@@ -13,7 +13,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
@@ -63,7 +63,7 @@ import { editingTechRecord, selectTechRecord } from '../selectors/technical-reco
 @Injectable()
 export class TechnicalRecordServiceEffects {
 	private actions$ = inject(Actions);
-	private techRecordHttpService = inject(TechnicalRecordHttpService);
+	private httpService = inject(HttpService);
 	private technicalRecordService = inject(TechnicalRecordService);
 	private batchTechRecordService = inject(BatchTechnicalRecordService);
 	private userService = inject(UserService);
@@ -76,7 +76,7 @@ export class TechnicalRecordServiceEffects {
 			mergeMap((action) => {
 				const anchorLink = 'search-term';
 
-				return this.techRecordHttpService.getBySystemNumber$(action.systemNumber).pipe(
+				return this.httpService.searchTechRecordBySystemNumber(action.systemNumber).pipe(
 					map((vehicleTechRecords) => {
 						return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
 					}),
@@ -94,7 +94,7 @@ export class TechnicalRecordServiceEffects {
 			mergeMap((action) => {
 				const anchorLink = 'search-term';
 
-				return this.techRecordHttpService.getRecordV3$(action.systemNumber, action.createdTimestamp).pipe(
+				return this.httpService.getTechRecordV3(action.systemNumber, action.createdTimestamp).pipe(
 					map((vehicleTechRecord) => {
 						return getTechRecordV3Success({ vehicleTechRecord });
 					}),
@@ -118,7 +118,7 @@ export class TechnicalRecordServiceEffects {
 			concatMap(([{ vehicle }, applicationId]) => {
 				const vehicleRecord = { ...vehicle, techRecord_applicationId: applicationId };
 
-				return this.techRecordHttpService.createVehicleRecord$(vehicleRecord).pipe(
+				return this.httpService.createTechRecord(vehicleRecord).pipe(
 					map((response) => createVehicleRecordSuccess({ vehicleTechRecord: response })),
 					catchError((error) =>
 						of(
@@ -144,7 +144,7 @@ export class TechnicalRecordServiceEffects {
 				if (!techRecord) {
 					return of(updateTechRecordFailure({ error: 'There is not technical record in edit' }));
 				}
-				return this.techRecordHttpService.updateTechRecords$(systemNumber, createdTimestamp, techRecord).pipe(
+				return this.httpService.updateTechRecord(systemNumber, createdTimestamp, techRecord).pipe(
 					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord })),
 					catchError((error) =>
 						of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
@@ -158,8 +158,8 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(amendVrm),
 			switchMap(({ newVrm, cherishedTransfer, systemNumber, createdTimestamp, thirdMark }) => {
-				return this.techRecordHttpService
-					.amendVrm$(newVrm, cherishedTransfer, systemNumber, createdTimestamp, thirdMark)
+				return this.httpService
+					.amendTechRecordVrm(newVrm, cherishedTransfer, systemNumber, createdTimestamp, thirdMark)
 					.pipe(
 						map((vehicleTechRecord) => amendVrmSuccess({ vehicleTechRecord })),
 						catchError((error) =>
@@ -174,7 +174,7 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(amendVin),
 			switchMap(({ newVin, systemNumber, createdTimestamp }) => {
-				return this.techRecordHttpService.amendVin$(newVin, systemNumber, createdTimestamp).pipe(
+				return this.httpService.amendTechRecordVin(newVin, systemNumber, createdTimestamp).pipe(
 					map((vehicleTechRecord) => amendVinSuccess({ vehicleTechRecord })),
 					catchError((error) =>
 						of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
@@ -188,7 +188,7 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(archiveTechRecord),
 			switchMap(({ systemNumber, createdTimestamp, reasonForArchiving }) =>
-				this.techRecordHttpService.archiveTechnicalRecord$(systemNumber, createdTimestamp, reasonForArchiving).pipe(
+				this.httpService.archiveTechRecord(systemNumber, createdTimestamp, reasonForArchiving).pipe(
 					map((vehicleTechRecord) => archiveTechRecordSuccess({ vehicleTechRecord })),
 					catchError((error) =>
 						of(archiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'archiveTechRecord') }))
@@ -202,7 +202,7 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(promoteTechRecord),
 			switchMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
-				this.techRecordHttpService.promoteTechnicalRecord$(systemNumber, createdTimestamp, reasonForPromoting).pipe(
+				this.httpService.promoteTechRecord(systemNumber, createdTimestamp, reasonForPromoting).pipe(
 					map((vehicleTechRecord) => promoteTechRecordSuccess({ vehicleTechRecord })),
 					catchError((error) =>
 						of(promoteTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'promoteTechRecord') }))
@@ -296,7 +296,7 @@ export class TechnicalRecordServiceEffects {
 			ofType(generatePlate),
 			withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
 			switchMap(([{ reason }, vehicle, name, email]) =>
-				this.techRecordHttpService.generatePlate$(vehicle as TechRecordType<'get'>, reason, { name, email }).pipe(
+				this.httpService.generatePlate(vehicle as TechRecordType<'get'>, reason, { name, email }).pipe(
 					map(() => generatePlateSuccess()),
 					catchError((error) =>
 						of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') }))
@@ -311,8 +311,8 @@ export class TechnicalRecordServiceEffects {
 			ofType(generateLetter),
 			withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
 			switchMap(([{ letterType, paragraphId }, vehicle, name, email]) =>
-				this.techRecordHttpService
-					.generateLetter$(vehicle as TechRecordType<'get'>, letterType, paragraphId, { name, email })
+				this.httpService
+					.generateLetter(vehicle as TechRecordType<'get'>, letterType, paragraphId, { name, email })
 					.pipe(
 						map(() => generateLetterSuccess()),
 						catchError((error) =>
@@ -327,14 +327,12 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(unarchiveTechRecord),
 			switchMap(({ systemNumber, createdTimestamp, reasonForUnarchiving, status }) =>
-				this.techRecordHttpService
-					.unarchiveTechnicalRecord$(systemNumber, createdTimestamp, reasonForUnarchiving, status)
-					.pipe(
-						map((vehicleTechRecord) => unarchiveTechRecordSuccess({ vehicleTechRecord })),
-						catchError((error) =>
-							of(unarchiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'unarchiveTechRecord') }))
-						)
+				this.httpService.unarchiveTechRecord(systemNumber, createdTimestamp, reasonForUnarchiving, status).pipe(
+					map((vehicleTechRecord) => unarchiveTechRecordSuccess({ vehicleTechRecord })),
+					catchError((error) =>
+						of(unarchiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'unarchiveTechRecord') }))
 					)
+				)
 			)
 		)
 	);
@@ -343,7 +341,7 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(generateADRCertificate),
 			switchMap(({ systemNumber, createdTimestamp, certificateType }) =>
-				this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
+				this.httpService.generateADRCertificate(systemNumber, createdTimestamp, certificateType).pipe(
 					map((res) => generateADRCertificateSuccess({ id: res.id })),
 					catchError((error) =>
 						of(

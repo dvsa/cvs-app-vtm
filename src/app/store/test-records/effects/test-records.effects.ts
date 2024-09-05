@@ -13,7 +13,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
@@ -52,7 +52,7 @@ import {
 export class TestResultsEffects {
 	private actions$ = inject(Actions);
 	private testRecordsService = inject(TestRecordsService);
-	private techRecordHttpService = inject(TechnicalRecordHttpService);
+	private httpService = inject(HttpService);
 	private store = inject<Store<State>>(Store);
 	private router = inject(Router);
 	private userService = inject(UserService);
@@ -342,7 +342,7 @@ export class TestResultsEffects {
 				ofType(createTestResultSuccess),
 				delay(3000),
 				map((action) => action.payload.changes.systemNumber as string),
-				switchMap((systemNumber) => this.techRecordHttpService.getBySystemNumber$(systemNumber)),
+				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
 				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
 				filter(Boolean),
 				switchMap((techRecord) =>

@@ -6,7 +6,7 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { Observable, firstValueFrom, of } from 'rxjs';
@@ -15,7 +15,7 @@ import { BatchTechnicalRecordService } from './batch-technical-record.service';
 describe('TechnicalRecordService', () => {
 	let service: BatchTechnicalRecordService;
 	let httpClient: HttpTestingController;
-	let technicalRecordHttpService: TechnicalRecordHttpService;
+	let httpService: HttpService;
 	let technicalRecordService: TechnicalRecordService;
 
 	beforeEach(() => {
@@ -24,13 +24,13 @@ describe('TechnicalRecordService', () => {
 			providers: [
 				BatchTechnicalRecordService,
 				provideMockStore({ initialState: initialAppState }),
-				TechnicalRecordHttpService,
+				HttpService,
 				TechnicalRecordService,
 			],
 		});
 		httpClient = TestBed.inject(HttpTestingController);
 		service = TestBed.inject(BatchTechnicalRecordService);
-		technicalRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
+		httpService = TestBed.inject(HttpService);
 		technicalRecordService = TestBed.inject(TechnicalRecordService);
 	});
 
@@ -130,7 +130,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
+				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -152,7 +152,7 @@ describe('TechnicalRecordService', () => {
 					techRecord_vehicleType: VehicleTypes.TRL,
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
+				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -176,7 +176,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
+				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -196,7 +196,7 @@ describe('TechnicalRecordService', () => {
 				} as TechRecordSearchSchema;
 
 				jest
-					.spyOn(technicalRecordHttpService, 'search$')
+					.spyOn(httpService, 'searchTechRecords')
 					.mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
 
 				const errors = await firstValueFrom(
@@ -219,7 +219,7 @@ describe('TechnicalRecordService', () => {
 				trailerIdOrVrmControl.setValue('TESTTRAILERID');
 			}
 
-			jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([]));
+			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 
 			const errors = await firstValueFrom(
 				service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>

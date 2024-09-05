@@ -5,7 +5,7 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -20,7 +20,7 @@ describe('DefectsEffects', () => {
 	let effects: TechSearchResultsEffects;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	let service: TechnicalRecordHttpService;
+	let service: HttpService;
 
 	const expectedResult = { systemNumber: '1' } as TechRecordSearchSchema;
 	const testCases = [
@@ -36,7 +36,7 @@ describe('DefectsEffects', () => {
 			providers: [
 				TechSearchResultsEffects,
 				provideMockActions(() => actions$),
-				TechnicalRecordHttpService,
+				HttpService,
 				provideMockStore({
 					initialState: initialAppState,
 				}),
@@ -44,7 +44,7 @@ describe('DefectsEffects', () => {
 		});
 
 		effects = TestBed.inject(TechSearchResultsEffects);
-		service = TestBed.inject(TechnicalRecordHttpService);
+		service = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {
@@ -62,7 +62,7 @@ describe('DefectsEffects', () => {
 				actions$ = hot('-a--', { a: fetchSearchResult });
 
 				// mock service call
-				jest.spyOn(service, 'search$').mockReturnValue(cold('--a|', { a: payload }));
+				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--a|', { a: payload }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
@@ -77,7 +77,7 @@ describe('DefectsEffects', () => {
 
 				const expectedError = new Error('Oopsi');
 
-				jest.spyOn(service, 'search$').mockReturnValue(cold('--#|', {}, expectedError));
+				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
 					b: fetchSearchResultFailed({
