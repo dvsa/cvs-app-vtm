@@ -4,7 +4,7 @@ import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/req
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { RequiredStandardsService } from '@services/required-standards/required-standards.service';
+import { HttpService } from '@services/http/http.service';
 import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -19,7 +19,7 @@ describe('RequiredStandardEffects', () => {
 	let effects: RequiredStandardsEffects;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	let service: RequiredStandardsService;
+	let service: HttpService;
 
 	const testCases = [
 		{
@@ -37,7 +37,7 @@ describe('RequiredStandardEffects', () => {
 			providers: [
 				RequiredStandardsEffects,
 				provideMockActions(() => actions$),
-				RequiredStandardsService,
+				HttpService,
 				provideMockStore({
 					initialState: initialAppState,
 				}),
@@ -45,7 +45,7 @@ describe('RequiredStandardEffects', () => {
 		});
 
 		effects = TestBed.inject(RequiredStandardsEffects);
-		service = TestBed.inject(RequiredStandardsService);
+		service = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {
@@ -63,7 +63,7 @@ describe('RequiredStandardEffects', () => {
 				actions$ = hot('-a--', { a: getRequiredStandards({ euVehicleCategory: 'm1' }) });
 
 				// mock service call
-				jest.spyOn(service, 'getRequiredStandards').mockReturnValue(cold('--a|', { a: requiredStandards }));
+				jest.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--a|', { a: requiredStandards }));
 
 				// expect effect to return success action
 				expectObservable(effects.getRequiredStandards$).toBe('---b', {
@@ -78,7 +78,7 @@ describe('RequiredStandardEffects', () => {
 
 				const expectedError = new Error('No required standards found');
 
-				jest.spyOn(service, 'getRequiredStandards').mockReturnValue(cold('--#|', {}, expectedError));
+				jest.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.getRequiredStandards$).toBe('---b', {
 					b: getRequiredStandardsFailure({ error: 'No required standards found' }),

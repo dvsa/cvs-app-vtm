@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
@@ -64,6 +65,12 @@ export class HttpService {
 
 	fetchDefect(id: number): Observable<Defect> {
 		return this.http.get<Defect>(`${environment.VTM_API_URI}/defects/${id}`);
+	}
+
+	fetchRequiredStandards(euVehicleCategory: string): Observable<DefectGETRequiredStandards> {
+		return this.http.get<DefectGETRequiredStandards>(
+			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`
+		);
 	}
 
 	fetchTestStations(): Observable<Array<TestStation>> {

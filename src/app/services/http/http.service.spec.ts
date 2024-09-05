@@ -1,12 +1,14 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Defect } from '@models/defects/defect.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
 
@@ -159,6 +161,45 @@ describe('HttpService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);
+			expect(req.request.method).toBe('GET');
+
+			// Respond with mock error
+			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
+		});
+	});
+
+	describe('fetchRequiredStandards', () => {
+		it('should get an array of matching results', () => {
+			const expectedResult = [{ imDescription: 'Some Description' } as Defect];
+			httpService
+				.fetchRequiredStandards(EUVehicleCategory.M1)
+				.subscribe((response) => expect(response).toEqual(expectedResult));
+
+			// Check for correct requests: should have made one request to search from expected URL
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=m1`
+			);
+			expect(req.request.method).toBe('GET');
+
+			// Provide each request with a mock response
+			req.flush(expectedResult);
+		});
+
+		it('should handle errors', (done) => {
+			httpService.fetchRequiredStandards(EuVehicleCategory.M1).subscribe({
+				next: () => {},
+				error: (e) => {
+					expect(e.error).toBe('Deliberate 500 error');
+					expect(e.status).toBe(500);
+					expect(e.statusText).toBe('Server Error');
+					done();
+				},
+			});
+
+			// Check for correct requests: should have made one request to search from expected URL
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=m1`
+			);
 			expect(req.request.method).toBe('GET');
 
 			// Respond with mock error
