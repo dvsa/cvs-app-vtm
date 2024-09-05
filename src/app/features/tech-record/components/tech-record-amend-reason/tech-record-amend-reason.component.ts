@@ -3,8 +3,13 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
+import {
+	CustomFormControl,
+	CustomFormGroup,
+	FormNodeOption,
+	FormNodeTypes,
+} from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-tech-amend-reason',

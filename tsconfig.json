@@ -25,10 +25,12 @@
     "paths": {
       "@api/*": ["src/app/api/*"],
       "@core/*": ["src/app/core/*"],
+      "@components/*": ["src/app/components/*"],
       "@forms/*": ["src/app/forms/*"],
       "@guards/*": ["src/app/guards/*"],
       "@mocks/*": ["src/mocks/*"],
       "@models/*": ["src/app/models/*"],
+      "@pipes/*": ["src/app/pipes/*"],
       "@services/*": ["src/app/services/*"],
       "@store/*": ["src/app/store/*"],
       "@shared/*": ["src/app/shared/*"],

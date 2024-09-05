@@ -3,12 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { ValidatorNames } from '@models/validators.enum';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { Store, select } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import {
+	CustomFormGroup,
+	FormNodeEditTypes,
+	FormNodeTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import {
 	ReferenceDataState,

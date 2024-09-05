@@ -4,9 +4,9 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({

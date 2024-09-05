@@ -8,8 +8,8 @@ import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { State, initialAppState } from '@store/index';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { SearchComponent } from '../search.component';
 

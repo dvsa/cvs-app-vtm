@@ -1,8 +1,8 @@
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { EmissionStandard } from '@models/test-types/emissions.enum';
 
 export const EmissionsSection: FormNode = {
 	name: 'emissionsSection',

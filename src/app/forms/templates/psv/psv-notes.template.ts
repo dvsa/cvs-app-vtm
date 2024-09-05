@@ -1,5 +1,10 @@
 import { ValidatorNames } from '@models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
+import {
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeTypes,
+	FormNodeViewTypes,
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const PsvNotes: FormNode = {
 	name: 'notesSection',

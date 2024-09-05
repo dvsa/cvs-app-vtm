@@ -1,17 +1,17 @@
-import {
-	TEST_TYPES_GROUP1_SPEC_TEST,
-	TEST_TYPES_GROUP5_SPEC_TEST,
-	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-} from '@models/testTypeId.enum';
-// eslint-disable-next-line import/no-cycle
-import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import {
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+} from '@models/testTypeId.enum';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
+// eslint-disable-next-line import/no-cycle
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {

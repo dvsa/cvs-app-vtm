@@ -26,12 +26,12 @@ import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';

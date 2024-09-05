@@ -4,8 +4,8 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';

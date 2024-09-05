@@ -12,8 +12,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
 import * as refSelectors from '@store/reference-data/selectors/reference-data.selectors';
+import { of } from 'rxjs';
 import { ReferenceDataListComponent } from '../reference-data-list.component';
 
 describe('DataTypeListComponent', () => {

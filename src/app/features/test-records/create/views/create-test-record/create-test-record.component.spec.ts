@@ -11,7 +11,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
@@ -21,6 +20,7 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';

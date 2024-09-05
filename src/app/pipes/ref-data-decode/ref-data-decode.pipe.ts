@@ -1,5 +1,4 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,
@@ -7,6 +6,7 @@ import {
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import { State } from '@store/index';
 import {
 	fetchReferenceData,

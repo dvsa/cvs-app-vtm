@@ -1,6 +1,6 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { DefectValidators } from './defect.validators';
 
 describe('parent sibling validators', () => {

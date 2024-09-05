@@ -1,6 +1,8 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	CustomFormControl,
@@ -9,8 +11,6 @@ import {
 	FormNodeTypes,
 	FormNodeViewTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { CustomValidators } from '@forms/validators/custom-validators';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
 

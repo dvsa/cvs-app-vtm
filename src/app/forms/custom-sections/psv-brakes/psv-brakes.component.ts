@@ -1,15 +1,20 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { MultiOptions } from '@models/options.model';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { MultiOptions } from '@models/options.model';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Retarders } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import {
+	CustomFormGroup,
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';

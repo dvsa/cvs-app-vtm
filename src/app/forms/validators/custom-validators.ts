@@ -1,8 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
-import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import validateDate from 'validate-govuk-date';
 
 export class CustomValidators {

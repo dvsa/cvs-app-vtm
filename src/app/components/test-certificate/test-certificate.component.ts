@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
 import { Store, select } from '@ngrx/store';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { State } from '@store/index';

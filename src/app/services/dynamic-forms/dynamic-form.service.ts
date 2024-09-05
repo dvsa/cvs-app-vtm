@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { AsyncValidatorNames } from '@models/async-validators.enum';
-import { Condition } from '@models/condition.model';
-import { ValidatorNames } from '@models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { CustomValidators, EnumValidatorOptions, IsArrayValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { Condition } from '@models/condition.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';

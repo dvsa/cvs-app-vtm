@@ -5,10 +5,10 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';

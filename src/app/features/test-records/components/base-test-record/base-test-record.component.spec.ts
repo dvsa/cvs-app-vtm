@@ -10,12 +10,12 @@ import {
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';

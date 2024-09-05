@@ -4,8 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { Store } from '@ngrx/store';
+import {
+	CustomFormControl,
+	FormNodeEditTypes,
+	FormNodeTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';

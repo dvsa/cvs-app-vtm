@@ -1,12 +1,12 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-// eslint-disable-next-line import/no-cycle
-import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
+// eslint-disable-next-line import/no-cycle
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 
 export const fetchTestResults = createAction('[API/test-results] Fetch All');
 export const fetchTestResultsSuccess = createAction(

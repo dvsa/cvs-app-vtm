@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TEST_TYPES_GROUP5_13 } from '@models/testTypeId.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import merge from 'lodash.merge';
-import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
 import { BaseDialogComponent } from '../../../components/base-dialog/base-dialog.component';
+import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
 
 const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialRefData): FormNode => ({
 	name: 'abandonSection',

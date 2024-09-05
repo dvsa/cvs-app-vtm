@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';

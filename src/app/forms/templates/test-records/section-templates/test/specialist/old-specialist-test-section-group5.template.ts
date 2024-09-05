@@ -1,4 +1,5 @@
 import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
@@ -7,7 +8,6 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const OldIVASpecialistTestSectionGroup5: FormNode = {
 	name: 'testSection',

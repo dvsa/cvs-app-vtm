@@ -3,8 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
+import {
+	CustomFormControl,
+	CustomFormGroup,
+	FormNodeTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { initialAppState } from '@store/index';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FocusNextDirective } from '../date/focus-next.directive';
