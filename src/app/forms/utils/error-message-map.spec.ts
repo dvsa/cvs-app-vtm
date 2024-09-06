@@ -1,5 +1,5 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { ErrorMessageMap } from './error-message-map';
 
 describe('ErrorMessageMap', () => {

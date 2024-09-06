@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 

@@ -3,8 +3,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { Defect } from '@models/defects/defect.model';
@@ -14,8 +12,10 @@ import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/t
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';

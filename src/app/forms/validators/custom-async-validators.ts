@@ -1,12 +1,12 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
-import { Condition, operatorEnum } from '@forms/models/condition.model';
-// eslint-disable-next-line import/no-cycle
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { Condition, operatorEnum } from '@models/condition.model';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
+// eslint-disable-next-line import/no-cycle
+import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';

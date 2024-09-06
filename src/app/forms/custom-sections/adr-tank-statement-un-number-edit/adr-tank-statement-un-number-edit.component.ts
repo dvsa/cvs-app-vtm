@@ -1,6 +1,6 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
 

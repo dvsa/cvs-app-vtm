@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from '../field-warning-message/field-warning-message.component';

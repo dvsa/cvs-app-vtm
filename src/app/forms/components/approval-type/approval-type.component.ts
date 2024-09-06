@@ -11,7 +11,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 

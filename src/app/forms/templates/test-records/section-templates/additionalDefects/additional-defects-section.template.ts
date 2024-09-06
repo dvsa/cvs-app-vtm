@@ -1,5 +1,5 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@models/validators.enum';
+import { FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 
 export const AdditionalDefectsSection: FormNode = {
 	name: 'additionalDefectsSection',

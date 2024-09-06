@@ -7,7 +7,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { hgvRequiredFields } from '@forms/models/plateRequiredFields.model';
+import { hgvRequiredFields } from '@models/plateRequiredFields.model';
 import { Roles } from '@models/roles.enum';
 import { VehicleConfigurations } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';

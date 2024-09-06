@@ -1,13 +1,13 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
 	name: 'vehicleSection',

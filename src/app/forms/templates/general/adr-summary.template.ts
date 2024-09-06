@@ -13,16 +13,16 @@ import { AdrTankDetailsSubsequentInspectionsEditComponent } from '@forms/custom-
 import { AdrTankDetailsSubsequentInspectionsViewComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
 import { AdrTankStatementUnNumberEditComponent } from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
 import { AdrTankStatementUnNumberViewComponent } from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const AdrSummaryTemplate: FormNode = {
 	name: 'adrSection',

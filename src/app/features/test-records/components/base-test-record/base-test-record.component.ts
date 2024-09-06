@@ -15,8 +15,6 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { RequiredStandardsComponent } from '@forms/custom-sections/required-standards/required-standards.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -24,6 +22,8 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormControl, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';

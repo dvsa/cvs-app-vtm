@@ -1,4 +1,4 @@
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { AdrValidators } from './adr.validators';
 
 describe('ADR Validators', () => {

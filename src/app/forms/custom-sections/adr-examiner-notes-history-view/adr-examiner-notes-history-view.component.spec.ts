@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State, initialAppState } from '@store/index';

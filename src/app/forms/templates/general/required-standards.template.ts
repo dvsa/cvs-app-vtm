@@ -1,4 +1,4 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 
 export const RequiredStandardsTpl: FormNode = {
 	name: 'requiredStandards',

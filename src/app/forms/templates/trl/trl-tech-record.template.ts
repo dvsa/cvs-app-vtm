@@ -1,10 +1,9 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { FrameDescriptions } from '@models/vehicle-tech-record.model';
-import { TagType } from '@shared/components/tag/tag.component';
 import {
 	FormNode,
 	FormNodeEditTypes,
@@ -12,7 +11,8 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 	TagTypeLabels,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const TrlTechRecordTemplate: FormNode = {
 	name: 'techRecordSummary',

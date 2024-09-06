@@ -2,8 +2,8 @@ import { KeyValue } from '@angular/common';
 import { AfterContentInit, Component, InjectionToken, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup, NgControl } from '@angular/forms';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { Observable, map, of } from 'rxjs';
 
 @Component({

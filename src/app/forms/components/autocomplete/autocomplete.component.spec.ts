@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { of } from 'rxjs';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { AutocompleteComponent } from './autocomplete.component';
