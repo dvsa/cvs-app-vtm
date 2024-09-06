@@ -5,12 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { TagComponent } from '@shared/components/tag/tag.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { initialAppState } from '@store/index';
 import { RequiredStandardsComponent } from './required-standards.component';
 

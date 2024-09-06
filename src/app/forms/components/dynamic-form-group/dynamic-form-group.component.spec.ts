@@ -4,13 +4,13 @@ import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
-import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {

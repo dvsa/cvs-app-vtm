@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-custom-defect[index][form]',

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MultiOptions } from '@forms/models/options.model';
+import { MultiOptions } from '@models/options.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { Store } from '@ngrx/store';
 import { TestStationsState, testStations } from '@store/test-stations';

@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';

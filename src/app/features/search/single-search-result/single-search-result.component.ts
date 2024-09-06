@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-single-search-result[searchResult]',

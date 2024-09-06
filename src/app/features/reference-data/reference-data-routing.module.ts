@@ -4,7 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataRoutes } from '@models/routes.enum';
-import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
+import { RouterOutletComponent } from '../../components/router-outlet/router-outlet.component';
 import { ReferenceDataCreateComponent } from './reference-data-add/reference-data-add.component';
 import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend.component';
 import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';

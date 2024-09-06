@@ -1,8 +1,13 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomFormControl, FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { ValidatorNames } from '@models/validators.enum';
 import { Store, select } from '@ngrx/store';
+import {
+	CustomFormControl,
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeTypes,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { State } from '@store/index';
 import { testResultInEdit } from '@store/test-records';
 import { map, take, tap } from 'rxjs';

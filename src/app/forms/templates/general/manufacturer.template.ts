@@ -1,5 +1,5 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { ValidatorNames } from '@models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
 export const ManufacturerTemplate: FormNode = {
 	name: 'manufacturerSection',

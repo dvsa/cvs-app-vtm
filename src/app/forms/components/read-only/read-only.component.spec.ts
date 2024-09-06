@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { ReadOnlyComponent } from './read-only.component';

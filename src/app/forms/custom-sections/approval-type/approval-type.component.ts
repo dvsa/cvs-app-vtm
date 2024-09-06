@@ -4,18 +4,18 @@ import { TechRecord } from '@api/vehicle';
 import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
+import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormGroup,
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
-import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
-import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({

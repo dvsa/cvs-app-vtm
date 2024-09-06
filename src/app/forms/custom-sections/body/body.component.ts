@@ -1,10 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -14,9 +10,18 @@ import {
 	vehicleBodyTypeCodeMap,
 	vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
+import { MultiOptions } from '@models/options.model';
 import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import {
+	CustomFormGroup,
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';

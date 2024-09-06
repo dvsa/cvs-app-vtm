@@ -1,13 +1,13 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
-import { SpecialRefData } from '@forms/services/multi-options.service';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { SpecialRefData } from '@services/multi-options/multi-options.service';
 
 export const TestSectionGroup15And16: FormNode = {
 	name: 'testSection',

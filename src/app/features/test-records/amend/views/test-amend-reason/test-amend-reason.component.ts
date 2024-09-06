@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+	CustomFormControl,
+	CustomFormGroup,
+	FormNodeOption,
+	FormNodeTypes,
+} from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-test-amend-reason',

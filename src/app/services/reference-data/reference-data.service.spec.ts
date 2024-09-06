@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ReferenceDataApiResponse, ReferenceDataItem } from '@api/reference-data';
-import { MultiOptions } from '@forms/models/options.model';
+import { MultiOptions } from '@models/options.model';
 import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,

@@ -1,11 +1,10 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { FuelTypes } from '@models/vehicle-tech-record.model';
-import { TagType } from '@shared/components/tag/tag.component';
 import {
 	FormNode,
 	FormNodeEditTypes,
@@ -13,7 +12,8 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 	TagTypeLabels,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const PsvTechRecord: FormNode = {
 	name: 'techRecordSummary',
