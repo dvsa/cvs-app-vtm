@@ -1,9 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-	CompleteTestResults,
-	DefaultService as CreateTestResultsService,
-	GetTestResultsService,
-} from '@api/test-results';
+import { CompleteTestResults, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -44,7 +40,6 @@ import { Observable, take, throwError } from 'rxjs';
 export class TestRecordsService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
-	private getTestResultService = inject(GetTestResultsService);
 	private createTestResultsService = inject(CreateTestResultsService);
 
 	fetchTestResultbySystemNumber(
@@ -62,7 +57,7 @@ export class TestRecordsService {
 		}
 
 		const { status, fromDateTime, toDateTime, testResultId, version } = queryparams;
-		return this.getTestResultService.testResultsSystemNumberGet(
+		return this.httpService.testResultsSystemNumberGet(
 			systemNumber,
 			status,
 			fromDateTime,

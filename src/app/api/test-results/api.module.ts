@@ -4,15 +4,13 @@ import { Configuration } from './configuration';
 
 
 import { DefaultService } from './api/default.service';
-import { GetTestResultsService } from './api/getTestResults.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    DefaultService,
-    GetTestResultsService]
+    DefaultService]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
