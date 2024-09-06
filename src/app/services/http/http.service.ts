@@ -73,6 +73,21 @@ export class HttpService {
 		);
 	}
 
+	archiveTechRecordStatus(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling archiveTechRecordStatus.');
+		}
+
+		if (systemNumber === null || systemNumber === undefined) {
+			throw new Error('Required parameter systemNumber was null or undefined when calling archiveTechRecordStatus.');
+		}
+
+		return this.http.post<CompleteTechRecordPUT>(
+			`${environment.VTM_API_URI}/vehicles/archive/${encodeURIComponent(String(systemNumber))}`,
+			body
+		);
+	}
+
 	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
 		return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
