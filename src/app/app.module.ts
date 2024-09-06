@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 import { Configuration as TestResultsApiConfiguration, ApiModule as TestResultsApiModule } from '@api/test-results';
-import { Configuration as TestTypesApiConfiguration, ApiModule as TestTypesApiModule } from '@api/test-types';
 import {
 	MSAL_GUARD_CONFIG,
 	MSAL_INSTANCE,
@@ -84,7 +83,6 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 		InterceptorModule,
 		CoreModule,
 		TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
-		TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
 		DocumentRetrievalApiModule.forRoot(
 			() =>
 				new DocumentRetrievalConfiguration({

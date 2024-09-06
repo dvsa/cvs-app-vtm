@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, Optional } from '@angular/core';
-import { BASE_PATH, Configuration, TestTypesService as TestTypesApiService, TestTypesTaxonomy } from '@api/test-types';
+import { Injectable, inject } from '@angular/core';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { Store } from '@ngrx/store';
-import { State } from '@store/.';
+import { HttpService } from '@services/http/http.service';
 import { testTypeIdChanged } from '@store/test-records';
 import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
 import { selectTestTypesByVehicleType } from '@store/test-types/selectors/test-types.selectors';
@@ -11,15 +10,9 @@ import { Observable } from 'rxjs';
 @Injectable({
 	providedIn: 'root',
 })
-export class TestTypesService extends TestTypesApiService {
-	constructor(
-		httpClient: HttpClient,
-		@Optional() @Inject(BASE_PATH) basePath: string,
-		@Optional() configuration: Configuration,
-		private store: Store<State>
-	) {
-		super(httpClient, basePath, configuration);
-	}
+export class TestTypesService {
+	store = inject(Store);
+	httpService = inject(HttpService);
 
 	get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
 		return this.store.select(selectTestTypesByVehicleType);

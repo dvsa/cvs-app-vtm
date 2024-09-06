@@ -1,4 +1,5 @@
-import { TestType, TestTypeCategory } from '@api/test-types';
+import { TestType } from '@models/test-types/testType';
+import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestType } from '@api/test-types';
+import { TestType } from '@models/test-types/testType';
 
 @Component({
 	selector: 'app-test-type-select-wrapper',

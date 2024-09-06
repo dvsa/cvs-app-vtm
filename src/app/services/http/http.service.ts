@@ -14,6 +14,8 @@ import {
 } from '@models/reference-data/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { TestTypeInfo } from '@models/test-types/testTypeInfo';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
 import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
@@ -186,6 +188,84 @@ export class HttpService {
 		return this.http.get<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
 		);
+	}
+
+	getTestTypes(typeOfTest?: string) {
+		let params = new HttpParams();
+		if (typeOfTest !== undefined && typeOfTest !== null) {
+			params = params.set('typeOfTest', typeOfTest);
+		}
+
+		return this.http.request<TestTypesTaxonomy>('get', `${environment.VTM_API_URI}/test-types`, {
+			params,
+		});
+	}
+
+	getTestTypesid(
+		id: string,
+		fields: Array<string>,
+		vehicleType: string,
+		vehicleSize?: string,
+		vehicleConfiguration?: string,
+		vehicleAxles?: number,
+		euVehicleCategory?: string,
+		vehicleClass?: string,
+		vehicleSubclass?: string,
+		vehicleWheels?: number
+	) {
+		if (id === null || id === undefined) {
+			throw new Error('Required parameter id was null or undefined when calling getTestTypesid.');
+		}
+
+		if (fields === null || fields === undefined) {
+			throw new Error('Required parameter fields was null or undefined when calling getTestTypesid.');
+		}
+
+		if (vehicleType === null || vehicleType === undefined) {
+			throw new Error('Required parameter vehicleType was null or undefined when calling getTestTypesid.');
+		}
+
+		let params = new HttpParams();
+
+		if (fields) {
+			params = params.set('fields', fields.join(','));
+		}
+
+		if (vehicleType !== undefined && vehicleType !== null) {
+			params = params.set('vehicleType', vehicleType);
+		}
+
+		if (vehicleSize !== undefined && vehicleSize !== null) {
+			params = params.set('vehicleSize', vehicleSize);
+		}
+
+		if (vehicleConfiguration !== undefined && vehicleConfiguration !== null) {
+			params = params.set('vehicleConfiguration', vehicleConfiguration);
+		}
+
+		if (vehicleAxles !== undefined && vehicleAxles !== null) {
+			params = params.set('vehicleAxles', vehicleAxles);
+		}
+
+		if (euVehicleCategory !== undefined && euVehicleCategory !== null) {
+			params = params.set('euVehicleCategory', euVehicleCategory);
+		}
+
+		if (vehicleClass !== undefined && vehicleClass !== null) {
+			params = params.set('vehicleClass', vehicleClass);
+		}
+
+		if (vehicleSubclass !== undefined && vehicleSubclass !== null) {
+			params = params.set('vehicleSubclass', vehicleSubclass);
+		}
+
+		if (vehicleWheels !== undefined && vehicleWheels !== null) {
+			params = params.set('vehicleWheels', vehicleWheels);
+		}
+
+		return this.http.get<TestTypeInfo>(`${environment.VTM_API_URI}/test-types/${encodeURIComponent(String(id))}`, {
+			params,
+		});
 	}
 
 	postTechRecords(body: TechRecordPOST) {

@@ -1,4 +1,5 @@
-import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategory } from '@models/test-types/testTypeCategory';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';
 import { TestTypeState, initialTestTypeState, testTypesReducer } from './test-types.reducer';
 

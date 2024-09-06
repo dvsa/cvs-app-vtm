@@ -1,4 +1,4 @@
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { TestTypeNamePipe } from './test-type-name.pipe';
 
 const testTypes = [

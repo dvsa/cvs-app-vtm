@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TestType, TestTypeCategory } from '@api/test-types';
+import { TestType } from '@models/test-types/testType';
+import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 
 @Pipe({
 	name: 'testTypeName',

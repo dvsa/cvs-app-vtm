@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
@@ -58,7 +57,6 @@ export class TestResultsEffects {
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
 	private featureToggleService = inject(FeatureToggleService);
-	private testTypesService = inject(TestTypesService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(

@@ -1,6 +1,7 @@
-import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestTypeCategory } from '@models/test-types/testTypeCategory';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { selectTestType, selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 

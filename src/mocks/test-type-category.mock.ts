@@ -1,4 +1,4 @@
-import { TestTypeCategory } from '@api/test-types';
+import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 
 export const createMockTestTypeCategory = (params: Partial<TestTypeCategory> = {}): TestTypeCategory => ({
 	id: 'testTypeCategoryId',

@@ -3,7 +3,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
-import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -20,6 +19,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -178,7 +178,7 @@ describe('TestResultsEffects', () => {
 				DynamicFormService,
 				FeatureToggleService,
 				{
-					provide: TestTypesService,
+					provide: HttpService,
 					useValue: { getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())) },
 				},
 			],

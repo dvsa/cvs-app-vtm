@@ -1,10 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TestTypesService } from '@api/test-types';
 import { TestType } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { HttpService } from '@services/http/http.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
@@ -27,7 +27,7 @@ describe('VehicleHeaderComponent', () => {
 			declarations: [VehicleHeaderComponent],
 			imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
 			providers: [
-				TestTypesService,
+				HttpService,
 				provideMockStore({ initialState: initialAppState }),
 				ResultOfTestService,
 				{ provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
