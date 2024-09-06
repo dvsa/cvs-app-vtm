@@ -15,11 +15,28 @@ import {
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
+import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
 import { cloneDeep } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
 	http = inject(HttpClient);
+
+	addProvisionalTechRecord(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling addProvisionalTechRecord.');
+		}
+
+		if (systemNumber === null || systemNumber === undefined) {
+			throw new Error('Required parameter systemNumber was null or undefined when calling addProvisionalTechRecord.');
+		}
+
+		return this.http.post<CompleteTechRecordPUT>(
+			`${environment.VTM_API_URI}/vehicles/add-provisional/${encodeURIComponent(String(systemNumber))}`,
+			body
+		);
+	}
 
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
 		return this.http.patch<TechRecordType<'get'>>(

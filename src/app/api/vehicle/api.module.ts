@@ -1,9 +1,8 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { Configuration } from './configuration';
 
 
-import { AddProvisionalTechRecordService } from './api/addProvisionalTechRecord.service';
 import { ArchiveTechRecordStatusService } from './api/archiveTechRecordStatus.service';
 import { GetTechRecordsService } from './api/getTechRecords.service';
 import { PostTechRecordsService } from './api/postTechRecords.service';
@@ -14,7 +13,6 @@ import { UpdateTechRecordsService } from './api/updateTechRecords.service';
   declarations: [],
   exports:      [],
   providers: [
-    AddProvisionalTechRecordService,
     ArchiveTechRecordStatusService,
     GetTechRecordsService,
     PostTechRecordsService,
