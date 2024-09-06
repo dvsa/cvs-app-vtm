@@ -3,7 +3,6 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { Configuration } from './configuration';
 
 
-import { ArchiveTestResultsService } from './api/archiveTestResults.service';
 import { DefaultService } from './api/default.service';
 import { GetTestResultsService } from './api/getTestResults.service';
 
@@ -12,7 +11,6 @@ import { GetTestResultsService } from './api/getTestResults.service';
   declarations: [],
   exports:      [],
   providers: [
-    ArchiveTestResultsService,
     DefaultService,
     GetTestResultsService]
 })
