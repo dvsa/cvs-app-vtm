@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TechRecord } from '@api/vehicle';
 import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -8,6 +7,7 @@ import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecord } from '@models/vehicle/techRecord';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormGroup,

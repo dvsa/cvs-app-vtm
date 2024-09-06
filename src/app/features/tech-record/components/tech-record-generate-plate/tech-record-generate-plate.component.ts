@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { PlatesInner } from '@models/vehicle/platesInner';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import {

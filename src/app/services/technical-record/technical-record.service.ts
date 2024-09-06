@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { AxleTyreProperties } from '@api/vehicle';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -20,6 +19,7 @@ import {
 	VehicleTechRecordModel,
 	VehicleTypes,
 } from '@models/vehicle-tech-record.model';
+import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { Store, select } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
@@ -52,7 +52,6 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
-import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -70,7 +69,7 @@ export class TechnicalRecordService {
 
 	getAxleFittingWeightValueFromLoadIndex(
 		loadIndexValue: string,
-		fitmentCodeType: FitmentCodeEnum | null | undefined,
+		fitmentCodeType: AxleTyreProperties.FitmentCodeEnum | null | undefined,
 		loadIndex: ReferenceDataTyreLoadIndex[] | null
 	): number | undefined {
 		let factor = 4;

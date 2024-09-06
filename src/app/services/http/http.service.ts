@@ -19,6 +19,7 @@ import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
 import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
 import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
 import { TechRecordPOST } from '@models/vehicle/techRecordPOST';
+import { TechRecordPUT } from '@models/vehicle/techRecordPUT';
 import { cloneDeep } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
@@ -362,6 +363,29 @@ export class HttpService {
 		return this.http.patch<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
 			techRecord
+		);
+	}
+
+	updateTechRecords(body: TechRecordPUT, systemNumber: string, oldStatusCode?: string) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling updateTechRecords.');
+		}
+
+		if (systemNumber === null || systemNumber === undefined) {
+			throw new Error('Required parameter systemNumber was null or undefined when calling updateTechRecords.');
+		}
+
+		let params = new HttpParams();
+		if (oldStatusCode !== undefined && oldStatusCode !== null) {
+			params = params.set('oldStatusCode', oldStatusCode);
+		}
+
+		return this.http.put<CompleteTechRecordPUT>(
+			`${environment.VTM_API_URI}/vehicles/${encodeURIComponent(String(systemNumber))}`,
+			body,
+			{
+				params,
+			}
 		);
 	}
 }
