@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -127,6 +127,23 @@ export class HttpService {
 			`${environment.VTM_API_URI}/v3/technical-records/adrCertificate/${systemNumber}/${createdTimestamp}`,
 			{ certificateType }
 		);
+	}
+
+	getDocument(paramMap: Map<string, string>) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/pdf; charset=utf-8');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+
+		let params = new HttpParams();
+		paramMap.forEach((value, key) => (params = params.set(key, value)));
+
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval`, {
+			headers,
+			observe: 'events',
+			params,
+			reportProgress: true,
+			responseType: 'text',
+		});
 	}
 
 	generateLetter(
@@ -429,6 +446,62 @@ export class HttpService {
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
+	}
+
+	testCertificateGet(testNumber?: string, vin?: string) {
+		if (!vin) {
+			throw new Error('Required parameter vin was null or undefined when calling testCertificateGet.');
+		}
+
+		if (!testNumber) {
+			throw new Error('Required parameter testNumber was null or undefined when calling testCertificateGet.');
+		}
+
+		let params = new HttpParams();
+
+		if (testNumber) {
+			params = params.set('testNumber', testNumber);
+		}
+
+		if (vin) {
+			params = params.set('vinNumber', vin);
+		}
+
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/pdf; charset=utf-8');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval`, {
+			headers,
+			params,
+			reportProgress: false,
+			observe: 'body',
+			responseType: 'text',
+		});
+	}
+
+	testPlateGet(serialNumber?: string) {
+		if (!serialNumber) {
+			throw new Error('Required parameter serialNumber was null or undefined when calling testCertificateGet.');
+		}
+
+		let params = new HttpParams();
+
+		if (serialNumber) {
+			params = params.set('plateSerialNumber', <any>serialNumber);
+		}
+
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/pdf; charset=utf-8');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval`, {
+			headers,
+			params,
+			reportProgress: false,
+			observe: 'body',
+			responseType: 'text',
+		});
 	}
 
 	testResultsArchiveTestResultIdPut(body: CompleteTestResults, testResultId: string) {

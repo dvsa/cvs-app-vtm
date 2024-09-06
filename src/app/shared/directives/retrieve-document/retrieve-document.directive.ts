@@ -1,9 +1,8 @@
 import { HttpEventType } from '@angular/common/http';
-import { Directive, HostListener, Input } from '@angular/core';
-import { DocumentRetrievalService } from '@api/document-retrieval';
+import { Directive, HostListener, Input, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
-import { State } from '@store/index';
+import { HttpService } from '@services/http/http.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { takeWhile } from 'rxjs';
 
@@ -15,11 +14,9 @@ export class RetrieveDocumentDirective {
 	@Input() certNotNeeded = false;
 	@Input() fileType = 'pdf';
 
-	constructor(
-		private documentRetrievalService: DocumentRetrievalService,
-		private documentsService: DocumentsService,
-		private store: Store<State>
-	) {}
+	private store = inject(Store);
+	private httpService = inject(HttpService);
+	private documentsService = inject(DocumentsService);
 
 	@HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
 		if (this.certNotNeeded) return;
@@ -30,7 +27,7 @@ export class RetrieveDocumentDirective {
 			this.store.dispatch(setSpinnerState({ showSpinner: true }));
 		}
 
-		this.documentRetrievalService
+		this.httpService
 			.getDocument(this.params)
 			.pipe(takeWhile((doc) => doc.type !== HttpEventType.Response, true))
 			.subscribe((response) => {

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
 import { AccordionControlComponent } from '../components/accordion-control/accordion-control.component';
@@ -84,6 +83,5 @@ import { RetrieveDocumentDirective } from './directives/retrieve-document/retrie
 		FormatVehicleTypePipe,
 		CollapsibleTextComponent,
 	],
-	providers: [DocumentRetrievalService],
 })
 export class SharedModule {}

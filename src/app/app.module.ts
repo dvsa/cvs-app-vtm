@@ -2,7 +2,6 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 import {
 	MSAL_GUARD_CONFIG,
 	MSAL_INSTANCE,
@@ -81,15 +80,6 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 		AppStoreModule,
 		InterceptorModule,
 		CoreModule,
-		DocumentRetrievalApiModule.forRoot(
-			() =>
-				new DocumentRetrievalConfiguration({
-					basePath: environment.VTM_API_URI,
-					apiKeys: {
-						'X-Api-Key': environment.DOCUMENT_RETRIEVAL_API_KEY,
-					},
-				})
-		),
 		GoogleTagManagerModule.forRoot({
 			id: environment.VTM_GTM_CONTAINER_ID,
 		}),
