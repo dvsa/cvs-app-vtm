@@ -1,25 +1,27 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { Defect } from '@models/defects/defect.model';
+import {
+	DeleteItem,
+	ReferenceDataApiResponse,
+	ReferenceDataItem,
+	ReferenceDataItemApiResponse,
+	ResourceKey,
+} from '@models/reference-data/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
 	http = inject(HttpClient);
 
-	amendTechRecordVin(
-		newVin: string,
-		systemNumber: string,
-		createdTimestamp: string
-	): Observable<TechRecordType<'get'>> {
+	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
 		return this.http.patch<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`,
 			{
@@ -54,30 +56,30 @@ export class HttpService {
 		);
 	}
 
-	createTechRecord(newVehicleRecord: V3TechRecordModel): Observable<TechRecordType<'get'>> {
+	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
 		return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
 	}
 
-	fetchDefects(): Observable<Defect[]> {
+	fetchDefects() {
 		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`);
 	}
 
-	fetchDefect(id: number): Observable<Defect> {
+	fetchDefect(id: number) {
 		return this.http.get<Defect>(`${environment.VTM_API_URI}/defects/${id}`);
 	}
 
-	fetchRequiredStandards(euVehicleCategory: string): Observable<DefectGETRequiredStandards> {
+	fetchRequiredStandards(euVehicleCategory: string) {
 		return this.http.get<DefectGETRequiredStandards>(
 			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`
 		);
 	}
 
-	fetchTestStations(): Observable<Array<TestStation>> {
+	fetchTestStations() {
 		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`);
 	}
 
-	fetchTestStation(id: string): Observable<TestStation> {
+	fetchTestStation(id: string) {
 		return this.http.get<TestStation>(`${environment.VTM_API_URI}/test-stations/${id}`);
 	}
 
@@ -118,7 +120,7 @@ export class HttpService {
 		);
 	}
 
-	getTechRecordV3(systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
+	getTechRecordV3(systemNumber: string, createdTimestamp: string) {
 		return this.http.get<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
 		);
@@ -133,13 +135,147 @@ export class HttpService {
 		);
 	}
 
-	searchTechRecords(type: SEARCH_TYPES, term: string): Observable<TechRecordSearchSchema[]> {
+	referenceResourceTypeGet(resourceType: string, paginationToken?: string) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error('Required parameter resourceType was null or undefined when calling referenceResourceTypeGet.');
+		}
+
+		let params = new HttpParams();
+
+		if (paginationToken !== undefined && paginationToken !== null) {
+			params = params.set('paginationToken', paginationToken);
+		}
+
+		return this.http.get<ReferenceDataApiResponse>(
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}`,
+			{
+				params,
+			}
+		);
+	}
+
+	referenceResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyGet.'
+			);
+		}
+
+		if (resourceKey === null || resourceKey === undefined) {
+			throw new Error(
+				'Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyGet.'
+			);
+		}
+
+		return this.http.get<ReferenceDataItemApiResponse>(
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+		);
+	}
+
+	referenceResourceTypeResourceKeyDelete(
+		resourceType: string,
+		resourceKey: ResourceKey,
+		body?: Record<string, unknown>
+	) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyDelete.'
+			);
+		}
+
+		if (resourceKey === null || resourceKey === undefined) {
+			throw new Error(
+				'Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyDelete.'
+			);
+		}
+
+		return this.http.delete<DeleteItem>(
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			body
+		);
+	}
+
+	referenceLookupResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error(
+				'Required parameter resourceType was null or undefined when calling referenceLookupResourceTypeResourceKeyGet.'
+			);
+		}
+
+		if (resourceKey === null || resourceKey === undefined) {
+			throw new Error(
+				'Required parameter resourceKey was null or undefined when calling referenceLookupResourceTypeResourceKeyGet.'
+			);
+		}
+
+		return this.http.get<ReferenceDataApiResponse>(
+			`${environment.VTM_API_URI}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+		);
+	}
+
+	referenceLookupTyresSearchKeyParamGet(searchKey: string, param: string) {
+		if (searchKey === null || searchKey === undefined) {
+			throw new Error(
+				'Required parameter searchKey was null or undefined when calling referenceLookupTyresSearchKeyParamGet.'
+			);
+		}
+
+		if (param === null || param === undefined) {
+			throw new Error(
+				'Required parameter param was null or undefined when calling referenceLookupTyresSearchKeyParamGet.'
+			);
+		}
+
+		return this.http.get<ReferenceDataApiResponse>(
+			`${environment.VTM_API_URI}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`
+		);
+	}
+
+	referenceResourceTypeResourceKeyPost(resourceType: string, resourceKey: ResourceKey, body?: unknown) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyPost.'
+			);
+		}
+
+		if (resourceKey === null || resourceKey === undefined) {
+			throw new Error(
+				'Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyPost.'
+			);
+		}
+
+		return this.http.post<ReferenceDataItem>(
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			body
+		);
+	}
+
+	referenceResourceTypeResourceKeyPut(resourceType: string, resourceKey: ResourceKey, body?: unknown) {
+		if (resourceType === null || resourceType === undefined) {
+			throw new Error(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyPut.'
+			);
+		}
+
+		if (resourceKey === null || resourceKey === undefined) {
+			throw new Error(
+				'Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyPut.'
+			);
+		}
+
+		return this.http.put<ReferenceDataItem>(
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			body
+		);
+	}
+
+	searchTechRecords(type: SEARCH_TYPES, term: string) {
 		return this.http.get<TechRecordSearchSchema[]>(
 			`${environment.VTM_API_URI}/v3/technical-records/search/${term}?searchCriteria=${type}`
 		);
 	}
 
-	searchTechRecordBySystemNumber(systemNumber: string): Observable<TechRecordSearchSchema[]> {
+	searchTechRecordBySystemNumber(systemNumber: string) {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
 	}
 
@@ -153,11 +289,7 @@ export class HttpService {
 		);
 	}
 
-	updateTechRecord(
-		systemNumber: string,
-		createdTimestamp: string,
-		techRecord: TechRecordType<'put'>
-	): Observable<TechRecordType<'get'>> {
+	updateTechRecord(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>) {
 		return this.http.patch<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
 			techRecord

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DeleteItem, ReferenceDataItem } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { DeleteItem, ReferenceDataItem } from '@models/reference-data/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
