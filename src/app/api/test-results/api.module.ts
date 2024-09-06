@@ -1,12 +1,11 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { Configuration } from './configuration';
 
 
 import { ArchiveTestResultsService } from './api/archiveTestResults.service';
 import { DefaultService } from './api/default.service';
 import { GetTestResultsService } from './api/getTestResults.service';
-import { UpdateTestResultsService } from './api/updateTestResults.service';
 
 @NgModule({
   imports:      [],
@@ -15,8 +14,7 @@ import { UpdateTestResultsService } from './api/updateTestResults.service';
   providers: [
     ArchiveTestResultsService,
     DefaultService,
-    GetTestResultsService,
-    UpdateTestResultsService ]
+    GetTestResultsService]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

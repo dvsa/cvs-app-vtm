@@ -13,6 +13,7 @@ import {
 	ResourceKey,
 } from '@models/reference-data/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
+import { CompleteTestResults } from '@models/test-results/completeTestResults';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
@@ -427,6 +428,21 @@ export class HttpService {
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
+	}
+
+	testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling testResultsSystemNumberPut.');
+		}
+
+		if (systemNumber === null || systemNumber === undefined) {
+			throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberPut.');
+		}
+
+		return this.http.put<CompleteTestResults>(
+			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
+			body
+		);
 	}
 
 	unarchiveTechRecord(systemNumber: string, createdTimestamp: string, reasonForUnarchiving: string, status: string) {
