@@ -3,13 +3,13 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { initialAppState } from '@store/index';
 import { BaseControlComponent } from '../../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../../field-error-message/field-error-message.component';
 import { DateComponent } from '../date.component';
-import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 
 @Component({
 	selector: 'app-host-component',
