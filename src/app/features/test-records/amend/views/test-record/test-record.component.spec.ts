@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angul
 import { By } from '@angular/platform-browser';
 import { Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -42,7 +41,7 @@ describe('TestRecordComponent', () => {
 				TestRecordComponent,
 				VehicleHeaderComponent,
 			],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, TestResultsApiModule, SharedModule],
+			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
 			providers: [
 				TestRecordsService,
 				provideMockStore({ initialState: initialAppState }),

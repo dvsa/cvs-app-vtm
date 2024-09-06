@@ -1,6 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DefaultService as CreateTestResultsService } from '@api/test-results';
 import { environment } from '@environments/environment';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -17,6 +16,7 @@ import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 
 describe('TestRecordsService', () => {
+	let httpService: HttpService;
 	let service: TestRecordsService;
 	let httpTestingController: HttpTestingController;
 	let store: MockStore<State>;
@@ -24,18 +24,13 @@ describe('TestRecordsService', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [HttpClientTestingModule],
-			providers: [
-				TestRecordsService,
-				provideMockStore({ initialState: initialAppState }),
-				HttpService,
-				HttpService,
-				CreateTestResultsService,
-			],
+			providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), HttpService, HttpService],
 		});
 
 		httpTestingController = TestBed.inject(HttpTestingController);
 		service = TestBed.inject(TestRecordsService);
 		store = TestBed.inject(MockStore);
+		httpService = TestBed.inject(HttpService);
 	});
 
 	afterEach(() => {
@@ -185,13 +180,6 @@ describe('TestRecordsService', () => {
 				expect(isValid).toBe(false);
 				done();
 			});
-		});
-	});
-
-	describe('postTestResult', () => {
-		it('should call the service', () => {
-			service['createTestResultsService'].testResultsPost = jest.fn().mockReturnValue('foo');
-			expect(service.postTestResult({} as TestResultModel)).toBe('foo');
 		});
 	});
 });

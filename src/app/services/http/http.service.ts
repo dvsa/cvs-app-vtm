@@ -490,6 +490,14 @@ export class HttpService {
 		);
 	}
 
+	testResultsPost(body: CompleteTestResults) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling testResultsPost.');
+		}
+
+		return this.http.post<any>(`${environment.VTM_API_URI}/test-results`, body);
+	}
+
 	testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string) {
 		if (body === null || body === undefined) {
 			throw new Error('Required parameter body was null or undefined when calling testResultsSystemNumberPut.');

@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
@@ -36,7 +35,6 @@ describe('VehicleTechnicalRecordComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [
-				ApiModule,
 				DynamicFormsModule,
 				EffectsModule.forRoot(),
 				HttpClientTestingModule,

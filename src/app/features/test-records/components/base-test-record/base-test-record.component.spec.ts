@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DefaultService as CreateTestResultsService } from '@api/test-results';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -39,7 +38,6 @@ describe('BaseTestRecordComponent', () => {
 				TestTypesService,
 				TechnicalRecordService,
 				HttpService,
-				CreateTestResultsService,
 				{
 					provide: UserService,
 					useValue: {

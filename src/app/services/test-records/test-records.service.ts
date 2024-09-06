@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { CompleteTestResults, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { CompleteTestResults } from '@models/test-results/completeTestResults';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
@@ -40,7 +40,6 @@ import { Observable, take, throwError } from 'rxjs';
 export class TestRecordsService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
-	private createTestResultsService = inject(CreateTestResultsService);
 
 	fetchTestResultbySystemNumber(
 		systemNumber: string,
@@ -122,7 +121,7 @@ export class TestRecordsService {
 	}
 
 	postTestResult(body: TestResultModel) {
-		return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
+		return this.httpService.testResultsPost(body as CompleteTestResults);
 	}
 
 	createTestResult(value: TestResultModel): void {

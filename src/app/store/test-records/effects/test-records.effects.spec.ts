@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -146,7 +145,7 @@ describe('TestResultsEffects', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule, TestResultsApiModule, RouterTestingModule],
+			imports: [HttpClientTestingModule, RouterTestingModule],
 			providers: [
 				TestResultsEffects,
 				provideMockActions(() => actions$),
