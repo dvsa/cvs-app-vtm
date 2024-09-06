@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DefaultService as CreateTestResultsService, GetTestResultsService } from '@api/test-results';
+import { DefaultService as CreateTestResultsService } from '@api/test-results';
+import { environment } from '@environments/environment';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
@@ -26,7 +27,7 @@ describe('TestRecordsService', () => {
 			providers: [
 				TestRecordsService,
 				provideMockStore({ initialState: initialAppState }),
-				GetTestResultsService,
+				HttpService,
 				HttpService,
 				CreateTestResultsService,
 			],
@@ -72,7 +73,7 @@ describe('TestRecordsService', () => {
 				// Check for correct requests: should have made one request to POST search from expected URL
 				const req = httpTestingController.expectOne(
 					// eslint-disable-next-line max-len
-					'https://url/api/v1/test-results/SystemNumber?status=submited&fromDateTime=2022-01-01T00:00:00.000Z&toDateTime=2022-01-01T00:00:00.000Z&testResultId=TEST_RESULT_ID&version=1'
+					`${environment.VTM_API_URI}/test-results/SystemNumber?status=submited&fromDateTime=2022-01-01T00:00:00.000Z&toDateTime=2022-01-01T00:00:00.000Z&testResultId=TEST_RESULT_ID&version=1`
 				);
 				expect(req.request.method).toBe('GET');
 
@@ -88,7 +89,7 @@ describe('TestRecordsService', () => {
 				});
 
 				// Check for correct requests: should have made one request to POST search from expected URL
-				const req = httpTestingController.expectOne('https://url/api/v1/test-results/SYS0001');
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-results/SYS0001`);
 				expect(req.request.method).toBe('GET');
 
 				// Provide each request with a mock response

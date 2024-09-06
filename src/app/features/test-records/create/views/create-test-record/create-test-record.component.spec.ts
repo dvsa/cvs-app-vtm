@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DefaultService as CreateTestResultsService, GetTestResultsService } from '@api/test-results';
+import { DefaultService as CreateTestResultsService } from '@api/test-results';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
 import { IconComponent } from '@components/icon/icon.component';
@@ -73,7 +73,6 @@ describe('CreateTestRecordComponent', () => {
 				GlobalErrorService,
 				RouterService,
 				TestRecordsService,
-				GetTestResultsService,
 				HttpService,
 				CreateTestResultsService,
 				{ provide: UserService, useValue: MockUserService },
