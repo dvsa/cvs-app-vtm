@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State } from '@store/.';
+import { State } from '@store/index';
 
 import { Navigation, NavigationExtras, Params, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { NoQueryParamsGuard } from './no-query-params.guard';
+import { NoQueryParamsGuard } from '../no-query-params.guard';
 
 describe('NoQueryParamsGuard', () => {
 	let guard: NoQueryParamsGuard;

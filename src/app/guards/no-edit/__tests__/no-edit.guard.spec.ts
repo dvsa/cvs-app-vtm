@@ -3,9 +3,9 @@ import { ActivatedRoute, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State } from '@store/.';
+import { State } from '@store/index';
 import { routeEditable } from '@store/router/selectors/router.selectors';
-import { NoEditGuard } from './no-edit.guard';
+import { NoEditGuard } from '../no-edit.guard';
 
 describe('NoEditGuard', () => {
 	let guard: NoEditGuard;

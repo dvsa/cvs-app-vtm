@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ErrorInterceptor } from './error-handling.interceptor';
+import { ErrorInterceptor } from '../error-handling.interceptor';
 
 @Component({
 	selector: 'app-dummy-component',

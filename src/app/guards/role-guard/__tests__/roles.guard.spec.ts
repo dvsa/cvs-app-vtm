@@ -4,9 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { InteractionStatus } from '@azure/msal-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState } from '@store/.';
+import { initialAppState } from '@store/index';
 import { lastValueFrom, of } from 'rxjs';
-import { RoleGuard } from './roles.guard';
+import { RoleGuard } from '../roles.guard';
 
 describe('RoleGuard', () => {
 	let guard: RoleGuard;

@@ -2,22 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { CancelEditTestGuard } from '../cancel-edit-test.guard';
 
-import { CancelEditTechGuard } from './cancel-edit-tech.guard';
-
-describe('CancelEditTechGuard', () => {
-	let guard: CancelEditTechGuard;
+describe('NoEditGuard', () => {
+	let guard: CancelEditTestGuard;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [RouterTestingModule],
 			providers: [
-				CancelEditTechGuard,
+				CancelEditTestGuard,
 				provideMockStore({}),
 				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
 			],
 		});
-		guard = TestBed.inject(CancelEditTechGuard);
+
+		guard = TestBed.inject(CancelEditTestGuard);
 	});
 
 	it('should be created', () => {

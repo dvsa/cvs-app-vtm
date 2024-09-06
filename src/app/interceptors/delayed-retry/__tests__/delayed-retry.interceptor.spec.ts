@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
+import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from '../delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
 	let httpTestingController: HttpTestingController;
