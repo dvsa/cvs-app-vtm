@@ -20,8 +20,8 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { EmptyError, firstValueFrom, from, of } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { TechnicalRecordService } from './technical-record.service';
+import { environment } from '../../../../environments/environment';
+import { TechnicalRecordService } from '../technical-record.service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 describe('TechnicalRecordService', () => {

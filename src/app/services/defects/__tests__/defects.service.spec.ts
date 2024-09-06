@@ -1,9 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Defect } from '@models/defects/defect.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
-import { DefectsService } from './defects.service';
+import { DefectsService } from '../defects.service';
 
 describe('DefectsService', () => {
 	let service: DefectsService;

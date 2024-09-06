@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import {
 	selectQueryParams,
 	selectRouteNestedParams,
 	selectRouteParams,
 } from '@store/router/selectors/router.selectors';
 import { firstValueFrom, of, take } from 'rxjs';
-import { RouterService } from './router.service';
+import { RouterService } from '../router.service';
 
 describe('RouterService', () => {
 	let service: RouterService;

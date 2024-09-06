@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { Store } from '@ngrx/store';
 import { Logout } from '@store/user/user-service.actions';
+import { UserServiceState } from '@store/user/user-service.reducer';
 import { of, take } from 'rxjs';
-import { AppModule } from '../../app.module';
-import { UserServiceState } from '../../store/user/user-service.reducer';
-import { UserService } from './user-service';
+import { AppModule } from '../../../app.module';
+import { UserService } from '../user-service';
 
 jest.mock('jwt-decode', () => ({
 	jwtDecode: () => ({ roles: ['12345'] }),

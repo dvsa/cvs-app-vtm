@@ -8,8 +8,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 import { first, of } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { TechnicalRecordHttpService } from './technical-record-http.service';
+import { environment } from '../../../../environments/environment';
+import { TechnicalRecordHttpService } from '../technical-record-http.service';
 
 // TODO: need to include tests for search$, seachBy, getBySystemNumber, getRecordV3, AmendVrm, promoteTechRecord, generatePlate, generateLetter
 

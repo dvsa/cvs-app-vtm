@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AxlesService } from './axles.service';
+import { AxlesService } from '../axles.service';
 
 describe('AxlesService', () => {
 	let service: AxlesService;

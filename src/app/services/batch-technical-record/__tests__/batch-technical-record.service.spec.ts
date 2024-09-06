@@ -10,7 +10,7 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { Observable, firstValueFrom, of } from 'rxjs';
-import { BatchTechnicalRecordService } from './batch-technical-record.service';
+import { BatchTechnicalRecordService } from '../batch-technical-record.service';
 
 describe('TechnicalRecordService', () => {
 	let service: BatchTechnicalRecordService;

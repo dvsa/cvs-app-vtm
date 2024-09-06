@@ -2,9 +2,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { provideMockStore } from '@ngrx/store/testing';
-import { environment } from '../../../environments/environment';
-import { initialAppState } from '../../store';
-import { TestStationsService } from './test-stations.service';
+import { initialAppState } from '@store/index';
+import { environment } from '../../../../environments/environment';
+import { TestStationsService } from '../test-stations.service';
 
 describe('TestStationsService', () => {
 	let service: TestStationsService;

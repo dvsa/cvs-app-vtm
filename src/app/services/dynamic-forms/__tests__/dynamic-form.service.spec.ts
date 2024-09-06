@@ -6,7 +6,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { ValidatorNames } from '@models/validators.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { DynamicFormService } from './dynamic-form.service';
+import { DynamicFormService } from '../dynamic-form.service';
 import {
 	CustomControl,
 	CustomFormArray,
@@ -15,7 +15,7 @@ import {
 	FormNode,
 	FormNodeTypes,
 	FormNodeViewTypes,
-} from './dynamic-form.types';
+} from '../dynamic-form.types';
 
 describe('DynamicFormService', () => {
 	let service: DynamicFormService;

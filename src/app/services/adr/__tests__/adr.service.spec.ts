@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { AdrService } from './adr.service';
+import { AdrService } from '../adr.service';
 
 describe('AdrService', () => {
 	let service: AdrService;

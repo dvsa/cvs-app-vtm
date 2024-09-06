@@ -11,7 +11,7 @@ import {
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState } from '@store/.';
+import { initialAppState } from '@store/index';
 import {
 	ReferenceDataEntityStateSearch,
 	STORE_FEATURE_REFERENCE_DATA_KEY,
@@ -26,7 +26,7 @@ import {
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
-import { ReferenceDataService } from './reference-data.service';
+import { ReferenceDataService } from '../reference-data.service';
 
 describe('ReferenceDataService', () => {
 	let service: ReferenceDataService;

@@ -5,9 +5,10 @@ import {
 	GetTestResultsService,
 	UpdateTestResultsService,
 } from '@api/test-results';
+import { mockTestResult } from '@mocks/mock-test-result';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import {
 	createTestResult,
 	fetchTestResults,
@@ -15,8 +16,7 @@ import {
 	toEditOrNotToEdit,
 	updateTestResult,
 } from '@store/test-records';
-import { mockTestResult } from '../../../mocks/mock-test-result';
-import { TestRecordsService } from './test-records.service';
+import { TestRecordsService } from '../test-records.service';
 
 describe('TestRecordsService', () => {
 	let service: TestRecordsService;

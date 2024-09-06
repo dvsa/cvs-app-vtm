@@ -3,8 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { FeatureToggleService } from './feature-toggle-service';
+import { environment } from '../../../../environments/environment';
+import { FeatureToggleService } from '../feature-toggle-service';
 
 describe('feature toggle service', () => {
 	let service: FeatureToggleService;

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { resultOfTestSelector } from '@store/test-records';
 
-import { ResultOfTestService } from './result-of-test.service';
+import { ResultOfTestService } from '../result-of-test.service';
 
 describe('ResultOfTestService', () => {
 	let service: ResultOfTestService;

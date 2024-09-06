@@ -3,8 +3,8 @@ import { TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { DynamicFormService } from './dynamic-form.service';
-import { FormNode, FormNodeTypes } from './dynamic-form.types';
+import { DynamicFormService } from '../dynamic-form.service';
+import { FormNode, FormNodeTypes } from '../dynamic-form.types';
 
 describe('Custom Classes', () => {
 	beforeEach(() => {
