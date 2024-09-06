@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NumberPlateComponent } from '../number-plate.component';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { NumberPlateComponent } from '../number-plate.component';
 
 describe('NumberPlateComponent', () => {
 	let component: NumberPlateComponent;

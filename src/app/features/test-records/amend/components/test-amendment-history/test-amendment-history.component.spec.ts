@@ -6,10 +6,10 @@ import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result'
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { State, initialAppState } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 describe('TestAmendmentHistoryComponent', () => {
 	let component: TestAmendmentHistoryComponent;

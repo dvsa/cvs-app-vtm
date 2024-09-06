@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { Roles } from '@models/roles.enum';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -10,7 +11,6 @@ import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { ReferenceDataDeletedListComponent } from '../reference-data-deleted-list.component';
-import { PaginationComponent } from '@components/pagination/pagination.component';
 
 describe('DataTypeListComponent', () => {
 	let component: ReferenceDataDeletedListComponent;

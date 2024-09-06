@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/index';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/actions/global-error.actions';
+import { State, initialAppState } from '@store/index';
 import { GlobalError } from '../global-error.interface';
 import { GlobalErrorService } from '../global-error.service';
 

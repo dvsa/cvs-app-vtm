@@ -4,15 +4,15 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
-import { ButtonComponent } from '@components/button/button.component';
-import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
-import { TagComponent } from '@components/tag/tag.component';
 
 describe('DefectsComponent', () => {
 	let component: DefectsComponent;
