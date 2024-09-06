@@ -5,7 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CheckboxGroupComponent } from '@forms/components/checkbox-group/checkbox-group.component';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOptions } from '@models/options.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
