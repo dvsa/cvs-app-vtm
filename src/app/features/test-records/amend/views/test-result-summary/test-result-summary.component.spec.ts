@@ -6,11 +6,11 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { NumberPlateComponent } from '@shared/components/number-plate/number-plate.component';
-import { TagComponent } from '@shared/components/tag/tag.component';
 import { initialAppState } from '@store/.';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { TestResultSummaryComponent } from './test-result-summary.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
+import { TagComponent } from '@components/tag/tag.component';
 
 describe('TestResultSummaryComponent', () => {
 	let component: TestResultSummaryComponent;

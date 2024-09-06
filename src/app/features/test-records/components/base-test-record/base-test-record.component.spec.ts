@@ -20,12 +20,12 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
 import { BaseTestRecordComponent } from './base-test-record.component';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 describe('BaseTestRecordComponent', () => {
 	let component: BaseTestRecordComponent;

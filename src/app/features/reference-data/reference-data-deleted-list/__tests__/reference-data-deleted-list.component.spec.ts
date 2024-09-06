@@ -7,10 +7,10 @@ import { Roles } from '@models/roles.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { ReferenceDataDeletedListComponent } from '../reference-data-deleted-list.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 
 describe('DataTypeListComponent', () => {
 	let component: ReferenceDataDeletedListComponent;

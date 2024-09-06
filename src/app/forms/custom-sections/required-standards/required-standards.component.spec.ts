@@ -8,11 +8,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { TagComponent } from '@shared/components/tag/tag.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { initialAppState } from '@store/index';
 import { RequiredStandardsComponent } from './required-standards.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
+import { TagComponent } from '@components/tag/tag.component';
 
 describe('RequiredStandardsComponent', () => {
 	let component: RequiredStandardsComponent;

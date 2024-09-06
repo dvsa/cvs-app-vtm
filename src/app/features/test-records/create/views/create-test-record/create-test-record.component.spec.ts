@@ -25,12 +25,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { ButtonGroupComponent } from '@shared/components/button-group/button-group.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { IconComponent } from '@shared/components/icon/icon.component';
-import { NumberPlateComponent } from '@shared/components/number-plate/number-plate.component';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/.';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
@@ -38,6 +32,12 @@ import { Observable, ReplaySubject, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from './create-test-record.component';
+import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { ButtonComponent } from '@components/button/button.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 
 describe('CreateTestRecordComponent', () => {
 	let component: CreateTestRecordComponent;

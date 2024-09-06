@@ -6,13 +6,13 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { TagComponent } from '@shared/components/tag/tag.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
+import { TagComponent } from '@components/tag/tag.component';
 
 describe('DefectsComponent', () => {
 	let component: DefectsComponent;

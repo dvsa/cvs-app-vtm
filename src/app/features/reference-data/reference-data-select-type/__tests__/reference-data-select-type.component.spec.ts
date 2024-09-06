@@ -11,10 +11,10 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { ButtonComponent } from '@shared/components/button/button.component';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { ReferenceDataSelectTypeComponent } from '../reference-data-select-type.component';
+import { ButtonComponent } from '@components/button/button.component';
 
 describe('ReferenceDataComponent', () => {
 	let component: ReferenceDataSelectTypeComponent;
