@@ -3,7 +3,6 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { Configuration } from './configuration';
 
 
-import { GetTechRecordsService } from './api/getTechRecords.service';
 import { PostTechRecordsService } from './api/postTechRecords.service';
 import { UpdateTechRecordsService } from './api/updateTechRecords.service';
 
@@ -12,7 +11,6 @@ import { UpdateTechRecordsService } from './api/updateTechRecords.service';
   declarations: [],
   exports:      [],
   providers: [
-    GetTechRecordsService,
     PostTechRecordsService,
     UpdateTechRecordsService ]
 })

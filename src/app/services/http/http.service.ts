@@ -16,6 +16,7 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
+import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
 import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
 import { cloneDeep } from 'lodash';
 
@@ -148,6 +149,33 @@ export class HttpService {
 				reasonForCreation: reason,
 				vtmUsername: user.name,
 				recipientEmailAddress: vehicleRecord?.techRecord_applicantDetails_emailAddress ?? user.email,
+			}
+		);
+	}
+
+	getTechRecords(searchIdentifier: string, metadata?: boolean, status?: string, searchCriteria?: string) {
+		if (searchIdentifier === null || searchIdentifier === undefined) {
+			throw new Error('Required parameter searchIdentifier was null or undefined when calling getTechRecords.');
+		}
+
+		let params = new HttpParams();
+
+		if (metadata !== undefined && metadata !== null) {
+			params = params.set('metadata', metadata);
+		}
+
+		if (status !== undefined && status !== null) {
+			params = params.set('status', status);
+		}
+
+		if (searchCriteria !== undefined && searchCriteria !== null) {
+			params = params.set('searchCriteria', searchCriteria);
+		}
+
+		return this.http.get<CompleteTechRecords>(
+			`${environment.VTM_API_URI}/vehicles/${encodeURIComponent(String(searchIdentifier))}/tech-records`,
+			{
+				params,
 			}
 		);
 	}
