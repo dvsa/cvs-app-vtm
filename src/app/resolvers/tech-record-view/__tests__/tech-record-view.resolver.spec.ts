@@ -4,7 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { selectRouteParam } from '@store/router/router.selectors';
 import { getTechRecordV3Failure, getTechRecordV3Success } from '@store/technical-records';
 import { fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { Observable } from 'rxjs';

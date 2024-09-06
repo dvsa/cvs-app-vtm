@@ -3,11 +3,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SpinnerComponent } from '@core/components/spinner/spinner.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
+import { getSpinner } from '@store/spinner/spinner.selectors';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
 import { testStationsLoadingState } from '@store/test-stations';
-import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
+import { selectTestTypesLoadingState } from '@store/test-types/test-types.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { LoadingService } from '../loading.service';
 

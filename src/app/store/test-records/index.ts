@@ -1,4 +1,4 @@
 // eslint-disable-next-line import/no-cycle
-export * from './actions/test-records.actions';
-export * from './reducers/test-records.reducer';
-export * from './selectors/test-records.selectors';
+export * from './test-records.actions';
+export * from './test-records.reducer';
+export * from './test-records.selectors';

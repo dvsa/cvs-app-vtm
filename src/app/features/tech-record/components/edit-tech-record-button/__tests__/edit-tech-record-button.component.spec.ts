@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
-import { clearError } from '@store/global-error/actions/global-error.actions';
+import { clearError } from '@store/global-error/global-error.actions';
 import { initialAppState } from '@store/index';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, ReplaySubject, of } from 'rxjs';

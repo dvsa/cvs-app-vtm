@@ -2,8 +2,8 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { retryInterceptorFailure } from '@store/retry-interceptor/actions/retry-interceptor.actions';
-import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
+import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
+import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { Observable, retry, throwError, timer } from 'rxjs';
 
 export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');

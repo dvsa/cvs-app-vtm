@@ -5,13 +5,13 @@ import {
 	STORE_FEATURE_GLOBAL_ERROR_KEY,
 	globalErrorReducer,
 	initialGlobalErrorState,
-} from '@store/global-error/reducers/global-error-service.reducer';
+} from '@store/global-error/global-error-service.reducer';
 import {
 	STORE_FEATURE_SPINNER_KEY,
 	SpinnerState,
 	initialSpinnerState,
 	spinnerReducer,
-} from '@store/spinner/reducers/spinner.reducer';
+} from '@store/spinner/spinner.reducer';
 import { DefectsState, STORE_FEATURE_DEFECTS_KEY, defectsReducer, initialDefectsState } from './defects';
 import {
 	ReferenceDataState,
@@ -24,19 +24,19 @@ import {
 	STORE_FEATURE_REQUIRED_STANDARDS_KEY,
 	initialRequiredStandardsState,
 	requiredStandardsReducer,
-} from './required-standards/reducers/required-standards.reducer';
+} from './required-standards/required-standards.reducer';
 import {
 	STORE_FEATURE_SEARCH_TECH_RESULTS_KEY,
 	SearchResultState,
 	initialTechSearchResultState,
 	techSearchResultReducer,
-} from './tech-record-search/reducer/tech-record-search.reducer';
+} from './tech-record-search/tech-record-search.reducer';
 import {
 	STORE_FEATURE_TECHNICAL_RECORDS_KEY,
 	TechnicalRecordServiceState,
 	initialState as initialTechnicalRecordsState,
 	vehicleTechRecordReducer,
-} from './technical-records/reducers/technical-record-service.reducer';
+} from './technical-records/technical-record-service.reducer';
 import {
 	STORE_FEATURE_TEST_RESULTS_KEY,
 	TestResultsState,
@@ -54,7 +54,7 @@ import {
 	TestTypeState,
 	initialTestTypeState,
 	testTypesReducer,
-} from './test-types/reducers/test-types.reducer';
+} from './test-types/test-types.reducer';
 import {
 	STORE_FEATURE_USER_KEY,
 	UserServiceState,

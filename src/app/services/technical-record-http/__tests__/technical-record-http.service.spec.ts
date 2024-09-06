@@ -6,7 +6,7 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
 import { first, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TechnicalRecordHttpService } from '../technical-record-http.service';

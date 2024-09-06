@@ -18,7 +18,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
-import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/router.selectors';
 import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit } from '@store/test-records';
 import { ReplaySubject, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';

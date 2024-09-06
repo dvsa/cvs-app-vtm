@@ -8,7 +8,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { clearWarning, setWarnings } from '@store/global-warning/actions/global-warning.actions';
+import { clearWarning, setWarnings } from '@store/global-warning/global-warning.actions';
 import { State, initialAppState } from '@store/index';
 import { GlobalWarning } from '../global-warning.interface';
 import { GlobalWarningService } from '../global-warning.service';

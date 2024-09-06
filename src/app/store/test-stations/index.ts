@@ -1,3 +1,3 @@
-export * from './actions/test-stations.actions';
-export * from './reducers/test-stations.reducer';
-export * from './selectors/test-stations.selectors';
+export * from './test-stations.actions';
+export * from './test-stations.reducer';
+export * from './test-stations.selectors';

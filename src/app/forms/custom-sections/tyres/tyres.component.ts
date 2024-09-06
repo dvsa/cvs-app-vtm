@@ -32,7 +32,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable, ReplaySubject, filter, takeUntil } from 'rxjs';
 

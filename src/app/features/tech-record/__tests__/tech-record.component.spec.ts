@@ -6,7 +6,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { TechRecordComponent } from '../tech-record.component';
 
 describe('TechRecordComponent', () => {

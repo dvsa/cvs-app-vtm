@@ -11,7 +11,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { State, initialAppState } from '@store/index';
 import { createVehicleRecord, updateTechRecord } from '@store/technical-records';
-import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
+import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import { of } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchVehicleResultsComponent } from '../../batch-vehicle-results/batch-vehicle-results.component';

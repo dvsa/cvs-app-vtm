@@ -9,8 +9,8 @@ import {
 	getRequiredStandards,
 	getRequiredStandardsFailure,
 	getRequiredStandardsSuccess,
-} from '@store/required-standards/actions/required-standards.actions';
-import { testResultInEdit } from '@store/test-records/selectors/test-records.selectors';
+} from '@store/required-standards/required-standards.actions';
+import { testResultInEdit } from '@store/test-records/test-records.selectors';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { requiredStandardsResolver } from '../required-standards.resolver';

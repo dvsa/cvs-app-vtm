@@ -5,7 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';

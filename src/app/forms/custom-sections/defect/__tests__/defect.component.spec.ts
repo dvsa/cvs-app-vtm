@@ -14,7 +14,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { defects, selectByImNumber } from '@store/defects';
 import { State, initialAppState } from '@store/index';
-import { selectRouteParams } from '@store/router/selectors/router.selectors';
+import { selectRouteParams } from '@store/router/router.selectors';
 import { createDefect, removeDefect, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { DefectComponent } from '../defect.component';
 

@@ -4,11 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import {
-	fetchTestTypes,
-	fetchTestTypesFailed,
-	fetchTestTypesSuccess,
-} from '@store/test-types/actions/test-types.actions';
+import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/test-types.actions';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { testTypeTaxonomyResolver } from '../test-type-taxonomy.resolver';

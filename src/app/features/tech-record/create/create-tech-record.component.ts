@@ -14,7 +14,7 @@ import { BatchTechnicalRecordService } from '@services/batch-technical-record/ba
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
+import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

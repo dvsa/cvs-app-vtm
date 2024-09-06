@@ -10,8 +10,8 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { State, initialAppState } from '@store/index';
-import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/selectors/required-standards.selector';
-import { selectRouteParams } from '@store/router/selectors/router.selectors';
+import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/required-standards.selector';
+import { selectRouteParams } from '@store/router/router.selectors';
 import { testResultInEdit } from '@store/test-records';
 import { RequiredStandardComponent } from '../required-standard.component';
 

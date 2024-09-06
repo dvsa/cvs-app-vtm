@@ -13,7 +13,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { selectRouteData } from '@store/router/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { AmendVrmComponent } from '../tech-record-amend-vrm.component';

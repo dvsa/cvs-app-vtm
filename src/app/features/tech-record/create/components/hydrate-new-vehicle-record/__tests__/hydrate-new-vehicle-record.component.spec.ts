@@ -9,7 +9,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { selectRouteData } from '@store/router/router.selectors';
 import { createVehicleRecordSuccess } from '@store/technical-records';
 import { ReplaySubject, firstValueFrom, of } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from '../hydrate-new-vehicle-record.component';

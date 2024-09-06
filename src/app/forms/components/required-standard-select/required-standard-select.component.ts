@@ -7,8 +7,8 @@ import {
 } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store } from '@ngrx/store';
-import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';
-import { getRequiredStandardsState } from '@store/required-standards/selectors/required-standards.selector';
+import { RequiredStandardState } from '@store/required-standards/required-standards.reducer';
+import { getRequiredStandardsState } from '@store/required-standards/required-standards.selector';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
