@@ -1,5 +1,5 @@
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { TyreAxleLoadPipe } from './tyre-axle-load.pipe';
+import { TyreAxleLoadPipe } from '../tyre-axle-load.pipe';
 
 describe('TyreAxleLoadPipe', () => {
 	it('create an instance', () => {

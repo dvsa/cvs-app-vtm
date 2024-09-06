@@ -1,4 +1,4 @@
-import { TruncatePipe } from './truncate.pipe';
+import { TruncatePipe } from '../truncate.pipe';
 
 describe('truncatePipe pipe tests', () => {
 	// This pipe is a pure, stateless function so no need for BeforeEach

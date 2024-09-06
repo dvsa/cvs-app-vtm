@@ -1,4 +1,4 @@
-import { DefaultNullOrEmpty } from './default-null-or-empty.pipe';
+import { DefaultNullOrEmpty } from '../default-null-or-empty.pipe';
 
 describe('DefaultNullOrEmpty pipe tests', () => {
 	// This pipe is a pure, stateless function so no need for BeforeEach

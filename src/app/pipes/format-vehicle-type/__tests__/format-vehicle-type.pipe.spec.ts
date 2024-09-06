@@ -1,5 +1,5 @@
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormatVehicleTypePipe } from './format-vehicle-type.pipe';
+import { FormatVehicleTypePipe } from '../format-vehicle-type.pipe';
 
 describe('FormatVehicleTypePipe', () => {
 	it('create an instance', () => {

@@ -4,7 +4,7 @@ import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { STORE_FEATURE_REFERENCE_DATA_KEY, initialReferenceDataState } from '@store/reference-data';
-import { RefDataDecodePipe } from './ref-data-decode.pipe';
+import { RefDataDecodePipe } from '../ref-data-decode.pipe';
 
 describe('RefDataDecodePipe', () => {
 	let store: MockStore<State>;

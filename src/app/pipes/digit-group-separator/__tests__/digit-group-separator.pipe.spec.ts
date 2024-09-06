@@ -1,4 +1,4 @@
-import { DigitGroupSeparatorPipe } from './digit-group-separator.pipe';
+import { DigitGroupSeparatorPipe } from '../digit-group-separator.pipe';
 
 describe('digitGroupSeparator pipe tests', () => {
 	// This pipe is a pure, stateless function so no need for BeforeEach

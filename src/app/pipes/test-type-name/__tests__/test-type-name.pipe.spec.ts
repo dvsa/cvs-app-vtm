@@ -1,5 +1,5 @@
 import { TestTypesTaxonomy } from '@api/test-types';
-import { TestTypeNamePipe } from './test-type-name.pipe';
+import { TestTypeNamePipe } from '../test-type-name.pipe';
 
 const testTypes = [
 	{

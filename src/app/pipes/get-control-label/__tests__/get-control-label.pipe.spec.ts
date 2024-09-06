@@ -1,5 +1,5 @@
 import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
-import { GetControlLabelPipe } from './get-control-label.pipe';
+import { GetControlLabelPipe } from '../get-control-label.pipe';
 
 describe('GetControlLabelPipe', () => {
 	let testOptions: FormNodeOption<string>[];
