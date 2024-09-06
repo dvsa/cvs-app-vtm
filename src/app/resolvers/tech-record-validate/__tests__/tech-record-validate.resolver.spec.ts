@@ -5,9 +5,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { Observable, firstValueFrom, of } from 'rxjs';
-import { techRecordValidateResolver } from './tech-record-validate.resolver';
+import { techRecordValidateResolver } from '../tech-record-validate.resolver';
 
 describe('TechRecordViewResolver', () => {
 	let resolver: ResolveFn<boolean>;

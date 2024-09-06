@@ -3,13 +3,13 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
 import { getTechRecordV3Failure, getTechRecordV3Success } from '@store/technical-records';
 import { fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { techRecordViewResolver } from './tech-record-view.resolver';
+import { techRecordViewResolver } from '../tech-record-view.resolver';
 
 describe('TechRecordViewResolver', () => {
 	let resolver: ResolveFn<boolean>;

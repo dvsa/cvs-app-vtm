@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { techRecordDataResolver } from './tech-record-data.resolver';
+import { techRecordDataResolver } from '../tech-record-data.resolver';
 
 describe('techRecordDataResolver', () => {
 	let referenceDataService: ReferenceDataService;

@@ -7,7 +7,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { Observable, firstValueFrom, of } from 'rxjs';
-import { techRecordCleanResolver } from './tech-record-clean.resolver';
+import { techRecordCleanResolver } from '../tech-record-clean.resolver';
 
 describe('techRecordCleanResolver', () => {
 	const executeResolver: ResolveFn<Observable<boolean>> = (...resolverParameters) =>

@@ -10,10 +10,10 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { initialContingencyTest } from '@store/test-records';
 import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
-import { contingencyTestResolver, getBodyMake, getBodyModel, getBodyType } from './contingency-test.resolver';
+import { contingencyTestResolver, getBodyMake, getBodyModel, getBodyType } from '../contingency-test.resolver';
 
 describe('ContingencyTestResolver', () => {
 	let resolver: ResolveFn<boolean>;

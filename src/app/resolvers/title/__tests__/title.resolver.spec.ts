@@ -3,8 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
-import { titleResolver } from './title.resolver';
+import { State, initialAppState } from '@store/index';
+import { titleResolver } from '../title.resolver';
 
 describe('TitleResolver', () => {
 	let resolver: ResolveFn<boolean>;
