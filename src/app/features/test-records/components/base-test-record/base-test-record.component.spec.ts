@@ -14,6 +14,7 @@ import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
@@ -25,7 +26,6 @@ import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
 import { BaseTestRecordComponent } from './base-test-record.component';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 describe('BaseTestRecordComponent', () => {
 	let component: BaseTestRecordComponent;

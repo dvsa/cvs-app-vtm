@@ -3,7 +3,6 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { Configuration } from './configuration';
 
 
-import { PostTechRecordsService } from './api/postTechRecords.service';
 import { UpdateTechRecordsService } from './api/updateTechRecords.service';
 
 @NgModule({
@@ -11,7 +10,6 @@ import { UpdateTechRecordsService } from './api/updateTechRecords.service';
   declarations: [],
   exports:      [],
   providers: [
-    PostTechRecordsService,
     UpdateTechRecordsService ]
 })
 export class ApiModule {

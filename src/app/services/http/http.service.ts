@@ -18,6 +18,7 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
 import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
 import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
+import { TechRecordPOST } from '@models/vehicle/techRecordPOST';
 import { cloneDeep } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
@@ -184,6 +185,14 @@ export class HttpService {
 		return this.http.get<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
 		);
+	}
+
+	postTechRecords(body: TechRecordPOST) {
+		if (body === null || body === undefined) {
+			throw new Error('Required parameter body was null or undefined when calling postTechRecords.');
+		}
+
+		return this.http.post<any>(`${environment.VTM_API_URI}/vehicles`, body);
 	}
 
 	promoteTechRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string) {

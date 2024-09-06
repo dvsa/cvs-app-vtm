@@ -7,6 +7,10 @@ import {
 	GetTestResultsService,
 	UpdateTestResultsService,
 } from '@api/test-results';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
@@ -20,6 +24,8 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -32,12 +38,6 @@ import { Observable, ReplaySubject, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from './create-test-record.component';
-import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { ButtonComponent } from '@components/button/button.component';
-import { ButtonGroupComponent } from '@components/button-group/button-group.component';
-import { IconComponent } from '@components/icon/icon.component';
-import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 
 describe('CreateTestRecordComponent', () => {
 	let component: CreateTestRecordComponent;

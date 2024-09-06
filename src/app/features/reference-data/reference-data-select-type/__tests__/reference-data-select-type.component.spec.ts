@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent } from '@components/button/button.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
@@ -14,7 +15,6 @@ import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { ReferenceDataSelectTypeComponent } from '../reference-data-select-type.component';
-import { ButtonComponent } from '@components/button/button.component';
 
 describe('ReferenceDataComponent', () => {
 	let component: ReferenceDataSelectTypeComponent;
