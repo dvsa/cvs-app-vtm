@@ -23,7 +23,7 @@ import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { Store, select } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
 import {
 	selectTechRecordSearchResults,
 	selectTechRecordSearchResultsBySystemNumber,
