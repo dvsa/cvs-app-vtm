@@ -1,6 +1,7 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
@@ -8,9 +9,8 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 	TagTypeLabels,
-} from '@forms/services/dynamic-form.types';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TagType } from '@shared/components/tag/tag.component';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const MotorcycleTechRecord: FormNode = {
 	name: 'techRecordSummary',

@@ -9,13 +9,13 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSummaryTrl } from '@forms/templates/tech-records/vehicle-summary-trl.template';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { FormNode, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';

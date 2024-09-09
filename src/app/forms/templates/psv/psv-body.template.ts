@@ -1,12 +1,12 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { TagType } from '@shared/components/tag/tag.component';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeWidth,
 	TagTypeLabels,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const PsvBodyTemplate: FormNode = {
 	name: 'bodySection',

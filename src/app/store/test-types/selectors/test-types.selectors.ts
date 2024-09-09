@@ -3,9 +3,9 @@ import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { StatusCodes, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { selectTechRecordHistory } from '@store/technical-records';
+import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
@@ -29,11 +29,12 @@ export const selectTestTypesByVehicleType = createSelector(
 	selectAllTestTypes,
 	toEditOrNotToEdit,
 	selectTechRecordHistory,
-	(testTypes, testResult, techRecordHistory) => {
+	selectTechRecord,
+	(testTypes, testResult, techRecordHistory, techRecord) => {
 		const hasCurrentRecordInHistory = techRecordHistory ? currentRecordInHistoryCheck(techRecordHistory) : false;
 
-		if (testResult) {
-			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory);
+		if (testResult && techRecord) {
+			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory, techRecord);
 		}
 		return [];
 	}
@@ -110,11 +111,11 @@ function currentRecordInHistoryCheck(techRecordHistorys: TechRecordSearchSchema[
 function filterTestTypes(
 	testTypes: TestTypesTaxonomy,
 	testResult: TestResultModel,
-	hasCurrentRecordInHistory: boolean
+	hasCurrentRecordInHistory: boolean,
+	techRecord: V3TechRecordModel
 ): TestTypesTaxonomy {
 	const {
 		vehicleType,
-		statusCode,
 		euVehicleCategory,
 		vehicleSize,
 		vehicleConfiguration,
@@ -123,7 +124,9 @@ function filterTestTypes(
 		vehicleSubclass,
 		numberOfWheelsDriven,
 	} = testResult;
-	const filterFirstTestIds: string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104', '51'];
+	const filterAllFirstTestIds = ['41', '119', '120', '67', '103', '104', '51', '95', '82', '83', '65', '66'];
+	const filterHgvFirstTestIds = ['41', '119', '120', '67', '103', '104'];
+	const { techRecord_statusCode: statusCode } = techRecord;
 	return (
 		testTypes
 			.filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
@@ -173,7 +176,9 @@ function filterTestTypes(
 					!statusCode ||
 					statusCode !== StatusCodes.PROVISIONAL ||
 					!hasCurrentRecordInHistory ||
-					!filterFirstTestIds.includes(testType.id)
+					!(vehicleType === VehicleTypes.HGV
+						? filterHgvFirstTestIds.includes(testType.id)
+						: filterAllFirstTestIds.includes(testType.id))
 			)
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;
@@ -183,7 +188,8 @@ function filterTestTypes(
 					newTestType.nextTestTypesOrCategories = filterTestTypes(
 						newTestType.nextTestTypesOrCategories!,
 						testResult,
-						hasCurrentRecordInHistory
+						hasCurrentRecordInHistory,
+						techRecord
 					);
 				}
 

@@ -1,4 +1,3 @@
-import { FormNode } from '@forms/services/dynamic-form.types';
 import { CarTechRecord } from '@forms/templates/car/car-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
@@ -25,6 +24,7 @@ import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 
 import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
 import { AdrTemplate } from '@forms/templates/general/adr.template';

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateEditingTechRecordCancel } from '@store/technical-records';

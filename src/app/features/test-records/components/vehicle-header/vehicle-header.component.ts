@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
 import { Observable } from 'rxjs';
+import { TagType, TagTypes } from '../../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-vehicle-header',
@@ -27,8 +28,8 @@ export class VehicleHeaderComponent {
 
 	constructor(
 		private testTypesService: TestTypesService,
-		private techRecordService: TechnicalRecordService,
-		private store: Store
+		private store: Store,
+		private activatedRoute: ActivatedRoute
 	) {}
 
 	get test(): TestType | undefined {
@@ -77,7 +78,7 @@ export class VehicleHeaderComponent {
 	}
 
 	get testCode(): string | undefined {
-		const testCode = this.testResult?.testTypes[0].testCode;
+		const testCode = this.testResult?.testTypes[0].testCode || this.activatedRoute.snapshot?.data?.['testCode'];
 		return testCode ? `(${testCode})` : '';
 	}
 
@@ -107,5 +108,9 @@ export class VehicleHeaderComponent {
 			default:
 				return 'Unknown Vehicle Type';
 		}
+	}
+
+	get isADRTest(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.test?.testTypeId as string) || false;
 	}
 }

@@ -1,6 +1,6 @@
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { PlateReasonForIssue } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
 export const PlatesTemplate: FormNode = {
 	name: 'platesSection',

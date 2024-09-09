@@ -1,4 +1,9 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeTypes,
+	FormNodeViewTypes,
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const RequiredSection: FormNode = {
 	name: 'requiredSection',

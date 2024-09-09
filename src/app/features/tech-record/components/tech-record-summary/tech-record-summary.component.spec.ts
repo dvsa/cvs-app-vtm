@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';

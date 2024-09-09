@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { AxleTyreProperties } from '@api/vehicle';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
@@ -386,5 +387,34 @@ export class TechnicalRecordService {
 		if (vehicleType === 'trl' && this.hasTrlGrossAxleChanged(changes as Partial<TechRecordGETTRL>)) return true;
 
 		return false;
+	}
+
+	getVehicleSize(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_vehicleSize : undefined;
+	}
+
+	getVehicleClassDescription(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'psv' ||
+			techRecord.techRecord_vehicleType === 'hgv' ||
+			techRecord.techRecord_vehicleType === 'trl' ||
+			techRecord.techRecord_vehicleType === 'motorcycle'
+			? techRecord.techRecord_vehicleClass_description
+			: undefined;
+	}
+
+	getVehicleClassCode(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'motorcycle' && techRecord.techRecord_recordCompleteness === 'complete'
+			? (techRecord as TechRecordGETMotorcycleComplete).techRecord_vehicleClass_code
+			: undefined;
+	}
+
+	getVehicleClass(techRecord: V3TechRecordModel) {
+		return this.getVehicleClassCode(techRecord) ?? this.getVehicleClassDescription(techRecord);
+	}
+
+	getVehicleSubClass(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'car' || techRecord.techRecord_vehicleType === 'lgv'
+			? techRecord.techRecord_vehicleSubclass
+			: undefined;
 	}
 }

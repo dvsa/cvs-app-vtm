@@ -7,12 +7,12 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';

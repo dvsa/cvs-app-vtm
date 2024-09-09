@@ -8,11 +8,11 @@ import {
 	Input,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { PrefixDirective } from '@forms/directives/prefix.directive';
-import { SuffixDirective } from '@forms/directives/suffix.directive';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { PrefixDirective } from '@directives/prefix/prefix.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
+import { ValidatorNames } from '@models/validators.enum';
 // eslint-disable-next-line import/no-cycle
-import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -28,6 +28,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	@Input() name = '';
 	@Input() customId?: string;
 	@Input() hint?: string;
+	@Input() link?: string;
 	@Input() label?: string;
 	@Input() width?: FormNodeWidth;
 	@Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;

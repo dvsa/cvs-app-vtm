@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormsModule, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { AdrTankStatementUnNumberViewComponent } from './adr-tank-statement-un-number-view.component';

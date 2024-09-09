@@ -1,9 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { UserService } from '@services/user-service/user-service';

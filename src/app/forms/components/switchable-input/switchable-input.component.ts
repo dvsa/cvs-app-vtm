@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MultiOptions } from '@forms/models/options.model';
-import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { MultiOptions } from '@models/options.model';
+import { FormNodeEditTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { Observable, of } from 'rxjs';
 
 @Component({
