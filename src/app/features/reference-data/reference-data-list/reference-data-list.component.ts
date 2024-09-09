@@ -147,7 +147,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		return (this.data ?? of([])).pipe(map((items) => items?.length ?? 0));
 	}
 
-	search(term: string, filterterm: string) {
+	search(term: string, filterterm: keyof ReferenceDataModelBase) {
 		this.globalErrorService.clearErrors();
 		const trimmedTerm = term?.trim();
 		if (!trimmedTerm || !filterterm) {
