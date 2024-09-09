@@ -4,8 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { ReferenceDataItem } from '@models/reference-data/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { createSelector } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -152,7 +151,7 @@ describe('DataTypeListComponent', () => {
 				jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
 					createSelector(
 						(v) => v,
-						() => [{ resourceKey: 'foo', resourceType: 'bar' }] as ReferenceDataItem[] | undefined
+						() => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as ReferenceDataModelBase[] | undefined
 					)
 				);
 				component.search('foo', 'bar');
