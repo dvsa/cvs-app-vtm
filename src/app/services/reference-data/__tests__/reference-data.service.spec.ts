@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataApiResponse, ReferenceDataItem } from '@api/reference-data';
+import { environment } from '@environments/environment';
 import { MultiOptions } from '@models/options.model';
 import {
 	ReferenceDataModelBase,
@@ -8,8 +8,10 @@ import {
 	ReferenceDataTyre,
 	User,
 } from '@models/reference-data.model';
+import { ReferenceDataApiResponse, ReferenceDataItem } from '@models/reference-data/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { HttpService } from '@services/http/http.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import {
@@ -32,6 +34,7 @@ describe('ReferenceDataService', () => {
 	let service: ReferenceDataService;
 	let controller: HttpTestingController;
 	let store: MockStore;
+	let httpService: HttpService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -46,6 +49,7 @@ describe('ReferenceDataService', () => {
 		service = TestBed.inject(ReferenceDataService);
 		controller = TestBed.inject(HttpTestingController);
 		store = TestBed.inject(MockStore);
+		httpService = TestBed.inject(HttpService);
 
 		controller.verify();
 	});
@@ -66,7 +70,7 @@ describe('ReferenceDataService', () => {
 					expect(response).toEqual(apiResponse);
 				});
 
-				const req = controller.expectOne('https://url/api/v1/reference/COUNTRY_OF_REGISTRATION');
+				const req = controller.expectOne(`${environment.VTM_API_URI}/reference/COUNTRY_OF_REGISTRATION`);
 				req.flush(apiResponse);
 			});
 		});
@@ -104,7 +108,7 @@ describe('ReferenceDataService', () => {
 				expect(data).toEqual(apiResponse);
 			});
 
-			const req = controller.expectOne('https://url/api/v1/reference/lookup/TYRES/101');
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/lookup/TYRES/101`);
 			req.flush(apiResponse);
 		});
 	});
@@ -132,14 +136,14 @@ describe('ReferenceDataService', () => {
 				expect(data).toEqual(apiResponse);
 			});
 
-			const req = controller.expectOne('https://url/api/v1/reference/lookup/tyres/plyrating/10');
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/lookup/tyres/plyrating/10`);
 			req.flush(apiResponse);
 		});
 	});
 
 	describe('resourceKeys', () => {
 		it.each(testCases)('should return one result for a given resourceType and resourceKey', (value) => {
-			const getOneFromResourceSpy = jest.spyOn(service, 'referenceResourceTypeResourceKeyGet');
+			const getOneFromResourceSpy = jest.spyOn(httpService, 'referenceResourceTypeResourceKeyGet');
 			const { resourceType, resourceKey, payload } = value;
 			const resource = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataItem;
 			expect(resource).toBeDefined();
@@ -150,7 +154,7 @@ describe('ReferenceDataService', () => {
 				expect(getOneFromResourceSpy).toHaveBeenCalled();
 			});
 
-			const req = controller.expectOne('https://url/api/v1/reference/COUNTRY_OF_REGISTRATION/gb');
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/COUNTRY_OF_REGISTRATION/gb`);
 			req.flush(expectedResult);
 		});
 	});
@@ -164,7 +168,7 @@ describe('ReferenceDataService', () => {
 				expect(data).toEqual(item);
 			});
 
-			const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/${resourceType}/${resourceKey}`);
 			expect(req.request.method).toBe('POST');
 
 			req.flush(apiResponse);
@@ -181,7 +185,7 @@ describe('ReferenceDataService', () => {
 				expect(data).toEqual(apiResponse);
 			});
 
-			const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/${resourceType}/${resourceKey}`);
 			expect(req.request.method).toBe('PUT');
 
 			req.flush(apiResponse);
@@ -196,7 +200,7 @@ describe('ReferenceDataService', () => {
 			service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe((data) => {
 				expect(data).toEqual(apiResponse);
 			});
-			const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/${resourceType}/${resourceKey}`);
 			expect(req.request.method).toBe('DELETE');
 
 			req.flush(apiResponse);

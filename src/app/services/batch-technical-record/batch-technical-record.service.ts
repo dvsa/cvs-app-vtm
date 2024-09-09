@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
 import {
@@ -35,11 +35,9 @@ import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BatchTechnicalRecordService {
-	constructor(
-		private store: Store,
-		private techRecordHttpService: TechnicalRecordHttpService,
-		private technicalRecordService: TechnicalRecordService
-	) {}
+	private store = inject(Store);
+	private httpService = inject(HttpService);
+	private technicalRecordService = inject(TechnicalRecordService);
 
 	validateForBatch(): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -73,7 +71,7 @@ export class BatchTechnicalRecordService {
 		systemNumberControl: CustomFormControl,
 		createdTimestampControl: CustomFormControl
 	): Observable<ValidationErrors | null> {
-		return this.techRecordHttpService.search$(SEARCH_TYPES.VIN, vin).pipe(
+		return this.httpService.searchTechRecords(SEARCH_TYPES.VIN, vin).pipe(
 			map((result) => {
 				const recordsWithTrailerIdOrVrm = result.filter(
 					(vehicleTechRecord) =>

@@ -2,11 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-	DefaultService as CreateTestResultsService,
-	GetTestResultsService,
-	UpdateTestResultsService,
-} from '@api/test-results';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -17,6 +12,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -41,9 +37,7 @@ describe('BaseTestRecordComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 				TestTypesService,
 				TechnicalRecordService,
-				UpdateTestResultsService,
-				GetTestResultsService,
-				CreateTestResultsService,
+				HttpService,
 				{
 					provide: UserService,
 					useValue: {

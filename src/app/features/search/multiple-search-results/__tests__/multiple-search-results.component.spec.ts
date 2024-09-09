@@ -8,7 +8,6 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams } from '@store/router/router.selectors';
@@ -35,7 +34,6 @@ describe('MultipleSearchResultsComponent', () => {
 						roles$: of(['TechRecord.View', 'TechRecord.Create']),
 					},
 				},
-				TechnicalRecordHttpService,
 			],
 		}).compileComponents();
 	});

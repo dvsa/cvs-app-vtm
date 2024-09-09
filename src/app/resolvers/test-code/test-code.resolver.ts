@@ -1,14 +1,14 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { TestTypesService } from '@api/test-types';
 import { Store, select } from '@ngrx/store';
+import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 
 export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (route) => {
 	const store = inject(Store);
-	const testTypesService = inject(TestTypesService);
+	const httpService = inject(HttpService);
 	const techRecordService = inject(TechnicalRecordService);
 	const testTypeId: string | undefined = route.queryParams['testType'];
 
@@ -16,7 +16,7 @@ export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (rout
 	return store.pipe(
 		select(techRecord),
 		switchMap((record) => {
-			return testTypesService.getTestTypesid(
+			return httpService.getTestTypesid(
 				String(testTypeId),
 				['defaultTestCode'],
 				record!.techRecord_vehicleType,

@@ -26,6 +26,7 @@
       "@api/*": ["src/app/api/*"],
       "@components/*": ["src/app/components/*"],
       "@core/*": ["src/app/core/*"],
+      "@environments/*": ["src/environments/*"],
       "@directives/*": ["src/app/directives/*"],
       "@features/*": ["src/app/features/*"],
       "@forms/*": ["src/app/forms/*"],

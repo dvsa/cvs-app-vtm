@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Roles } from '@models/roles.enum';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { TestTypesService } from '@services/test-types/test-types.service';
+import { HttpService } from '@services/http/http.service';
 import { UserService } from '@services/user-service/user-service';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from './test-types.actions';
@@ -10,7 +10,7 @@ import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from './t
 @Injectable()
 export class TestTypeEffects {
 	private actions$ = inject(Actions);
-	private testTypeService = inject(TestTypesService);
+	private httpService = inject(HttpService);
 	private userService = inject(UserService);
 
 	fetchTestTypeTaxonomy$ = createEffect(() =>
@@ -22,7 +22,7 @@ export class TestTypeEffects {
 					? TypeOfTest.DESK_BASED
 					: undefined;
 
-				return this.testTypeService.getTestTypes(typeOfTest).pipe(
+				return this.httpService.getTestTypes(typeOfTest).pipe(
 					map((testTypes) => fetchTestTypesSuccess({ payload: testTypes })),
 					catchError((e) => of(fetchTestTypesFailed({ error: e.message })))
 				);

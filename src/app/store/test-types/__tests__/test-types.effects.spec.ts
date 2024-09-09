@@ -1,13 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TestTypesTaxonomy } from '@api/test-types';
-import { ApiModule as TestTypesApiModule } from '@api/test-types/api.module';
+import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { Observable, of } from 'rxjs';
@@ -19,15 +18,15 @@ describe('TestResultsEffects', () => {
 	let effects: TestTypeEffects;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	let testTypesService: TestTypesService;
+	let httpService: HttpService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule, TestTypesApiModule],
+			imports: [HttpClientTestingModule],
 			providers: [
 				TestTypeEffects,
 				provideMockActions(() => actions$),
-				TestTypesService,
+				HttpService,
 				provideMockStore({
 					initialState: initialAppState,
 				}),
@@ -40,7 +39,7 @@ describe('TestResultsEffects', () => {
 		});
 
 		effects = TestBed.inject(TestTypeEffects);
-		testTypesService = TestBed.inject(TestTypesService);
+		httpService = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {
@@ -58,7 +57,7 @@ describe('TestResultsEffects', () => {
 				actions$ = hot('-a--', { a: fetchTestTypes });
 
 				// mock service call
-				(testTypesService.getTestTypes as () => Observable<TestTypesTaxonomy>) = jest.fn(
+				(httpService.getTestTypes as () => Observable<TestTypesTaxonomy>) = jest.fn(
 					(): Observable<TestTypesTaxonomy> => {
 						return cold('--a|', { a: testTypes });
 					}
@@ -81,7 +80,7 @@ describe('TestResultsEffects', () => {
 				});
 
 				// mock service call
-				(testTypesService.getTestTypes as () => Observable<unknown>) = jest.fn((): Observable<HttpErrorResponse> => {
+				(httpService.getTestTypes as () => Observable<unknown>) = jest.fn((): Observable<HttpErrorResponse> => {
 					return cold('--#|', {}, expectedError);
 				});
 

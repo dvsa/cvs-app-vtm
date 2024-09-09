@@ -2,11 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-	DefaultService as CreateTestResultsService,
-	GetTestResultsService,
-	UpdateTestResultsService,
-} from '@api/test-results';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
 import { IconComponent } from '@components/icon/icon.component';
@@ -27,6 +22,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -76,9 +72,7 @@ describe('CreateTestRecordComponent', () => {
 				GlobalErrorService,
 				RouterService,
 				TestRecordsService,
-				GetTestResultsService,
-				UpdateTestResultsService,
-				CreateTestResultsService,
+				HttpService,
 				{ provide: UserService, useValue: MockUserService },
 				provideMockStore({ initialState: initialAppState }),
 				provideMockActions(() => actions$),

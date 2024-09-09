@@ -1,20 +1,15 @@
-import { Injectable } from '@angular/core';
-import {
-	CompleteTestResults,
-	DefaultService as CreateTestResultsService,
-	GetTestResultsService,
-	UpdateTestResultsService,
-} from '@api/test-results';
+import { Injectable, inject } from '@angular/core';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { CompleteTestResults } from '@models/test-results/completeTestResults';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
+import { HttpService } from '@services/http/http.service';
 import {
-	TestResultsState,
 	cancelEditingTestResult,
 	cleanTestResult,
 	contingencyTestTypeSelected,
@@ -43,12 +38,8 @@ import { Observable, take, throwError } from 'rxjs';
 	providedIn: 'root',
 })
 export class TestRecordsService {
-	constructor(
-		private store: Store<TestResultsState>,
-		private updateTestResultsService: UpdateTestResultsService,
-		private getTestResultService: GetTestResultsService,
-		private createTestResultsService: CreateTestResultsService
-	) {}
+	private store = inject(Store);
+	private httpService = inject(HttpService);
 
 	fetchTestResultbySystemNumber(
 		systemNumber: string,
@@ -65,7 +56,7 @@ export class TestRecordsService {
 		}
 
 		const { status, fromDateTime, toDateTime, testResultId, version } = queryparams;
-		return this.getTestResultService.testResultsSystemNumberGet(
+		return this.httpService.testResultsSystemNumberGet(
 			systemNumber,
 			status,
 			fromDateTime,
@@ -114,18 +105,14 @@ export class TestRecordsService {
 	saveTestResult(
 		systemNumber: string,
 		user: { name: string; id?: string; userEmail?: string },
-		body: TestResultModel,
-		observe?: 'body',
-		reportProgress?: boolean
+		body: TestResultModel
 	): Observable<TestResultModel> {
 		const { name, id, userEmail } = user;
 		const tr = cloneDeep(body);
 		delete tr.testHistory;
-		return this.updateTestResultsService.testResultsSystemNumberPut(
+		return this.httpService.testResultsSystemNumberPut(
 			{ msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr } as CompleteTestResults,
-			systemNumber,
-			observe,
-			reportProgress
+			systemNumber
 		) as Observable<TestResultModel>;
 	}
 
@@ -134,7 +121,7 @@ export class TestRecordsService {
 	}
 
 	postTestResult(body: TestResultModel) {
-		return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
+		return this.httpService.testResultsPost(body as CompleteTestResults);
 	}
 
 	createTestResult(value: TestResultModel): void {

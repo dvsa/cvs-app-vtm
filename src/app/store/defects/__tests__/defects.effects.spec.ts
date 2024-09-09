@@ -4,7 +4,7 @@ import { Defect } from '@models/defects/defect.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DefectsService } from '@services/defects/defects.service';
+import { HttpService } from '@services/http/http.service';
 import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -22,7 +22,7 @@ describe('DefectsEffects', () => {
 	let effects: DefectsEffects;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	let service: DefectsService;
+	let service: HttpService;
 
 	const expectedResult = { imNumber: 1 } as Defect;
 	const testCases = [
@@ -38,7 +38,7 @@ describe('DefectsEffects', () => {
 			providers: [
 				DefectsEffects,
 				provideMockActions(() => actions$),
-				DefectsService,
+				HttpService,
 				provideMockStore({
 					initialState: initialAppState,
 				}),
@@ -46,7 +46,7 @@ describe('DefectsEffects', () => {
 		});
 
 		effects = TestBed.inject(DefectsEffects);
-		service = TestBed.inject(DefectsService);
+		service = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {

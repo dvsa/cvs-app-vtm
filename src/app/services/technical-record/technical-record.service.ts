@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { AxleTyreProperties } from '@api/vehicle';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -20,9 +19,11 @@ import {
 	VehicleTechRecordModel,
 	VehicleTypes,
 } from '@models/vehicle-tech-record.model';
+import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { Store, select } from '@ngrx/store';
+import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
 import {
 	selectTechRecordSearchResults,
 	selectTechRecordSearchResultsBySystemNumber,
@@ -51,15 +52,12 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
-import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-	constructor(
-		private store: Store,
-		private techRecordHttpService: TechnicalRecordHttpService,
-		private routerService: RouterService
-	) {}
+	private store = inject(Store);
+	private httpService = inject(HttpService);
+	private routerService = inject(RouterService);
 
 	getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
 		return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL &&
@@ -71,7 +69,7 @@ export class TechnicalRecordService {
 
 	getAxleFittingWeightValueFromLoadIndex(
 		loadIndexValue: string,
-		fitmentCodeType: FitmentCodeEnum | null | undefined,
+		fitmentCodeType: AxleTyreProperties.FitmentCodeEnum | null | undefined,
 		loadIndex: ReferenceDataTyreLoadIndex[] | null
 	): number | undefined {
 		let factor = 4;
@@ -83,7 +81,7 @@ export class TechnicalRecordService {
 	}
 
 	isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-		return this.techRecordHttpService.search$(searchType, valueToCheck).pipe(
+		return this.httpService.searchTechRecords(searchType, valueToCheck).pipe(
 			map((searchResults) => {
 				if (searchResults.every((result) => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
 					return true;
@@ -216,7 +214,7 @@ export class TechnicalRecordService {
 					if (thirdMark) {
 						const vrmNotNew = previousVrm === vrmControl.value;
 						if (vrmNotNew) return of({ validateVrm: { message: 'You must provide a new VRM' } });
-						return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, vrmControl.value).pipe(
+						return this.httpService.searchTechRecords(SEARCH_TYPES.VRM, vrmControl.value).pipe(
 							map((results) => {
 								if (results.some((result) => result.techRecord_statusCode === StatusCodes.CURRENT)) {
 									return null;
@@ -290,7 +288,7 @@ export class TechnicalRecordService {
 	}
 
 	checkVrmNotActive(control: AbstractControl, previousVrm: string) {
-		return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
+		return this.httpService.searchTechRecords(SEARCH_TYPES.VRM, control.value).pipe(
 			map((results) => {
 				const currentRecord = results.filter((result) => result.techRecord_statusCode === StatusCodes.CURRENT);
 				const provisionalRecord = results.filter((result) => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
@@ -416,5 +414,9 @@ export class TechnicalRecordService {
 		return techRecord.techRecord_vehicleType === 'car' || techRecord.techRecord_vehicleType === 'lgv'
 			? techRecord.techRecord_vehicleSubclass
 			: undefined;
+	}
+
+	searchBy(type: SEARCH_TYPES | undefined, term: string): void {
+		this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
 	}
 }

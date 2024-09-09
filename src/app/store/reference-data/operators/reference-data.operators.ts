@@ -1,5 +1,5 @@
-import { ReferenceDataApiResponse, ReferenceDataItem } from '@api/reference-data';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataApiResponse, ReferenceDataItem } from '@models/reference-data/reference-data.model';
 import { Observable } from 'rxjs';
 
 /**

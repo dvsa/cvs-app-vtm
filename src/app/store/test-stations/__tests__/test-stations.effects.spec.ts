@@ -4,6 +4,7 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { HttpService } from '@services/http/http.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
@@ -22,7 +23,7 @@ describe('TestStationsEffects', () => {
 	let effects: TestStationsEffects;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	let service: TestStationsService;
+	let service: HttpService;
 
 	const expectedResult = { testStationId: 'some ID' } as TestStation;
 	const testCases = [
@@ -46,7 +47,7 @@ describe('TestStationsEffects', () => {
 		});
 
 		effects = TestBed.inject(TestStationsEffects);
-		service = TestBed.inject(TestStationsService);
+		service = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {

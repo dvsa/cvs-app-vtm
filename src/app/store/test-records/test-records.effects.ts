@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
@@ -13,7 +12,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
@@ -52,13 +51,12 @@ import {
 export class TestResultsEffects {
 	private actions$ = inject(Actions);
 	private testRecordsService = inject(TestRecordsService);
-	private techRecordHttpService = inject(TechnicalRecordHttpService);
+	private httpService = inject(HttpService);
 	private store = inject<Store<State>>(Store);
 	private router = inject(Router);
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
 	private featureToggleService = inject(FeatureToggleService);
-	private testTypesService = inject(TestTypesService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -342,7 +340,7 @@ export class TestResultsEffects {
 				ofType(createTestResultSuccess),
 				delay(3000),
 				map((action) => action.payload.changes.systemNumber as string),
-				switchMap((systemNumber) => this.techRecordHttpService.getBySystemNumber$(systemNumber)),
+				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
 				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
 				filter(Boolean),
 				switchMap((techRecord) =>

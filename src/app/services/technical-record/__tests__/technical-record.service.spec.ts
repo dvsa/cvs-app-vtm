@@ -2,7 +2,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AxleTyreProperties } from '@api/vehicle';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -15,20 +14,20 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { ReferenceDataResourceType, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { HttpService } from '@services/http/http.service';
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { EmptyError, firstValueFrom, from, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TechnicalRecordService } from '../technical-record.service';
-import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 describe('TechnicalRecordService', () => {
 	let service: TechnicalRecordService;
 	let httpClient: HttpTestingController;
 	let store: MockStore<State>;
-	let techRecordHttpService: TechnicalRecordHttpService;
+	let httpService: HttpService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -38,7 +37,7 @@ describe('TechnicalRecordService', () => {
 		httpClient = TestBed.inject(HttpTestingController);
 		service = TestBed.inject(TechnicalRecordService);
 		store = TestBed.inject(MockStore);
-		techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
+		httpService = TestBed.inject(HttpService);
 	});
 
 	afterEach(() => {
@@ -533,12 +532,12 @@ describe('TechnicalRecordService', () => {
 			},
 		];
 		it('should return double the loadIndex value passed in if fitment code is set to single', () => {
-			const fitmentCodeType = FitmentCodeEnum.Single;
+			const fitmentCodeType = AxleTyreProperties.FitmentCodeEnum.Single;
 			const result = service.getAxleFittingWeightValueFromLoadIndex(loadIndex, fitmentCodeType, loadIndexArray);
 			expect(result).toBe(1650);
 		});
 		it('should return quadruple the loadIndex value passed in if fitment code is set to single', () => {
-			const fitmentCodeType = FitmentCodeEnum.Double;
+			const fitmentCodeType = AxleTyreProperties.FitmentCodeEnum.Double;
 			const result = service.getAxleFittingWeightValueFromLoadIndex(loadIndex, fitmentCodeType, loadIndexArray);
 			expect(result).toBe(3300);
 		});
@@ -631,7 +630,7 @@ describe('TechnicalRecordService', () => {
 
 	describe('validateVrmDoesNotExist', () => {
 		beforeEach(() => {
-			jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should emit empty if the control has a falsy value', async () => {
@@ -659,12 +658,12 @@ describe('TechnicalRecordService', () => {
 
 	describe('validateVrmForCherishedTransfer', () => {
 		beforeEach(() => {
-			jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should return empty is the value of the control is falsy', async () => {
 			const control = new FormControl(null);
-			const searchSpy = jest.spyOn(techRecordHttpService, 'search$');
+			const searchSpy = jest.spyOn(httpService, 'searchTechRecords');
 			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmForCherishedTransfer();
@@ -681,7 +680,7 @@ describe('TechnicalRecordService', () => {
 				control: new FormControl('current vrm'),
 			});
 
-			const searchSpy = jest.spyOn(techRecordHttpService, 'search$');
+			const searchSpy = jest.spyOn(httpService, 'searchTechRecords');
 			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmForCherishedTransfer();
@@ -699,7 +698,7 @@ describe('TechnicalRecordService', () => {
 			});
 
 			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
-			const searchSpy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(
+			const searchSpy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'previous vrm',
@@ -723,7 +722,7 @@ describe('TechnicalRecordService', () => {
 			});
 
 			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
-			const searchSpy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(
+			const searchSpy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'previous vrm',
@@ -766,13 +765,13 @@ describe('TechnicalRecordService', () => {
 
 	describe('checkVrmNotActive', () => {
 		beforeEach(() => {
-			jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should not display an appropriate error message when the provided VRM is the same as the current', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl(vrm);
-			const spy = jest.spyOn(techRecordHttpService, 'search$');
+			const spy = jest.spyOn(httpService, 'searchTechRecords');
 
 			await expect(firstValueFrom(service.checkVrmNotActive(control, vrm))).resolves.toEqual({
 				validateVrm: { message: 'You must provide a new VRM' },
@@ -784,7 +783,7 @@ describe('TechnicalRecordService', () => {
 		it('should determine if the VRM is being used by a current tech record, and display an appropriate message', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(
+			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'new vrm',
@@ -808,7 +807,7 @@ describe('TechnicalRecordService', () => {
 		it('should determine if the VRM is being used by a provisional tech record, and display an appropriate message', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(
+			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'new vrm',
@@ -830,7 +829,7 @@ describe('TechnicalRecordService', () => {
 		it('should return null when the VRM is not being used by a current or provisional record', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 
 			await expect(firstValueFrom(service.checkVrmNotActive(control, vrm))).resolves.toBeNull();
 

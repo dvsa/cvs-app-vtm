@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import {
+	ReferenceDataApiResponse,
+	ReferenceDataApiResponseWithPagination,
+} from '@models/reference-data/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
