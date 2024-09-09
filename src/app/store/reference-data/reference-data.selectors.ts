@@ -1,4 +1,9 @@
-import { Brake, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import {
+	Brake,
+	ReferenceDataModelBase,
+	ReferenceDataResourceType,
+	ReferenceDataResourceTypeAudit,
+} from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import {
@@ -68,19 +73,25 @@ export const selectRefDataBySearchTerm = (
 	filter: string
 ) =>
 	createSelector(referenceDataFeatureState, (state) => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const searchItem: Array<any> = [];
+		const searchItem: ReferenceDataModelBase[] = [];
 
-		state[`${referenceDataType}`].ids.forEach((key) => {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const obj = state[`${referenceDataType}`].entities[`${key}`] as any;
-			if (obj[`${filter}`].toString().toUpperCase().includes(searchTerm.toString().toUpperCase())) {
+		state[referenceDataType]?.ids.forEach((key) => {
+			const obj = state[referenceDataType].entities[key];
+			if (
+				obj &&
+				obj[filter as keyof ReferenceDataModelBase]
+					?.toString()
+					.toUpperCase()
+					.includes(searchTerm.toString().toUpperCase())
+			) {
 				searchItem.push(obj);
 			}
 		});
+
 		if (searchTerm.length > 0) {
 			return searchItem;
 		}
+
 		return undefined;
 	});
 
