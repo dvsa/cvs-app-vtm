@@ -1,3 +1,3 @@
-export * from './actions/reference-data.actions';
-export * from './reducers/reference-data.reducer';
-export * from './selectors/reference-data.selectors';
+export * from './reference-data.actions';
+export * from './reference-data.reducer';
+export * from './reference-data.selectors';

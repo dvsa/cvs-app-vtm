@@ -6,9 +6,10 @@ import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directiv
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
+import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { PrefixDirective } from '@directives/prefix/prefix.directive';
 import { SuffixDirective } from '@directives/suffix/suffix.directive';
-import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
@@ -21,7 +22,6 @@ import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-gro
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { DateComponent } from './components/date/date.component';
-import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
@@ -89,7 +89,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		FieldErrorMessageComponent,
 		DefectSelectComponent,
 		RequiredStandardSelectComponent,
-		FocusNextDirective,
+		DateFocusNextDirective,
 		TruncatePipe,
 		WeightsComponent,
 		LettersComponent,

@@ -9,8 +9,8 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
-import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/selectors/required-standards.selector';
-import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/required-standards.selector';
+import { selectRouteParam } from '@store/router/router.selectors';
 import {
 	createRequiredStandard,
 	removeRequiredStandard,

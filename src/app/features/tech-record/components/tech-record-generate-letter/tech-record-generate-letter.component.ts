@@ -18,7 +18,7 @@ import {
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
 
 @Component({

@@ -14,7 +14,7 @@ import {
 	FormNodeEditTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Subscription } from 'rxjs';
 
 @Component({

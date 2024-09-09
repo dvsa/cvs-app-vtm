@@ -18,7 +18,7 @@ import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dyna
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { State } from '@store/index';
-import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { Subject, filter, take, takeUntil, withLatestFrom } from 'rxjs';
 

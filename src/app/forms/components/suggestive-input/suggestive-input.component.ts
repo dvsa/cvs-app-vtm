@@ -1,6 +1,6 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOption } from '@models/options.model';
 import { Observable, firstValueFrom, skipWhile, take } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';

@@ -12,7 +12,7 @@ import {
 	selectRouteDataProperty,
 	selectRouteNestedParams,
 	selectRouteParam,
-} from '@store/router/selectors/router.selectors';
+} from '@store/router/router.selectors';
 import { Observable, map } from 'rxjs';
 
 @Injectable({

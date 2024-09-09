@@ -12,7 +12,7 @@ import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-te
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
 
 @Component({

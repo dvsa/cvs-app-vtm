@@ -3,8 +3,12 @@ import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Valid
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
-import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators, EnumValidatorOptions, IsArrayValidatorOptions } from '@forms/validators/custom-validators';
+import { CustomAsyncValidators } from '@forms/validators/custom-async-validator/custom-async-validators';
+import {
+	CustomValidators,
+	EnumValidatorOptions,
+	IsArrayValidatorOptions,
+} from '@forms/validators/custom-validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { Condition } from '@models/condition.model';

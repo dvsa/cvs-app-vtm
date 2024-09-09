@@ -3,11 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
-import {
-	fetchTestTypes,
-	fetchTestTypesFailed,
-	fetchTestTypesSuccess,
-} from '@store/test-types/actions/test-types.actions';
+import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/test-types.actions';
 import { map, take } from 'rxjs';
 
 export const testTypeTaxonomyResolver: ResolveFn<boolean> = () => {

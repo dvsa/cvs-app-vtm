@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { CustomControl, CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({

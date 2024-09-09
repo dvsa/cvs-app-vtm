@@ -14,8 +14,8 @@ import {
 	setVehicleStatus,
 	setVehicleType,
 	upsertVehicleBatch,
-} from '@store/technical-records/actions/batch-create.actions';
-import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
+} from '@store/technical-records/batch-create.actions';
+import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import {
 	selectAllBatch,
 	selectApplicationId,
@@ -30,7 +30,7 @@ import {
 	selectIsBatch,
 	selectVehicleStatus,
 	selectVehicleType,
-} from '@store/technical-records/selectors/batch-create.selectors';
+} from '@store/technical-records/batch-create.selectors';
 import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

@@ -15,8 +15,8 @@ import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@service
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
-import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { selectSearchReturn } from '@store/reference-data/reference-data.selectors';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, mergeMap, take } from 'rxjs';
 
 @Component({

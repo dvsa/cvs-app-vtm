@@ -16,8 +16,8 @@ import {
 	selectTechRecord,
 	updateADRAdditionalExaminerNotes,
 } from '@store/technical-records';
-import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { BatchRecord } from '@store/technical-records/batch-create.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
