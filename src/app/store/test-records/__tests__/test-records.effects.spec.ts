@@ -7,7 +7,6 @@ import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { masterTpl } from '@forms/templates/test-records/master.template';
 import { mockTestResult, mockTestResultList } from '@mocks/mock-test-result';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
@@ -47,9 +46,9 @@ import {
 	updateTestResult,
 	updateTestResultFailed,
 	updateTestResultSuccess,
-} from '../test-records.actions';
+} from '@store/test-records';
 import { TestResultsEffects } from '../test-records.effects';
-import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '../test-records.selectors';
+import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '@store/test-records';
 
 jest.mock('@forms/templates/test-records/master.template', () => ({
 	__esModule: true,
@@ -135,6 +134,9 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 		},
 	},
 }));
+// This must be imported here to avoid the test suite failing -
+// https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
+import { masterTpl } from '@forms/templates/test-records/master.template';
 
 describe('TestResultsEffects', () => {
 	let effects: TestResultsEffects;
