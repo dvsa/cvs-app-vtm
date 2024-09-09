@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControlStatus, FormGroup, 
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';

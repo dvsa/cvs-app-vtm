@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
-import { clearWarning, setWarnings } from '@store/global-warning/actions/global-warning.actions';
-import { globalWarningState } from '@store/global-warning/reducers/global-warning-service.reducers';
+import { globalWarningState } from '@store/global-warning/global-warning-service.reducers';
+import { clearWarning, setWarnings } from '@store/global-warning/global-warning.actions';
 import { Observable } from 'rxjs';
 import { GlobalWarning } from './global-warning.interface';
 

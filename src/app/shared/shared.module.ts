@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
+import { PreventDoubleClickDirective } from '@directives/prevent-double-click/prevent-double-click.directive';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { AccordionControlComponent } from '../components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '../components/accordion/accordion.component';
 import { BannerComponent } from '../components/banner/banner.component';
@@ -24,8 +26,6 @@ import { GetControlLabelPipe } from '../pipes/get-control-label/get-control-labe
 import { RefDataDecodePipe } from '../pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '../pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
-import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
-import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 
 @NgModule({
 	declarations: [

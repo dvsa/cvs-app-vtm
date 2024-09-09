@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { TestStationsEffects } from './effects/test-stations.effects';
-import { STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer } from './reducers/test-stations.reducer';
+import { TestStationsEffects } from './test-stations.effects';
+import { STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer } from './test-stations.reducer';
 
 @NgModule({
 	declarations: [],

@@ -1,3 +1,3 @@
-export * from './actions/defects.actions';
-export * from './reducers/defects.reducer';
-export * from './selectors/defects.selectors';
+export * from './defects.actions';
+export * from './defects.reducer';
+export * from './defects.selectors';

@@ -3,8 +3,8 @@ import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { Store } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { testTypeIdChanged } from '@store/test-records';
-import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
-import { selectTestTypesByVehicleType } from '@store/test-types/selectors/test-types.selectors';
+import { fetchTestTypes } from '@store/test-types/test-types.actions';
+import { selectTestTypesByVehicleType } from '@store/test-types/test-types.selectors';
 import { Observable } from 'rxjs';
 
 @Injectable({

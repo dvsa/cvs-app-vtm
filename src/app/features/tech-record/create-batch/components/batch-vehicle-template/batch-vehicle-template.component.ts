@@ -17,7 +17,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, map, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 

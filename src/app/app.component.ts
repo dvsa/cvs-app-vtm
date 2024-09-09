@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { selectRouteData } from '@store/router/router.selectors';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';

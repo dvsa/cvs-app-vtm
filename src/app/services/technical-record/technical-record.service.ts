@@ -27,7 +27,7 @@ import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record
 import {
 	selectTechRecordSearchResults,
 	selectTechRecordSearchResultsBySystemNumber,
-} from '@store/tech-record-search/selector/tech-record-search.selector';
+} from '@store/tech-record-search/tech-record-search.selector';
 import {
 	clearAllSectionStates,
 	createVehicle,

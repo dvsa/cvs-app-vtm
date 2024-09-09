@@ -6,7 +6,7 @@ import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectQueryParams } from '@store/router/selectors/router.selectors';
+import { selectQueryParams } from '@store/router/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({

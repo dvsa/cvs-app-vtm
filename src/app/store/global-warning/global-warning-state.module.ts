@@ -4,7 +4,7 @@ import { StoreModule } from '@ngrx/store';
 import {
 	STORE_FEATURE_GLOBAL_WARNING_KEY,
 	globalWarningReducer,
-} from '@store/global-warning/reducers/global-warning-service.reducers';
+} from '@store/global-warning/global-warning-service.reducers';
 
 @NgModule({
 	declarations: [],

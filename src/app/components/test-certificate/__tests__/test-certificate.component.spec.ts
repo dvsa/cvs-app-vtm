@@ -1,11 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
-import { RetrieveDocumentDirective } from '@shared/directives/retrieve-document/retrieve-document.directive';
 import { State, initialAppState } from '@store/index';
 import { isTestTypeOldIvaOrMsva, toEditOrNotToEdit } from '@store/test-records';
 import { TestCertificateComponent } from '../test-certificate.component';
