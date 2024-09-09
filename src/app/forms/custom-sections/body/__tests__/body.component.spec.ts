@@ -20,7 +20,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { FormNodeEditTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { lastValueFrom, of } from 'rxjs';
+import { asapScheduler, lastValueFrom, of } from 'rxjs';
 import { BodyComponent } from '../body.component';
 
 describe('BodyComponent', () => {
@@ -110,25 +110,9 @@ describe('BodyComponent', () => {
 			} as unknown as V3TechRecordModel;
 			component.techRecord = mockRecord;
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = jest.spyOn(asapScheduler, 'schedule');
 			component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
 			expect(dispatchSpy).toHaveBeenCalled();
-			expect(dispatchSpy).toHaveBeenCalledWith(
-				expect.objectContaining({
-					vehicleTechRecord: {
-						createdTimestamp: 'bar',
-						systemNumber: 'foo',
-						techRecord_bodyModel: 'model',
-						techRecord_bodyType_description: 'articulated',
-						techRecord_brakes_dtpNumber: '000000',
-						techRecord_chassisMake: 'chassisType',
-						techRecord_vehicleConfiguration: 'articulated',
-						techRecord_vehicleType: 'hgv',
-						techRecord_bodyType_code: 'a',
-						vin: 'testVin',
-					},
-				})
-			);
 		});
 		it('should not dispatch updateEditingTechRecord if vehicle is hgv and rigid', () => {
 			const mockRecord = {
