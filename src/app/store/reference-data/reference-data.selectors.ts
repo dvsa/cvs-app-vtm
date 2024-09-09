@@ -1,4 +1,9 @@
-import { Brake, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import {
+	Brake,
+	ReferenceDataModelBase,
+	ReferenceDataResourceType,
+	ReferenceDataResourceTypeAudit,
+} from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import {
@@ -65,23 +70,17 @@ export const selectTyreSearchCriteria = createSelector(
 export const selectRefDataBySearchTerm = (
 	searchTerm: string,
 	referenceDataType: ReferenceDataResourceType,
-	filter: string
+	filter: keyof ReferenceDataModelBase
 ) =>
 	createSelector(referenceDataFeatureState, (state) => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const searchItem: Array<any> = [];
+		const entities = state[referenceDataType]?.entities;
 
-		state[`${referenceDataType}`].ids.forEach((key) => {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const obj = state[`${referenceDataType}`].entities[`${key}`] as any;
-			if (obj[`${filter}`].toString().toUpperCase().includes(searchTerm.toString().toUpperCase())) {
-				searchItem.push(obj);
-			}
-		});
-		if (searchTerm.length > 0) {
-			return searchItem;
-		}
-		return undefined;
+		if (!searchTerm || !entities) return [];
+
+		return Object.values(entities).filter(
+			(obj): obj is ReferenceDataModelBase =>
+				obj !== undefined && (obj[filter]?.toString().toUpperCase() || '').includes(searchTerm.toUpperCase())
+		);
 	});
 
 export const selectUserByResourceKey = (resourceKey: string) =>
