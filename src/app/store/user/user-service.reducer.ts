@@ -50,6 +50,7 @@ export const userServiceReducer = createReducer(
 	on(UserServiceActions.Logout, () => initialState)
 );
 
-function getRoles(rolesArray: string[]): string[] {
+function getRoles(rolesArray?: string[]): string[] {
+	if (!rolesArray) return [];
 	return environment.RemoveAADFullAccessRole ? rolesArray.filter((role) => role !== Roles.Admin) : rolesArray;
 }

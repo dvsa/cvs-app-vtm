@@ -56,7 +56,7 @@ export class UserService implements OnDestroy {
 	}: { name: string; userEmail: string; oid: string; accessToken: string }): void {
 		window.localStorage.setItem('accessToken', accessToken);
 		const decodedJWT = jwtDecode(accessToken);
-		const { roles } = decodedJWT as { roles: string[] };
+		const { roles } = decodedJWT as { roles?: string[] };
 		this.store.dispatch(
 			UserServiceActions.Login({
 				name,
