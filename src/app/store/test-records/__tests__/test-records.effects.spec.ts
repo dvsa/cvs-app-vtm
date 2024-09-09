@@ -26,8 +26,6 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/router.selectors';
-import { Observable, of } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -47,8 +45,10 @@ import {
 	updateTestResultFailed,
 	updateTestResultSuccess,
 } from '@store/test-records';
-import { TestResultsEffects } from '../test-records.effects';
 import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '@store/test-records';
+import { Observable, of } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { TestResultsEffects } from '../test-records.effects';
 
 jest.mock('@forms/templates/test-records/master.template', () => ({
 	__esModule: true,
