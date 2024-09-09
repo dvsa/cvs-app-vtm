@@ -1,3 +1,5 @@
+import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
+
 export enum ReferenceDataResourceType {
 	Brakes = 'BRAKES',
 	CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
@@ -73,7 +75,6 @@ export interface User extends ReferenceDataModelBase {
 	name: string;
 	email: string;
 }
-
 export interface ReferenceDataAdminType extends ReferenceDataModelBase {
 	code?: string;
 	dtpNumber?: string;
@@ -88,4 +89,6 @@ export interface ReferenceDataAdminType extends ReferenceDataModelBase {
 	secondary?: string;
 	service?: string;
 	tyreSize?: string;
+	columns?: ReferenceDataAdminColumn[];
+	searchOptions?: FormNodeOption<string | number | boolean>[];
 }

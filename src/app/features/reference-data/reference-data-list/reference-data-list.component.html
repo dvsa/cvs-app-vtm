@@ -1,9 +1,9 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async).label }}</p>
+    <p class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async)?.label }}</p>
 
     <div id="buttonsAndSearch">
-      <div [formGroup]="form" class="govuk-form-group" id="searchForm">
+      <div [formGroup]="form" class="govuk-form-group" id="searchForm" *ngIf="(refDataAdminType$ | async)?.searchOptions as searchOptions">
         <div id="filterSelect">
           <label class="govuk-label" for="searchFilter">Search Filter</label>
           <app-select
@@ -11,7 +11,7 @@
             id="searchFilter"
             [formControlName]="form.meta.children![0].name"
             [name]="form.meta.children![0].name"
-            [options]="(refDataAdminType$ | async).searchOptions"
+            [options]="searchOptions"
           ></app-select>
         </div>
         <div id="searchInput">
@@ -60,14 +60,14 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th *ngFor="let column of (refDataAdminType$ | async).columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
+          <th *ngFor="let column of (refDataAdminType$ | async)?.columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
           <th scope="col" class="govuk-table__header"></th>
         </tr>
       </thead>
 
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
-          <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
+          <td *ngFor="let column of (refDataAdminType$ | async)?.columns" class="govuk-table__cell">{{ item[column.name] }}</td>
           <td class="govuk-table__cell" id="buttons">
             <app-button-group>
               <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
