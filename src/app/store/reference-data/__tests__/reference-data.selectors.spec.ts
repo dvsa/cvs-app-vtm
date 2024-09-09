@@ -171,18 +171,18 @@ describe('Reference Data Selectors', () => {
 		});
 		it('should return only items that contain the search term 1', () => {
 			const expectedState = referenceDataSelectors
-				.selectRefDataBySearchTerm('1', ReferenceDataResourceType.Tyres, 'brakeCode')
+				.selectRefDataBySearchTerm('1', ReferenceDataResourceType.Tyres, 'brakeCode' as keyof ReferenceDataModelBase)
 				.projector(state);
 			expect(expectedState).toEqual([
 				{ resourceKey: 1, brakeCode: 1, resourceType: ReferenceDataResourceType.Tyres },
 				{ resourceKey: 11, brakeCode: 11, resourceType: ReferenceDataResourceType.Tyres },
-				{ resourceKey: 111, brakeCode: 111, resourceType: ReferenceDataResourceType.Tyres },
 				{ resourceKey: 101, brakeCode: 101, resourceType: ReferenceDataResourceType.Tyres },
+				{ resourceKey: 111, brakeCode: 111, resourceType: ReferenceDataResourceType.Tyres },
 			]);
 		});
 		it('should return only items that contain the search term 11', () => {
 			const expectedState = referenceDataSelectors
-				.selectRefDataBySearchTerm('11', ReferenceDataResourceType.Tyres, 'brakeCode')
+				.selectRefDataBySearchTerm('11', ReferenceDataResourceType.Tyres, 'brakeCode' as keyof ReferenceDataModelBase)
 				.projector(state);
 			expect(expectedState).toEqual([
 				{ resourceKey: 11, brakeCode: 11, resourceType: ReferenceDataResourceType.Tyres },
@@ -191,13 +191,13 @@ describe('Reference Data Selectors', () => {
 		});
 		it('should return only items that contain the search term 2', () => {
 			const expectedState = referenceDataSelectors
-				.selectRefDataBySearchTerm('2', ReferenceDataResourceType.Tyres, 'brakeCode')
+				.selectRefDataBySearchTerm('2', ReferenceDataResourceType.Tyres, 'brakeCode' as keyof ReferenceDataModelBase)
 				.projector(state);
 			expect(expectedState).toEqual([{ resourceKey: 2, brakeCode: 2, resourceType: ReferenceDataResourceType.Tyres }]);
 		});
 		it('should return an empty array if there are no items to return', () => {
 			const expectedState = referenceDataSelectors
-				.selectRefDataBySearchTerm('3', ReferenceDataResourceType.Tyres, 'brakeCode')
+				.selectRefDataBySearchTerm('3', ReferenceDataResourceType.Tyres, 'brakeCode' as keyof ReferenceDataModelBase)
 				.projector(state);
 			expect(expectedState).toEqual([]);
 		});

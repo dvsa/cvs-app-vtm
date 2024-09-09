@@ -70,29 +70,17 @@ export const selectTyreSearchCriteria = createSelector(
 export const selectRefDataBySearchTerm = (
 	searchTerm: string,
 	referenceDataType: ReferenceDataResourceType,
-	filter: string
+	filter: keyof ReferenceDataModelBase
 ) =>
 	createSelector(referenceDataFeatureState, (state) => {
-		const searchItem: ReferenceDataModelBase[] = [];
+		const entities = state[referenceDataType]?.entities;
 
-		state[referenceDataType]?.ids.forEach((key) => {
-			const obj = state[referenceDataType].entities[key];
-			if (
-				obj &&
-				obj[filter as keyof ReferenceDataModelBase]
-					?.toString()
-					.toUpperCase()
-					.includes(searchTerm.toString().toUpperCase())
-			) {
-				searchItem.push(obj);
-			}
-		});
+		if (!searchTerm || !entities) return [];
 
-		if (searchTerm.length > 0) {
-			return searchItem;
-		}
-
-		return undefined;
+		return Object.values(entities).filter(
+			(obj): obj is ReferenceDataModelBase =>
+				obj !== undefined && (obj[filter]?.toString().toUpperCase() || '').includes(searchTerm.toUpperCase())
+		);
 	});
 
 export const selectUserByResourceKey = (resourceKey: string) =>

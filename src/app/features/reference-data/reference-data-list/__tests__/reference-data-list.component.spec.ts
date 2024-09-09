@@ -125,13 +125,13 @@ describe('DataTypeListComponent', () => {
 	describe('search', () => {
 		it('should call add error if there is no search term', () => {
 			const errorSpy = jest.spyOn(errorService, 'addError');
-			component.search('', 'tyreCode');
+			component.search('', 'tyreCode' as keyof ReferenceDataModelBase);
 
 			expect(errorSpy).toHaveBeenCalled();
 		});
 		it('should call add error if there is no filter', () => {
 			const errorSpy = jest.spyOn(errorService, 'addError');
-			component.search('term', '');
+			component.search('term', '' as keyof ReferenceDataModelBase);
 
 			expect(errorSpy).toHaveBeenCalled();
 		});
@@ -139,7 +139,7 @@ describe('DataTypeListComponent', () => {
 			const errorSpy = jest.spyOn(errorService, 'addError');
 			component.type = ReferenceDataResourceType.Tyres;
 
-			component.search('term', 'brakeCode');
+			component.search('term', 'brakeCode' as keyof ReferenceDataModelBase);
 
 			expect(errorSpy).toHaveBeenCalled();
 		});
@@ -151,10 +151,10 @@ describe('DataTypeListComponent', () => {
 				jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
 					createSelector(
 						(v) => v,
-						() => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as ReferenceDataModelBase[] | undefined
+						() => [{ resourceKey: 'foo', resourceType: 'bar' } as unknown as ReferenceDataModelBase]
 					)
 				);
-				component.search('foo', 'bar');
+				component.search('foo', 'bar' as keyof ReferenceDataModelBase);
 
 				expect(navigateSpy).toHaveBeenCalledWith(['../TYRES'], {
 					relativeTo: route,
