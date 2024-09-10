@@ -1,7 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import {
+	ReferenceDataAdminType,
+	ReferenceDataModelBase,
+	ReferenceDataResourceType,
+} from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -97,8 +101,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
+	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {
 		return this.store.pipe(
 			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
 		);

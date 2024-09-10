@@ -25,7 +25,7 @@ export const selectReferenceDataByResourceKey = (
 	resourceKey: string | number
 ) =>
 	createSelector(referenceDataFeatureState, (state) =>
-		isResourceType(resourceType) ? state[`${resourceType}`].entities[`${resourceKey}`] : undefined
+		isResourceType(resourceType) ? state[resourceType].entities[resourceKey] : undefined
 	);
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, (state) =>
