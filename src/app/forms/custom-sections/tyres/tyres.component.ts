@@ -194,6 +194,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 			const currentAxles = vehicleTechRecord.currentValue.techRecord_axles;
 			const previousAxles = vehicleTechRecord.previousValue.techRecord_axles;
 
+			if (!currentAxles) return false;
 			if (!previousAxles) return false;
 
 			// eslint-disable-next-line no-restricted-syntax
