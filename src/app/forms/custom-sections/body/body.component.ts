@@ -26,7 +26,18 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { State } from '@store/index';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateBody, updateEditingTechRecord } from '@store/technical-records';
-import { Observable, Subject, combineLatest, debounceTime, map, mergeMap, skipWhile, take, takeUntil } from 'rxjs';
+import {
+	Observable,
+	Subject,
+	asapScheduler,
+	combineLatest,
+	debounceTime,
+	map,
+	mergeMap,
+	skipWhile,
+	take,
+	takeUntil,
+} from 'rxjs';
 
 @Component({
 	selector: 'app-body',
@@ -170,14 +181,16 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
 	updateHgvVehicleBodyType(record: TechRecordVehicleType<'hgv'>) {
 		if (record.techRecord_vehicleConfiguration === 'articulated') {
-			this.store.dispatch(
-				updateEditingTechRecord({
-					vehicleTechRecord: {
-						...this.techRecord,
-						techRecord_bodyType_description: 'articulated',
-						techRecord_bodyType_code: 'a',
-					} as TechRecordType<'put'>,
-				})
+			asapScheduler.schedule(() =>
+				this.store.dispatch(
+					updateEditingTechRecord({
+						vehicleTechRecord: {
+							...this.techRecord,
+							techRecord_bodyType_description: 'articulated',
+							techRecord_bodyType_code: 'a',
+						} as TechRecordType<'put'>,
+					})
+				)
 			);
 		}
 	}
