@@ -38,19 +38,33 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 	}
 
 	private remove(option: FormNodeOption<OptionsType>) {
-		// eslint-disable-next-line security/detect-non-literal-regexp
-		const separator =
-			this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
+		const seperator = this.delimited?.regex ? new RegExp(this.delimited.regex) : this.delimited?.separator;
 
-		let newValue = separator ? this.value?.split(separator) : [...this.value];
+		let filtered: string[] = [];
+		let newValue: string[] | string | null = null;
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		newValue = newValue?.filter((v: any) => v !== option.value);
+		// if we can, split the string value into pieces by the seperator
+		if (typeof this.value === 'string' && seperator) {
+			filtered = this.value.split(seperator);
+		}
 
-		newValue = separator ? newValue?.join(this.delimited?.separator) : newValue;
+		// otherwise, if the value is an array, just use it
+		if (Array.isArray(this.value)) {
+			filtered = this.value;
+		}
 
-		this.value = newValue !== '' && newValue?.length !== 0 ? newValue : null;
+		// remove invalid options
+		filtered = filtered.filter((v) => v !== option.value);
 
+		// if we used a seperator, join the pieces back together (as this implies the value is a string)
+		newValue = seperator ? filtered.join(this.delimited?.separator) : filtered;
+
+		// prevent empty strings or arrays, represent these as null
+		if (newValue?.length === 0) {
+			newValue = null;
+		}
+
+		this.value = newValue;
 		this.onChange(this.value);
 	}
 
