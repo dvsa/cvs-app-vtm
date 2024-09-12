@@ -597,7 +597,7 @@ export const AdrTemplate: FormNode = {
 		{
 			name: 'techRecord_adrDetails_memosApply',
 			label: 'Memo 07/09 (3 month extension) can be applied',
-      labelClass: 'govuk-!-font-weight-bold',
+			labelClass: 'govuk-!-font-weight-bold',
 			hint: 'Only applicable for vehicles used on national journeys',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.CHECKBOXGROUP,

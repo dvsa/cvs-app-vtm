@@ -102,7 +102,7 @@ export interface FormNode {
 	editType?: FormNodeEditTypes;
 	width?: FormNodeWidth;
 	label?: string;
-  labelClass?: string;
+	labelClass?: string;
 	hint?: string;
 	link?: string;
 	delimited?: { regex?: string; separator: string };
