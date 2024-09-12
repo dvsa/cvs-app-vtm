@@ -1,39 +1,52 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { FormsModule, NgControl, Validators } from '@angular/forms';
+import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
+import { CustomFormControl, FormNodeTypes, FormNodeValueFormat } from '@services/dynamic-forms/dynamic-form.types';
 import { TextInputComponent } from '../text-input.component';
 
-@Component({
-	selector: 'app-host-component',
-	template: `<form [formGroup]="form">
-    <app-text-input name="foo" formControlName="foo"></app-text-input>
-  </form> `,
-	styles: [],
-})
-class HostComponent {
-	form = new FormGroup({
-		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
-	});
-}
-
 describe('TextInputComponent', () => {
-	let component: HostComponent;
-	let fixture: ComponentFixture<HostComponent>;
+	let component: TextInputComponent;
+	let fixture: ComponentFixture<TextInputComponent>;
+	const metadata = {
+		name: 'foo',
+		type: FormNodeTypes.CONTROL,
+		children: [],
+		valueFormat: FormNodeValueFormat.UPPERCASE,
+	};
 
 	beforeEach(async () => {
-		await TestBed.configureTestingModule({
-			declarations: [TextInputComponent],
-		}).compileComponents();
-	});
+		const NG_CONTROL_PROVIDER = {
+			provide: NgControl,
+			useClass: class extends NgControl {
+				control = new CustomFormControl(metadata, '', [Validators.required]);
+				viewToModelUpdate() {}
+			},
+		};
 
-	beforeEach(() => {
-		fixture = TestBed.createComponent(HostComponent);
+		await TestBed.configureTestingModule({
+			declarations: [TextInputComponent, FieldErrorMessageComponent],
+			imports: [FormsModule],
+		})
+			.overrideComponent(TextInputComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
+			.compileComponents();
+
+		fixture = TestBed.createComponent(TextInputComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	describe('handleChange', () => {
+		it('should call the formatString method if the value is a string', () => {
+			const formatString = jest.spyOn(component, 'formatString');
+			const onChange = jest.spyOn(component, 'onChange');
+			component.handleChange('string');
+			expect(formatString).toHaveBeenCalled();
+			expect(onChange).toHaveBeenCalledWith('STRING');
+			expect(component.value).toBe('STRING');
+		});
 	});
 });

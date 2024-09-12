@@ -1,13 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import {
+	CustomFormControl,
+	FormNode,
+	FormNodeTypes,
+	FormNodeValueFormat,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control.component';
 
 describe('BaseControlComponent', () => {
 	let component: BaseControlComponent;
 	let fixture: ComponentFixture<BaseControlComponent>;
 
-	const controlMetaData = { name: 'testControl', type: FormNodeTypes.CONTROL, children: [] };
+	const controlMetaData: FormNode = { name: 'testControl', type: FormNodeTypes.CONTROL, children: [] };
 
 	describe('has control binding', () => {
 		beforeEach(async () => {
@@ -82,6 +87,19 @@ describe('BaseControlComponent', () => {
 			const state = component.handleEvent(new Event('submit'));
 			expect(handleEventSpy).toHaveBeenCalled();
 			expect(state).toBeNull();
+		});
+
+		describe('formatString', () => {
+			it('should return the value if it has no valueFormat property', () => {
+				const newValue = component.formatString('string');
+				expect(newValue).toBe('string');
+			});
+
+			it('should uppercase the value if it has valueFormat as uppercase', () => {
+				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
+				const newValue = component.formatString('string');
+				expect(newValue).toBe('STRING');
+			});
 		});
 
 		describe('interacting with the value', () => {
