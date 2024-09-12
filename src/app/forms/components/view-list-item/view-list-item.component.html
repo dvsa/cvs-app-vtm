@@ -7,7 +7,7 @@
   </ng-container>
 
   <ng-template #plainText>
-    <td *ngIf="displayAsRow" class="govuk-table__cell" [style.width.%]="30">{{ label }}:</td>
+    <td *ngIf="displayAsRow" class="govuk-table__cell" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label }}:</td>
   </ng-template>
 
   <ng-container [ngSwitch]="viewType">
