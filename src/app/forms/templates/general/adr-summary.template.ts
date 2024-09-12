@@ -613,6 +613,7 @@ export const AdrSummaryTemplate: FormNode = {
 		{
 			name: 'techRecord_adrDetails_memosApply',
 			label: 'Memo 07/09 (3 month extension) can be applied',
+      labelClass: 'govuk-!-font-weight-bold',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.CHECKBOXGROUP,
 			groups: ['tank_details', 'dangerous_goods'],
