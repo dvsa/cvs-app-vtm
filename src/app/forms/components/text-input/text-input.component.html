@@ -24,7 +24,7 @@
       [class]="style"
       [(ngModel)]="value"
       [disabled]="disabled"
-      (ngModelChange)="onChange($event)"
+      (ngModelChange)="handleChange($event)"
       (blur)="onTouched(); handleEvent($event); blur.emit($event)"
       (focus)="handleEvent($event)"
     />
