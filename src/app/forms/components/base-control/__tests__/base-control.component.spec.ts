@@ -16,6 +16,7 @@ describe('BaseControlComponent', () => {
 
 	describe('has control binding', () => {
 		beforeEach(async () => {
+			controlMetaData.valueFormat = undefined;
 			const NG_CONTROL_PROVIDER = {
 				provide: NgControl,
 				useClass: class extends NgControl {
@@ -111,6 +112,12 @@ describe('BaseControlComponent', () => {
 			it('set should set the value', () => {
 				component.value = 'anything';
 				expect(component.value).toBe('anything');
+			});
+
+			it('should set and uppercase the value', () => {
+				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
+				component.value = 'anything';
+				expect(component.value).toBe('ANYTHING');
 			});
 		});
 

@@ -84,7 +84,11 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	}
 
 	set value(value) {
-		this.control_value = value;
+		if (typeof value === 'string') {
+			this.control_value = this.formatString(value);
+		} else {
+			this.control_value = value;
+		}
 	}
 
 	get disabled() {
