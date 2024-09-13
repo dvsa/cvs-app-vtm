@@ -73,7 +73,8 @@ function vehicleRecordsToBatchRecordMapper(
 		changes: {
 			vin: techRecord.vin,
 			systemNumber: techRecord.systemNumber,
-			trailerIdOrVrm: techRecord.techRecord_vehicleType !== 'trl' ? techRecord.primaryVrm ?? '' : techRecord.trailerId,
+			trailerIdOrVrm:
+				techRecord.techRecord_vehicleType !== 'trl' ? (techRecord.primaryVrm ?? '') : techRecord.trailerId,
 			vehicleType: techRecord.techRecord_vehicleType,
 			status: (techRecord.techRecord_statusCode as StatusCodes) ?? undefined,
 			created,

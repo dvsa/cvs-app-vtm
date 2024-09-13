@@ -47,11 +47,11 @@ export class TechRecordTitleComponent implements OnInit {
 	}
 
 	get currentVrm(): string | undefined {
-		return this.vehicle?.techRecord_vehicleType !== 'trl' ? this.vehicle?.primaryVrm ?? '' : undefined;
+		return this.vehicle?.techRecord_vehicleType !== 'trl' ? (this.vehicle?.primaryVrm ?? '') : undefined;
 	}
 
 	get otherVrms(): string[] | undefined {
-		return this.vehicle?.techRecord_vehicleType !== 'trl' ? this.vehicle?.secondaryVrms ?? [] : undefined;
+		return this.vehicle?.techRecord_vehicleType !== 'trl' ? (this.vehicle?.secondaryVrms ?? []) : undefined;
 	}
 
 	get vehicleTypes(): typeof VehicleTypes {
