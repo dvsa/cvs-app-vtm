@@ -60,7 +60,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 	}
 
 	get currentVrm(): string | undefined {
-		return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+		return this.techRecord?.techRecord_vehicleType !== 'trl' ? (this.techRecord?.primaryVrm ?? '') : undefined;
 	}
 
 	isFormValid(): boolean {
