@@ -22,17 +22,19 @@ export class AdrService {
 	}
 
 	carriesDangerousGoods(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
-		return (
-			techRecord.techRecord_adrDetails_dangerousGoods ||
-			(techRecord.techRecord_adrDetails_dangerousGoods !== false &&
-				Boolean(
-					Object.keys(techRecord).find(
-						(key) =>
-							key !== 'techRecord_adrDetails_dangerousGoods' &&
-							key.includes('adrDetails') &&
-							techRecord[key as keyof TechRecordType<'hgv' | 'lgv' | 'trl'>] != null
-					)
-				))
-		);
+		return techRecord.techRecord_adrDetails_dangerousGoods === true;
+	}
+
+	preprocessTechRecord(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
+		if (!this.carriesDangerousGoods(techRecord)) {
+			// Remove all ADR fields
+			for (const key in techRecord) {
+				if (key.startsWith('techRecord_adrDetails')) {
+					delete techRecord[key as keyof TechRecordType<'hgv' | 'lgv' | 'trl'>];
+				}
+			}
+		}
+
+		return techRecord;
 	}
 }
