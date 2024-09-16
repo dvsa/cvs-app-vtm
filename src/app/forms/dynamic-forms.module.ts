@@ -64,6 +64,9 @@ import { RequiredStandardsComponent } from './custom-sections/required-standards
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
+import {
+  AdrPermittedDangerousGoodsComponent
+} from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 
 @NgModule({
 	declarations: [
@@ -129,6 +132,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		AdrTankDetailsM145ViewComponent,
 		ContingencyAdrGenerateCertComponent,
 		AdrNewCertificateRequiredViewComponent,
+    AdrPermittedDangerousGoodsComponent,
 	],
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
 	exports: [

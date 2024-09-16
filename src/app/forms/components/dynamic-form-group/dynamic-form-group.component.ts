@@ -31,6 +31,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() data: any = {};
 	@Input() template?: FormNode;
 	@Input() edit = false;
+  @Input() parentForm?: CustomFormGroup;
 	@Output() formChange = new EventEmitter();
 
 	form: CustomFormGroup | CustomFormArray = new CustomFormGroup(
