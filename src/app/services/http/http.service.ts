@@ -152,7 +152,7 @@ export class HttpService {
 		paragraphId: number,
 		user: { name?: string; email?: string }
 	) {
-		return this.http.post<string>(
+		return this.http.post(
 			`${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
 			{
 				vtmUsername: user.name,
@@ -161,7 +161,8 @@ export class HttpService {
 				recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
 					? vehicleRecord.techRecord_applicantDetails_emailAddress
 					: user.email,
-			}
+			},
+			{ responseType: 'text' }
 		);
 	}
 
@@ -337,7 +338,9 @@ export class HttpService {
 		}
 
 		return this.http.get<ReferenceDataItemApiResponse>(
-			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
+				String(resourceType)
+			)}/${encodeURIComponent(String(resourceKey))}`
 		);
 	}
 
@@ -359,7 +362,9 @@ export class HttpService {
 		}
 
 		return this.http.delete<DeleteItem>(
-			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
+				String(resourceType)
+			)}/${encodeURIComponent(String(resourceKey))}`,
 			body
 		);
 	}
@@ -378,7 +383,9 @@ export class HttpService {
 		}
 
 		return this.http.get<ReferenceDataApiResponse>(
-			`${environment.VTM_API_URI}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+			`${environment.VTM_API_URI}/reference/lookup/${encodeURIComponent(
+				String(resourceType)
+			)}/${encodeURIComponent(String(resourceKey))}`
 		);
 	}
 
@@ -396,7 +403,9 @@ export class HttpService {
 		}
 
 		return this.http.get<ReferenceDataApiResponse>(
-			`${environment.VTM_API_URI}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`
+			`${environment.VTM_API_URI}/reference/lookup/tyres/${encodeURIComponent(
+				String(searchKey)
+			)}/${encodeURIComponent(String(param))}`
 		);
 	}
 
@@ -414,7 +423,9 @@ export class HttpService {
 		}
 
 		return this.http.post<ReferenceDataItem>(
-			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
+				String(resourceType)
+			)}/${encodeURIComponent(String(resourceKey))}`,
 			body
 		);
 	}
@@ -433,7 +444,9 @@ export class HttpService {
 		}
 
 		return this.http.put<ReferenceDataItem>(
-			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
+				String(resourceType)
+			)}/${encodeURIComponent(String(resourceKey))}`,
 			body
 		);
 	}
