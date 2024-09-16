@@ -107,7 +107,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 	}
 	get currentVrm(): string | undefined {
 		return this.vehicleTechRecord?.techRecord_vehicleType !== 'trl'
-			? (this.vehicleTechRecord?.primaryVrm ?? '')
+			? this.vehicleTechRecord?.primaryVrm ?? ''
 			: undefined;
 	}
 	get paginatedFields(): ReferenceDataTyre[] {

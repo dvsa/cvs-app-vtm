@@ -80,7 +80,7 @@ export class GenerateLetterComponent implements OnInit {
 
 	get emailAddress(): string | undefined {
 		return this.techRecord?.techRecord_vehicleType === 'trl'
-			? (this.techRecord?.techRecord_applicantDetails_emailAddress ?? '')
+			? this.techRecord?.techRecord_applicantDetails_emailAddress ?? ''
 			: undefined;
 	}
 

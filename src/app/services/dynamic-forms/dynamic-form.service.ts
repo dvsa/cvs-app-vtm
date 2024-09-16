@@ -245,7 +245,7 @@ export class DynamicFormService {
 				// If an anchor link is provided, use that, otherwise determine target element from customId or name
 				const defaultAnchorLink = meta?.customId ?? meta?.name;
 				const anchorLink =
-					typeof data === 'object' && data !== null ? (data.anchorLink ?? defaultAnchorLink) : defaultAnchorLink;
+					typeof data === 'object' && data !== null ? data.anchorLink ?? defaultAnchorLink : defaultAnchorLink;
 
 				// If typeof data is an array, assume we're passing the service multiple global errors
 				const globalErrors = Array.isArray(data)
