@@ -1,4 +1,9 @@
-<ng-container *ngIf="control">
-  <app-checkbox-group *ngIf="options" [options]="options" [label]="control?.value?.meta?.label">
+<ng-container *ngIf="control && control.value">
+  <app-checkbox-group
+    *ngIf="options"
+    [options]="options"
+    [label]="control.value.meta?.label"
+    [formControl]="control.value"
+  >
   </app-checkbox-group>
 </ng-container>
