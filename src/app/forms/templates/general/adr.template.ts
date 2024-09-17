@@ -199,37 +199,8 @@ export const AdrTemplate: FormNode = {
 				{ name: ValidatorNames.DateIsInvalid },
 			],
 		},
-		{
-			name: 'techRecord_adrDetails_permittedDangerousGoods',
-			label: 'Permitted dangerous goods',
-			type: FormNodeTypes.CONTROL,
-			editType: FormNodeEditTypes.CHECKBOXGROUP,
-			groups: ['adr_details', 'dangerous_goods'],
-			hide: true,
-			options: getOptionsFromEnum(ADRDangerousGood),
-			validators: [
-				{
-					name: ValidatorNames.ShowGroupsWhenIncludes,
-					args: {
-						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['compatibility_group_j'],
-					},
-				},
-				{
-					name: ValidatorNames.HideGroupsWhenExcludes,
-					args: {
-						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['compatibility_group_j'],
-					},
-				},
-				{
-					name: ValidatorNames.RequiredIfEquals,
-					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
-				},
-			],
-		},
     {
-      name: 'techRecord_adrDetails_permittedDangerousGoods2',
+      name: 'techRecord_adrDetails_permittedDangerousGoods',
       label: 'Permitted dangerous goods',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
