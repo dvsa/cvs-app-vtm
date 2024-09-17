@@ -44,7 +44,7 @@ export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
 
 	ngOnInit(): void {
 		this.createCustomFormControlInjector();
-    this.createCustomFormControlInputs();
+    this.customFormControlInputs = { parentForm: this.parentForm };
 	}
 
 	ngAfterContentInit(): void {
@@ -64,9 +64,5 @@ export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
 			parent: this.injector,
 		});
 	}
-  createCustomFormControlInputs() {
-    console.log(this.parentForm);
-    this.customFormControlInputs = { parentForm: this.parentForm };
-  }
 }
 export const FORM_INJECTION_TOKEN = new InjectionToken('form');
