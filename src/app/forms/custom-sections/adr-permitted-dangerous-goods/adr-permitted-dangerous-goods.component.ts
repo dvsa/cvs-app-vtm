@@ -30,7 +30,6 @@ export class AdrPermittedDangerousGoodsComponent extends BaseControlComponent
         this.options = this.getOptions();
       }
     });
-    console.log(this.label);
   }
 
   getOptions() {
