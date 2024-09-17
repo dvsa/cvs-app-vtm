@@ -65,6 +65,7 @@ export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
 		});
 	}
   createCustomFormControlInputs() {
+    console.log(this.parentForm);
     this.customFormControlInputs = { parentForm: this.parentForm };
   }
 }

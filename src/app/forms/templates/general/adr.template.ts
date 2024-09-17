@@ -24,6 +24,9 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
+import {
+  AdrPermittedDangerousGoodsComponent
+} from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 
 export const AdrTemplate: FormNode = {
 	name: 'adrSection',
@@ -225,6 +228,35 @@ export const AdrTemplate: FormNode = {
 				},
 			],
 		},
+    {
+      name: 'techRecord_adrDetails_permittedDangerousGoods2',
+      label: 'Permitted dangerous goods',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      editComponent: AdrPermittedDangerousGoodsComponent,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+            groups: ['compatibility_group_j'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+            groups: ['compatibility_group_j'],
+          },
+        },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+        },
+      ],
+    },
 		{
 			name: 'techRecord_adrDetails_compatibilityGroupJ',
 			label: 'Compatibility group J',

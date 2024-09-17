@@ -2,6 +2,9 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ReplaySubject } from 'rxjs';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 
 @Component({
     selector: 'app-adr-permitted-dangerous-goods',
@@ -13,14 +16,27 @@ export class AdrPermittedDangerousGoodsComponent extends BaseControlComponent
 
   @Input() parentForm?: CustomFormGroup;
   adrBodyType?: ADRBodyType;
-
+  destroy$ = new ReplaySubject<boolean>(1);
 
   ngOnInit(): void {
-    this.adrBodyType = this.parentForm?.get('techRecord_adrDetails_adrBodyType')?.value;
+    this.adrBodyType = this.parentForm?.get('techRecord_adrDetails_vehicleDetails_type')?.value;
+  }
+
+  getOptions() {
+    console.log(this.parentForm);
+    console.log(this.adrBodyType);
+    let enumValues = getOptionsFromEnum(ADRDangerousGood);
+    // console.log(this.adrBodyType);
+    if (this.adrBodyType?.includes('battery') || this.adrBodyType?.includes('tank')) {
+      enumValues = enumValues.filter((option) => option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2);
+      console.log(enumValues);
+    }
+    return enumValues;
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
 }
