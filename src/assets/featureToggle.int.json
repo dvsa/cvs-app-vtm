@@ -1,6 +1,7 @@
 {
-    "testToggle": false,
-    "adrToggle": true,
-    "adrCertToggle": true,
-    "requiredStandards": true
-  }
+  "testToggle": false,
+  "adrToggle": true,
+  "adrCertToggle": true,
+  "requiredStandards": true,
+  "dfs": false
+}
