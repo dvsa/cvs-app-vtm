@@ -7,6 +7,7 @@ import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/t
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrExaminerNotesHistoryViewComponent } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrNewCertificateRequiredViewComponent } from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { AdrTankDetailsInitialInspectionViewComponent } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrTankDetailsSubsequentInspectionsEditComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -24,9 +25,6 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
-import {
-  AdrPermittedDangerousGoodsComponent
-} from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 
 export const AdrTemplate: FormNode = {
 	name: 'adrSection',
@@ -199,35 +197,35 @@ export const AdrTemplate: FormNode = {
 				{ name: ValidatorNames.DateIsInvalid },
 			],
 		},
-    {
-      name: 'techRecord_adrDetails_permittedDangerousGoods',
-      label: 'Permitted dangerous goods',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CUSTOM,
-      editComponent: AdrPermittedDangerousGoodsComponent,
-      groups: ['adr_details', 'dangerous_goods'],
-      hide: true,
-      validators: [
-        {
-          name: ValidatorNames.ShowGroupsWhenIncludes,
-          args: {
-            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-            groups: ['compatibility_group_j'],
-          },
-        },
-        {
-          name: ValidatorNames.HideGroupsWhenExcludes,
-          args: {
-            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-            groups: ['compatibility_group_j'],
-          },
-        },
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
-        },
-      ],
-    },
+		{
+			name: 'techRecord_adrDetails_permittedDangerousGoods',
+			label: 'Permitted dangerous goods',
+			type: FormNodeTypes.CONTROL,
+			editType: FormNodeEditTypes.CUSTOM,
+			editComponent: AdrPermittedDangerousGoodsComponent,
+			groups: ['adr_details', 'dangerous_goods'],
+			hide: true,
+			validators: [
+				{
+					name: ValidatorNames.ShowGroupsWhenIncludes,
+					args: {
+						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['compatibility_group_j'],
+					},
+				},
+				{
+					name: ValidatorNames.HideGroupsWhenExcludes,
+					args: {
+						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['compatibility_group_j'],
+					},
+				},
+				{
+					name: ValidatorNames.RequiredIfEquals,
+					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+				},
+			],
+		},
 		{
 			name: 'techRecord_adrDetails_compatibilityGroupJ',
 			label: 'Compatibility group J',
