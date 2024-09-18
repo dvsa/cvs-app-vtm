@@ -11,7 +11,7 @@ import {
   ViewChildren,
   inject,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -219,7 +219,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   checkForms(): void {
-    const forms = this.sections?.map((section) => section.form).concat(this.customSectionForms);
+    const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections?.map((section) => section.form).concat(this.customSectionForms);
 
     this.isFormDirty.emit(forms.some((form) => form.dirty));
 
@@ -228,10 +228,28 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.isFormInvalid.emit(forms.some((form) => form.invalid));
   }
 
-  setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
+  setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {
     const errors: GlobalError[] = [];
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
+
+    this.form.markAllAsTouched();
+    this.form.updateValueAndValidity();
+
+    function extractErrors(form: FormGroup | FormArray) {
+      Object.entries(form.controls).forEach(([key, control]) => {
+        if (control instanceof FormGroup || control instanceof FormArray) {
+          extractErrors(control);
+        } else if (control.invalid && control.errors) {
+          Object.values(control.errors).forEach((error) => {
+            errors.push({ error, anchorLink: key });
+          });
+        }
+      });
+    }
+
+    extractErrors(this.form);
+    console.log(errors, this.form);
 
     if (errors.length) {
       this.errorService.setErrors(errors);

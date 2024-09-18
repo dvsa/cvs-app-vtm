@@ -212,7 +212,7 @@
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_permittedDangerousGoods-error">
           <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationIssuer"> Permitted dangerous goods </label>
+            <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_permittedDangerousGoods"> Permitted dangerous goods </label>
           </h1>
           <p
             id="techRecord_adrDetails_permittedDangerousGoods-error"
@@ -275,7 +275,7 @@
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_additionalNotes_number-error">
           <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationIssuer"> Guidance notes </label>
+            <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_additionalNotes_number"> Guidance notes </label>
           </h1>
           <p
             id="techRecord_adrDetails_additionalNotes_number-error"
@@ -290,13 +290,12 @@
               <input
                 class="govuk-checkboxes__input"
                 id="techRecord_adrDetails_additionalNotes_number-{{ option.value }}"
-                formControlName="techRecord_adrDetails_additionalNotes_number"
                 type="checkbox"
-                [value]="option.value"
+                [checked]="form.get('techRecord_adrDetails_additionalNotes_number')?.value?.includes(option.value.toString())"
                 [attr.aria-describedby]="
                   isInvalid('techRecord_adrDetails_additionalNotes_number') ? 'techRecord_adrDetails_additionalNotes_number-error' : null
                 "
-                checked
+                (input)="toggle('techRecord_adrDetails_additionalNotes_number', option.value.toString())"
               />
               <label class="govuk-label govuk-checkboxes__label" for="techRecord_adrDetails_additionalNotes_number-{{ option.value }}">
                 {{ option.label }}
@@ -572,7 +571,9 @@
             <!-- Reference number -->
             <div class="govuk-form-group">
               <h1 class="govuk-label-wrapper">
-                <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"> Code </label>
+                <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
+                  Reference number
+                </label>
               </h1>
               <p
                 id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo-error"
@@ -598,7 +599,29 @@
             </div>
 
             <!-- UN numbers -->
-            <div>Un Numbers</div>
+            <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
+              <fieldset
+                class="govuk-fieldset"
+                *ngFor="let inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; let i = index"
+              >
+                <div class="govuk-form-group">
+                  <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
+                      UN Number {{ i + 1 }}
+                    </label>
+                  </h1>
+                  <input
+                    id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                    type="text"
+                    name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                    formControlName="{{ i }}"
+                    class="govuk-input govuk-!-width-one-third"
+                  />
+                  <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
+                </div>
+              </fieldset>
+              <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
+            </div>
           </ng-container>
         </ng-container>
       </ng-container>
@@ -678,7 +701,54 @@
           />
         </div>
 
+        <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+
         <!-- TC2: Expiry Date -->
+
+        <!-- TC3: Inspections -->
+        <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+          <fieldset
+            class="govuk-fieldset"
+            formGroupName="{{ i }}"
+            *ngFor="let inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; let i = index"
+          >
+            <!-- TC3 Inspection Type -->
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--m" for="tc3Type"> TC3: Inspection Type </label>
+              </h1>
+              <select class="govuk-select" id="tc3Type" name="tc3Type" formControlName="tc3Type">
+                <option [value]="option.value" *ngFor="let option of tc3InspectionOptions">{{ option.label }}</option>
+              </select>
+            </div>
+
+            <!-- TC3 Certificate Number -->
+            <div class="govuk-form-group">
+              <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--m" for="tc3PeriodicNumber"> TC3: Certificate Number </label>
+              </h1>
+              <input
+                id="tc3PeriodicNumber"
+                type="text"
+                name="tc3PeriodicNumber"
+                formControlName="tc3PeriodicNumber"
+                class="govuk-input govuk-!-width-one-third"
+              />
+            </div>
+
+            <!-- TC3 Expiry Date -->
+
+            <!-- TC3 Footer -->
+            <p class="govuk-body govuk-!-text-align-right">
+              <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeTC3TankInspection(i)">Remove</a>
+            </p>
+            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+          </fieldset>
+        </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addTC3TankInspection()">Add subsequent inspection</a>
+        </p>
       </ng-container>
 
       <!-- Memo 07/09 (3 month extension) can be applied -->
@@ -708,13 +778,13 @@
         </fieldset>
       </div>
 
-       <!-- M145 -->
-       <div class="govuk-form-group">
+      <!-- M145 -->
+      <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_m145Statement-error">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h1 class="govuk-fieldset__heading">M145</h1>
           </legend>
-           <p id="techRecord_adrDetails_m145Statement-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_m145Statement')">
+          <p id="techRecord_adrDetails_m145Statement-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_m145Statement')">
             <span class="govuk-visually-hidden">Error:</span>
             <span *ngIf="form.get('techRecord_adrDetails_m145Statement')?.getError('required') as error">{{ error }}</span>
           </p>
@@ -767,7 +837,7 @@
       </div>
 
       <!-- When Battery list applicable is true -->
-      <ng-container *ngIf="canDisplayBatteryListNumber()">
+      <ng-container *ngIf="canDisplayBatteryListNumberSection()">
         <!-- Battery list reference number -->
         <div class="govuk-form-group">
           <h1 class="govuk-label-wrapper">
@@ -829,7 +899,7 @@
     </div>
 
     <!-- Issuer -->
-    <div class="govuk-form-group govuk-character-count" *ngIf="form.get('techRecord_adrDetails_brakeDeclarationsSeen')?.value === true">
+    <div class="govuk-form-group govuk-character-count" *ngIf="canDisplayIssueSection()">
       <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationIssuer"> Issuer </label>
       </h1>
