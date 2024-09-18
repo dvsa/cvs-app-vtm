@@ -1,16 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import {
+	CustomFormControl,
+	FormNode,
+	FormNodeTypes,
+	FormNodeValueFormat,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control.component';
 
 describe('BaseControlComponent', () => {
 	let component: BaseControlComponent;
 	let fixture: ComponentFixture<BaseControlComponent>;
 
-	const controlMetaData = { name: 'testControl', type: FormNodeTypes.CONTROL, children: [] };
+	const controlMetaData: FormNode = { name: 'testControl', type: FormNodeTypes.CONTROL, children: [] };
 
 	describe('has control binding', () => {
 		beforeEach(async () => {
+			controlMetaData.valueFormat = undefined;
 			const NG_CONTROL_PROVIDER = {
 				provide: NgControl,
 				useClass: class extends NgControl {
@@ -84,6 +90,19 @@ describe('BaseControlComponent', () => {
 			expect(state).toBeNull();
 		});
 
+		describe('formatString', () => {
+			it('should return the value if it has no valueFormat property', () => {
+				const newValue = component.formatString('string');
+				expect(newValue).toBe('string');
+			});
+
+			it('should uppercase the value if it has valueFormat as uppercase', () => {
+				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
+				const newValue = component.formatString('string');
+				expect(newValue).toBe('STRING');
+			});
+		});
+
 		describe('interacting with the value', () => {
 			it('writeValue should set the value', () => {
 				component.writeValue('anything');
@@ -93,6 +112,12 @@ describe('BaseControlComponent', () => {
 			it('set should set the value', () => {
 				component.value = 'anything';
 				expect(component.value).toBe('anything');
+			});
+
+			it('should set and uppercase the value', () => {
+				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
+				component.value = 'anything';
+				expect(component.value).toBe('ANYTHING');
 			});
 		});
 

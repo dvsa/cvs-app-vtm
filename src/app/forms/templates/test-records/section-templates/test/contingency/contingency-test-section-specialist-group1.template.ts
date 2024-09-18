@@ -5,6 +5,7 @@ import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
+	FormNodeValueFormat,
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
@@ -137,6 +138,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
 							type: FormNodeTypes.CONTROL,
 							viewType: FormNodeViewTypes.STRING,
 							editType: FormNodeEditTypes.TEXT,
+							valueFormat: FormNodeValueFormat.UPPERCASE,
 							validators: [
 								{ name: ValidatorNames.Alphanumeric },
 								// Make required if test result is pass/prs, but issue documents centrally is false

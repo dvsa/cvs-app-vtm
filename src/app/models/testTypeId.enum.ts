@@ -93,11 +93,7 @@ export const TEST_TYPES_GROUP15_16: string[] = ['39', '201', '45', '44'];
 export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'125',
 	'126',
-	'186',
-	'187',
 	'128',
-	'188',
-	'189',
 	'129',
 	'130',
 	'133',
@@ -110,11 +106,7 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'158',
 	'159',
 	'161',
-	'192',
-	'193',
 	'162',
-	'194',
-	'195',
 	'163',
 	'166',
 	'167',
@@ -122,6 +114,14 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'170',
 	'172',
 	'173',
+	'186',
+	'187',
+	'188',
+	'189',
+	'192',
+	'193',
+	'194',
+	'195',
 ];
 
 // Test/Retest COIF with annual test, Seatbelt installation check COIF with annual test
