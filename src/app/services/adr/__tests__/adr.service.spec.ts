@@ -19,7 +19,7 @@ describe('AdrService', () => {
 	describe('carriesDangerousGoods', () => {
 		it('should return true if vehicle carries dangerous goods', () => {
 			expect(
-				service.carriesDangerousGoods({ techRecord_adrDetails_batteryListNumber: 'number' } as TechRecordType<'hgv'>)
+				service.carriesDangerousGoods({ techRecord_adrDetails_dangerousGoods: true } as TechRecordType<'hgv'>)
 			).toBe(true);
 		});
 		it('should return false if vehicle does not carry dangerous goods', () => {
