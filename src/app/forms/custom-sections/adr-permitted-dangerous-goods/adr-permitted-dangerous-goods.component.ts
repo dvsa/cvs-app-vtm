@@ -28,13 +28,18 @@ export class AdrPermittedDangerousGoodsComponent
 			const newBodyTypeValue = this.parentForm?.get('techRecord_adrDetails_vehicleDetails_type')?.value;
 			if (this.adrBodyType !== newBodyTypeValue) {
 				this.adrBodyType = newBodyTypeValue;
-        if (this.adrBodyType?.includes('battery') || this.adrBodyType?.includes('tank')) {
-          let currentValue: string[] = this.control?.value?.value;
-          if (currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_2) || currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)) {
-            currentValue = currentValue.filter((value) => value !== ADRDangerousGood.EXPLOSIVES_TYPE_3 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_2);
-            this.control?.value?.patchValue(currentValue);
-          }
-        }
+				if (this.adrBodyType?.includes('battery') || this.adrBodyType?.includes('tank')) {
+					let currentValue: string[] = this.control?.value?.value;
+					if (
+						currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_2) ||
+						currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
+					) {
+						currentValue = currentValue.filter(
+							(value) => value !== ADRDangerousGood.EXPLOSIVES_TYPE_3 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_2
+						);
+						this.control?.value?.patchValue(currentValue);
+					}
+				}
 				this.options = this.getOptions();
 			}
 		});
