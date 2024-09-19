@@ -42,14 +42,7 @@
           <span class="govuk-visually-hidden">Error:</span>
           <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_name')?.getError('maxLength') as error">{{ error }}</span>
         </p>
-        <input
-          id="techRecord_adrDetails_applicantDetails_name"
-          type="text"
-          name="techRecord_adrDetails_applicantDetails_name"
-          formControlName="techRecord_adrDetails_applicantDetails_name"
-          class="govuk-input"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_applicantDetails_name')"
-        />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_name" />
       </div>
 
       <!-- Applicant Details Street -->
