@@ -152,7 +152,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.handleFormState(this.form.value));
+    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.handleFormState(changes));
   }
 
   ngOnDestroy(): void {
@@ -249,7 +249,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     }
 
     extractErrors(this.form);
-    console.log(errors, this.form);
 
     if (errors.length) {
       this.errorService.setErrors(errors);

@@ -127,7 +127,7 @@
           >
             <!-- New ADR section -->
             <ng-container *ngIf="featureToggleService.isFeatureEnabled('dfs'); else oldADRSection">
-              <app-adr-section />
+              <app-adr-section [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
             </ng-container>
 
             <!-- Old ADR section -->

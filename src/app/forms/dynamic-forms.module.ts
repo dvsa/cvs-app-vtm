@@ -41,6 +41,9 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrNewCertificateRequiredViewComponent } from './custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrSectionEditComponent } from './custom-sections/adr-section/adr-section-edit/adr-section-edit.component';
+import { AdrSectionSummaryComponent } from './custom-sections/adr-section/adr-section-summary/adr-section-summary.component';
+import { AdrSectionViewComponent } from './custom-sections/adr-section/adr-section-view/adr-section-view.component';
 import { AdrSectionComponent } from './custom-sections/adr-section/adr-section.component';
 import { AdrTankDetailsInitialInspectionViewComponent } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
@@ -131,6 +134,9 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
     ContingencyAdrGenerateCertComponent,
     AdrNewCertificateRequiredViewComponent,
     AdrSectionComponent,
+    AdrSectionEditComponent,
+    AdrSectionViewComponent,
+    AdrSectionSummaryComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -182,6 +188,9 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
     AdrCertificateHistoryComponent,
     FieldWarningMessageComponent,
     AdrSectionComponent,
+    AdrSectionEditComponent,
+    AdrSectionViewComponent,
+    AdrSectionSummaryComponent,
   ],
 })
 export class DynamicFormsModule {}
