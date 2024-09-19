@@ -30,9 +30,9 @@ export class AdrPermittedDangerousGoodsComponent
 				this.adrBodyType = newBodyTypeValue;
 				if (this.adrBodyType?.includes('battery') || this.adrBodyType?.includes('tank')) {
 					let currentValue: string[] = this.control?.value?.value;
-					if (
-						currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_2) ||
-						currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
+					if ( currentValue &&
+						(currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_2) ||
+						currentValue.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3))
 					) {
 						currentValue = currentValue.filter(
 							(value) => value !== ADRDangerousGood.EXPLOSIVES_TYPE_3 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_2
