@@ -1,0 +1,39 @@
+<div [formGroup]="form">
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m flex flex-wrap gap-2" for="techRecord_vehicleType"> Vehicle type <div class="flex flex-wrap gap-2">
+        <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
+      </div></label>
+    </h1>
+    <input id="techRecord_vehicleType" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_vehicleType" />
+  </div>
+
+  <!--  Date of First Registration Here -->
+
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m flex flex-wrap gap-2" for="techRecord_manufactureYear"> Year of manufacture <div class="flex flex-wrap gap-2">
+        <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+      </div></label>
+    </h1>
+    <p
+      id="techRecord_manufactureYear-error"
+      class="govuk-error-message"
+      *ngIf="isInvalid('techRecord_manufactureYear')"
+    >
+      <span class="govuk-visually-hidden">Error:</span>
+      <span *ngIf="form.get('techRecord_manufactureYear')?.getError('min') as error">{{ error }}</span>
+      <span *ngIf="form.get('techRecord_manufactureYear')?.getError('pastYear') as error">{{ error }}</span>
+    </p>
+    <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_manufactureYear" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_manufactureYear" />
+  </div>
+
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m flex flex-wrap gap-2" for="techRecord_noOfAxles"> Number of axles <div class="flex flex-wrap gap-2">
+        <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
+      </div></label>
+    </h1>
+    <input id="techRecord_noOfAxles" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_noOfAxles" />
+  </div>
+</div>

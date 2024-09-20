@@ -15,7 +15,7 @@ import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certi
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { SharedModule } from '@shared/shared.module';
-import { TruncatePipe } from '../pipes/truncate/truncate.pipe';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -68,6 +68,18 @@ import { RequiredStandardsComponent } from './custom-sections/required-standards
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
+import {
+  VehicleSectionComponent
+} from '@forms/custom-sections/vehicle-section/vehicle-section.component';
+import {
+  VehicleSectionSummaryComponent
+} from '@forms/custom-sections/vehicle-section/vehicle-section-summary/vehicle-section-summary.component';
+import {
+  VehicleSectionViewComponent
+} from '@forms/custom-sections/vehicle-section/vehicle-section-view/vehicle-section-view.component';
+import {
+  VehicleSectionEditComponent
+} from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +149,10 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
     AdrSectionEditComponent,
     AdrSectionViewComponent,
     AdrSectionSummaryComponent,
+    VehicleSectionComponent,
+    VehicleSectionSummaryComponent,
+    VehicleSectionViewComponent,
+    VehicleSectionEditComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -191,6 +207,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
     AdrSectionEditComponent,
     AdrSectionViewComponent,
     AdrSectionSummaryComponent,
+    VehicleSectionComponent
   ],
 })
 export class DynamicFormsModule {}

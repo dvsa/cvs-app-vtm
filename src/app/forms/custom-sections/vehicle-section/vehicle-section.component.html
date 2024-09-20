@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="mode()">
+<!--  <app-vehicle-section-view *ngSwitchCase="'view'" />-->
+  <app-vehicle-section-edit *ngSwitchCase="'view'" />
+  <app-vehicle-section-summary *ngSwitchCase="'summary'" />
+</ng-container>

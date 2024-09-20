@@ -1,6 +1,7 @@
 import { Directive, ElementRef, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
 @Directive({
   selector: '[govukInput]',
@@ -10,6 +11,7 @@ export class GovukInputDirective implements OnInit, OnDestroy {
   controlContainer = inject(ControlContainer);
 
   formControlName = input.required<string>();
+  width = input<FormNodeWidth>();
 
   destroy$ = new ReplaySubject<boolean>(1);
 
@@ -19,6 +21,9 @@ export class GovukInputDirective implements OnInit, OnDestroy {
     if (control) {
       this.elementRef.nativeElement.setAttribute('id', formControlName);
       this.elementRef.nativeElement.setAttribute('name', formControlName);
+      if (this.width()) {
+        this.elementRef.nativeElement.classList.add(`govuk-input--width-${this.width()}`);
+      }
       this.elementRef.nativeElement.classList.add('govuk-input');
 
       control.statusChanges.pipe(takeUntil(this.destroy$)).subscribe((statusChange) => {
@@ -38,5 +43,9 @@ export class GovukInputDirective implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+
+  get style(): string {
+    return `govuk-input ${this.width() ? `govuk-input--width-${this.width()}` : ''}`;
   }
 }

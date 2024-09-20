@@ -22,6 +22,24 @@
   <form [formGroup]="form">
     <ng-container *ngIf="techRecordCalculated">
       <ng-container [ngSwitch]="sectionName">
+        <ng-container *ngSwitchCase="'techRecordSummary'">
+          <!-- New Vehicle Summary section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('dfs'); else oldTechRecordSummary">
+            <app-vehicle-section [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          </ng-container>
+
+          <!-- Old Vehicle Summary section -->
+          <ng-template #oldTechRecordSummary>
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          </ng-template>
+
+        </ng-container>
+
         <app-body
           *ngSwitchCase="'bodySection'"
           [techRecord]="techRecordCalculated"
