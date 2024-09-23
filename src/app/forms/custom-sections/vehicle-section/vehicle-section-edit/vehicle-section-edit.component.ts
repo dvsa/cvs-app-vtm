@@ -4,11 +4,13 @@ import { TagType } from '@components/tag/tag.component';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FuelTypes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { techRecord } from '@store/technical-records';
 import { ReplaySubject, take } from 'rxjs';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv'>, FormControl>>;
 
@@ -55,6 +57,40 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 		},
 		{ validators: [] }
 	);
+
+  speedLimiterExemptOptions = [
+    { value: true, label: 'Exempt' },
+    { value: false, label: 'Not exempt' },
+  ];
+
+  tachoExemptOptions = [
+    { value: true, label: 'Exempt' },
+    { value: false, label: 'Not exempt' },
+  ];
+
+  roadFriendlySuspentionOptions = [
+    { value: true, label: 'Exempt' },
+    { value: false, label: 'Not exempt' },
+  ];
+
+  euroStandardOptions = [
+    { label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
+    ...getOptionsFromEnum(EmissionStandard),
+  ];
+
+  fuelPropulsionSystemOptions = [
+    ...getOptionsFromEnum(FuelTypes),
+  ];
+
+  drawbarCouplingFittedOptions = [
+    { value: true, label: 'Yes' },
+    { value: false, label: 'No' },
+  ];
+
+  offRoadVehicleOptions = [
+    { value: true, label: 'Yes' },
+    { value: false, label: 'No' },
+  ]
 
 	ngOnInit(): void {
 		// Attach all form controls to parent

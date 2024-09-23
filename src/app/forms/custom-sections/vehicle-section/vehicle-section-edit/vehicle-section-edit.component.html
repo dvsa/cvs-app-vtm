@@ -36,4 +36,180 @@
     </h1>
     <input id="techRecord_noOfAxles" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_noOfAxles" />
   </div>
+
+  <!-- Speed limiter exempt -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m flex flex-wrap gap-2">
+        Speed limiter exempt
+        <div class="flex flex-wrap gap-2">
+          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+        </div>
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of speedLimiterExemptOptions">
+        <input
+          type="radio"
+          id="techRecord_speedLimiterMrk-{{ option.value }}-radio"
+          formControlName="techRecord_speedLimiterMrk"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_speedLimiterMrk-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tacho exempt -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m">
+        Tacho exempt
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of tachoExemptOptions">
+        <input
+          type="radio"
+          id="techRecord_tachoExemptMrk-{{ option.value }}-radio"
+          formControlName="techRecord_tachoExemptMrk"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_tachoExemptMrk-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Euro standard -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m">
+        Euro standard
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of euroStandardOptions">
+        <input
+          type="radio"
+          id="techRecord_euroStandard-{{ option.value }}-radio"
+          formControlName="techRecord_euroStandard"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_euroStandard-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Speed limiter exempt -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m flex flex-wrap gap-2">
+        Road friendly suspension
+        <div class="flex flex-wrap gap-2">
+          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+        </div>
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of roadFriendlySuspentionOptions">
+        <input
+          type="radio"
+          id="techRecord_roadFriendly-{{ option.value }}-radio"
+          formControlName="techRecord_roadFriendly"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_roadFriendly-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fuel / propulsion system -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m"> Fuel / propulsion system </label>
+    </h1>
+    <app-control-errors for="techRecord_fuelPropulsionSystem" />
+    <select govukSelect formControlName="techRecord_fuelPropulsionSystem">
+      <option [value]="option.value" *ngFor="let option of fuelPropulsionSystemOptions">{{ option.label }}</option>
+    </select>
+  </div>
+
+  <!-- Drawbar coupling fitted -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m">
+        Drawbar coupling fitted
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of drawbarCouplingFittedOptions">
+        <input
+          type="radio"
+          id="techRecord_drawbarCouplingFitted-{{ option.value }}-radio"
+          formControlName="techRecord_drawbarCouplingFitted"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_drawbarCouplingFitted-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Off road vehicle -->
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m">
+        Off road vehicle
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of offRoadVehicleOptions">
+        <input
+          type="radio"
+          id="techRecord_offRoad-{{ option.value }}-radio"
+          formControlName="techRecord_offRoad"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_offRoad-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
 </div>
