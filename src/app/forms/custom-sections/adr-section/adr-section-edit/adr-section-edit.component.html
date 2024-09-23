@@ -3,10 +3,6 @@
     <h1 class="govuk-label-wrapper">
       <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_dangerousGoods"> Able to carry dangerous goods </label>
     </h1>
-    <p id="techRecord_adrDetails_dangerousGoods-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_dangerousGoods')">
-      <span class="govuk-visually-hidden">Error:</span>
-      <span *ngIf="form.get('techRecord_adrDetails_dangerousGoods')?.getError('required') as error">{{ error }}</span>
-    </p>
     <div class="govuk-radios" data-module="govuk-radios">
       <div class="govuk-radios__item" *ngFor="let option of dangerousGoodsOptions">
         <input
@@ -24,7 +20,7 @@
   </div>
 
   <!-- When dangerous goods is true -->
-  <ng-container *ngIf="adrService.canDisplayDangerousGoodsSection($any(form.value))">
+  <ng-container *ngIf="adrService.canDisplayDangerousGoodsSection($any(form.getRawValue()))">
     <!-- Applicant Details -->
     <ng-container>
       <span class="govuk-label govuk-label--m">Applicant Details</span>
@@ -34,14 +30,7 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_applicantDetails_name"> Name </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_applicantDetails_name-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_applicantDetails_name')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_name')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_applicantDetails_name" />
         <input govukInput formControlName="techRecord_adrDetails_applicantDetails_name" />
       </div>
 
@@ -50,22 +39,8 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_applicantDetails_street"> Street </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_applicantDetails_street-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_applicantDetails_street')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_street')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
-        <input
-          id="techRecord_adrDetails_applicantDetails_street"
-          type="text"
-          name="techRecord_adrDetails_applicantDetails_street"
-          formControlName="techRecord_adrDetails_applicantDetails_street"
-          class="govuk-input"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_applicantDetails_street')"
-        />
+        <app-control-errors for="techRecord_adrDetails_applicantDetails_street" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_street" />
       </div>
 
       <!-- Applicant Details Town -->
@@ -73,22 +48,8 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_applicantDetails_town"> Town </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_applicantDetails_town-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_applicantDetails_town')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_town')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
-        <input
-          id="techRecord_adrDetails_applicantDetails_town"
-          type="text"
-          name="techRecord_adrDetails_applicantDetails_town"
-          formControlName="techRecord_adrDetails_applicantDetails_town"
-          class="govuk-input"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_applicantDetails_town')"
-        />
+        <app-control-errors for="techRecord_adrDetails_applicantDetails_town" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_town" />
       </div>
 
       <!-- Applicant Details City -->
@@ -96,22 +57,8 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_applicantDetails_city"> City </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_applicantDetails_city-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_applicantDetails_city')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_city')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
-        <input
-          id="techRecord_adrDetails_applicantDetails_city"
-          type="text"
-          name="techRecord_adrDetails_applicantDetails_city"
-          formControlName="techRecord_adrDetails_applicantDetails_city"
-          class="govuk-input govuk-!-width-two-thirds"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_applicantDetails_city')"
-        />
+        <app-control-errors for="techRecord_adrDetails_applicantDetails_city" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_city" />
       </div>
 
       <!-- Applicant Details Postcode -->
@@ -119,22 +66,8 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_applicantDetails_postcode"> Postcode </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_applicantDetails_postcode-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_applicantDetails_postcode')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_applicantDetails_postcode')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
-        <input
-          id="techRecord_adrDetails_applicantDetails_postcode"
-          type="text"
-          name="techRecord_adrDetails_applicantDetails_postcode"
-          formControlName="techRecord_adrDetails_applicantDetails_postcode"
-          class="govuk-input govuk-!-width-one-third"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_applicantDetails_postcode')"
-        />
+        <app-control-errors for="techRecord_adrDetails_applicantDetails_postcode" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_postcode" />
       </div>
     </ng-container>
 
@@ -147,22 +80,8 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_vehicleDetails_type"> ADR body type </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_vehicleDetails_type-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_vehicleDetails_type')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_vehicleDetails_type')?.getError('required') as error">{{ error }}</span>
-        </p>
-        <select
-          class="govuk-select"
-          [class.govuk-select--error]="isInvalid('techRecord_adrDetails_vehicleDetails_type')"
-          id="techRecord_adrDetails_vehicleDetails_type"
-          name="techRecord_adrDetails_vehicleDetails_type"
-          [attr.aria-describedby]="isInvalid('techRecord_adrDetails_vehicleDetails_type') ? 'techRecord_adrDetails_vehicleDetails_type-error' : null"
-          formControlName="techRecord_adrDetails_vehicleDetails_type"
-        >
+        <app-control-errors for="techRecord_adrDetails_vehicleDetails_type" />
+        <select govukSelect formControlName="techRecord_adrDetails_vehicleDetails_type">
           <option [value]="option.value" *ngFor="let option of adrBodyTypesOptions">{{ option.label }}</option>
         </select>
       </div>
@@ -174,14 +93,6 @@
             Vehicle used on international journeys
           </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')?.getError('required') as error">{{ error }}</span>
-        </p>
         <div class="govuk-radios" data-module="govuk-radios">
           <div class="govuk-radios__item" *ngFor="let option of usedOnInternationJourneysOptions">
             <input
@@ -201,20 +112,91 @@
         </div>
       </div>
 
+      <!-- Approval date -->
+      <app-date-controls formControlName="techRecord_adrDetails_vehicleDetails_approvalDate" #approvalDate>
+        <div class="govuk-form-group" [formGroup]="approvalDate.form">
+          <h1 class="govuk-label-wrapper">
+            <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_vehicleDetails_approvalDate"> Date processed </label>
+          </h1>
+          <p
+            id="techRecord_adrDetails_vehicleDetails_approvalDate-error"
+            class="govuk-error-message"
+            *ngIf="isInvalid('techRecord_adrDetails_vehicleDetails_approvalDate') || approvalDate.form.invalid"
+          >
+            <span class="govuk-visually-hidden">Error:</span>
+            <span *ngIf="form.get('techRecord_adrDetails_vehicleDetails_approvalDate')?.getError('required') as error">{{ error }}</span>
+            <span *ngIf="form.get('techRecord_adrDetails_vehicleDetails_approvalDate')?.getError('invalidDate') as error">{{ error }}</span>
+            <span *ngIf="form.get('techRecord_adrDetails_vehicleDetails_approvalDate')?.getError('pastDate') as error">{{ error }}</span>
+            <span *ngIf="approvalDate.form.get('day')?.getError('min') || approvalDate.form.get('day')?.getError('max')">
+              Day must between 1 and 31
+            </span>
+            <span *ngIf="approvalDate.form.get('month')?.getError('min') || approvalDate.form.get('month')?.getError('max')">
+              Month must between 1 and 12
+            </span>
+            <span *ngIf="approvalDate.form.get('year')?.getError('min') || approvalDate.form.get('year')?.getError('max')">
+              Year must between 1000 and 9999
+            </span>
+          </p>
+          <div class="govuk-date-input" id="techRecord_adrDetails_vehicleDetails_approvalDate">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="techRecord_adrDetails_vehicleDetails_approvalDate-day"> Day </label>
+                <input
+                  appFocusNext
+                  appNumberOnly
+                  formControlName="day"
+                  class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="techRecord_adrDetails_vehicleDetails_approvalDate-day"
+                  name="techRecord_adrDetails_vehicleDetails_approvalDate-day"
+                  type="number"
+                  inputmode="numeric"
+                  [class.govuk-input--error]="approvalDate.form.get('day')?.invalid && approvalDate.form.get('day')?.touched"
+                />
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="techRecord_adrDetails_vehicleDetails_approvalDate-month"> Month </label>
+                <input
+                  appFocusNext
+                  appNumberOnly
+                  formControlName="month"
+                  class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="techRecord_adrDetails_vehicleDetails_approvalDate-month"
+                  name="techRecord_adrDetails_vehicleDetails_approvalDate-month"
+                  type="number"
+                  inputmode="numeric"
+                  [class.govuk-input--error]="approvalDate.form.get('month')?.invalid && approvalDate.form.get('month')?.touched"
+                />
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="techRecord_adrDetails_vehicleDetails_approvalDate-year"> Year </label>
+                <input
+                  appFocusNext
+                  appNumberOnly
+                  formControlName="year"
+                  class="govuk-input govuk-date-input__input govuk-input--width-4"
+                  id="techRecord_adrDetails_vehicleDetails_approvalDate-year"
+                  name="techRecord_adrDetails_vehicleDetails_approvalDate-year"
+                  type="number"
+                  inputmode="numeric"
+                  [class.govuk-input--error]="approvalDate.form.get('year')?.invalid && approvalDate.form.get('year')?.touched"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-date-controls>
+
       <!-- Permitted dangerous goods -->
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_permittedDangerousGoods-error">
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_permittedDangerousGoods"> Permitted dangerous goods </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_permittedDangerousGoods-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_permittedDangerousGoods')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_permittedDangerousGoods')?.getError('required') as error">{{ error }}</span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_permittedDangerousGoods" />
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item" *ngFor="let option of permittedDangerousGoodsOptions; let i = index">
               <input
@@ -236,18 +218,11 @@
       </div>
 
       <!-- Compatibility group J -->
-      <div class="govuk-form-group" *ngIf="adrService.canDisplayCompatibilityGroupJSection($any(form.value))">
+      <div class="govuk-form-group" *ngIf="adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_compatibilityGroupJ"> Compatibility group J </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_compatibilityGroupJ-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_compatibilityGroupJ')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_compatibilityGroupJ')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_compatibilityGroupJ" />
         <div class="govuk-radios" data-module="govuk-radios">
           <div class="govuk-radios__item" *ngFor="let option of compatibilityGroupJOptions; let i = index">
             <input
@@ -270,14 +245,7 @@
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_additionalNotes_number"> Guidance notes </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_additionalNotes_number-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_additionalNotes_number')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_additionalNotes_number')?.getError('required') as error">{{ error }}</span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_additionalNotes_number" />
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item" *ngFor="let option of guidanceNotesOptions">
               <input
@@ -303,27 +271,13 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_adrTypeApprovalNo"> ADR type approval number </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_adrTypeApprovalNo-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_adrTypeApprovalNo')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_adrTypeApprovalNo')?.getError('maxLength') as error">{{ error }}</span>
-        </p>
-        <input
-          id="techRecord_adrDetails_adrTypeApprovalNo"
-          type="text"
-          name="techRecord_adrDetails_adrTypeApprovalNo"
-          formControlName="techRecord_adrDetails_adrTypeApprovalNo"
-          class="govuk-input"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_adrTypeApprovalNo')"
-        />
+        <app-control-errors for="techRecord_adrDetails_adrTypeApprovalNo" />
+        <input govukInput formControlName="techRecord_adrDetails_adrTypeApprovalNo" />
       </div>
     </ng-container>
 
     <!-- When ADR body type contains the words 'tank' or 'battery' -->
-    <ng-container *ngIf="adrService.canDisplayTankOrBatterySection($any(form.value))">
+    <ng-container *ngIf="adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))">
       <!-- Tank details section -->
       <ng-container>
         <!-- Tank Make -->
@@ -331,23 +285,8 @@
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankManufacturer"> Tank Make </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tankManufacturer-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankManufacturer')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankManufacturer')?.getError('required') as error">{{ error }}</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankManufacturer')?.getError('maxLength') as error">{{ error }}</span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankManufacturer')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
         </div>
 
         <!-- Tank Year of manufacture -->
@@ -357,23 +296,8 @@
               Tank year of manufacture
             </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_yearOfManufacture-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')?.getError('required') as error">{{ error }}</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')?.getError('maxLength') as error">{{ error }}</span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
-            formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_yearOfManufacture" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture" />
         </div>
 
         <!-- Tank manufacturer serial number -->
@@ -383,27 +307,8 @@
               Manufacturer serial number
             </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')?.getError('required') as error">
-              {{ error }}
-            </span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')?.getError('maxLength') as error">
-              {{ error }}
-            </span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" />
         </div>
 
         <!-- Tank type approval number -->
@@ -411,23 +316,8 @@
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"> Tank type approval number </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')?.getError('required') as error">{{ error }}</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')?.getError('maxLength') as error">{{ error }}</span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" />
         </div>
 
         <!-- Tank code -->
@@ -435,23 +325,8 @@
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankCode"> Code </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tankCode-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankCode')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankCode')?.getError('required') as error">{{ error }}</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankCode')?.getError('maxLength') as error">{{ error }}</span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_tankCode"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_tankCode"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankCode')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankCode" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankCode" />
         </div>
 
         <!-- Substances permitted -->
@@ -461,16 +336,7 @@
               Substances permitted
             </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')?.getError('required') as error">
-              {{ error }}
-            </span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted" />
           <div class="govuk-radios" data-module="govuk-radios">
             <div class="govuk-radios__item" *ngFor="let option of tankStatementSubstancePermittedOptions">
               <input
@@ -491,22 +357,13 @@
         </div>
 
         <!-- When tank statement (substances permitted) is 'Under UN Number' -->
-        <ng-container *ngIf="adrService.canDisplayTankStatementSelectSection($any(form.value))">
+        <ng-container *ngIf="adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))">
           <!-- Tank statement select -->
           <div class="govuk-form-group">
             <h1 class="govuk-label-wrapper">
               <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_select"> Select </label>
             </h1>
-            <p
-              id="techRecord_adrDetails_tank_tankDetails_tankStatement_select-error"
-              class="govuk-error-message"
-              *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_select')"
-            >
-              <span class="govuk-visually-hidden">Error:</span>
-              <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_select')?.getError('required') as error">
-                {{ error }}
-              </span>
-            </p>
+            <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankStatement_select" />
             <div class="govuk-radios" data-module="govuk-radios">
               <div class="govuk-radios__item" *ngFor="let option of tankStatementSelectOptions">
                 <input
@@ -527,7 +384,7 @@
           </div>
 
           <!-- When select is 'statement' -->
-          <ng-container *ngIf="adrService.canDisplayTankStatementStatementSection($any(form.value))">
+          <ng-container *ngIf="adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))">
             <!-- Reference number -->
             <div class="govuk-form-group">
               <h1 class="govuk-label-wrapper">
@@ -535,32 +392,13 @@
                   Reference Number
                 </label>
               </h1>
-              <p
-                id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement-error"
-                class="govuk-error-message"
-                *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')"
-              >
-                <span class="govuk-visually-hidden">Error:</span>
-                <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')?.getError('required') as error">
-                  {{ error }}
-                </span>
-                <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')?.getError('maxLength') as error">
-                  {{ error }}
-                </span>
-              </p>
-              <input
-                id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
-                type="text"
-                name="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
-                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
-                class="govuk-input govuk-!-width-one-third"
-                [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')"
-              />
+              <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
+              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
             </div>
           </ng-container>
 
           <!-- When select is 'product '-->
-          <ng-container *ngIf="adrService.canDisplayTankStatementProductListSection($any(form.value))">
+          <ng-container *ngIf="adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))">
             <!-- Reference number -->
             <div class="govuk-form-group">
               <h1 class="govuk-label-wrapper">
@@ -568,27 +406,8 @@
                   Reference number
                 </label>
               </h1>
-              <p
-                id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo-error"
-                class="govuk-error-message"
-                *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')"
-              >
-                <span class="govuk-visually-hidden">Error:</span>
-                <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')?.getError('required') as error">
-                  {{ error }}
-                </span>
-                <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')?.getError('maxLength') as error">
-                  {{ error }}
-                </span>
-              </p>
-              <input
-                id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
-                type="text"
-                name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
-                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
-                class="govuk-input govuk-!-width-one-third"
-                [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')"
-              />
+              <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
+              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
             </div>
 
             <!-- UN numbers -->
@@ -624,40 +443,9 @@
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_specialProvisions"> Special Provisions </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_tank_tankDetails_specialProvisions-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_specialProvisions')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_specialProvisions')?.getError('required') as error">{{ error }}</span>
-        </p>
-        <textarea
-          rows="5"
-          class="govuk-textarea govuk-js-character-count"
-          [class.govuk-textarea--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_specialProvisions')"
-          id="techRecord_adrDetails_tank_tankDetails_specialProvisions"
-          formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
-          [attr.aria-describedby]="
-            isInvalid('techRecord_adrDetails_tank_tankDetails_specialProvisions')
-              ? 'techRecord_adrDetails_tank_tankDetails_specialProvisions-error'
-              : null
-          "
-        ></textarea>
-        <div
-          id="techRecord_adrDetails_tank_tankDetails_specialProvisions-info"
-          class="govuk-hint govuk-character-count__message"
-          *ngIf="(form.get('techRecord_adrDetails_tank_tankDetails_specialProvisions')?.value?.length ?? 0) <= 500"
-        >
-          You have {{ 500 - (form.get('techRecord_adrDetails_tank_tankDetails_specialProvisions')?.value?.length ?? 0) }} characters remaining
-        </div>
-        <div
-          id="techRecord_adrDetails_tank_tankDetails_specialProvisions-info"
-          class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
-          *ngIf="(form.get('techRecord_adrDetails_tank_tankDetails_specialProvisions')?.value?.length ?? 0) > 500"
-        >
-          You have {{ (form.get('techRecord_adrDetails_tank_tankDetails_specialProvisions')?.value?.length ?? 500) - 500 }} too many
-        </div>
+        <app-control-errors for="techRecord_adrDetails_tank_tankDetails_specialProvisions" />
+        <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
+        <app-character-count for="techRecord_adrDetails_tank_tankDetails_specialProvisions" [limit]="500" />
       </div>
 
       <!-- Tank Inspections section -->
@@ -671,32 +459,109 @@
               TC2: Certificate Number
             </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')?.getError('required') as error">{{
-              error
-            }}</span>
-            <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')?.getError('maxLength') as error">{{
-              error
-            }}</span>
-          </p>
-          <input
-            id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
-            type="text"
-            name="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
-            class="govuk-input govuk-!-width-one-third"
-            [class.govuk-input--error]="isInvalid('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')"
-          />
+          <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
         </div>
 
         <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
         <!-- TC2: Expiry Date -->
+        <app-date-controls formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" #tc2ExpiryDate>
+          <div class="govuk-form-group" [formGroup]="tc2ExpiryDate.form">
+            <h1 class="govuk-label-wrapper">
+              <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+                TC2: Expiry Date
+              </label>
+            </h1>
+            <p
+              id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-error"
+              class="govuk-error-message"
+              *ngIf="tc2ExpiryDate.form.invalid"
+            >
+              <span class="govuk-visually-hidden">Error:</span>
+              <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')?.getError('required') as error">
+                {{ error }}
+              </span>
+              <span *ngIf="form.get('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')?.getError('invalidDate') as error">
+                {{ error }}
+              </span>
+              <span *ngIf="tc2ExpiryDate.form.get('day')?.getError('min') || tc2ExpiryDate.form.get('day')?.getError('max')">
+                Day must between 1 and 31
+              </span>
+              <span *ngIf="tc2ExpiryDate.form.get('month')?.getError('min') || tc2ExpiryDate.form.get('month')?.getError('max')">
+                Month must between 1 and 12
+              </span>
+              <span *ngIf="tc2ExpiryDate.form.get('year')?.getError('min') || tc2ExpiryDate.form.get('year')?.getError('max')">
+                Year must between 1000 and 9999
+              </span>
+            </p>
+            <div class="govuk-date-input" id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-day"
+                  >
+                    Day
+                  </label>
+                  <input
+                    appFocusNext
+                    appNumberOnly
+                    formControlName="day"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2"
+                    id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-day"
+                    name="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-day"
+                    type="number"
+                    inputmode="numeric"
+                    [class.govuk-input--error]="tc2ExpiryDate.form.get('day')?.invalid && tc2ExpiryDate.form.get('day')?.touched"
+                  />
+                </div>
+              </div>
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-month"
+                  >
+                    Month
+                  </label>
+                  <input
+                    appFocusNext
+                    appNumberOnly
+                    formControlName="month"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2"
+                    id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-month"
+                    name="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-month"
+                    type="number"
+                    inputmode="numeric"
+                    [class.govuk-input--error]="tc2ExpiryDate.form.get('month')?.invalid && tc2ExpiryDate.form.get('month')?.touched"
+                  />
+                </div>
+              </div>
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-year"
+                  >
+                    Year
+                  </label>
+                  <input
+                    appFocusNext
+                    appNumberOnly
+                    formControlName="year"
+                    class="govuk-input govuk-date-input__input govuk-input--width-4"
+                    id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-year"
+                    name="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-year"
+                    type="number"
+                    inputmode="numeric"
+                    [class.govuk-input--error]="tc2ExpiryDate.form.get('year')?.invalid && tc2ExpiryDate.form.get('year')?.touched"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-date-controls>
 
         <!-- TC3: Inspections -->
         <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
@@ -710,7 +575,7 @@
               <h1 class="govuk-label-wrapper">
                 <label class="govuk-label govuk-label--m" for="tc3Type"> TC3: Inspection Type </label>
               </h1>
-              <select class="govuk-select" id="tc3Type" name="tc3Type" formControlName="tc3Type">
+              <select govukSelect formControlName="tc3Type">
                 <option [value]="option.value" *ngFor="let option of tc3InspectionOptions">{{ option.label }}</option>
               </select>
             </div>
@@ -730,6 +595,81 @@
             </div>
 
             <!-- TC3 Expiry Date -->
+            <app-date-controls formControlName="tc3PeriodicExpiryDate" #tc3ApprovalDate>
+              <div class="govuk-form-group" [formGroup]="tc3ApprovalDate.form">
+                <h1 class="govuk-label-wrapper">
+                  <label class="govuk-label govuk-label--m" for="tc3PeriodicExpiryDate-{{ i + 1 }}"> TC3: Expiry Date </label>
+                </h1>
+                <p id="tc3PeriodicExpiryDate-{{ i + 1 }}-error" class="govuk-error-message" *ngIf="tc3ApprovalDate.form.invalid">
+                  <span class="govuk-visually-hidden">Error:</span>
+                  <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('required') as error">
+                    {{ error }}
+                  </span>
+                  <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('invalidDate') as error">
+                    {{ error }}
+                  </span>
+                  <span *ngIf="tc3ApprovalDate.form.get('day')?.getError('min') || tc3ApprovalDate.form.get('day')?.getError('max')">
+                    Day must between 1 and 31
+                  </span>
+                  <span *ngIf="tc3ApprovalDate.form.get('month')?.getError('min') || tc3ApprovalDate.form.get('month')?.getError('max')">
+                    Month must between 1 and 12
+                  </span>
+                  <span *ngIf="tc3ApprovalDate.form.get('year')?.getError('min') || tc3ApprovalDate.form.get('year')?.getError('max')">
+                    Year must between 1000 and 9999
+                  </span>
+                </p>
+                <div class="govuk-date-input" id="tc3PeriodicExpiryDate-{{ i + 1 }}">
+                  <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-day"> Day </label>
+                      <input
+                        appFocusNext
+                        appNumberOnly
+                        formControlName="day"
+                        class="govuk-input govuk-date-input__input govuk-input--width-2"
+                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-day"
+                        name="tc3PeriodicExpiryDate{{ i + 1 }}-day"
+                        type="number"
+                        inputmode="numeric"
+                        [class.govuk-input--error]="tc3ApprovalDate.form.get('day')?.invalid && tc3ApprovalDate.form.get('day')?.touched"
+                      />
+                    </div>
+                  </div>
+                  <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-month"> Month </label>
+                      <input
+                        appFocusNext
+                        appNumberOnly
+                        formControlName="month"
+                        class="govuk-input govuk-date-input__input govuk-input--width-2"
+                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
+                        name="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
+                        type="number"
+                        inputmode="numeric"
+                        [class.govuk-input--error]="tc3ApprovalDate.form.get('month')?.invalid && tc3ApprovalDate.form.get('month')?.touched"
+                      />
+                    </div>
+                  </div>
+                  <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-year"> Year </label>
+                      <input
+                        appFocusNext
+                        appNumberOnly
+                        formControlName="year"
+                        class="govuk-input govuk-date-input__input govuk-input--width-4"
+                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
+                        name="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
+                        type="number"
+                        inputmode="numeric"
+                        [class.govuk-input--error]="tc3ApprovalDate.form.get('year')?.invalid && tc3ApprovalDate.form.get('year')?.touched"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </app-date-controls>
 
             <!-- TC3 Footer -->
             <p class="govuk-body govuk-!-text-align-right">
@@ -751,10 +691,7 @@
             <h1 class="govuk-fieldset__heading">Memo 07/09 (3 month extension) can be applied</h1>
           </legend>
           <div id="techRecord_adrDetails_memosApply-hint" class="govuk-hint">Only applicable for vehicles used on national journeys</div>
-          <p id="techRecord_adrDetails_memosApply-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_memosApply')">
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_memosApply')?.getError('required') as error">{{ error }}</span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_memosApply" />
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
               <input
@@ -777,10 +714,7 @@
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h1 class="govuk-fieldset__heading">M145</h1>
           </legend>
-          <p id="techRecord_adrDetails_m145Statement-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_m145Statement')">
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_m145Statement')?.getError('required') as error">{{ error }}</span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_m145Statement" />
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
               <input
@@ -799,20 +733,13 @@
     </ng-container>
 
     <!-- When ADR body type contains 'battery' -->
-    <ng-container *ngIf="adrService.canDisplayBatterySection($any(form.value))">
+    <ng-container *ngIf="adrService.canDisplayBatterySection($any(form.getRawValue()))">
       <!-- Battery list applicable -->
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_listStatementApplicable"> Battery List Applicable </label>
         </h1>
-        <p
-          id="techRecord_adrDetails_listStatementApplicable-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_listStatementApplicable')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_listStatementApplicable')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_listStatementApplicable" />
         <div class="govuk-radios" data-module="govuk-radios">
           <div class="govuk-radios__item" *ngFor="let option of batteryListApplicableOptions">
             <input
@@ -830,20 +757,13 @@
       </div>
 
       <!-- When Battery list applicable is true -->
-      <ng-container *ngIf="adrService.canDisplayBatteryListNumberSection($any(form.value))">
+      <ng-container *ngIf="adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))">
         <!-- Battery list reference number -->
         <div class="govuk-form-group">
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_batteryListNumber"> Reference number </label>
           </h1>
-          <p
-            id="techRecord_adrDetails_batteryListNumber-error"
-            class="govuk-error-message"
-            *ngIf="isInvalid('techRecord_adrDetails_batteryListNumber')"
-          >
-            <span class="govuk-visually-hidden">Error:</span>
-            <span *ngIf="form.get('techRecord_adrDetails_batteryListNumber')?.getError('required') as error">{{ error }}</span>
-          </p>
+          <app-control-errors for="techRecord_adrDetails_batteryListNumber" />
           <input
             id="techRecord_adrDetails_batteryListNumber"
             type="text"
@@ -862,14 +782,7 @@
     <!-- Manufacturer brake declaration -->
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_brakeDeclarationsSeen-error">
-        <p
-          id="techRecord_adrDetails_brakeDeclarationsSeen-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_brakeDeclarationsSeen')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_brakeDeclarationsSeen')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_brakeDeclarationsSeen" />
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <input
@@ -892,51 +805,19 @@
     </div>
 
     <!-- Issuer -->
-    <div class="govuk-form-group govuk-character-count" *ngIf="adrService.canDisplayIssueSection($any(form.value))">
+    <div class="govuk-form-group govuk-character-count" *ngIf="adrService.canDisplayIssueSection($any(form.getRawValue()))">
       <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationIssuer"> Issuer </label>
       </h1>
-      <p
-        id="techRecord_adrDetails_brakeDeclarationIssuer-error"
-        class="govuk-error-message"
-        *ngIf="isInvalid('techRecord_adrDetails_brakeDeclarationIssuer')"
-      >
-        <span class="govuk-visually-hidden">Error:</span>
-        <span *ngIf="form.get('techRecord_adrDetails_brakeDeclarationIssuer')?.getError('required') as error">{{ error }}</span>
-      </p>
-      <textarea
-        rows="5"
-        class="govuk-textarea govuk-js-character-count"
-        [class.govuk-textarea--error]="isInvalid('techRecord_adrDetails_brakeDeclarationIssuer')"
-        id="techRecord_adrDetails_brakeDeclarationIssuer"
-        formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
-        [attr.aria-describedby]="
-          isInvalid('techRecord_adrDetails_brakeDeclarationIssuer') ? 'techRecord_adrDetails_brakeDeclarationIssuer-error' : null
-        "
-      ></textarea>
-      <div
-        id="techRecord_adrDetails_brakeDeclarationIssuer-info"
-        class="govuk-hint govuk-character-count__message"
-        *ngIf="(form.get('techRecord_adrDetails_brakeDeclarationIssuer')?.value?.length ?? 0) <= 500"
-      >
-        You have {{ 500 - (form.get('techRecord_adrDetails_brakeDeclarationIssuer')?.value?.length ?? 0) }} characters remaining
-      </div>
-      <div
-        id="techRecord_adrDetails_brakeDeclarationIssuer-info"
-        class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
-        *ngIf="(form.get('techRecord_adrDetails_brakeDeclarationIssuer')?.value?.length ?? 0) > 500"
-      >
-        You have {{ (form.get('techRecord_adrDetails_brakeDeclarationIssuer')?.value?.length ?? 500) - 500 }} too many
-      </div>
+      <app-control-errors for="techRecord_adrDetails_brakeDeclarationIssuer" />
+      <textarea govukTextarea formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
+      <app-character-count for="techRecord_adrDetails_brakeDeclarationIssuer" [limit]="500" />
     </div>
 
     <!-- Brake endurance -->
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_brakeEndurance-error">
-        <p id="techRecord_adrDetails_brakeEndurance-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_brakeEndurance')">
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_brakeEndurance')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_brakeEndurance" />
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <input
@@ -955,25 +836,13 @@
     </div>
 
     <!-- Weight (tonnes) -->
-    <div class="govuk-form-group" *ngIf="adrService.canDisplayWeightSection($any(form.value))">
+    <div class="govuk-form-group" *ngIf="adrService.canDisplayWeightSection($any(form.getRawValue()))">
       <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_weight"> Weight (tonnes) </label>
       </h1>
-      <p id="techRecord_adrDetails_weight-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_weight')">
-        <span class="govuk-visually-hidden">Error:</span>
-        <span *ngIf="form.get('techRecord_adrDetails_weight')?.getError('required') as error">{{ error }}</span>
-      </p>
+      <app-control-errors for="techRecord_adrDetails_weight" />
       <div class="govuk-input__wrapper">
-        <input
-          class="govuk-input govuk-input--width-5"
-          [class.govuk-input--error]="isInvalid('techRecord_adrDetails_weight')"
-          id="techRecord_adrDetails_weight"
-          name="techRecord_adrDetails_weight"
-          type="text"
-          spellcheck="false"
-          formControlName="techRecord_adrDetails_weight"
-          [attr.aria-describedby]="isInvalid('techRecord_adrDetails_weight') ? 'techRecord_adrDetails_weight-error' : null"
-        />
+        <input govukInput class="govuk-input--width-5" spellcheck="false" formControlName="techRecord_adrDetails_weight" />
         <div class="govuk-input__suffix" aria-hidden="true">tonnes</div>
       </div>
     </div>
@@ -984,10 +853,7 @@
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
           <h1 class="govuk-fieldset__heading">Owner/operator declaration</h1>
         </legend>
-        <p id="techRecord_adrDetails_declarationsSeen-error" class="govuk-error-message" *ngIf="isInvalid('techRecord_adrDetails_declarationsSeen')">
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_declarationsSeen')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_declarationsSeen" />
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <input
@@ -1010,14 +876,7 @@
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
           <h1 class="govuk-fieldset__heading">New certificate required</h1>
         </legend>
-        <p
-          id="techRecord_adrDetails_newCertificateRequested-error"
-          class="govuk-error-message"
-          *ngIf="isInvalid('techRecord_adrDetails_newCertificateRequested')"
-        >
-          <span class="govuk-visually-hidden">Error:</span>
-          <span *ngIf="form.get('techRecord_adrDetails_newCertificateRequested')?.getError('required') as error">{{ error }}</span>
-        </p>
+        <app-control-errors for="techRecord_adrDetails_newCertificateRequested" />
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <input
@@ -1042,38 +901,9 @@
         <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_additionalExaminerNotes_note"> ADR Certificate Notes </label>
       </h1>
       <div id="techRecord_adrDetails_additionalExaminerNotes_note-hint" class="govuk-hint">Will not be present on the ADR certificate</div>
-      <p
-        id="techRecord_adrDetails_additionalExaminerNotes_note-error"
-        class="govuk-error-message"
-        *ngIf="isInvalid('techRecord_adrDetails_additionalExaminerNotes_note')"
-      >
-        <span class="govuk-visually-hidden">Error:</span>
-        <span *ngIf="form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.getError('maxLength') as error">{{ error }}</span>
-      </p>
-      <textarea
-        rows="5"
-        class="govuk-textarea govuk-js-character-count"
-        [class.govuk-textarea--error]="isInvalid('techRecord_adrDetails_additionalExaminerNotes_note')"
-        id="techRecord_adrDetails_additionalExaminerNotes_note"
-        formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
-        [attr.aria-describedby]="
-          isInvalid('techRecord_adrDetails_additionalExaminerNotes_note') ? 'techRecord_adrDetails_additionalExaminerNotes_note-error' : null
-        "
-      ></textarea>
-      <div
-        id="with-hint-info"
-        class="govuk-hint govuk-character-count__message"
-        *ngIf="(form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value?.length ?? 0) <= 1024"
-      >
-        You have {{ 1024 - (form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value?.length ?? 0) }} characters remaining
-      </div>
-      <div
-        id="techRecord_adrDetails_additionalExaminerNotes_note-info"
-        class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
-        *ngIf="(form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value?.length ?? 0) > 1024"
-      >
-        You have {{ (form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value?.length ?? 1024) - 1024 }} too many
-      </div>
+      <app-control-errors for="techRecord_adrDetails_additionalExaminerNotes_note" />
+      <textarea govukTextarea formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
+      <app-character-count for="techRecord_adrDetails_additionalExaminerNotes_note" [limit]="1024" />
     </div>
 
     <!-- ADR Additional Examiner Note History -->
@@ -1116,36 +946,9 @@
       <h1 class="govuk-label-wrapper">
         <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_adrCertificateNotes"> ADR Certificate Notes </label>
       </h1>
-      <p
-        id="techRecord_adrDetails_adrCertificateNotes-error"
-        class="govuk-error-message"
-        *ngIf="isInvalid('techRecord_adrDetails_adrCertificateNotes')"
-      >
-        <span class="govuk-visually-hidden">Error:</span>
-        <span *ngIf="form.get('techRecord_adrDetails_adrCertificateNotes')?.getError('maxLength') as error">{{ error }}</span>
-      </p>
-      <textarea
-        rows="5"
-        class="govuk-textarea govuk-js-character-count"
-        [class.govuk-textarea--error]="isInvalid('techRecord_adrDetails_adrCertificateNotes')"
-        id="techRecord_adrDetails_adrCertificateNotes"
-        formControlName="techRecord_adrDetails_adrCertificateNotes"
-        [attr.aria-describedby]="isInvalid('techRecord_adrDetails_adrCertificateNotes') ? 'techRecord_adrDetails_adrCertificateNotes-error' : null"
-      ></textarea>
-      <div
-        id="with-hint-info"
-        class="govuk-hint govuk-character-count__message"
-        *ngIf="(form.get('techRecord_adrDetails_adrCertificateNotes')?.value?.length ?? 0) <= 1500"
-      >
-        You have {{ 1500 - (form.get('techRecord_adrDetails_adrCertificateNotes')?.value?.length ?? 0) }} characters remaining
-      </div>
-      <div
-        id="techRecord_adrDetails_adrCertificateNotes-info"
-        class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
-        *ngIf="(form.get('techRecord_adrDetails_adrCertificateNotes')?.value?.length ?? 0) > 1500"
-      >
-        You have {{ (form.get('techRecord_adrDetails_adrCertificateNotes')?.value?.length ?? 1500) - 1500 }} too many
-      </div>
+      <app-control-errors for="techRecord_adrDetails_adrCertificateNotes" />
+      <textarea govukTextarea formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
+      <app-character-count for="techRecord_adrDetails_adrCertificateNotes" [limit]="1500" />
     </div>
   </ng-container>
 </div>

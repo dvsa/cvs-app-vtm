@@ -18,9 +18,12 @@ import { SharedModule } from '@shared/shared.module';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
+import { CharacterCountComponent } from './components/character-count/character-count.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
+import { ControlErrorsComponent } from './components/control-errors/control-errors.component';
+import { DateControlsComponent } from './components/date-controls/date-controls.component';
 import { DateComponent } from './components/date/date.component';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
@@ -82,25 +85,27 @@ import {
 } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
 
 @NgModule({
-  declarations: [
-    BaseControlComponent,
-    TextInputComponent,
-    ViewListItemComponent,
-    DynamicFormGroupComponent,
-    ViewCombinationComponent,
-    CheckboxGroupComponent,
-    RadioGroupComponent,
-    DefectComponent,
-    DefectsComponent,
-    AutocompleteComponent,
-    NumberInputComponent,
-    TextAreaComponent,
-    NumberOnlyDirective,
-    ToUppercaseDirective,
-    NoSpaceDirective,
-    TrimWhitespaceDirective,
-    DateComponent,
-    SelectComponent,
+	declarations: [
+		BaseControlComponent,
+		TextInputComponent,
+		ViewListItemComponent,
+		DynamicFormGroupComponent,
+		ViewCombinationComponent,
+		CheckboxGroupComponent,
+		RadioGroupComponent,
+		DefectComponent,
+		DefectsComponent,
+		AutocompleteComponent,
+		NumberInputComponent,
+		TextAreaComponent,
+		NumberOnlyDirective,
+		ToUppercaseDirective,
+		NoSpaceDirective,
+		TrimWhitespaceDirective,
+		DateComponent,
+		DateControlsComponent,
+		CharacterCountComponent,
+		ControlErrorsComponent,SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
@@ -167,7 +172,9 @@ import {
     AutocompleteComponent,
     NumberInputComponent,
     TextAreaComponent,
-    DateComponent,
+    DateComponent,DateControlsComponent,
+		CharacterCountComponent,
+		ControlErrorsComponent,
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,

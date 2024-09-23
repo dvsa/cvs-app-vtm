@@ -44,8 +44,4 @@ export class GovukInputDirective implements OnInit, OnDestroy {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
-
-  get style(): string {
-    return `govuk-input ${this.width() ? `govuk-input--width-${this.width()}` : ''}`;
-  }
 }

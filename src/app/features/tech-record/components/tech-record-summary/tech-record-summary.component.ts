@@ -1,17 +1,17 @@
 import { ViewportScroller } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-  inject,
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	OnDestroy,
+	OnInit,
+	Output,
+	QueryList,
+	ViewChild,
+	ViewChildren,
+	inject,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -44,230 +44,232 @@ import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record-summary',
-  templateUrl: './tech-record-summary.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./tech-record-summary.component.scss'],
+	selector: 'app-tech-record-summary',
+	templateUrl: './tech-record-summary.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrls: ['./tech-record-summary.component.scss'],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy {
-  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
-  @ViewChild(BodyComponent) body!: BodyComponent;
-  @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
-  @ViewChild(PsvBrakesComponent) psvBrakes!: PsvBrakesComponent;
-  @ViewChild(TrlBrakesComponent) trlBrakes!: TrlBrakesComponent;
-  @ViewChild(TyresComponent) tyres!: TyresComponent;
-  @ViewChild(WeightsComponent) weights!: WeightsComponent;
-  @ViewChild(LettersComponent) letters!: LettersComponent;
-  @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
-  @ViewChild(AdrComponent) adr!: AdrComponent;
+	@ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+	@ViewChild(BodyComponent) body!: BodyComponent;
+	@ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
+	@ViewChild(PsvBrakesComponent) psvBrakes!: PsvBrakesComponent;
+	@ViewChild(TrlBrakesComponent) trlBrakes!: TrlBrakesComponent;
+	@ViewChild(TyresComponent) tyres!: TyresComponent;
+	@ViewChild(WeightsComponent) weights!: WeightsComponent;
+	@ViewChild(LettersComponent) letters!: LettersComponent;
+	@ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
+	@ViewChild(AdrComponent) adr!: AdrComponent;
 
-  @Output() isFormDirty = new EventEmitter<boolean>();
-  @Output() isFormInvalid = new EventEmitter<boolean>();
+	@Output() isFormDirty = new EventEmitter<boolean>();
+	@Output() isFormInvalid = new EventEmitter<boolean>();
 
-  techRecordCalculated?: V3TechRecordModel;
-  sectionTemplates: Array<FormNode> = [];
-  middleIndex = 0;
-  isEditing = false;
-  scrollPosition: [number, number] = [0, 0];
-  isADRCertGenEnabled = false;
-  isDFSEnabled = false;
+	techRecordCalculated?: V3TechRecordModel;
+	sectionTemplates: Array<FormNode> = [];
+	middleIndex = 0;
+	isEditing = false;
+	scrollPosition: [number, number] = [0, 0];
+	isADRCertGenEnabled = false;
+	isDFSEnabled = false;
 
-  private axlesService = inject(AxlesService);
-  private errorService = inject(GlobalErrorService);
-  private warningService = inject(GlobalWarningService);
-  private referenceDataService = inject(ReferenceDataService);
-  private technicalRecordService = inject(TechnicalRecordService);
-  private routerService = inject(RouterService);
-  private activatedRoute = inject(ActivatedRoute);
-  private viewportScroller = inject(ViewportScroller);
-  private store = inject(Store);
-  private loading = inject(LoadingService);
+	private axlesService = inject(AxlesService);
+	private errorService = inject(GlobalErrorService);
+	private warningService = inject(GlobalWarningService);
+	private referenceDataService = inject(ReferenceDataService);
+	private technicalRecordService = inject(TechnicalRecordService);
+	private routerService = inject(RouterService);
+	private activatedRoute = inject(ActivatedRoute);
+	private viewportScroller = inject(ViewportScroller);
+	private store = inject(Store);
+	private loading = inject(LoadingService);
 
-  fb = inject(FormBuilder);
-  featureToggleService = inject(FeatureToggleService);
+	fb = inject(FormBuilder);
+	featureToggleService = inject(FeatureToggleService);
+	globalErrorService = inject(GlobalErrorService);
 
-  private destroy$ = new Subject<void>();
+	private destroy$ = new Subject<void>();
 
-  form = this.fb.group({});
+	form = this.fb.group({});
 
-  ngOnInit(): void {
-    this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
-    this.isDFSEnabled = this.featureToggleService.isFeatureEnabled('dfs');
-    this.technicalRecordService.techRecord$
-      .pipe(
-        map((record) => {
-          if (!record) {
-            return;
-          }
+	ngOnInit(): void {
+		this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
+		this.isDFSEnabled = this.featureToggleService.isFeatureEnabled('dfs');
+		this.technicalRecordService.techRecord$
+			.pipe(
+				map((record) => {
+					if (!record) {
+						return;
+					}
 
-          let techRecord = cloneDeep(record);
-          techRecord = this.normaliseAxles(record);
+					let techRecord = cloneDeep(record);
+					techRecord = this.normaliseAxles(record);
 
-          return techRecord;
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((techRecord) => {
-        if (techRecord) {
-          this.techRecordCalculated = techRecord;
-        }
-        this.referenceDataService.removeTyreSearch();
-        this.sectionTemplates = this.vehicleTemplates;
-        this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
-      });
+					return techRecord;
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe((techRecord) => {
+				if (techRecord) {
+					this.techRecordCalculated = techRecord;
+				}
+				this.referenceDataService.removeTyreSearch();
+				this.sectionTemplates = this.vehicleTemplates;
+				this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
+			});
 
-    const editingReason = this.activatedRoute.snapshot.data['reason'];
-    if (this.isEditing) {
-      this.technicalRecordService.clearReasonForCreation();
-      this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
-        if (techRecord) {
-          if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-            this.technicalRecordService.updateEditingTechRecord({
-              ...(techRecord as TechRecordType<'put'>),
-              techRecord_statusCode: StatusCodes.PROVISIONAL,
-            });
-          }
+		const editingReason = this.activatedRoute.snapshot.data['reason'];
+		if (this.isEditing) {
+			this.technicalRecordService.clearReasonForCreation();
+			this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
+				if (techRecord) {
+					if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+						this.technicalRecordService.updateEditingTechRecord({
+							...(techRecord as TechRecordType<'put'>),
+							techRecord_statusCode: StatusCodes.PROVISIONAL,
+						});
+					}
 
-          if (techRecord?.vin?.match('([IOQ])a*')) {
-            const warnings: GlobalWarning[] = [];
-            warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' });
-            this.warningService.setWarnings(warnings);
-          }
-        }
-      });
-    } else if (!this.isEditing) {
-      this.warningService.clearWarnings();
-    }
+					if (techRecord?.vin?.match('([IOQ])a*')) {
+						const warnings: GlobalWarning[] = [];
+						warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' });
+						this.warningService.setWarnings(warnings);
+					}
+				}
+			});
+		} else if (!this.isEditing) {
+			this.warningService.clearWarnings();
+		}
 
-    this.store
-      .select(selectScrollPosition)
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe((position) => {
-        this.scrollPosition = position;
-      });
+		this.store
+			.select(selectScrollPosition)
+			.pipe(take(1), takeUntil(this.destroy$))
+			.subscribe((position) => {
+				this.scrollPosition = position;
+			});
 
-    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
-      if (!loading) {
-        this.viewportScroller.scrollToPosition(this.scrollPosition);
-      }
-    });
+		this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
+			if (!loading) {
+				this.viewportScroller.scrollToPosition(this.scrollPosition);
+			}
+		});
 
-    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.handleFormState(changes));
-  }
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.handleFormState(changes));
+	}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-  get vehicleType() {
-    return this.techRecordCalculated ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated) : undefined;
-  }
+	get vehicleType() {
+		return this.techRecordCalculated
+			? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated)
+			: undefined;
+	}
 
-  get vehicleTemplates(): Array<FormNode> {
-    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
-      this.isEditing = editing;
-    });
-    if (!this.vehicleType) {
-      return [];
-    }
-    return (
-      vehicleTemplateMap
-        .get(this.vehicleType)
-        ?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
-        .filter((template) => template.name !== (this.isADRCertGenEnabled ? '' : 'adrCertificateSection')) ?? []
-    );
-  }
+	get vehicleTemplates(): Array<FormNode> {
+		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
+			this.isEditing = editing;
+		});
+		if (!this.vehicleType) {
+			return [];
+		}
+		return (
+			vehicleTemplateMap
+				.get(this.vehicleType)
+				?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
+				.filter((template) => template.name !== (this.isADRCertGenEnabled ? '' : 'adrCertificateSection')) ?? []
+		);
+	}
 
-  get sectionTemplatesState$() {
-    return this.technicalRecordService.sectionStates$;
-  }
+	get sectionTemplatesState$() {
+		return this.technicalRecordService.sectionStates$;
+	}
 
-  isSectionExpanded$(sectionName: string | number) {
-    return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
-  }
+	isSectionExpanded$(sectionName: string | number) {
+		return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
+	}
 
-  get isEditing$(): Observable<boolean> {
-    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
-  }
+	get isEditing$(): Observable<boolean> {
+		return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
+	}
 
-  get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
+	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
+		const commonCustomSections = [
+			this.body?.form,
+			this.dimensions?.form,
+			this.tyres?.form,
+			this.weights?.form,
+			this.approvalType?.form,
+		];
 
-    switch (this.vehicleType) {
-      case VehicleTypes.PSV:
-        return [...commonCustomSections, this.psvBrakes.form];
-      case VehicleTypes.HGV:
-        return !this.isDFSEnabled ? [...commonCustomSections, this.adr.form] : commonCustomSections;
-      case VehicleTypes.TRL:
-        return !this.isDFSEnabled
-          ? [...commonCustomSections, this.trlBrakes.form, this.letters.form, this.adr.form]
-          : [...commonCustomSections, this.trlBrakes.form, this.letters.form];
-      case VehicleTypes.LGV:
-        return !this.isDFSEnabled ? [this.adr.form] : [];
-      default:
-        return [];
-    }
-  }
+		switch (this.vehicleType) {
+			case VehicleTypes.PSV:
+				return [...commonCustomSections, this.psvBrakes.form];
+			case VehicleTypes.HGV:
+				return !this.isDFSEnabled ? [...commonCustomSections, this.adr.form] : commonCustomSections;
+			case VehicleTypes.TRL:
+				return !this.isDFSEnabled
+					? [...commonCustomSections, this.trlBrakes.form, this.letters.form, this.adr.form]
+					: [...commonCustomSections, this.trlBrakes.form, this.letters.form];
+			case VehicleTypes.LGV:
+				return !this.isDFSEnabled ? [this.adr.form] : [];
+			default:
+				return [];
+		}
+	}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleFormState(event: any): void {
-    const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	handleFormState(event: any): void {
+		const isPrimitiveArray = (a: unknown, b: unknown) =>
+			Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined;
 
-    this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
-    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
-  }
+		this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
+		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+	}
 
-  checkForms(): void {
-    const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections?.map((section) => section.form).concat(this.customSectionForms);
+	checkForms(): void {
+		const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections
+			?.map((section) => section.form)
+			.concat(this.customSectionForms);
 
-    this.isFormDirty.emit(forms.some((form) => form.dirty));
+		this.isFormDirty.emit(forms.some((form) => form.dirty));
 
-    this.setErrors(forms);
+		this.setErrors(forms);
 
-    this.isFormInvalid.emit(forms.some((form) => form.invalid));
-  }
+		this.isFormInvalid.emit(forms.some((form) => form.invalid));
+	}
 
-  setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {
-    const errors: GlobalError[] = [];
+	setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {
+		const errors: GlobalError[] = [];
 
-    forms.forEach((form) => DynamicFormService.validate(form, errors));
+		forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    this.form.markAllAsTouched();
-    this.form.updateValueAndValidity();
+		this.form.markAllAsTouched();
+		this.form.updateValueAndValidity();
+		errors.push(...this.globalErrorService.extractGlobalErrors(this.form));
 
-    function extractErrors(form: FormGroup | FormArray) {
-      Object.entries(form.controls).forEach(([key, control]) => {
-        if (control instanceof FormGroup || control instanceof FormArray) {
-          extractErrors(control);
-        } else if (control.invalid && control.errors) {
-          Object.values(control.errors).forEach((error) => {
-            errors.push({ error, anchorLink: key });
-          });
-        }
-      });
-    }
+		if (errors.length) {
+			this.errorService.setErrors(errors);
+		} else {
+			this.errorService.clearErrors();
+		}
+	}
 
-    extractErrors(this.form);
+	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
+		const type = record.techRecord_vehicleType;
+		const category = record.techRecord_euVehicleCategory;
 
-    if (errors.length) {
-      this.errorService.setErrors(errors);
-    } else {
-      this.errorService.clearErrors();
-    }
-  }
+		if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
+			const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+				record.techRecord_axles ?? [],
+				record.techRecord_dimensions_axleSpacing
+			);
 
-  private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
-    const type = record.techRecord_vehicleType;
-    const category = record.techRecord_euVehicleCategory;
+			record.techRecord_dimensions_axleSpacing = axleSpacing;
+			record.techRecord_axles = axles;
+		}
 
-    if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
-      const [axles, axleSpacing] = this.axlesService.normaliseAxles(record.techRecord_axles ?? [], record.techRecord_dimensions_axleSpacing);
-
-      record.techRecord_dimensions_axleSpacing = axleSpacing;
-      record.techRecord_axles = axles;
-    }
-
-    return record;
-  }
+		return record;
+	}
 }
