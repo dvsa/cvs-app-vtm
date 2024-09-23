@@ -1,12 +1,12 @@
-import { Directive, ElementRef, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Directive, ElementRef, inject, input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Directive({
-	selector: '[govukInput]',
+	selector: '[govukSelect]',
 })
-export class GovukInputDirective implements OnInit, OnDestroy {
-	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+export class GovukSelectDirective {
+	elementRef = inject<ElementRef<HTMLSelectElement>>(ElementRef);
 	controlContainer = inject(ControlContainer);
 
 	formControlName = input.required<string>();
@@ -19,16 +19,16 @@ export class GovukInputDirective implements OnInit, OnDestroy {
 		if (control) {
 			this.elementRef.nativeElement.setAttribute('id', formControlName);
 			this.elementRef.nativeElement.setAttribute('name', formControlName);
-			this.elementRef.nativeElement.classList.add('govuk-input');
+			this.elementRef.nativeElement.classList.add('govuk-select');
 
 			control.statusChanges.pipe(takeUntil(this.destroy$)).subscribe((statusChange) => {
 				if (statusChange === 'INVALID' && control.touched) {
-					this.elementRef.nativeElement.classList.add('govuk-input--error');
+					this.elementRef.nativeElement.classList.add('govuk-select--error');
 					this.elementRef.nativeElement.setAttribute('aria-describedby', `${formControlName}-error`);
 				}
 
 				if (statusChange === 'VALID') {
-					this.elementRef.nativeElement.classList.remove('govuk-input--error');
+					this.elementRef.nativeElement.classList.remove('govuk-select--error');
 					this.elementRef.nativeElement.setAttribute('aria-describedby', '');
 				}
 			});
