@@ -91,6 +91,7 @@
     "jest-preset-angular": "^14.2.2",
     "jest-sonar-reporter": "^2.0.0",
     "json-server": "^0.17.3",
+    "lint-staged": "^15.2.10",
     "sonarqube-scanner": "^3.3.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
@@ -103,6 +104,9 @@
     "@nx/nx-darwin-x64": "18.0.4",
     "@nx/nx-linux-x64-gnu": "18.0.4",
     "@nx/nx-win32-x64-msvc": "18.0.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched"
   },
   "jestSonar": {
     "reportPath": "./coverage",
