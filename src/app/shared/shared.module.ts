@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
+import { GovukFormGroupDirective } from '@directives/govuk-form-group/govuk-form-group.directive';
 import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directive';
 import { GovukSelectDirective } from '@directives/govuk-select/govuk-select.directive';
 import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
 import { PreventDoubleClickDirective } from '@directives/prevent-double-click/prevent-double-click.directive';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
+import { TagDirective } from '@directives/tag/tag.directive';
 import { AccordionControlComponent } from '../components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '../components/accordion/accordion.component';
 import { BannerComponent } from '../components/banner/banner.component';
@@ -29,6 +31,7 @@ import { GetControlLabelPipe } from '../pipes/get-control-label/get-control-labe
 import { RefDataDecodePipe } from '../pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '../pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
+import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
 
 @NgModule({
 	declarations: [
@@ -61,6 +64,9 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukInputDirective,
 		GovukTextareaDirective,
 		GovukSelectDirective,
+		GovukFormGroupDirective,
+    GovukRadioDirective,
+		TagDirective,
 	],
 	imports: [CommonModule, RouterModule],
 	exports: [
@@ -91,6 +97,9 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukInputDirective,
 		GovukTextareaDirective,
 		GovukSelectDirective,
+		GovukFormGroupDirective,
+    GovukRadioDirective,
+		TagDirective,
 	],
 })
 export class SharedModule {}

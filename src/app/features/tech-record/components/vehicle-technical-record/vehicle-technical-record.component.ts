@@ -85,7 +85,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 	}
 
 	get currentVrm(): string | undefined {
-		return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+		return this.techRecord?.techRecord_vehicleType !== 'trl' ? (this.techRecord?.primaryVrm ?? '') : undefined;
 	}
 
 	get roles(): typeof Roles {
