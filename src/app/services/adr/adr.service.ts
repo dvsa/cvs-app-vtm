@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
-import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 @Injectable({
@@ -90,7 +90,7 @@ export class AdrService {
 
 	canDisplayWeightSection(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
 		const brakeEndurance = techRecord.techRecord_adrDetails_brakeEndurance;
-		return brakeEndurance === true;
+		return this.canDisplayDangerousGoodsSection(techRecord) && brakeEndurance === true;
 	}
 
 	canDisplayBatteryListNumberSection(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
@@ -100,6 +100,6 @@ export class AdrService {
 
 	canDisplayIssueSection(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
 		const brakeDeclarationsSeen = techRecord.techRecord_adrDetails_brakeDeclarationsSeen;
-		return brakeDeclarationsSeen === true;
+		return this.canDisplayDangerousGoodsSection(techRecord) && brakeDeclarationsSeen === true;
 	}
 }
