@@ -7,6 +7,7 @@ import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/t
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrExaminerNotesHistoryViewComponent } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrNewCertificateRequiredViewComponent } from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { AdrTankDetailsInitialInspectionViewComponent } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrTankDetailsSubsequentInspectionsEditComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -200,10 +201,10 @@ export const AdrTemplate: FormNode = {
 			name: 'techRecord_adrDetails_permittedDangerousGoods',
 			label: 'Permitted dangerous goods',
 			type: FormNodeTypes.CONTROL,
-			editType: FormNodeEditTypes.CHECKBOXGROUP,
+			editType: FormNodeEditTypes.CUSTOM,
+			editComponent: AdrPermittedDangerousGoodsComponent,
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
-			options: getOptionsFromEnum(ADRDangerousGood),
 			validators: [
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
