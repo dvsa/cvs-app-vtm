@@ -13,6 +13,7 @@ import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
 import { VehicleSectionSummaryComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-summary/vehicle-section-summary.component';
@@ -151,6 +152,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		VehicleSectionSummaryComponent,
 		VehicleSectionViewComponent,
 		VehicleSectionEditComponent,
+		AdrPermittedDangerousGoodsComponent,
 	],
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
 	exports: [

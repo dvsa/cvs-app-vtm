@@ -21,4 +21,11 @@ export class TextInputComponent extends BaseControlComponent {
 	get style(): string {
 		return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
 	}
+
+	handleChange(event: unknown) {
+		if (typeof event === 'string') {
+			this.value = this.formatString(event);
+		}
+		this.onChange(this.value);
+	}
 }

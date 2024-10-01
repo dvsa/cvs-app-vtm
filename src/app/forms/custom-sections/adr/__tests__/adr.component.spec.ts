@@ -14,6 +14,8 @@ describe('AdrComponent', () => {
 	let component: AdrComponent;
 	let fixture: ComponentFixture<AdrComponent>;
 
+	const hgv = createMockHgv(1234);
+
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [AdrComponent],
@@ -23,14 +25,14 @@ describe('AdrComponent', () => {
 				{ provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
 				{
 					provide: AdrService,
-					useValue: { carriesDangerousGoods: jest.fn(), determineTankStatementSelect: jest.fn() },
+					useValue: { preprocessTechRecord: jest.fn().mockReturnValue(hgv), determineTankStatementSelect: jest.fn() },
 				},
 			],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(AdrComponent);
 		component = fixture.componentInstance;
-		component.techRecord = createMockHgv(1234);
+		component.techRecord = hgv;
 		fixture.detectChanges();
 	});
 
@@ -39,8 +41,8 @@ describe('AdrComponent', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should populate the dangerous goods property', () => {
-			const spy = jest.spyOn(component.adrService, 'carriesDangerousGoods');
+		it('should preprocess the tech record', () => {
+			const spy = jest.spyOn(component.adrService, 'preprocessTechRecord');
 			component.ngOnInit();
 			expect(spy).toHaveBeenCalled();
 		});

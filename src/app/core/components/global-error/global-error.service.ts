@@ -58,7 +58,7 @@ export class GlobalErrorService {
 			});
 	}
 
-	extractErrors(form: FormGroup | FormArray) {
+	extractErrors = (form: FormGroup | FormArray) => {
 		const errors: ValidationErrors = {};
 		Object.values(form.controls).forEach((control) => {
 			if (control instanceof FormGroup || control instanceof FormArray) {
@@ -71,13 +71,14 @@ export class GlobalErrorService {
 		});
 
 		return errors;
-	}
+	};
 
-	extractGlobalErrors(form: FormGroup | FormArray) {
+	extractGlobalErrors = (form: FormGroup | FormArray) => {
 		const errors: GlobalError[] = [];
 		Object.entries(form.controls).forEach(([key, control]) => {
+			control.updateValueAndValidity();
 			if (control instanceof FormGroup || control instanceof FormArray) {
-				this.extractErrors(control);
+				errors.push(...this.extractGlobalErrors(control));
 			} else if (control.invalid && control.errors) {
 				Object.values(control.errors).forEach((error) => {
 					errors.push({ error, anchorLink: key });
@@ -86,5 +87,5 @@ export class GlobalErrorService {
 		});
 
 		return errors;
-	}
+	};
 }

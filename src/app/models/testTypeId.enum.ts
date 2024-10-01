@@ -60,26 +60,14 @@ export const TEST_TYPES_GROUP9_10: string[] = [
 	'40',
 	'98',
 	'99',
-	'67',
 	'107',
 	'113',
 	'116',
+	'199',
 ];
 
 // tests for HGV and TRL - First tests, Paid/Part paid prohibition clearance on first test
-export const TEST_TYPES_GROUP9_10_CENTRAL_DOCS = [
-	'95',
-	'41',
-	'65',
-	'103',
-	'66',
-	'104',
-	'82',
-	'119',
-	'83',
-	'120',
-	'199',
-];
+export const TEST_TYPES_GROUP9_10_CENTRAL_DOCS = ['95', '41', '65', '103', '66', '104', '82', '119', '83', '120', '67'];
 
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
 export const TEST_TYPES_GROUP12_14: string[] = ['117', '108', '109', '110', '114', '71', '72', '73', '77', '80'];
@@ -93,11 +81,7 @@ export const TEST_TYPES_GROUP15_16: string[] = ['39', '201', '45', '44'];
 export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'125',
 	'126',
-	'186',
-	'187',
 	'128',
-	'188',
-	'189',
 	'129',
 	'130',
 	'133',
@@ -110,11 +94,7 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'158',
 	'159',
 	'161',
-	'192',
-	'193',
 	'162',
-	'194',
-	'195',
 	'163',
 	'166',
 	'167',
@@ -122,6 +102,14 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'170',
 	'172',
 	'173',
+	'186',
+	'187',
+	'188',
+	'189',
+	'192',
+	'193',
+	'194',
+	'195',
 ];
 
 // Test/Retest COIF with annual test, Seatbelt installation check COIF with annual test

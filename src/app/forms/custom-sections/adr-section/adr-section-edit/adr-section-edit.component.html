@@ -191,7 +191,7 @@
       </app-date-controls>
 
       <!-- Permitted dangerous goods -->
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" id="techRecord_adrDetails_permittedDangerousGoods">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_permittedDangerousGoods-error">
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_permittedDangerousGoods"> Permitted dangerous goods </label>
@@ -240,7 +240,7 @@
       </div>
 
       <!-- Guidance notes -->
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" id="techRecord_adrDetails_additionalNotes_number">
         <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_additionalNotes_number-error">
           <h1 class="govuk-label-wrapper">
             <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_additionalNotes_number"> Guidance notes </label>
@@ -575,6 +575,7 @@
               <h1 class="govuk-label-wrapper">
                 <label class="govuk-label govuk-label--m" for="tc3Type"> TC3: Inspection Type </label>
               </h1>
+              <app-control-errors for="tc3Type" />
               <select govukSelect formControlName="tc3Type">
                 <option [value]="option.value" *ngFor="let option of tc3InspectionOptions">{{ option.label }}</option>
               </select>
@@ -585,6 +586,7 @@
               <h1 class="govuk-label-wrapper">
                 <label class="govuk-label govuk-label--m" for="tc3PeriodicNumber"> TC3: Certificate Number </label>
               </h1>
+              <app-control-errors for="tc3PeriodicNumber" />
               <input
                 id="tc3PeriodicNumber"
                 type="text"
@@ -618,6 +620,7 @@
                     Year must between 1000 and 9999
                   </span>
                 </p>
+                <app-control-errors for="tc3PeriodicExpiryDate" />
                 <div class="govuk-date-input" id="tc3PeriodicExpiryDate-{{ i + 1 }}">
                   <div class="govuk-date-input__item">
                     <div class="govuk-form-group">
