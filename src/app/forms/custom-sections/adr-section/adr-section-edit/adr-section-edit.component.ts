@@ -112,15 +112,23 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.adrValidators.requiresAUnNumberOrReferenceNumber(
+				'Reference number or UN number 1 is required when selecting Product List'
+			),
 		]),
-		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array([
-			this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1500, 'UN number 1 must be less than or equal to 1500 characters'),
-				this.adrValidators.requiresAUNNumberOrReferenceNumber(
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array(
+			[
+				this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(1500, 'UN number 1 must be less than or equal to 1500 characters'),
+				]),
+			],
+			[
+				this.adrValidators.requiresAllUnNumbersToBePopulated(),
+				this.adrValidators.requiresAUnNumberOrReferenceNumber(
 					'Reference number or UN number 1 is required when selecting Product List'
 				),
-			]),
-		]),
+			]
+		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: this.fb.control<string | null>(null, []),
 		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'Special provisions must be less than or equal to 1500 characters'),
@@ -277,17 +285,21 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 
 	addUNNumber() {
 		const arr = this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-		arr.push(
-			this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(
-					1500,
-					`UN number ${arr.length + 1} must be less than or equal to 1500 characters`
-				),
-				this.adrValidators.requiresAUNNumberOrReferenceNumber(
-					'Reference number or UN number 1 is required when selecting Product List'
-				),
-			])
-		);
+		const allNumbersPopulated = arr.value.every((value: string | null) => !!value);
+
+		if (allNumbersPopulated) {
+			arr.push(
+				this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(
+						1500,
+						`UN number ${arr.length + 1} must be less than or equal to 1500 characters`
+					),
+				])
+			);
+		}
+
+		arr.markAsTouched();
+		arr.updateValueAndValidity();
 	}
 
 	removeUNNumber(index: number) {

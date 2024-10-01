@@ -1,6 +1,6 @@
-<ng-container *ngIf="control() as control">
-  <p id="{{ for() }}-error" class="govuk-error-message" *ngIf="control?.invalid && control?.touched && control?.errors">
+<ng-container *ngIf="controlContainer.control?.get(for) as control">
+  <p id="{{ for }}-error" class="govuk-error-message" *ngIf="control?.invalid && control?.touched && control?.errors">
     <span class="govuk-visually-hidden">Error:</span>
-    <span>{{ error() }}</span>
+    <span>{{ (control.errors | keyvalue)?.[0]?.value }}</span>
   </p>
 </ng-container>

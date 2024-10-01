@@ -75,9 +75,19 @@ export class GlobalErrorService {
 
 	extractGlobalErrors = (form: FormGroup | FormArray) => {
 		const errors: GlobalError[] = [];
+
+		// For each control in the form, determine its validity and collect form errors
 		Object.entries(form.controls).forEach(([key, control]) => {
 			control.updateValueAndValidity();
+
+			// For nested form groups/arrays, collect the top level errors, then recusively collect errors from their children
 			if (control instanceof FormGroup || control instanceof FormArray) {
+				if (control.invalid && control.errors) {
+					Object.values(control.errors).forEach((error) => {
+						errors.push({ error, anchorLink: key });
+					});
+				}
+
 				errors.push(...this.extractGlobalErrors(control));
 			} else if (control.invalid && control.errors) {
 				Object.values(control.errors).forEach((error) => {
