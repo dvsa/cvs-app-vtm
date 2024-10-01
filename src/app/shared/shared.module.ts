@@ -5,6 +5,7 @@ import { RoleRequiredDirective } from '@directives/app-role-required/app-role-re
 import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
 import { GovukFormGroupDirective } from '@directives/govuk-form-group/govuk-form-group.directive';
 import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directive';
+import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
 import { GovukSelectDirective } from '@directives/govuk-select/govuk-select.directive';
 import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
 import { PreventDoubleClickDirective } from '@directives/prevent-double-click/prevent-double-click.directive';
@@ -31,7 +32,6 @@ import { GetControlLabelPipe } from '../pipes/get-control-label/get-control-labe
 import { RefDataDecodePipe } from '../pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '../pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
-import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
 
 @NgModule({
 	declarations: [
@@ -65,7 +65,7 @@ import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directi
 		GovukTextareaDirective,
 		GovukSelectDirective,
 		GovukFormGroupDirective,
-    GovukRadioDirective,
+		GovukRadioDirective,
 		TagDirective,
 	],
 	imports: [CommonModule, RouterModule],
@@ -98,7 +98,7 @@ import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directi
 		GovukTextareaDirective,
 		GovukSelectDirective,
 		GovukFormGroupDirective,
-    GovukRadioDirective,
+		GovukRadioDirective,
 		TagDirective,
 	],
 })
