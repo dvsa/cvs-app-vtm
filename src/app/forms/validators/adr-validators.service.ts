@@ -107,18 +107,38 @@ export class AdrValidatorsService {
 		};
 	}
 
-	requiresAUNNumberOrReferenceNumber(message: string): ValidatorFn {
+	requiresAllUnNumbersToBePopulated(): ValidatorFn {
 		return (control) => {
-			if (
-				control.root?.value &&
-				this.adrService.canDisplayTankStatementProductListSection(control.root.getRawValue())
-			) {
-				const refNo = control.root.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo');
-				const unNos = control.root.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo');
-				const unNosPopulated = unNos?.value && Array.isArray(unNos.value) && unNos.value.some((unNo) => !!unNo);
-				if (!refNo?.value && !unNosPopulated) {
+			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
+				const unNumbers = control.value;
+				if (Array.isArray(unNumbers)) {
+					const index = unNumbers.findIndex((unNumber) => !unNumber);
+					if (index > -1) {
+						return { required: `UN number ${index + 1} is required or remove UN number ${index + 1}` };
+					}
+				}
+			}
+
+			return null;
+		};
+	}
+
+	requiresAUnNumberOrReferenceNumber(message: string): ValidatorFn {
+		return (control) => {
+			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
+				const refNo = control.parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo');
+				const unNumbers = control.parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo');
+				if (!refNo?.value && Array.isArray(unNumbers?.value) && !unNumbers?.value[0]) {
+					// Set errors on both simulatenously
+					refNo?.setErrors({ required: message });
+					unNumbers?.setErrors({ required: message });
+
 					return { required: message };
 				}
+
+				// Clear errors from both fields if either is populated
+				refNo?.setErrors(null);
+				unNumbers?.setErrors(null);
 			}
 
 			return null;

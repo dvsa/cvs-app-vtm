@@ -411,6 +411,8 @@
             </div>
 
             <!-- UN numbers -->
+            <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo" />
+            
             <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
               <fieldset
                 class="govuk-fieldset"
@@ -422,17 +424,42 @@
                       UN Number {{ i + 1 }}
                     </label>
                   </h1>
-                  <input
-                    id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                    type="text"
-                    name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                    formControlName="{{ i }}"
-                    class="govuk-input govuk-!-width-one-third"
-                  />
-                  <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
+                 <ng-container *ngIf="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1; else singleUnNumber">
+                  <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+                      <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">
+                          <input
+                            id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                            type="text"
+                            name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                            formControlName="{{ i }}"
+                            class="govuk-input"
+                          />
+                        </td>
+                        <td class="govuk-table__cell">
+                          <p class="govuk-body">
+                            <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
+                         </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                 </ng-container>
+                 <ng-template #singleUnNumber>
+                    <input
+                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                      type="text"
+                      name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                      formControlName="{{ i }}"
+                      class="govuk-input"
+                    />
+                 </ng-template>
                 </div>
               </fieldset>
-              <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
+              <p class="govuk-body">
+                <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
+              </p>
             </div>
           </ng-container>
         </ng-container>
@@ -467,13 +494,15 @@
 
         <!-- TC2: Expiry Date -->
         <app-date-controls formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" #tc2ExpiryDate>
-          <div class="govuk-form-group" [formGroup]="tc2ExpiryDate.form">
+          <div class="govuk-form-group">
             <h1 class="govuk-label-wrapper">
               <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
                 TC2: Expiry Date
               </label>
             </h1>
-            <p
+            <app-control-errors for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+            <div [formGroup]="tc2ExpiryDate.form">
+              <p
               id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-error"
               class="govuk-error-message"
               *ngIf="tc2ExpiryDate.form.invalid"
@@ -560,6 +589,7 @@
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </app-date-controls>
 
@@ -598,76 +628,78 @@
 
             <!-- TC3 Expiry Date -->
             <app-date-controls formControlName="tc3PeriodicExpiryDate" #tc3ApprovalDate>
-              <div class="govuk-form-group" [formGroup]="tc3ApprovalDate.form">
+              <div class="govuk-form-group">
                 <h1 class="govuk-label-wrapper">
                   <label class="govuk-label govuk-label--m" for="tc3PeriodicExpiryDate-{{ i + 1 }}"> TC3: Expiry Date </label>
                 </h1>
-                <p id="tc3PeriodicExpiryDate-{{ i + 1 }}-error" class="govuk-error-message" *ngIf="tc3ApprovalDate.form.invalid">
-                  <span class="govuk-visually-hidden">Error:</span>
-                  <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('required') as error">
-                    {{ error }}
-                  </span>
-                  <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('invalidDate') as error">
-                    {{ error }}
-                  </span>
-                  <span *ngIf="tc3ApprovalDate.form.get('day')?.getError('min') || tc3ApprovalDate.form.get('day')?.getError('max')">
-                    Day must between 1 and 31
-                  </span>
-                  <span *ngIf="tc3ApprovalDate.form.get('month')?.getError('min') || tc3ApprovalDate.form.get('month')?.getError('max')">
-                    Month must between 1 and 12
-                  </span>
-                  <span *ngIf="tc3ApprovalDate.form.get('year')?.getError('min') || tc3ApprovalDate.form.get('year')?.getError('max')">
-                    Year must between 1000 and 9999
-                  </span>
-                </p>
                 <app-control-errors for="tc3PeriodicExpiryDate" />
-                <div class="govuk-date-input" id="tc3PeriodicExpiryDate-{{ i + 1 }}">
-                  <div class="govuk-date-input__item">
-                    <div class="govuk-form-group">
-                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-day"> Day </label>
-                      <input
-                        appFocusNext
-                        appNumberOnly
-                        formControlName="day"
-                        class="govuk-input govuk-date-input__input govuk-input--width-2"
-                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-day"
-                        name="tc3PeriodicExpiryDate{{ i + 1 }}-day"
-                        type="number"
-                        inputmode="numeric"
-                        [class.govuk-input--error]="tc3ApprovalDate.form.get('day')?.invalid && tc3ApprovalDate.form.get('day')?.touched"
-                      />
+                <div [formGroup]="tc3ApprovalDate.form">
+                  <p id="tc3PeriodicExpiryDate-{{ i + 1 }}-error" class="govuk-error-message" *ngIf="tc3ApprovalDate.form.invalid">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('required') as error">
+                      {{ error }}
+                    </span>
+                    <span *ngIf="form.get('tc3PeriodicExpiryDate')?.getError('invalidDate') as error">
+                      {{ error }}
+                    </span>
+                    <span *ngIf="tc3ApprovalDate.form.get('day')?.getError('min') || tc3ApprovalDate.form.get('day')?.getError('max')">
+                      Day must between 1 and 31
+                    </span>
+                    <span *ngIf="tc3ApprovalDate.form.get('month')?.getError('min') || tc3ApprovalDate.form.get('month')?.getError('max')">
+                      Month must between 1 and 12
+                    </span>
+                    <span *ngIf="tc3ApprovalDate.form.get('year')?.getError('min') || tc3ApprovalDate.form.get('year')?.getError('max')">
+                      Year must between 1000 and 9999
+                    </span>
+                  </p>
+                  <div class="govuk-date-input" id="tc3PeriodicExpiryDate-{{ i + 1 }}">
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-day"> Day </label>
+                        <input
+                          appFocusNext
+                          appNumberOnly
+                          formControlName="day"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2"
+                          id="tc3PeriodicExpiryDate-{{ i + 1 }}-day"
+                          name="tc3PeriodicExpiryDate{{ i + 1 }}-day"
+                          type="number"
+                          inputmode="numeric"
+                          [class.govuk-input--error]="tc3ApprovalDate.form.get('day')?.invalid && tc3ApprovalDate.form.get('day')?.touched"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div class="govuk-date-input__item">
-                    <div class="govuk-form-group">
-                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-month"> Month </label>
-                      <input
-                        appFocusNext
-                        appNumberOnly
-                        formControlName="month"
-                        class="govuk-input govuk-date-input__input govuk-input--width-2"
-                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
-                        name="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
-                        type="number"
-                        inputmode="numeric"
-                        [class.govuk-input--error]="tc3ApprovalDate.form.get('month')?.invalid && tc3ApprovalDate.form.get('month')?.touched"
-                      />
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-month"> Month </label>
+                        <input
+                          appFocusNext
+                          appNumberOnly
+                          formControlName="month"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2"
+                          id="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
+                          name="tc3PeriodicExpiryDate-{{ i + 1 }}-month"
+                          type="number"
+                          inputmode="numeric"
+                          [class.govuk-input--error]="tc3ApprovalDate.form.get('month')?.invalid && tc3ApprovalDate.form.get('month')?.touched"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div class="govuk-date-input__item">
-                    <div class="govuk-form-group">
-                      <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-year"> Year </label>
-                      <input
-                        appFocusNext
-                        appNumberOnly
-                        formControlName="year"
-                        class="govuk-input govuk-date-input__input govuk-input--width-4"
-                        id="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
-                        name="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
-                        type="number"
-                        inputmode="numeric"
-                        [class.govuk-input--error]="tc3ApprovalDate.form.get('year')?.invalid && tc3ApprovalDate.form.get('year')?.touched"
-                      />
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="tc3PeriodicExpiryDate-{{ i + 1 }}-year"> Year </label>
+                        <input
+                          appFocusNext
+                          appNumberOnly
+                          formControlName="year"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4"
+                          id="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
+                          name="tc3PeriodicExpiryDate-{{ i + 1 }}-year"
+                          type="number"
+                          inputmode="numeric"
+                          [class.govuk-input--error]="tc3ApprovalDate.form.get('year')?.invalid && tc3ApprovalDate.form.get('year')?.touched"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
