@@ -94,7 +94,7 @@ export class AdrValidatorsService {
 
 	requiresOnePopulatedTC3Field(message: string): ValidatorFn {
 		return (control) => {
-			if (control.parent) {
+			if (control.parent && this.adrService.canDisplayTankOrBatterySection(control.root.value)) {
 				const tc3InspectionType = control.parent.get('tc3Type');
 				const tc3PeriodicNumber = control.parent.get('tc3PeriodicNumber');
 				const tc3ExpiryDate = control.parent.get('tc3ExpiryDate');
