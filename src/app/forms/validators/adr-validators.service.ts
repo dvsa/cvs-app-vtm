@@ -8,7 +8,11 @@ export class AdrValidatorsService {
 
 	requiredWithDangerousGoods(message: string): ValidatorFn {
 		return (control) => {
-			if (control.parent && !control.value && this.adrService.canDisplayDangerousGoodsSection(control.parent.value)) {
+			if (
+				control.parent &&
+				(!control.value || (Array.isArray(control.value) && control.value.length === 0)) &&
+				this.adrService.canDisplayDangerousGoodsSection(control.parent.value)
+			) {
 				return { required: message };
 			}
 

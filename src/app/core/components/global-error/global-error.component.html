@@ -10,7 +10,7 @@
     <div class="govuk-error-summary__body">
       <ul class="govuk-list govuk-error-summary__list">
         <li *ngFor="let error of errorMessages">
-          <a [routerLink]="" queryParamsHandling="preserve" [fragment]="error.anchorLink" (click)="goto(error)">{{ error.error }}</a>
+          <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)">{{ error.error }}</a>
         </li>
       </ul>
     </div>

@@ -58,13 +58,16 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.pastDate('Date processed must be in the past'),
-			this.adrValidators.requiredWithDangerousGoods('Date processed'),
+			this.adrValidators.requiredWithDangerousGoods('Date processed is required with Able to carry dangerous goods'),
 		]),
-		techRecord_adrDetails_permittedDangerousGoods: this.fb.control<string[] | null>(null, [
-			this.adrValidators.requiredWithDangerousGoods(
-				'Permitted dangerous goods is required with Able to carry dangerous goods'
-			),
-		]),
+		techRecord_adrDetails_permittedDangerousGoods: this.fb.control<string[] | null>(
+			[],
+			[
+				this.adrValidators.requiredWithDangerousGoods(
+					'Permitted dangerous goods is required with Able to carry dangerous goods'
+				),
+			]
+		),
 		techRecord_adrDetails_compatibilityGroupJ: this.fb.control<boolean | null>(null, [
 			this.adrValidators.requiredWithExplosives('Compatibility group J is required with Permitted dangerous goods'),
 		]),
@@ -213,18 +216,9 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		const control = this.form.get(formControlName);
 		if (!control) return;
 
-		// If this is the first checkbox, set the value to an array
-		if (control.value === null) {
-			return control.setValue([value]);
-		}
-
-		// If the value is already an array, toggle the value - if the array is then empty, set the value to null
-		if (Array.isArray(control.value)) {
-			control.value.includes(value) ? control.value.splice(control.value.indexOf(value), 1) : control.value.push(value);
-			if (control.value.length === 0) {
-				control.setValue(null);
-			}
-		}
+		const arr = [...control.value];
+		arr.includes(value) ? arr.splice(arr.indexOf(value), 1) : arr.push(value);
+		control.setValue(arr);
 	}
 
 	ngOnInit(): void {
