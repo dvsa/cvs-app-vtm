@@ -246,7 +246,7 @@
   </div>
 
   <!-- EU Category -->
-  <div govukFormGroup>
+  <div class="govuk-form-group">
     <h1>
       <label>EU vehicle category</label>
     </h1>
@@ -257,7 +257,7 @@
   </div>
 
   <!-- Emission Limit -->
-  <div govukFormGroup>
+  <div class="govuk-form-group">
     <h1>
       <label tag for="techRecord_emissionsLimit">Emission limit (m-1) (plate value)</label>
     </h1>
@@ -266,13 +266,13 @@
   </div>
 
   <!-- PSV Only Fields -->
-  <div govukFormGroup *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV">
+  <div class="govuk-form-group" *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV">
     <h1>
       <label>Seats:</label>
     </h1>
     <div class="flex-row">
       <!-- Upper Deck -->
-      <div govukFormGroup>
+      <div class="govuk-form-group">
         <h1>
           <label tag for="techRecord_seatsUpperDeck">
             Upper deck
@@ -285,7 +285,7 @@
       </div>
 
       <!-- Lower Deck -->
-      <div govukFormGroup>
+      <div class="govuk-form-group">
         <h1>
           <label tag for="techRecord_seatsLowerDeck">
             Lower deck

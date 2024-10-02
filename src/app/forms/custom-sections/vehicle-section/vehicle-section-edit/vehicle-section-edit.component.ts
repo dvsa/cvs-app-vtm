@@ -26,7 +26,7 @@ import { FuelTypes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { techRecord } from '@store/technical-records';
-import { ReplaySubject, take } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv'>, FormControl>>;
 
@@ -50,31 +50,19 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	form = this.fb.group<VehicleSectionForm>(
 		{
-			// values from hgv-tech-record template file
-			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
-			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
-			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
-			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
-				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
-			]),
+			// base properties that belong to all vehicle types
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_euroStandard: this.fb.control<string | null>(null),
-			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.pastYear('Year of manufacture must be the current or a past year'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>({ value: null, disabled: true }),
-			techRecord_offRoad: this.fb.control<boolean | null>(null),
 			techRecord_regnDate: this.fb.control<string | null>(null),
-			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
-			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
 			techRecord_statusCode: this.fb.control<string | null>(null),
-			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
-			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [this.updateFunctionCode]),
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: null, disabled: true }),
+			// vehicle type specific properties
+			...this.controlsBasedOffVehicleType,
 		},
 		{ validators: [] }
 	);
@@ -105,12 +93,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			}
 		}
 
-		this.store
-			.select(techRecord)
-			.pipe(take(1))
-			.subscribe((techRecord) => {
-				if (techRecord) this.form.patchValue(techRecord as any);
-			});
+		if (this.techRecord()) {
+			this.form.patchValue(this.techRecord() as any);
+		}
 	}
 
 	ngOnDestroy(): void {
@@ -132,37 +117,33 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	// could have an overall getter that sets the form with controls that belong
 	// to all vehicle types and then a getter for each vehicle type that adds the
 	// specific controls that only belong to that vehicle type?
-	// get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
-	//   return {
-	//     techRecord_alterationMarker: this.fb.control<boolean | null>(null),
-	//     techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
-	//     techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
-	//     techRecord_emissionsLimit: this.fb.control<number | null>(null, [
-	//       this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
-	//       this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places')
-	//     ]),
-	//     techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-	//     techRecord_euroStandard: this.fb.control<string | null>(null),
-	//     techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
-	//     techRecord_manufactureYear: this.fb.control<number | null>(null, [
-	//       this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-	//       this.commonValidators.pastYear('Year of manufacture must be the current or a past year'),
-	//     ]),
-	//     techRecord_noOfAxles: this.fb.control<number | null>({ value: null, disabled: true }),
-	//     techRecord_offRoad: this.fb.control<boolean | null>(null),
-	//     techRecord_regnDate: this.fb.control<string | null>(null),
-	//     techRecord_roadFriendly: this.fb.control<boolean | null>(null),
-	//     techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
-	//     techRecord_statusCode: this.fb.control<string | null>(null),
-	//     techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
-	//     techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
-	//     techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [this.updateFunctionCode]),
-	//     techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: null, disabled: true }),
-	//   }
-	// }
+	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
+		return {
+			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
+			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
+			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
+			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
+				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
+			]),
+			techRecord_euroStandard: this.fb.control<string | null>(null),
+			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
+			techRecord_offRoad: this.fb.control<boolean | null>(null),
+			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
+			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
+			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
+			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
+		};
+	}
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
+			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
+				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
+			]),
+			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
+			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
 			techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [Validators.required]),
 			techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [Validators.required]),
 			techRecord_standingCapacity: this.fb.control<number | null>(null, [Validators.required]),
@@ -201,7 +182,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	get EUCategoryOptions() {
-		switch (this.form.get('techRecord_vehicleType')?.value.toLowerCase()) {
+		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
 				return getOptionsFromEnum(HGVCategories);
 			case VehicleTypes.PSV:
@@ -218,7 +199,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	get vehicleClassDescriptionOptions() {
-		switch (this.form.get('techRecord_vehicleType')?.value.toLowerCase()) {
+		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
 				return [{ label: 'heavy goods vehicle', value: 'heavy goods vehicle' }];
 			case VehicleTypes.PSV:
@@ -244,7 +225,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	get vehicleConfigurationOptions() {
-		switch (this.form.get('techRecord_vehicleType')?.value.toLowerCase()) {
+		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
 			case VehicleTypes.PSV:
 				return [...getOptionsFromEnum(HgvPsvVehicleConfiguration)];
@@ -253,6 +234,24 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				return [...getOptionsFromEnum(TrlVehicleConfiguration)];
 			default:
 				return [...getOptionsFromEnum(VehicleConfiguration)];
+		}
+	}
+
+	get controlsBasedOffVehicleType() {
+		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
+			case VehicleTypes.HGV:
+				return this.hgvFields;
+			case VehicleTypes.PSV:
+				return this.psvFields;
+			default:
+				return {};
+		}
+	}
+
+	addControlsBasedOffVehicleType() {
+		const vehicleControls = this.controlsBasedOffVehicleType;
+		for (const [key, control] of Object.entries(vehicleControls)) {
+			this.form.addControl(key, control);
 		}
 	}
 }
