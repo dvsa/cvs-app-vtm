@@ -186,19 +186,9 @@
     </fieldset>
   </div>
 
-<!--  Vehicle class -->
-  <div class="govuk-form-group">
-    <label class="govuk-label govuk-label--m" tag>
-      Vehicle class
-      <div>
-        <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-      </div>
-    </label>
-    <app-control-errors for="techRecord_vehicleClass_description" />
-    <select govukSelect formControlName="techRecord_vehicleClass_description">
-      <option [value]="option.value" *ngFor="let option of vehicleClassDescriptionOptions">{{ option.label }}</option>
-    </select>
-  </div>
+<!--  Vehicle class (HGV) -->
+  <ng-template *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.HGV" [ngTemplateOutlet]="vehicleClass"></ng-template>
+
 
 <!--  Vehicle configuration-->
   <div class="govuk-form-group">
@@ -279,6 +269,7 @@
             </div>
           </label>
         </h1>
+        <app-control-errors for="techRecord_seatsUpperDeck" />
         <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsUpperDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsUpperDeck" />
       </div>
 
@@ -292,10 +283,24 @@
             </div>
           </label>
         </h1>
+        <app-control-errors for="techRecord_seatsLowerDeck" />
         <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsLowerDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsLowerDeck" />
       </div>
     </div>
+
+    <!-- Standing Capacity -->
+    <div class="govuk-form-group">
+      <h1>
+        <label tag for="techRecord_standingCapacity">Standing capacity</label>
+      </h1>
+      <app-control-errors for="techRecord_standingCapacity" />
+      <input type="number" spellcheck="false" id="techRecord_standingCapacity" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_standingCapacity" />
+    </div>
+
+    <!-- Vehicle Class (PSV) -->
+    <ng-template [ngTemplateOutlet]="vehicleClass"></ng-template>
   </div>
+
 
   <!-- Departmental vehicle marker -->
   <div class="govuk-form-group">
@@ -348,4 +353,25 @@
       </div>
     </fieldset>
   </div>
+
+
+
+  <ng-template #vehicleClass>
+    <div  class="govuk-form-group">
+      <label class="govuk-label govuk-label--m" tag>
+        Vehicle class
+        <div>
+          <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
+        </div>
+      </label>
+      <div *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV" class="govuk-hint">
+        The Vehicle Class is calculated automatically based on the number of seats and standing capacity.
+        Only change the Class if you need to
+      </div>
+      <app-control-errors for="techRecord_vehicleClass_description" />
+      <select govukSelect formControlName="techRecord_vehicleClass_description">
+        <option [value]="option.value" *ngFor="let option of vehicleClassDescriptionOptions">{{ option.label }}</option>
+      </select>
+    </div>
+  </ng-template>
 </div>
