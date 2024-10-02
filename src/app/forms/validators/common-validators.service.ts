@@ -13,6 +13,16 @@ export class CommonValidatorsService {
 		};
 	}
 
+	min(size: number, message: string): ValidatorFn {
+		return (control) => {
+			if (control.value && control.value < size) {
+				return { min: message };
+			}
+
+			return null;
+		};
+	}
+
 	maxLength(length: number, message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
@@ -39,6 +49,19 @@ export class CommonValidatorsService {
 				return { pastDate: message };
 			}
 
+			return null;
+		};
+	}
+
+	pastYear(message: string): ValidatorFn {
+		return (control) => {
+			if (control.value) {
+				const currentYear = new Date().getFullYear();
+				const inputYear = control.value;
+				if (inputYear && inputYear > currentYear) {
+					return { pastYear: message };
+				}
+			}
 			return null;
 		};
 	}

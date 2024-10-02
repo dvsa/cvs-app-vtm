@@ -1,4 +1,6 @@
 <div [formGroup]="form">
+
+  <!-- Vehicle Type -->
   <div govukFormGroup>
     <h1>
       <label tag for="techRecord_vehicleType"> Vehicle type <div>
@@ -28,6 +30,7 @@
     <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_manufactureYear" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_manufactureYear" />
   </div>
 
+  <!-- Number of Axles -->
   <div govukFormGroup>
     <h1>
       <label tag for="techRecord_noOfAxles"> Number of axles <div>
@@ -37,57 +40,59 @@
     <input id="techRecord_noOfAxles" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_noOfAxles" />
   </div>
 
-  <!-- Speed limiter exempt -->
-  <div govukFormGroup>
-    <h1>
-      <label tag>
-        Speed limiter exempt
-        <div>
-          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
-        </div>
-      </label>
-    </h1>
-    <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of speedLimiterExemptOptions">
-        <input
-          type="radio"
-          id="techRecord_speedLimiterMrk-{{ option.value }}-radio"
-          formControlName="techRecord_speedLimiterMrk"
-          class="govuk-radios__input"
-          [value]="option.value"
-        />
-        <label
-          class="govuk-label govuk-radios__label"
-          for="techRecord_speedLimiterMrk-{{ option.value }}-radio'"
-        >
-          {{ option.label }}
+  <div class="flex-row">
+    <!-- Speed limiter exempt -->
+    <div govukFormGroup>
+      <h1>
+        <label tag>
+          Speed limiter exempt
+          <div>
+            <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+          </div>
         </label>
+      </h1>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let option of ExemptOrNotOptions">
+          <input
+            type="radio"
+            id="techRecord_speedLimiterMrk-{{ option.value }}-radio"
+            formControlName="techRecord_speedLimiterMrk"
+            class="govuk-radios__input"
+            [value]="option.value"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="techRecord_speedLimiterMrk-{{ option.value }}-radio'"
+          >
+            {{ option.label }}
+          </label>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Tacho exempt -->
-  <div govukFormGroup>
-    <h1>
-      <label>
-        Tacho exempt
-      </label>
-    </h1>
-    <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of tachoExemptOptions">
-        <input
-          type="radio"
-          id="techRecord_tachoExemptMrk-{{ option.value }}-radio"
-          formControlName="techRecord_tachoExemptMrk"
-          class="govuk-radios__input"
-          [value]="option.value"
-        />
-        <label
-          class="govuk-label govuk-radios__label"
-          for="techRecord_tachoExemptMrk-{{ option.value }}-radio'"
-        >
-          {{ option.label }}
+    <!-- Tacho exempt -->
+    <div govukFormGroup>
+      <h1>
+        <label>
+          Tacho exempt
         </label>
+      </h1>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let option of ExemptOrNotOptions">
+          <input
+            type="radio"
+            id="techRecord_tachoExemptMrk-{{ option.value }}-radio"
+            formControlName="techRecord_tachoExemptMrk"
+            class="govuk-radios__input"
+            [value]="option.value"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="techRecord_tachoExemptMrk-{{ option.value }}-radio'"
+          >
+            {{ option.label }}
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -99,15 +104,17 @@
         Euro standard
       </label>
     </h1>
-    <div govukRadio data-module="govuk-radios">
-      <div *ngFor="let option of euroStandardOptions">
+    <div data-module="govuk-radios" class="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of euroStandardOptions">
         <input
+          class="govuk-radios__input"
           type="radio"
           id="techRecord_euroStandard-{{ option.value }}-radio"
           formControlName="techRecord_euroStandard"
           [value]="option.value"
         />
         <label
+          class="govuk-label govuk-radios__label"
           for="techRecord_euroStandard-{{ option.value }}-radio'"
         >
           {{ option.label }}
@@ -128,7 +135,7 @@
       </label>
     </h1>
     <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of roadFriendlySuspensionOptions">
+      <div class="govuk-radios__item" *ngFor="let option of ExemptOrNotOptions">
         <input
           type="radio"
           id="techRecord_roadFriendly-{{ option.value }}-radio"
@@ -165,7 +172,7 @@
       </label>
     </h1>
     <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of drawbarCouplingFittedOptions">
+      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
         <input
           type="radio"
           id="techRecord_drawbarCouplingFitted-{{ option.value }}-radio"
@@ -183,7 +190,7 @@
     </div>
   </div>
 
-<!--  Vehicle class -->
+  <!--  Vehicle class -->
   <div govukFormGroup>
     <h1>
       <label tag>
@@ -199,7 +206,7 @@
     </select>
   </div>
 
-<!--  Vehicle configuration-->
+  <!--  Vehicle configuration-->
   <div govukFormGroup>
     <h1>
       <label tag>
@@ -226,7 +233,7 @@
       </label>
     </h1>
     <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of offRoadVehicleOptions">
+      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
         <input
           type="radio"
           id="techRecord_offRoad-{{ option.value }}-radio"
@@ -244,4 +251,109 @@
     </div>
   </div>
 
+  <!-- EU Category -->
+  <div govukFormGroup>
+    <h1>
+      <label>EU vehicle category</label>
+    </h1>
+    <app-control-errors for="techRecord_euVehicleCategory" />
+    <select govukSelect [width]="FormNodeWidth.XXS" formControlName="techRecord_euVehicleCategory">
+      <option [value]="option.value" *ngFor="let option of EUCategoryOptions">{{ option.label }}</option>
+    </select>
+  </div>
+
+  <!-- Emission Limit -->
+  <div govukFormGroup>
+    <h1>
+      <label tag for="techRecord_emissionsLimit">Emission limit (m-1) (plate value)</label>
+    </h1>
+    <app-control-errors for="techRecord_emissionsLimit" />
+    <input type="number" spellcheck="false" id="techRecord_emissionsLimit" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_emissionsLimit" />
+  </div>
+
+  <!-- PSV Only Fields -->
+  <div govukFormGroup *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV">
+    <h1>
+      <label>Seats:</label>
+    </h1>
+    <div class="flex-row">
+      <!-- Upper Deck -->
+      <div govukFormGroup>
+        <h1>
+          <label tag for="techRecord_seatsUpperDeck">
+            Upper deck
+            <div>
+              <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
+            </div>
+          </label>
+        </h1>
+        <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsUpperDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsUpperDeck" />
+      </div>
+
+      <!-- Lower Deck -->
+      <div govukFormGroup>
+        <h1>
+          <label tag for="techRecord_seatsLowerDeck">
+            Lower deck
+            <div>
+              <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
+            </div>
+          </label>
+        </h1>
+        <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsLowerDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsLowerDeck" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Departmental vehicle marker -->
+  <div govukFormGroup>
+    <h1>
+      <label>
+        Departmental vehicle marker
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
+        <input
+          type="radio"
+          id="techRecord_departmentalVehicleMarker-{{ option.value }}-radio"
+          formControlName="techRecord_departmentalVehicleMarker"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_departmentalVehicleMarker-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alteration marker -->
+  <div govukFormGroup>
+    <h1>
+      <label>
+        Alteration marker
+      </label>
+    </h1>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
+        <input
+          type="radio"
+          id="techRecord_alterationMarker-{{ option.value }}-radio"
+          formControlName="techRecord_alterationMarker"
+          class="govuk-radios__input"
+          [value]="option.value"
+        />
+        <label
+          class="govuk-label govuk-radios__label"
+          for="techRecord_alterationMarker-{{ option.value }}-radio'"
+        >
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  </div>
 </div>
