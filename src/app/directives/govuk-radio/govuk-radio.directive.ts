@@ -1,34 +1,36 @@
-import { Directive, ElementRef, OnDestroy, OnInit, inject } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { Directive, ElementRef, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ControlContainer } from '@angular/forms';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Directive({
 	selector: '[govukRadio]',
 })
 export class GovukRadioDirective implements OnInit, OnDestroy {
 	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+	controlContainer = inject(ControlContainer);
+
+	formControlName = input.required<string>();
+	width = input<FormNodeWidth>();
+
 	destroy$ = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
-		this.elementRef.nativeElement.classList.add('govuk-radios');
-		const children = this.elementRef.nativeElement.children;
-		console.log('test 0');
-		console.log(children);
-		console.log(this.elementRef.nativeElement.children);
-		console.log(Array.from(this.elementRef.nativeElement.children));
-		// if (children && children.length > 0) {
-		//   console.log('test 1');
-		//   for (let child of children) {
-		//     console.log('test 2');
-		//     child.classList.add('govuk-radios__item');
-		//     const grandchildren = child.children;
-		//     if (grandchildren.length  && grandchildren.length > 1) {
-		//       console.log('test 3');
-		//       grandchildren[0].classList.add('govuk-radios__input');
-		//       grandchildren[1].classList.add('govuk-label');
-		//       grandchildren[1].classList.add('govuk-radios__label');
-		//     }
-		//   }
-		// }
+		const formControlName = this.formControlName();
+		const control = this.controlContainer.control?.get(formControlName);
+		if (control) {
+			control.statusChanges.pipe(takeUntil(this.destroy$)).subscribe((statusChange) => {
+				if (statusChange === 'INVALID' && control.touched) {
+					this.elementRef.nativeElement.classList.add('govuk-radio--error');
+					this.elementRef.nativeElement.setAttribute('aria-describedby', `${formControlName}-error`);
+				}
+
+				if (statusChange === 'VALID') {
+					this.elementRef.nativeElement.classList.remove('govuk-radio--error');
+					this.elementRef.nativeElement.setAttribute('aria-describedby', '');
+				}
+			});
+		}
 	}
 
 	ngOnDestroy(): void {

@@ -20,3 +20,46 @@
     gap: 15px;
   }
 }
+
+/** Global govuk styles */
+.govuk-form-group {
+  @extend .govuk-form-group;
+
+  > h1 {
+    @extend .govuk-label-wrapper;
+
+    > label {
+      @extend .govuk-label;
+      @extend .govuk-label--m;
+
+      display: flex;
+      align-items: center;
+      column-gap: 0.5rem;
+      flex-wrap: wrap;
+
+      > div {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
+.govuk-radios {
+  @extend .govuk-radios;
+
+  > div {
+    @extend .govuk-radios__item;
+
+    > input {
+      @extend .govuk-radios__input;
+    }
+
+    > label {
+      @extend .govuk-label;
+      @extend .govuk-radios__label;
+    }
+  }
+}
