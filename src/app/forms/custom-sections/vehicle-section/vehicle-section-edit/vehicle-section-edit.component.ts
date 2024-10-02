@@ -7,7 +7,6 @@ import {
 	FormGroup,
 	ValidationErrors,
 	ValidatorFn,
-	Validators,
 } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
@@ -132,28 +131,72 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
 			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
-			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
+			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
+				this.commonValidators.required('Vehicle class is required'),
+			]),
 		};
 	}
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
+			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
 			]),
 			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
-			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [Validators.required]),
-			techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [Validators.required]),
-			techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [Validators.required]),
-			techRecord_standingCapacity: this.fb.control<number | null>(null, [Validators.required]),
-			techRecord_vehicleSize: this.fb.control<string | null>(null, [Validators.required]),
+			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
+				this.commonValidators.required('Vehicle class is required'),
+			]),
+			techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [
+				this.commonValidators.required('Upper deck is required'),
+			]),
+			techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [
+				this.commonValidators.required('Lower deck is required'),
+			]),
+			techRecord_standingCapacity: this.fb.control<number | null>(null, [
+				this.commonValidators.required('Standing capacity is required'),
+			]),
+			techRecord_vehicleSize: this.fb.control<string | null>(null, [
+				this.commonValidators.required('Vehicle size is required'),
+			]),
 			techRecord_numberOfSeatbelts: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Number of seatbelts must be less than or equal to 99'),
 			]),
 			techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 				this.commonValidators.pastDate('Seatbelt installation approval date / type approved must be in the past'),
 			]),
+		};
+	}
+
+	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
+		return {
+			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
+				this.commonValidators.required('Vehicle class is required'),
+			]),
+			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
+			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
+			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
+			techRecord_firstUseDate: this.fb.control<string | null>(null),
+			techRecord_suspensionType: this.fb.control<string | null>(null),
+			techRecord_couplingType: this.fb.control<string | null>(null),
+			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99999, 'Max load on coupling (optional) must be less than or equal to 99999'),
+			]),
+			techRecord_frameDescription: this.fb.control<string | null>(null),
+		};
+	}
+
+	get lgvAndCarFields(): Partial<Record<keyof TechRecordType<'lgv' | 'car'>, FormControl>> {
+		return {
+			techRecord_vehicleSubclass: this.fb.control<string | null>(null),
+		};
+	}
+
+	// get motorcycleFields(): Partial<Record<keyof TechRecordType<'motorcycle'>, FormControl>> {
+	get motorcycleFields(): Partial<Record<string, FormControl>> {
+		return {
+			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null),
 		};
 	}
 
@@ -243,6 +286,14 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				return this.hgvFields;
 			case VehicleTypes.PSV:
 				return this.psvFields;
+			case VehicleTypes.TRL:
+			case VehicleTypes.SMALL_TRL:
+				return this.trlFields;
+			case VehicleTypes.LGV:
+			case VehicleTypes.CAR:
+				return this.lgvAndCarFields;
+			case VehicleTypes.MOTORCYCLE:
+				return this.motorcycleFields;
 			default:
 				return {};
 		}

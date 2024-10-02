@@ -75,4 +75,14 @@ export class CommonValidatorsService {
 			return null;
 		};
 	}
+
+	required(message: string): ValidatorFn {
+		return (control) => {
+			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
+				return { required: message };
+			}
+
+			return null;
+		};
+	}
 }
