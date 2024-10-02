@@ -27,7 +27,7 @@ import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-fo
 import { techRecord } from '@store/technical-records';
 import { ReplaySubject } from 'rxjs';
 
-type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv'>, FormControl>>;
+type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
 @Component({
 	selector: 'app-vehicle-section-edit',
