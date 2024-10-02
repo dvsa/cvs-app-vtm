@@ -247,9 +247,7 @@
 
   <!-- EU Category -->
   <div class="govuk-form-group">
-    <h1>
-      <label>EU vehicle category</label>
-    </h1>
+    <label class="govuk-label govuk-label--m">EU vehicle category</label>
     <app-control-errors for="techRecord_euVehicleCategory" />
     <select govukSelect [width]="FormNodeWidth.XXS" formControlName="techRecord_euVehicleCategory">
       <option [value]="option.value" *ngFor="let option of EUCategoryOptions">{{ option.label }}</option>
@@ -300,54 +298,54 @@
   </div>
 
   <!-- Departmental vehicle marker -->
-  <div govukFormGroup>
-    <h1>
-      <label>
-        Departmental vehicle marker
-      </label>
-    </h1>
-    <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
-        <input
-          type="radio"
-          id="techRecord_departmentalVehicleMarker-{{ option.value }}-radio"
-          formControlName="techRecord_departmentalVehicleMarker"
-          class="govuk-radios__input"
-          [value]="option.value"
-        />
-        <label
-          class="govuk-label govuk-radios__label"
-          for="techRecord_departmentalVehicleMarker-{{ option.value }}-radio'"
-        >
-          {{ option.label }}
-        </label>
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading">
+          Departmental vehicle marker
+        </h1>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div *ngFor="let option of YesNoOptions">
+          <input
+            type="radio"
+            id="techRecord_departmentalVehicleMarker-{{ option.value }}-radio"
+            formControlName="techRecord_departmentalVehicleMarker"
+            [value]="option.value"
+          />
+          <label
+            for="techRecord_departmentalVehicleMarker-{{ option.value }}-radio'"
+          >
+            {{ option.label }}
+          </label>
+        </div>
       </div>
-    </div>
+    </fieldset>
   </div>
 
   <!-- Alteration marker -->
-  <div govukFormGroup>
-    <h1>
-      <label>
-        Alteration marker
-      </label>
-    </h1>
-    <div class="govuk-radios" data-module="govuk-radios">
-      <div class="govuk-radios__item" *ngFor="let option of YesNoOptions">
-        <input
-          type="radio"
-          id="techRecord_alterationMarker-{{ option.value }}-radio"
-          formControlName="techRecord_alterationMarker"
-          class="govuk-radios__input"
-          [value]="option.value"
-        />
-        <label
-          class="govuk-label govuk-radios__label"
-          for="techRecord_alterationMarker-{{ option.value }}-radio'"
-        >
-          {{ option.label }}
-        </label>
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading">
+          Departmental vehicle marker
+        </h1>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div *ngFor="let option of YesNoOptions">
+          <input
+            type="radio"
+            id="techRecord_alterationMarker-{{ option.value }}-radio"
+            formControlName="techRecord_alterationMarker"
+            [value]="option.value"
+          />
+          <label
+            for="techRecord_alterationMarker-{{ option.value }}-radio'"
+          >
+            {{ option.label }}
+          </label>
+        </div>
       </div>
-    </div>
+    </fieldset>
   </div>
 </div>
