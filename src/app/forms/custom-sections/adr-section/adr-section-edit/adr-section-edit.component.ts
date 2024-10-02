@@ -1,20 +1,25 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { TC2Types } from '@models/adr.enum';
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
-import { techRecord } from '@store/technical-records';
-import { ReplaySubject, take } from 'rxjs';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { techRecord, updateScrollPosition } from '@store/technical-records';
+import { ReplaySubject, take, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-adr-section-edit',
@@ -24,12 +29,17 @@ import { ReplaySubject, take } from 'rxjs';
 export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	fb = inject(FormBuilder);
 	store = inject(Store);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
 	adrService = inject(AdrService);
 	adrValidators = inject(AdrValidatorsService);
 	commonValidators = inject(CommonValidatorsService);
 	controlContainer = inject(ControlContainer);
+	viewportScroller = inject(ViewportScroller);
+	technicalRecordService = inject(TechnicalRecordService);
 
 	destroy$ = new ReplaySubject<boolean>(1);
+	currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
 
 	form = this.fb.group({
 		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
@@ -84,9 +94,10 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 			this.adrValidators.requiredWithTankOrBattery('Tank Make is required with ADR body type'),
 			this.commonValidators.maxLength(70, 'Tank Make must be less than or equal to 70 characters'),
 		]),
-		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<string | null>(null, [
+		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'Tank Year of manufacture must be less than or equal to 70 characters'),
+			this.commonValidators.min(1000, 'Tank Year of manufacture must be greater than or equal to 1000'),
+			this.commonValidators.max(9999, 'Tank Year of manufacture must be less than or equal to 9999'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
@@ -155,6 +166,7 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		]),
 		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithBatteryListApplicable('Reference Number is required with Battery List Applicable'),
+			this.commonValidators.maxLength(8, 'Reference Number must be less than or equal to 8 characters'),
 		]),
 
 		// Brake declaration
@@ -200,8 +212,8 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
 	compatibilityGroupJOptions = [
-		{ label: 'Yes', value: true },
-		{ label: 'No', value: false },
+		{ value: ADRCompatibilityGroupJ.I, label: 'Yes' },
+		{ value: ADRCompatibilityGroupJ.E, label: 'No' },
 	];
 
 	tankStatementSubstancePermittedOptions = getOptionsFromEnum(ADRTankStatementSubstancePermitted);
@@ -215,6 +227,8 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 
 	tc3InspectionOptions = getOptionsFromEnum(TC3Types);
 
+	memosApplyOptions = [{ value: '07/09 3mth leak ext ', label: 'Yes' }];
+
 	isInvalid(formControlName: string) {
 		const control = this.form.get(formControlName);
 		return control?.invalid && control?.touched;
@@ -223,6 +237,10 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	toggle(formControlName: string, value: string) {
 		const control = this.form.get(formControlName);
 		if (!control) return;
+
+		if (control.value === null) {
+			return control.setValue([value]);
+		}
 
 		const arr = [...control.value];
 		arr.includes(value) ? arr.splice(arr.indexOf(value), 1) : arr.push(value);
@@ -242,6 +260,10 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 			.subscribe((techRecord) => {
 				if (techRecord) this.form.patchValue(techRecord as any);
 			});
+
+		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
+			this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+		});
 	}
 
 	ngOnDestroy(): void {
@@ -304,5 +326,13 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 
 	removeUNNumber(index: number) {
 		this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.removeAt(index);
+	}
+
+	getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
+		const reason = this.route.snapshot.data['reason'];
+		const route = `../${reason}/edit-additional-examiner-note/${examinerNoteIndex}`;
+
+		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
+		this.router.navigate([route], { relativeTo: this.route, state: this.currentTechRecord });
 	}
 }

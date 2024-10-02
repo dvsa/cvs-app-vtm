@@ -13,6 +13,16 @@ export class CommonValidatorsService {
 		};
 	}
 
+	min(size: number, message: string): ValidatorFn {
+		return (control) => {
+			if (control.value && control.value < size) {
+				return { min: message };
+			}
+
+			return null;
+		};
+	}
+
 	maxLength(length: number, message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {

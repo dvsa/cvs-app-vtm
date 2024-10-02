@@ -27,6 +27,7 @@ export class DateControlsComponent implements ControlValueAccessor, OnInit, OnDe
 	controlContainer = inject(ControlContainer);
 	globalErrorService = inject(GlobalErrorService);
 
+	mode = input<Format>('yyyy-mm-dd');
 	formControlName = input.required<string>();
 
 	form = this.fb.group({
@@ -56,7 +57,7 @@ export class DateControlsComponent implements ControlValueAccessor, OnInit, OnDe
 	writeDate(date: Date) {
 		this.form.setValue({
 			year: date.getFullYear(),
-			month: date.getMonth(),
+			month: date.getMonth() + 1,
 			day: date.getDate(),
 			hours: date.getHours(),
 			minutes: date.getMinutes(),
@@ -106,10 +107,16 @@ export class DateControlsComponent implements ControlValueAccessor, OnInit, OnDe
 			const monthStr = month?.toString().padStart(2, '0');
 			const dayStr = day?.toString().padStart(2, '0');
 			const hoursStr = hours?.toString().padStart(2, '0');
-			const minutesStr = minutes?.toString().padStart(2, '0');
-			const secondsStr = seconds?.toString().padStart(2, '0');
+			const minsStr = minutes?.toString().padStart(2, '0');
+			const secsStr = seconds?.toString().padStart(2, '0');
 
-			this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minutesStr || '00'}:${secondsStr || '00'}`);
+			switch (this.mode()) {
+				case 'iso':
+					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}`);
+					break;
+				default:
+					this.onChange(`${year}-${monthStr}-${dayStr}`);
+			}
 		});
 	}
 
@@ -130,3 +137,5 @@ export class DateControlsComponent implements ControlValueAccessor, OnInit, OnDe
 		};
 	}
 }
+
+type Format = 'iso' | 'yyyy-mm-dd';

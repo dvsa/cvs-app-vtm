@@ -237,7 +237,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
 		this.setErrors(forms);
 
-		this.isFormInvalid.emit(forms.some((form) => form.invalid));
+		this.isFormInvalid.emit(forms.some((form) => form.invalid || this.form.invalid));
 	}
 
 	setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {
