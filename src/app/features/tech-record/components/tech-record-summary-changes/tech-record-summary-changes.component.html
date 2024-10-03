@@ -95,7 +95,7 @@
           "
         >
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('dfs'); else oldADRSection">
-            <app-adr-section mode="summary" />
+            <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
           </ng-container>
           <ng-template #oldADRSection>
             <app-adr [techRecord]="techRecordEdited" [isReviewScreen]="true" />

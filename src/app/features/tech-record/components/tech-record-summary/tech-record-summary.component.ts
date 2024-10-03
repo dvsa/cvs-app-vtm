@@ -1,5 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
 	EventEmitter,
@@ -41,7 +42,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-tech-record-summary',
@@ -49,7 +50,7 @@ import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./tech-record-summary.component.scss'],
 })
-export class TechRecordSummaryComponent implements OnInit, OnDestroy {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 	@ViewChild(BodyComponent) body!: BodyComponent;
 	@ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
@@ -94,6 +95,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
 		this.isDFSEnabled = this.featureToggleService.isFeatureEnabled('dfs');
+
 		this.technicalRecordService.techRecord$
 			.pipe(
 				map((record) => {
@@ -153,12 +155,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 			}
 		});
 
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.handleFormState(changes));
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+			this.handleFormState(changes);
+		});
 	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
+	}
+
+	ngAfterViewInit(): void {
+		this.technicalRecordService.techRecord$
+			.pipe(
+				takeUntil(this.destroy$),
+				skipWhile((techRecord) => !techRecord),
+				take(1)
+			)
+			.subscribe((techRecord) => {
+				if (this.isEditing && techRecord) this.form.patchValue({ ...techRecord });
+			});
 	}
 
 	get vehicleType() {

@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
@@ -18,8 +18,8 @@ import { TC2Types } from '@models/adr.enum';
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { techRecord, updateScrollPosition } from '@store/technical-records';
-import { ReplaySubject, take, takeUntil } from 'rxjs';
+import { updateScrollPosition } from '@store/technical-records';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-adr-section-edit',
@@ -38,8 +38,9 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	viewportScroller = inject(ViewportScroller);
 	technicalRecordService = inject(TechnicalRecordService);
 
+	techRecord = input.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
+
 	destroy$ = new ReplaySubject<boolean>(1);
-	currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
 
 	form = this.fb.group({
 		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
@@ -251,26 +252,17 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		// Attatch all form controls to parent
 		const parent = this.controlContainer.control;
 		if (parent instanceof FormGroup) {
-			Object.entries(this.form.controls).forEach(([key, control]) => parent.addControl(key, control));
+			Object.entries(this.form.controls).forEach(([key, control]) =>
+				parent.addControl(key, control, { emitEvent: false })
+			);
 		}
-
-		this.store
-			.select(techRecord)
-			.pipe(take(1))
-			.subscribe((techRecord) => {
-				if (techRecord) this.form.patchValue(techRecord as any);
-			});
-
-		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
-			this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-		});
 	}
 
 	ngOnDestroy(): void {
 		// Detatch all form controls from parent
 		const parent = this.controlContainer.control;
 		if (parent instanceof FormGroup) {
-			Object.keys(this.form.controls).forEach((key) => parent.removeControl(key));
+			Object.keys(this.form.controls).forEach((key) => parent.removeControl(key, { emitEvent: false }));
 		}
 
 		// Clear subscriptions
@@ -333,6 +325,6 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		const route = `../${reason}/edit-additional-examiner-note/${examinerNoteIndex}`;
 
 		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-		this.router.navigate([route], { relativeTo: this.route, state: this.currentTechRecord });
+		this.router.navigate([route], { relativeTo: this.route, state: this.techRecord });
 	}
 }
