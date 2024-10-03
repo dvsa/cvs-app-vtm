@@ -39,7 +39,7 @@
 
   <div class="flex-row">
     <!-- Speed limiter exempt -->
-    <div class="govuk-form-group">
+    <div class="govuk-form-group govuk-form-group-radio">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
           <h1 tag class="govuk-fieldset__heading">
@@ -76,14 +76,16 @@
           </h1>
         </legend>
         <div class="govuk-radios" data-module="govuk-radios">
-          <div *ngFor="let option of ExemptOrNotOptions">
+          <div class="govuk-radios__item" *ngFor="let option of ExemptOrNotOptions">
             <input
-              type="radio"
               id="techRecord_tachoExemptMrk-{{ option.value }}-radio"
+              name="techRecord_tachoExemptMrk-{{ option.value }}-radio"
               formControlName="techRecord_tachoExemptMrk"
               [value]="option.value"
+              govukRadio
             />
             <label
+              class="govuk-label govuk-radios__label"
               for="techRecord_tachoExemptMrk-{{ option.value }}-radio'"
             >
               {{ option.label }}
@@ -105,10 +107,10 @@
       <div class="govuk-radios" data-module="govuk-radios">
         <div *ngFor="let option of euroStandardOptions">
           <input
-            type="radio"
             id="techRecord_euroStandard-{{ option.value }}-radio"
             formControlName="techRecord_euroStandard"
             [value]="option.value"
+            govukRadio
           />
           <label
             for="techRecord_euroStandard-{{ option.value }}-radio'"
