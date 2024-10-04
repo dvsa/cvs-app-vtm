@@ -5,12 +5,12 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
-import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { techRecord } from '@store/technical-records';
+import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
 import { Observable } from 'rxjs';
 import { TagType, TagTypes } from '../../../../components/tag/tag.component';
 
@@ -36,8 +36,8 @@ export class VehicleHeaderComponent {
 		return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
 	}
 
-	get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
-		return this.testTypesService.selectAllTestTypes$;
+	get selectAllTestTypes$() {
+		return this.store.select(selectAllTestTypes);
 	}
 
 	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
