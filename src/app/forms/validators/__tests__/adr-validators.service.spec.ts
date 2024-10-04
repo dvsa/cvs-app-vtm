@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
@@ -30,6 +30,19 @@ describe('AdrValidatorsService', () => {
 			techRecord_adrDetails_brakeEndurance: new FormControl(null),
 			techRecord_adrDetails_weight: new FormControl(null),
 			techRecord_adrDetails_batteryListNumber: new FormControl(null),
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: new FormControl(null),
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: new FormArray([
+				new FormControl(null),
+				new FormControl(null),
+				new FormControl(null),
+			]),
+			techRecord_adrDetails_tank_tankDetails_tc3Details: new FormArray([
+				new FormGroup({
+					tc3Type: new FormControl(null),
+					tc3PeriodicNumber: new FormControl(null),
+					tc3PeriodicExpiryDate: new FormControl(null),
+				}),
+			]),
 		});
 	});
 
@@ -274,6 +287,158 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_batteryListNumber: null,
 			});
 			expect(validator(control)).toEqual({ required: 'message' });
+		});
+	});
+
+	describe('requiresOnePopulatedTC3Field', () => {
+		it('should return null when the tank or battery section is not visible', () => {
+			const validator = service.requiresOnePopulatedTC3Field('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: false,
+				techRecord_adrDetails_tank_tankDetails_tc3Details: [
+					{
+						tc3Type: 'type',
+						tc3PeriodicNumber: 'number',
+						tc3PeriodicExpiryDate: 'expiry',
+					},
+				],
+			});
+			expect(validator(control.controls[0])).toBeNull();
+		});
+
+		it('should return null when the tank or battery section is visible and one field is populated', () => {
+			const validator = service.requiresOnePopulatedTC3Field('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tc3Details: [
+					{
+						tc3Type: 'type',
+						tc3PeriodicNumber: null,
+						tc3PeriodicExpiryDate: null,
+					},
+				],
+			});
+			expect(validator(control.controls[0])).toEqual({ required: 'message' });
+		});
+
+		it('should return an error when the tank or battery section is visible and no fields are populated', () => {
+			const validator = service.requiresOnePopulatedTC3Field('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tc3Details: [
+					{
+						tc3Type: null,
+						tc3PeriodicNumber: null,
+						tc3PeriodicExpiryDate: null,
+					},
+				],
+			});
+			expect(validator(control.controls[0])).toEqual({ required: 'message' });
+		});
+	});
+
+	describe('requiresAllUnNumbersToBePopulated', () => {
+		it('should return null when the un number section is not visible', () => {
+			const validator = service.requiresAllUnNumbersToBePopulated();
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: false,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null],
+			});
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return null when the un number section is visible and all un numbers are populated', () => {
+			const validator = service.requiresAllUnNumbersToBePopulated();
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: ['123', '456', '789'],
+			});
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return an error when the un number section is visible and one un number is not populated', () => {
+			const validator = service.requiresAllUnNumbersToBePopulated();
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: ['123', null, '789'],
+			});
+			expect(validator(control)).toEqual({ required: 'UN number 2 is required or remove UN number 2' });
+		});
+	});
+
+	describe('requiresAUnNumberOrReferenceNumber', () => {
+		it('should return null when the un number section is not visible', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo') as FormControl;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: false,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null, null, null],
+			});
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return null when the un number section is visible and the reference number has a value', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo') as FormControl;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: '123',
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null, null, null],
+			});
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return null when the un number section is visible and the first un number has a value', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo') as FormControl;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: ['123', null, null],
+			});
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return an error when the un number section is visible and the reference number and un numbers are empty', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control1 = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo') as FormControl;
+			const control2 = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null, null, null],
+			});
+			expect(validator(control1)).toEqual({ required: 'message' });
+			expect(validator(control2)).toEqual({ required: 'message' });
 		});
 	});
 });
