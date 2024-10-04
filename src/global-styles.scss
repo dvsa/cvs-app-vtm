@@ -44,8 +44,8 @@
         flex-wrap: wrap;
       }
     }
-  } 
-} 
+  }
+}
 
 .govuk-form-group-radio {
   @extend .govuk-form-group;
@@ -61,11 +61,11 @@
     > div {
       > div {
         @extend .govuk-radios__item;
- 
+
         > input {
           @extend .govuk-radios__input;
         }
- 
+
         > label {
           @extend .govuk-label;
           @extend .govuk-radios__label;
@@ -74,3 +74,17 @@
     }
   }
  }
+
+.govuk-form-group-select {
+  @extend .govuk-form-group;
+  > label {
+    @extend .govuk-label;
+    @extend .govuk-label--m;
+  }
+  > div {
+    @extend .govuk-hint;
+  }
+  > select {
+    @extend .govuk-select;
+  }
+}

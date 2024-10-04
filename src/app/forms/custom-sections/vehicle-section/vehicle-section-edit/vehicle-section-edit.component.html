@@ -194,8 +194,8 @@
 
 
 <!--  Vehicle configuration-->
-  <div class="govuk-form-group">
-    <label class="govuk-label govuk-label--m" tag>
+  <div class="govuk-form-group-select">
+    <label tag>
       Vehicle configuration
       <div>
         <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
@@ -239,8 +239,8 @@
   </div>
 
   <!-- EU Category -->
-  <div class="govuk-form-group">
-    <label class="govuk-label govuk-label--m">EU vehicle category</label>
+  <div class="govuk-form-group-select">
+    <label>EU vehicle category</label>
     <app-control-errors for="techRecord_euVehicleCategory" />
     <select govukSelect [width]="FormNodeWidth.XXS" formControlName="techRecord_euVehicleCategory">
       <option [value]="option.value" *ngFor="let option of EUCategoryOptions">{{ option.label }}</option>
@@ -362,8 +362,8 @@
 
 
   <ng-template #vehicleClass>
-    <div  class="govuk-form-group">
-      <label class="govuk-label govuk-label--m" tag>
+    <div  class="govuk-form-group-select">
+      <label tag>
         Vehicle class
         <div>
           <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
