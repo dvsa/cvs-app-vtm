@@ -39,21 +39,22 @@
 
   <div class="flex-row">
     <!-- Speed limiter exempt -->
-    <div class="govuk-form-group govuk-form-group-radio">
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h1 tag class="govuk-fieldset__heading">
+    <div class="govuk-form-group-radio">
+      <fieldset>
+        <legend>
+          <h1 tag>
             Speed limiter exempt
             <div>
               <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
             </div>
           </h1>
         </legend>
-        <div class="govuk-radios" data-module="govuk-radios">
+        <div data-module="govuk-radios">
           <div *ngFor="let option of ExemptOrNotOptions">
             <input
               type="radio"
               id="techRecord_speedLimiterMrk-{{ option.value }}-radio"
+              govukRadio
               formControlName="techRecord_speedLimiterMrk"
               [value]="option.value"
             />
@@ -68,15 +69,15 @@
     </div>
 
     <!-- Tacho exempt -->
-    <div class="govuk-form-group">
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h1 class="govuk-fieldset__heading">
+    <div class="govuk-form-group-radio">
+      <fieldset>
+        <legend>
+          <h1>
             Tacho exempt
           </h1>
         </legend>
-        <div class="govuk-radios" data-module="govuk-radios">
-          <div class="govuk-radios__item" *ngFor="let option of ExemptOrNotOptions">
+        <div data-module="govuk-radios">
+          <div *ngFor="let option of ExemptOrNotOptions">
             <input
               id="techRecord_tachoExemptMrk-{{ option.value }}-radio"
               name="techRecord_tachoExemptMrk-{{ option.value }}-radio"
@@ -85,7 +86,6 @@
               govukRadio
             />
             <label
-              class="govuk-label govuk-radios__label"
               for="techRecord_tachoExemptMrk-{{ option.value }}-radio'"
             >
               {{ option.label }}
@@ -97,14 +97,14 @@
   </div>
 
   <!-- Euro standard -->
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1>
           Euro standard
         </h1>
       </legend>
-      <div class="govuk-radios" data-module="govuk-radios">
+      <div data-module="govuk-radios">
         <div *ngFor="let option of euroStandardOptions">
           <input
             id="techRecord_euroStandard-{{ option.value }}-radio"
@@ -124,20 +124,21 @@
 
 
   <!-- Road friendly suspension -->
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 tag class="govuk-fieldset__heading">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1 tag>
           Road friendly suspension
           <div>
             <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
           </div>
         </h1>
       </legend>
-      <div class="govuk-radios" data-module="govuk-radios">
+      <div data-module="govuk-radios">
         <div *ngFor="let option of ExemptOrNotOptions">
           <input
             type="radio"
+            govukRadio
             id="techRecord_roadFriendly-{{ option.value }}-radio"
             formControlName="techRecord_roadFriendly"
             [value]="option.value"
@@ -162,14 +163,14 @@
   </div>
 
   <!-- Drawbar coupling fitted -->
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1>
           Drawbar coupling fitted
         </h1>
       </legend>
-      <div class="govuk-radios" data-module="govuk-radios">
+      <div data-module="govuk-radios">
         <div *ngFor="let option of YesNoOptions">
           <input
             govukRadio
@@ -220,14 +221,14 @@
   </div>
 
 <!-- Off road vehicle -->
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1>
           Off road vehicle
         </h1>
       </legend>
-      <div  class="govuk-radios" data-module="govuk-radios">
+      <div data-module="govuk-radios">
         <div *ngFor="let option of YesNoOptions">
           <input
             govukRadio
@@ -300,17 +301,18 @@
   </div>
 
   <!-- Departmental vehicle marker -->
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1>
           Departmental vehicle marker
         </h1>
       </legend>
-      <div class="govuk-radios" data-module="govuk-radios">
+      <div data-module="govuk-radios">
         <div *ngFor="let option of YesNoOptions">
           <input
             type="radio"
+            govukRadio
             id="techRecord_departmentalVehicleMarker-{{ option.value }}-radio"
             formControlName="techRecord_departmentalVehicleMarker"
             [value]="option.value"
@@ -330,13 +332,14 @@
     <fieldset>
       <legend>
         <h1>
-          Departmental vehicle marker
+          Alteration marker
         </h1>
       </legend>
       <div data-module="govuk-radios">
         <div *ngFor="let option of YesNoOptions">
           <input
             type="radio"
+            govukRadio
             id="techRecord_alterationMarker-{{ option.value }}-radio"
             formControlName="techRecord_alterationMarker"
             [value]="option.value"
