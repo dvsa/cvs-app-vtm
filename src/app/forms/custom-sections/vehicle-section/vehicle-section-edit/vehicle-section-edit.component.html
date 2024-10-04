@@ -1,5 +1,5 @@
 <div [formGroup]="form">
-  <div class="govuk-form-group">
+  <div class="govuk-form-group-input">
     <h1>
       <label tag for="techRecord_vehicleType"> Vehicle type <div>
         <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
@@ -10,7 +10,7 @@
 
   <!--  Date of First Registration Here -->
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group-input">
     <h1>
       <label tag for="techRecord_manufactureYear"> Year of manufacture <div>
         <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
@@ -28,7 +28,7 @@
     <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_manufactureYear" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_manufactureYear" />
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group-input">
     <h1>
       <label tag for="techRecord_noOfAxles"> Number of axles <div>
         <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
@@ -154,8 +154,8 @@
   </div>
 
   <!-- Fuel / propulsion system -->
-  <div class="govuk-form-group">
-    <label class="govuk-label govuk-label--m"> Fuel / propulsion system </label>
+  <div class="govuk-form-group-select">
+    <label> Fuel / propulsion system </label>
     <app-control-errors for="techRecord_fuelPropulsionSystem" />
     <select govukSelect formControlName="techRecord_fuelPropulsionSystem">
       <option [value]="option.value" *ngFor="let option of fuelPropulsionSystemOptions">{{ option.label }}</option>
@@ -248,7 +248,7 @@
   </div>
 
   <!-- Emission Limit -->
-  <div class="govuk-form-group">
+  <div class="govuk-form-group-input">
     <h1>
       <label tag for="techRecord_emissionsLimit">Emission limit (m-1) (plate value)</label>
     </h1>
@@ -257,13 +257,13 @@
   </div>
 
   <!-- PSV Only Fields -->
-  <div class="govuk-form-group" *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV">
+  <div class="govuk-form-group-split-controls" *ngIf="techRecord()?.techRecord_vehicleType === VehicleTypes.PSV">
     <h1>
       <label>Seats:</label>
     </h1>
     <div class="flex-row">
       <!-- Upper Deck -->
-      <div class="govuk-form-group">
+      <div class="govuk-form-group-input">
         <h1>
           <label tag for="techRecord_seatsUpperDeck">
             Upper deck
@@ -277,7 +277,7 @@
       </div>
 
       <!-- Lower Deck -->
-      <div class="govuk-form-group">
+      <div class="govuk-form-group-input">
         <h1>
           <label tag for="techRecord_seatsLowerDeck">
             Lower deck
@@ -292,7 +292,7 @@
     </div>
 
     <!-- Standing Capacity -->
-    <div class="govuk-form-group">
+    <div class="govuk-form-group-input">
       <h1>
         <label tag for="techRecord_standingCapacity">Standing capacity</label>
       </h1>

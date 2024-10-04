@@ -22,7 +22,7 @@
 }
 
 /** Global govuk styles */
-.govuk-form-group {
+.govuk-form-group-input {
   @extend .govuk-form-group;
 
   > h1 {
@@ -86,5 +86,16 @@
   }
   > select {
     @extend .govuk-select;
+  }
+}
+
+.govuk-form-group-split-controls {
+  @extend .govuk-form-group;
+  > h1 {
+    @extend .govuk-label-wrapper;
+    > label {
+      @extend .govuk-label;
+      @extend .govuk-label--m;
+    }
   }
 }
