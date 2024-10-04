@@ -1,10 +1,17 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { techRecord } from '@store/technical-records';
+import { of } from 'rxjs';
 import { AdrSectionEditComponent } from '../adr-section-edit.component';
 
 describe('AdrSectionEditComponent', () => {
@@ -23,7 +30,10 @@ describe('AdrSectionEditComponent', () => {
 			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
+				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 			],
 		}).compileComponents();
 
@@ -110,6 +120,75 @@ describe('AdrSectionEditComponent', () => {
 			const spy = jest.spyOn(arr, 'removeAt');
 			component.removeUNNumber(1);
 			expect(spy).toHaveBeenCalledWith(1);
+		});
+	});
+
+	describe('handleADRBodyTypeChange', () => {
+		it('should subscribe to ADR body type changes', () => {
+			const spy = jest.spyOn(
+				component.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges,
+				'subscribe'
+			);
+			component.handleADRBodyTypeChange();
+			expect(spy).toHaveBeenCalled();
+		});
+
+		it('should clear any selected explosives if the body type is changed to battery or tank', () => {
+			// Valid options for tractor
+			component.form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.ARTIC_TRACTOR,
+				techRecord_adrDetails_permittedDangerousGoods: [
+					ADRDangerousGood.AT,
+					ADRDangerousGood.EXPLOSIVES_TYPE_2,
+					ADRDangerousGood.EXPLOSIVES_TYPE_3,
+				],
+			});
+
+			component.handleADRBodyTypeChange();
+
+			// Change body type to battery
+			component.form.patchValue({
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
+			});
+
+			expect(component.form.controls.techRecord_adrDetails_compatibilityGroupJ.value).toBeNull();
+			expect(component.form.controls.techRecord_adrDetails_permittedDangerousGoods.value).not.toContain(
+				ADRDangerousGood.EXPLOSIVES_TYPE_2
+			);
+			expect(component.form.controls.techRecord_adrDetails_permittedDangerousGoods.value).not.toContain(
+				ADRDangerousGood.EXPLOSIVES_TYPE_3
+			);
+		});
+
+		it('should set the permitted dangerous goods options based on the body type', () => {
+			// Valid options for tractor
+			component.form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.ARTIC_TRACTOR,
+				techRecord_adrDetails_permittedDangerousGoods: [
+					ADRDangerousGood.AT,
+					ADRDangerousGood.EXPLOSIVES_TYPE_2,
+					ADRDangerousGood.EXPLOSIVES_TYPE_3,
+				],
+			});
+
+			const options = getOptionsFromEnum(ADRDangerousGood);
+			expect(component.permittedDangerousGoodsOptions).toEqual(options);
+
+			component.handleADRBodyTypeChange();
+
+			// Change body type to battery
+			component.form.patchValue({
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
+			});
+
+			expect(component.permittedDangerousGoodsOptions).toEqual(
+				options.filter(
+					(option) =>
+						option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3
+				)
+			);
 		});
 	});
 });
