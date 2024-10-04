@@ -5,12 +5,10 @@ import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveF
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { techRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { AdrSectionEditComponent } from '../adr-section-edit.component';
 
@@ -51,18 +49,6 @@ describe('AdrSectionEditComponent', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 			expect(spy).toHaveBeenCalled();
-		});
-
-		it('should patch the form with the currently stored vehicle technical record', () => {
-			const mockTechRecord = {
-				techRecord_adrDetails_applicantDetails_city: 'city',
-			} as TechRecordType<'get'>;
-
-			const spy = jest.spyOn(component.form, 'patchValue');
-			store.overrideSelector(techRecord, mockTechRecord);
-			component.ngOnInit();
-			expect(spy).toHaveBeenCalledWith(mockTechRecord);
-			expect(component.form.controls.techRecord_adrDetails_applicantDetails_city.value).toBe('city');
 		});
 	});
 

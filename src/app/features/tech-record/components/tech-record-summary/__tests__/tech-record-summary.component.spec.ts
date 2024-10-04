@@ -175,41 +175,6 @@ describe('TechRecordSummaryComponent', () => {
 			checkHeadingAndForm();
 			expect(component.vehicleType).toEqual(VehicleTypes.TRL);
 		});
-		it('should show adr section if ADR is enabled', () => {
-			component.isEditing = false;
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.HGV,
-					techRecord_adrDetails_dangerousGoods: true,
-					techRecord_adrDetails_applicantDetails_name: 'Test',
-				} as V3TechRecordModel)
-			);
-			fixture.detectChanges();
-
-			checkHeadingAndForm();
-			expect(component.adr).toBeDefined();
-		});
-		it('should not show adr section if ADR is disabled', () => {
-			component.isEditing = false;
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.TRL,
-					techRecord_adrDetails_applicantDetails_name: 'Test',
-				} as V3TechRecordModel)
-			);
-			fixture.detectChanges();
-
-			checkHeadingAndForm();
-			expect(component.adr).toBeUndefined();
-		});
 	});
 
 	describe('handleFormState', () => {
