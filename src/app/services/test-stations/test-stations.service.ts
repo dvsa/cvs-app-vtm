@@ -1,28 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MultiOptions } from '@forms/models/options.model';
-import { TestStation } from '@models/test-stations/test-station.model';
+import { Injectable, inject } from '@angular/core';
+import { MultiOptions } from '@models/options.model';
 import { Store } from '@ngrx/store';
-import { TestStationsState, testStations } from '@store/test-stations';
+import { testStations } from '@store/test-stations';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TestStationsService {
-	private url = `${environment.VTM_API_URI}/test-stations/`;
-
-	constructor(
-		private http: HttpClient,
-		private store: Store<TestStationsState>
-	) {}
-
-	fetchTestStations(): Observable<Array<TestStation>> {
-		return this.http.get<Array<TestStation>>(this.url, { responseType: 'json' });
-	}
-
-	fetchTestStation(id: string): Observable<TestStation> {
-		return this.http.get<TestStation>(this.url + id, { responseType: 'json' });
-	}
+	private store = inject(Store);
 
 	getTestStationsOptions(): Observable<MultiOptions> {
 		return this.store.select(testStations).pipe(

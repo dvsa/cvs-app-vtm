@@ -4,16 +4,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import {
+	CustomFormControl,
+	FormNodeOption,
+	FormNodeTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
 
 @Component({
@@ -75,7 +80,7 @@ export class GenerateLetterComponent implements OnInit {
 
 	get emailAddress(): string | undefined {
 		return this.techRecord?.techRecord_vehicleType === 'trl'
-			? this.techRecord?.techRecord_applicantDetails_emailAddress ?? ''
+			? (this.techRecord?.techRecord_applicantDetails_emailAddress ?? '')
 			: undefined;
 	}
 

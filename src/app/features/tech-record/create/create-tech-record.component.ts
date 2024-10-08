@@ -5,16 +5,16 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CheckboxGroupComponent } from '@forms/components/checkbox-group/checkbox-group.component';
-import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
+import { MultiOptions } from '@models/options.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
+import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

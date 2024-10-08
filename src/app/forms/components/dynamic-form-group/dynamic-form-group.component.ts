@@ -10,15 +10,15 @@ import {
 	SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { DynamicFormService } from '../../services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormArray,
 	CustomFormGroup,
 	FormNode,
 	FormNodeTypes,
 	FormNodeViewTypes,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-dynamic-form-group',
@@ -31,6 +31,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 	@Input() data: any = {};
 	@Input() template?: FormNode;
 	@Input() edit = false;
+	@Input() parentForm?: CustomFormGroup;
 	@Output() formChange = new EventEmitter();
 
 	form: CustomFormGroup | CustomFormArray = new CustomFormGroup(

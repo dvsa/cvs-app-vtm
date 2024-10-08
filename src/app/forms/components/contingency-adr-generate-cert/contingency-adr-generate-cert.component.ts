@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { LoadingService } from '@services/loading/loading.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { retryInterceptorFailure } from '@store/retry-interceptor/actions/retry-interceptor.actions';
+import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
 import { Subject, take, takeUntil } from 'rxjs';
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
-import { addError, clearError, patchErrors, setErrors } from '@store/global-error/actions/global-error.actions';
-import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { globalErrorState } from '@store/global-error/global-error-service.reducer';
+import { addError, clearError, patchErrors, setErrors } from '@store/global-error/global-error.actions';
 import { Observable } from 'rxjs';
 import { GlobalError } from './global-error.interface';
 

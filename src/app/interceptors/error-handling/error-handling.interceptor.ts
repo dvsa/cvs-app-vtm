@@ -14,14 +14,19 @@ export interface HttpResponseRedirectConfig {
 	 * The route to redirect to
 	 */
 	redirectTo?: string;
+	/**
+	 * Blacklist urls from the given behaviour
+	 */
+	blacklist?: string[];
 }
-type InternalConfig = Required<Pick<HttpResponseRedirectConfig, 'httpStatusRedirect' | 'redirectTo'>>;
+
+type InternalConfig = Required<Pick<HttpResponseRedirectConfig, 'httpStatusRedirect' | 'redirectTo' | 'blacklist'>>;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 	config: InternalConfig;
 
-	private readonly defaultConfig = { httpStatusRedirect: [500], redirectTo: 'error' };
+	private readonly defaultConfig = { httpStatusRedirect: [500], redirectTo: 'error', blacklist: [] };
 
 	constructor(
 		private router: Router,
@@ -34,7 +39,10 @@ export class ErrorInterceptor implements HttpInterceptor {
 		return next.handle(request).pipe(
 			catchError((error) => {
 				if (error instanceof HttpErrorResponse) {
-					if (this.config.httpStatusRedirect.includes(error.status)) {
+					if (
+						this.config.httpStatusRedirect.includes(error.status) &&
+						!this.config.blacklist?.some((url) => request.url.includes(url))
+					) {
 						void this.router.navigateByUrl(this.config.redirectTo);
 					}
 				}

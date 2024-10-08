@@ -1,6 +1,6 @@
 import { Params } from '@angular/router';
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { ValidatorNames } from '@models/validators.enum';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 
 export function createSingleSearchResult(
 	systemNumber: string,

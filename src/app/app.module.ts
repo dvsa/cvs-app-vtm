@@ -1,11 +1,7 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
-import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
-import { Configuration as TestResultsApiConfiguration, ApiModule as TestResultsApiModule } from '@api/test-results';
-import { Configuration as TestTypesApiConfiguration, ApiModule as TestTypesApiModule } from '@api/test-types';
 import {
 	MSAL_GUARD_CONFIG,
 	MSAL_INSTANCE,
@@ -25,7 +21,7 @@ import {
 	InteractionType,
 	PublicClientApplication,
 } from '@azure/msal-browser';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
@@ -75,26 +71,15 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 
 @NgModule({
 	declarations: [AppComponent],
+	exports: [],
+	bootstrap: [AppComponent, MsalRedirectComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		MsalModule,
-		HttpClientModule,
 		AppStoreModule,
 		InterceptorModule,
 		CoreModule,
-		TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
-		TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
-		ReferenceDataApiModule.forRoot(() => new ReferenceDataConfiguration({ basePath: environment.VTM_API_URI })),
-		DocumentRetrievalApiModule.forRoot(
-			() =>
-				new DocumentRetrievalConfiguration({
-					basePath: environment.VTM_API_URI,
-					apiKeys: {
-						'X-Api-Key': environment.DOCUMENT_RETRIEVAL_API_KEY,
-					},
-				})
-		),
 		GoogleTagManagerModule.forRoot({
 			id: environment.VTM_GTM_CONTAINER_ID,
 		}),
@@ -153,8 +138,7 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 		MsalGuard,
 		MsalBroadcastService,
 		UserService,
+		provideHttpClient(withInterceptorsFromDi()),
 	],
-	exports: [],
-	bootstrap: [AppComponent, MsalRedirectComponent],
 })
 export class AppModule {}

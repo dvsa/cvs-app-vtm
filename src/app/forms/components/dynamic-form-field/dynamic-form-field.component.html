@@ -118,7 +118,7 @@
 
   <ng-container *ngSwitchCase="formNodeEditTypes.CUSTOM">
     <ng-container *ngIf="control.value.meta.editComponent">
-      <ng-container [ngComponentOutlet]="control.value.meta.editComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
+      <ng-container [ngComponentOutlet]="control.value.meta.editComponent" [ngComponentOutletInputs]="customFormControlInputs" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
     </ng-container>
   </ng-container>
 

@@ -56,3 +56,14 @@
   gap: 10px;
   align-items: center;
 }
+
+.guidance_notes_link {
+  display: flex;
+  padding: 10px 0;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-summary-list__row {
+    display: flex;
+  }
+}

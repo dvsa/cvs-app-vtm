@@ -1,14 +1,15 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
+	FormNodeValueFormat,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const SpecialistTestSectionGroup1: FormNode = {
 	name: 'testSection',
@@ -154,6 +155,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
 							label: 'Certificate number',
 							type: FormNodeTypes.CONTROL,
 							editType: FormNodeEditTypes.TEXT,
+							valueFormat: FormNodeValueFormat.UPPERCASE,
 							validators: [
 								{ name: ValidatorNames.Alphanumeric },
 								// Make required if test result is pass/prs, but issue documents centrally is false

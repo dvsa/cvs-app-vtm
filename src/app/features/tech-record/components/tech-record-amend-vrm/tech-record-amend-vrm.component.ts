@@ -1,19 +1,19 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
@@ -29,6 +29,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	createdTimestamp?: string;
 	formValidity = false;
 	width: FormNodeWidth = FormNodeWidth.L;
+
+	private technicalRecordService = inject(TechnicalRecordService);
 
 	cherishedTransferForm = new FormGroup({
 		currentVrm: new CustomFormControl(
@@ -94,8 +96,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 		private globalErrorService: GlobalErrorService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService
+		private store: Store<TechnicalRecordServiceState>
 	) {}
 
 	ngOnInit(): void {

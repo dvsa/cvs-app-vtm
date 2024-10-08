@@ -7,6 +7,7 @@ import {
 	QueryList,
 	ViewChild,
 	ViewChildren,
+	inject,
 } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -14,19 +15,18 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { RequiredStandardsComponent } from '@forms/custom-sections/required-standards/required-standards.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormControl, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
-import { selectTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
 import { Observable, map } from 'rxjs';
 
@@ -48,16 +48,10 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	@Output() newTestResult = new EventEmitter<TestResultModel>();
 
-	techRecord$: Observable<V3TechRecordModel | undefined>;
-	constructor(
-		private defectsStore: Store<DefectsState>,
-		private routerService: RouterService,
-		private testRecordsService: TestRecordsService,
-		private store: Store,
-		private globalErrorService: GlobalErrorService
-	) {
-		this.techRecord$ = this.store.select(selectTechRecord);
-	}
+	private defectsStore = inject(Store<DefectsState>);
+	private routerService = inject(RouterService);
+	private testRecordsService = inject(TestRecordsService);
+	private globalErrorService = inject(GlobalErrorService);
 
 	ngAfterViewInit(): void {
 		this.handleFormChange({});
@@ -77,9 +71,13 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
 
-		if (latestTest && Object.keys(latestTest).length > 0) {
-			this.newTestResult.emit(latestTest as TestResultModel);
+		if (this.shouldUpdateTest(latestTest)) {
+			this.newTestResult.emit(latestTest);
 		}
+	}
+
+	shouldUpdateTest(latestTest: unknown): latestTest is TestResultModel {
+		return !!latestTest && Object.keys(latestTest).length > 0;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

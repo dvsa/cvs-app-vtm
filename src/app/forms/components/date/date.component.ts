@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';

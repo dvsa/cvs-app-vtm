@@ -6,9 +6,9 @@ import {
 	getRequiredStandards,
 	getRequiredStandardsFailure,
 	getRequiredStandardsSuccess,
-} from '@store/required-standards/actions/required-standards.actions';
-import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';
-import { testResultInEdit } from '@store/test-records/selectors/test-records.selectors';
+} from '@store/required-standards/required-standards.actions';
+import { RequiredStandardState } from '@store/required-standards/required-standards.reducer';
+import { testResultInEdit } from '@store/test-records/test-records.selectors';
 import { map, take } from 'rxjs';
 
 export const requiredStandardsResolver: ResolveFn<boolean> = () => {

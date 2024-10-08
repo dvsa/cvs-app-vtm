@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormGroup, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
-import { CustomControl } from '@forms/services/dynamic-form.types';
+import { CustomControl } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-custom-form-control',

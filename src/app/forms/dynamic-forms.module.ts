@@ -2,20 +2,27 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
+import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
+import { PrefixDirective } from '@directives/prefix/prefix.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
+import { TruncatePipe } from '../pipes/truncate/truncate.pipe';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { DateComponent } from './components/date/date.component';
-import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
@@ -58,12 +65,6 @@ import { RequiredStandardsComponent } from './custom-sections/required-standards
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
-import { NoSpaceDirective } from './directives/app-no-space.directive';
-import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
-import { PrefixDirective } from './directives/prefix.directive';
-import { SuffixDirective } from './directives/suffix.directive';
 
 @NgModule({
 	declarations: [
@@ -89,7 +90,7 @@ import { SuffixDirective } from './directives/suffix.directive';
 		FieldErrorMessageComponent,
 		DefectSelectComponent,
 		RequiredStandardSelectComponent,
-		FocusNextDirective,
+		DateFocusNextDirective,
 		TruncatePipe,
 		WeightsComponent,
 		LettersComponent,
@@ -129,6 +130,7 @@ import { SuffixDirective } from './directives/suffix.directive';
 		AdrTankDetailsM145ViewComponent,
 		ContingencyAdrGenerateCertComponent,
 		AdrNewCertificateRequiredViewComponent,
+		AdrPermittedDangerousGoodsComponent,
 	],
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
 	exports: [

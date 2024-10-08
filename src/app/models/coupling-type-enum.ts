@@ -1,4 +1,4 @@
-import { MultiOptions } from '@forms/models/options.model';
+import { MultiOptions } from '@models/options.model';
 
 export enum CouplingTypeCodeEnum {
 	F = 'F',

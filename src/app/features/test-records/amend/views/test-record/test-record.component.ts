@@ -3,12 +3,12 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
@@ -67,6 +67,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 					this.testRecordsService.editingTestResult(testResult);
 				}
 				if (testType && testType !== testResult?.testTypes[0].testTypeId) {
+					// @ts-ignore
 					this.testRecordsService.testTypeChange(testType);
 				}
 			});

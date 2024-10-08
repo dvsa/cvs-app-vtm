@@ -7,23 +7,24 @@ import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/t
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrExaminerNotesHistoryViewComponent } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrNewCertificateRequiredViewComponent } from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { AdrTankDetailsInitialInspectionViewComponent } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrTankDetailsSubsequentInspectionsEditComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import { AdrTankDetailsSubsequentInspectionsViewComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
 import { AdrTankStatementUnNumberEditComponent } from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
 import { AdrTankStatementUnNumberViewComponent } from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidators } from '@forms/validators/adr/adr.validators';
 import { TC2Types } from '@models/adr.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const AdrTemplate: FormNode = {
 	name: 'adrSection',
@@ -200,10 +201,10 @@ export const AdrTemplate: FormNode = {
 			name: 'techRecord_adrDetails_permittedDangerousGoods',
 			label: 'Permitted dangerous goods',
 			type: FormNodeTypes.CONTROL,
-			editType: FormNodeEditTypes.CHECKBOXGROUP,
+			editType: FormNodeEditTypes.CUSTOM,
+			editComponent: AdrPermittedDangerousGoodsComponent,
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
-			options: getOptionsFromEnum(ADRDangerousGood),
 			validators: [
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
@@ -254,6 +255,7 @@ export const AdrTemplate: FormNode = {
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
 			width: FormNodeWidth.XS,
+			link: 'https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx',
 			value: [],
 			options: getOptionsFromEnum(ADRAdditionalNotesNumber),
 			validators: [
@@ -595,7 +597,8 @@ export const AdrTemplate: FormNode = {
 		},
 		{
 			name: 'techRecord_adrDetails_memosApply',
-			label: 'Memo 7/9 (3 month extension) applied',
+			label: 'Memo 07/09 (3 month extension) can be applied',
+			labelClass: 'govuk-!-font-weight-bold',
 			hint: 'Only applicable for vehicles used on national journeys',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.CHECKBOXGROUP,

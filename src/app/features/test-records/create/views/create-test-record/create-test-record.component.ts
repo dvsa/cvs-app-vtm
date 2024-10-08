@@ -5,7 +5,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
@@ -13,13 +12,14 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { State } from '@store/index';
 import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
-import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
+import { getTypeOfTest } from '@store/test-types/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
 import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, map, of, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
@@ -69,6 +69,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 			)
 			.subscribe((testTypeId) => {
 				this.testRecordsService.contingencyTestTypeSelected(testTypeId as string);
+				// @ts-ignore
 				this.testTypeId = testTypeId;
 			});
 
