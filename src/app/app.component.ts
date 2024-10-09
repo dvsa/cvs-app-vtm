@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
+import { startSendingLogs } from '@store/logs/logs.actions';
 import { selectRouteData } from '@store/router/router.selectors';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
@@ -33,6 +34,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	async ngOnInit() {
 		this.startSentry();
+
+		this.store.dispatch(startSendingLogs());
+
 		this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
 			if (event instanceof NavigationEnd) {
 				const gtmTag = {
@@ -42,6 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
 				void this.gtmService.pushTag(gtmTag);
 			}
 		});
+
 		await this.gtmService.addGtmToDom();
 		initAll();
 	}
