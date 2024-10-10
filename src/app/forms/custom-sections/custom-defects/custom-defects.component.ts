@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { CustomDefect, CustomDefects } from '@api/test-results';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { CustomDefect } from '@models/test-results/customDefect';
+import { CustomDefects } from '@models/test-results/customDefects';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { Subscription } from 'rxjs';
 
 @Component({

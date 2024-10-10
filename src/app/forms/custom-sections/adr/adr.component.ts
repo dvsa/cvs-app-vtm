@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -34,12 +34,12 @@ export class AdrComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.template = this.isReviewScreen ? AdrSummaryTemplate : AdrTemplate;
-		this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
-		this.techRecord.techRecord_adrDetails_dangerousGoods = this.adrService.carriesDangerousGoods(this.techRecord);
 		if (this.techRecord.techRecord_adrDetails_dangerousGoods && !this.isReviewScreen) {
 			this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select =
 				this.adrService.determineTankStatementSelect(this.techRecord);
 		}
+		this.techRecord = this.adrService.preprocessTechRecord(this.techRecord);
+		this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
 		this.handleSubmit();
 	}
 

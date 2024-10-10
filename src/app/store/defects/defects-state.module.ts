@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { DefectsEffects } from './effects/defects.effects';
-import { STORE_FEATURE_DEFECTS_KEY, defectsReducer } from './reducers/defects.reducer';
+import { DefectsEffects } from './defects.effects';
+import { STORE_FEATURE_DEFECTS_KEY, defectsReducer } from './defects.reducer';
 
 @NgModule({
 	declarations: [],

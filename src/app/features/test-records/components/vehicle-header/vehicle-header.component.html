@@ -5,10 +5,16 @@
         <div class="vehicle_heading">
           <h1 class="govuk-heading-l">
             <span>
-              {{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
+              {{
+                test?.testTypeId ?? ''
+                  | testTypeName : (selectAllTestTypes$ | async)
+                  | defaultNullOrEmpty
+              }}
               {{ testCode | uppercase }}
             </span>
-            <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
+            <app-icon
+              [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"
+            ></app-icon>
           </h1>
         </div>
       </div>
@@ -21,7 +27,10 @@
           <ng-container [ngSwitch]="testResult?.vehicleType">
             <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
 
-            <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
+            <div
+              *ngSwitchCase="vehicleTypes.TRL"
+              class="govuk-summary-list__row"
+            >
               <dt class="govuk-summary-list__key">Trailer ID</dt>
               <dd id="test-testTypeId" class="govuk-summary-list__value">
                 {{ testResult?.trailerId | defaultNullOrEmpty }}
@@ -41,6 +50,18 @@
               {{ testResult?.vin }}
             </dd>
           </div>
+          <div
+            *ngIf="isADRTest"
+            class="govuk-summary-list__row guidance_notes_link"
+          >
+            <a
+              class="govuk-link--no-visited-state"
+              target="_blank"
+              href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx"
+            >
+              Guidance notes
+            </a>
+          </div>
         </dl>
       </div>
     </div>
@@ -50,11 +71,22 @@
     <div class="test_result_header">
       <div class="test_name_and_date">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
-          <span>{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
+          <span>
+            {{
+              test?.testTypeId ?? ''
+                | testTypeName : (selectAllTestTypes$ | async)
+                | defaultNullOrEmpty
+            }}
+            {{ testCode | uppercase }}
+          </span>
         </h1>
         <div class="date_and_result">
-          <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-          <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
+          <span class="govuk-caption-l">{{
+            testResult?.createdAt | date : 'dd MMM yyyy'
+          }}</span>
+          <app-tag [type]="tagType">{{
+            resultOfTest | defaultNullOrEmpty
+          }}</app-tag>
         </div>
       </div>
 
@@ -62,11 +94,15 @@
         <dl class="govuk-summary-list govuk-summary-list--no-border">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Assessor</dt>
-            <dd class="govuk-summary-list__value">{{ testResult?.testerName | defaultNullOrEmpty }}</dd>
+            <dd class="govuk-summary-list__value">
+              {{ testResult?.testerName | defaultNullOrEmpty }}
+            </dd>
           </div>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Test location</dt>
-            <dd class="govuk-summary-list__value">{{ testResult?.testStationName | defaultNullOrEmpty }}</dd>
+            <dd class="govuk-summary-list__value">
+              {{ testResult?.testStationName | defaultNullOrEmpty }}
+            </dd>
           </div>
         </dl>
       </div>
@@ -80,7 +116,9 @@
           {{ getVehicleDescription(techRecord, testResult?.vehicleType) }}
         </ng-container>
 
-        <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
+        <app-icon
+          [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"
+        ></app-icon>
       </h2>
     </div>
     <h3 class="govuk-heading-m">Vehicle overview</h3>
@@ -90,7 +128,9 @@
 
         <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Trailer ID</dt>
-          <dd id="test-testTypeId" class="govuk-summary-list__value">{{ testResult?.trailerId | defaultNullOrEmpty }}</dd>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testResult?.trailerId | defaultNullOrEmpty }}
+          </dd>
         </div>
 
         <div *ngSwitchDefault class="govuk-summary-list__row">
@@ -109,13 +149,23 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle type</dt>
         <dd id="test-vehicleType" class="govuk-summary-list__value">
-          {{ (techRecord$ | async)?.techRecord_vehicleType | defaultNullOrEmpty | uppercase }}
+          {{
+            (techRecord$ | async)?.techRecord_vehicleType
+              | defaultNullOrEmpty
+              | uppercase
+          }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Country of registration</dt>
         <dd id="test-cor" class="govuk-summary-list__value">
-          {{ testResult?.countryOfRegistration | refDataDecode$: referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
+          {{
+            testResult?.countryOfRegistration
+              | refDataDecode$ : referenceDataType.CountryOfRegistration
+              | async
+              | defaultNullOrEmpty
+              | uppercase
+          }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -124,16 +174,28 @@
           {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div *ngIf="testResult?.vehicleType !== vehicleTypes.TRL" class="govuk-summary-list__row">
+      <div
+        *ngIf="testResult?.vehicleType !== vehicleTypes.TRL"
+        class="govuk-summary-list__row"
+      >
         <dt class="govuk-summary-list__key">Odometer reading</dt>
         <dd id="test-odomReading" class="govuk-summary-list__value">
-          {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
+          {{
+            combinedOdometerReading(
+              testResult?.odometerReading | digitGroupSeparator,
+              testResult?.odometerReadingUnits
+            ) | defaultNullOrEmpty
+          }}
         </dd>
       </div>
       <div *ngIf="resultOfTest !== 'cancelled'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Certificate:</dt>
         <dd id="test-certificate" class="govuk-summary-list__value">
-          <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''" [isClickable]="!isReview">
+          <app-test-certificate
+            [testNumber]="testNumber || ''"
+            [vin]="testResult?.vin || ''"
+            [isClickable]="!isReview"
+          >
             {{ test?.certificateNumber | defaultNullOrEmpty }}
           </app-test-certificate>
         </dd>

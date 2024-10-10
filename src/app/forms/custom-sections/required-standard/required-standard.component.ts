@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { RequiredStandardsTpl } from '@forms/templates/general/required-standards.template';
 import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { Store, select } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/selectors/required-standards.selector';
-import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { getRequiredStandardFromTypeAndRef } from '@store/required-standards/required-standards.selector';
+import { selectRouteParam } from '@store/router/router.selectors';
 import {
 	createRequiredStandard,
 	removeRequiredStandard,

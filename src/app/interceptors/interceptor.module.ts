@@ -14,7 +14,8 @@ import { ErrorInterceptorModule } from './error-handling/error-handling.module';
 			backoff: true,
 			whiteList: ['document-retrieval'],
 		}),
-		ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], redirectTo: 'error' }),
+		// @TODO - Remove blacklisted paths once source of 500 errors are resolved
+		ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], redirectTo: 'error', blacklist: ['/test-types/'] }),
 	],
 })
 export class InterceptorModule {}

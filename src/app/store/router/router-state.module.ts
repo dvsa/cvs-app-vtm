@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
-import { STORE_FEATURE_ROUTER_STORE_KEY } from './selectors/router.selectors';
+import { STORE_FEATURE_ROUTER_STORE_KEY } from './router.selectors';
 
 @NgModule({
 	declarations: [],

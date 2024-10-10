@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 
 const DEFAULT_LABEL = 'This field';
 export const ErrorMessageMap: Record<string, Function> = {

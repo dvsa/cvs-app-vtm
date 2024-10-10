@@ -8,11 +8,15 @@ import {
 	Input,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { PrefixDirective } from '@forms/directives/prefix.directive';
-import { SuffixDirective } from '@forms/directives/suffix.directive';
-import { ValidatorNames } from '@forms/models/validators.enum';
-// eslint-disable-next-line import/no-cycle
-import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { PrefixDirective } from '@directives/prefix/prefix.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
+import { ValidatorNames } from '@models/validators.enum';
+import {
+	CustomControl,
+	FormNodeValueFormat,
+	FormNodeViewTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -28,6 +32,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	@Input() name = '';
 	@Input() customId?: string;
 	@Input() hint?: string;
+	@Input() link?: string;
 	@Input() label?: string;
 	@Input() width?: FormNodeWidth;
 	@Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
@@ -54,7 +59,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 		const ngControl: NgControl | null = this.injector.get(NgControl, null);
 		if (ngControl) {
 			this.control = ngControl.control as CustomControl;
-			if (this.control && this.control.meta) {
+			if (this.control?.meta) {
 				this.control.meta.changeDetection = this.cdr;
 			}
 		} else {
@@ -79,7 +84,11 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	}
 
 	set value(value) {
-		this.control_value = value;
+		if (typeof value === 'string') {
+			this.control_value = this.formatString(value);
+		} else {
+			this.control_value = value;
+		}
 	}
 
 	get disabled() {
@@ -117,5 +126,14 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
 	trackBy(i: number) {
 		return i;
+	}
+
+	formatString(value: string) {
+		switch (this.control?.meta.valueFormat) {
+			case FormNodeValueFormat.UPPERCASE:
+				return value.toUpperCase();
+			default:
+				return value;
+		}
 	}
 }

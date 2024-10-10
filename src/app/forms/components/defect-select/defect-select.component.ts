@@ -9,7 +9,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
-import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
+import { TestResultsState } from '@store/test-records/test-records.reducer';
 import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({

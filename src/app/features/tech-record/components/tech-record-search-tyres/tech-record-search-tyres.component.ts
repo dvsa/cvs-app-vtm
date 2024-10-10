@@ -4,19 +4,19 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeByVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
+import { MultiOptions } from '@models/options.model';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
-import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { selectSearchReturn } from '@store/reference-data/reference-data.selectors';
+import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, mergeMap, take } from 'rxjs';
 
 @Component({
@@ -107,7 +107,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 	}
 	get currentVrm(): string | undefined {
 		return this.vehicleTechRecord?.techRecord_vehicleType !== 'trl'
-			? this.vehicleTechRecord?.primaryVrm ?? ''
+			? (this.vehicleTechRecord?.primaryVrm ?? '')
 			: undefined;
 	}
 	get paginatedFields(): ReferenceDataTyre[] {

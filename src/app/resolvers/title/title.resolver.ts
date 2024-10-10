@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ResolveFn } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { selectRouteData } from '@store/router/router.selectors';
 
 export const titleResolver: ResolveFn<boolean> = () => {
 	const store: Store<State> = inject(Store<State>);

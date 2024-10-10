@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Store, select } from '@ngrx/store';
-import { selectedTestSortedAmendmentHistory } from '@store/test-records/selectors/test-records.selectors';
+import { selectedTestSortedAmendmentHistory } from '@store/test-records/test-records.selectors';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Component({

@@ -1,13 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store, select } from '@ngrx/store';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectQueryParams } from '@store/router/selectors/router.selectors';
+import { selectQueryParams } from '@store/router/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -19,13 +18,12 @@ export class MultipleSearchResultsComponent implements OnDestroy {
 	searchResults$: Observable<TechRecordSearchSchema[] | undefined>;
 	ngDestroy$ = new Subject();
 
-	constructor(
-		public globalErrorService: GlobalErrorService,
-		private technicalRecordService: TechnicalRecordService,
-		private technicalRecordHttpService: TechnicalRecordHttpService,
-		private store: Store,
-		private location: Location
-	) {
+	public globalErrorService = inject(GlobalErrorService);
+	private technicalRecordService = inject(TechnicalRecordService);
+	private store = inject(Store);
+	private location = inject(Location);
+
+	constructor() {
 		this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
 			if (Object.keys(params).length === 1) {
 				const type = Object.keys(params)[0] as SEARCH_TYPES;
@@ -34,7 +32,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
 
 				if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {
 					this.globalErrorService.clearErrors();
-					this.technicalRecordHttpService.searchBy(type, searchTerm);
+					this.technicalRecordService.searchBy(type, searchTerm);
 				}
 			}
 		});

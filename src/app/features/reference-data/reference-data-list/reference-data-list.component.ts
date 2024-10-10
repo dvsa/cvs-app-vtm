@@ -1,11 +1,15 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import {
+	ReferenceDataAdminType,
+	ReferenceDataModelBase,
+	ReferenceDataResourceType,
+} from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import {
 	selectAllReferenceDataByResourceType,
@@ -97,8 +101,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
+	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {
 		return this.store.pipe(
 			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
 		);
@@ -144,7 +147,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		return (this.data ?? of([])).pipe(map((items) => items?.length ?? 0));
 	}
 
-	search(term: string, filterterm: string) {
+	search(term: string, filterterm: keyof ReferenceDataModelBase) {
 		this.globalErrorService.clearErrors();
 		const trimmedTerm = term?.trim();
 		if (!trimmedTerm || !filterterm) {

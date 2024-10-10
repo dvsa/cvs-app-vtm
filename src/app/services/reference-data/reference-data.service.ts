@@ -1,25 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-	BASE_PATH,
-	Configuration,
-	ReferenceDataApiResponse,
-	ReferenceDataService as ReferenceDataApiService,
-	ReferenceDataItemApiResponse,
-} from '@api/reference-data';
-import { MultiOptions } from '@forms/models/options.model';
+import { Injectable, inject } from '@angular/core';
+import { MultiOptions } from '@models/options.model';
 import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,
 	ReferenceDataTyre,
 	User,
 } from '@models/reference-data.model';
+import { ReferenceDataApiResponse, ReferenceDataItemApiResponse } from '@models/reference-data/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { HttpService } from '@services/http/http.service';
 import { UserService } from '@services/user-service/user-service';
 import {
 	ReferenceDataEntityStateSearch,
-	ReferenceDataState,
 	addSearchInformation,
 	fetchReferenceData,
 	fetchReferenceDataByKey,
@@ -39,16 +32,10 @@ import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 @Injectable({
 	providedIn: 'root',
 })
-export class ReferenceDataService extends ReferenceDataApiService {
-	constructor(
-		@Optional() @Inject(BASE_PATH) basePath: string,
-		@Optional() configuration: Configuration,
-		httpClient: HttpClient,
-		private usersService: UserService,
-		private store: Store<ReferenceDataState>
-	) {
-		super(httpClient, basePath, configuration);
-	}
+export class ReferenceDataService {
+	store = inject(Store);
+	httpService = inject(HttpService);
+	usersService = inject(UserService);
 
 	//  URL to POST new reference data items: /reference/{ type capitalized }/{ new key } POST
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,13 +43,12 @@ export class ReferenceDataService extends ReferenceDataApiService {
 		return this.usersService.id$.pipe(
 			withLatestFrom(this.usersService.name$),
 			switchMap(([createdId, createdName]) => {
-				const referenceData = {
+				return this.httpService.referenceResourceTypeResourceKeyPost(type, key, {
 					...data,
 					createdId,
 					createdName,
 					createdAt: new Date(),
-				};
-				return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
+				});
 			})
 		);
 	}
@@ -73,13 +59,12 @@ export class ReferenceDataService extends ReferenceDataApiService {
 		return this.usersService.id$.pipe(
 			withLatestFrom(this.usersService.name$),
 			switchMap(([createdId, createdName]) => {
-				const referenceData = {
+				return this.httpService.referenceResourceTypeResourceKeyPut(type, key, {
 					...data,
 					createdId,
 					createdName,
 					createdAt: new Date(),
-				};
-				return this.referenceResourceTypeResourceKeyPut(type, key, referenceData, 'body', false);
+				});
 			})
 		);
 	}
@@ -88,13 +73,12 @@ export class ReferenceDataService extends ReferenceDataApiService {
 		return this.usersService.id$.pipe(
 			withLatestFrom(this.usersService.name$),
 			switchMap(([createdId, createdName]) => {
-				const deleteObject = {
+				return this.httpService.referenceResourceTypeResourceKeyDelete(type, key, {
 					...payload,
 					createdId,
 					createdName,
 					createdAt: new Date(),
-				};
-				return this.referenceResourceTypeResourceKeyDelete(type, key, deleteObject, 'body', false);
+				});
 			})
 		);
 	}
@@ -107,7 +91,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
 			return throwError(() => new Error('Reference data resourceType is required'));
 		}
 
-		return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
+		return this.httpService.referenceResourceTypeGet(resourceType, paginationToken);
 	}
 
 	fetchReferenceDataAudit(
@@ -118,14 +102,14 @@ export class ReferenceDataService extends ReferenceDataApiService {
 			return throwError(() => new Error('Reference data resourceType is required'));
 		}
 
-		return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
+		return this.httpService.referenceResourceTypeGet(resourceType, paginationToken);
 	}
 
 	fetchReferenceDataByKey(
 		resourceType: ReferenceDataResourceType,
 		resourceKey: string | number
 	): Observable<ReferenceDataItemApiResponse> {
-		return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
+		return this.httpService.referenceResourceTypeResourceKeyGet(resourceType, resourceKey);
 	}
 
 	loadReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
@@ -136,11 +120,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
 		resourceType: ReferenceDataResourceType,
 		resourceKey: string | number
 	): Observable<ReferenceDataApiResponse> {
-		return this.referenceLookupResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
+		return this.httpService.referenceLookupResourceTypeResourceKeyGet(resourceType, resourceKey);
 	}
 
 	fetchTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): Observable<ReferenceDataApiResponse> {
-		return this.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm, 'body');
+		return this.httpService.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm);
 	}
 
 	loadReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {

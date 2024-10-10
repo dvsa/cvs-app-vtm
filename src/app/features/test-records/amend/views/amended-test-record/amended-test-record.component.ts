@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, firstValueFrom, of } from 'rxjs';
 

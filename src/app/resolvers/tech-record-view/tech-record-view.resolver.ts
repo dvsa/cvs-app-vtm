@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { getTechRecordV3, getTechRecordV3Failure, getTechRecordV3Success } from '@store/technical-records';
 import {
 	fetchTestResultsBySystemNumber,
