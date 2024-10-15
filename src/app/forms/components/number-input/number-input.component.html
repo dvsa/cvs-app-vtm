@@ -36,6 +36,7 @@
       (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
+      appDecimalOnly
     />
 
     <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
