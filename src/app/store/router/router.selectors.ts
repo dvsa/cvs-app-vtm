@@ -5,6 +5,10 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 export const STORE_FEATURE_ROUTER_STORE_KEY = 'router';
 export const selectRouter = createFeatureSelector<RouterReducerState>(STORE_FEATURE_ROUTER_STORE_KEY);
 
+const selectMergedRoute = createSelector(selectRouter, (routerReducerState) => routerReducerState?.state);
+
+export const selectMergedRouteUrl = createSelector(selectMergedRoute, (mergedRoute) => mergedRoute?.url?.substring(1));
+
 export const {
 	selectCurrentRoute, // select the current route
 	selectFragment, // select the current route fragment

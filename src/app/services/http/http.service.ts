@@ -5,6 +5,7 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { Defect } from '@models/defects/defect.model';
+import { Log } from '@models/logs/logs.model';
 import {
 	DeleteItem,
 	ReferenceDataApiResponse,
@@ -25,10 +26,12 @@ import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techReco
 import { TechRecordPOST } from '@models/vehicle/techRecordPOST';
 import { TechRecordPUT } from '@models/vehicle/techRecordPUT';
 import { cloneDeep } from 'lodash';
+import { lastValueFrom, timeout } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-	http = inject(HttpClient);
+	private http = inject(HttpClient);
+	private static readonly TIMEOUT = 30000;
 
 	addProvisionalTechRecord(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
 		if (body === null || body === undefined) {
@@ -638,4 +641,17 @@ export class HttpService {
 			}
 		);
 	}
+
+	sendLogs = async (logs: Log[]) => {
+		const headers = new HttpHeaders().set('x-api-key', environment.LOGS_API_KEY);
+
+		return lastValueFrom(
+			this.http
+				.post(`${environment.VTM_API_URI}/log`, logs, {
+					headers,
+					observe: 'response',
+				})
+				.pipe(timeout(HttpService.TIMEOUT))
+		);
+	};
 }

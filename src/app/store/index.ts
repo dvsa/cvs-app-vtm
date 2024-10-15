@@ -1,3 +1,4 @@
+import type { LogsModel } from '@models/logs/logs.model';
 import { ActionReducerMap } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
 import {
@@ -6,6 +7,8 @@ import {
 	globalErrorReducer,
 	initialGlobalErrorState,
 } from '@store/global-error/global-error-service.reducer';
+import { STORE_FEATURE_LOGS_KEY } from '@store/logs/logs.feature';
+import { initialState as initialLogState, logsReducer } from '@store/logs/logs.reducer';
 import {
 	STORE_FEATURE_SPINNER_KEY,
 	SpinnerState,
@@ -74,6 +77,7 @@ export interface State {
 	[STORE_FEATURE_USER_KEY]: UserServiceState;
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: SearchResultState;
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: RequiredStandardState;
+	[STORE_FEATURE_LOGS_KEY]: LogsModel;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	router?: any;
 }
@@ -90,6 +94,7 @@ export const initialAppState = {
 	[STORE_FEATURE_USER_KEY]: initialUserState,
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: initialTechSearchResultState,
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: initialRequiredStandardsState,
+	[STORE_FEATURE_LOGS_KEY]: initialLogState,
 };
 
 export const reducers: ActionReducerMap<State> = {
@@ -104,4 +109,5 @@ export const reducers: ActionReducerMap<State> = {
 	[STORE_FEATURE_USER_KEY]: userServiceReducer,
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: techSearchResultReducer,
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: requiredStandardsReducer,
+	[STORE_FEATURE_LOGS_KEY]: logsReducer,
 };

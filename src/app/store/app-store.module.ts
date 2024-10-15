@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { environment } from '@environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GlobalErrorStateModule } from '@store/global-error/global-error-state.module';
+import { reducers } from '@store/index';
+import { STORE_FEATURE_LOGS_KEY } from '@store/logs/logs.feature';
+import { LogsModule } from '@store/logs/logs.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
-import { environment } from '../../environments/environment';
+import { localStorageSync } from 'ngrx-store-localstorage';
 import { DefectsStateModule } from './defects/defects-state.module';
 import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
@@ -19,11 +23,15 @@ import { TestStationsStateModule } from './test-stations/test-stations-state.mod
 import { TestTypesStateModule } from './test-types/test-types.module';
 import { UserStateModule } from './user/user-state.module';
 
+function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+	return localStorageSync({ keys: [STORE_FEATURE_LOGS_KEY], rehydrate: true })(reducer);
+}
+
 @NgModule({
 	declarations: [],
 	imports: [
 		CommonModule,
-		StoreModule.forRoot({}),
+		StoreModule.forRoot(reducers, { metaReducers: [localStorageSyncReducer] }),
 		EffectsModule.forRoot([]),
 		environment.EnableDevTools
 			? StoreDevtoolsModule.instrument({
@@ -46,6 +54,7 @@ import { UserStateModule } from './user/user-state.module';
 		TechRecordSearchStateModule,
 		RetryInterceptorStateModule,
 		RequiredStandardsStateModule,
+		LogsModule,
 	],
 })
 export class AppStoreModule {}
