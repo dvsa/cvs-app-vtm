@@ -48,7 +48,7 @@
     "@ngrx/router-store": "^18.0.2",
     "@ngrx/store": "^18.0.2",
     "@ngrx/store-devtools": "^18.0.2",
-    "@sentry/angular": "^8.26.0",
+    "@sentry/angular": "^8.33.1",
     "@sentry/types": "^8.26.0",
     "accessible-autocomplete": "^2.0.4",
     "angular-google-tag-manager": "^1.10.0",
