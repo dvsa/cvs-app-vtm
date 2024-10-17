@@ -19,7 +19,7 @@ import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-adr-section-edit',
@@ -256,6 +256,8 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 				parent.addControl(key, control, { emitEvent: false })
 			);
 		}
+
+		this.handleADRBodyTypeChange();
 	}
 
 	ngOnDestroy(): void {
@@ -268,6 +270,31 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	handleADRBodyTypeChange() {
+		this.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(() => {
+				const options = getOptionsFromEnum(ADRDangerousGood);
+
+				// When the ADR body type is a tank or battery, remove the explosives type 2 and 3 from the permitted dangerous goods list
+				if (this.adrService.canDisplayTankOrBatterySection(this.form.getRawValue() as any)) {
+					this.form.patchValue({
+						techRecord_adrDetails_permittedDangerousGoods:
+							this.form.controls.techRecord_adrDetails_permittedDangerousGoods.value?.filter((good) => {
+								return good !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && good !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
+							}),
+						techRecord_adrDetails_compatibilityGroupJ: null,
+					});
+
+					this.permittedDangerousGoodsOptions = options.filter(({ value }) => {
+						return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
+					});
+				} else {
+					this.permittedDangerousGoodsOptions = options;
+				}
+			});
 	}
 
 	addTC3TankInspection() {
