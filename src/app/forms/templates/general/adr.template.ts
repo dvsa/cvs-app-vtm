@@ -630,7 +630,7 @@ export const AdrTemplate: FormNode = {
 			name: 'techRecord_adrDetails_listStatementApplicable',
 			label: 'Battery List Applicable',
 			width: FormNodeWidth.XS,
-			value: false,
+			value: null,
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.RADIO,
 			options: [
