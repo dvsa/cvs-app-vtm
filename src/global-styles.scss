@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'node_modules/govuk-frontend/govuk/all';
 @import 'node_modules/accessible-autocomplete';
+@import 'node_modules/govuk-frontend/govuk/all';
 @import './styles';
 
 .vehicle_heading {
@@ -22,7 +22,7 @@
 }
 
 /** Global govuk styles */
-.govuk-form-group {
+.govuk-form-group-input {
   @extend .govuk-form-group;
 
   > h1 {
@@ -47,19 +47,55 @@
   }
 }
 
-.govuk-radios {
-  @extend .govuk-radios;
-
-  > div {
-    @extend .govuk-radios__item;
-
-    > input {
-      @extend .govuk-radios__input;
+.govuk-form-group-radio {
+  @extend .govuk-form-group;
+  > fieldset {
+    @extend .govuk-fieldset;
+    > legend {
+      @extend .govuk-fieldset__legend;
+      @extend .govuk-fieldset__legend--m;
+      > h1 {
+        @extend .govuk-fieldset__heading;
+      }
     }
+    > div {
+      > div {
+        @extend .govuk-radios__item;
 
+        > input {
+          @extend .govuk-radios__input;
+        }
+
+        > label {
+          @extend .govuk-label;
+          @extend .govuk-radios__label;
+        }
+      }
+    }
+  }
+ }
+
+.govuk-form-group-select {
+  @extend .govuk-form-group;
+  > label {
+    @extend .govuk-label;
+    @extend .govuk-label--m;
+  }
+  > div {
+    @extend .govuk-hint;
+  }
+  > select {
+    @extend .govuk-select;
+  }
+}
+
+.govuk-form-group-split-controls {
+  @extend .govuk-form-group;
+  > h1 {
+    @extend .govuk-label-wrapper;
     > label {
       @extend .govuk-label;
-      @extend .govuk-radios__label;
+      @extend .govuk-label--m;
     }
   }
 }
