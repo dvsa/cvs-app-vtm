@@ -21,6 +21,7 @@ import {
 	InteractionType,
 	PublicClientApplication,
 } from '@azure/msal-browser';
+import { ResponseLoggerInterceptor } from '@interceptors/response-logger/response-logger.interceptor';
 import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -92,6 +93,11 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: MsalInterceptor,
+			multi: true,
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ResponseLoggerInterceptor,
 			multi: true,
 		},
 		{
