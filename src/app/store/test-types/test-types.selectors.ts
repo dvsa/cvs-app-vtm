@@ -124,6 +124,7 @@ function filterTestTypes(
 		vehicleSubclass,
 		numberOfWheelsDriven,
 	} = testResult;
+	const adrTestIds = ['50', '59', '60'];
 	const filterAllFirstTestIds = ['41', '119', '120', '67', '103', '104', '51', '95', '82', '83', '65', '66'];
 	const filterHgvFirstTestIds = ['41', '119', '120', '67', '103', '104'];
 	const { techRecord_statusCode: statusCode } = techRecord;
@@ -180,6 +181,16 @@ function filterTestTypes(
 						? filterHgvFirstTestIds.includes(testType.id)
 						: filterAllFirstTestIds.includes(testType.id))
 			)
+			// only allow ADR tests on ADR vehicles which carry dangerous goods
+			.filter((testType) => {
+				const isAdrTest = adrTestIds.includes(testType.id);
+				const isHGV = techRecord.techRecord_vehicleType === VehicleTypes.HGV;
+				const isTRL = techRecord.techRecord_vehicleType === VehicleTypes.TRL;
+				const isLGV = techRecord.techRecord_vehicleType === VehicleTypes.LGV;
+				const isADRVehicle = isHGV || isTRL || isLGV;
+
+				return isAdrTest && isADRVehicle ? techRecord.techRecord_adrDetails_dangerousGoods : true;
+			})
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;
 
