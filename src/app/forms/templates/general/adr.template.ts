@@ -209,15 +209,22 @@ export const AdrTemplate: FormNode = {
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
 					args: {
-						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['compatibility_group_j'],
+						values: [ADRDangerousGood, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['body_declaration'],
+					},
+				},
+				{
+					name: ValidatorNames.HideGroupsWhenExcludes,
+					args: {
+						values: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['body_declaration'],
 					},
 				},
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
 					args: {
-						values: [ADRDangerousGood, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['body_declaration'],
+						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['compatibility_group_j'],
 					},
 				},
 				{
@@ -238,7 +245,7 @@ export const AdrTemplate: FormNode = {
 			label: 'Body declaration',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.RADIO,
-			groups: ['body-declaration', 'adr_details', 'dangerous_goods'],
+			groups: ['body_declaration', 'adr_details', 'dangerous_goods'],
 			hide: true,
 			options: [
 				{ value: true, label: 'Pre 1st July 2005' },
