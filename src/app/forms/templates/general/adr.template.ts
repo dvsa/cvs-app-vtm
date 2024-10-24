@@ -1,4 +1,5 @@
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
@@ -248,9 +249,12 @@ export const AdrTemplate: FormNode = {
 			groups: ['body_declaration', 'adr_details', 'dangerous_goods'],
 			hide: true,
 			options: [
-				{ value: true, label: 'Pre 1st July 2005' },
-				{ value: false, label: 'On or after 1st July 2005' },
-				{ value: null, label: 'Unknown' },
+				{ value: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005, label: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005 },
+				{
+					value: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+					label: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+				},
+				{ value: ADRBodyDeclarationTypes.UNKNOWN, label: ADRBodyDeclarationTypes.UNKNOWN },
 			],
 			validators: [
 				{
