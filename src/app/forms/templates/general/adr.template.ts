@@ -214,12 +214,38 @@ export const AdrTemplate: FormNode = {
 					},
 				},
 				{
+					name: ValidatorNames.ShowGroupsWhenIncludes,
+					args: {
+						values: [ADRDangerousGood, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['body_declaration'],
+					},
+				},
+				{
 					name: ValidatorNames.HideGroupsWhenExcludes,
 					args: {
 						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
 						groups: ['compatibility_group_j'],
 					},
 				},
+				{
+					name: ValidatorNames.RequiredIfEquals,
+					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+				},
+			],
+		},
+		{
+			name: 'techRecord_adrDetails_bodyDeclaration',
+			label: 'Body declaration',
+			type: FormNodeTypes.CONTROL,
+			editType: FormNodeEditTypes.RADIO,
+			groups: ['body-declaration', 'adr_details', 'dangerous_goods'],
+			hide: true,
+			options: [
+				{ value: true, label: 'Pre 1st July 2005' },
+				{ value: false, label: 'On or after 1st July 2005' },
+				{ value: null, label: 'Unknown' },
+			],
+			validators: [
 				{
 					name: ValidatorNames.RequiredIfEquals,
 					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
