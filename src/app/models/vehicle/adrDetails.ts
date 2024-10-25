@@ -49,7 +49,7 @@ export interface AdrDetails {
 	/**
 	 * Optional for all vehicle types
 	 */
-	bodyDeclaration?: boolean;
+	bodyDeclaration?: string;
 	/**
 	 * Optional for all vehicle types, displayed only if explosives type 3 chosen for
 	 */
