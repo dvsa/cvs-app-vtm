@@ -49,6 +49,10 @@ export interface AdrDetails {
 	/**
 	 * Optional for all vehicle types
 	 */
+	bodyDeclaration?: boolean;
+	/**
+	 * Optional for all vehicle types, displayed only if explosives type 3 chosen for
+	 */
 	compatibilityGroupJ?: boolean;
 	/**
 	 * Optional. Applicable only if vehicleDetails.type contains the word ‘tank’ or ‘battery’.
