@@ -235,7 +235,7 @@ export const AdrSummaryTemplate: FormNode = {
 			],
 		},
 		{
-			name: 'techRecord_adrDetails_bodyDeclaration',
+			name: 'techRecord_adrDetails_bodyDeclaration_type',
 			label: 'Body declaration',
 			type: FormNodeTypes.CONTROL,
 			groups: ['body_declaration', 'adr_details', 'dangerous_goods'],

@@ -242,7 +242,7 @@ export const AdrTemplate: FormNode = {
 			],
 		},
 		{
-			name: 'techRecord_adrDetails_bodyDeclaration',
+			name: 'techRecord_adrDetails_bodyDeclaration_type',
 			label: 'Body declaration',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.RADIO,
