@@ -5,8 +5,10 @@ import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2_DESK_BASED_TEST,
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP15_16,
 } from '@models/testTypeId.enum';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
@@ -206,6 +208,14 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		// When abandoning a first test ensure certificate number is sent up
 		if (isAbandon && TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(testType.testTypeId)) {
 			testType.certificateNumber = '';
+		}
+
+		if (
+			(TEST_TYPES_GROUP2_DESK_BASED_TEST.includes(testType.testTypeId) ||
+				TEST_TYPES_GROUP15_16.includes(testType.testTypeId)) &&
+			testType.smokeTestKLimitApplied
+		) {
+			testType.smokeTestKLimitApplied = testType.smokeTestKLimitApplied.toString();
 		}
 
 		return testType;

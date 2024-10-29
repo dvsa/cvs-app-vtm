@@ -37,10 +37,18 @@ export const EmissionsSection: FormNode = {
 							name: 'smokeTestKLimitApplied',
 							label: 'Smoke test K limit applied',
 							type: FormNodeTypes.CONTROL,
-							validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+							editType: FormNodeEditTypes.NUMBER,
+							validators: [
+								{ name: ValidatorNames.Max, args: 9.999 },
+								{
+									name: ValidatorNames.CustomPattern,
+									args: ['^\\d*(\\.\\d{0,3})?$', 'must be less than or equal to 9.999'],
+								},
+							],
 							asyncValidators: [
 								{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } },
 							],
+							enableDecimals: true,
 							required: true,
 							value: null,
 						},

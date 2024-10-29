@@ -33,6 +33,9 @@ export class AdrService {
 					delete techRecord[key as keyof TechRecordType<'hgv' | 'lgv' | 'trl'>];
 				}
 			}
+
+			// but keep the dangerousGoods field
+			techRecord.techRecord_adrDetails_dangerousGoods = false;
 		}
 
 		return techRecord;

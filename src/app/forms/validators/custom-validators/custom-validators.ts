@@ -248,7 +248,7 @@ export class CustomValidators {
 
 	static email(): ValidatorFn {
 		return this.customPattern([
-			'^[\\w\\-\\.\\+]+@([\\w-]+\\.)+[\\w-]{2,}$',
+			"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
 			'Enter an email address in the correct format, like name@example.com',
 		]);
 	}
