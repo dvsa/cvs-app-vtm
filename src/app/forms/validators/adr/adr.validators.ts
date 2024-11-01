@@ -84,12 +84,13 @@ export class AdrValidators {
 	 */
 	static setBodyDeclarationVisibility = (): ValidatorFn => {
 		return (control: AbstractControl) => {
-			const carriesDangerousGoods = control.parent?.get('techRecord_adrDetails_dangerousGoods')?.value;
-			const permittedDangerousGoods = control.parent?.get('techRecord_adrDetails_permittedDangerousGoods')?.value;
-			const adrBodyType = control.parent?.get('techRecord_adrDetails_vehicleDetails_type')?.value;
 			const bodyDeclaration = control.parent?.get('techRecord_adrDetails_bodyDeclaration_type');
 
 			if (bodyDeclaration instanceof CustomFormControl && bodyDeclaration.meta) {
+				const carriesDangerousGoods = control.parent?.get('techRecord_adrDetails_dangerousGoods')?.value;
+				const permittedDangerousGoods = control.parent?.get('techRecord_adrDetails_permittedDangerousGoods')?.value;
+				const adrBodyType = control.parent?.get('techRecord_adrDetails_vehicleDetails_type')?.value;
+
 				if (
 					carriesDangerousGoods === true &&
 					Array.isArray(permittedDangerousGoods) &&
