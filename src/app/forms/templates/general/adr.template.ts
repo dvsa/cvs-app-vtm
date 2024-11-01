@@ -44,6 +44,7 @@ export const AdrTemplate: FormNode = {
 				{ value: false, label: 'No' },
 			],
 			validators: [
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{ name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
 				{
 					name: ValidatorNames.HideGroupsWhenEqualTo,
@@ -129,6 +130,7 @@ export const AdrTemplate: FormNode = {
 			hide: true,
 			options: getOptionsFromEnum(ADRBodyType),
 			validators: [
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{
 					name: ValidatorNames.RequiredIfEquals,
 					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
@@ -207,20 +209,7 @@ export const AdrTemplate: FormNode = {
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
 			validators: [
-				{
-					name: ValidatorNames.ShowGroupsWhenIncludes,
-					args: {
-						values: [ADRDangerousGood, ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['body_declaration'],
-					},
-				},
-				{
-					name: ValidatorNames.HideGroupsWhenExcludes,
-					args: {
-						values: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
-						groups: ['body_declaration'],
-					},
-				},
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
 					args: {
@@ -246,7 +235,7 @@ export const AdrTemplate: FormNode = {
 			label: 'Body declaration',
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.RADIO,
-			groups: ['body_declaration', 'adr_details', 'dangerous_goods'],
+			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
 			options: [
 				{ value: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005, label: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005 },

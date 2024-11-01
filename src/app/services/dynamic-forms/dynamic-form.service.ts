@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
-// eslint-disable-next-line import/no-cycle
+import { AdrValidators } from '@forms/validators/adr/adr.validators';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validator/custom-async-validators';
 import {
 	CustomValidators,
@@ -97,6 +97,7 @@ export class DynamicFormService {
 		[ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number; message: string }) =>
 			CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
 		[ValidatorNames.IssueRequired]: () => CustomValidators.issueRequired(),
+		[ValidatorNames.SetBodyDeclarationVisibility]: () => AdrValidators.setBodyDeclarationVisibility(),
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

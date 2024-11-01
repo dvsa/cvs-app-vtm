@@ -1,3 +1,5 @@
+import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { AdrValidators } from '../adr.validators';
 
@@ -154,6 +156,94 @@ describe('ADR Validators', () => {
 			b.patchValue(['small string', 'small string', 'small string']); // make so last UN number is empty
 
 			expect(AdrValidators.validateProductListUNNumbers(b)).toBeNull();
+		});
+	});
+
+	describe('setBodyDeclarationVisibility', () => {
+		const form = new CustomFormGroup(
+			{ name: 'ADRForm', type: FormNodeTypes.GROUP },
+			{
+				techRecord_adrDetails_dangerousGoods: new CustomFormControl({
+					name: 'techRecord_adrDetails_dangerousGoods',
+					type: FormNodeTypes.CONTROL,
+					value: false,
+				}),
+				techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl({
+					name: 'techRecord_adrDetails_dangerousGoodsExplosives',
+					type: FormNodeTypes.CONTROL,
+					value: [],
+				}),
+				techRecord_adrDetails_vehicleDetails_type: new CustomFormControl({
+					name: 'techRecord_adrDetails_vehicleDetails_type',
+					type: FormNodeTypes.CONTROL,
+					value: null,
+				}),
+				techRecord_adrDetails_bodyDeclaration_type: new CustomFormControl({
+					name: 'techRecord_adrDetails_bodyDeclaration_type',
+					type: FormNodeTypes.CONTROL,
+					value: null,
+				}),
+			}
+		);
+
+		beforeEach(() => {
+			form.reset();
+		});
+
+		it('should hide body declaration when dangerous goods is false', () => {
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: false,
+				techRecord_adrDetails_permittedDangerousGoods: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BOX_BODY,
+				techRecord_adrDetails_bodyDeclaration_type: null,
+			});
+
+			const validator = AdrValidators.setBodyDeclarationVisibility();
+			const control = form.get('techRecord_adrDetails_bodyDeclaration_type') as CustomFormControl;
+			validator(control);
+			expect(control.meta.hide).toBe(true);
+		});
+
+		it('should hide body declaration when explosives type 3 is not a selected permitted dangerous good', () => {
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_permittedDangerousGoods: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.AT],
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BOX_BODY,
+				techRecord_adrDetails_bodyDeclaration_type: null,
+			});
+
+			const validator = AdrValidators.setBodyDeclarationVisibility();
+			const control = form.get('techRecord_adrDetails_bodyDeclaration_type') as CustomFormControl;
+			validator(control);
+			expect(control.meta.hide).toBe(true);
+		});
+
+		it('should hide body declaration when carry explosives type 3, but the ADR body type is not applicable', () => {
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_permittedDangerousGoods: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.ARTIC_TRACTOR,
+				techRecord_adrDetails_bodyDeclaration_type: null,
+			});
+
+			const validator = AdrValidators.setBodyDeclarationVisibility();
+			const control = form.get('techRecord_adrDetails_bodyDeclaration_type') as CustomFormControl;
+			validator(control);
+			expect(control.meta.hide).toBe(true);
+		});
+
+		it('should show body declaration when carrying dangerous goods, including explosives type 3, and is of an applicable ADR body type', () => {
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_permittedDangerousGoods: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BOX_BODY,
+				techRecord_adrDetails_bodyDeclaration_type: null,
+			});
+
+			const validator = AdrValidators.setBodyDeclarationVisibility();
+			const control = form.get('techRecord_adrDetails_bodyDeclaration_type') as CustomFormControl;
+			validator(control);
+			expect(control.meta.hide).toBe(false);
 		});
 	});
 });
