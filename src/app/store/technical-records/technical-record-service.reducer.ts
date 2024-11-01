@@ -581,7 +581,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 				(adrBodyType && !bodyTypesRequiringDeclaration.includes(adrBodyType)) ||
 				!permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
 			) {
-				// @TO-DO: set to undefined as a workaround for the type definition validation rule
+				// @TO-DO: use null instead of undefined. This is a workaround for the type definitions validation rule
 				sanitisedEditingTechRecord.techRecord_adrDetails_bodyDeclaration_type = undefined;
 			}
 
