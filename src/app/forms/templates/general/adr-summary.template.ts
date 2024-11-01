@@ -248,12 +248,6 @@ export const AdrSummaryTemplate: FormNode = {
 				},
 				{ value: ADRBodyDeclarationTypes.UNKNOWN, label: ADRBodyDeclarationTypes.UNKNOWN },
 			],
-			validators: [
-				{
-					name: ValidatorNames.RequiredIfEquals,
-					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
-				},
-			],
 		},
 		{
 			name: 'techRecord_adrDetails_compatibilityGroupJ',
