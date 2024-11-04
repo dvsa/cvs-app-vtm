@@ -1,50 +1,32 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TagType } from '@components/tag/tag.component';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
-import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 
 @Component({
 	selector: 'app-single-search-result[searchResult]',
 	templateUrl: './single-search-result.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrls: ['./single-search-result.component.scss'],
 })
-export class SingleSearchResultComponent implements OnInit {
+export class SingleSearchResultComponent {
 	@Input() searchResult!: TechRecordSearchSchema;
-	vehicleDisplayData?: VehicleDisplayData;
-	template?: FormNode;
-
-	ngOnInit(): void {
-		this.vehicleDisplayData = {
-			vin: this.searchResult.vin,
-			vrm: this.searchResult.primaryVrm,
-			trailerId: this.searchResult.trailerId,
-			make:
-				this.searchResult.techRecord_vehicleType === 'psv'
-					? this.searchResult.techRecord_chassisMake
-					: this.searchResult.techRecord_make,
-			model:
-				this.searchResult.techRecord_vehicleType === 'psv'
-					? this.searchResult.techRecord_chassisModel
-					: this.searchResult.techRecord_model,
-			manufactureYear: this.searchResult.techRecord_manufactureYear,
-			vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase(),
-		};
-
-		this.template = createSingleSearchResult(this.searchResult.systemNumber, this.searchResult.createdTimestamp);
-	}
 
 	public get roles() {
 		return Roles;
 	}
-}
 
-interface VehicleDisplayData {
-	vin?: string;
-	vrm?: string;
-	trailerId?: string;
-	make?: string | null;
-	model?: string | null;
-	manufactureYear?: number | null;
-	vehicleType?: string;
+	public get tagType() {
+		switch (this.searchResult?.techRecord_statusCode) {
+			case StatusCodes.CURRENT:
+				return ''; // default is dark blue;
+			case StatusCodes.ARCHIVED:
+				return TagType.GREY;
+			case StatusCodes.PROVISIONAL:
+				return TagType.ORANGE;
+			default:
+				return TagType.BLUE;
+		}
+	}
 }

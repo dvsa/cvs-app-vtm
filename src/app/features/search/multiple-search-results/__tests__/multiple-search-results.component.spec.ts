@@ -8,6 +8,8 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { FormatVehicleTypePipe } from '@pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams } from '@store/router/router.selectors';
@@ -23,7 +25,13 @@ describe('MultipleSearchResultsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent, RoleRequiredDirective],
+			declarations: [
+				SingleSearchResultComponent,
+				MultipleSearchResultsComponent,
+				RoleRequiredDirective,
+				DefaultNullOrEmpty,
+				FormatVehicleTypePipe,
+			],
 			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),

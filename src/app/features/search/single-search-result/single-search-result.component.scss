@@ -1,0 +1,16 @@
+.subheading-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.subheading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.subheading h2 {
+  margin-bottom: 0;
+}

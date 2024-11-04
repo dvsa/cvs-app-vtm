@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-export type TagTypes = 'blue' | 'green' | 'orange' | 'red' | 'yellow' | 'purple';
+export type TagTypes = 'blue' | 'green' | 'orange' | 'red' | 'yellow' | 'purple' | 'grey';
 export const TagType = {
 	BLUE: 'blue' as TagTypes,
 	GREEN: 'green' as TagTypes,
@@ -8,6 +8,7 @@ export const TagType = {
 	RED: 'red' as TagTypes,
 	YELLOW: 'yellow' as TagTypes,
 	PURPLE: 'purple' as TagTypes,
+	GREY: 'grey' as TagTypes,
 };
 
 @Component({
