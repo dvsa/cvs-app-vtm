@@ -18,9 +18,10 @@ import { State } from './store';
 	styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
+	currentDate = new Date();
 	private destroy$ = new Subject<void>();
-	private currentDate: Date = new Date();
 	private sentryInitialized: boolean | undefined;
+	private interval?: ReturnType<typeof setInterval>;
 
 	constructor(
 		public userService: UserService,
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
+		clearInterval(this.interval);
 	}
 
 	get isStandardLayout() {
@@ -80,7 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	checkDateChange() {
-		setInterval(() => {
+		this.interval = setInterval(() => {
 			const newDate = new Date();
 			if (newDate.getDate() !== this.currentDate.getDate()) {
 				this.currentDate = newDate;
