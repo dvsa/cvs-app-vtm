@@ -1,18 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
+import { environment } from '@environments/environment';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/router.selectors';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';
 import { Subject, map, take, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
-import { environment } from '../environments/environment';
 import { State } from './store';
 
 @Component({
@@ -22,6 +19,8 @@ import { State } from './store';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
+	private currentDate: Date = new Date();
+	private sentryInitialized: boolean | undefined;
 
 	constructor(
 		public userService: UserService,
@@ -32,7 +31,9 @@ export class AppComponent implements OnInit, OnDestroy {
 	) {}
 
 	async ngOnInit() {
-		this.startSentry();
+		if (!this.sentryInitialized) {
+			this.startSentry();
+		}
 		this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
 			if (event instanceof NavigationEnd) {
 				const gtmTag = {
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		});
 		await this.gtmService.addGtmToDom();
 		initAll();
+		this.checkDateChange();
 	}
 
 	ngOnDestroy(): void {
@@ -74,5 +76,20 @@ export class AppComponent implements OnInit, OnDestroy {
 			enableTracing: false,
 			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
 		});
+		this.sentryInitialized = true;
+	}
+
+	checkDateChange() {
+		setInterval(() => {
+			const newDate = new Date();
+			if (newDate.getDate() !== this.currentDate.getDate()) {
+				this.currentDate = newDate;
+				this.reinitializeApp();
+			}
+		}, 21600000); // Check every six hours
+	}
+
+	reinitializeApp() {
+		this.ngOnInit().then((r) => r);
 	}
 }

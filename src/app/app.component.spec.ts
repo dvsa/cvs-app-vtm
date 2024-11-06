@@ -129,4 +129,47 @@ describe('AppComponent', () => {
 			expect(currentComponent).toBeTruthy();
 		});
 	});
+
+	// describe('checkDateChange', () => {
+	//   let component: AppComponent;
+	//
+	//   beforeEach(() => {
+	//     component = new AppComponent(
+	//       TestBed.inject(UserService),
+	//       TestBed.inject(LoadingService),
+	//       TestBed.inject(Router),
+	//       TestBed.inject(GoogleTagManagerService),
+	//       TestBed.inject(Store)
+	//     );
+	//     jest.useFakeTimers();
+	//   });
+	//
+	//   afterEach(() => {
+	//     jest.useRealTimers();
+	//     jest.clearAllTimers();
+	//   });
+	//
+	//   it('should reinitialize app if date changes', fakeAsync(() => {
+	//     jest.spyOn(component, 'reinitializeApp');
+	//     component['currentDate'] = new Date(2023, 9, 1);
+	//     component.checkDateChange();
+	//     tick(21600000);
+	//     tick();
+	//     const newDate = new Date(2023, 9, 2);
+	//     jest.setSystemTime(newDate);
+	//     tick(21600000); // Simulate another 6 hours passing
+	//     expect(component.reinitializeApp).toHaveBeenCalled();
+	//   }));
+	//
+	//   it('should not reinitialize app if date does not change', fakeAsync(() => {
+	//     jest.spyOn(component, 'reinitializeApp');
+	//     component['currentDate'] = new Date(2023, 9, 1);
+	//     component.checkDateChange();
+	//     tick(21600000); // Simulate 6 hours passing
+	//     const sameDate = new Date(2023, 9, 1);
+	//     jest.setSystemTime(sameDate);
+	//     tick(21600000); // Simulate another 6 hours passing
+	//     expect(component.reinitializeApp).not.toHaveBeenCalled();
+	//   }));
+	// });
 });
