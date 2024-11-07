@@ -9,12 +9,9 @@ import packageInfo from '../../../../../package.json';
 export class HeaderComponent {
 	@Output() logOutEvent = new EventEmitter<void>();
 	@Input() username: string | null = '';
+	protected readonly version = packageInfo.version;
 
 	logout() {
 		this.logOutEvent.emit();
-	}
-
-	getAppVersion() {
-		return packageInfo.version;
 	}
 }
