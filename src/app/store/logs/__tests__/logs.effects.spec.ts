@@ -88,18 +88,22 @@ describe('LogsEffects', () => {
 			});
 		});
 
-		// xit('should not send logs when isAutomation is true', (done) => {
-		// 	// Set isAutomation to true for this test
-		// 	Object.defineProperty(effects, 'isAutomation', { value: true });
-		//
-		// 	actions$ = of(logsActions.sendLogs());
-		//
-		// 	effects.sendLogsEffect$.subscribe((resultAction) => {
-		// 		// The effect should not emit any action
-		// 		expect(resultAction).toBeUndefined();
-		// 		expect(logsProviderMock.sendLogs).not.toHaveBeenCalled();
-		// 		done();
-		// 	});
-		// });
+		it('should not send logs when isAutomation is true', () => {
+			// Set the "isAutomation" class prop to true for this test
+			Object.defineProperty(effects, 'isAutomation', { value: true });
+
+			const sendLogsSpy = jest.spyOn(logsProviderMock, 'sendLogs');
+
+			actions$ = of(logsActions.sendLogs());
+
+			effects.sendLogsEffect$.subscribe({
+				next: () => {
+					fail('Effect should not emit any action due to filter');
+				},
+				complete: () => {
+					expect(sendLogsSpy).not.toHaveBeenCalled();
+				},
+			});
+		});
 	});
 });

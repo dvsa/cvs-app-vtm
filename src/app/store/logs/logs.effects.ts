@@ -12,8 +12,7 @@ import * as logsActions from './logs.actions';
 export class LogsEffects {
 	private static readonly MINUTE = 60 * 1000;
 
-	// determine somehow - maybe in VTM auto, set localStorage.setItem("isAutomation", "true")
-	private readonly isAutomation = localStorage.getItem('isAutomation') === 'true';
+	private static readonly isAutomation = localStorage.getItem('isAutomation') === 'true';
 
 	private actions$ = inject(Actions);
 	private store$ = inject(Store);
@@ -29,7 +28,7 @@ export class LogsEffects {
 	sendLogsEffect$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(logsActions.sendLogs),
-			filter(() => !this.isAutomation),
+			filter(() => !LogsEffects.isAutomation),
 			concatLatestFrom(() => this.store$.pipe(select(getLogsState))),
 			switchMap(([_, logs]) =>
 				forkJoin([this.logsProvider.sendLogs(logs)]).pipe(
