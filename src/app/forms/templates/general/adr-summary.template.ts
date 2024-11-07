@@ -1,4 +1,5 @@
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
@@ -202,6 +203,20 @@ export const AdrSummaryTemplate: FormNode = {
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
 					args: {
+						values: [ADRDangerousGood, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['body_declaration'],
+					},
+				},
+				{
+					name: ValidatorNames.HideGroupsWhenExcludes,
+					args: {
+						values: [ADRDangerousGood.EXPLOSIVES_TYPE_3],
+						groups: ['body_declaration'],
+					},
+				},
+				{
+					name: ValidatorNames.ShowGroupsWhenIncludes,
+					args: {
 						values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
 						groups: ['compatibility_group_j'],
 					},
@@ -217,6 +232,21 @@ export const AdrSummaryTemplate: FormNode = {
 					name: ValidatorNames.RequiredIfEquals,
 					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
 				},
+			],
+		},
+		{
+			name: 'techRecord_adrDetails_bodyDeclaration_type',
+			label: 'Body declaration',
+			type: FormNodeTypes.CONTROL,
+			groups: ['body_declaration', 'adr_details', 'dangerous_goods'],
+			hide: true,
+			options: [
+				{ value: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005, label: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005 },
+				{
+					value: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+					label: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+				},
+				{ value: ADRBodyDeclarationTypes.UNKNOWN, label: ADRBodyDeclarationTypes.UNKNOWN },
 			],
 		},
 		{

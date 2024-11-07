@@ -111,4 +111,36 @@ describe('DelayedRetryInterceptor', () => {
 			flush();
 		}));
 	});
+
+	describe('Http failure response for x: 0 Unknown Error', () => {
+		beforeEach(() => {
+			TestBed.overrideProvider(HTTP_RETRY_CONFIG, {
+				useValue: { delay: 500, count: 3, httpStatusRetry: [0, 504], whiteList: [DUMMY_ENDPOINT] },
+			});
+			client = TestBed.inject(HttpClient);
+			httpTestingController = TestBed.inject(HttpTestingController);
+			interceptor = TestBed.inject(DelayedRetryInterceptor);
+		});
+
+		afterEach(() => {
+			// After every test, assert that there are no more pending requests.
+			httpTestingController.verify();
+		});
+
+		it('should handle response codes of 0 (Unknown Error) by retrying the request', fakeAsync(() => {
+			client.get(DUMMY_ENDPOINT).subscribe({
+				error: (e) => {
+					expect(e).toEqual(new Error('Request timed out. Check connectivity and try again.'));
+				},
+			});
+
+			const retryCount = 3;
+			for (let i = 0; i < retryCount; i++) {
+				tick(500 * (i + 1));
+				const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
+				req.flush('Deliberate 0 error', { status: 0, statusText: 'Unknown error' });
+			}
+			flush();
+		}));
+	});
 });

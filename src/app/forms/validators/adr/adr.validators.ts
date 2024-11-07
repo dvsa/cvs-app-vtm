@@ -1,4 +1,6 @@
-import { ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 
 export class AdrValidators {
@@ -66,5 +68,45 @@ export class AdrValidators {
 		}
 
 		return null;
+	};
+
+	/**
+	 * Body declaration should only be visible when:
+	 *  - Carries dangerous goods is true
+	 *  - AND The ADR body type is one of the following:
+	 *    > Rigid box body
+	 *    > Full drawbar box body
+	 *    > Centre axle box body
+	 *    > Semi trailer box body
+	 *  - AND The permitted dangerous good 'Explosive (type 3)' is selected
+	 *
+	 * @param control
+	 */
+	static setBodyDeclarationVisibility = (): ValidatorFn => {
+		return (control: AbstractControl) => {
+			const bodyDeclaration = control.parent?.get('techRecord_adrDetails_bodyDeclaration_type');
+
+			if (bodyDeclaration instanceof CustomFormControl && bodyDeclaration.meta) {
+				const carriesDangerousGoods = control.parent?.get('techRecord_adrDetails_dangerousGoods')?.value;
+				const permittedDangerousGoods = control.parent?.get('techRecord_adrDetails_permittedDangerousGoods')?.value;
+				const adrBodyType = control.parent?.get('techRecord_adrDetails_vehicleDetails_type')?.value;
+
+				if (
+					carriesDangerousGoods === true &&
+					Array.isArray(permittedDangerousGoods) &&
+					permittedDangerousGoods.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3) &&
+					(adrBodyType === ADRBodyType.RIGID_BOX_BODY ||
+						adrBodyType === ADRBodyType.FULL_DRAWBAR_BOX_BODY ||
+						adrBodyType === ADRBodyType.CENTRE_AXLE_BOX_BODY ||
+						adrBodyType === ADRBodyType.SEMI_TRAILER_BOX_BODY)
+				) {
+					bodyDeclaration.meta.hide = false;
+				} else {
+					bodyDeclaration.meta.hide = true;
+				}
+			}
+
+			return null;
+		};
 	};
 }

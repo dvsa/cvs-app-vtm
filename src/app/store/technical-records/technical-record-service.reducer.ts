@@ -566,6 +566,25 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
 			}
 
+			// If ADR body type does not require a body declaration or explosives type 3 is not selected, null the body declaration field
+			const bodyTypesRequiringDeclaration: string[] = [
+				ADRBodyType.RIGID_BOX_BODY,
+				ADRBodyType.FULL_DRAWBAR_BOX_BODY,
+				ADRBodyType.CENTRE_AXLE_BOX_BODY,
+				ADRBodyType.SEMI_TRAILER_BOX_BODY,
+			];
+
+			const adrBodyType = sanitisedEditingTechRecord.techRecord_adrDetails_vehicleDetails_type;
+			const permittedDangerousGoods = sanitisedEditingTechRecord.techRecord_adrDetails_permittedDangerousGoods;
+
+			if (
+				(adrBodyType && !bodyTypesRequiringDeclaration.includes(adrBodyType)) ||
+				!permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
+			) {
+				// @TO-DO: use null instead of undefined. This is a workaround for the type definitions validation rule
+				sanitisedEditingTechRecord.techRecord_adrDetails_bodyDeclaration_type = undefined;
+			}
+
 			return { ...state, editingTechRecord: sanitisedEditingTechRecord };
 		}
 	}

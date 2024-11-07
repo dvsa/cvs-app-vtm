@@ -1,4 +1,5 @@
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
@@ -43,6 +44,7 @@ export const AdrTemplate: FormNode = {
 				{ value: false, label: 'No' },
 			],
 			validators: [
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{ name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
 				{
 					name: ValidatorNames.HideGroupsWhenEqualTo,
@@ -128,6 +130,7 @@ export const AdrTemplate: FormNode = {
 			hide: true,
 			options: getOptionsFromEnum(ADRBodyType),
 			validators: [
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{
 					name: ValidatorNames.RequiredIfEquals,
 					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
@@ -206,6 +209,7 @@ export const AdrTemplate: FormNode = {
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
 			validators: [
+				{ name: ValidatorNames.SetBodyDeclarationVisibility },
 				{
 					name: ValidatorNames.ShowGroupsWhenIncludes,
 					args: {
@@ -224,6 +228,22 @@ export const AdrTemplate: FormNode = {
 					name: ValidatorNames.RequiredIfEquals,
 					args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
 				},
+			],
+		},
+		{
+			name: 'techRecord_adrDetails_bodyDeclaration_type',
+			label: 'Body declaration',
+			type: FormNodeTypes.CONTROL,
+			editType: FormNodeEditTypes.RADIO,
+			groups: ['adr_details', 'dangerous_goods'],
+			hide: true,
+			options: [
+				{ value: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005, label: ADRBodyDeclarationTypes.PRE_1ST_JULY_2005 },
+				{
+					value: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+					label: ADRBodyDeclarationTypes.ON_OR_AFTER_1ST_JULY_2005,
+				},
+				{ value: ADRBodyDeclarationTypes.UNKNOWN, label: ADRBodyDeclarationTypes.UNKNOWN },
 			],
 		},
 		{
@@ -630,7 +650,7 @@ export const AdrTemplate: FormNode = {
 			name: 'techRecord_adrDetails_listStatementApplicable',
 			label: 'Battery List Applicable',
 			width: FormNodeWidth.XS,
-			value: false,
+			value: null,
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.RADIO,
 			options: [

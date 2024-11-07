@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { DecimalOnlyDirective } from '@directives/app-decimal-only/app-decimal-only.directive';
 import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
@@ -81,6 +82,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		NumberInputComponent,
 		TextAreaComponent,
 		NumberOnlyDirective,
+		DecimalOnlyDirective,
 		ToUppercaseDirective,
 		NoSpaceDirective,
 		TrimWhitespaceDirective,
