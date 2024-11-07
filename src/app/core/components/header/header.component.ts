@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import packageInfo from '../../../../../package.json';
 
 @Component({
 	selector: 'app-header',
@@ -11,5 +12,9 @@ export class HeaderComponent {
 
 	logout() {
 		this.logOutEvent.emit();
+	}
+
+	getAppVersion() {
+		return packageInfo.version;
 	}
 }

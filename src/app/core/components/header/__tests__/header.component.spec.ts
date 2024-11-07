@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import packageInfo from '../../../../../../package.json';
 import { HeaderComponent } from '../header.component';
 
 describe('HeaderComponent', () => {
@@ -41,5 +42,9 @@ describe('HeaderComponent', () => {
 		});
 
 		logOutButton.triggerEventHandler('click', null);
+	});
+	it('getAppVersion returns correct version', () => {
+		const version = component.getAppVersion();
+		expect(version).toBe(packageInfo.version);
 	});
 });
