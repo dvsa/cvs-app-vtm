@@ -113,6 +113,7 @@ export const ContingencyTestSectionGroup12and14: FormNode = {
 							label: 'Prohibition issued',
 							type: FormNodeTypes.CONTROL,
 							value: null,
+							viewType: FormNodeViewTypes.HIDDEN,
 							editType: FormNodeEditTypes.HIDDEN,
 							required: true,
 						},
