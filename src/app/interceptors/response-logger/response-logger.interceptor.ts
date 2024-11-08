@@ -58,10 +58,11 @@ export class ResponseLoggerInterceptor implements HttpInterceptor {
 
 				this.logsProvider.dispatchLog({
 					type: LogType.ERROR,
-					message: `${this.oid()} - ${message}`,
+					message: `${this.oid()} - Method: ${request.method}. ${message}.`,
 					status,
-					errors: get(err, 'error.errors', undefined),
 					timestamp: Date.now(),
+					errors: err instanceof HttpErrorResponse ? err.error : get(err, 'error.errors', undefined),
+					stackTrace: err instanceof Error ? err.stack : undefined,
 				});
 
 				return throwError(() => err);

@@ -75,7 +75,7 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 		const mockResponse = new HttpResponse({ status: 200, statusText: 'OK', url: 'https://example.com' });
 		mockNext.handle.mockReturnValue(of(mockResponse));
 
-		jest.spyOn(interceptor as any, 'getRequestDuration').mockReturnValue(mockThreshold + 1);
+		jest.spyOn(interceptor, 'getRequestDuration').mockReturnValue(mockThreshold + 1);
 
 		interceptor.intercept(mockReq, mockNext).subscribe(() => {
 			expect(logsProvider.dispatchLog).toHaveBeenCalledWith({
@@ -91,16 +91,23 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 	});
 
 	it('should log errors', (done) => {
-		const mockError = new HttpErrorResponse({ status: 404, statusText: 'Not Found', url: 'https://example.com' });
+		const mockError = new HttpErrorResponse({
+			status: 404,
+			statusText: 'Not Found',
+			url: 'https://example.com',
+			error: 'This is a big error',
+		});
+
 		mockNext.handle.mockReturnValue(throwError(() => mockError));
 
 		interceptor.intercept(mockReq, mockNext).subscribe({
 			error: () => {
 				expect(logsProvider.dispatchLog).toHaveBeenCalledWith({
 					type: LogType.ERROR,
-					message: 'test-oid - Http failure response for https://example.com: 404 Not Found',
+					message: 'test-oid - Method: GET. Http failure response for https://example.com: 404 Not Found.',
 					status: 404,
-					errors: undefined,
+					errors: 'This is a big error',
+					stackTrace: undefined,
 					timestamp: expect.any(Number),
 				});
 				done();
