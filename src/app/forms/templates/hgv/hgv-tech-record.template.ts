@@ -66,7 +66,7 @@ export const HgvTechRecord: FormNode = {
 			validators: [
 				{ name: ValidatorNames.Max, args: 9999 },
 				{ name: ValidatorNames.Min, args: 1000 },
-				{ name: ValidatorNames.PastYear },
+				{ name: ValidatorNames.XYearsAfterCurrent, args: 1 },
 			],
 			customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
 		},

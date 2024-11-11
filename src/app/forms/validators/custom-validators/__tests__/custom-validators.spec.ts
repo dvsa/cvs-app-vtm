@@ -2146,3 +2146,52 @@ describe('IssueRequired', () => {
 		});
 	});
 });
+
+describe('xYearsAfterCurrent', () => {
+	let control: CustomFormControl;
+
+	beforeEach(() => {
+		// Set current year to 2024
+		jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
+
+		control = new CustomFormControl({
+			type: FormNodeTypes.CONTROL,
+			name: 'techRecord_manufactureYear',
+			label: 'Year of Manufacture',
+			value: 2024,
+		});
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('should allow the current year', () => {
+		control.patchValue(2024);
+		expect(CustomValidators.xYearsAfterCurrent(2)(control)).toBeNull();
+	});
+
+	it('should allow the current year +2 years', () => {
+		control.patchValue(2026);
+		expect(CustomValidators.xYearsAfterCurrent(2)(control)).toBeNull();
+	});
+
+	it('should allow the current year -2 years', () => {
+		control.patchValue(2022);
+		expect(CustomValidators.xYearsAfterCurrent(2)(control)).toBeNull();
+	});
+
+	it('should not allow the current year +3 years', () => {
+		control.patchValue(2028);
+		expect(CustomValidators.xYearsAfterCurrent(2)(control)).toEqual({
+			xYearsAfterCurrent: { message: 'Year of Manufacture must be equal to or before 2026' },
+		});
+	});
+
+	it('should not allow negative years', () => {
+		control.patchValue(-100);
+		expect(CustomValidators.xYearsAfterCurrent(2)(control)).toEqual({
+			xYearsAfterCurrent: { message: 'Year of Manufacture must be equal to or before 2026' },
+		});
+	});
+});

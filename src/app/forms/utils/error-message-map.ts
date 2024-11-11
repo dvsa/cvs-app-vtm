@@ -55,6 +55,7 @@ export const ErrorMessageMap: Record<string, Function> = {
 		err.message ?? `${label || DEFAULT_LABEL} is invalid`,
 	[ValidatorNames.Custom]: (err: { message: string }) => err.message,
 	[ValidatorNames.MinArrayLengthIfNotEmpty]: (err: { message: string }) => err.message,
+	[ValidatorNames.XYearsAfterCurrent]: (err: { message: string }) => err.message,
 
 	[AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) =>
 		`${label || DEFAULT_LABEL} is required`,

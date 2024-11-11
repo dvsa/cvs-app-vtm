@@ -98,6 +98,7 @@ export class DynamicFormService {
 			CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
 		[ValidatorNames.IssueRequired]: () => CustomValidators.issueRequired(),
 		[ValidatorNames.SetBodyDeclarationVisibility]: () => AdrValidators.setBodyDeclarationVisibility(),
+		[ValidatorNames.XYearsAfterCurrent]: (xYears: number) => CustomValidators.xYearsAfterCurrent(xYears),
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
