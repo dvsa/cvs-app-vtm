@@ -101,7 +101,8 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	get brakeCode(): string {
-		return `${this.brakeCodePrefix}${this.form.get('techRecord_brakes_brakeCodeOriginal')?.value}`;
+		const suffix = this.form.get('techRecord_brakes_brakeCodeOriginal')?.value;
+		return suffix ? `${this.brakeCodePrefix}${suffix}` : '-';
 	}
 
 	get brakesForm(): FormGroup {

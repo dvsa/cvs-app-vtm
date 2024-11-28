@@ -228,13 +228,12 @@ function handleUpdateBrakeForces(
 	}
 
 	if (data.grossLadenWeight) {
-		const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+		if (newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal) {
+			const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+			newState.editingTechRecord.techRecord_brakes_brakeCode =
+				(prefix.length <= 2 ? `0${prefix}` : prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal;
+		}
 
-		newState.editingTechRecord.techRecord_brakes_brakeCode =
-			(prefix.length <= 2
-				? `0${prefix}`
-				: // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
 		newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round(
 			(data.grossLadenWeight * 16) / 100
 		);
