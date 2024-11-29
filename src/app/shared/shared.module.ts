@@ -31,6 +31,7 @@ import { DefaultNullOrEmpty } from '../pipes/default-null-or-empty/default-null-
 import { DigitGroupSeparatorPipe } from '../pipes/digit-group-separator/digit-group-separator.pipe';
 import { FormatVehicleTypePipe } from '../pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { GetControlLabelPipe } from '../pipes/get-control-label/get-control-label.pipe';
+import { MultiOptionPipe } from '../pipes/multi-option/multi-option.pipe';
 import { RefDataDecodePipe } from '../pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '../pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
@@ -71,6 +72,7 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukFormGroupDirective,
 		GovukRadioDirective,
 		TagDirective,
+		MultiOptionPipe,
 	],
 	imports: [CommonModule, RouterModule, GovukDateInputDirective],
 	exports: [
@@ -107,6 +109,7 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukFormGroupDirective,
 		GovukRadioDirective,
 		TagDirective,
+		MultiOptionPipe,
 	],
 })
 export class SharedModule {}

@@ -9,29 +9,32 @@ import {
 	ValidatorFn,
 } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
-import { EUVehicleCategory as PSVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
-import { MultiOption, MultiOptions } from '@models/options.model';
-import { EmissionStandard } from '@models/test-types/emissions.enum';
 import {
-	HgvPsvVehicleConfiguration,
-	TrlVehicleConfiguration,
-	VehicleConfiguration,
-} from '@models/vehicle-configuration.enum';
-import { VehicleSize } from '@models/vehicle-size.enum';
-import {
-	FrameDescriptions,
-	FuelTypes,
-	V3TechRecordModel,
-	VehicleSubclass,
-	VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	ALL_VEHICLE_CONFIGURATION_OPTIONS,
+	EMISSION_STANDARD_OPTIONS,
+	EXEMPT_OR_NOT_OPTIONS,
+	FRAME_DESCRIPTION_OPTIONS,
+	FUEL_PROPULSION_SYSTEM_OPTIONS,
+	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
+	HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	MONTHS,
+	MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
+	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	SUSPENSION_TYRE_OPTIONS,
+	TRL_VEHICLE_CONFIGURATION_OPTIONS,
+	VEHICLE_SIZE_OPTIONS,
+	VEHICLE_SUBCLASS_OPTIONS,
+	YES_NO_OPTIONS,
+} from '@models/options.model';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -45,11 +48,21 @@ type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'p
 	styleUrls: ['./vehicle-section-edit.component.scss'],
 })
 export class VehicleSectionEditComponent implements OnInit, OnDestroy {
-	protected readonly CouplingTypeOptions = CouplingTypeOptions;
-	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly TagType = TagType;
-	protected readonly TagTypeLabels = TagTypeLabels;
-	protected readonly VehicleTypes = VehicleTypes;
+	readonly CouplingTypeOptions = CouplingTypeOptions;
+	readonly FormNodeWidth = FormNodeWidth;
+	readonly TagType = TagType;
+	readonly TagTypeLabels = TagTypeLabels;
+	readonly VehicleTypes = VehicleTypes;
+	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
+	readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
+	readonly FUEL_PROPULSION_SYSTEM_OPTIONS = FUEL_PROPULSION_SYSTEM_OPTIONS;
+	readonly MONTHS = MONTHS;
+	readonly SUSPENSION_TYRE_OPTIONS = SUSPENSION_TYRE_OPTIONS;
+	readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
+	readonly VEHICLE_SUBCLASS_OPTIONS = VEHICLE_SUBCLASS_OPTIONS;
+	readonly VEHICLE_SIZE_OPTIONS = VEHICLE_SIZE_OPTIONS;
+	readonly FRAME_DESCRIPTION_OPTIONS = FRAME_DESCRIPTION_OPTIONS;
+
 	fb = inject(FormBuilder);
 	store = inject(Store);
 	controlContainer = inject(ControlContainer);
@@ -73,23 +86,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 		},
 		{ validators: [] }
 	);
-
-	ExemptOrNotOptions: MultiOption[] = [
-		{ value: true, label: 'Exempt' },
-		{ value: false, label: 'Not exempt' },
-	];
-
-	euroStandardOptions = [
-		{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
-		...getOptionsFromEnum(EmissionStandard),
-	];
-
-	fuelPropulsionSystemOptions = [...getOptionsFromEnum(FuelTypes)];
-
-	YesNoOptions = [
-		{ value: true, label: 'Yes' },
-		{ value: false, label: 'No' },
-	];
 
 	ngOnInit(): void {
 		this.addControlsBasedOffVehicleType();
@@ -266,60 +262,27 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	get EUCategoryOptions() {
 		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
-				return getOptionsFromEnum(HGVCategories);
+				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
 			case VehicleTypes.PSV:
-				return getOptionsFromEnum(PSVCategories);
-			case VehicleTypes.TRL:
-			case VehicleTypes.SMALL_TRL:
-			case VehicleTypes.LGV:
-			case VehicleTypes.CAR:
-			case VehicleTypes.MOTORCYCLE:
-				return getOptionsFromEnum(EUVehicleCategory);
+				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
 			default:
-				return getOptionsFromEnum(EUVehicleCategory);
+				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
 		}
 	}
 
 	get vehicleClassDescriptionOptions() {
 		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
-				return [{ label: 'heavy goods vehicle', value: 'heavy goods vehicle' }];
+				return HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 			case VehicleTypes.PSV:
-				return [
-					{
-						label: 'small psv (ie: less than or equal to 22 passengers)',
-						value: 'small psv (ie: less than or equal to 22 seats)',
-					},
-					{
-						label: 'large psv(ie: greater than or equal to 23 passengers)',
-						value: 'large psv(ie: greater than 23 seats)',
-					},
-				];
+				return PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 			case VehicleTypes.TRL:
 			case VehicleTypes.SMALL_TRL:
 			case VehicleTypes.LGV:
 			case VehicleTypes.CAR:
 				return null;
 			case VehicleTypes.MOTORCYCLE:
-				return [
-					{ label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
-					{ label: 'not applicable', value: 'not applicable' },
-					{
-						label: 'small psv (ie: less than or equal to 22 passengers)',
-						value: 'small psv (ie: less than or equal to 22 seats)',
-					},
-					{ label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
-					{ label: 'trailer', value: 'trailer' },
-					{
-						label: 'large psv(ie: greater than or equal to 23 passengers)',
-						value: 'large psv(ie: greater than 23 seats)',
-					},
-					{ label: '3 wheelers', value: '3 wheelers' },
-					{ label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
-					{ label: 'MOT class 4', value: 'MOT class 4' },
-					{ label: 'MOT class 7', value: 'MOT class 7' },
-					{ label: 'MOT class 5', value: 'MOT class 5' },
-				];
+				return MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 			default:
 				return null;
 		}
@@ -329,52 +292,13 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 		switch (this.techRecord()?.techRecord_vehicleType.toLowerCase()) {
 			case VehicleTypes.HGV:
 			case VehicleTypes.PSV:
-				return getOptionsFromEnum(HgvPsvVehicleConfiguration);
+				return HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS;
 			case VehicleTypes.TRL:
 			case VehicleTypes.SMALL_TRL:
-				return getOptionsFromEnum(TrlVehicleConfiguration);
+				return TRL_VEHICLE_CONFIGURATION_OPTIONS;
 			default:
-				return getOptionsFromEnum(VehicleConfiguration);
+				return ALL_VEHICLE_CONFIGURATION_OPTIONS;
 		}
-	}
-
-	get months(): MultiOptions {
-		return [
-			{ value: 'January', label: 'January' },
-			{ value: 'February', label: 'Febraury' },
-			{ value: 'March', label: 'March' },
-			{ value: 'April', label: 'April' },
-			{ value: 'May', label: 'May' },
-			{ value: 'June', label: 'June' },
-			{ value: 'July', label: 'July' },
-			{ value: 'August', label: 'August' },
-			{ value: 'September', label: 'September' },
-			{ value: 'October', label: 'October' },
-			{ value: 'November', label: 'November' },
-			{ value: 'December', label: 'December' },
-		];
-	}
-
-	get suspensionTypeOptions(): MultiOptions {
-		return [
-			{ value: 'S', label: 'Steel' },
-			{ value: 'R', label: 'Rubber' },
-			{ value: 'A', label: 'Air' },
-			{ value: 'H', label: 'Hydraulic' },
-			{ value: 'O', label: 'Other' },
-		];
-	}
-
-	get subClassOptions(): MultiOptions {
-		return getOptionsFromEnum(VehicleSubclass);
-	}
-
-	get vehicleSizeOptions(): MultiOptions {
-		return getOptionsFromEnum(VehicleSize);
-	}
-
-	get frameDescriptionOptions(): MultiOptions {
-		return getOptionsFromEnum(FrameDescriptions);
 	}
 
 	get controlsBasedOffVehicleType() {

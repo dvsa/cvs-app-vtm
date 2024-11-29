@@ -117,16 +117,21 @@
         </dd>
       </div>
   </ng-container>
-  <ng-container *ngIf="
-      vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE ||
-      vm.techRecord_vehicleType === VehicleTypes.TRL">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle class</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
-          {{ vm.techRecord_vehicleClass_description | defaultNullOrEmpty }}
-        </dd>
-      </div>
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle class</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
+        {{ vm.techRecord_vehicleClass_description | multiOption : HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+      </dd>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle class</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
+        {{ vm.techRecord_vehicleClass_description | multiOption : MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+      </dd>
+    </div>
   </ng-container>
     <ng-container
       *ngIf="
@@ -246,7 +251,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle class</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_psv">
-          {{ vm.techRecord_vehicleClass_description | defaultNullOrEmpty }}
+          {{ vm.techRecord_vehicleClass_description | multiOption : PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
