@@ -7,7 +7,6 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOption } from '@models/options.model';
 import { CustomTag } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
@@ -15,7 +14,7 @@ import { SharedModule } from '@shared/shared.module';
 @Component({
 	selector: 'govuk-form-group-select',
 	standalone: true,
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, DynamicFormsModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
 	templateUrl: './govuk-form-group-select.component.html',
 	styleUrls: ['./govuk-form-group-select.component.scss'],
 	providers: [
