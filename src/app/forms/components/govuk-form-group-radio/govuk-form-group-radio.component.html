@@ -10,6 +10,18 @@
         </ng-container>
       </h1>
     </legend>
+
+    <ng-container *ngIf="controlHint">
+      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
+    </ng-container>
+
+    <ng-container *ngIf="hasError">
+      <p class="govuk-error-message" id="{{ errorId }}">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+      </p>
+    </ng-container>
+
     <div data-module="govuk-radios">
       <div *ngFor="let option of options">
         <input

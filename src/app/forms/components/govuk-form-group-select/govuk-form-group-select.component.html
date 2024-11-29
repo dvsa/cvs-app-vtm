@@ -1,0 +1,24 @@
+<div class="govuk-form-group-select">
+  <label>
+    {{ controlLabel }}
+  </label>
+  <ng-container *ngIf="controlHint">
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
+  </ng-container>
+
+  <ng-container *ngIf="hasError">
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  </ng-container>
+  <select
+    id="{{ controlName }}"
+    name="{{ controlName }}"
+    [attr.aria-describedby]="hintId"
+    [attr.aria-labelledby]="labelId"
+    [attr.data-testid]="id"
+  >
+    <option [value]="option.value" *ngFor="let option of options">{{ option.label }}</option>
+  </select>
+</div>
