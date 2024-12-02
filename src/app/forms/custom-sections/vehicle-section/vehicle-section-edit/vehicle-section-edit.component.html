@@ -197,23 +197,15 @@
   </ng-container>
 
   <!--  Coupling type (TRL Only) -->
-<!--  <div class="govuk-form-group-select" *ngIf="shouldDisplayFormControl('techRecord_couplingType')">-->
-<!--    <label>-->
-<!--      Coupling type (optional)-->
-<!--    </label>-->
-<!--    <app-control-errors elementId="techRecord_couplingType" [control]="$any(form.get('techRecord_couplingType'))" />-->
-<!--    <select govukSelect formControlName="techRecord_couplingType">-->
-<!--      <option [value]="option.value" *ngFor="let option of CouplingTypeOptions">{{ option.label }}</option>-->
-<!--    </select>-->
-<!--  </div>-->
-
-  <govuk-form-group-select
-    *ngIf="shouldDisplayFormControl('techRecord_couplingType')"
-    formControlName="techRecord_couplingType"
-    label="Coupling type (optional)"
-    [options]="CouplingTypeOptions"
-  >
-  </govuk-form-group-select>
+  <div class="govuk-form-group-select" *ngIf="shouldDisplayFormControl('techRecord_couplingType')">
+    <label>
+      Coupling type (optional)
+    </label>
+    <app-control-errors elementId="techRecord_couplingType" [control]="$any(form.get('techRecord_couplingType'))" />
+    <select govukSelect formControlName="techRecord_couplingType">
+      <option [value]="option.value" *ngFor="let option of CouplingTypeOptions">{{ option.label }}</option>
+    </select>
+  </div>
 
   <!--  Max load on coupling (TRL Only) -->
   <div *ngIf="shouldDisplayFormControl('techRecord_maxLoadOnCoupling')" class="govuk-form-group-input">
