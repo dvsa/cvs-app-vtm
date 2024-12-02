@@ -13,11 +13,15 @@
     </p>
   </ng-container>
   <select
-    id="{{ controlName }}"
-    name="{{ controlName }}"
+    id="{{ id }}"
+    name="{{ id }}"
     [attr.aria-describedby]="hintId"
     [attr.aria-labelledby]="labelId"
     [attr.data-testid]="id"
+    [class.govuk-radios__input--error]="hasError"
+    [(ngModel)]="value"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched()"
   >
     <option [value]="option.value" *ngFor="let option of options">{{ option.label }}</option>
   </select>
