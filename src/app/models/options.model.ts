@@ -51,7 +51,9 @@ export const PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	},
 ];
 
-export const MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
+export const TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [{ label: 'trailer', value: 'trailer' }];
+
+export const ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	{ label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
 	{ label: 'not applicable', value: 'not applicable' },
 	{

@@ -13,7 +13,7 @@
       <fieldset role="group">
         <legend>
           Date of first registration
-          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+          <app-tag *ngIf="shouldShowPlatesHgv" [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
         </legend>
         <app-control-errors elementId="techRecord_regnDate-error" [control]="$any(form.controls.techRecord_regnDate)" />
         <div id="techRecord_regnDate">
@@ -42,10 +42,10 @@
 
   <!--  Month of manufacture (TRL Only) -->
   <div *ngIf="shouldDisplayFormControl('techRecord_manufactureMonth')" class="govuk-form-group-select">
-    <label>
+    <label for="techRecord_manufactureMonth">
       Month of manufacture
     </label>
-    <app-control-errors elementId="techRecord_manufactureMonth" [control]="$any(form.get('techRecord_manufactureMonth'))" />
+    <app-control-errors elementId="techRecord_manufactureMonth-error" [control]="$any(form.get('techRecord_manufactureMonth'))" />
     <select govukSelect formControlName="techRecord_manufactureMonth">
       <option [value]="option.value" *ngFor="let option of MONTHS">{{ option.label }}</option>
     </select>
@@ -57,11 +57,11 @@
       <label tag id="techRecord_manufactureYear-label">
         Year of manufacture
         <div>
-          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+          <app-tag *ngIf="shouldShowPlatesHgv || shouldShowPlatesTrl" [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
         </div>
       </label>
     </h1>
-    <app-control-errors elementId="techRecord_manufactureYear" [control]="$any(form.get('techRecord_manufactureYear'))" />
+    <app-control-errors elementId="techRecord_manufactureYear-error" [control]="$any(form.get('techRecord_manufactureYear'))" />
     <input
       appNumberOnly
       inputmode="numeric"
@@ -120,13 +120,21 @@
   ></govuk-checkbox-group>
 
   <div class="flex-row">
-    <!-- Speed limiter exempt -->
+    <!-- Speed limiter exempt for HGV (required to generate plates) -->
     <govuk-form-group-radio
-      *ngIf="shouldDisplayFormControl('techRecord_speedLimiterMrk')"
+      *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.HGV"
       label="Speed limiter exempt"
       formControlName="techRecord_speedLimiterMrk"
       [options]="EXEMPT_OR_NOT_OPTIONS"
-      [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+      [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
+    ></govuk-form-group-radio>
+
+    <!-- Speed limiter exempt for PSV -->
+    <govuk-form-group-radio
+      *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV"
+      label="Speed limiter exempt"
+      formControlName="techRecord_speedLimiterMrk"
+      [options]="EXEMPT_OR_NOT_OPTIONS"
     ></govuk-form-group-radio>
 
     <!-- Tacho exempt -->
@@ -152,15 +160,15 @@
     label="Road friendly suspension"
     formControlName="techRecord_roadFriendly"
     [options]="YES_NO_OPTIONS"
-    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+    [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
   ></govuk-form-group-radio>
 
   <!--  Suspension type (TRL Only) -->
   <div class="govuk-form-group-select" *ngIf="shouldDisplayFormControl('techRecord_suspensionType')">
-    <label>
+    <label for="techRecord_suspensionType">
       Suspension type (optional)
     </label>
-    <app-control-errors elementId="techRecord_suspensionType" [control]="$any(form.get('techRecord_suspensionType'))" />
+    <app-control-errors elementId="techRecord_suspensionType-error" [control]="$any(form.get('techRecord_suspensionType'))" />
     <select govukSelect formControlName="techRecord_suspensionType">
       <option [value]="option.value" *ngFor="let option of SUSPENSION_TYRE_OPTIONS">{{ option.label }}</option>
     </select>
@@ -168,8 +176,8 @@
 
   <!-- Fuel / propulsion system -->
   <div *ngIf="shouldDisplayFormControl('techRecord_fuelPropulsionSystem')" class="govuk-form-group-select">
-    <label> Fuel / propulsion system </label>
-    <app-control-errors elementId="techRecord_fuelPropulsionSystem" [control]="$any(form.get('techRecord_fuelPropulsionSystem'))" />
+    <label for="techRecord_fuelPropulsionSystem"> Fuel / propulsion system </label>
+    <app-control-errors elementId="techRecord_fuelPropulsionSystem-error" [control]="$any(form.get('techRecord_fuelPropulsionSystem'))" />
     <select govukSelect formControlName="techRecord_fuelPropulsionSystem">
       <option [value]="option.value" *ngFor="let option of FUEL_PROPULSION_SYSTEM_OPTIONS">{{ option.label }}</option>
     </select>
@@ -190,10 +198,10 @@
 
   <!--  Coupling type (TRL Only) -->
   <div class="govuk-form-group-select" *ngIf="shouldDisplayFormControl('techRecord_couplingType')">
-    <label>
+    <label for="techRecord_couplingType">
       Coupling type (optional)
     </label>
-    <app-control-errors elementId="techRecord_couplingType" [control]="$any(form.get('techRecord_couplingType'))" />
+    <app-control-errors elementId="techRecord_couplingType-error" [control]="$any(form.get('techRecord_couplingType'))" />
     <select govukSelect formControlName="techRecord_couplingType">
       <option [value]="option.value" *ngFor="let option of CouplingTypeOptions">{{ option.label }}</option>
     </select>
@@ -211,12 +219,12 @@
 
   <!--  Vehicle configuration-->
   <div *ngIf="shouldDisplayFormControl('techRecord_vehicleConfiguration')" class="govuk-form-group-select">
-    <label tag>
+    <label for="techRecord_vehicleConfiguration" tag>
       Vehicle configuration
-      <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-      <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
+      <app-tag [type]="TagType.RED" style="margin-right: 8px;">{{ TagTypeLabels.REQUIRED }}</app-tag>
+      <app-tag *ngIf="shouldShowPlatesHgv || shouldShowPlatesTrl" [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
     </label>
-    <app-control-errors elementId="techRecord_vehicleConfiguration" [control]="$any(form.get('techRecord_vehicleConfiguration'))" />
+    <app-control-errors elementId="techRecord_vehicleConfiguration-error" [control]="$any(form.get('techRecord_vehicleConfiguration'))" />
     <select govukSelect formControlName="techRecord_vehicleConfiguration">
       <option [value]="option.value" *ngFor="let option of vehicleConfigurationOptions">{{ option.label }}</option>
     </select>
@@ -232,21 +240,12 @@
 
   <!-- Frame description (TRL Only) -->
   <div *ngIf="shouldDisplayFormControl('techRecord_frameDescription')" class="govuk-form-group-select">
-    <label tag>
+    <label for="techRecord_frameDescription" tag>
       Frame description (optional)
     </label>
-    <app-control-errors elementId="techRecord_frameDescription" [control]="$any(form.get('techRecord_frameDescription'))" />
+    <app-control-errors elementId="techRecord_frameDescription-error" [control]="$any(form.get('techRecord_frameDescription'))" />
     <select govukSelect formControlName="techRecord_frameDescription">
       <option [value]="option.value" *ngFor="let option of FRAME_DESCRIPTION_OPTIONS">{{ option.label }}</option>
-    </select>
-  </div>
-
-  <!-- EU Category -->
-  <div *ngIf="shouldDisplayFormControl('techRecord_euVehicleCategory')" class="govuk-form-group-select">
-    <label>EU vehicle category</label>
-    <app-control-errors elementId="techRecord_euVehicleCategory" [control]="$any(form.get('techRecord_euVehicleCategory'))" />
-    <select govukSelect [width]="FormNodeWidth.XXS" formControlName="techRecord_euVehicleCategory">
-      <option [value]="option.value" *ngFor="let option of EUCategoryOptions">{{ option.label }}</option>
     </select>
   </div>
 
@@ -295,7 +294,7 @@
       <h1>
         <label tag for="techRecord_standingCapacity">Standing capacity</label>
       </h1>
-      <app-control-errors elementId="techRecord_standingCapacity" [control]="$any(form.get('techRecord_standingCapacity'))" />
+      <app-control-errors elementId="techRecord_standingCapacity-error" [control]="$any(form.get('techRecord_standingCapacity'))" />
       <input type="number" spellcheck="false" id="techRecord_standingCapacity" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_standingCapacity" />
     </div>
 
@@ -362,6 +361,15 @@
     [options]="YES_NO_OPTIONS"
   ></govuk-form-group-radio>
 
+  <!-- EU Category -->
+  <div *ngIf="shouldDisplayFormControl('techRecord_euVehicleCategory')" class="govuk-form-group-select">
+    <label for="techRecord_euVehicleCategory">EU vehicle category</label>
+    <app-control-errors elementId="techRecord_euVehicleCategory-error" [control]="$any(form.get('techRecord_euVehicleCategory'))" />
+    <select govukSelect [width]="FormNodeWidth.XXS" formControlName="techRecord_euVehicleCategory">
+      <option [value]="option.value" *ngFor="let option of EUCategoryOptions">{{ option.label }}</option>
+    </select>
+  </div>
+
   <!-- Alteration marker -->
   <govuk-form-group-radio
     *ngIf="shouldDisplayFormControl('techRecord_alterationMarker')"
@@ -372,7 +380,7 @@
 
   <ng-template #vehicleClass>
     <div  class="govuk-form-group-select">
-      <label tag>
+      <label for="techRecord_vehicleClass_description" tag>
         Vehicle class
         <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
       </label>
@@ -380,7 +388,7 @@
         The Vehicle Class is calculated automatically based on the number of seats and standing capacity.
         Only change the Class if you need to
       </div>
-      <app-control-errors elementId="techRecord_vehicleClass_description" [control]="$any(form.get('techRecord_vehicleClass_description'))" />
+      <app-control-errors elementId="techRecord_vehicleClass_description-error" [control]="$any(form.get('techRecord_vehicleClass_description'))" />
       <select govukSelect formControlName="techRecord_vehicleClass_description">
         <option [value]="option.value" *ngFor="let option of vehicleClassDescriptionOptions">{{ option.label }}</option>
       </select>

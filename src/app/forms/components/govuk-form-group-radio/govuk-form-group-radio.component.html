@@ -1,5 +1,5 @@
-<div class="govuk-form-group-radio">
-  <fieldset>
+<div class="govuk-form-group-radio" [id]="id">
+  <fieldset role="group">
     <legend>
       <h1 tag>
         {{ controlLabel }}
@@ -32,7 +32,7 @@
           [value]="option.value"
           [checked]="option.value === value"
           [attr.aria-describedby]="hintId"
-          [attr.aria-labelledby]="labelId"
+          [attr.aria-labelledby]="id + '-' + option.value + '-label'"
           [attr.data-testid]="id"
           [class.govuk-radios__input--error]="hasError"
           [(ngModel)]="value"
@@ -40,7 +40,7 @@
           (blur)="onTouched()"
         />
         <label
-          id="{{ labelId }}"
+          id="{{ id }}-{{ option.value }}-label"
           for="{{ id }}-{{ option.value }}-radio"
         >
           {{ option.label }}

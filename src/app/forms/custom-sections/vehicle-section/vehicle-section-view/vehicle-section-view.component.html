@@ -125,11 +125,19 @@
       </dd>
     </div>
   </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE">
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle class</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
-        {{ vm.techRecord_vehicleClass_description | multiOption : MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+        {{ vm.techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+      </dd>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE || technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle class</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
+        {{ $any(vm).techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
       </dd>
     </div>
   </ng-container>

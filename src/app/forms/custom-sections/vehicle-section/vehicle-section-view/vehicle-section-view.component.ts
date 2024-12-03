@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import {
+	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
-	MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 } from '@models/options.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -17,8 +18,9 @@ import { techRecord } from '@store/technical-records';
 export class VehicleSectionViewComponent {
 	readonly VehicleTypes = VehicleTypes;
 	readonly HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS = HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
+	readonly TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS = TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 	readonly PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS = PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
-	readonly MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS = MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
+	readonly ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS = ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);

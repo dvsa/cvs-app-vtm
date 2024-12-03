@@ -150,16 +150,14 @@ export class CommonValidatorsService {
 	}
 
 	xYearsAfterCurrent(xYears: number, message: string): ValidatorFn {
-		console.log('xYearsAfterCurrent');
 		return (control: AbstractControl): ValidationErrors | null => {
 			const currentYear = new Date().getFullYear();
 			const inputYear = control.value;
 			const maxYear = currentYear + xYears;
-			console.log('xYearsAfterCurrent values', currentYear, inputYear, maxYear);
 			if (inputYear && (inputYear > maxYear || inputYear < 0)) {
 				return { xYearsAfterCurrent: message };
 			}
-			console.log('xYearsAfterCurrent return null');
+
 			return null;
 		};
 	}
