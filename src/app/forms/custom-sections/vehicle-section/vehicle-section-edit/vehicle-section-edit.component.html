@@ -1,13 +1,11 @@
 <div [formGroup]="form">
   <!--  Vehicle Type -->
-  <div *ngIf="shouldDisplayFormControl('techRecord_vehicleType')" class="govuk-form-group-input">
-    <h1>
-      <label tag for="techRecord_vehicleType"> Vehicle type <div>
-        <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-      </div></label>
-    </h1>
-    <input id="techRecord_vehicleType" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_vehicleType" />
-  </div>
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_vehicleType')"
+    label="Vehicle type"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    formControlName="techRecord_vehicleType"
+  ></govuk-form-group-input>
 
   <!--  Date of First Registration -->
   <app-date-controls *ngIf="shouldDisplayFormControl('techRecord_regnDate')" formControlName="techRecord_regnDate" #dateFirstReg>
@@ -106,27 +104,20 @@
   </app-date-controls>
 
   <!--  Number of axles -->
-  <div *ngIf="shouldDisplayFormControl('techRecord_noOfAxles')" class="govuk-form-group-input">
-    <h1>
-      <label tag for="techRecord_noOfAxles"> Number of axles
-        <div>
-          <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-        </div>
-      </label>
-    </h1>
-    <input id="techRecord_noOfAxles" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_noOfAxles" />
-  </div>
+  <govuk-form-group-input
+    label="Number of axles"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    formControlName="techRecord_noOfAxles"
+  ></govuk-form-group-input>
 
   <!-- Vehicle Subclass (LGV/CAR/Small TRL only) -->
-  <ng-container *ngIf="shouldShowSubclass">
-    <govuk-checkbox-group
-      *ngIf="shouldDisplayFormControl('techRecord_vehicleSubclass')"
-      label="Vehicle subclass"
-      formControlName="techRecord_vehicleSubclass"
-      [options]="VEHICLE_SUBCLASS_OPTIONS"
-      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
-    ></govuk-checkbox-group>
-  </ng-container>
+  <govuk-checkbox-group
+    *ngIf="shouldShowSubclass && shouldDisplayFormControl('techRecord_vehicleSubclass')"
+    label="Vehicle subclass"
+    formControlName="techRecord_vehicleSubclass"
+    [options]="VEHICLE_SUBCLASS_OPTIONS"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+  ></govuk-checkbox-group>
 
   <div class="flex-row">
     <!-- Speed limiter exempt -->
@@ -209,23 +200,13 @@
   </div>
 
   <!--  Max load on coupling (TRL Only) -->
-  <div *ngIf="shouldDisplayFormControl('techRecord_maxLoadOnCoupling')" class="govuk-form-group-input">
-    <h1>
-      <label id="techRecord_maxLoadOnCoupling-label">
-        Max load on coupling (optional)
-        <div>
-          <app-tag [type]="TagType.PURPLE">{{ TagTypeLabels.PLATES }}</app-tag>
-        </div>
-      </label>
-    </h1>
-    <input
-      appNumberOnly
-      inputmode="numeric"
-      type="number"
-      [width]="FormNodeWidth.XS"
-      govukInput
-      formControlName="techRecord_maxLoadOnCoupling" />
-  </div>
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_maxLoadOnCoupling')"
+    label="Max load on coupling (optional)"
+    formControlName="techRecord_maxLoadOnCoupling"
+    type="number"
+    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+  ></govuk-form-group-input>
 
 
   <!--  Vehicle configuration-->
@@ -270,25 +251,21 @@
   </div>
 
   <!-- Number of wheels (Motorcycle only) -->
-  <ng-container *ngIf="getVehicleType() === VehicleTypes.MOTORCYCLE">
-    <div *ngIf="shouldDisplayFormControl('techRecord_numberOfWheelsDriven')" class="govuk-form-group-input">
-      <h1>
-        <label tag for="techRecord_numberOfWheelsDriven"> Number of wheels <div>
-          <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-        </div></label>
-      </h1>
-      <input id="techRecord_numberOfWheelsDriven" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_numberOfWheelsDriven" />
-    </div>
-  </ng-container>
+  <govuk-form-group-input
+    *ngIf="getVehicleType() === VehicleTypes.MOTORCYCLE &&
+    shouldDisplayFormControl('techRecord_numberOfWheelsDriven')"
+    label="Number of wheels"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    formControlName="techRecord_numberOfWheelsDriven"
+    ></govuk-form-group-input>
 
   <!-- Emission Limit -->
-  <div *ngIf="shouldDisplayFormControl('techRecord_emissionsLimit')" class="govuk-form-group-input">
-    <h1>
-      <label tag for="techRecord_emissionsLimit">Emission limit (m-1) (plate value)</label>
-    </h1>
-    <app-control-errors elementId="techRecord_emissionsLimit" [control]="$any(form.get('techRecord_emissionsLimit'))" />
-    <input type="number" spellcheck="false" id="techRecord_emissionsLimit" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_emissionsLimit" />
-  </div>
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_emissionsLimit')"
+    label="Emission limit (m-1) (plate value)"
+    formControlName="techRecord_emissionsLimit"
+    type="number"
+  ></govuk-form-group-input>
 
   <!-- PSV Only Fields -->
   <div class="govuk-form-group-split-controls" *ngIf="getVehicleType() === VehicleTypes.PSV">
@@ -297,32 +274,20 @@
     </h1>
     <div class="flex-row">
       <!-- Upper Deck -->
-      <div class="govuk-form-group-input">
-        <h1>
-          <label tag for="techRecord_seatsUpperDeck">
-            Upper deck
-            <div>
-              <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-            </div>
-          </label>
-        </h1>
-        <app-control-errors elementId="techRecord_seatsUpperDeck" [control]="$any(form.get('techRecord_seatsUpperDeck'))" />
-        <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsUpperDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsUpperDeck" />
-      </div>
+      <govuk-form-group-input
+        label="Upper deck"
+        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+        formControlName="techRecord_seatsUpperDeck"
+        type="number"
+      ></govuk-form-group-input>
 
       <!-- Lower Deck -->
-      <div class="govuk-form-group-input">
-        <h1>
-          <label tag for="techRecord_seatsLowerDeck">
-            Lower deck
-            <div>
-              <app-tag [type]="TagType.RED">{{ TagTypeLabels.REQUIRED }}</app-tag>
-            </div>
-          </label>
-        </h1>
-        <app-control-errors elementId="techRecord_seatsLowerDeck" [control]="$any(form.get('techRecord_seatsLowerDeck'))" />
-        <input appNumberOnly inputmode="numeric" type="number" spellcheck="false" id="techRecord_seatsLowerDeck" [width]="FormNodeWidth.XS" govukInput formControlName="techRecord_seatsLowerDeck" />
-      </div>
+      <govuk-form-group-input
+        label="Lower deck"
+        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+        formControlName="techRecord_seatsLowerDeck"
+        type="number"
+      ></govuk-form-group-input>
     </div>
 
     <!-- Standing Capacity -->
@@ -349,13 +314,12 @@
     </govuk-form-group-radio>
 
     <!--  Number of Seatbelts -->
-    <div class="govuk-form-group-input" *ngIf="shouldDisplayFormControl('techRecord_numberOfSeatbelts')">
-      <h1>
-        <label tag for="techRecord_numberOfSeatbelts">Number of seat belts</label>
-      </h1>
-      <app-control-errors elementId="techRecord_numberOfSeatbelts" [control]="$any(form.get('techRecord_numberOfSeatbelts'))" />
-      <input type="number" spellcheck="false" id="techRecord_numberOfSeatbelts" [width]="FormNodeWidth.XXS" govukInput formControlName="techRecord_numberOfSeatbelts" />
-    </div>
+    <govuk-form-group-input
+      label="Number of seat belts"
+      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+      formControlName="techRecord_numberOfSeatbelts"
+      type="number"
+    ></govuk-form-group-input>
 
     <!--  Seatbelt installation approval date / type approved -->
     <app-date-controls *ngIf="shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')" formControlName="techRecord_seatbeltInstallationApprovalDate" #seatbeltInstallationDate>

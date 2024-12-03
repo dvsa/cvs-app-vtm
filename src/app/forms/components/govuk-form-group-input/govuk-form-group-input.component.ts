@@ -1,4 +1,3 @@
-import { type } from 'node:os';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
 import {
@@ -9,7 +8,6 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { MultiOption } from '@models/options.model';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 
@@ -39,9 +37,6 @@ export class GovukFormGroupInputComponent implements ControlValueAccessor {
 
 	@Input()
 	tags: CustomTag[] = [];
-
-	@Input({ required: true })
-	options!: MultiOption[];
 
 	@Input({ alias: 'hint' })
 	controlHint = '';
@@ -105,5 +100,4 @@ export class GovukFormGroupInputComponent implements ControlValueAccessor {
 	}
 
 	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly type = type;
 }
