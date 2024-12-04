@@ -1,5 +1,5 @@
 <div class="govuk-form-group-select">
-  <label>
+  <label for="{{ id }}" [id]="labelId">
     {{ controlLabel }}
   </label>
   
@@ -24,7 +24,9 @@
     [(ngModel)]="value"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched()"
+    [class]="style"
   >
+    <option *ngIf="allowNull" [ngValue]="null"></option>
     <option [value]="option.value" *ngFor="let option of options">{{ option.label }}</option>
   </select>
 </div>

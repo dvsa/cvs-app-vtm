@@ -8,7 +8,7 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { MultiOption } from '@models/options.model';
-import { CustomTag } from '@services/dynamic-forms/dynamic-form.types';
+import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
@@ -53,6 +53,12 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	@Input({ alias: 'id' })
 	controlId = '';
 
+	@Input()
+	allowNull = true;
+
+	@Input()
+	width?: FormNodeWidth;
+
 	controlContainer = inject(ControlContainer);
 
 	get control() {
@@ -77,6 +83,10 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 
 	get hasError() {
 		return this.control?.invalid && this.control?.touched && this.control?.errors;
+	}
+
+	get style(): string {
+		return `govuk-select ${this.width ? `govuk-input--width-${this.width}` : ''}`;
 	}
 
 	onChange = (_: any) => {};

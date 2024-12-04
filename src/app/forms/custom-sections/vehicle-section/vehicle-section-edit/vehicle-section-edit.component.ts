@@ -172,9 +172,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.max(999, 'Standing capacity must be less than or equal to 999'),
 				this.handlePsvPassengersChange(),
 			]),
-			techRecord_vehicleSize: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle size is required'),
-			]),
+			techRecord_vehicleSize: this.fb.control<string | null>(null),
 			techRecord_numberOfSeatbelts: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Number of seatbelts must be less than or equal to 99'),
 			]),
@@ -413,5 +411,11 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			this.getVehicleType() === VehicleTypes.HGV ||
 			this.getVehicleType() === VehicleTypes.MOTORCYCLE
 		);
+	}
+
+	get vehicleClassHint() {
+		return this.getVehicleType() === VehicleTypes.PSV
+			? 'The Vehicle Class is calculated automatically based on the number of seats and standing capacity. Only change the Class if you need to'
+			: '';
 	}
 }
