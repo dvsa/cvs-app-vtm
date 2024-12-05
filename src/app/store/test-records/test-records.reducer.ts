@@ -33,6 +33,7 @@ import {
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
 	initialContingencyTest,
+	patchEditingTestResult,
 	removeDefect,
 	removeRequiredStandard,
 	setResultOfTest,
@@ -107,6 +108,11 @@ export const testResultsReducer = createReducer(
 	on(setResultOfTest, (state, action) => ({
 		...state,
 		editingTestResult: setTestResult(state.editingTestResult, action.result),
+	})),
+
+	on(patchEditingTestResult, (state, action) => ({
+		...state,
+		editingTestResult: merge({}, state.editingTestResult, action.testResult),
 	})),
 
 	on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, action.testResult) })),

@@ -312,6 +312,7 @@ export class TestResultsEffects {
 				mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
 				mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
 				mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
+				mergedForms.recalls = editedTestResult.recalls;
 
 				const now = new Date().toISOString();
 

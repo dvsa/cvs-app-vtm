@@ -20,6 +20,12 @@
       </div>
     </div>
 
+    <!-- Recalls warning -->
+    <app-field-warning-message 
+      *ngIf="(recalls | async)?.hasRecall" 
+      warningMessage="This vehicle has an oustanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair.">
+    </app-field-warning-message>
+    
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">Vehicle details</h2>
@@ -89,6 +95,12 @@
           }}</app-tag>
         </div>
       </div>
+
+      <!-- Recalls warning -->
+      <app-field-warning-message 
+        *ngIf="(recalls | async)?.hasRecall"  
+        warningMessage="This vehicle has an oustanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair.">
+      </app-field-warning-message>
 
       <div class="tester_and_location">
         <dl class="govuk-summary-list govuk-summary-list--no-border">

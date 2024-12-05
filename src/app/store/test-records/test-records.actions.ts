@@ -61,6 +61,12 @@ export const updateTestResultFailed = createAction(
 export const cleanTestResult = createAction('[test-results] Clean test result for submission');
 
 export const editingTestResult = createAction('[test-results] Editing', props<{ testTypeId: string }>());
+
+export const patchEditingTestResult = createAction(
+	'[test-results] Patch editing',
+	props<{ testResult: Partial<TestResultModel> }>()
+);
+
 export const updateEditingTestResult = createAction(
 	'[test-results] Update editing',
 	props<{ testResult: TestResultModel }>()

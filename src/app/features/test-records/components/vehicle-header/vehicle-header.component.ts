@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TestRecordsService } from '@/src/app/services/test-records/test-records.service';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -8,10 +10,9 @@ import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { techRecord } from '@store/technical-records';
 import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { TagType, TagTypes } from '../../../../components/tag/tag.component';
 
 @Component({
@@ -26,11 +27,9 @@ export class VehicleHeaderComponent {
 	@Input() testNumber?: string | null;
 	@Input() isReview = false;
 
-	constructor(
-		private testTypesService: TestTypesService,
-		private store: Store,
-		private activatedRoute: ActivatedRoute
-	) {}
+	store = inject(Store);
+	activatedRoute = inject(ActivatedRoute);
+	testRecordsService = inject(TestRecordsService);
 
 	get test(): TestType | undefined {
 		return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
@@ -80,6 +79,12 @@ export class VehicleHeaderComponent {
 	get testCode(): string | undefined {
 		const testCode = this.testResult?.testTypes[0].testCode || this.activatedRoute.snapshot?.data?.['testCode'];
 		return testCode ? `(${testCode})` : '';
+	}
+
+	get recalls(): Observable<RecallsSchema | undefined> {
+		return this.testRecordsService.isTestTypeGroupEditable$.pipe(
+			map((editable) => (editable ? this.testResult?.recalls : this.activatedRoute.snapshot?.data?.['recalls']))
+		);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-shadow

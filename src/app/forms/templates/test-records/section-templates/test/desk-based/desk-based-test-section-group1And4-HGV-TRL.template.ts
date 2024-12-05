@@ -31,6 +31,26 @@ export const DeskBasedTestSectionGroup1And4HgvTrl: FormNode = {
 			viewType: FormNodeViewTypes.HIDDEN,
 		},
 		{
+			name: 'recalls',
+			type: FormNodeTypes.GROUP,
+			children: [
+				{
+					name: 'hasRecall',
+					value: false,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+				{
+					name: 'manufacturer',
+					value: null,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+			],
+		},
+		{
 			name: 'testTypes',
 			label: 'Test Types',
 			type: FormNodeTypes.ARRAY,
