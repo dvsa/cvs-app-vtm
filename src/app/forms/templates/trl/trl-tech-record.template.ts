@@ -57,7 +57,7 @@ export const TrlTechRecordTemplate: FormNode = {
 			editType: FormNodeEditTypes.SELECT,
 			options: [
 				{ value: 'January', label: 'January' },
-				{ value: 'February', label: 'Febraury' },
+				{ value: 'February', label: 'February' },
 				{ value: 'March', label: 'March' },
 				{ value: 'April', label: 'April' },
 				{ value: 'May', label: 'May' },
