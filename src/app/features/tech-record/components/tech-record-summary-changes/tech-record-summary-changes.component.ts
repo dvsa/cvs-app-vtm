@@ -9,7 +9,6 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -137,10 +136,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 		return this.techRecordEdited
 			? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordEdited)
 			: undefined;
-	}
-
-	get vehicleSummary(): FormNode {
-		return VehicleSummary;
 	}
 
 	get deletedAxles(): Axles {
