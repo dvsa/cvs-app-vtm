@@ -3,7 +3,7 @@ import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { CustomTag, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -73,10 +73,10 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	getTags(formControlName: string): CustomTag[] {
 		switch (true) {
-			case this.techRecord().techRecord_vehicleType === 'hgv' && formControlName === 'techRecord_chassisMake':
-				return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
-			case this.techRecord().techRecord_vehicleType === 'trl' && formControlName === 'techRecord_chassisMake':
-				return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
+			// case this.techRecord().techRecord_vehicleType === 'hgv' && formControlName === 'techRecord_chassisMake':
+			// 	return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
+			// case this.techRecord().techRecord_vehicleType === 'trl' && formControlName === 'techRecord_chassisMake':
+			// 	return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
 			default:
 				return [];
 		}
@@ -88,7 +88,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
-			techRecord_chassisMake: this.fb.control<string | null>(null, [
+			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, [
 				this.commonValidators.maxLength(30, "'Chassis make must be less than or equal to 30'"),
 			]),
 		};
@@ -97,4 +97,5 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly TagTypeLabels = TagTypeLabels;
 	protected readonly TagType = TagType;
+	protected readonly VehicleTypes = VehicleTypes;
 }

@@ -1,10 +1,11 @@
 <div [formGroup]="form">
-  <govuk-form-group-input
-    type="text"
-    formControlName="techRecord_chassisMake"
-    label="Chassis make"
-    [width]="FormNodeWidth.L"
-    [tags]="getTags('techRecord_chassisMake')"
-  >
-  </govuk-form-group-input>
+  <ng-container *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV">
+    <govuk-form-group-input
+      type="text"
+      formControlName="techRecord_chassisMake"
+      label="Chassis make"
+      [width]="FormNodeWidth.L"
+    >
+    </govuk-form-group-input>
+  </ng-container>
 </div>
