@@ -5,7 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { CustomTag, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
 
@@ -27,6 +27,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	form = this.fb.group({});
 
 	ngOnInit(): void {
+		this.addControlsBasedOffVehicleType();
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
 		if (parent instanceof FormGroup) {
@@ -50,30 +51,47 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
+	addControlsBasedOffVehicleType() {
+		const vehicleControls = this.controlsBasedOffVehicleType;
+		for (const [key, control] of Object.entries(vehicleControls)) {
+			this.form.addControl(key, control, { emitEvent: false });
+		}
+	}
+
+	get controlsBasedOffVehicleType() {
+		switch (this.techRecord().techRecord_vehicleType) {
+			case 'hgv':
+				return this.hgvAndTrailerFields;
+			case 'psv':
+				return this.psvFields;
+			case 'trl':
+				return this.hgvAndTrailerFields;
+			default:
+				return {};
+		}
+	}
+
+	getTags(formControlName: string): CustomTag[] {
+		switch (true) {
+			case this.techRecord().techRecord_vehicleType === 'hgv' && formControlName === 'techRecord_chassisMake':
+				return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
+			case this.techRecord().techRecord_vehicleType === 'trl' && formControlName === 'techRecord_chassisMake':
+				return [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }];
+			default:
+				return [];
+		}
+	}
+
+	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {};
 	}
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
-		return {};
-	}
-
-	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
-		return {};
-	}
-
-	get smallTrlFields(): Partial<Record<any, FormControl>> {
-		return {};
-	}
-
-	get lgvAndCarFields(): Partial<Record<keyof TechRecordType<'lgv' | 'car'>, FormControl>> {
-		return {};
-	}
-
-	// currently typed as string due to wrong typing of motorcycle, as it has a skeleton car in its place
-	// get motorcycleFields(): Partial<Record<keyof TechRecordType<'motorcycle'>, FormControl>> {
-	get motorcycleFields(): Partial<Record<string, FormControl>> {
-		return {};
+		return {
+			techRecord_chassisMake: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(30, "'Chassis make must be less than or equal to 30'"),
+			]),
+		};
 	}
 
 	protected readonly FormNodeWidth = FormNodeWidth;
