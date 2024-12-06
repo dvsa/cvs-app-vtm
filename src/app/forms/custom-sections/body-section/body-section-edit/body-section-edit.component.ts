@@ -89,7 +89,22 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(30, "'Chassis make must be less than or equal to 30'"),
+				this.commonValidators.maxLength(30, 'Chassis make must be less than or equal to 30'),
+			]),
+			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, [
+				this.commonValidators.maxLength(20, 'Chassis model must be less than or equal to 20'),
+			]),
+			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }, [
+				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20'),
+			]),
+			techRecord_bodyModel: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20'),
+			]),
+			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
+				this.commonValidators.required('Body type is required'),
+			]),
+			techRecord_modelLiteral: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(30, 'Model literal must be less than or equal to 30'),
 			]),
 		};
 	}
