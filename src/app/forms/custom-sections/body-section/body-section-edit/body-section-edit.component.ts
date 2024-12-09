@@ -3,11 +3,14 @@ import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { MultiOptions } from '@models/options.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { CustomTag, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, map, skipWhile, take } from 'rxjs';
 
 @Component({
 	selector: 'app-body-section-edit',
@@ -20,6 +23,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	controlContainer = inject(ControlContainer);
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
+	referenceDataService = inject(ReferenceDataService);
 	techRecord = input.required<V3TechRecordModel>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -49,6 +53,19 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	get dtpNumbers$(): Observable<MultiOptions> {
+		return combineLatest([
+			this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
+			this.referenceDataService.getReferencePsvMakeDataLoading$(),
+		]).pipe(
+			skipWhile(([, loading]) => loading),
+			take(1),
+			map(([data]) => {
+				return data?.map((option) => ({ value: option.resourceKey, label: option.resourceKey })) as MultiOptions;
+			})
+		);
 	}
 
 	addControlsBasedOffVehicleType() {

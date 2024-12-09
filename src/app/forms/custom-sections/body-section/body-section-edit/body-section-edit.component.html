@@ -1,5 +1,11 @@
 <div [formGroup]="form">
   <ng-container *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV">
+    <govuk-form-group-autocomplete
+      formControlName="techRecord_brakes_dtpNumber"
+      label="DTp Number"
+      [options$]="dtpNumbers$"
+      [width]="FormNodeWidth.L"
+    ></govuk-form-group-autocomplete>
     <div class="node-row">
       <govuk-form-group-input
         type="text"
