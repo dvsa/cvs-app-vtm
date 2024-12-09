@@ -8,6 +8,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { CustomTag, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable, ReplaySubject, combineLatest, map, skipWhile, take } from 'rxjs';
@@ -24,6 +25,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
 	referenceDataService = inject(ReferenceDataService);
+	optionsService = inject(MultiOptionsService);
 	techRecord = input.required<V3TechRecordModel>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -39,6 +41,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 				parent.addControl(key, control, { emitEvent: false });
 			}
 		}
+		this.loadOptions();
 	}
 
 	ngOnDestroy(): void {
@@ -72,6 +75,16 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		const vehicleControls = this.controlsBasedOffVehicleType;
 		for (const [key, control] of Object.entries(vehicleControls)) {
 			this.form.addControl(key, control, { emitEvent: false });
+		}
+	}
+
+	loadOptions(): void {
+		if (this.techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+			this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
+		} else if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+			this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+		} else {
+			this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
 		}
 	}
 

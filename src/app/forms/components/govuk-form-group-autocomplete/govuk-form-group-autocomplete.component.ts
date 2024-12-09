@@ -86,6 +86,7 @@ export class GovukFormGroupAutocompleteComponent implements ControlValueAccessor
 		lastValueFrom(this.options$.pipe(takeWhile((options) => !options || options.length === 0, true)))
 			.then((options) => {
 				this.options = options;
+				console.log([...options]);
 				this.cdr.detectChanges();
 
 				enhanceSelectElement({
