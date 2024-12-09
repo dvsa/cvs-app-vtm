@@ -21,7 +21,7 @@ export const recallsResolver: ResolveFn<Observable<RecallsSchema | undefined>> =
 				record.techRecord_vehicleType === VehicleTypes.PSV ||
 				record.techRecord_vehicleType === VehicleTypes.TRL
 			) {
-				httpService.getRecalls(record.vin).pipe(
+				return httpService.getRecalls(record.vin).pipe(
 					tap((recalls) => store.dispatch(patchEditingTestResult({ testResult: { recalls } }))),
 					catchError(() => of(undefined))
 				);
