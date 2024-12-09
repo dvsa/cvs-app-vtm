@@ -19,10 +19,10 @@
     </p>
   </ng-container>
 
-  <div class="innerStyle">
-    <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
-      <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
-    </div>
+  <div [class]="innerStyle">
+<!--    <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">-->
+<!--      <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>-->
+<!--    </div>-->
     <select
       id="{{ id }}"
       name="{{ id }}"
