@@ -160,4 +160,8 @@ export class CommonValidatorsService {
 			return null;
 		};
 	}
+
+	invalidOption(message: string): ValidatorFn {
+		return (control) => (control.value === '[INVALID_OPTION]' ? { invalidOption: message } : null);
+	}
 }

@@ -20,14 +20,6 @@
   </ng-container>
 
   <div [class]="innerStyle">
-<!--    <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">-->
-<!--      <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>-->
-<!--    </div>-->
-    <select
-      id="{{ id }}"
-    >
-      <option *ngIf="allowNull" [ngValue]="null"></option>
-      <option [value]="option.value" [selected]="option.value === control?.value" *ngFor="let option of options">{{ option.label }}</option>
-    </select>
+    <select id="{{ id }}"></select>
   </div>
 </div>

@@ -1,10 +1,12 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 import {
+	AfterContentInit,
 	AfterViewInit,
 	ChangeDetectorRef,
 	Component,
 	EventEmitter,
 	Input,
+	OnDestroy,
 	Output,
 	forwardRef,
 	inject,
@@ -16,11 +18,20 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import { Observable, lastValueFrom, takeWhile } from 'rxjs';
+import {
+	Observable,
+	ReplaySubject,
+	debounceTime,
+	distinctUntilChanged,
+	fromEvent,
+	lastValueFrom,
+	takeUntil,
+	takeWhile,
+} from 'rxjs';
+import { CommonValidatorsService } from '../../validators/common-validators.service';
 
 @Component({
 	selector: 'govuk-form-group-autocomplete',
@@ -36,7 +47,9 @@ import { Observable, lastValueFrom, takeWhile } from 'rxjs';
 		},
 	],
 })
-export class GovukFormGroupAutocompleteComponent implements ControlValueAccessor, AfterViewInit {
+export class GovukFormGroupAutocompleteComponent
+	implements ControlValueAccessor, AfterViewInit, AfterContentInit, OnDestroy
+{
 	@Output() blur = new EventEmitter<FocusEvent>();
 	@Output() focus = new EventEmitter<FocusEvent>();
 
@@ -72,38 +85,52 @@ export class GovukFormGroupAutocompleteComponent implements ControlValueAccessor
 	@Input() options$!: Observable<any[]>;
 
 	document = inject(DOCUMENT);
-
-	controlContainer = inject(ControlContainer);
 	cdr = inject(ChangeDetectorRef);
-	DROP_DOWN_ARROW =
-		'<svg class="autocomplete__dropdown-arrow-down"style="height: 17px;" viewBox="0 0 512 512"  ><path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/></svg>';
-	options: any[] = [];
+	controlContainer = inject(ControlContainer);
+	commonValidators = inject(CommonValidatorsService);
+
+	options: (string | number)[] = [];
+
+	destroy = new ReplaySubject<boolean>(1);
 
 	ngAfterViewInit(): void {
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		const self = this;
-
 		lastValueFrom(this.options$.pipe(takeWhile((options) => !options || options.length === 0, true)))
 			.then((options) => {
 				this.options = options;
-				console.log([...options]);
 				this.cdr.detectChanges();
 
 				enhanceSelectElement({
+					id: this.labelId,
 					selectElement: this.document.querySelector(`#${this.id}`),
 					autoselect: false,
 					defaultValue: '',
 					showAllValues: true,
 					confirmOnBlur: false,
-					dropdownArrow: () => this.DROP_DOWN_ARROW,
-					onConfirm(selected) {
-						self.handleChangeForOption(selected);
+					source: this.options,
+					dropdownArrow: () => `
+            <svg class="autocomplete__dropdown-arrow-down"style="height: 17px;" viewBox="0 0 512 512">
+              <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>
+            </svg>
+          `,
+					onConfirm: (selected) => {
+						this.handleChangeForOption(selected);
 					},
 				});
 
-				window.document.querySelector(`#${this.id}`)?.addEventListener('change', (event) => this.handleChange(event));
+				fromEvent(this.document.querySelector(`#${this.id}`)!, 'change')
+					.pipe(takeUntil(this.destroy), distinctUntilChanged(), debounceTime(500))
+					.subscribe((event) => this.handleChange(event));
 			})
 			.catch(() => {});
+	}
+
+	ngAfterContentInit(): void {
+		this.addValidators();
+	}
+
+	ngOnDestroy(): void {
+		this.destroy.next(true);
+		this.destroy.complete();
 	}
 
 	get control() {
@@ -158,36 +185,21 @@ export class GovukFormGroupAutocompleteComponent implements ControlValueAccessor
 		this.disabled = isDisabled;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	handleChange(event: any) {
-		const {
-			target: { value },
-		} = event;
-
-		this.handleChangeForOption(value);
+	handleChange(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		this.handleChangeForOption(select.value);
 	}
 
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
-
-		this.control?.patchValue(optionValue ?? '[INVALID_OPTION]');
-		this.control?.markAsTouched();
-		this.control?.updateValueAndValidity();
-		this.cdr.detectChanges();
+		this.onChange(optionValue ?? '[INVALID_OPTION]');
 	}
 
-	/**
-	 * Takes the value from the autocomplete element and looks for a matching option in the options array.
-	 * Returns the found value or undefined if no match.
-	 * If value is empty, returns `''`.
-	 * @param value - value to get option for
-	 * @returns `string | undefined`
-	 */
 	findOptionValue(label: string) {
-		return label ? this.options.find((option) => option.label === label)?.value : '';
+		return label ? this.options.find((option) => option === label) : '';
 	}
 
 	addValidators() {
-		this.control?.addValidators([CustomValidators.invalidOption]);
+		this.control?.addValidators(this.commonValidators.invalidOption(`${this.controlLabel} is invalid`));
 	}
 }
