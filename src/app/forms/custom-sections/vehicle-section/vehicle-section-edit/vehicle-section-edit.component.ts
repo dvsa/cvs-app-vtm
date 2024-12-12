@@ -170,7 +170,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				this.handlePsvPassengersChange(),
 			]),
 			techRecord_vehicleSize: this.fb.control<string | null>(null),
-			techRecord_numberOfSeatbelts: this.fb.control<number | null>(null, [
+			techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99, 'Number of seat belts must be less than or equal to 99'),
 			]),
 			techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
