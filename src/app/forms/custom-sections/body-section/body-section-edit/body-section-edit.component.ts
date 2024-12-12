@@ -136,13 +136,13 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {
-			techRecord_make: this.fb.control<string | null>({ value: null, disabled: true }, [
+			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20'),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20'),
 			]),
-			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
+			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>({ value: null, disabled: true }, []),
@@ -190,7 +190,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>({ value: null, disabled: true }, []),
-			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
+			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
