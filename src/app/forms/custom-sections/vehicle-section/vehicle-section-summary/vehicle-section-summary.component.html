@@ -28,6 +28,14 @@
         {{ vm.techRecord_manufactureYear | defaultNullOrEmpty }}
       </dd>
     </div>
+    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_firstUseDate')">
+        <dt class="govuk-summary-list__key">Date of first use</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_firstUseDate">
+          {{ vm.techRecord_firstUseDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </ng-container>
     <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_noOfAxles')">
       <dt class="govuk-summary-list__key">Number of axles</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_noOfAxles">
