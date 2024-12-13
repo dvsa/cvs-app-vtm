@@ -127,7 +127,7 @@
         </dd>
       </div>
   </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle class</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
@@ -135,7 +135,7 @@
       </dd>
     </div>
   </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL">
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle class</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
