@@ -264,7 +264,8 @@
       label="Number of seat belts"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       formControlName="techRecord_numberOfSeatbelts"
-      type="number"
+      type="numericString"
+      [width]="FormNodeWidth.XXS"
     ></govuk-form-group-input>
 
     <!-- Seatbelt installation approval date / type approved -->
