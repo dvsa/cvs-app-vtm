@@ -92,7 +92,7 @@
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_suspensionType')">
         <dt class="govuk-summary-list__key">Suspension type (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_suspensionType">
-          {{ vm.techRecord_suspensionType | defaultNullOrEmpty }}
+          {{ vm.techRecord_suspensionType | defaultNullOrEmpty | multiOption : SUSPENSION_TYRE_OPTIONS }}
         </dd>
       </div>
     </ng-container>
@@ -146,7 +146,7 @@
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingType')">
         <dt class="govuk-summary-list__key">Coupling type (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_couplingType">
-          {{ vm.techRecord_couplingType | defaultNullOrEmpty }}
+          {{ vm.techRecord_couplingType | defaultNullOrEmpty | multiOption : COUPLING_TYPE_OPTIONS }}
         </dd>
       </div>
     </ng-container>
