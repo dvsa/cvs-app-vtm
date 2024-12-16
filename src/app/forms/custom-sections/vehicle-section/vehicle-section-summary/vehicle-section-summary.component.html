@@ -123,26 +123,10 @@
         </dd>
       </div>
   </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_vehicleClass')">
+  <ng-container *ngIf="$any(vm).techRecord_vehicleClass_description">
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_vehicleClass_description')">
       <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
-        {{ vm.techRecord_vehicleClass_description | multiOption : HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-      </dd>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL  && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL">
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_vehicleClass_motorcycle')">
-      <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
-        {{ vm.techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-      </dd>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE || technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL">
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_vehicleClass_motorcycle')">
-      <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_motorcycle">
+      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_description">
         {{ $any(vm).techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
       </dd>
     </div>
