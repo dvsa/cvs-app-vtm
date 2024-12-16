@@ -92,6 +92,18 @@ import { RequiredStandardsComponent } from './custom-sections/required-standards
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
+import {
+  TypeApprovalSectionComponent
+} from "@forms/custom-sections/type-approval-section/type-approval-section.component";
+import {
+  TypeApprovalSectionEditComponent
+} from "@forms/custom-sections/type-approval-section/type-approval-section-edit/type-approval-section-edit.component";
+import {
+  TypeApprovalSectionSummaryComponent
+} from "@forms/custom-sections/type-approval-section/type-approval-section-summary/type-approval-section-summary.component";
+import {
+  TypeApprovalSectionViewComponent
+} from "@forms/custom-sections/type-approval-section/type-approval-section-view/type-approval-section-view.component";
 
 @NgModule({
 	declarations: [
@@ -168,14 +180,21 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		VehicleSectionViewComponent,
 		VehicleSectionEditComponent,
 		AdrPermittedDangerousGoodsComponent,
+
 		BodySectionComponent,
 		BodySectionEditComponent,
 		BodySectionViewComponent,
 		BodySectionSummaryComponent,
+
 		NotesSectionComponent,
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+
+    TypeApprovalSectionComponent,
+    TypeApprovalSectionEditComponent,
+    TypeApprovalSectionViewComponent,
+    TypeApprovalSectionSummaryComponent,
 	],
 	imports: [
 		CommonModule,
@@ -258,14 +277,21 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
 		GovukFormGroupTextareaComponent,
+
 		BodySectionComponent,
 		BodySectionEditComponent,
 		BodySectionViewComponent,
 		BodySectionSummaryComponent,
+
 		NotesSectionComponent,
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+
+    TypeApprovalSectionComponent,
+    TypeApprovalSectionEditComponent,
+    TypeApprovalSectionViewComponent,
+    TypeApprovalSectionSummaryComponent,
 	],
 })
 export class DynamicFormsModule {}

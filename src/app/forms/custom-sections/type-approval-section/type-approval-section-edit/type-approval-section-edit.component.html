@@ -1,0 +1,67 @@
+<div [formGroup]="form">
+  <!-- Approval type -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_approvalType')"
+    label="Approval type"
+    formControlName="techRecord_approvalType"
+    [options]="ApprovalTypes"
+  ></govuk-form-group-select>
+
+  <!-- Approval type number -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_approvalTypeNumber')"
+    label="Approval type number"
+    [width]="FormNodeWidth.XL"
+    formControlName="techRecord_approvalTypeNumber"
+  ></govuk-form-group-input>
+
+  <!-- National type number (NTA) -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_ntaNumber')"
+    label="National type number"
+    [width]="FormNodeWidth.XL"
+    formControlName="techRecord_ntaNumber"
+  ></govuk-form-group-input>
+
+  <!--  PSV Only-->
+  <ng-container *ngIf="vehicleType === VehicleTypes.PSV">
+    <!-- COIF Serial number -->
+    <govuk-form-group-input
+      *ngIf="shouldDisplayFormControl('techRecord_coifSerialNumber')"
+      label="COIF Serial number"
+      [width]="FormNodeWidth.M"
+      formControlName="techRecord_coifSerialNumber"
+    ></govuk-form-group-input>
+
+    <!-- COIF Certifier name -->
+    <govuk-form-group-input
+      *ngIf="shouldDisplayFormControl('techRecord_coifCertifierName')"
+      label="COIF Certifier name"
+      [width]="FormNodeWidth.XL"
+      formControlName="techRecord_coifCertifierName"
+    ></govuk-form-group-input>
+
+    <!-- COIF Certifier date -->
+    <govuk-form-group-date
+      *ngIf="shouldDisplayFormControl('techRecord_coifDate')"
+      label="COIF Certifier date"
+      formControlName="techRecord_coifDate"
+    ></govuk-form-group-date>
+  </ng-container>
+
+  <!-- Variant number -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_variantNumber')"
+    label="Variant number"
+    [width]="FormNodeWidth.XL"
+    formControlName="techRecord_variantNumber"
+  ></govuk-form-group-input>
+
+  <!-- Variant version number -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_variantVersionNumber')"
+    label="Variant version number"
+    [width]="FormNodeWidth.XL"
+    formControlName="techRecord_variantVersionNumber"
+  ></govuk-form-group-input>
+</div>

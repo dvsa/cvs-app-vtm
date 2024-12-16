@@ -4,6 +4,16 @@ import validateDate from 'validate-govuk-date';
 
 @Injectable({ providedIn: 'root' })
 export class CommonValidatorsService {
+  isOneOf<T>(value: T, message: string): ValidatorFn {
+    return (control) => {
+      if (control.value && typeof value === 'object' && Object.keys(value as object).indexOf(control.value) === -1) {
+        return { oneOf: message };
+      }
+
+      return null;
+    };
+  }
+
 	max(size: number, message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
