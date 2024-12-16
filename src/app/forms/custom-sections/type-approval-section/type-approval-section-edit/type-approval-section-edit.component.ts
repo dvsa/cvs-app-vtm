@@ -1,14 +1,22 @@
-import {Component, inject, input, OnDestroy, OnInit} from '@angular/core';
-import {ControlContainer, FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {CommonValidatorsService} from '@forms/validators/common-validators.service';
-import {TechnicalRecordService} from '@services/technical-record/technical-record.service';
-import {V3TechRecordModel, VehicleTypes} from '@models/vehicle-tech-record.model';
-import {ReplaySubject} from 'rxjs';
-import {FormNodeWidth, TagTypeLabels} from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import {TagType} from '@/src/app/components/tag/tag.component';
-import {TechRecordType} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import {ApprovalType} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
-import {getOptionsFromEnum} from '@forms/utils/enum-map';
+import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import {
+	AbstractControl,
+	ControlContainer,
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	ValidationErrors,
+	ValidatorFn,
+} from '@angular/forms';
+import { TagType } from '@components/tag/tag.component';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { ReplaySubject } from 'rxjs';
 
 type TypeApprovalSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>;
 
@@ -29,7 +37,10 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 
 	form = this.fb.group<TypeApprovalSectionForm>({
 		techRecord_approvalType: this.fb.control<ApprovalType | null>({ value: null, disabled: false }, [
-			this.commonValidators.isOneOf(ApprovalType, 'Approval type selection is invalid'),
+			this.commonValidators.isOneOf(ApprovalType, 'Approval type is required'),
+		]),
+		techRecord_approvalTypeNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
+			this.handleApprovalTypeChange(),
 		]),
 		techRecord_ntaNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
 			this.commonValidators.maxLength(40, 'National type number must be less than or equal to 40 characters'),
@@ -108,9 +119,63 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 		};
 	}
 
+	private handleApprovalTypeChange(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (control.dirty) {
+				if (this.showApprovalTypeNumber) {
+					return { required: 'Approval type number is required' };
+				}
+			}
+
+			return null;
+		};
+	}
+
+	get showApprovalTypeNumber(): boolean {
+		return this.approvalTypes.includes(this.form.get('techRecord_approvalType')?.value);
+	}
+
+	private get approvalTypes() {
+		// We could do a base and then merge the extra from PSV, but they seem to be in slightly different order
+		// so not sure if that's intentional
+		if (this.vehicleType === VehicleTypes.PSV) {
+			return [
+				'NTA',
+				'ECTA',
+				'ECSSTA',
+				'IVA',
+				'NSSTA',
+				'GB WVTA',
+				'UKNI WVTA',
+				'EU WVTA Pre 23',
+				'EU WVTA 23 on',
+				'QNIG',
+				'Prov.GB WVTA',
+				'Small series NKSXX',
+				'Small series NKS',
+				'IVA - VCA',
+				'IVA - DVSA/NI',
+			];
+		}
+
+		return [
+			'NTA',
+			'ECTA',
+			'IVA',
+			'NSSTA',
+			'ECSSTA',
+			'GB WVTA',
+			'Prov.GB WVTA',
+			'Small series NKSXX',
+			'Small series NKS',
+			'IVA - VCA',
+			'IVA - DVSA/NI',
+		];
+	}
+
 	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly TagTypeLabels = TagTypeLabels;
-	protected readonly TagType = TagType;
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly ApprovalTypes = getOptionsFromEnum(ApprovalType);
+	protected readonly TagType = TagType;
+	protected readonly TagTypeLabels = TagTypeLabels;
 }

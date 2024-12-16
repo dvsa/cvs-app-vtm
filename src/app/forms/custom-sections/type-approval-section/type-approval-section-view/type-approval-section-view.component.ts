@@ -5,13 +5,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { techRecord } from '@store/technical-records';
 
 @Component({
-  selector: 'app-type-approval-section-view',
-  templateUrl: './type-approval-section-view.component.html',
-  styleUrls: ['./type-approval-section-view.component.scss'],
+	selector: 'app-type-approval-section-view',
+	templateUrl: './type-approval-section-view.component.html',
+	styleUrls: ['./type-approval-section-view.component.scss'],
 })
 export class TypeApprovalSectionViewComponent {
-  protected readonly VehicleTypes = VehicleTypes;
-  store = inject(Store);
-  technicalRecordService = inject(TechnicalRecordService);
-  techRecord = this.store.selectSignal(techRecord);
+	protected readonly VehicleTypes = VehicleTypes;
+	store = inject(Store);
+	technicalRecordService = inject(TechnicalRecordService);
+	techRecord = this.store.selectSignal(techRecord);
 }
