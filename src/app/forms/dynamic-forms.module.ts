@@ -12,12 +12,18 @@ import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-n
 import { PrefixDirective } from '@directives/prefix/prefix.directive';
 import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
+import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
+import { VehicleSectionSummaryComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-summary/vehicle-section-summary.component';
+import { VehicleSectionViewComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-view/vehicle-section-view.component';
+import { VehicleSectionComponent } from '@forms/custom-sections/vehicle-section/vehicle-section.component';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
-import { TruncatePipe } from '../pipes/truncate/truncate.pipe';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CharacterCountComponent } from './components/character-count/character-count.component';
@@ -32,6 +38,9 @@ import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynam
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
+import { GovukCheckboxGroupComponent } from './components/govuk-checkbox-group/govuk-checkbox-group.component';
+import { GovukFormGroupDateComponent } from './components/govuk-form-group-date/govuk-form-group-date.component';
+import { GovukFormGroupRadioComponent } from './components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { ReadOnlyComponent } from './components/read-only/read-only.component';
@@ -144,6 +153,10 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		AdrSectionEditComponent,
 		AdrSectionViewComponent,
 		AdrSectionSummaryComponent,
+		VehicleSectionComponent,
+		VehicleSectionSummaryComponent,
+		VehicleSectionViewComponent,
+		VehicleSectionEditComponent,
 		AdrPermittedDangerousGoodsComponent,
 	],
 	imports: [
@@ -154,6 +167,11 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		RouterModule,
 		DateFocusNextDirective,
 		NumberOnlyDirective,
+		GovukCheckboxGroupComponent,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupInputComponent,
+		GovukFormGroupDateComponent,
 	],
 	exports: [
 		TextInputComponent,
@@ -210,6 +228,15 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		AdrSectionEditComponent,
 		AdrSectionViewComponent,
 		AdrSectionSummaryComponent,
+		VehicleSectionComponent,
+		VehicleSectionSummaryComponent,
+		VehicleSectionViewComponent,
+		VehicleSectionEditComponent,
+		GovukCheckboxGroupComponent,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupInputComponent,
+		GovukFormGroupDateComponent,
 	],
 })
 export class DynamicFormsModule {}

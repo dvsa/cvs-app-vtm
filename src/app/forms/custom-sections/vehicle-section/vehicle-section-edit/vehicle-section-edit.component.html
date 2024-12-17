@@ -1,0 +1,316 @@
+<div [formGroup]="form">
+  <!--  Vehicle Type -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_vehicleType')"
+    label="Vehicle type"
+    [width]="getVehicleType() === VehicleTypes.MOTORCYCLE ? FormNodeWidth.M : FormNodeWidth.XS"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    formControlName="techRecord_vehicleType"
+  ></govuk-form-group-input>
+
+  <!--  Date of First Registration -->
+  <govuk-form-group-date
+    *ngIf="shouldDisplayFormControl('techRecord_regnDate')"
+    label="Date of first registration"
+    [tags]="shouldShowPlatesHgv ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+    formControlName="techRecord_regnDate"
+  ></govuk-form-group-date>
+
+  <!--  Month of manufacture (TRL Only) -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_manufactureMonth')"
+    label="Month of manufacture"
+    formControlName="techRecord_manufactureMonth"
+    [options]="MONTHS"
+  ></govuk-form-group-select>
+
+  <!--  Year of manufacture -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_manufactureYear')"
+    label="Year of manufacture"
+    formControlName="techRecord_manufactureYear"
+    [width]="FormNodeWidth.XS"
+    type="number"
+    [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+  ></govuk-form-group-input>
+
+  <!--  Date of first use (TRL only) -->
+  <govuk-form-group-date
+    *ngIf="shouldDisplayFormControl('techRecord_firstUseDate')"
+    label="Date of first use"
+    formControlName="techRecord_firstUseDate"
+  ></govuk-form-group-date>
+
+  <!--  Number of axles -->
+  <govuk-form-group-input
+    type="number"
+    label="Number of axles"
+    [width]="FormNodeWidth.XXS"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    [value]="techRecord().techRecord_noOfAxles"
+    formControlName="techRecord_noOfAxles"
+  ></govuk-form-group-input>
+
+  <div class="flex-row" *ngIf="getVehicleType() === VehicleTypes.HGV || getVehicleType() === VehicleTypes.PSV">
+    <!-- Speed limiter exempt for HGV (required to generate plates) -->
+    <govuk-form-group-radio
+      *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.HGV"
+      label="Speed limiter exempt"
+      formControlName="techRecord_speedLimiterMrk"
+      [options]="EXEMPT_OR_NOT_OPTIONS"
+      [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
+    ></govuk-form-group-radio>
+
+    <!-- Speed limiter exempt for PSV -->
+    <govuk-form-group-radio
+      *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV"
+      label="Speed limiter exempt"
+      formControlName="techRecord_speedLimiterMrk"
+      [options]="EXEMPT_OR_NOT_OPTIONS"
+    ></govuk-form-group-radio>
+
+    <!-- Tacho exempt -->
+    <govuk-form-group-radio
+      *ngIf="shouldDisplayFormControl('techRecord_tachoExemptMrk')"
+      label="Tacho exempt"
+      formControlName="techRecord_tachoExemptMrk"
+      [options]="EXEMPT_OR_NOT_OPTIONS"
+    ></govuk-form-group-radio>
+  </div>
+
+  <!-- Euro standard -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_euroStandard')"
+    label="Euro standard"
+    formControlName="techRecord_euroStandard"
+    [options]="EMISSION_STANDARD_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Road friendly suspension -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_roadFriendly')"
+    label="Road friendly suspension"
+    formControlName="techRecord_roadFriendly"
+    [options]="YES_NO_OPTIONS"
+    [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
+  ></govuk-form-group-radio>
+
+  <!--  Suspension type (TRL Only) -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_suspensionType')"
+    label="Suspension type (optional)"
+    formControlName="techRecord_suspensionType"
+    [options]="SUSPENSION_TYRE_OPTIONS"
+  ></govuk-form-group-select>
+
+  <!-- Fuel / propulsion system -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_fuelPropulsionSystem')"
+    label="Fuel / propulsion system"
+    formControlName="techRecord_fuelPropulsionSystem"
+    [options]="FUEL_PROPULSION_SYSTEM_OPTIONS"
+  ></govuk-form-group-select>
+
+  <!-- Drawbar coupling fitted -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_drawbarCouplingFitted')"
+    label="Drawbar coupling fitted"
+    formControlName="techRecord_drawbarCouplingFitted"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <ng-container *ngIf="getVehicleType() !== VehicleTypes.PSV" [ngTemplateOutlet]="euVehicleCategory"></ng-container>
+
+  <!--  Vehicle class (HGV/Motorcycle/Small TRL/TRL Only) -->
+  <ng-container *ngIf="shouldShowClass">
+    <ng-container *ngIf="shouldDisplayFormControl('techRecord_vehicleClass_description')" [ngTemplateOutlet]="vehicleClass"></ng-container>
+  </ng-container>
+
+  <!-- Vehicle Subclass (LGV/CAR/Small TRL only) -->
+  <govuk-checkbox-group
+    *ngIf="shouldShowSubclass && shouldDisplayFormControl('techRecord_vehicleSubclass')"
+    label="Vehicle subclass"
+    formControlName="techRecord_vehicleSubclass"
+    [options]="VEHICLE_SUBCLASS_OPTIONS"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+  ></govuk-checkbox-group>
+
+  <!--  Coupling type (TRL Only) -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_couplingType')"
+    label="Coupling type (optional)"
+    [options]="CouplingTypeOptions"
+    formControlName="techRecord_couplingType"
+  ></govuk-form-group-select>
+
+  <!--  Max load on coupling (TRL Only) -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_maxLoadOnCoupling')"
+    label="Max load on coupling (optional)"
+    formControlName="techRecord_maxLoadOnCoupling"
+    type="number"
+    [width]="FormNodeWidth.M"
+    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+  ></govuk-form-group-input>
+
+  <!-- Vehicle configuration-->
+  <ng-container *ngIf="shouldDisplayFormControl('techRecord_vehicleConfiguration')">
+    <govuk-form-group-select
+      *ngIf="(shouldShowPlatesHgv || shouldShowPlatesTrl); else otherVehicleConfigurations"
+      label="Vehicle configuration"
+      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }, { label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
+      [options]="vehicleConfigurationOptions"
+      formControlName="techRecord_vehicleConfiguration"
+    ></govuk-form-group-select>
+
+    <ng-template #otherVehicleConfigurations>
+      <govuk-form-group-select
+        label="Vehicle configuration"
+        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+        [options]="vehicleConfigurationOptions"
+        formControlName="techRecord_vehicleConfiguration"
+      ></govuk-form-group-select>
+    </ng-template>
+  </ng-container>
+
+  <!-- Off road vehicle -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_offRoad')"
+    label="Off road vehicle"
+    formControlName="techRecord_offRoad"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Frame description (TRL Only) -->
+  <govuk-form-group-select
+    *ngIf="shouldDisplayFormControl('techRecord_frameDescription')"
+    label="Frame description (optional)"
+    formControlName="techRecord_frameDescription"
+    [options]="FRAME_DESCRIPTION_OPTIONS"
+  ></govuk-form-group-select>
+
+  <!-- Number of wheels (Motorcycle only) -->
+  <govuk-form-group-input
+    *ngIf="getVehicleType() === VehicleTypes.MOTORCYCLE &&
+    shouldDisplayFormControl('techRecord_numberOfWheelsDriven')"
+    type="number"
+    label="Number of wheels"
+    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    formControlName="techRecord_numberOfWheelsDriven"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- Emission Limit -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_emissionsLimit')"
+    label="Emission limit (m-1) (plate value)"
+    formControlName="techRecord_emissionsLimit"
+    type="number"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- PSV Only Fields -->
+  <div *ngIf="getVehicleType() === VehicleTypes.PSV">
+    <h1>
+      <label class="govuk-label govuk-label--m">Seats:</label>
+    </h1>
+
+    <div class="flex-row govuk-form-group-split-controls">
+      <!-- Upper Deck -->
+      <govuk-form-group-input
+        label="Upper deck"
+        [width]="FormNodeWidth.M"
+        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+        formControlName="techRecord_seatsUpperDeck"
+        type="number"
+      ></govuk-form-group-input>
+
+      <!-- Lower Deck -->
+      <govuk-form-group-input
+        label="Lower deck"
+        [width]="FormNodeWidth.M"
+        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+        formControlName="techRecord_seatsLowerDeck"
+        type="number"
+      ></govuk-form-group-input>
+    </div>
+
+    <!-- Standing Capacity -->
+    <govuk-form-group-input
+      label="Standing capacity"
+      formControlName = 'techRecord_standingCapacity'
+      type="number"
+      [width]="FormNodeWidth.XXS"
+    ></govuk-form-group-input>
+
+
+    <!-- Vehicle Class (PSV) -->
+    <ng-container *ngIf="getVehicleType() === VehicleTypes.PSV" [ngTemplateOutlet]="euVehicleCategory"></ng-container>
+
+    <ng-template [ngTemplateOutlet]="vehicleClass"></ng-template>
+
+    <!--  Vehicle Size -->
+    <govuk-form-group-radio
+      *ngIf="shouldDisplayFormControl('techRecord_vehicleSize')"
+      label="Vehicle size"
+      formControlName="techRecord_vehicleSize"
+      [options]="VEHICLE_SIZE_OPTIONS"
+      [tags]="[{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]"
+      [hint]="'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to'"
+    >
+    </govuk-form-group-radio>
+
+    <!--  Number of Seatbelts -->
+    <govuk-form-group-input
+      label="Number of seat belts"
+      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+      formControlName="techRecord_numberOfSeatbelts"
+      type="numericString"
+      [width]="FormNodeWidth.XXS"
+    ></govuk-form-group-input>
+
+    <!-- Seatbelt installation approval date / type approved -->
+    <govuk-form-group-date
+      *ngIf="shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')"
+      label="Seatbelt installation approval date / type approved"
+      formControlName="techRecord_seatbeltInstallationApprovalDate"
+    ></govuk-form-group-date>
+  </div>
+
+  <!-- Departmental vehicle marker -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_departmentalVehicleMarker')"
+    label="Departmental vehicle marker"
+    formControlName="techRecord_departmentalVehicleMarker"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Alteration marker -->
+  <govuk-form-group-radio
+    *ngIf="shouldDisplayFormControl('techRecord_alterationMarker')"
+    label="Alteration marker"
+    formControlName="techRecord_alterationMarker"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <ng-template #euVehicleCategory>
+    <!-- EU Category -->
+    <govuk-form-group-select
+      *ngIf="shouldDisplayFormControl('techRecord_euVehicleCategory')"
+      label="EU vehicle category"
+      formControlName="techRecord_euVehicleCategory"
+      [width]="FormNodeWidth.S"
+      [options]="EUCategoryOptions"
+    ></govuk-form-group-select>
+  </ng-template>
+
+  <ng-template #vehicleClass>
+    <govuk-form-group-select
+      label="Vehicle class"
+      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+      [hint]="vehicleClassHint"
+      formControlName="techRecord_vehicleClass_description"
+      [options]="vehicleClassDescriptionOptions ?? []"
+    ></govuk-form-group-select>
+  </ng-template>
+</div>

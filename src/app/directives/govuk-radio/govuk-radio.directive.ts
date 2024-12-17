@@ -1,6 +1,5 @@
 import { Directive, ElementRef, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
-import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Directive({
@@ -11,7 +10,6 @@ export class GovukRadioDirective implements OnInit, OnDestroy {
 	controlContainer = inject(ControlContainer);
 
 	controlName = input.required<string>({ alias: 'formControlName' });
-	width = input<FormNodeWidth>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 

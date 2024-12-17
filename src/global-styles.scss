@@ -149,36 +149,6 @@
   }
 }
 
-
-/*
-.govuk-form-group-date {
-  @extend .govuk-form-group;
-  > h1 {
-    @extend .govuk-label-wrapper;
-    > label {
-      @extend .govuk-label;
-      @extend .govuk-label--m;
-    }
-  }
-  > div {
-    @extend .govuk-date-input;
-    > div {
-      @extend .govuk-date-input__item;
-      > div {
-        @extend .govuk-form-group;
-        > label {
-          @extend .govuk-label;
-          @extend .govuk-date-input__label;
-        }
-        > input {
-          @extend .govuk-input;
-        }
-      }
-    }
-  }
-}
-*/
-
 .govuk-form-group-radio {
   @extend .govuk-form-group;
   > fieldset {

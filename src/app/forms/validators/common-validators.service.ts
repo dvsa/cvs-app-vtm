@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import validateDate from 'validate-govuk-date';
 
 @Injectable({ providedIn: 'root' })
@@ -64,6 +64,19 @@ export class CommonValidatorsService {
 		};
 	}
 
+	pastYear(message: string): ValidatorFn {
+		return (control) => {
+			if (control.value) {
+				const currentYear = new Date().getFullYear();
+				const inputYear = control.value;
+				if (inputYear && inputYear > currentYear) {
+					return { pastYear: message };
+				}
+			}
+			return null;
+		};
+	}
+
 	invalidDate(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && Number.isNaN(Date.parse(control.value))) {
@@ -109,7 +122,6 @@ export class CommonValidatorsService {
 	date(label: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
-
 			const [d] = (control.value as string).split('T');
 			const [year, month, day] = d.split('-');
 			const { error, errors } = validateDate(day || '', month || '', year || '', label);
@@ -120,6 +132,29 @@ export class CommonValidatorsService {
 
 			if (year.length !== 4) {
 				return { invalidDate: `'${label || 'Date'}' year must be four digits` };
+			}
+
+			return null;
+		};
+	}
+
+	required(message: string): ValidatorFn {
+		return (control) => {
+			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
+				return { required: message };
+			}
+
+			return null;
+		};
+	}
+
+	xYearsAfterCurrent(xYears: number, message: string): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const currentYear = new Date().getFullYear();
+			const inputYear = control.value;
+			const maxYear = currentYear + xYears;
+			if (inputYear && (inputYear > maxYear || inputYear < 0)) {
+				return { xYearsAfterCurrent: message };
 			}
 
 			return null;

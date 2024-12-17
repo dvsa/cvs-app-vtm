@@ -1,5 +1,6 @@
 import { Directive, ElementRef, inject, input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Directive({
@@ -10,6 +11,7 @@ export class GovukSelectDirective {
 	controlContainer = inject(ControlContainer);
 
 	controlName = input.required<string>({ alias: 'formControlName' });
+	width = input<FormNodeWidth>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
@@ -21,6 +23,9 @@ export class GovukSelectDirective {
 			this.elementRef.nativeElement.setAttribute('name', controlName);
 			this.elementRef.nativeElement.setAttribute('aria-labelledby', `${controlName}-label`);
 			this.elementRef.nativeElement.classList.add('govuk-select');
+			if (this.width()) {
+				this.elementRef.nativeElement.classList.add(`govuk-input--width-${this.width()}`);
+			}
 
 			control.statusChanges.pipe(takeUntil(this.destroy$)).subscribe((statusChange) => {
 				if (statusChange === 'INVALID' && control.touched) {

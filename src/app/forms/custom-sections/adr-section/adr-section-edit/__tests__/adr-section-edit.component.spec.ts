@@ -14,11 +14,11 @@ import { of } from 'rxjs';
 import { AdrSectionEditComponent } from '../adr-section-edit.component';
 
 describe('AdrSectionEditComponent', () => {
-	let store: MockStore;
 	let controlContainer: ControlContainer;
 	let component: AdrSectionEditComponent;
 	let fixture: ComponentFixture<AdrSectionEditComponent>;
 	let formGroupDirective: FormGroupDirective;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);

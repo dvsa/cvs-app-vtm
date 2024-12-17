@@ -2,5 +2,6 @@
   "testToggle": false,
   "adrCertToggle": true,
   "requiredStandards": true,
-  "FsAdr": true
+  "FsAdr": true,
+  "FsVehicleSummary": true
 }

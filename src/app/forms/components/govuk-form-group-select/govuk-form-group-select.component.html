@@ -1,0 +1,37 @@
+<div class="govuk-form-group-select">
+  <label tag for="{{ id }}" [id]="labelId">
+    {{ controlLabel }}
+    <ng-container *ngIf="tags?.length">
+      <div class="flex gap-2">
+        <app-tag *ngFor="let tag of tags" [type]="tag.colour">{{ tag.label }}</app-tag>
+      </div>
+    </ng-container>
+  </label>
+  
+  <ng-container *ngIf="controlHint">
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
+  </ng-container>
+
+  <ng-container *ngIf="hasError">
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  </ng-container>
+
+  <select
+    id="{{ id }}"
+    name="{{ id }}"
+    [attr.aria-describedby]="hintId"
+    [attr.aria-labelledby]="labelId"
+    [attr.data-testid]="id"
+    [class.govuk-radios__input--error]="hasError"
+    [(ngModel)]="value"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched()"
+    [class]="style"
+  >
+    <option *ngIf="allowNull" [ngValue]="null"></option>
+    <option [value]="option.value" *ngFor="let option of options">{{ option.label }}</option>
+  </select>
+</div>
