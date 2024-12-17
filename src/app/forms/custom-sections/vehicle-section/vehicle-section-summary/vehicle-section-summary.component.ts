@@ -45,8 +45,15 @@ export class VehicleSectionSummaryComponent {
 	hasChanged(property: string) {
 		const current = this.currentTechRecord();
 		const amended = this.amendedTechRecord();
+
 		if (!current || !amended) return true;
 
-		return !isEqual(current[property as keyof TechRecordType<'put'>], amended[property as keyof TechRecordType<'put'>]);
+		const currentValue = current[property as keyof TechRecordType<'put'>];
+		const amendedValue = amended[property as keyof TechRecordType<'put'>];
+
+		// If the property is edited, exclude certain changes
+		if (currentValue == null && Array.isArray(amendedValue) && amendedValue.length === 0) return false;
+
+		return !isEqual(currentValue, amendedValue);
 	}
 }
