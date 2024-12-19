@@ -1,0 +1,18 @@
+<ng-container *ngIf="techRecord() as vm">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <!-- Speed restriction -->
+    <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+      <dt class="govuk-summary-list__key">Speed restriction</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
+        {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Tyre use code -->
+    <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+      <dt class="govuk-summary-list__key">Tyre use code</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
+        {{ vm.techRecord_tyreUseCode | defaultNullOrEmpty }}
+      </dd>
+    </div>
+  </dl>
+</ng-container>
