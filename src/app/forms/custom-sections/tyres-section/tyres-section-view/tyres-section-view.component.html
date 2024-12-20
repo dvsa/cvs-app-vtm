@@ -23,14 +23,25 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-        <ng-container *ngFor="let axle of vm.techRecord_axles">
-          <tr class="govuk-table__row">
+        <ng-container *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
+          <tr class="govuk-table__row" *ngFor="let axle of vm.techRecord_axles">
             <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
             <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
-            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ axle }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+          <tr class="govuk-table__row" *ngFor="let axle of psvAxles">
+            <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_speedCategorySymbol }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
           </tr>
         </ng-container>
         </tbody>

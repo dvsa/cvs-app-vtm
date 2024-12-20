@@ -3,7 +3,6 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
-import { indexOf } from 'lodash';
 
 @Component({
 	selector: 'app-tyres-section-view',
@@ -16,5 +15,12 @@ export class TyresSectionViewComponent {
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);
 	techRecord = this.store.selectSignal(techRecord);
-	protected readonly indexOf = indexOf;
+
+	get psvAxles() {
+		const techRecord = this.techRecord();
+		if (techRecord?.techRecord_vehicleType === VehicleTypes.PSV) {
+			return techRecord?.techRecord_axles;
+		}
+		return undefined;
+	}
 }
