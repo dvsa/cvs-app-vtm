@@ -1,11 +1,40 @@
 <ng-container *ngIf="techRecord() as vm">
-  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.TRL">
     <!-- Speed restriction -->
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
       <dt class="govuk-summary-list__key">Speed restriction</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
         {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
       </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header"></th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-code-header">Code</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-size-header">Size</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-ply-header">Ply</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-load-index-header">Load Index</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-sr-header" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">SR</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-sd-header">S/D</th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-search-header"></th>
+            <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        <ng-container *ngFor="let axle of vm.techRecord_axles">
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
+            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ axle }}</td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
     </div>
     <!-- Tyre use code -->
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
