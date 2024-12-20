@@ -9,7 +9,8 @@
     </div>
   </dl>
   <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
-      <table class="govuk-table">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">Tyre Details</caption>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header"></th>
@@ -22,27 +23,15 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-        <ng-container *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
           <tr class="govuk-table__row" *ngFor="let axle of vm.techRecord_axles">
             <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
             <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
+            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType == VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
           </tr>
-        </ng-container>
-        <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
-          <tr class="govuk-table__row" *ngFor="let axle of psvAxles">
-            <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_speedCategorySymbol }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
-          </tr>
-        </ng-container>
         </tbody>
       </table>
   </ng-container>
