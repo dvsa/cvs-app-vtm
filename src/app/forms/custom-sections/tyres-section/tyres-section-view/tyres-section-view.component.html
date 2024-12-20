@@ -1,13 +1,14 @@
 <ng-container *ngIf="techRecord() as vm">
-  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
     <!-- Speed restriction -->
-    <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Speed restriction</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
         {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
       </dd>
     </div>
-    <div class="govuk-summary-list__row">
+  </dl>
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
@@ -18,8 +19,6 @@
             <th scope="col" class="govuk-table__header" id="tyre-table-load-index-header">Load Index</th>
             <th scope="col" class="govuk-table__header" id="tyre-table-sr-header" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">SR</th>
             <th scope="col" class="govuk-table__header" id="tyre-table-sd-header">S/D</th>
-            <th scope="col" class="govuk-table__header" id="tyre-table-search-header"></th>
-            <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -46,9 +45,10 @@
         </ng-container>
         </tbody>
       </table>
-    </div>
+  </ng-container>
     <!-- Tyre use code -->
-    <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+  <dl *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Tyre use code</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
         {{ vm.techRecord_tyreUseCode | defaultNullOrEmpty }}
