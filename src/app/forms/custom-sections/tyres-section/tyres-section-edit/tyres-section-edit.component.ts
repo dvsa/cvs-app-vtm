@@ -18,7 +18,7 @@ import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep } from 'lodash';
@@ -243,7 +243,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 		if (axles === null || axles === undefined) return;
 
 		// Get the last added axle, as this is the one that needs autopopulating
-		const lastAxle = axles[axles.length - 1];
+		const lastAxle = axles[axleNumber - 1];
 
 		if (lastAxle?.tyres_tyreCode) {
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
@@ -369,15 +369,16 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 
 		if (
 			!changes['techRecord']?.currentValue?.techRecord_axles ||
-			(changes['techRecord']?.previousValue?.techRecord_axles &&
+			(changes['techRecord']?.previousValue &&
+				!changes['techRecord']?.previousValue.techRecord_axles &&
 				changes['techRecord']?.currentValue?.techRecord_axles ===
 					changes['techRecord']?.previousValue?.techRecord_axles)
 		) {
 			return;
 		}
 
-		changes['techRecord'].currentValue.techRecord_axles.forEach((axle: any) => {
-			if (axle?.weights_gbWeight === null || axle?.weights_designWeight === null) {
+		changes['techRecord'].currentValue.techRecord_axles.forEach((axle: Axle) => {
+			if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
 				const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
 					axle.tyres_dataTrAxles?.toString(),
 					axle.tyres_fitmentCode,

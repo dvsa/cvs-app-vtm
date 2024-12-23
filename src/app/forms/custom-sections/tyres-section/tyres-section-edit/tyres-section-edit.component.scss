@@ -23,11 +23,25 @@
     padding-right: 0.5rem;
   }
 
+  tfoot td {
+    padding: 0.5rem 0;
+  }
+
   govuk-form-group-input ::ng-deep .govuk-form-group-input {
     margin-bottom: 0 !important;
   }
 
   govuk-form-group-select ::ng-deep .govuk-form-group-select {
     margin-bottom: 0 !important;
+  }
+
+  app-field-warning-message {
+    ::ng-deep .govuk-warning-text {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 0;
+    }
   }
 }
