@@ -1,3 +1,5 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 .test_result_header {
   display: flex;
   flex-flow: row wrap;
@@ -60,6 +62,32 @@
 .guidance_notes_link {
   display: flex;
   padding: 10px 0;
+}
+
+.text {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  font-family: GDS Transport, arial, sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  padding: 0;
+}
+
+.link {
+  @extend .text;
+  color: $govuk-brand-colour;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, 0.0625rem);
+  text-underline-offset: 0.1em;
+  cursor: pointer;
+
+  &:hover {
+    background-color: transparent;
+    color: govuk-colour('dark-blue', $legacy: 'light-blue');
+    text-decoration: underline;
+    text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+  }
 }
 
 @media (min-width: 40.0625em) {
