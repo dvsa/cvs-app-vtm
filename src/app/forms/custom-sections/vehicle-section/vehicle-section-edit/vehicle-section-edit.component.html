@@ -301,6 +301,7 @@
       formControlName="techRecord_euVehicleCategory"
       [width]="FormNodeWidth.S"
       [options]="EUCategoryOptions"
+      [tags]="getVehicleType() === VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
     ></govuk-form-group-select>
   </ng-template>
 
