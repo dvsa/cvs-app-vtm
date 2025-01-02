@@ -41,8 +41,8 @@
             <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
             <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
-            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType == VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
+            <td class="govuk-table__cell uppercase" *ngIf="vm.techRecord_vehicleType == VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol }}</td>
+            <td class="govuk-table__cell capitalize">{{ axle.tyres_fitmentCode }}</td>
           </tr>
         </tbody>
       </table>
