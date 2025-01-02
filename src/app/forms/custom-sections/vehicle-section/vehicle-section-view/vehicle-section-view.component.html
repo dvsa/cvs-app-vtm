@@ -30,10 +30,9 @@
         {{ vm.techRecord_manufactureYear | defaultNullOrEmpty }}
       </dd>
     </div>
-    <ng-container *ngIf="
-      vm.techRecord_vehicleType === VehicleTypes.TRL
-    ">
-      <div class="govuk-summary-list__row">
+    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL && vm.techRecord_euVehicleCategory !== 'o1' && vm.techRecord_euVehicleCategory !== 'o2'">
+
+    <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date of first use</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_firstUseDate">
           {{ vm.techRecord_firstUseDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
