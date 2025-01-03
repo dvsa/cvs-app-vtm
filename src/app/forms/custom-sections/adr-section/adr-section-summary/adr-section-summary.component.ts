@@ -18,7 +18,7 @@ export class AdrSectionSummaryComponent {
 	store = inject(Store);
 	adrService = inject(AdrService);
 
-	currentTechRecord = this.store.selectSignal(techRecord);
+	currentTechRecord = this.store.selectSignal(techRecord) as Signal<ADRTechRecord>;
 	amendedTechRecord = this.store.selectSignal(editingTechRecord) as Signal<ADRTechRecord>;
 
 	hasChanged(property: keyof ADRTechRecord) {
@@ -68,6 +68,7 @@ export class AdrSectionSummaryComponent {
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode'),
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted'),
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement'),
+			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'),
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo'),
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList'),
 			this.hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions'),
