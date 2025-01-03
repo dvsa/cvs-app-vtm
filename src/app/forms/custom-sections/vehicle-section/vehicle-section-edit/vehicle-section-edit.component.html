@@ -132,7 +132,7 @@
     label="Vehicle subclass"
     formControlName="techRecord_vehicleSubclass"
     [options]="VEHICLE_SUBCLASS_OPTIONS"
-    [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+    [tags]="getVehicleType() !== VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
   ></govuk-checkbox-group>
 
   <!--  Coupling type (TRL Only) -->
@@ -301,6 +301,7 @@
       formControlName="techRecord_euVehicleCategory"
       [width]="FormNodeWidth.S"
       [options]="EUCategoryOptions"
+      [tags]="getVehicleType() === VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
     ></govuk-form-group-select>
   </ng-template>
 
