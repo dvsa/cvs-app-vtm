@@ -185,7 +185,7 @@
               </strong>
             </div>
             <!-- New Weights section -->
-            <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsTyres'); else oldWeightsSection">
+            <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsWeights'); else oldWeightsSection">
               <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
             </ng-container>
 
