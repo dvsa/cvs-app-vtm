@@ -48,4 +48,12 @@
       </tbody>
     </table>
   </ng-container>
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Unladen weight</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
+        {{ vm.techRecord_unladenWeight | defaultNullOrEmpty }}
+      </dd>
+    </div>
+  </dl>
 </ng-container>
