@@ -92,4 +92,17 @@
       </ng-container>
     </tbody>
   </table>
+
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <dl class="govuk-summary-list" *ngIf="hasChanged('techRecord_unladenWeight')">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Unladen Weight
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ vm.techRecord_unladenWeight }} kg
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
 </ng-container>
