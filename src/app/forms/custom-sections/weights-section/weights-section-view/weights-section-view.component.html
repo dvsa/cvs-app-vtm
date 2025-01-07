@@ -1,9 +1,58 @@
 <ng-container *ngIf="techRecord() as vm">
-  <dl class="govuk-summary-list">
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">Axle weights (kg)</caption>
+      <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header" id="weights-kerb-header" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">Kerb</th>
+        <th scope="col" class="govuk-table__header" id="weights-laden-header" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">Laden</th>
+        <th scope="col" class="govuk-table__header" id="weights-gb-max-header" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">GB max</th>
+        <th scope="col" class="govuk-table__header" id="weights-gb-header" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">GB</th>
+        <th scope="col" class="govuk-table__header" id="weights-eec-header" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">EEC</th>
+        <th scope="col" class="govuk-table__header" id="weights-design-header">Design</th>
+      </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let axle of vm.techRecord_axles">
+        <th scope="row" class="govuk-table__header">Axle {{axle.axleNumber}}</th>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(axle).weights_kerbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(axle).weights_ladenWeight }}</td>
+        <td class="govuk-table__cell">{{ axle.weights_gbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">{{ $any(axle).weights_eecWeight }}</td>
+        <td class="govuk-table__cell">{{ axle.weights_designWeight }}</td>
+      </tr>
+      <tr>
+        <th scope="row" class="govuk-table__header">Gross</th>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(vm).techRecord_grossKerbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(vm).techRecord_grossLadenWeight }}</td>
+        <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">{{ $any(vm).techRecord_grossEecWeight }}</td>
+        <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight }}</td>
+      </tr>
+      <tr  *ngIf="vm.techRecord_vehicleType !== VehicleTypes.TRL">
+        <th scope="row" class="govuk-table__header">Train</th>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV"></td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV"></td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">{{ $any(vm).techRecord_trainGbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(vm).techRecord_maxTrainGbWeight }}</td>
+        <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">{{ $any(vm).techRecord_trainEecWeight }}</td>
+        <td class="govuk-table__cell">{{ $any(vm).techRecord_trainDesignWeight }}</td>
+      </tr>
+      <tr *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
+        <th scope="row" class="govuk-table__header">Max Train</th>
+        <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight }}</td>
+        <td class="govuk-table__cell">{{ vm.techRecord_maxTrainEecWeight }}</td>
+        <td class="govuk-table__cell">{{ $any(vm).techRecord_maxTrainDesignWeight }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key"></dt>
-      <dd class="govuk-summary-list__value" id="test-">
-
+      <dt class="govuk-summary-list__key">Unladen weight</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_unladenWeight">
+        {{ vm.techRecord_unladenWeight | defaultNullOrEmpty }}
       </dd>
     </div>
   </dl>
