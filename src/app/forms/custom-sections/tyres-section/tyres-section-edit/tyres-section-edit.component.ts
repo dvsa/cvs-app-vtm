@@ -1,3 +1,4 @@
+import { TagType } from '@/src/app/components/tag/tag.component';
 import {
 	FITMENR_CODE_OPTIONS,
 	HGV_TYRE_USE_CODE_OPTIONS,
@@ -9,7 +10,7 @@ import {
 	ReferenceDataTyre,
 	ReferenceDataTyreLoadIndex,
 } from '@/src/app/models/reference-data.model';
-import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
 import { addAxle, removeAxle, updateScrollPosition } from '@/src/app/store/technical-records';
 import { ViewportScroller } from '@angular/common';
@@ -32,6 +33,8 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
+	protected readonly TagType = TagType;
+	protected readonly TagTypeLabels = TagTypeLabels;
 	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
 	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
