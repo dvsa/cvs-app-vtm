@@ -1,6 +1,6 @@
 {
   "name": "cvs-app-vtm",
-  "version": "1.29",
+  "version": "1.30",
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
@@ -75,6 +75,7 @@
     "@commitlint/config-conventional": "^18.6.2",
     "@compodoc/compodoc": "^1.1.23",
     "@dvsa/biome-config": "0.2.0",
+    "@dvsa/cvs-microservice-common": "1.3.1",
     "@ngrx/schematics": "^18.0.2",
     "@sentry/cli": "^2.32.2",
     "@types/jest": "^29.5.12",

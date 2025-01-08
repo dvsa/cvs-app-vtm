@@ -35,14 +35,16 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let axle of vm.techRecord_axles">
+          <tr class="govuk-table__row" *ngFor="let axle of vm.techRecord_axles; let i = index">
             <th scope="row" class="govuk-table__header">T{{axle.axleNumber}}</th>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
-            <td class="govuk-table__cell uppercase" *ngIf="vm.techRecord_vehicleType == VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol }}</td>
-            <td class="govuk-table__cell capitalize">{{ axle.tyres_fitmentCode }}</td>
+            <td class="govuk-table__cell" id="tyres_tyreCode-{{ i + 1 }}">{{ axle.tyres_tyreCode }}</td>
+            <td class="govuk-table__cell" id="tyres_tyreSize-{{ i + 1 }}">{{ axle.tyres_tyreSize }}</td>
+            <td class="govuk-table__cell" id="tyres_plyRating-{{ i + 1 }}">{{ axle.tyres_plyRating }}</td>
+            <td class="govuk-table__cell" id="tyres_dataTrAxles-{{ i + 1 }}">{{ axle.tyres_dataTrAxles }}</td>
+            <td class="govuk-table__cell uppercase" id="tyres_speedCategorySymbol-{{ i + 1 }}" *ngIf="vm.techRecord_vehicleType == VehicleTypes.PSV">
+              {{ $any(axle).tyres_speedCategorySymbol }}
+            </td>
+            <td class="govuk-table__cell capitalize" id="tyres_fitmentCode-{{ i + 1 }}">{{ axle.tyres_fitmentCode }}</td>
           </tr>
         </tbody>
       </table>
