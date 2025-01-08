@@ -15,10 +15,17 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { TyresSectionEditComponent } from '../tyres-section-edit.component';
+
+const mockReferenceDataService = {
+	fetchReferenceDataByKey: jest.fn(),
+	loadReferenceData: jest.fn(),
+	getAll$: jest.fn().mockReturnValue(of([])),
+};
 
 describe('TyresSectionEditComponent', () => {
 	let controlContainer: ControlContainer;
@@ -43,8 +50,9 @@ describe('TyresSectionEditComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				{ provide: ActivatedRoute, useValue: { snapshot: { data: { reason: 'test' } } } },
 				TechnicalRecordService,
+				{ provide: ReferenceDataService, useValue: mockReferenceDataService },
 			],
 		}).compileComponents();
 
