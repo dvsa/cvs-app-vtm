@@ -90,6 +90,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		this.handleTechRecordChange(changes);
 		this.checkAxleAdded(changes);
 		this.checkAxleRemoved(changes);
 		this.checkFitmentCodeHasChanged(changes);
@@ -240,7 +241,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	getTyresRefData(axleNumber: number) {
-		const axles = this.techRecord().techRecord_axles;
+		const axles = this.techRecordAxles.value;
 
 		// Don't search if the axle is unfocused by removing the axle
 		if (axles === null || axles === undefined) return;
@@ -392,5 +393,11 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 				}
 			}
 		});
+	}
+
+	handleTechRecordChange(changes: SimpleChanges): void {
+		if (changes['techRecord']?.currentValue) {
+			this.form.patchValue(changes['techRecord'].currentValue, { onlySelf: true, emitEvent: false });
+		}
 	}
 }

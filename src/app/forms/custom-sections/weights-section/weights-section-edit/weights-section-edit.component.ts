@@ -78,6 +78,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 
 	addHgvTrlAxleWeights() {
 		return this.fb.group({
+			axleNumber: this.fb.control<number | null>(null),
 			weights_gbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
@@ -87,11 +88,18 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 			weights_designWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
+			tyres_tyreCode: this.fb.control<number | null>(null),
+			tyres_tyreSize: this.fb.control<number | null>(null),
+			tyres_plyRating: this.fb.control<string | null>(null),
+			tyres_fitmentCode: this.fb.control<string | null>(null),
+			tyres_dataTrAxles: this.fb.control<number | null>(null),
+			parkingBrakeMrk: this.fb.control<boolean | null>(null),
 		});
 	}
 
 	addPsvAxleWeights() {
 		return this.fb.group({
+			axleNumber: this.fb.control<number | null>(null),
 			weights_kerbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
@@ -104,6 +112,13 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 			weights_designWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
+			tyres_tyreCode: this.fb.control<number | null>(null),
+			tyres_tyreSize: this.fb.control<number | null>(null),
+			tyres_plyRating: this.fb.control<string | null>(null),
+			tyres_fitmentCode: this.fb.control<string | null>(null),
+			tyres_dataTrAxles: this.fb.control<number | null>(null),
+			parkingBrakeMrk: this.fb.control<boolean | null>(null),
+			tyres_speedCategorySymbol: this.fb.control<string | null>(null),
 		});
 	}
 
