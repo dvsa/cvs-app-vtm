@@ -10,7 +10,7 @@
   </dl>
   <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
     <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">Tyre Details</caption>
+      <caption class="govuk-table__caption govuk-table__caption--m">Tyre details</caption>
       <div class="govuk-table__caption govuk-table__caption--m">
         <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="' '">
           <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
