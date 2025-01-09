@@ -1,6 +1,6 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import {
-	FITMENR_CODE_OPTIONS,
+	FITMENT_CODE_OPTIONS,
 	HGV_TYRE_USE_CODE_OPTIONS,
 	SPEED_CATEGORY_SYMBOL_OPTIONS,
 	TRL_TYRE_USE_CODE_OPTIONS,
@@ -38,7 +38,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
 	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
-	protected readonly FITMENT_CODE_OPTIONS = FITMENR_CODE_OPTIONS;
+	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;
 
 	fb = inject(FormBuilder);
 	store = inject(Store);
@@ -215,7 +215,11 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	prepopulateAxles() {
-		this.techRecord().techRecord_axles?.forEach(() => this.techRecordAxles.push(this.getAxleForm()));
+		this.techRecord().techRecord_axles?.forEach((axle) => {
+			const form = this.getAxleForm();
+			form.patchValue(axle as any, { emitEvent: false });
+			this.techRecordAxles.push(form);
+		});
 	}
 
 	loadReferenceData() {
@@ -240,7 +244,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	getTyresRefData(axleNumber: number) {
-		const axles = this.techRecord().techRecord_axles;
+		const axles = this.techRecordAxles.value;
 
 		// Don't search if the axle is unfocused by removing the axle
 		if (axles === null || axles === undefined) return;
@@ -266,6 +270,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 				tyreSize: refData.tyreSize,
 				plyRating: refData.plyRating,
 				dataTrAxles: indexLoad,
+				fitmentCode: lastAxle.tyres_fitmentCode,
 			});
 
 			this.addTyre(tyre, axleNumber);
@@ -320,9 +325,10 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 		axle.tyres_tyreSize = tyre.tyreSize;
 		axle.tyres_plyRating = tyre.plyRating;
 		axle.tyres_dataTrAxles = tyre.dataTrAxles;
+		axle.tyres_fitmentCode = tyre.fitmentCode;
 
 		this.techRecordAxles.patchValue(axlesClone);
-		this.technicalRecordService.updateEditingTechRecord({ ...this.form.getRawValue() });
+		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);
 	}
 
 	checkAxleAdded(changes: SimpleChanges) {

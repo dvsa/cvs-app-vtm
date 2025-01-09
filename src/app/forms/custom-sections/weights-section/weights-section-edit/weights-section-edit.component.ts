@@ -78,6 +78,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 
 	addHgvTrlAxleWeights() {
 		return this.fb.group({
+			axleNumber: this.fb.control<number | null>(null),
 			weights_gbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
@@ -92,6 +93,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 
 	addPsvAxleWeights() {
 		return this.fb.group({
+			axleNumber: this.fb.control<number | null>(null),
 			weights_kerbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
@@ -270,9 +272,11 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 
 				if (fieldsChanged) {
 					const grossLadenWeight = this.calculateGrossLadenWeight();
-					if (grossLadenWeight !== this.form.value.techRecord_grossLadenWeight) {
+					if (grossLadenWeight !== currentValue.techRecord_grossLadenWeight) {
 						currentValue.techRecord_grossLadenWeight = grossLadenWeight;
-						this.technicalRecordService.updateEditingTechRecord(currentValue);
+						if (currentValue.techRecord_grossLadenWeight !== previousValue?.techRecord_grossLadenWeight) {
+							this.technicalRecordService.updateEditingTechRecord(currentValue);
+						}
 					}
 				}
 			}
