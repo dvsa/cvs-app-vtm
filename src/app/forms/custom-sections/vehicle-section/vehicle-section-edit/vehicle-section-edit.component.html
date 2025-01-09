@@ -51,7 +51,7 @@
     formControlName="techRecord_noOfAxles"
   ></govuk-form-group-input>
 
-  <div class="flex-row">
+  <div class="flex-row" *ngIf="getVehicleType() === VehicleTypes.HGV || getVehicleType() === VehicleTypes.PSV">
     <!-- Speed limiter exempt for HGV (required to generate plates) -->
     <govuk-form-group-radio
       *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.HGV"
@@ -197,6 +197,7 @@
     label="Number of wheels"
     [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
     formControlName="techRecord_numberOfWheelsDriven"
+    [width]="FormNodeWidth.XXS"
   ></govuk-form-group-input>
 
   <!-- Emission Limit -->
@@ -264,7 +265,8 @@
       label="Number of seat belts"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       formControlName="techRecord_numberOfSeatbelts"
-      type="number"
+      type="numericString"
+      [width]="FormNodeWidth.XXS"
     ></govuk-form-group-input>
 
     <!-- Seatbelt installation approval date / type approved -->

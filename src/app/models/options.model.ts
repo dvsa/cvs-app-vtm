@@ -1,6 +1,7 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { EUVehicleCategory as PSVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { CouplingTypeCodeEnum } from '@models/coupling-type-enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import {
 	HgvPsvVehicleConfiguration,
@@ -106,6 +107,15 @@ export const SUSPENSION_TYRE_OPTIONS: MultiOptions = [
 export const EMISSION_STANDARD_OPTIONS: MultiOptions = [
 	{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
 	...getOptionsFromEnum(EmissionStandard),
+];
+
+export const COUPLING_TYPE_OPTIONS: MultiOptions = [
+	{ label: 'Fifth wheel', value: CouplingTypeCodeEnum.F },
+	{ label: 'Drawbar', value: CouplingTypeCodeEnum.B },
+	{ label: 'Other', value: CouplingTypeCodeEnum.O },
+	{ label: 'Automatic', value: CouplingTypeCodeEnum.A },
+	{ label: 'Dolly', value: CouplingTypeCodeEnum.D },
+	{ label: 'Semi', value: CouplingTypeCodeEnum.S },
 ];
 
 export const HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(HgvPsvVehicleConfiguration);

@@ -24,17 +24,7 @@ import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
 } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import {
-	BehaviorSubject,
-	Observable,
-	ReplaySubject,
-	combineLatest,
-	debounceTime,
-	distinctUntilChanged,
-	fromEvent,
-	takeUntil,
-	takeWhile,
-} from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
 import { CommonValidatorsService } from '../../validators/common-validators.service';
 @Component({
 	selector: 'govuk-form-group-autocomplete',
@@ -94,7 +84,7 @@ export class GovukFormGroupAutocompleteComponent
 				this.options = options;
 
 				const enhanceParams: AutocompleteEnhanceParams = {
-					id: this.labelId,
+					id: this.id,
 					defaultValue: '',
 					selectElement: this.document.querySelector(`#${this.id}`),
 					autoselect: false,
@@ -117,9 +107,7 @@ export class GovukFormGroupAutocompleteComponent
 
 				enhanceSelectElement(enhanceParams);
 
-				fromEvent(this.document.querySelector(`#${this.id}`)!, 'change')
-					.pipe(takeUntil(this.destroy), distinctUntilChanged(), debounceTime(500))
-					.subscribe((event) => this.handleChange(event));
+				this.document.querySelector(`#${this.id}`)?.addEventListener('change', (event) => this.handleChange(event));
 			});
 	}
 
@@ -193,6 +181,7 @@ export class GovukFormGroupAutocompleteComponent
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
 		this.onChange(optionValue ?? '[INVALID_OPTION]');
+		this.onTouched();
 	}
 
 	findOptionValue(label: string) {

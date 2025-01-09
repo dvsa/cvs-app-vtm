@@ -69,10 +69,10 @@ export class NotesSectionEditComponent implements OnInit, OnDestroy {
 
 	get psvFields() {
 		return {
-			techRecord_remarks: this.fb.control<string | null>(null, [
+			techRecord_remarks: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
 				this.commonValidators.maxLength(1024, 'Notes must be less than or equal to 1024 characters'),
 			]),
-			techRecord_dispensations: this.fb.control<string | null>(null, [
+			techRecord_dispensations: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
 				this.commonValidators.maxLength(160, 'Dispensations must be less than or equal to 160 characters'),
 			]),
 		};
@@ -80,7 +80,7 @@ export class NotesSectionEditComponent implements OnInit, OnDestroy {
 
 	get defaultFields() {
 		return {
-			techRecord_notes: this.fb.control<string | null>(null, [
+			techRecord_notes: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
 				this.commonValidators.maxLength(1024, 'Notes must be less than or equal to 1024 characters'),
 			]),
 		};
