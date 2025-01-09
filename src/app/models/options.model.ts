@@ -149,4 +149,4 @@ export const TRL_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(TRLTyreUseCode);
 
 export const SPEED_CATEGORY_SYMBOL_OPTIONS = getOptionsFromEnum(SpeedCategorySymbol);
 
-export const FITMENR_CODE_OPTIONS = getOptionsFromEnumOneChar(FitmentCode);
+export const FITMENT_CODE_OPTIONS = getOptionsFromEnumOneChar(FitmentCode);
