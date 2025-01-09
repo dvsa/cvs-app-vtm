@@ -200,4 +200,39 @@ describe('BodySectionEditComponent', () => {
 			expect(optionServSpy).toHaveBeenCalledWith(ReferenceDataResourceType.TrlMake);
 		});
 	});
+
+	describe('bodyMakeRequiredWithDangerousGoods', () => {
+		it('should return an error if dangerous goods is true and body make is empty', () => {
+			const control = new FormControl('');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(true),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toEqual({ required: 'Body make is required' });
+		});
+
+		it('should return null if dangerous goods is true and body make is not empty', () => {
+			const control = new FormControl('Some Make');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(true),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return null if dangerous goods is false and body make is empty', () => {
+			const control = new FormControl('');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(false),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toBeNull();
+		});
+	});
 });

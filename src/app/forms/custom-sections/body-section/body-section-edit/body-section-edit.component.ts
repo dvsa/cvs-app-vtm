@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ControlContainer, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -166,6 +166,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		return {
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
+				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
@@ -243,6 +244,15 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 					'Conversion reference number max length 10 uppercase letters or numbers'
 				),
 			]),
+		};
+	}
+
+	bodyMakeRequiredWithDangerousGoods(): ValidatorFn {
+		return (control) => {
+			if (control.parent && control.parent.get('techRecord_adrDetails_dangerousGoods')?.value && !control.value) {
+				return { required: 'Body make is required' };
+			}
+			return null;
 		};
 	}
 
