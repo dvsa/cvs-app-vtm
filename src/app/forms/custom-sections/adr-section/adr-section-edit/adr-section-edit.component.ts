@@ -255,6 +255,9 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.handleInitialiseUNNumbers();
+		this.handleInitialiseSubsequentTankInspections();
+
 		// Attatch all form controls to parent
 		const parent = this.controlContainer.control;
 		if (parent instanceof FormGroup) {
