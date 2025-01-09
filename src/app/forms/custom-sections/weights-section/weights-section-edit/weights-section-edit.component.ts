@@ -272,9 +272,11 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy {
 
 				if (fieldsChanged) {
 					const grossLadenWeight = this.calculateGrossLadenWeight();
-					if (grossLadenWeight !== this.form.value.techRecord_grossLadenWeight) {
+					if (grossLadenWeight !== currentValue.techRecord_grossLadenWeight) {
 						currentValue.techRecord_grossLadenWeight = grossLadenWeight;
-						this.technicalRecordService.updateEditingTechRecord(currentValue);
+						if (currentValue.techRecord_grossLadenWeight !== previousValue?.techRecord_grossLadenWeight) {
+							this.technicalRecordService.updateEditingTechRecord(currentValue);
+						}
 					}
 				}
 			}
