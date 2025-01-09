@@ -387,7 +387,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy {
 		}
 
 		changes['techRecord'].currentValue.techRecord_axles.forEach((axle: Axle) => {
-			console.log(axle, this.techRecord().techRecord_axles);
 			if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
 				const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
 					axle.tyres_dataTrAxles?.toString(),
