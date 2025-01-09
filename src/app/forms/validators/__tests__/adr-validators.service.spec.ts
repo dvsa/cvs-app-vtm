@@ -58,22 +58,22 @@ describe('AdrValidatorsService', () => {
 		});
 
 		it('should return null when able to carry dangerous goods is true and control has a value', () => {
+			const validator = service.requiredWithDangerousGoods('message');
+			const control = form.get('techRecord_adrDetails_applicantDetails_name') as FormControl;
 			form.patchValue({
 				techRecord_adrDetails_dangerousGoods: true,
 				techRecord_adrDetails_applicantDetails_name: 'name',
 			});
-			const validator = service.requiredWithDangerousGoods('message');
-			const control = form.get('techRecord_adrDetails_applicantDetails_name') as FormControl;
 			expect(validator(control)).toBeNull();
 		});
 
 		it('should return an error when able to carry dangerous goods is true and control has no value', () => {
+			const validator = service.requiredWithDangerousGoods('message');
+			const control = form.get('techRecord_adrDetails_applicantDetails_name') as FormControl;
 			form.patchValue({
 				techRecord_adrDetails_dangerousGoods: true,
 				techRecord_adrDetails_applicantDetails_name: null,
 			});
-			const validator = service.requiredWithDangerousGoods('message');
-			const control = form.get('techRecord_adrDetails_applicantDetails_name') as FormControl;
 			expect(validator(control)).toEqual({ required: 'message' });
 		});
 	});
