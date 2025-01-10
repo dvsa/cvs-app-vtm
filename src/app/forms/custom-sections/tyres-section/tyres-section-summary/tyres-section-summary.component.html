@@ -28,12 +28,12 @@
         <ng-container *ngFor="let axle of vm.techRecord_axles; let i = index">
           <tr class="govuk-table__row" *ngIf="hasAxleChanged(i)">
             <th scope="row" class="govuk-table__header">T{{ axle.axleNumber }}</th>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreCode }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreSize }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_plyRating }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles }}</td>
-            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreCode | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_tyreSize | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_plyRating | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode | defaultNullOrEmpty  }}</td>
           </tr>
         </ng-container>
       </tbody>

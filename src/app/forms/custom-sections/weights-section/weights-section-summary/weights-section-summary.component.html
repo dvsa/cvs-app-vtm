@@ -30,16 +30,16 @@
           <th scope="col" class="govuk-table__header">Axle {{ axle.axleNumber }}</th>
 
           <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
-            <td class="govuk-table__cell">{{ axle.weights_gbWeight }}</td>
-            <td class="govuk-table__cell">{{ $any(axle).weights_eecWeight }}</td>
-            <td class="govuk-table__cell">{{ axle.weights_designWeight }}</td>
+            <td class="govuk-table__cell">{{ axle.weights_gbWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ $any(axle).weights_eecWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.weights_designWeight | defaultNullOrEmpty  }}</td>
           </ng-container>
 
           <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
-            <td class="govuk-table__cell">{{ $any(axle).weights_kerbWeight }}</td>
-            <td class="govuk-table__cell">{{ $any(axle).weights_ladenWeight }}</td>
-            <td class="govuk-table__cell">{{ axle.weights_gbWeight }}</td>
-            <td class="govuk-table__cell">{{ axle.weights_designWeight }}</td>
+            <td class="govuk-table__cell">{{ $any(axle).weights_kerbWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ $any(axle).weights_ladenWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.weights_gbWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">{{ axle.weights_designWeight | defaultNullOrEmpty  }}</td>
           </ng-container>
         </tr>
       </ng-container>
@@ -47,28 +47,28 @@
       <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
         <tr class="govuk-table__row" *ngIf="hasHGVOrTRLGrossAxleChanged()">
           <th scope="col" class="govuk-table__header">Gross</th>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossEecWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossEecWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty  }}</td>
         </tr>
       </ng-container>
 
       <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
         <tr class="govuk-table__row" *ngIf="hasPsvGrossAxleChanged()">
           <th scope="col" class="govuk-table__header">Gross</th>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossKerbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossLadenWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossKerbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossLadenWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty  }}</td>
         </tr>
       </ng-container>
 
       <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
         <tr class="govuk-table__row" *ngIf="hasHgvTrainAxleChanged()">
           <th scope="col" class="govuk-table__header">Train</th>
-          <td class="govuk-table__cell">{{ vm.techRecord_trainGbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_trainEecWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_trainGbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_trainEecWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty  }}</td>
         </tr>
       </ng-container>
 
@@ -77,17 +77,17 @@
           <th scope="col" class="govuk-table__header">Train</th>
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty  }}</td>
         </tr>
       </ng-container>
 
       <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
         <tr class="govuk-table__row" *ngIf="hasMaxTrainAxleChanged()">
           <th scope="col" class="govuk-table__header">Max Train</th>
-          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainEecWeight }}</td>
-          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainDesignWeight }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainEecWeight | defaultNullOrEmpty  }}</td>
+          <td class="govuk-table__cell">{{ vm.techRecord_maxTrainDesignWeight | defaultNullOrEmpty  }}</td>
         </tr>
       </ng-container>
     </tbody>
@@ -100,7 +100,7 @@
           Unladen Weight
         </dt>
         <dd class="govuk-summary-list__value">
-          {{ vm.techRecord_unladenWeight }} kg
+          {{ vm.techRecord_unladenWeight | defaultNullOrEmpty }} kg
         </dd>
       </div>
     </dl>
