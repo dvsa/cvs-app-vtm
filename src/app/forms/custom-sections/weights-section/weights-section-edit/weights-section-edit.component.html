@@ -21,7 +21,7 @@
     <ng-container formArrayName="techRecord_axles">
       <ng-container *ngFor="let axle of techRecordAxles.controls; let i = index">
         <tr class="govuk-table__row" formGroupName="{{ i }}">
-          <th class="govuk-table__header" scope="row">Axle {{ i + 1 }}</th>
+          <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
 
           <!-- GB (HGV/TRL only) -->
           <td class="govuk-table__cell" *ngIf="tr.techRecord_vehicleType !== VehicleTypes.PSV">
