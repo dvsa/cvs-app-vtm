@@ -1,5 +1,5 @@
 import { addAxle, removeAxle } from '@/src/app/store/technical-records';
-import { Component, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
@@ -14,7 +14,7 @@ import { ReplaySubject } from 'rxjs';
 	templateUrl: './weights-section-edit.component.html',
 	styleUrls: ['./weights-section-edit.component.scss'],
 })
-export class WeightsSectionEditComponent implements OnInit, OnDestroy {
+export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	fb = inject(FormBuilder);

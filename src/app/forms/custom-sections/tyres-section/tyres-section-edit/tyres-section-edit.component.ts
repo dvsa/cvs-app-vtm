@@ -14,7 +14,7 @@ import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/d
 import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
 import { addAxle, removeAxle, updateScrollPosition } from '@/src/app/store/technical-records';
 import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -30,7 +30,7 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 	templateUrl: './tyres-section-edit.component.html',
 	styleUrls: ['./tyres-section-edit.component.scss'],
 })
-export class TyresSectionEditComponent implements OnInit, OnDestroy {
+export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly TagType = TagType;
