@@ -113,6 +113,8 @@ export const unarchiveTechRecordFailure = createOutcomeAction('unarchiveTechReco
 export const addAxle = createAction(`${prefix} addAxle`);
 export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
 
+export const removeTC3TankInspection = createAction(`${prefix} removeTC3TankInspection`, props<{ index: number }>());
+
 export const addSectionState = createAction(`${prefix} addSectionState`, props<{ section: string | number }>());
 export const removeSectionState = createAction(`${prefix} removeSectionState`, props<{ section: string | number }>());
 export const clearAllSectionStates = createAction(`${prefix} clearAllSectionState`);

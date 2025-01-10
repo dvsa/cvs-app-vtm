@@ -18,7 +18,7 @@ import { CommonValidatorsService } from '@forms/validators/common-validators.ser
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateScrollPosition } from '@store/technical-records';
+import { removeTC3TankInspection, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -364,6 +364,7 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 
 	removeTC3TankInspection(index: number) {
 		this.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.removeAt(index);
+		this.store.dispatch(removeTC3TankInspection({ index }));
 	}
 
 	addUNNumber() {

@@ -73,7 +73,11 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	}
 
 	prepopulateAxles() {
-		this.techRecord().techRecord_axles?.forEach(() => this.techRecordAxles.push(this.getAxleForm()));
+		this.techRecord().techRecord_axles?.forEach((axle) => {
+			const form = this.getAxleForm();
+			form.patchValue(axle as any, { emitEvent: false });
+			this.techRecordAxles.push(form, { emitEvent: false });
+		});
 	}
 
 	addHgvTrlAxleWeights() {

@@ -156,9 +156,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-			// prevent merging of array of objects - always override
-			//const isArray = (a: unknown, b: unknown) => (Array.isArray(a) ? b : undefined);
-			this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), changes); //isArray);
+			this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), changes);
 			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});
 	}

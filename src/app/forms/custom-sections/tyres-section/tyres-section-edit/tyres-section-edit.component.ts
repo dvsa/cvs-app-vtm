@@ -218,7 +218,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		this.techRecord().techRecord_axles?.forEach((axle) => {
 			const form = this.getAxleForm();
 			form.patchValue(axle as any, { emitEvent: false });
-			this.techRecordAxles.push(form);
+			this.techRecordAxles.push(form, { emitEvent: false });
 		});
 	}
 
