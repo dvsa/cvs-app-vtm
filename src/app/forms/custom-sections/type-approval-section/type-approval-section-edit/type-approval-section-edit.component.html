@@ -8,13 +8,13 @@
     ></govuk-form-group-select>
 
     <!-- Approval type number -->
-    <!--    TODO: This seems to have a different display for each approval type - needs looking at. -->
-    <govuk-form-group-input
-            *ngIf="shouldDisplayFormControl('techRecord_approvalTypeNumber') && showApprovalTypeNumber"
-            label="Approval type number"
-            [width]="FormNodeWidth.XL"
-            formControlName="techRecord_approvalTypeNumber"
-    ></govuk-form-group-input>
+    <approval-type-number-input
+          *ngIf="shouldDisplayFormControl('techRecord_approvalTypeNumber') && showApprovalTypeNumber"
+          label="Approval type number"
+          formControlName="techRecord_approvalTypeNumber"
+          approvalTypeControlName="techRecord_approvalType"
+          [width]="FormNodeWidth.XL"
+    ></approval-type-number-input>
 
     <!-- National type number (NTA) -->
     <govuk-form-group-input

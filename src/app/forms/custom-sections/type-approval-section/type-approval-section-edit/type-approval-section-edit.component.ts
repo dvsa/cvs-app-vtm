@@ -85,7 +85,7 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 		const vehicleControls = this.controlsBasedOffVehicleType;
 
 		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
-			this.form.addControl(key, control, { emitEvent: false });
+			this.form?.addControl(key, control, { emitEvent: false });
 		}
 	}
 

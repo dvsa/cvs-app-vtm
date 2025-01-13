@@ -19,6 +19,7 @@ import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certi
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/components/approval-type-number/approval-type-number';
 import { TypeApprovalSectionEditComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/type-approval-section-edit.component';
 import { TypeApprovalSectionSummaryComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-summary/type-approval-section-summary.component';
 import { TypeApprovalSectionViewComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-view/type-approval-section-view.component';
@@ -203,6 +204,7 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		GovukFormGroupDateComponent,
 		GovukFormGroupTextareaComponent,
 		GovukFormGroupAutocompleteComponent,
+		ApprovalTypeNumber,
 	],
 	exports: [
 		TextInputComponent,
