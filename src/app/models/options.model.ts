@@ -35,6 +35,11 @@ export const HGV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(
 
 export const PSV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(PSVCategories);
 
+export const SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = [
+	{ label: 'O1', value: EUVehicleCategory.O1 },
+	{ label: 'O2', value: EUVehicleCategory.O2 },
+];
+
 export const ALL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(EUVehicleCategory);
 
 export const HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [

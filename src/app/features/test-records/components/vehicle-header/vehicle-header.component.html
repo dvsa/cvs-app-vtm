@@ -21,11 +21,11 @@
     </div>
 
     <!-- Recalls warning -->
-    <app-field-warning-message 
-      *ngIf="(recalls | async)?.hasRecall" 
+    <app-field-warning-message
+      *ngIf="(recalls | async)?.hasRecall"
       warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair.">
     </app-field-warning-message>
-    
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">Vehicle details</h2>
@@ -97,8 +97,8 @@
       </div>
 
       <!-- Recalls warning -->
-      <app-field-warning-message 
-        *ngIf="(recalls | async)?.hasRecall"  
+      <app-field-warning-message
+        *ngIf="(recalls | async)?.hasRecall"
         warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair.">
       </app-field-warning-message>
 
@@ -210,6 +210,14 @@
           >
             {{ test?.certificateNumber | defaultNullOrEmpty }}
           </app-test-certificate>
+        </dd>
+      </div>
+      <div *ngIf="shouldShowAbandonCert" class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">{{ abandonCertDocName }} document</dt>
+        <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+          <a class="link" appRetrieveDocument [params]="params" [fileName]="fileName">
+            Download
+          </a>
         </dd>
       </div>
     </dl>

@@ -1,6 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
@@ -131,12 +131,8 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 				'Reference number or UN number 1 is required when selecting Product List'
 			),
 		]),
-		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array(
-			[
-				this.fb.control<string | null>(null, [
-					this.commonValidators.maxLength(1500, 'UN number 1 must be less than or equal to 1500 characters'),
-				]),
-			],
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array<FormControl<string | null>>(
+			[],
 			[
 				this.adrValidators.requiresAllUnNumbersToBePopulated(),
 				this.adrValidators.requiresAUnNumberOrReferenceNumber(
@@ -306,6 +302,37 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 					this.permittedDangerousGoodsOptions = options;
 				}
 			});
+	}
+
+	handleInitialiseUNNumbers() {
+		const unNumbers = this.techRecord()?.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+
+		// If there are un numbers, then prepopulate them
+		if (Array.isArray(unNumbers) && unNumbers.length > 0) {
+			unNumbers?.forEach((number, index) => {
+				this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
+					this.fb.control<string | null>(number, [
+						this.commonValidators.maxLength(
+							1500,
+							`UN number ${index + 1} must be less than or equal to 1500 characters`
+						),
+					])
+				);
+			});
+		}
+
+		// Otherwise, add a single empty UN number
+		else {
+			this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
+				this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(1500, 'UN number 1 must be less than or equal to 1500 characters'),
+				])
+			);
+		}
+	}
+
+	handleInitialiseSubsequentTankInspections() {
+		this.techRecord()?.techRecord_adrDetails_tank_tankDetails_tc3Details?.forEach(() => this.addTC3TankInspection());
 	}
 
 	addTC3TankInspection() {
