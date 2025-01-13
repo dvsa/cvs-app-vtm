@@ -267,23 +267,24 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	handleUpdateFunctionCode() {
-		this.form.controls.techRecord_vehicleConfiguration?.valueChanges
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((value) => {
-				if (value) {
-					const functionCodes: Record<string, string> = {
-						rigid: 'R',
-						articulated: 'A',
-						'semi-trailer': 'A',
-					};
+		const control = this.form.controls.techRecord_vehicleConfiguration;
+		control?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			if (value && control?.dirty) {
+				const functionCodes: Record<string, string> = {
+					rigid: 'R',
+					articulated: 'A',
+					'semi-trailer': 'A',
+				};
 
-					const functionCode = functionCodes[value];
+				const functionCode = functionCodes[value];
 
-					this.technicalRecordService.updateEditingTechRecord({
-						techRecord_functionCode: functionCode,
-					} as TechRecordTypeVerb<'put'>);
-				}
-			});
+				this.technicalRecordService.updateEditingTechRecord({
+					techRecord_functionCode: functionCode,
+				} as TechRecordTypeVerb<'put'>);
+
+				control.markAsPristine();
+			}
+		});
 	}
 
 	handlePsvPassengersChange(): ValidatorFn {
