@@ -17,6 +17,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -245,14 +246,17 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 
 	getTyresRefData(axleNumber: number) {
 		const axles = this.techRecordAxles.value;
+		console.log(axles);
 
 		// Don't search if the axle is unfocused by removing the axle
 		if (axles === null || axles === undefined) return;
 
 		// Get the last added axle, as this is the one that needs autopopulating
 		const lastAxle = axles[axleNumber - 1];
+		console.log(lastAxle);
 
 		if (lastAxle?.tyres_tyreCode) {
+			console.log('test 2');
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
@@ -264,14 +268,26 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 				lastAxle.tyres_fitmentCode === FitmentCode.SINGLE
 					? Number.parseInt(String(refData.loadIndexSingleLoad), 10)
 					: Number.parseInt(String(refData.loadIndexTwinLoad), 10);
-
-			const tyre = new Tyre({
-				tyreCode: lastAxle.tyres_tyreCode,
-				tyreSize: refData.tyreSize,
-				plyRating: refData.plyRating,
-				dataTrAxles: indexLoad,
-				fitmentCode: lastAxle.tyres_fitmentCode,
-			});
+			let tyre;
+			if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
+				tyre = new Tyre({
+					tyreCode: lastAxle.tyres_tyreCode,
+					tyreSize: refData.tyreSize,
+					plyRating: refData.plyRating,
+					dataTrAxles: indexLoad,
+					fitmentCode: lastAxle.tyres_fitmentCode,
+				});
+			} else {
+				console.log('test 3');
+				tyre = new Tyre({
+					tyreCode: lastAxle.tyres_tyreCode,
+					tyreSize: refData.tyreSize,
+					plyRating: refData.plyRating,
+					dataTrAxles: indexLoad,
+					fitmentCode: lastAxle.tyres_fitmentCode,
+					speedCategorySymbol: lastAxle.speedCategorySymbol,
+				});
+			}
 
 			this.addTyre(tyre, axleNumber);
 		}
@@ -309,6 +325,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	}
 
 	addTyre(tyre: Tyre, axleNumber: number) {
+		console.log(tyre);
 		const techRecord = this.techRecord();
 
 		// Only add tyres if we can push to the axles array
@@ -326,6 +343,9 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		axle.tyres_plyRating = tyre.plyRating;
 		axle.tyres_dataTrAxles = tyre.dataTrAxles;
 		axle.tyres_fitmentCode = tyre.fitmentCode;
+		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+			(axle as PSVAxles).tyres_speedCategorySymbol = tyre.speedCategorySymbol;
+		}
 
 		this.techRecordAxles.patchValue(axlesClone);
 		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);
