@@ -8,6 +8,6 @@
   "FsNotes": true,
   "FsDimensions": false,
   "FsTyres": true,
-  "FsWeights": false,
+  "FsWeights": true,
   "FsApprovalType": false
 }

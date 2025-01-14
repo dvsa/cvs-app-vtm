@@ -6,8 +6,8 @@
   "FsVehicleSummary": true,
   "FsBody": true,
   "FsNotes": true,
+  "FsDimensions": false,
   "FsTyres": true,
   "FsWeights": true,
-  "FsDimensions": false,
   "FsApprovalType": false
 }
