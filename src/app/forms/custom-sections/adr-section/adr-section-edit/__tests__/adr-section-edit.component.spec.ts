@@ -1,3 +1,4 @@
+import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -39,6 +40,7 @@ describe('AdrSectionEditComponent', () => {
 		controlContainer = TestBed.inject(ControlContainer);
 
 		fixture = TestBed.createComponent(AdrSectionEditComponent);
+		fixture.componentRef.setInput('techRecord', createMockHgv(100000));
 		component = fixture.componentInstance;
 		component.form.reset();
 		fixture.detectChanges();

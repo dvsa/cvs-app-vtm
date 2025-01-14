@@ -24,6 +24,16 @@ export class CommonValidatorsService {
 		};
 	}
 
+	minLength(length: number, message: string): ValidatorFn {
+		return (control) => {
+			if (control.value && control.value.length < length) {
+				return { minLength: message };
+			}
+
+			return null;
+		};
+	}
+
 	maxLength(length: number, message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {

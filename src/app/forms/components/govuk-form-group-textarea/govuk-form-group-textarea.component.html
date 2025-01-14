@@ -1,6 +1,6 @@
 <div class="govuk-form-group-input">
   <h1>
-    <label tag>
+    <label id="{{ labelId}}" for="{{ id }}" tag>
       {{ controlLabel }}
       <ng-container *ngIf="tags?.length">
         <div>
@@ -26,6 +26,8 @@
     rows="5"
     id="{{ id }}"
     name="{{ id }}"
+    [attr.aria-labelledby]="labelId"
+    [attr.data-testid]="id"
     [(ngModel)]="value"
     [disabled]="disabled"
     (ngModelChange)="onChange($event)"

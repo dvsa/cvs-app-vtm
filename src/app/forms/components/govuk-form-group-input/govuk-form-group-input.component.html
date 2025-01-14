@@ -1,6 +1,6 @@
 <div class="govuk-form-group-input">
-  <h1>
-    <label tag>
+  <h1 *ngIf="controlLabel">
+    <label id="{{ labelId }}" for="{{ id }}" tag>
       {{ controlLabel }}
       <ng-container *ngIf="tags?.length">
         <div>
@@ -31,33 +31,39 @@
       [class.govuk-radios__input--error]="hasError"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
-      (blur)="onTouched()"
+      (blur)="onBlur($event)"
       [class]="style"
       [disabled]="control?.disabled || false"
     />
   </ng-container>
-  <ng-container *ngIf="controlType === 'number'">
 
-    <input
-      id="{{ id }}"
-      name="{{ id }}"
-      [attr.aria-describedby]="hintId"
-      [attr.aria-labelledby]="labelId"
-      [attr.data-testid]="id"
-      [class.govuk-radios__input--error]="hasError"
-      [(ngModel)]="value"
-      (ngModelChange)="onChange($event)"
-      type="number"
-      appNumberOnly
-      inputmode="numeric"
-      (blur)="onTouched()"
-      [class]="style"
-      [disabled]="control?.disabled || false"
-    />
+  <ng-container *ngIf="controlType === 'number'">
+    <div class="govuk-input__wrapper">
+      <input
+        id="{{ id }}"
+        name="{{ id }}"
+        [attr.aria-describedby]="hintId"
+        [attr.aria-labelledby]="labelId"
+        [attr.data-testid]="id"
+        [class.govuk-radios__input--error]="hasError"
+        [(ngModel)]="value"
+        (ngModelChange)="onChange($event)"
+        type="number"
+        appNumberOnly
+        inputmode="numeric"
+        (blur)="onBlur($event)"
+        [class]="style"
+        [disabled]="control?.disabled || false"
+      />
+
+      <div class="govuk-input__suffix" aria-hidden="true" *ngIf="suffix">{{ suffix }}</div>
+    </div>
   </ng-container>
+
   <ng-container *ngIf="controlType === 'decimal'">
 
   </ng-container>
+
   <ng-container *ngIf="controlType === 'numericString'">
     <input
       id="{{ id }}"
@@ -69,7 +75,7 @@
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
       appNumberOnly
-      (blur)="onTouched()"
+      (blur)="onBlur($event)"
       [class]="style"
       [disabled]="control?.disabled || false"
     />

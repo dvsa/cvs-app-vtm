@@ -47,7 +47,7 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	@Input({ alias: 'formControlName', required: true })
 	controlName = '';
 
-	@Input({ alias: 'label', required: true })
+	@Input({ alias: 'label' })
 	controlLabel = '';
 
 	@Input({ alias: 'id' })
@@ -91,6 +91,11 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
+
+	onBlur(event: FocusEvent) {
+		this.onTouched();
+		this.blur.emit(event);
+	}
 
 	writeValue(obj: any): void {
 		this.value = obj;

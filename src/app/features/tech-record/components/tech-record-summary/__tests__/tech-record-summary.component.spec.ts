@@ -211,6 +211,7 @@ describe('TechRecordSummaryComponent', () => {
 				.mockReturnValue(of('articulated'));
 			const formPatchSpy = jest.spyOn(form, 'patchValue');
 			component.form = form;
+			component.form.get('techRecord_vehicleConfiguration')?.markAsDirty();
 			component.handleVehicleConfigurationChanges();
 			expect(subscriptionSpy).toHaveBeenCalled();
 			expect(formPatchSpy).toHaveBeenCalled();

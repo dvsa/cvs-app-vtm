@@ -7,7 +7,7 @@
   "FsBody": true,
   "FsNotes": true,
   "FsDimensions": false,
-  "FsTyres": false,
-  "FsWeights": false,
+  "FsTyres": true,
+  "FsWeights": true,
   "FsApprovalType": false
 }

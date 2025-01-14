@@ -1,6 +1,8 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { EUVehicleCategory as PSVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { TyreUseCode as HGVTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TRLTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { CouplingTypeCodeEnum } from '@models/coupling-type-enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import {
@@ -8,9 +10,15 @@ import {
 	TrlVehicleConfiguration,
 	VehicleConfiguration,
 } from '@models/vehicle-configuration.enum';
-import { getOptionsFromEnum } from '../forms/utils/enum-map';
+import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '../forms/utils/enum-map';
 import { VehicleSize } from './vehicle-size.enum';
-import { FrameDescriptions, FuelTypes, VehicleSubclass } from './vehicle-tech-record.model';
+import {
+	FitmentCode,
+	FrameDescriptions,
+	FuelTypes,
+	SpeedCategorySymbol,
+	VehicleSubclass,
+} from './vehicle-tech-record.model';
 
 export interface MultiOption {
 	label: string;
@@ -34,6 +42,11 @@ export const FUEL_PROPULSION_SYSTEM_OPTIONS: MultiOptions = getOptionsFromEnum(F
 export const HGV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(HGVCategories);
 
 export const PSV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(PSVCategories);
+
+export const SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = [
+	{ label: 'O1', value: EUVehicleCategory.O1 },
+	{ label: 'O2', value: EUVehicleCategory.O2 },
+];
 
 export const ALL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(EUVehicleCategory);
 
@@ -129,3 +142,11 @@ export const VEHICLE_SUBCLASS_OPTIONS = getOptionsFromEnum(VehicleSubclass);
 export const VEHICLE_SIZE_OPTIONS = getOptionsFromEnum(VehicleSize);
 
 export const FRAME_DESCRIPTION_OPTIONS = getOptionsFromEnum(FrameDescriptions);
+
+export const HGV_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(HGVTyreUseCode);
+
+export const TRL_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(TRLTyreUseCode);
+
+export const SPEED_CATEGORY_SYMBOL_OPTIONS = getOptionsFromEnum(SpeedCategorySymbol);
+
+export const FITMENT_CODE_OPTIONS = getOptionsFromEnumOneChar(FitmentCode);

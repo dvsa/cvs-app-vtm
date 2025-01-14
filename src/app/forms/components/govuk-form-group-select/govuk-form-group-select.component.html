@@ -1,5 +1,5 @@
 <div class="govuk-form-group-select">
-  <label tag for="{{ id }}" [id]="labelId">
+  <label tag for="{{ id }}" [id]="labelId" *ngIf="controlLabel">
     {{ controlLabel }}
     <ng-container *ngIf="tags?.length">
       <div class="flex gap-2">
@@ -28,7 +28,7 @@
     [class.govuk-radios__input--error]="hasError"
     [(ngModel)]="value"
     (ngModelChange)="onChange($event)"
-    (blur)="onTouched()"
+    (blur)="onBlur($event)"
     [class]="style"
   >
     <option *ngIf="allowNull" [ngValue]="null"></option>

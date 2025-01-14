@@ -53,20 +53,20 @@
     <div class="govuk-summary-list__row" *ngIf="techRecordEdited.techRecord_vehicleType !== 'psv'">
       <dt class="govuk-summary-list__key">Make</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_make">
-        {{ 
-          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv' 
-            ? (techRecordEdited.techRecord_make | defaultNullOrEmpty) 
-            : '-' 
+        {{
+          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv'
+            ? (techRecordEdited.techRecord_make | defaultNullOrEmpty)
+            : '-'
         }}
       </dd>
     </div>
     <div class="govuk-summary-list__row" *ngIf="techRecordEdited.techRecord_vehicleType !== 'psv'">
       <dt class="govuk-summary-list__key">Model</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_model">
-        {{ 
-          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv' 
-            ? (techRecordEdited.techRecord_model | defaultNullOrEmpty) 
-            : '-' 
+        {{
+          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv'
+            ? (techRecordEdited.techRecord_model | defaultNullOrEmpty)
+            : '-'
         }}
       </dd>
     </div>
@@ -156,7 +156,15 @@
             techRecordEdited.techRecord_vehicleType === 'trl'
           "
         >
-          <app-tyres [vehicleTechRecord]="techRecordEdited"></app-tyres>
+          <!-- New Tyres section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsTyres'); else oldTyresSection">
+            <app-tyres-section [techRecord]="techRecordEdited" [mode]="'summary'"></app-tyres-section>
+          </ng-container>
+
+          <!-- Old Tyres section -->
+          <ng-template #oldTyresSection>
+            <app-tyres [vehicleTechRecord]="techRecordEdited"></app-tyres>
+          </ng-template>
         </ng-container>
       </ng-container>
 
@@ -176,10 +184,27 @@
                 You removed an axle.
               </strong>
             </div>
-            <app-weights [vehicleTechRecord]="techRecordEdited"></app-weights>
+            <!-- New Weights section -->
+            <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsWeights'); else oldWeightsSection">
+              <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+            </ng-container>
+
+            <!-- Old Weights section -->
+            <ng-template #oldWeightsSection>
+              <app-weights [vehicleTechRecord]="techRecordEdited"></app-weights>
+            </ng-template>
           </ng-container>
+
           <ng-template #noDeleted>
-            <app-modified-weights *ngIf="changesForWeights" [vehicleType]="vehicleType" [changes]="changesForWeights"></app-modified-weights>
+            <!-- New Weights section -->
+            <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsWeights'); else oldModifiedWeightsSection">
+              <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+            </ng-container>
+
+            <!-- Old Weights section -->
+            <ng-template #oldModifiedWeightsSection>
+              <app-modified-weights *ngIf="changesForWeights" [vehicleType]="vehicleType" [changes]="changesForWeights"></app-modified-weights>
+            </ng-template>
           </ng-template>
         </ng-container>
       </ng-container>

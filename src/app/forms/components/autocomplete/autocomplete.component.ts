@@ -88,6 +88,13 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
 
+		// Handle case where input is cleared fully, so it returns to default state without triggering validation
+		if (optionValue === '') {
+			this.control?.patchValue(null);
+			this.control?.markAsPristine();
+			return;
+		}
+
 		this.control?.patchValue(optionValue ?? '[INVALID_OPTION]');
 		this.control?.markAsTouched();
 		this.control?.updateValueAndValidity();

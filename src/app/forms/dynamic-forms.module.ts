@@ -23,6 +23,9 @@ import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-sect
 import { VehicleSectionSummaryComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-summary/vehicle-section-summary.component';
 import { VehicleSectionViewComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-view/vehicle-section-view.component';
 import { VehicleSectionComponent } from '@forms/custom-sections/vehicle-section/vehicle-section.component';
+import { WeightsSectionEditComponent } from '@forms/custom-sections/weights-section/weights-section-edit/weights-section-edit.component';
+import { WeightsSectionSummaryComponent } from '@forms/custom-sections/weights-section/weights-section-summary/weights-section-summary.component';
+import { WeightsSectionViewComponent } from '@forms/custom-sections/weights-section/weights-section-view/weights-section-view.component';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
@@ -90,7 +93,12 @@ import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.comp
 import { RequiredStandardComponent } from './custom-sections/required-standard/required-standard.component';
 import { RequiredStandardsComponent } from './custom-sections/required-standards/required-standards.component';
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
+import { TyresSectionEditComponent } from './custom-sections/tyres-section/tyres-section-edit/tyres-section-edit.component';
+import { TyresSectionSummaryComponent } from './custom-sections/tyres-section/tyres-section-summary/tyres-section-summary.component';
+import { TyresSectionViewComponent } from './custom-sections/tyres-section/tyres-section-view/tyres-section-view.component';
+import { TyresSectionComponent } from './custom-sections/tyres-section/tyres-section.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
+import { WeightsSectionComponent } from './custom-sections/weights-section/weights-section.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
 
 @NgModule({
@@ -176,6 +184,14 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+		TyresSectionComponent,
+		TyresSectionEditComponent,
+		TyresSectionViewComponent,
+		TyresSectionSummaryComponent,
+		WeightsSectionComponent,
+		WeightsSectionEditComponent,
+		WeightsSectionViewComponent,
+		WeightsSectionSummaryComponent,
 	],
 	imports: [
 		CommonModule,
@@ -266,6 +282,14 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+		TyresSectionComponent,
+		TyresSectionEditComponent,
+		TyresSectionViewComponent,
+		TyresSectionSummaryComponent,
+		WeightsSectionComponent,
+		WeightsSectionEditComponent,
+		WeightsSectionViewComponent,
+		WeightsSectionSummaryComponent,
 	],
 })
 export class DynamicFormsModule {}

@@ -62,7 +62,10 @@ export class ConfirmCancellationComponent implements OnDestroy {
 	}
 
 	handleSubmit() {
-		if (!this.form.valid) return;
+		if (!this.form.valid) {
+			this.form.markAllAsTouched();
+			return;
+		}
 
 		const reason: string = this.form.get('reason')?.value;
 
