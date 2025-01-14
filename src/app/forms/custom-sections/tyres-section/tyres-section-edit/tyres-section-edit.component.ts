@@ -278,7 +278,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 					fitmentCode: lastAxle.tyres_fitmentCode,
 				});
 			} else {
-				console.log('test 3');
+				console.log(lastAxle);
 				tyre = new Tyre({
 					tyreCode: lastAxle.tyres_tyreCode,
 					tyreSize: refData.tyreSize,
@@ -287,6 +287,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 					fitmentCode: lastAxle.tyres_fitmentCode,
 					speedCategorySymbol: lastAxle.speedCategorySymbol,
 				});
+				console.log(tyre);
 			}
 
 			this.addTyre(tyre, axleNumber);
