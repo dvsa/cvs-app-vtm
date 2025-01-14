@@ -12,7 +12,6 @@ import { TagType } from '@components/tag/tag.component';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import {
@@ -42,7 +41,7 @@ import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-t
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
@@ -101,8 +100,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				parent.addControl(key, control, { emitEvent: false });
 			}
 		}
-
-		this.handleUpdateFunctionCode();
 	}
 
 	ngOnDestroy(): void {
@@ -264,27 +261,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.max(99, 'Number of axles must be less than or equal to 99'),
 			]),
 		};
-	}
-
-	handleUpdateFunctionCode() {
-		const control = this.form.controls.techRecord_vehicleConfiguration;
-		control?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value && control?.dirty) {
-				const functionCodes: Record<string, string> = {
-					rigid: 'R',
-					articulated: 'A',
-					'semi-trailer': 'A',
-				};
-
-				const functionCode = functionCodes[value];
-
-				this.technicalRecordService.updateEditingTechRecord({
-					techRecord_functionCode: functionCode,
-				} as TechRecordTypeVerb<'put'>);
-
-				control.markAsPristine();
-			}
-		});
 	}
 
 	handlePsvPassengersChange(): ValidatorFn {
