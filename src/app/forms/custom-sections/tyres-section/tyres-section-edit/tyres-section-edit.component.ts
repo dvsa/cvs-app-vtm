@@ -17,6 +17,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -264,7 +265,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 				lastAxle.tyres_fitmentCode === FitmentCode.SINGLE
 					? Number.parseInt(String(refData.loadIndexSingleLoad), 10)
 					: Number.parseInt(String(refData.loadIndexTwinLoad), 10);
-
 			const tyre = new Tyre({
 				tyreCode: lastAxle.tyres_tyreCode,
 				tyreSize: refData.tyreSize,
@@ -272,6 +272,9 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 				dataTrAxles: indexLoad,
 				fitmentCode: lastAxle.tyres_fitmentCode,
 			});
+			if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+				tyre.speedCategorySymbol = lastAxle.tyres_speedCategorySymbol;
+			}
 
 			this.addTyre(tyre, axleNumber);
 		}
@@ -326,6 +329,9 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		axle.tyres_plyRating = tyre.plyRating;
 		axle.tyres_dataTrAxles = tyre.dataTrAxles;
 		axle.tyres_fitmentCode = tyre.fitmentCode;
+		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+			(axle as PSVAxles).tyres_speedCategorySymbol = tyre.speedCategorySymbol;
+		}
 
 		this.techRecordAxles.patchValue(axlesClone);
 		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);

@@ -1,7 +1,7 @@
 <div class="section-wrapper" [formGroup]="form" *ngIf="techRecord() as tr">
 
   <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
-    <govuk-form-group-input 
+    <govuk-form-group-input
       class="govuk-!-margin-bottom-7"
       type="number"
       label="Speed Restriction"
@@ -47,9 +47,9 @@
       <ng-container *ngFor="let axle of techRecordAxles.controls; let i = index">
         <tr class="govuk-table__row" formGroupName="{{ i }}">
           <th class="govuk-table__header" scope="row">T{{ axle.value.axleNumber }}</th>
-  
+
           <!-- Tyre Code -->
-          <td class="govuk-table__cell">      
+          <td class="govuk-table__cell">
             <govuk-form-group-input
               id="tyres_tyreCode-{{ i + 1 }}"
               type="number"
@@ -58,7 +58,7 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
           </td>
-  
+
           <!-- Tyre Size -->
           <td class="govuk-table__cell">
             <govuk-form-group-input
@@ -68,7 +68,7 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
           </td>
-  
+
           <!-- Ply Rating -->
           <td class="govuk-table__cell">
             <govuk-form-group-input
@@ -78,7 +78,7 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
           </td>
-  
+
           <!-- Data Tr Axles -->
           <td class="govuk-table__cell">
             <govuk-form-group-input
@@ -89,7 +89,7 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
           </td>
-  
+
           <!-- Speed Category Symbol (PSV Only)-->
           <td class="govuk-table__cell" *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
             <govuk-form-group-select
@@ -100,7 +100,7 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-select>
           </td>
-  
+
           <!-- Fitment Code -->
           <td class="govuk-table__cell">
             <govuk-form-group-select
@@ -111,13 +111,13 @@
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-select>
           </td>
-  
+
           <td class="govuk-table__cell">
             <a class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
               Search
             </a>
           </td>
-  
+
           <td class="govuk-table__cell">
             <a class="axleButton" id="tyres_remove-{{ i + 1 }}" href="javascript:void(0)" (click)="removeAxle(i)">Remove</a>
           </td>
@@ -141,7 +141,7 @@
       </tr>
    </tfoot>
   </table>
-  
+
 
   <!-- Tyre Use Code (HGV) -->
   <govuk-form-group-select
