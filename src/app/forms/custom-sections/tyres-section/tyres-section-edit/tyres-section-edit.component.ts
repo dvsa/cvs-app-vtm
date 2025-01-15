@@ -246,7 +246,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 
 	getTyresRefData(axleNumber: number) {
 		const axles = this.techRecordAxles.value;
-		console.log(axles);
 
 		// Don't search if the axle is unfocused by removing the axle
 		if (axles === null || axles === undefined) return;
@@ -256,7 +255,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		console.log(lastAxle);
 
 		if (lastAxle?.tyres_tyreCode) {
-			console.log('test 2');
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
@@ -278,16 +276,14 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 					fitmentCode: lastAxle.tyres_fitmentCode,
 				});
 			} else {
-				console.log(lastAxle);
 				tyre = new Tyre({
 					tyreCode: lastAxle.tyres_tyreCode,
 					tyreSize: refData.tyreSize,
 					plyRating: refData.plyRating,
 					dataTrAxles: indexLoad,
 					fitmentCode: lastAxle.tyres_fitmentCode,
-					speedCategorySymbol: lastAxle.speedCategorySymbol,
+					speedCategorySymbol: lastAxle.tyres_speedCategorySymbol,
 				});
-				console.log(tyre);
 			}
 
 			this.addTyre(tyre, axleNumber);
@@ -326,7 +322,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	}
 
 	addTyre(tyre: Tyre, axleNumber: number) {
-		console.log(tyre);
 		const techRecord = this.techRecord();
 
 		// Only add tyres if we can push to the axles array
