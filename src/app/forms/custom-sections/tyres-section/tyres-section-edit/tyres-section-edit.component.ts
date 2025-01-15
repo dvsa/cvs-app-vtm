@@ -252,7 +252,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 
 		// Get the last added axle, as this is the one that needs autopopulating
 		const lastAxle = axles[axleNumber - 1];
-		console.log(lastAxle);
 
 		if (lastAxle?.tyres_tyreCode) {
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
