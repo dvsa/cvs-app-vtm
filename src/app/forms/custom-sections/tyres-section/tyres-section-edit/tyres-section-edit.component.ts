@@ -266,24 +266,15 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 				lastAxle.tyres_fitmentCode === FitmentCode.SINGLE
 					? Number.parseInt(String(refData.loadIndexSingleLoad), 10)
 					: Number.parseInt(String(refData.loadIndexTwinLoad), 10);
-			let tyre;
-			if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
-				tyre = new Tyre({
-					tyreCode: lastAxle.tyres_tyreCode,
-					tyreSize: refData.tyreSize,
-					plyRating: refData.plyRating,
-					dataTrAxles: indexLoad,
-					fitmentCode: lastAxle.tyres_fitmentCode,
-				});
-			} else {
-				tyre = new Tyre({
-					tyreCode: lastAxle.tyres_tyreCode,
-					tyreSize: refData.tyreSize,
-					plyRating: refData.plyRating,
-					dataTrAxles: indexLoad,
-					fitmentCode: lastAxle.tyres_fitmentCode,
-					speedCategorySymbol: lastAxle.tyres_speedCategorySymbol,
-				});
+			const tyre = new Tyre({
+				tyreCode: lastAxle.tyres_tyreCode,
+				tyreSize: refData.tyreSize,
+				plyRating: refData.plyRating,
+				dataTrAxles: indexLoad,
+				fitmentCode: lastAxle.tyres_fitmentCode,
+			});
+			if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+				tyre.speedCategorySymbol = lastAxle.tyres_speedCategorySymbol;
 			}
 
 			this.addTyre(tyre, axleNumber);
