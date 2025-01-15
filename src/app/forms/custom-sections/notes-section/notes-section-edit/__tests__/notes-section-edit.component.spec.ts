@@ -12,7 +12,6 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -54,11 +53,15 @@ describe('NotesSectionEditComponent', () => {
 		controlContainer = TestBed.inject(ControlContainer);
 		technicalRecordService = TestBed.inject(TechnicalRecordService);
 
-		fixture = TestBed.createComponent(VehicleSectionEditComponent);
+		fixture = TestBed.createComponent(NotesSectionEditComponent);
 		component = fixture.componentInstance;
 		componentRef = fixture.componentRef;
 		componentRef.setInput('techRecord', mockTechRecord);
 		component.form.reset();
 		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
 	});
 });

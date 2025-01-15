@@ -156,7 +156,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-			this.handleFormState(changes);
+			// prevent merging of array of objects - always override
+			const isArray = (a: unknown, b: unknown) => (Array.isArray(a) ? b : undefined);
+			this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), changes, isArray);
+			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});
 	}
 
@@ -183,25 +186,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		// TODO clean this up in the future
 		const formControl = this.form.get('techRecord_vehicleConfiguration');
 		formControl?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (!value) {
-				return;
-			}
-			if (value === 'articulated') {
-				this.form.patchValue({
-					techRecord_bodyType_description: 'articulated',
-					techRecord_bodyType_code: 'a',
-				});
-			}
-			const functionCodes: Record<string, string> = {
-				rigid: 'R',
-				articulated: 'A',
-				'semi-trailer': 'A',
-			};
+			if (value && formControl?.dirty) {
+				if (this.techRecordCalculated?.techRecord_vehicleType === VehicleTypes.HGV && value === 'articulated') {
+					this.form.patchValue({
+						techRecord_bodyType_description: 'articulated',
+						techRecord_bodyType_code: 'a',
+					});
+				}
 
-			const functionCode = functionCodes[value];
-			this.form.patchValue({
-				techRecord_functionCode: functionCode,
-			});
+				const functionCodes: Record<string, string> = {
+					rigid: 'R',
+					articulated: 'A',
+					'semi-trailer': 'A',
+				};
+
+				const functionCode = functionCodes[value];
+				this.form.patchValue({
+					techRecord_functionCode: functionCode,
+				});
+				formControl.markAsPristine();
+			}
 		});
 	}
 
@@ -259,19 +263,19 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	addCustomSectionsBasedOffFlag(): CustomFormGroup[] {
 		const sections = [];
-		if (!this.featureToggleService.isFeatureEnabled('FsBody')) {
+		if (!this.featureToggleService.isFeatureEnabled('FsBody') && this.body?.form) {
 			sections.push(this.body.form);
 		}
-		if (!this.featureToggleService.isFeatureEnabled('FsDimensions')) {
+		if (!this.featureToggleService.isFeatureEnabled('FsDimensions') && this.dimensions?.form) {
 			sections.push(this.dimensions.form);
 		}
-		if (!this.featureToggleService.isFeatureEnabled('FsTyres')) {
+		if (!this.featureToggleService.isFeatureEnabled('FsTyres') && this.tyres?.form) {
 			sections.push(this.tyres.form);
 		}
-		if (!this.featureToggleService.isFeatureEnabled('FsWeights')) {
+		if (!this.featureToggleService.isFeatureEnabled('FsWeights') && this.weights?.form) {
 			sections.push(this.weights.form);
 		}
-		if (!this.featureToggleService.isFeatureEnabled('FsApprovalType')) {
+		if (!this.featureToggleService.isFeatureEnabled('FsApprovalType') && this.approvalType?.form) {
 			sections.push(this.approvalType.form);
 		}
 		return sections;

@@ -1,3 +1,4 @@
+import { VTG_VTP_12_TEST } from '@dvsa/cvs-microservice-common/classes/testTypes/Constants';
 // Copied from the backend-lambda https://github.com/dvsa/cvs-svc-test-results/blob/3c1ffe344282b5ce918c151a56144b51cbd1c929/src/assets/Enums.ts#L219
 
 // CVSB-10300 - the following constants are based on the grouping of the test-types in the excel
@@ -223,6 +224,9 @@ export const TEST_TYPES_GROUP4_DESK_BASED_TEST: string[] = [
 	'438',
 ];
 export const TEST_TYPES_GROUP5_DESK_BASED_TEST: string[] = ['439', '441', '442', '449'];
+
+// Test Type IDs that generate VTP12/VTG12 documentation on test abandonment
+export const TEST_TYPES_VTP_VTG_12 = [...VTG_VTP_12_TEST.IDS];
 
 export const TEST_TYPES = {
 	testTypesGroup1: TEST_TYPES_GROUP1,

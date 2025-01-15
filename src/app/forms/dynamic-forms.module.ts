@@ -164,15 +164,17 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		AdrTankDetailsM145ViewComponent,
 		ContingencyAdrGenerateCertComponent,
 		AdrNewCertificateRequiredViewComponent,
+		AdrPermittedDangerousGoodsComponent,
+
 		AdrSectionComponent,
 		AdrSectionEditComponent,
 		AdrSectionViewComponent,
 		AdrSectionSummaryComponent,
+
 		VehicleSectionComponent,
 		VehicleSectionSummaryComponent,
 		VehicleSectionViewComponent,
 		VehicleSectionEditComponent,
-		AdrPermittedDangerousGoodsComponent,
 
 		BodySectionComponent,
 		BodySectionEditComponent,
@@ -261,10 +263,12 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		AdrSectionEditComponent,
 		AdrSectionViewComponent,
 		AdrSectionSummaryComponent,
+
 		VehicleSectionComponent,
 		VehicleSectionSummaryComponent,
 		VehicleSectionViewComponent,
 		VehicleSectionEditComponent,
+
 		GovukCheckboxGroupComponent,
 		GovukFormGroupRadioComponent,
 		GovukFormGroupSelectComponent,

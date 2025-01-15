@@ -24,17 +24,7 @@ import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
 } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import {
-	BehaviorSubject,
-	Observable,
-	ReplaySubject,
-	combineLatest,
-	debounceTime,
-	distinctUntilChanged,
-	fromEvent,
-	takeUntil,
-	takeWhile,
-} from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
 import { CommonValidatorsService } from '../../validators/common-validators.service';
 @Component({
 	selector: 'govuk-form-group-autocomplete',
@@ -94,7 +84,7 @@ export class GovukFormGroupAutocompleteComponent
 				this.options = options;
 
 				const enhanceParams: AutocompleteEnhanceParams = {
-					id: this.labelId,
+					id: this.id,
 					defaultValue: '',
 					selectElement: this.document.querySelector(`#${this.id}`),
 					autoselect: false,
@@ -103,8 +93,8 @@ export class GovukFormGroupAutocompleteComponent
 					source: this.options,
 					dropdownArrow: () => `
             <svg class="autocomplete__dropdown-arrow-down"style="height: 17px;" viewBox="0 0 512 512">
-              <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>            
-            </svg>          
+              <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>
+            </svg>
           `,
 					onConfirm: (selected) => {
 						this.handleChangeForOption(selected);
@@ -117,9 +107,7 @@ export class GovukFormGroupAutocompleteComponent
 
 				enhanceSelectElement(enhanceParams);
 
-				fromEvent(this.document.querySelector(`#${this.id}`)!, 'change')
-					.pipe(takeUntil(this.destroy), distinctUntilChanged(), debounceTime(500))
-					.subscribe((event) => this.handleChange(event));
+				this.document.querySelector(`#${this.id}`)?.addEventListener('change', (event) => this.handleChange(event));
 			});
 	}
 
@@ -193,6 +181,7 @@ export class GovukFormGroupAutocompleteComponent
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
 		this.onChange(optionValue ?? '[INVALID_OPTION]');
+		this.onTouched();
 	}
 
 	findOptionValue(label: string) {

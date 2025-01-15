@@ -1,10 +1,15 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ControlContainer, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import {
+	BodyTypeCode,
+	BodyTypeDescription,
+	vehicleBodyTypeCodeMap,
+	vehicleBodyTypeDescriptionMap,
+} from '@models/body-type-enum';
 import { FUNCTION_CODE_OPTIONS, MultiOptions } from '@models/options.model';
 import { PsvMake, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -63,6 +68,28 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 					}
 				});
 		}
+		this.form
+			.get('techRecord_bodyType_description')
+			?.valueChanges.pipe(takeUntil(this.destroy$))
+			.subscribe((value) => {
+				if (value) {
+					this.handleBodyTypeDescriptionChange(value);
+				}
+			});
+	}
+
+	handleBodyTypeDescriptionChange(value: string) {
+		const vehicleType = this.techRecord().techRecord_vehicleType;
+		const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
+		const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
+			BodyTypeDescription,
+			BodyTypeCode
+		>;
+		this.form.patchValue({
+			techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
+		});
+		this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord(), ...this.form.getRawValue() });
+		this.cdr.detectChanges();
 	}
 
 	handleDTpNumberChange(refData: ReferenceDataModelBase) {
@@ -76,6 +103,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 				techRecord_chassisMake: modelBase.psvChassisMake,
 				techRecord_chassisModel: modelBase.psvChassisModel,
 			});
+			this.technicalRecordService.updateEditingTechRecord({ ...this.form.getRawValue() });
 			this.cdr.detectChanges();
 		}
 	}
@@ -136,23 +164,29 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {
-			techRecord_make: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20'),
+			techRecord_make: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
+				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20'),
+				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
 			]),
-			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
+			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
-			techRecord_bodyType_code: this.fb.control<string | null>({ value: null, disabled: true }, []),
+			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.required('DTp Number is required'),
+				this.commonValidators.maxLength(6, 'DTp Number must be less than or equal to 6 characters'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1'),
+				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
 			]),
-			techRecord_conversionRefNo: this.fb.control<string | null>(null, []),
+			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
+				this.commonValidators.pattern(
+					'^[A-Z0-9 ]{0,10}$',
+					'Conversion reference number max length 10 uppercase letters or numbers'
+				),
+			]),
 		};
 	}
 
@@ -180,31 +214,45 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(30, 'Chassis make must be less than or equal to 30'),
+				this.commonValidators.maxLength(30, 'Chassis make must be less than or equal to 30 characters'),
 			]),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(20, 'Chassis model must be less than or equal to 20'),
+				this.commonValidators.maxLength(20, 'Chassis model must be less than or equal to 20 characters'),
 			]),
 			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20'),
+				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20 characters'),
 			]),
 			techRecord_bodyModel: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20'),
+				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20 characters'),
 			]),
-			techRecord_bodyType_code: this.fb.control<string | null>({ value: null, disabled: true }, []),
-			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
+			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
+			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Model literal must be less than or equal to 30'),
+				this.commonValidators.maxLength(30, 'Model Literal must be less than or equal to 30 characters'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
 				this.commonValidators.required('DTp Number is required'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1'),
+				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
 			]),
-			techRecord_conversionRefNo: this.fb.control<string | null>(null, []),
+			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
+				this.commonValidators.pattern(
+					'^[A-Z0-9 ]{0,10}$',
+					'Conversion reference number max length 10 uppercase letters or numbers'
+				),
+			]),
+		};
+	}
+
+	bodyMakeRequiredWithDangerousGoods(): ValidatorFn {
+		return (control) => {
+			if (control.parent && control.parent.get('techRecord_adrDetails_dangerousGoods')?.value && !control.value) {
+				return { required: 'Body make is required' };
+			}
+			return null;
 		};
 	}
 

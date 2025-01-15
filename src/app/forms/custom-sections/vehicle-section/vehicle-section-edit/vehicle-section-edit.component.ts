@@ -28,6 +28,7 @@ import {
 	MONTHS,
 	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
 	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	SUSPENSION_TYRE_OPTIONS,
 	TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	TRL_VEHICLE_CONFIGURATION_OPTIONS,
@@ -170,7 +171,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				this.handlePsvPassengersChange(),
 			]),
 			techRecord_vehicleSize: this.fb.control<string | null>(null),
-			techRecord_numberOfSeatbelts: this.fb.control<number | null>(null, [
+			techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99, 'Number of seat belts must be less than or equal to 99'),
 			]),
 			techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
@@ -295,6 +296,8 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
 			case VehicleTypes.PSV:
 				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.SMALL_TRL:
+				return SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
 			default:
 				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
 		}
