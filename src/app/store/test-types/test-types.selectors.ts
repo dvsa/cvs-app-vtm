@@ -181,6 +181,14 @@ function filterTestTypes(
 						? filterHgvFirstTestIds.includes(testType.id)
 						: filterAllFirstTestIds.includes(testType.id))
 			)
+			.filter((testType) => {
+				const isADRRetestCategory = testType.name === 'ADR retest';
+				const isHGV = techRecord.techRecord_vehicleType === VehicleTypes.HGV;
+				const isTRL = techRecord.techRecord_vehicleType === VehicleTypes.TRL;
+				const isLGV = techRecord.techRecord_vehicleType === VehicleTypes.LGV;
+				const isADRVehicle = isHGV || isTRL || isLGV;
+				return isADRVehicle && isADRRetestCategory ? techRecord.techRecord_adrDetails_dangerousGoods : true;
+			})
 			// only allow ADR tests on ADR vehicles which carry dangerous goods
 			.filter((testType) => {
 				const isAdrTest = adrTestIds.includes(testType.id);
