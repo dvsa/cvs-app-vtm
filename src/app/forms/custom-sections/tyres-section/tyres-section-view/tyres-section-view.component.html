@@ -11,18 +11,6 @@
   <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">Tyre details</caption>
-      <div class="govuk-table__caption govuk-table__caption--m">
-        <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="' '">
-          <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
-          <p class="m-0">
-            GB Axles: Axle
-            <ng-container *ngFor="let axle of invalidAxles; let i = index; let isLast = last">
-              <ng-container *ngIf="invalidAxles.length > 1 && isLast"> and</ng-container>
-              {{ axle }}<ng-container *ngIf="invalidAxles.length > 2 && i < (invalidAxles.length - 2)">,</ng-container>
-            </ng-container>
-          </p>
-        </app-field-warning-message>
-      </div>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header"></th>
