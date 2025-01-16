@@ -26,7 +26,7 @@ export class LastApplicantSectionEditComponent implements OnInit, OnDestroy {
 	form = this.fb.group({});
 
 	ngOnInit(): void {
-		this.addControlsBasedOffVehicleType();
+		this.addControls();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -51,13 +51,15 @@ export class LastApplicantSectionEditComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	addControlsBasedOffVehicleType() {
+	addControls() {
 		const vehicleControls = this.defaultFields;
 		for (const [key, control] of Object.entries(vehicleControls)) {
 			this.form.addControl(key, control, { emitEvent: false });
 		}
 	}
 
+	//TODO replace the email validator with the common microservice
+	// once the work has been done to export and import that value on the FE
 	get defaultFields() {
 		return {
 			techRecord_applicantDetails_name: this.fb.control(null, [
