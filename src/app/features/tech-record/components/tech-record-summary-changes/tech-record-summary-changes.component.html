@@ -82,6 +82,16 @@
 
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
     <ng-container [ngSwitch]="sectionName">
+      <ng-container *ngSwitchCase="'notes'">
+        <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsNotes'); else oldNotes">
+          <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
+        </ng-container>
+
+        <ng-template #oldNotes>
+          <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
+        </ng-template>
+      </ng-container>
+
       <ng-container *ngSwitchCase="'techRecordSummary'">
         <!-- New Vehicle Summary section -->
         <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
@@ -95,7 +105,17 @@
 
       </ng-container>
 
-      <app-body *ngSwitchCase="'bodySection'" [techRecord]="techRecordEdited" [disableLoadOptions]="true"></app-body>
+      <ng-container *ngSwitchCase="'bodySection'">
+        <!-- New Body section -->
+        <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsBody')">
+          <app-body-section [techRecord]="techRecordEdited" mode="summary" />
+        </ng-container>
+
+        <!-- Old Body section -->
+        <ng-template #oldBodySection>
+          <app-body [techRecord]="techRecordEdited" [disableLoadOptions]="true"></app-body>
+        </ng-template>
+      </ng-container>
 
       <ng-container *ngSwitchCase="'dimensionsSection'">
         <app-dimensions

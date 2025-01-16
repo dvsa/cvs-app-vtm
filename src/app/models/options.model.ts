@@ -46,6 +46,13 @@ export const HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	{ label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
 ];
 
+export const FUNCTION_CODE_OPTIONS: MultiOptions = [
+	{ label: 'R', value: 'R' },
+	{ label: 'A', value: 'A' },
+];
+
+export const BODY_TYPE_OPTIONS: MultiOptions = [];
+
 export const PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	{
 		label: 'small psv (ie: less than or equal to 22 passengers)',

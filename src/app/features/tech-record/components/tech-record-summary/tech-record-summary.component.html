@@ -10,7 +10,7 @@
     </div>
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label">
+        <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
           <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
         </app-accordion>
       </ng-container>
@@ -22,6 +22,23 @@
   <form [formGroup]="form">
     <ng-container *ngIf="techRecordCalculated">
       <ng-container [ngSwitch]="sectionName">
+        <ng-container *ngSwitchCase="'notesSection'">
+          <!-- New Notes section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsNotes'); else oldNotes">
+            <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          </ng-container>
+
+          <!-- Old Notes section -->
+          <ng-template #oldNotes>
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          </ng-template>
+        </ng-container>
+
         <ng-container *ngSwitchCase="'techRecordSummary'">
           <!-- New Vehicle Summary section -->
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
@@ -40,12 +57,21 @@
 
         </ng-container>
 
-        <app-body
-          *ngSwitchCase="'bodySection'"
-          [techRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-body>
+        <ng-container *ngSwitchCase="'bodySection'">
+          <!-- New Body section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsBody'); else oldBodySection">
+            <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          </ng-container>
+
+          <!-- Old Body section -->
+          <ng-template #oldBodySection>
+            <app-body
+              [techRecord]="techRecordCalculated"
+              [isEditing]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-body>
+          </ng-template>
+        </ng-container>
 
         <ng-container *ngSwitchCase="'dimensionsSection'">
           <app-dimensions

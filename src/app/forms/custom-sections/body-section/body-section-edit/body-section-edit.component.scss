@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 2rem 1rem;
+
+  .node-row {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0 1rem;
+
+    > * {
+      min-width: 200px;
+    }
+  }
+}

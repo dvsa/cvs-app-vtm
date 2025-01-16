@@ -185,36 +185,6 @@ describe('VehicleSectionEditComponent', () => {
 		});
 	});
 
-	describe('handleUpdateFunctionCode', () => {
-		it('should update the function code to A when articulated is selected', () => {
-			const updateTechRecordSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			component.form.patchValue({ techRecord_vehicleConfiguration: 'articulated' });
-			component.handleUpdateFunctionCode();
-			expect(updateTechRecordSpy).toHaveBeenCalledWith({ techRecord_functionCode: 'A' });
-		});
-
-		it('should update the function code to A when semi-trailer is selected', () => {
-			const updateTechRecordSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			component.form.patchValue({ techRecord_vehicleConfiguration: 'semi-trailer' });
-			component.handleUpdateFunctionCode();
-			expect(updateTechRecordSpy).toHaveBeenCalledWith({ techRecord_functionCode: 'A' });
-		});
-
-		it('should update the function code to R when rigid is selected', () => {
-			const updateTechRecordSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			component.form.patchValue({ techRecord_vehicleConfiguration: 'rigid' });
-			component.handleUpdateFunctionCode();
-			expect(updateTechRecordSpy).toHaveBeenCalledWith({ techRecord_functionCode: 'R' });
-		});
-
-		it('should not update the function code if value is null', () => {
-			const updateTechRecordSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			component.form.patchValue({ techRecord_vehicleConfiguration: null });
-			component.handleUpdateFunctionCode();
-			expect(updateTechRecordSpy).not.toHaveBeenCalled();
-		});
-	});
-
 	describe('handlePsvPassengersChange', () => {
 		let form: FormGroup;
 

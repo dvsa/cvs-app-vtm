@@ -7,39 +7,35 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { MultiOptions } from '@models/options.model';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
-	selector: 'govuk-form-group-select',
+	selector: 'govuk-form-group-textarea',
 	standalone: true,
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
-	templateUrl: './govuk-form-group-select.component.html',
-	styleUrls: ['./govuk-form-group-select.component.scss'],
+	templateUrl: './govuk-form-group-textarea.component.html',
+	styleUrls: ['./govuk-form-group-textarea.component.scss'],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
-			useExisting: forwardRef(() => GovukFormGroupSelectComponent),
+			useExisting: forwardRef(() => GovukFormGroupTextareaComponent),
 			multi: true,
 		},
 	],
 })
-export class GovukFormGroupSelectComponent implements ControlValueAccessor {
+export class GovukFormGroupTextareaComponent implements ControlValueAccessor {
 	@Output() blur = new EventEmitter<FocusEvent>();
 	@Output() focus = new EventEmitter<FocusEvent>();
 
 	@Input()
-	value: string | number | boolean | null = null;
+	value: string | null | undefined = null;
 
 	@Input()
 	disabled = false;
 
 	@Input()
 	tags: CustomTag[] = [];
-
-	@Input({ required: true })
-	options!: MultiOptions;
 
 	@Input({ alias: 'hint' })
 	controlHint = '';
@@ -53,11 +49,14 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	@Input({ alias: 'id' })
 	controlId = '';
 
-	@Input()
-	allowNull = true;
+	@Input({ alias: 'type' })
+	controlType = 'text';
 
 	@Input()
 	width?: FormNodeWidth;
+
+	@Input()
+	maxLength: number | null = null;
 
 	controlContainer = inject(ControlContainer);
 
@@ -86,7 +85,11 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	}
 
 	get style(): string {
-		return `govuk-select ${this.width ? `govuk-input--width-${this.width}` : ''}`;
+		return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
+	}
+
+	get length() {
+		return this.value?.length ?? 0;
 	}
 
 	onChange = (_: any) => {};
@@ -108,4 +111,6 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	setDisabledState?(isDisabled: boolean): void {
 		this.disabled = isDisabled;
 	}
+
+	protected readonly FormNodeWidth = FormNodeWidth;
 }

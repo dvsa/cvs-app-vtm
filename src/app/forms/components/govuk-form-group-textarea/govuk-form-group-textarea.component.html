@@ -1,0 +1,48 @@
+<div class="govuk-form-group-input">
+  <h1>
+    <label tag>
+      {{ controlLabel }}
+      <ng-container *ngIf="tags?.length">
+        <div>
+          <app-tag *ngFor="let tag of tags" [type]="tag.colour">{{ tag.label }}</app-tag>
+        </div>
+      </ng-container>
+    </label>
+  </h1>
+
+  <ng-container *ngIf="controlHint">
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
+  </ng-container>
+
+  <ng-container *ngIf="hasError">
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  </ng-container>
+
+  <textarea
+    class="govuk-textarea"
+    rows="5"
+    id="{{ id }}"
+    name="{{ id }}"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched();"
+    attr.aria-describedby="{{ id }}"
+    [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength }"
+  ></textarea>
+
+  <ng-container *ngIf="maxLength">
+    <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint" *ngIf="maxLength - length >= 0; else overLimit">
+      You have {{ maxLength - length }} character{{ maxLength - length !== 1 ? 's' : '' }} remaining
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #overLimit>
+  <div id="{{ id }}-max-length" class="govuk-error-message" *ngIf="maxLength">
+    You have {{ -(maxLength - length) }} character{{ -(maxLength - length) !== 1 ? 's' : '' }} too many
+  </div>
+</ng-template>

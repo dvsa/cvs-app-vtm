@@ -1,0 +1,94 @@
+<ng-container *ngIf="amendedTechRecord() as vm">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <!-- DTp Number -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_brakes_dtpNumber')">
+      <dt class="govuk-summary-list__key">DTp Number</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dtpNumber">
+        {{ vm.techRecord_brakes_dtpNumber | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- HGV/TRL Only Body Fields -->
+    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+      <!-- Body make -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_make')">
+        <dt class="govuk-summary-list__key">Body make</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_make">
+          {{ vm.techRecord_make | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Body model -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_model')">
+        <dt class="govuk-summary-list__key">Body model</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_model">
+          {{ vm.techRecord_model | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Body type HGV/TRL -->
+      <ng-container [ngTemplateOutlet]="bodyType"></ng-container>
+    </ng-container>
+    <!--  PSV Only Body Fields -->
+    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+      <!-- Chassis Make -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_chassisMake')">
+        <dt class="govuk-summary-list__key">Chassis make</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_chassisMake">
+          {{ vm.techRecord_chassisMake | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Chassis Model -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_chassisModel')">
+        <dt class="govuk-summary-list__key">Chassis model</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_chassisModel">
+          {{ vm.techRecord_chassisModel | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Body Make -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_bodyMake')">
+        <dt class="govuk-summary-list__key">Body make</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_bodyMake">
+          {{ vm.techRecord_bodyMake | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Body Model -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_bodyModel')">
+        <dt class="govuk-summary-list__key">Body model</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_bodyModel">
+          {{ vm.techRecord_bodyModel | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <!-- Body Type PSV -->
+      <ng-container [ngTemplateOutlet]="bodyType"></ng-container>
+      <!-- Model Literal -->
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_modelLiteral')">
+        <dt class="govuk-summary-list__key">Model literal</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_modelLiteral">
+          {{ vm.techRecord_modelLiteral | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </ng-container>
+    <!-- Function code -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_functionCode')">
+      <dt class="govuk-summary-list__key">Function code</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_functionCode">
+        {{ vm.techRecord_functionCode | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Conversion reference number -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_conversionRefNo')">
+      <dt class="govuk-summary-list__key">Conversion reference number</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_conversionRefNo">
+        {{ vm.techRecord_conversionRefNo | defaultNullOrEmpty }}
+      </dd>
+    </div>
+
+
+    <ng-template #bodyType>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_bodyType_description')">
+        <dt class="govuk-summary-list__key">Body type</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_bodyType_description">
+          {{ vm.techRecord_bodyType_description | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </ng-template>
+  </dl>
+</ng-container>
