@@ -26,7 +26,7 @@ export class LastApplicantSectionEditComponent implements OnInit, OnDestroy {
 	form = this.fb.group({});
 
 	ngOnInit(): void {
-		// this.addControlsBasedOffVehicleType();
+		this.addControlsBasedOffVehicleType();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -51,32 +51,48 @@ export class LastApplicantSectionEditComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	// addControlsBasedOffVehicleType() {
-	//   const vehicleControls = this.controlsBasedOffVehicleType;
-	//   for (const [key, control] of Object.entries(vehicleControls)) {
-	//     this.form.addControl(key, control, { emitEvent: false });
-	//   }
-	// }
-
-	get controlsBasedOffVehicleType() {
-		switch (this.getVehicleType()) {
-			case VehicleTypes.PSV:
-				return this.psvFields;
-			default:
-				return this.defaultFields;
+	addControlsBasedOffVehicleType() {
+		const vehicleControls = this.defaultFields;
+		for (const [key, control] of Object.entries(vehicleControls)) {
+			this.form.addControl(key, control, { emitEvent: false });
 		}
 	}
 
-	get psvFields() {
-		return {};
-	}
-
 	get defaultFields() {
-		return {};
+		return {
+			techRecord_applicantDetails_name: this.fb.control(null, [
+				this.commonValidators.max(150, 'Name must be less than or equal to 150'),
+			]),
+			techRecord_applicantDetails_address1: this.fb.control(null, [
+				this.commonValidators.max(60, 'Address line 1 must be less than or equal to 60'),
+			]),
+			techRecord_applicantDetails_address2: this.fb.control(null, [
+				this.commonValidators.max(60, 'Address line 2 must be less than or equal to 60'),
+			]),
+			techRecord_applicantDetails_postTown: this.fb.control(null, [
+				this.commonValidators.max(60, 'Town or City must be less than or equal to 60'),
+			]),
+			techRecord_applicantDetails_address3: this.fb.control(null, [
+				this.commonValidators.max(60, 'County must be less than or equal to 60'),
+			]),
+			techRecord_applicantDetails_postCode: this.fb.control(null, [
+				this.commonValidators.max(12, 'Postcode must be less than or equal to 12'),
+			]),
+			techRecord_applicantDetails_telephoneNumber: this.fb.control(null, [
+				this.commonValidators.max(25, 'Telephone number must be less than or equal to 25'),
+			]),
+			techRecord_applicantDetails_emailAddress: this.fb.control(null, [
+				this.commonValidators.max(255, 'Email address must be less than or equal to 255'),
+			]),
+		};
 	}
 
 	getVehicleType(): VehicleTypes {
 		return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord());
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		return !!this.form.get(formControlName);
 	}
 
 	protected readonly FormNodeWidth = FormNodeWidth;
