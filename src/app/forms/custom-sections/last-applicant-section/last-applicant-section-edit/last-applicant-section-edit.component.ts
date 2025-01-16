@@ -83,6 +83,10 @@ export class LastApplicantSectionEditComponent implements OnInit, OnDestroy {
 			]),
 			techRecord_applicantDetails_emailAddress: this.fb.control(null, [
 				this.commonValidators.max(255, 'Email address must be less than or equal to 255'),
+				this.commonValidators.pattern(
+					"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
+					'Enter an email address in the correct format, like name@example.com'
+				),
 			]),
 		};
 	}
