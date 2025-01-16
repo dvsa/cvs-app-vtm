@@ -39,4 +39,10 @@ export class TyresSectionSummaryComponent {
 
 		return !isEqual(currentAxle, amendedAxle);
 	}
+
+	get shouldShowTable(): boolean {
+		const axles = (this.amendedTechRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>)?.techRecord_axles;
+		if (!Array.isArray(axles)) return false;
+		return axles.length > 0 && axles.some((_, index) => this.hasAxleChanged(index));
+	}
 }
