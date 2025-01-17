@@ -6,6 +6,7 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_4_8,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP7,
@@ -228,6 +229,7 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 				...TEST_TYPES_GROUP5_13,
 				...TEST_TYPES_GROUP15_16,
 				...TEST_TYPES_GROUP8_NOTIFABLE,
+				...TEST_TYPES_GROUP3_4_8,
 			].includes(testType.testTypeId) &&
 			!testType.customDefects
 		) {
