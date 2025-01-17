@@ -1,4 +1,3 @@
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
@@ -86,7 +85,6 @@ export const TestSectionGroup3And4And8: FormNode = {
 									args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' },
 								},
 							],
-							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
 						},
 						{
