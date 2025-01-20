@@ -1,5 +1,4 @@
 import { ContingencyAdrGenerateCertComponent } from '@forms/components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
@@ -86,7 +85,6 @@ export const ContingencyTestSectionGroup7: FormNode = {
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } },
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: 'pass' } },
 							],
-							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
 						},
 						{

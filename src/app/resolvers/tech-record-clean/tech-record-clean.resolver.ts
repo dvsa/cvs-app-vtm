@@ -15,6 +15,7 @@ export const techRecordCleanResolver: ResolveFn<Observable<boolean>> = (route) =
 		take(1),
 		map((vehicleTechRecord) => vehicleTechRecord as TechRecordType<'put'>),
 		map((vehicleTechRecord) => cleanseApprovalType(vehicleTechRecord, route)),
+		map((vehicleTechRecord) => cleanseADRDetails(vehicleTechRecord, route)),
 		tap((vehicleTechRecord) => store.dispatch(updateEditingTechRecord({ vehicleTechRecord }))),
 		map(() => true)
 	);
@@ -39,6 +40,23 @@ export const cleanseApprovalType = (record: TechRecordType<'put'>, route: Activa
 					record.techRecord_approvalType = key;
 				}
 			});
+		}
+	}
+
+	return record;
+};
+
+export const cleanseADRDetails = (record: TechRecordType<'put'>, route: ActivatedRouteSnapshot) => {
+	if (!route.data['isEditing']) return record;
+
+	const type = record.techRecord_vehicleType;
+	if (type === VehicleTypes.HGV || type === VehicleTypes.LGV || type === VehicleTypes.TRL) {
+		// If the vehicle record includes 'Class 5.1 Hydrogen Peroxide (OX)' as a permitted dangerous good, remove it
+		if (Array.isArray(record.techRecord_adrDetails_permittedDangerousGoods)) {
+			const oxIndex = record.techRecord_adrDetails_permittedDangerousGoods.indexOf('Class 5.1 Hydrogen Peroxide (OX)');
+			if (oxIndex !== -1) {
+				record.techRecord_adrDetails_permittedDangerousGoods.splice(oxIndex, 1);
+			}
 		}
 	}
 
