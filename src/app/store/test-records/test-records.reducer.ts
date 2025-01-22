@@ -6,7 +6,11 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_4_8,
+	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP15_16,
 } from '@models/testTypeId.enum';
@@ -216,6 +220,20 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		if (testType.centralDocs?.issueRequired) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
+		}
+
+		// these test types don't require custom defects from the user, but BE need a customDefects property on the test type
+		if (
+			[
+				...TEST_TYPES_GROUP7,
+				...TEST_TYPES_GROUP5_13,
+				...TEST_TYPES_GROUP15_16,
+				...TEST_TYPES_GROUP8_NOTIFABLE,
+				...TEST_TYPES_GROUP3_4_8,
+			].includes(testType.testTypeId) &&
+			!testType.customDefects
+		) {
+			testType.customDefects = [];
 		}
 
 		// When abandoning a first test ensure certificate number is sent up
