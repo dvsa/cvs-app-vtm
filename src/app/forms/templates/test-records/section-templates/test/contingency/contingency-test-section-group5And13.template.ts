@@ -1,4 +1,3 @@
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
@@ -79,7 +78,6 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
 								{ value: 'pass', label: 'Pass' },
 								{ value: 'fail', label: 'Fail' },
 							],
-							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							validators: [
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: 'pass' } },
