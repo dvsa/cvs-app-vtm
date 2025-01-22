@@ -212,6 +212,24 @@
           </ng-container>
         </ng-container>
 
+
+        <ng-container *ngSwitchCase="'techRecord'">
+          <!-- New Last Applicant section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsLastApplicant'); else oldLastApplicantComponent">
+            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          </ng-container>
+
+          <!-- Old Last Applicant section -->
+          <ng-template #oldLastApplicantComponent>
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          </ng-template>
+        </ng-container>
+
         <app-dynamic-form-group
           *ngSwitchDefault
           [data]="techRecordCalculated"
