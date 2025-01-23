@@ -28,16 +28,18 @@
         [width]="FormNodeWidth.L"
       >
       </govuk-form-group-input>
-      <govuk-form-group-select
-        type="text"
-        formControlName="techRecord_bodyType_description"
-        label="Body type"
-        [width]="FormNodeWidth.L"
-        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
-        [options]="bodyTypes"
-      >
-      </govuk-form-group-select>
     </div>
+
+    <govuk-form-group-select
+      type="text"
+      formControlName="techRecord_bodyType_description"
+      label="Body type"
+      [width]="FormNodeWidth.L"
+      [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
+      [options]="bodyTypes"
+    >
+    </govuk-form-group-select>
+
   </ng-container>
   <ng-container *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV">
     <govuk-form-group-autocomplete

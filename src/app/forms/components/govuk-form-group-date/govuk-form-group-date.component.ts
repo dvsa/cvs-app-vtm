@@ -134,7 +134,7 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 			}
 		});
 
-		// Map the seperate form controls to a single date string
+		// Map the separate form controls to a single date string
 		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
 			const { year, month, day, hours, minutes, seconds } = this.form.value;
 

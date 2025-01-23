@@ -21,6 +21,7 @@ export class AdrSectionSummaryComponent {
 	currentTechRecord = this.store.selectSignal(techRecord) as Signal<ADRTechRecord>;
 	amendedTechRecord = this.store.selectSignal(editingTechRecord) as Signal<ADRTechRecord>;
 
+	// TODO update this method so its consistent with some of the more recent changes
 	hasChanged(property: keyof ADRTechRecord) {
 		const current = this.currentTechRecord() as ADRTechRecord;
 		const amended = this.amendedTechRecord() as ADRTechRecord;

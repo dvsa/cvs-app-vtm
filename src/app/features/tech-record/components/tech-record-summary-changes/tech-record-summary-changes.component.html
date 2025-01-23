@@ -136,7 +136,13 @@
             techRecordEdited.techRecord_vehicleType === 'trl'
           "
         >
-          <app-approval-type [techRecord]="techRecordEdited"></app-approval-type>
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsApprovalType'); else oldApprovalTypeSection">
+            <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
+          </ng-container>
+
+          <ng-template #oldApprovalTypeSection>
+            <app-approval-type [techRecord]="techRecordEdited"></app-approval-type>
+          </ng-template>
         </ng-container>
       </ng-container>
 
