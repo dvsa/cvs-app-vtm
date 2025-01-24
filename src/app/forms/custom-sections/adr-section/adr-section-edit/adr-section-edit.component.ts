@@ -18,7 +18,7 @@ import { CommonValidatorsService } from '@forms/validators/common-validators.ser
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { removeTC3TankInspection, updateScrollPosition } from '@store/technical-records';
+import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -387,6 +387,7 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 
 	removeUNNumber(index: number) {
 		this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.removeAt(index);
+		this.store.dispatch(removeUNNumber({ index }));
 	}
 
 	getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
