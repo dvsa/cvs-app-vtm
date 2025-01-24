@@ -107,5 +107,14 @@ export class AdrSectionSummaryComponent {
 		].some((hasChanged) => hasChanged);
 	}
 
-	protected readonly techRecord = techRecord;
+	hasUNNumberChanged(index: number) {
+		const current = this.currentTechRecord() as ADRTechRecord;
+		const amended = this.amendedTechRecord() as ADRTechRecord;
+		if (!current || !amended) return true;
+
+		return !isEqual(
+			current.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo?.[index],
+			amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo?.[index]
+		);
+	}
 }

@@ -168,7 +168,7 @@
               </div>
               <ng-container *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')">
                 <ng-container *ngFor="let unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; let i = index">
-                  <div class="govuk-summary-list__row">
+                  <div class="govuk-summary-list__row" *ngIf="hasUNNumberChanged(i)">
                     <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
                       {{ unNo | defaultNullOrEmpty }}
