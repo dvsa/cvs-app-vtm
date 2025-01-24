@@ -26,7 +26,13 @@ export class AdrSectionSummaryComponent {
 		const amended = this.amendedTechRecord() as ADRTechRecord;
 		if (!current || !amended) return true;
 
-		return !isEqual(current[property], amended[property]);
+		const cp = current[property];
+		const ap = amended[property];
+
+		// If the property is edited, exclude certain changes
+		if (cp == null && Array.isArray(ap) && ap.length === 0) return false;
+
+		return !isEqual(cp, ap);
 	}
 
 	haveAnyApplicantDetailItemsChanged() {
