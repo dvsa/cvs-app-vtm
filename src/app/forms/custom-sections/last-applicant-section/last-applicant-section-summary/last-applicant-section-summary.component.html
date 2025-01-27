@@ -1,5 +1,5 @@
 <ng-container *ngIf="amendedTechRecord() as vm">
-  <dl *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
     <!-- Name or company -->
     <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_name')">
       <dt class="govuk-summary-list__key">Name or company</dt>
