@@ -203,9 +203,9 @@
   <!-- Emission Limit -->
   <govuk-form-group-input
     *ngIf="shouldDisplayFormControl('techRecord_emissionsLimit')"
-    label="Emission limit (m-1) (plate value)"
+    label="Emission limit (m-1) (plate values)"
     formControlName="techRecord_emissionsLimit"
-    type="number"
+    type="decimal"
     [width]="FormNodeWidth.XXS"
   ></govuk-form-group-input>
 
