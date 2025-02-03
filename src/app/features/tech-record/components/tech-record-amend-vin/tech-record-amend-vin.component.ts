@@ -92,7 +92,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 			vin: new CustomFormControl(
 				{
 					name: 'input-vin',
-					label: 'Vin',
+					label: 'VIN',
 					type: FormNodeTypes.CONTROL,
 				},
 				'',
