@@ -175,7 +175,7 @@
           <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'">
             <!-- New Weights Section -->
             <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsPlates'); else oldPlatesSection">
-              <app-weights-section
+              <app-plates-section
                 [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
             </ng-container>

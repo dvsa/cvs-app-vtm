@@ -8,7 +8,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 })
 export class PlatesSectionComponent {
 	mode = input<Mode>('edit');
-	techRecord = input.required<TechRecordType<'hgv' | 'psv' | 'trl'>>();
+	techRecord = input.required<TechRecordType<'hgv' | 'trl'>>();
 }
 
 type Mode = 'view' | 'edit' | 'summary';
