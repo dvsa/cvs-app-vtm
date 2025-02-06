@@ -32,8 +32,10 @@
       </div>
     </dl>
     
-    <h3>Front of vehicle to 5th wheel coupling</h3>
     <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <h3>Front of vehicle to 5th wheel coupling</h3>
+      </div>
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontVehicleTo5thWheelCouplingMin')">
         <dt class="govuk-summary-list__key">Minimum</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_frontVehicleTo5thWheelCouplingMin">
@@ -139,6 +141,11 @@
           {{ vm.techRecord_centreOfRearmostAxleToRearOfTrl }}
         </dd>
       </div>
+    </dl>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <h3>Coupling center to rear axle</h3>
+      </div>
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearAxleMin')">
         <dt class="govuk-summary-list__key">Minimum</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMin">
@@ -150,6 +157,11 @@
         <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMax">
           {{ vm.techRecord_couplingCenterToRearAxleMax }}
         </dd>
+      </div>    
+    </dl>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <h3>Coupling center to rear trailer</h3>
       </div>
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearTrlMin')">
         <dt class="govuk-summary-list__key">Minimum</dt>
