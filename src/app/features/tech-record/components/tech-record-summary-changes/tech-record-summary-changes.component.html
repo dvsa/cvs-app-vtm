@@ -118,14 +118,21 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'dimensionsSection'">
-        <app-dimensions
-          *ngIf="
-            techRecordEdited.techRecord_vehicleType === 'hgv' ||
-            techRecordEdited.techRecord_vehicleType === 'psv' ||
-            techRecordEdited.techRecord_vehicleType === 'trl'
-          "
-          [techRecord]="techRecordEdited"
-        ></app-dimensions>
+        <ng-container *ngIf="
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl'
+        ">
+          <!-- New Dimensions section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsDimensions'); else oldDimensionsSection">
+            <app-dimensions-section [techRecord]="techRecordEdited" mode="summary"></app-dimensions-section>
+          </ng-container>
+
+          <!-- Old Dimensions section -->
+          <ng-template #oldDimensionsSection>
+            <app-dimensions [techRecord]="techRecordEdited" mode="summary"></app-dimensions>
+          </ng-template>
+        </ng-container>
       </ng-container>
 
       <ng-container *ngSwitchCase="'approvalSection'">

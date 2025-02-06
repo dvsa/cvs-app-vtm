@@ -21,6 +21,7 @@ export class NumberInputComponent extends BaseControlComponent implements AfterC
 		return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
 	}
 
+	// @TODO: remove this when dimensions feature flag is removed
 	get getWarningMessage(): string {
 		if (this.isCorrectVehicleType()) {
 			if (this.shouldDisplayLengthWarning())
@@ -31,13 +32,17 @@ export class NumberInputComponent extends BaseControlComponent implements AfterC
 		return '';
 	}
 
+	// @TODO: remove this when dimensions feature flag is removed
 	shouldDisplayLengthWarning(): boolean {
 		return this.label === 'Length' && Number.parseInt(this.value, 10) > 12000;
 	}
+
+	// @TODO: remove this when dimensions feature flag is removed
 	shouldDisplayWidthWarning(): boolean {
 		return this.label === 'Width' && Number.parseInt(this.value, 10) > 2600;
 	}
 
+	// @TODO: remove this when dimensions feature flag is removed
 	isCorrectVehicleType(): boolean {
 		return this.vehicleType === 'hgv' || this.vehicleType === 'trl';
 	}
