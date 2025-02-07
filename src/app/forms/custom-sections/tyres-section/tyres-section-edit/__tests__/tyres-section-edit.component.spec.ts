@@ -14,11 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TyresSectionEditComponent } from '../tyres-section-edit.component';
 
 const mockReferenceDataService = {
@@ -35,6 +37,8 @@ describe('TyresSectionEditComponent', () => {
 	let formGroupDirective: FormGroupDirective;
 	let store: MockStore;
 
+	const actions$ = new Observable<Action>();
+
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<
@@ -47,6 +51,7 @@ describe('TyresSectionEditComponent', () => {
 			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => actions$),
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
