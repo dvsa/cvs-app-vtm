@@ -1,0 +1,28 @@
+:host {
+  th.govuk-table__header,
+  td.govuk-table__cell {
+    padding: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    vertical-align: middle;
+  }
+
+  th.govuk-table__header:not(:last-of-type),
+  td.govuk-table__cell:not(:last-of-type),
+  th.govuk-table__header:first-of-type,
+  td.govuk-table__cell:first-of-type {
+    padding-right: 0.5rem;
+  }
+
+  tfoot td {
+    padding: 0.5rem 0;
+  }
+
+  govuk-form-group-input ::ng-deep .govuk-form-group-input {
+    margin-bottom: 0 !important;
+  }
+
+  govuk-form-group-select ::ng-deep .govuk-form-group-select {
+    margin-bottom: 0 !important;
+  }
+}

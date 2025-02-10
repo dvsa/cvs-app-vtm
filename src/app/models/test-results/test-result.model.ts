@@ -1,3 +1,4 @@
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
@@ -73,4 +74,6 @@ export interface TestResultModel {
 	 * Used only for TRL
 	 */
 	firstUseDate?: string;
+
+	recalls?: RecallsSchema;
 }

@@ -31,14 +31,8 @@ describe('DateComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [
-				BaseControlComponent,
-				DateComponent,
-				FieldErrorMessageComponent,
-				DateFocusNextDirective,
-				HostComponent,
-			],
-			imports: [FormsModule, ReactiveFormsModule],
+			declarations: [BaseControlComponent, DateComponent, FieldErrorMessageComponent, HostComponent],
+			imports: [FormsModule, ReactiveFormsModule, DateFocusNextDirective],
 			providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});

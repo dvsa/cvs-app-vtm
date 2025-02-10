@@ -14,7 +14,8 @@ describe('NumberOnlyDirective', () => {
 
 	beforeEach(() => {
 		fixture = TestBed.configureTestingModule({
-			declarations: [NumberOnlyDirective, TestComponent],
+			imports: [NumberOnlyDirective],
+			declarations: [TestComponent],
 		}).createComponent(TestComponent);
 		fixture.detectChanges();
 

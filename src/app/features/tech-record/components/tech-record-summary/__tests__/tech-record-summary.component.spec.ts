@@ -8,6 +8,7 @@ import { LettersComponent } from '@forms/custom-sections/letters/letters.compone
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 
+import { FormControl, FormGroup } from '@angular/forms';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
@@ -175,41 +176,6 @@ describe('TechRecordSummaryComponent', () => {
 			checkHeadingAndForm();
 			expect(component.vehicleType).toEqual(VehicleTypes.TRL);
 		});
-		it('should show adr section if ADR is enabled', () => {
-			component.isEditing = false;
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.HGV,
-					techRecord_adrDetails_dangerousGoods: true,
-					techRecord_adrDetails_applicantDetails_name: 'Test',
-				} as V3TechRecordModel)
-			);
-			fixture.detectChanges();
-
-			checkHeadingAndForm();
-			expect(component.adr).toBeDefined();
-		});
-		it('should not show adr section if ADR is disabled', () => {
-			component.isEditing = false;
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.TRL,
-					techRecord_adrDetails_applicantDetails_name: 'Test',
-				} as V3TechRecordModel)
-			);
-			fixture.detectChanges();
-
-			checkHeadingAndForm();
-			expect(component.adr).toBeUndefined();
-		});
 	});
 
 	describe('handleFormState', () => {
@@ -229,6 +195,26 @@ describe('TechRecordSummaryComponent', () => {
 			component.handleFormState({});
 
 			expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockTechRecord }));
+		});
+	});
+
+	describe('handleVehicleConfigurationChanges', () => {
+		it('should update various form fields once the vehicle configuration changes', () => {
+			const form = new FormGroup({
+				techRecord_vehicleConfiguration: new FormControl(''),
+				techRecord_bodyType_description: new FormControl(''),
+				techRecord_bodyType_code: new FormControl(''),
+				techRecord_functionCode: new FormControl(''),
+			});
+			const subscriptionSpy = jest
+				.spyOn(form.get('techRecord_vehicleConfiguration')!.valueChanges, 'pipe')
+				.mockReturnValue(of('articulated'));
+			const formPatchSpy = jest.spyOn(form, 'patchValue');
+			component.form = form;
+			component.form.get('techRecord_vehicleConfiguration')?.markAsDirty();
+			component.handleVehicleConfigurationChanges();
+			expect(subscriptionSpy).toHaveBeenCalled();
+			expect(formPatchSpy).toHaveBeenCalled();
 		});
 	});
 });

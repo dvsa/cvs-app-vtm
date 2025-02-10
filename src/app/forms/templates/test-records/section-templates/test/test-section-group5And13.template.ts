@@ -1,4 +1,3 @@
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import {
@@ -31,6 +30,26 @@ export const TestSectionGroup5And13: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.DATE,
 			editType: FormNodeEditTypes.DATE,
+		},
+		{
+			name: 'recalls',
+			type: FormNodeTypes.GROUP,
+			children: [
+				{
+					name: 'hasRecall',
+					value: false,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+				{
+					name: 'manufacturer',
+					value: null,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+			],
 		},
 		{
 			name: 'testTypes',
@@ -72,7 +91,6 @@ export const TestSectionGroup5And13: FormNode = {
 								},
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
 							],
-							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
 						},
 						{

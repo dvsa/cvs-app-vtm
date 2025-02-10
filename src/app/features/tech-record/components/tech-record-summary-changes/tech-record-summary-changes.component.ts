@@ -9,12 +9,12 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FormNode, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -59,7 +59,8 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 		public route: ActivatedRoute,
 		public routerService: RouterService,
 		public actions$: Actions,
-		public userService$: UserService
+		public userService$: UserService,
+		public featureToggleService: FeatureToggleService
 	) {}
 
 	ngOnInit(): void {
@@ -135,10 +136,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 		return this.techRecordEdited
 			? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordEdited)
 			: undefined;
-	}
-
-	get vehicleSummary(): FormNode {
-		return VehicleSummary;
 	}
 
 	get deletedAxles(): Axles {

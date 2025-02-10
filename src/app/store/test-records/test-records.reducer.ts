@@ -6,7 +6,11 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_4_8,
+	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP15_16,
 } from '@models/testTypeId.enum';
@@ -16,6 +20,7 @@ import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 import {
 	cancelEditingTestResult,
 	cleanTestResult,
@@ -33,6 +38,7 @@ import {
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
 	initialContingencyTest,
+	patchEditingTestResult,
 	removeDefect,
 	removeRequiredStandard,
 	setResultOfTest,
@@ -109,6 +115,11 @@ export const testResultsReducer = createReducer(
 		editingTestResult: setTestResult(state.editingTestResult, action.result),
 	})),
 
+	on(patchEditingTestResult, (state, action) => ({
+		...state,
+		editingTestResult: merge({}, state.editingTestResult, action.testResult),
+	})),
+
 	on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, action.testResult) })),
 	on(cancelEditingTestResult, (state) => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
 
@@ -181,6 +192,12 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		return testResult;
 	}
 
+	// Remove recalls from non HGV/PSV/TRL tests
+	const vehicleType = testResult.vehicleType;
+	if (!(vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV || vehicleType === VehicleTypes.TRL)) {
+		delete testResult.recalls;
+	}
+
 	const testTypes = testResult.testTypes.map((testType, index) => {
 		// Remove empty requiredStandards from pass/prs non-voluntary IVA/MVSA tests
 		if (index === 0) {
@@ -203,6 +220,20 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		if (testType.centralDocs?.issueRequired) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
+		}
+
+		// these test types don't require custom defects from the user, but BE need a customDefects property on the test type
+		if (
+			[
+				...TEST_TYPES_GROUP7,
+				...TEST_TYPES_GROUP5_13,
+				...TEST_TYPES_GROUP15_16,
+				...TEST_TYPES_GROUP8_NOTIFABLE,
+				...TEST_TYPES_GROUP3_4_8,
+			].includes(testType.testTypeId) &&
+			!testType.customDefects
+		) {
+			testType.customDefects = [];
 		}
 
 		// When abandoning a first test ensure certificate number is sent up

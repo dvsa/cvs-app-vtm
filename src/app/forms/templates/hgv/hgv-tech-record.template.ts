@@ -1,3 +1,4 @@
+import { TagType } from '@components/tag/tag.component';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -12,7 +13,6 @@ import {
 	FormNodeWidth,
 	TagTypeLabels,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { TagType } from '../../../components/tag/tag.component';
 
 export const HgvTechRecord: FormNode = {
 	name: 'techRecordSummary',

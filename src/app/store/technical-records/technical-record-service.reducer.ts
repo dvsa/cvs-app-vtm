@@ -59,6 +59,8 @@ import {
 	promoteTechRecordSuccess,
 	removeAxle,
 	removeSectionState,
+	removeTC3TankInspection,
+	removeUNNumber,
 	unarchiveTechRecord,
 	unarchiveTechRecordFailure,
 	unarchiveTechRecordSuccess,
@@ -169,6 +171,10 @@ export const vehicleTechRecordReducer = createReducer(
 	on(addAxle, (state) => handleAddAxle(state)),
 	on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
 
+	on(removeTC3TankInspection, (state, action) => handleRemoveTC3TankInspection(state, action)),
+
+	on(removeUNNumber, (state, action) => handleRemoveUNNumber(state, action)),
+
 	on(addSectionState, (state, action) => handleAddSection(state, action)),
 	on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
@@ -228,13 +234,12 @@ function handleUpdateBrakeForces(
 	}
 
 	if (data.grossLadenWeight) {
-		const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+		if (newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal) {
+			const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+			newState.editingTechRecord.techRecord_brakes_brakeCode =
+				(prefix.length <= 2 ? `0${prefix}` : prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal;
+		}
 
-		newState.editingTechRecord.techRecord_brakes_brakeCode =
-			(prefix.length <= 2
-				? `0${prefix}`
-				: // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
 		newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round(
 			(data.grossLadenWeight * 16) / 100
 		);
@@ -364,6 +369,41 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
 	) {
 		newState.editingTechRecord.techRecord_dimensions_axleSpacing = new AxlesService().generateAxleSpacing(
 			newState.editingTechRecord.techRecord_axles.length
+		);
+	}
+
+	return newState;
+}
+
+function handleRemoveTC3TankInspection(state: TechnicalRecordServiceState, action: { index: number }) {
+	const newState = cloneDeep(state);
+	if (!newState.editingTechRecord) return newState;
+
+	if (
+		(newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.LGV) &&
+		Array.isArray(newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tc3Details)
+	) {
+		newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tc3Details.splice(action.index, 1);
+	}
+
+	return newState;
+}
+
+function handleRemoveUNNumber(state: TechnicalRecordServiceState, action: { index: number }) {
+	const newState = cloneDeep(state);
+	if (!newState.editingTechRecord) return newState;
+
+	if (
+		(newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.LGV) &&
+		Array.isArray(newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo)
+	) {
+		newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.splice(
+			action.index,
+			1
 		);
 	}
 

@@ -1,0 +1,25 @@
+.autocomplete__wrapper {
+  z-index: 0;
+  font-family: 'GDS Transport', arial, sans-serif;
+}
+
+.extra-margin {
+  margin-bottom: 30px;
+}
+
+.internal-wrapper {
+  margin-top: 10px;
+  display: flex;
+
+  .prefix {
+    border: 2px solid #0b0c0c;
+    border-right: 0;
+    height: fit-content;
+  }
+
+  @media (max-width: 640px) {
+    .prefix {
+      line-height: 1.25;
+    }
+  }
+}

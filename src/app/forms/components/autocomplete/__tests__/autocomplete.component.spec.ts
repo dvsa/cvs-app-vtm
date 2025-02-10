@@ -80,15 +80,15 @@ describe('AutocompleteComponent', () => {
 		expect(control?.touched).toBeTruthy();
 	});
 
-	it('should propagate "" to form control when input is left empty', () => {
+	it('should propagate null and reset to form control when input is cleared', () => {
 		const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
 		const control = component.form.get('foo');
 
 		autocompleteComponent.handleChange({ target: { value: '' } } as unknown as Event);
 
 		expect(findOptionValueSpy).toHaveBeenCalled();
-		expect(control?.value).toBe('');
-		expect(control?.touched).toBeTruthy();
+		expect(control?.value).toBeNull(); // use null to indicate the field is empty
+		expect(control?.touched).toBe(false);
 	});
 
 	it('should propagate "[INVALID_OPTION]" to form control when value is not an option', () => {

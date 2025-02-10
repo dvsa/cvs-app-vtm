@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
 	selector: '[appNumberOnly]',
+	standalone: true,
 })
 export class NumberOnlyDirective {
 	inputElement: HTMLInputElement;

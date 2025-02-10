@@ -9,7 +9,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { ConfirmCancellationComponent } from '../confirm-cancellation.component';
 
@@ -28,6 +28,7 @@ describe('ConfirmCancellationComponent', () => {
 					provide: TestRecordsService,
 					useValue: {
 						cancelTest: () => {},
+						isTestTypeGroupEditable$: of(false),
 					},
 				},
 			],

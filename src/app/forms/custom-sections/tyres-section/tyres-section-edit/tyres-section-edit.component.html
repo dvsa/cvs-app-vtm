@@ -1,0 +1,165 @@
+<div class="section-wrapper" [formGroup]="form" *ngIf="techRecord() as tr">
+
+  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
+    <govuk-form-group-input
+      class="govuk-!-margin-bottom-7"
+      type="number"
+      label="Speed Restriction"
+      formControlName="techRecord_speedRestriction"
+      [width]="FormNodeWidth.XS"
+      suffix="mph"
+    ></govuk-form-group-input>
+  </ng-container>
+
+  <table class="govuk-table">
+    <!-- Title -->
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Tyre details <app-tag type="purple" *ngIf="tr.techRecord_vehicleType !== VehicleTypes.PSV">plates</app-tag>
+    </caption>
+
+    <div class="govuk-table__caption govuk-table__caption--m">
+      <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="' '">
+        <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
+        <p class="m-0">
+          GB Axles: Axle
+          <ng-container *ngFor="let axle of invalidAxles; let i = index; let isLast = last">
+            <ng-container *ngIf="invalidAxles.length > 1 && isLast"> and</ng-container>
+            {{ axle }}<ng-container *ngIf="invalidAxles.length > 2 && i < (invalidAxles.length - 2)">,</ng-container>
+          </ng-container>
+        </p>
+      </app-field-warning-message>
+    </div>
+
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-code-header">Code</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-size-header">Size</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-ply-header">Ply</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-load-index-header">Load Index</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-sr-header" *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">SR</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-sd-header">S/D</th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-search-header"></th>
+        <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body" formArrayName="techRecord_axles">
+      <ng-container *ngFor="let axle of techRecordAxles.controls; let i = index">
+        <tr class="govuk-table__row" formGroupName="{{ i }}">
+          <th class="govuk-table__header" scope="row">T{{ axle.value.axleNumber }}</th>
+
+          <!-- Tyre Code -->
+          <td class="govuk-table__cell">
+            <govuk-form-group-input
+              id="tyres_tyreCode-{{ i + 1 }}"
+              type="number"
+              formControlName="tyres_tyreCode"
+              [width]="FormNodeWidth.XS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-input>
+          </td>
+
+          <!-- Tyre Size -->
+          <td class="govuk-table__cell">
+            <govuk-form-group-input
+              id="tyres_tyreSize-{{ i + 1 }}"
+              formControlName="tyres_tyreSize"
+              [width]="FormNodeWidth.XXXL"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-input>
+          </td>
+
+          <!-- Ply Rating -->
+          <td class="govuk-table__cell">
+            <govuk-form-group-input
+              id="tyres_plyRating-{{ i + 1 }}"
+              formControlName="tyres_plyRating"
+              [width]="FormNodeWidth.XXS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-input>
+          </td>
+
+          <!-- Data Tr Axles -->
+          <td class="govuk-table__cell">
+            <govuk-form-group-input
+              id="tyres_dataTrAxles-{{ i + 1 }}"
+              type="number"
+              formControlName="tyres_dataTrAxles"
+              [width]="FormNodeWidth.XXS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-input>
+          </td>
+
+          <!-- Speed Category Symbol (PSV Only)-->
+          <td class="govuk-table__cell" *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
+            <govuk-form-group-select
+              id="tyres_speedCategorySymbol-{{ i + 1 }}"
+              formControlName="tyres_speedCategorySymbol"
+              [width]="FormNodeWidth.UNSET"
+              [options]="SPEED_CATEGORY_SYMBOL_OPTIONS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-select>
+          </td>
+
+          <!-- Fitment Code -->
+          <td class="govuk-table__cell">
+            <govuk-form-group-select
+              id="tyres_fitmentCode-{{ i + 1 }}"
+              formControlName="tyres_fitmentCode"
+              [width]="FormNodeWidth.XS"
+              [options]="FITMENT_CODE_OPTIONS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-select>
+          </td>
+
+          <td class="govuk-table__cell">
+            <a class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
+              Search
+            </a>
+          </td>
+
+          <td class="govuk-table__cell">
+            <a class="axleButton" id="tyres_remove-{{ i + 1 }}" href="javascript:void(0)" (click)="removeAxle(i)">Remove</a>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+
+   <tfoot>
+      <tr>
+        <td colspan="100%">
+          <a class="axleButton" href="javascript:void(0)" role="button" id="tyresAddAxle" (click)="addAxle()">Add Axle</a>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="100%">
+          <p class="govuk-error-message" id="techRecord_axles-error">
+            <span class="govuk-visually-hidden">Error: </span>
+            <span>{{ (techRecordAxles.errors | keyvalue)?.[0]?.value }}</span>
+          </p>
+        </td>
+      </tr>
+   </tfoot>
+  </table>
+
+
+  <!-- Tyre Use Code (HGV) -->
+  <govuk-form-group-select
+    *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV"
+    label="Tyre Use Code"
+    formControlName="techRecord_tyreUseCode"
+    [width]="FormNodeWidth.UNSET"
+    [options]="HGV_TYRE_USE_CODE_OPTIONS"
+    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+  ></govuk-form-group-select>
+
+  <!-- Tyre Use Code (TRL) -->
+  <govuk-form-group-select
+    *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL"
+    label="Tyre Use Code"
+    formControlName="techRecord_tyreUseCode"
+    [width]="FormNodeWidth.UNSET"
+    [options]="TRL_TYRE_USE_CODE_OPTIONS"
+    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+  ></govuk-form-group-select>
+</div>

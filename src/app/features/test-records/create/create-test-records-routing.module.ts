@@ -1,3 +1,4 @@
+import { recallsResolver } from '@/src/app/resolvers/recalls/recalls.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
@@ -40,6 +41,7 @@ const routes: Routes = [
 					defectTaxonomy: defectsTaxonomyResolver,
 					testStations: testStationsResolver,
 					testCode: testCodeResolver,
+					recalls: recallsResolver,
 				},
 				data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
 				canActivate: [RoleGuard],

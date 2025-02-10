@@ -27,7 +27,7 @@ export class RadioGroupComponent extends BaseControlComponent {
 
 	getId(value: string | number | boolean | null, name: string) {
 		const id = `${name}-${value}-radio`;
-		if (this.control) {
+		if (this.control?.meta) {
 			this.control.meta.customId = id;
 		}
 		return id;

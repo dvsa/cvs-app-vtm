@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
@@ -178,6 +179,10 @@ export class HttpService {
 				recipientEmailAddress: vehicleRecord?.techRecord_applicantDetails_emailAddress ?? user.email,
 			}
 		);
+	}
+
+	getRecalls(vin: string) {
+		return this.http.get<RecallsSchema>(`${environment.VTM_API_URI}/v3/technical-records/recalls/${vin}`);
 	}
 
 	getTechRecords(searchIdentifier: string, metadata?: boolean, status?: string, searchCriteria?: string) {

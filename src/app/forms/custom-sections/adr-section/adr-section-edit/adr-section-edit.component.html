@@ -1,0 +1,878 @@
+<div [formGroup]="form">
+  <div class="govuk-form-group-radio">
+    <fieldset>
+      <legend>
+        <h1 id="techRecord_adrDetails_dangerousGoods-label"> Able to carry dangerous goods </h1>
+      </legend>
+      <ng-container *ngIf="canDisplayDangerousGoodsWarning($any(form.getRawValue()))">
+        <!-- Show warning message when setting from yes to no -->
+        <p class="govuk-error-message" id="techRecord_adrDetails_dangerousGoods-error">
+          <span class="govuk-visually-hidden">Error: </span>
+          <span>By selecting this field it will delete all previous ADR field inputs</span>
+        </p>
+      </ng-container>
+      <div data-module="govuk-radios">
+        <div *ngFor="let option of dangerousGoodsOptions">
+          <input
+            id="techRecord_adrDetails_dangerousGoods-{{ option.value }}-radio"
+            formControlName="techRecord_adrDetails_dangerousGoods"
+            govukRadio
+            type="radio"
+            [value]="option.value"
+          />
+          <label for="techRecord_adrDetails_dangerousGoods-{{ option.value }}-radio">
+            {{ option.label }}
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <!-- When dangerous goods is true -->
+  <ng-container *ngIf="adrService.canDisplayDangerousGoodsSection($any(form.getRawValue()))">
+    <!-- Applicant Details -->
+    <ng-container>
+      <span class="govuk-label govuk-label--m">Applicant Details</span>
+
+      <!-- Applicant Details Name -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_applicantDetails_name-label"> Name </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_applicantDetails_name-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_name" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_name" />
+      </div>
+
+      <!-- Applicant Details Street -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_applicantDetails_street-label"> Street </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_applicantDetails_street-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_street" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_street" />
+      </div>
+
+      <!-- Applicant Details Town -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_applicantDetails_town"> Town </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_applicantDetails_town-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_town" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_town" />
+      </div>
+
+      <!-- Applicant Details City -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_applicantDetails_city-label"> City </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_applicantDetails_city-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_city" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_city" class="govuk-input--width-20" />
+      </div>
+
+      <!-- Applicant Details Postcode -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_applicantDetails_postcode-label"> Postcode </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_applicantDetails_postcode-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_postcode" />
+        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_postcode" class="govuk-input--width-10" />
+      </div>
+    </ng-container>
+
+    <!-- ADR Details -->
+    <ng-container>
+      <span class="govuk-label govuk-label--m">ADR Details</span>
+
+      <!-- ADR Body Type -->
+      <div class="govuk-form-group-select">
+        <label id="techRecord_adrDetails_vehicleDetails_type-label"> ADR body type </label>
+        <app-control-errors elementId="techRecord_adrDetails_vehicleDetails_type-error" [control]="form.controls.techRecord_adrDetails_vehicleDetails_type" />
+        <select govukSelect formControlName="techRecord_adrDetails_vehicleDetails_type" class="govuk-input--width-10">
+          <option [value]="option.value" *ngFor="let option of adrBodyTypesOptions">{{ option.label }}</option>
+        </select>
+      </div>
+
+      <!-- Used on international journeys -->
+      <div class="govuk-form-group-radio">
+        <fieldset>
+          <legend>
+            <h1 id="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys-label">
+              Vehicle used on international journeys
+            </h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys-error" [control]="form.controls.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys" />
+          <div data-module="govuk-radios">
+            <div *ngFor="let option of usedOnInternationJourneysOptions">
+              <input
+                id="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys-{{ option.value }}-radio"
+                formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
+                govukRadio
+                type="radio"
+                [value]="option.value"
+              />
+              <label
+                for="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys-{{ option.value }}-radio"
+              >
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Approval date -->
+      <app-date-controls formControlName="techRecord_adrDetails_vehicleDetails_approvalDate" #approvalDate>
+        <div class="govuk-form-group-date" [formGroup]="approvalDate.form">
+          <fieldset role="group">
+            <legend>
+              <h1>Date processed</h1>
+            </legend>
+            <app-control-errors elementId="techRecord_adrDetails_vehicleDetails_approvalDate-error" [control]="form.controls.techRecord_adrDetails_vehicleDetails_approvalDate" />
+            <div id="techRecord_adrDetails_vehicleDetails_approvalDate">
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_vehicleDetails_approvalDate-day-label">Day</label>
+                  <input class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="day" />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_vehicleDetails_approvalDate-month-label">Month</label>
+                  <input class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="month" />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_vehicleDetails_approvalDate-year-label">Year</label>
+                  <input class="govuk-input--width-4" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="year" />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </app-date-controls>
+
+      <!-- Permitted dangerous goods -->
+      <div class="govuk-form-group-checkbox" id="techRecord_adrDetails_permittedDangerousGoods">
+        <fieldset aria-describedby="techRecord_adrDetails_permittedDangerousGoods-error">
+          <legend>
+            <h1 id="techRecord_adrDetails_permittedDangerousGoods-label">Permitted dangerous goods</h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_permittedDangerousGoods-error" [control]="form.controls.techRecord_adrDetails_permittedDangerousGoods" />
+          <div data-module="govuk-checkboxes">
+            <div *ngFor="let option of permittedDangerousGoodsOptions; let i = index">
+              <input
+                id="techRecord_adrDetails_permittedDangerousGoods-{{ option.value }}-checkbox"
+                type="checkbox"
+                govukCheckbox
+                [checked]="form.get('techRecord_adrDetails_permittedDangerousGoods')?.value?.includes(option.value.toString())"
+                [attr.aria-describedby]="
+                  isInvalid('techRecord_adrDetails_permittedDangerousGoods') ? 'techRecord_adrDetails_permittedDangerousGoods-error' : null
+                "
+                (input)="toggle('techRecord_adrDetails_permittedDangerousGoods', option.value.toString())"
+              />
+              <label for="techRecord_adrDetails_permittedDangerousGoods-{{ option.value }}-checkbox">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Body declaration -->
+      <div class="govuk-form-group-radio" *ngIf="adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))">
+        <fieldset>
+          <legend>
+            <h1 id="techRecord_adrDetails_bodyDeclaration_type-label">Body declaration</h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_bodyDeclaration_type-error" [control]="form.controls.techRecord_adrDetails_bodyDeclaration_type" />
+          <div data-module="govuk-radios">
+            <div *ngFor="let option of bodyDeclarationOptions">
+              <input
+                id="techRecord_adrDetails_bodyDeclaration_type-{{ option.value }}-radio"
+                formControlName="techRecord_adrDetails_bodyDeclaration_type"
+                govukRadio
+                type="radio"
+                [value]="option.value"
+              />
+              <label for="techRecord_adrDetails_bodyDeclaration_type-{{ option.value }}-radio">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Compatibility group J -->
+
+      <ng-container *ngIf="adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))">
+        <div class="govuk-form-group-radio">
+          <fieldset>
+            <legend>
+              <h1 id="techRecord_adrDetails_compatibilityGroupJ-label">Compatibility group J</h1>
+            </legend>
+            <app-control-errors elementId="techRecord_adrDetails_compatibilityGroupJ-error" [control]="form.controls.techRecord_adrDetails_compatibilityGroupJ" />
+            <div data-module="govuk-radios">
+              <div *ngFor="let option of compatibilityGroupJOptions">
+                <input
+                  type="radio"
+                  id="techRecord_adrDetails_compatibilityGroupJ-{{ option.value }}-radio"
+                  formControlName="techRecord_adrDetails_compatibilityGroupJ"
+                  [value]="option.value"
+                />
+                <label for="techRecord_adrDetails_compatibilityGroupJ-{{ option.value }}-radio">
+                  {{ option.label }}
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </ng-container>
+
+      <!-- Guidance notes -->
+      <div class="govuk-form-group-checkbox" id="techRecord_adrDetails_additionalNotes_number">
+        <fieldset aria-describedby="techRecord_adrDetails_additionalNotes_number-error">
+          <legend>
+            <h1 id="techRecord_adrDetails_additionalNotes_number-label">Guidance notes</h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_additionalNotes_number-error" [control]="form.controls.techRecord_adrDetails_additionalNotes_number" />
+          <div data-module="govuk-checkboxes">
+            <div *ngFor="let option of guidanceNotesOptions">
+              <input
+                id="techRecord_adrDetails_additionalNotes_number-{{ option.value }}-checkbox"
+                type="checkbox"
+                govukCheckbox
+                [checked]="form.get('techRecord_adrDetails_additionalNotes_number')?.value?.includes(option.value.toString())"
+                [attr.aria-describedby]="
+                  isInvalid('techRecord_adrDetails_additionalNotes_number') ? 'techRecord_adrDetails_additionalNotes_number-error' : null
+                "
+                (input)="toggle('techRecord_adrDetails_additionalNotes_number', option.value.toString())"
+              />
+              <label for="techRecord_adrDetails_additionalNotes_number-{{ option.value }}-checkbox">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- ADR type approval number -->
+      <div class="govuk-form-group-input">
+        <h1>
+          <label id="techRecord_adrDetails_adrTypeApprovalNo-label"> ADR type approval number </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_adrTypeApprovalNo-error" [control]="form.controls.techRecord_adrDetails_adrTypeApprovalNo" />
+        <input govukInput formControlName="techRecord_adrDetails_adrTypeApprovalNo" class="govuk-input--width-10" />
+      </div>
+    </ng-container>
+
+    <!-- When ADR body type contains the words 'tank' or 'battery' -->
+    <ng-container *ngIf="adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))">
+      <!-- Tank details section -->
+      <span class="govuk-label govuk-label--m">Tank Details</span>
+
+      <ng-container>
+        <!-- Tank Make -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_tank_tankDetails_tankManufacturer-label"> Tank Make </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankManufacturer-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
+        </div>
+
+        <!-- Tank Year of manufacture -->
+        <div class="govuk-form-group-input">
+          <h1 >
+            <label id="techRecord_adrDetails_tank_tankDetails_yearOfManufacture-label">
+              Tank year of manufacture
+            </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_yearOfManufacture-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_yearOfManufacture" />
+          <input type="number" govukInput formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture" class="govuk-input--width-4" />
+        </div>
+
+        <!-- Tank manufacturer serial number -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo-label">
+              Manufacturer serial number
+            </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" class="govuk-input--width-10" />
+        </div>
+
+        <!-- Tank type approval number -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo-label"> Tank type approval number </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" class="govuk-input--width-10" />
+        </div>
+
+        <!-- Tank code -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_tank_tankDetails_tankCode-label"> Code </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankCode-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankCode" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankCode" class="govuk-input--width-10" />
+        </div>
+
+        <!-- Substances permitted -->
+        <div class="govuk-form-group-radio" id="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
+          <fieldset>
+            <legend>
+              <h1 id="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted-label"> Substances permitted </h1>
+            </legend>
+            <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted" /><div class="govuk-radios" data-module="govuk-radios">
+            <div *ngFor="let option of tankStatementSubstancePermittedOptions">
+              <input
+                type="radio"
+                id="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted-{{ option.value }}-radio"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
+                govukRadio
+                [value]="option.value"
+              />
+              <label
+                for="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted-{{ option.value }}-radio"
+              >
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+          </fieldset>
+        </div>
+
+        <!-- When tank statement (substances permitted) is 'Under UN Number' -->
+        <ng-container *ngIf="adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))">
+          <!-- Tank statement select -->
+          <div class="govuk-form-group-radio">
+            <fieldset>
+              <legend>
+                <h1>Select</h1>
+              </legend>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_select-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_select" />
+              <div data-module="govuk-radios">
+                <div *ngFor="let option of tankStatementSelectOptions">
+                  <input
+                    type="radio"
+                    id="techRecord_adrDetails_tank_tankDetails_tankStatement_select-{{ option.value }}-radio"
+                    formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+                    govukRadio
+                    [value]="option.value"
+                  />
+                  <label
+                    for="techRecord_adrDetails_tank_tankDetails_tankStatement_select-{{ option.value }}-radio"
+                  >
+                    {{ option.label }}
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- When select is 'statement' -->
+          <ng-container *ngIf="adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))">
+            <!-- Reference number -->
+            <div class="govuk-form-group-input">
+              <h1>
+                <label id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement-label">
+                  Reference Number
+                </label>
+              </h1>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_statement-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
+              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
+            </div>
+          </ng-container>
+
+          <!-- When select is 'product '-->
+          <ng-container *ngIf="adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))">
+            <!-- Reference number -->
+            <div class="govuk-form-group-input">
+              <h1>
+                <label id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
+                  Reference number
+                </label>
+              </h1>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
+              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
+            </div>
+
+            <!-- UN numbers -->
+            <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-error" [control]="$any(form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'))" />
+
+            <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
+              <fieldset
+                class="govuk-fieldset"
+                *ngFor="let inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; let i = index"
+              >
+                <div class="govuk-form-group">
+                  <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
+                      UN Number {{ i + 1 }}
+                    </label>
+                  </h1>
+                 <ng-container *ngIf="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1; else singleUnNumber">
+                  <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+                      <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">
+                          <input
+                            id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                            type="text"
+                            name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                            formControlName="{{ i }}"
+                            class="govuk-input"
+                          />
+                        </td>
+                        <td class="govuk-table__cell">
+                          <p class="govuk-body">
+                            <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
+                         </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                 </ng-container>
+                 <ng-template #singleUnNumber>
+                    <input
+                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                      type="text"
+                      name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                      formControlName="{{ i }}"
+                      class="govuk-input"
+                    />
+                 </ng-template>
+                </div>
+              </fieldset>
+              <p class="govuk-body">
+                <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
+              </p>
+            </div>
+
+            <!-- Additional details -->
+            <div class="govuk-form-group-text-area">
+              <h1>
+                <label id="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-label">Additional Details </label>
+              </h1>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productList" />
+              <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"></textarea>
+              <app-character-count for="techRecord_adrDetails_tank_tankDetails_tankStatement_productList" [limit]="1500" />
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Special provisions -->
+      <div class="govuk-form-group-text-area">
+        <h1>
+          <label id="techRecord_adrDetails_tank_tankDetails_specialProvisions-label"> Special Provisions </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_specialProvisions-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_specialProvisions" />
+        <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
+        <app-character-count for="techRecord_adrDetails_tank_tankDetails_specialProvisions" [limit]="1024" />
+      </div>
+
+
+      <!-- Tank Inspections section -->
+      <ng-container>
+        <span class="govuk-label govuk-label--m">Tank Inspections</span>
+
+        <!-- TC2: Certificate Number -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo-label">
+              TC2: Certificate Number
+            </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
+          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
+        </div>
+
+        <!-- TC2: Expiry Date -->
+        <app-date-controls formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" #tc2ExpiryDate>
+          <div class="govuk-form-group-date">
+            <fieldset role="group">
+           <legend>
+            <h1>
+              <label for="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+                TC2: Expiry Date
+              </label>
+            </h1>
+           </legend>
+            <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+            <div [formGroup]="tc2ExpiryDate.form" id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-day-label">Day</label>
+                  <input class="govuk-input--width-2" formControlName="day" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-month-label">Month</label>
+                  <input class="govuk-input--width-2" formControlName="month" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-year-label">Year</label>
+                  <input class="govuk-input--width-4" formControlName="year" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                </div>
+              </div>
+            </div>
+            </fieldset>
+          </div>
+        </app-date-controls>
+
+        <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+
+        <!-- TC3: Inspections -->
+        <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+          <fieldset
+            class="govuk-fieldset"
+            formGroupName="{{ i }}"
+            *ngFor="let inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; let i = index"
+          >
+            <span class="govuk-label govuk-label--m">Subsequent {{ i + 1 }}</span>
+
+            <!-- TC3 Inspection Type -->
+            <div class="govuk-form-group-select">
+              <label class="govuk-label govuk-label--m" id="tc3Type-label"> TC3: Inspection Type </label>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type-error" [control]="$any(inspection.get('tc3Type'))" />
+              <select govukSelect formControlName="tc3Type">
+                <option [value]="option.value" *ngFor="let option of tc3InspectionOptions">{{ option.label }}</option>
+              </select>
+            </div>
+
+            <!-- TC3 Certificate Number -->
+            <div class="govuk-form-group-input">
+              <h1>
+                <label id="tc3PeriodicNumber-label"> TC3: Certificate Number </label>
+              </h1>
+              <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3PeriodicNumber-error" [control]="$any(inspection.get('tc3PeriodicNumber'))" />
+              <input
+                type="text"
+                name="tc3PeriodicNumber"
+                formControlName="tc3PeriodicNumber"
+                govukInput
+              />
+            </div>
+
+            <!-- TC3 Expiry Date -->
+            <app-date-controls formControlName="tc3PeriodicExpiryDate" #tc3ApprovalDate>
+              <div class="govuk-form-group-date">
+                <fieldset role="group">
+                  <legend>
+                    <h1>TC3: Expiry Date </h1>
+                  </legend>
+                  <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3PeriodicExpiryDate-error" [control]="$any(inspection.get('tc3PeriodicExpiryDate'))" />
+                  <div [formGroup]="tc3ApprovalDate.form" id="tc3PeriodicExpiryDate-{{ i + 1 }}">
+                    <div>
+                      <div>
+                        <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-day"> Day </label>
+                        <input formControlName="day" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-month"> Month </label>
+                        <input formControlName="month" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-year"> Year </label>
+                        <input formControlName="year" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-4" />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </app-date-controls>
+
+            <!-- TC3 Footer -->
+            <p class="govuk-body govuk-!-text-align-right">
+              <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeTC3TankInspection(i)">Remove</a>
+            </p>
+            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+          </fieldset>
+        </div>
+
+        <p class="govuk-body">
+          <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addTC3TankInspection()">Add subsequent inspection</a>
+        </p>
+      </ng-container>
+
+      <!-- Memo 07/09 (3 month extension) can be applied -->
+      <div class="govuk-form-group-checkbox">
+        <fieldset aria-describedby="techRecord_adrDetails_memosApply-error">
+          <legend>
+            <h1 id="techRecord_adrDetails_memosApply-label">Memo 07/09 (3 month extension) can be applied</h1>
+          </legend>
+          <div id="techRecord_adrDetails_memosApply-hint" class="govuk-hint">Only applicable for vehicles used on national journeys</div>
+          <app-control-errors elementId="techRecord_adrDetails_memosApply-error" [control]="form.controls.techRecord_adrDetails_memosApply" />
+          <div data-module="govuk-checkboxes">
+            <div *ngFor="let option of memosApplyOptions; let i = index">
+              <input
+                id="techRecord_adrDetails_memosApply-{{ option.value }}-checkbox"
+                type="checkbox"
+                govukCheckbox
+                [checked]="form.get('techRecord_adrDetails_memosApply')?.value?.includes(option.value.toString())"
+                [attr.aria-describedby]="
+                  isInvalid('techRecord_adrDetails_memosApply') ? 'techRecord_adrDetails_memosApply-error' : null
+                "
+                (input)="toggle('techRecord_adrDetails_memosApply', option.value.toString())"
+              />
+              <label for="techRecord_adrDetails_memosApply-{{ option.value }}-checkbox">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- M145 -->
+      <div class="govuk-form-group-checkbox">
+        <fieldset aria-describedby="techRecord_adrDetails_m145Statement-error">
+          <legend>
+            <h1 id="techRecord_adrDetails_m145Statement-label">M145</h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_m145Statement-error" [control]="form.controls.techRecord_adrDetails_m145Statement" />
+          <div data-module="govuk-checkboxes">
+            <div>
+              <input
+                id="techRecord_adrDetails_m145Statement"
+                formControlName="techRecord_adrDetails_m145Statement"
+                type="checkbox"
+                govukCheckbox
+                [value]="true"
+                [attr.aria-describedby]="isInvalid('techRecord_adrDetails_m145Statement') ? 'techRecord_adrDetails_m145Statement-error' : null"
+              />
+              <label for="techRecord_adrDetails_m145Statement-checkbox"> Yes </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </ng-container>
+
+    <!-- When ADR body type contains 'battery' -->
+    <ng-container *ngIf="adrService.canDisplayBatterySection($any(form.getRawValue()))">
+      <!-- Battery list applicable -->
+      <div class="govuk-form-group-radio">
+        <fieldset>
+          <legend>
+            <h1 id="techRecord_adrDetails_listStatementApplicable-label"> Battery List Applicable </h1>
+          </legend>
+          <app-control-errors elementId="techRecord_adrDetails_listStatementApplicable-error" [control]="form.controls.techRecord_adrDetails_listStatementApplicable" />
+          <div data-module="govuk-radios">
+            <div *ngFor="let option of batteryListApplicableOptions">
+              <input
+                type="radio"
+                id="techRecord_adrDetails_listStatementApplicable-{{ option.value }}-radio"
+                formControlName="techRecord_adrDetails_listStatementApplicable"
+                govukRadio
+                [value]="option.value"
+              />
+              <label for="techRecord_adrDetails_listStatementApplicable-{{ option.value }}-radio">
+                {{ option.label }}
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- When Battery list applicable is true -->
+      <ng-container *ngIf="adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))">
+        <!-- Battery list reference number -->
+        <div class="govuk-form-group-input">
+          <h1>
+            <label id="techRecord_adrDetails_batteryListNumber-label"> Reference number </label>
+          </h1>
+          <app-control-errors elementId="techRecord_adrDetails_batteryListNumber-error" [control]="form.controls.techRecord_adrDetails_batteryListNumber" />
+          <input govukInput formControlName="techRecord_adrDetails_batteryListNumber" class="govuk-input--width-10" />
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Declarations seen section -->
+    <div class="govuk-form-group-checkbox">
+      <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_brakeDeclarationsSeen-error">
+        <legend>
+          <h1 id="techRecord_adrDetails_brakeDeclarationsSeen-label">Declarations seen</h1>
+        </legend>
+        <app-control-errors elementId="techRecord_adrDetails_brakeDeclarationsSeen-error" [control]="form.controls.techRecord_adrDetails_brakeDeclarationsSeen" />
+        <div data-module="govuk-checkboxes">
+          <div>
+            <input
+              id="techRecord_adrDetails_brakeDeclarationsSeen"
+              formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
+              type="checkbox"
+              govukCheckbox
+              [value]="true"
+              [attr.aria-describedby]="
+                isInvalid('techRecord_adrDetails_brakeDeclarationsSeen') ? 'techRecord_adrDetails_brakeDeclarationsSeen-error' : null
+              "
+              checked
+            />
+            <label for="techRecord_adrDetails_brakeDeclarationsSeen-checkbox">
+              Manufacturer brake declaration
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <ng-container *ngIf="adrService.canDisplayIssueSection($any(form.getRawValue()))">
+      <!-- Issuer -->
+      <div class="govuk-form-group-text-area">
+        <h1>
+          <label id="techRecord_adrDetails_brakeDeclarationIssuer-label"> Issuer </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_brakeDeclarationIssuer-error" [control]="form.controls.techRecord_adrDetails_brakeDeclarationIssuer" />
+        <textarea govukTextarea formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
+        <app-character-count for="techRecord_adrDetails_brakeDeclarationIssuer" [limit]="500" />
+      </div>
+
+      <!-- Brake endurance -->
+      <div class="govuk-form-group-checkbox">
+        <fieldset class="govuk-fieldset" aria-describedby="techRecord_adrDetails_brakeEndurance-error">
+          <app-control-errors elementId="techRecord_adrDetails_brakeEndurance-error" [control]="form.controls.techRecord_adrDetails_brakeEndurance" />
+          <div data-module="govuk-checkboxes">
+            <div>
+              <input
+                id="techRecord_adrDetails_brakeEndurance"
+                formControlName="techRecord_adrDetails_brakeEndurance"
+                type="checkbox"
+                govukCheckbox
+                [value]="true"
+                [attr.aria-describedby]="isInvalid('techRecord_adrDetails_brakeEndurance') ? 'techRecord_adrDetails_brakeEndurance-error' : null"
+                checked
+              />
+              <label for="techRecord_adrDetails_brakeEndurance-checkbox"> Brake endurance </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Weight (tonnes) -->
+      <div class="govuk-form-group-input" *ngIf="adrService.canDisplayWeightSection($any(form.getRawValue()))">
+        <h1>
+          <label id="techRecord_adrDetails_weight-label"> Weight </label>
+        </h1>
+        <app-control-errors elementId="techRecord_adrDetails_weight-error" [control]="form.controls.techRecord_adrDetails_weight" />
+        <div class="govuk-input__wrapper">
+          <input type="number" govukInput appNumberOnly class="govuk-input--width-5" spellcheck="false" formControlName="techRecord_adrDetails_weight" />
+          <div class="govuk-input__suffix" aria-hidden="true">Tonnes</div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Delcarations seen (Owner/operator declaration )-->
+    <div class="govuk-form-group-checkbox">
+      <fieldset aria-describedby="techRecord_adrDetails_declarationsSeen-error">
+        <app-control-errors elementId="techRecord_adrDetails_declarationsSeen-error" [control]="form.controls.techRecord_adrDetails_declarationsSeen"  />
+        <div data-module="govuk-checkboxes">
+          <div>
+            <input
+              id="techRecord_adrDetails_declarationsSeen"
+              formControlName="techRecord_adrDetails_declarationsSeen"
+              type="checkbox"
+              govukCheckbox
+              [value]="true"
+              [attr.aria-describedby]="isInvalid('techRecord_adrDetails_declarationsSeen') ? 'techRecord_adrDetails_declarationsSeen-error' : null"
+            />
+            <label for="techRecord_adrDetails_declarationsSeen-checkbox"> Owner/operator declaration </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- New Certificate required -->
+    <div class="govuk-form-group-checkbox">
+      <fieldset aria-describedby="techRecord_adrDetails_newCertificateRequested-error">
+        <legend>
+          <h1 id="techRecord_adrDetails_newCertificateRequested-label">New Certificate required</h1>
+        </legend>
+        <app-control-errors elementId="techRecord_adrDetails_newCertificateRequested-error" [control]="form.controls.techRecord_adrDetails_newCertificateRequested" />
+        <div data-module="govuk-checkboxes">
+          <div>
+            <input
+              id="techRecord_adrDetails_newCertificateRequested"
+              formControlName="techRecord_adrDetails_newCertificateRequested"
+              type="checkbox"
+              govukCheckbox
+              [value]="true"
+              [attr.aria-describedby]="
+                isInvalid('techRecord_adrDetails_newCertificateRequested') ? 'techRecord_adrDetails_newCertificateRequested-error' : null
+              "
+            />
+            <label for="techRecord_adrDetails_newCertificateRequested-checkbox"> Yes </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- ADR Additional Examiner Note -->
+    <div class="govuk-form-group-text-area">
+      <h1>
+        <label id="techRecord_adrDetails_additionalExaminerNotes_note-label"> Additional Examiner Notes </label>
+      </h1>
+      <div id="techRecord_adrDetails_additionalExaminerNotes_note-hint" class="govuk-hint">Will not be present on the ADR certificate</div>
+      <app-control-errors elementId="techRecord_adrDetails_additionalExaminerNotes_note-error" [control]="form.controls.techRecord_adrDetails_additionalExaminerNotes_note" />
+      <textarea govukTextarea formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
+      <app-character-count for="techRecord_adrDetails_additionalExaminerNotes_note" [limit]="1024" />
+    </div>
+
+    <!-- ADR Additional Examiner Note History -->
+    <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
+    <ng-container *ngIf="form.controls.techRecord_adrDetails_additionalExaminerNotes?.value as notes; else noExaminerNotes">
+      <ng-container *ngIf="notes?.length as notesCount; else noExaminerNotes">
+        <table class="govuk-table">
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Notes</th>
+              <th scope="col" class="govuk-table__header">Created By</th>
+              <th scope="col" class="govuk-table__header">Date</th>
+              <th scope="col" class="govuk-table__header"></th>
+            </tr>
+            <ng-container *ngIf="pagination.paginationOptions | async as page">
+              <tr class="govuk-table__row" *ngFor="let note of notes.slice(page.start, page.end)">
+                <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
+                <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + page.start)">
+                    Edit
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+      </ng-container>
+    </ng-container>
+    <ng-template #noExaminerNotes>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row border-b-0">
+          <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+        </div>
+      </dl>
+    </ng-template>
+
+    <!-- ADR Certificate Notes -->
+    <div class="govuk-form-group-text-area">
+      <h1>
+        <label id="techRecord_adrDetails_adrCertificateNotes-label"> ADR Certificate Notes </label>
+      </h1>
+      <app-control-errors elementId="techRecord_adrDetails_adrCertificateNotes-error" [control]="form.controls.techRecord_adrDetails_adrCertificateNotes" />
+      <textarea govukTextarea formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
+      <app-character-count for="techRecord_adrDetails_adrCertificateNotes" [limit]="1500" />
+    </div>
+  </ng-container>
+</div>

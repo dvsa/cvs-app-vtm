@@ -130,6 +130,26 @@ export class TechnicalRecordService {
 			record.techRecord_noOfAxles =
 				record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
 		}
+
+		// @TODO - replace this hacky solution with a better one
+		if (
+			record.techRecord_vehicleType === 'hgv' ||
+			record.techRecord_vehicleType === 'trl' ||
+			record.techRecord_vehicleType === 'lgv'
+		) {
+			record.techRecord_adrDetails_bodyDeclaration_type = undefined;
+			if (Array.isArray(record.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo)) {
+				// remove all nulls from array
+				record.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo =
+					record.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.filter((unNo) => !!unNo);
+
+				// if array is empty, set to null
+				if (!record.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.length) {
+					record.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = null;
+				}
+			}
+		}
+
 		this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
 	}
 

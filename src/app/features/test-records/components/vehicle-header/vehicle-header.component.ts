@@ -1,18 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TestRecordsService } from '@/src/app/services/test-records/test-records.service';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TagType, TagTypes } from '@components/tag/tag.component';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
-import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { techRecord } from '@store/technical-records';
 import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
-import { Observable } from 'rxjs';
-import { TagType, TagTypes } from '../../../../components/tag/tag.component';
+import { Observable, map } from 'rxjs';
 
 @Component({
 	selector: 'app-vehicle-header',
@@ -26,11 +27,9 @@ export class VehicleHeaderComponent {
 	@Input() testNumber?: string | null;
 	@Input() isReview = false;
 
-	constructor(
-		private testTypesService: TestTypesService,
-		private store: Store,
-		private activatedRoute: ActivatedRoute
-	) {}
+	store = inject(Store);
+	activatedRoute = inject(ActivatedRoute);
+	testRecordsService = inject(TestRecordsService);
 
 	get test(): TestType | undefined {
 		return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
@@ -82,6 +81,12 @@ export class VehicleHeaderComponent {
 		return testCode ? `(${testCode})` : '';
 	}
 
+	get recalls(): Observable<RecallsSchema | undefined> {
+		return this.testRecordsService.isTestTypeGroupEditable$.pipe(
+			map((editable) => (editable ? this.testResult?.recalls : this.activatedRoute.snapshot?.data?.['recalls']))
+		);
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-shadow
 	getVehicleDescription(techRecord: V3TechRecordModel, vehicleType: VehicleTypes | undefined) {
 		switch (vehicleType) {
@@ -112,5 +117,28 @@ export class VehicleHeaderComponent {
 
 	get isADRTest(): boolean {
 		return TEST_TYPES_GROUP7.includes(this.test?.testTypeId as string) || false;
+	}
+
+	get shouldShowAbandonCert() {
+		return (
+			this.resultOfTest === resultOfTestEnum.abandoned &&
+			(this.testResult?.vehicleType === this.vehicleTypes.HGV ||
+				this.testResult?.vehicleType === this.vehicleTypes.PSV ||
+				this.testResult?.vehicleType === this.vehicleTypes.TRL) &&
+			TEST_TYPES_VTP_VTG_12.includes(this.test?.testTypeId as string)
+		);
+	}
+
+	get abandonCertDocName(): string {
+		return `VT${this.testResult?.vehicleType === this.vehicleTypes.PSV ? 'P' : 'G'}12`;
+	}
+
+	get fileName(): string {
+		const prefix = this.abandonCertDocName;
+		return `${prefix}_${this.testNumber}`;
+	}
+
+	get params(): Map<string, string> {
+		return new Map([['fileName', this.fileName]]);
 	}
 }

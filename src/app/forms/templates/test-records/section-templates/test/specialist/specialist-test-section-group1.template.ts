@@ -34,6 +34,26 @@ export const SpecialistTestSectionGroup1: FormNode = {
 			editType: FormNodeEditTypes.HIDDEN,
 		},
 		{
+			name: 'recalls',
+			type: FormNodeTypes.GROUP,
+			children: [
+				{
+					name: 'hasRecall',
+					value: false,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+				{
+					name: 'manufacturer',
+					value: null,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+			],
+		},
+		{
 			name: 'testTypes',
 			label: 'Test Types',
 			type: FormNodeTypes.ARRAY,
@@ -69,6 +89,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
 									args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' },
 								},
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
+								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reapplicationDate', value: 'fail' } },
 							],
 							asyncValidators: [
 								{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards },

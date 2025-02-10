@@ -13,7 +13,7 @@
 }
 
 .flex {
-  display: flex;
+  display: flex !important;
 
   &--wrap {
     flex-wrap: wrap;
@@ -24,6 +24,14 @@
       gap: govuk-spacing(7);
     }
   }
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }
 
 .justify {
@@ -58,4 +66,9 @@
 
 .width-2 {
   max-width: 2.75em;
+}
+
+.govuk-warning-text {
+  display: flex;
+  align-items: center;
 }
