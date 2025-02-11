@@ -42,7 +42,7 @@ import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-t
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, skip, takeUntil } from 'rxjs';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
@@ -283,7 +283,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	handleUpdateVehicleConfiguration() {
 		const control = this.form.controls.techRecord_vehicleConfiguration;
-		control?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((vehicleConfiguration) => {
+		control?.valueChanges.pipe(takeUntil(this.destroy$), skip(2)).subscribe((vehicleConfiguration) => {
 			if (vehicleConfiguration && control?.dirty) {
 				this.store.dispatch(updateVehicleConfiguration({ vehicleConfiguration }));
 				control.markAsPristine();
