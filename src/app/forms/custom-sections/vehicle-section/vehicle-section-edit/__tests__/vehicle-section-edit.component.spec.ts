@@ -238,9 +238,9 @@ describe('VehicleSectionEditComponent', () => {
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
-			component.form.patchValue({
-				techRecord_vehicleConfiguration: 'articulated',
-			});
+			// simulate initialisation of the form by patching from null to a value
+			component.form.patchValue({ techRecord_vehicleConfiguration: null });
+			component.form.patchValue({ techRecord_vehicleConfiguration: 'articulated' });
 			expect(dispatchSpy).toHaveBeenCalledWith(updateVehicleConfiguration({ vehicleConfiguration: 'articulated' }));
 		});
 	});
