@@ -238,10 +238,8 @@ describe('VehicleSectionEditComponent', () => {
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
-			// simulate initialisation of the form by patching from null to a value
-			component.form.patchValue({ techRecord_vehicleConfiguration: null });
-			component.form.patchValue({ techRecord_vehicleConfiguration: 'articulated' });
-			expect(dispatchSpy).toHaveBeenCalledWith(updateVehicleConfiguration({ vehicleConfiguration: 'articulated' }));
+			component.form.patchValue({ techRecord_vehicleConfiguration: 'rigid' });
+			expect(dispatchSpy).toHaveBeenCalledWith(updateVehicleConfiguration({ vehicleConfiguration: 'rigid' }));
 		});
 	});
 });
