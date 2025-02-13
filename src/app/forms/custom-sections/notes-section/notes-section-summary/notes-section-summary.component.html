@@ -3,19 +3,19 @@
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV && hasChanged('techRecord_notes')">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_notes">
-        {{ vm.techRecord_notes }}
+        <p style='white-space: pre;'>{{ vm.techRecord_notes }}</p>
       </dd>
     </div>
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV && hasChanged('techRecord_remarks')">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_remarks">
-        {{ vm.techRecord_remarks }}
+        <p style='white-space: pre;'>{{ vm.techRecord_remarks }}</p>
       </dd>
     </div>
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV && hasChanged('techRecord_dispensations')">
       <dt class="govuk-summary-list__key">Dispensations</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_dispensations">
-        {{ vm.techRecord_dispensations }}
+        <p style='white-space: pre;'>{{ vm.techRecord_dispensations }}</p>
       </dd>
     </div>
   </dl>

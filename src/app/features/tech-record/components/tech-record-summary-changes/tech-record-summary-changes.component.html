@@ -82,11 +82,12 @@
 
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
     <ng-container [ngSwitch]="sectionName">
-      <ng-container *ngSwitchCase="'notes'">
+      <ng-container *ngSwitchCase="'notesSection'">
+        <!-- New NOTES Summary section -->
         <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsNotes'); else oldNotes">
           <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
         </ng-container>
-
+        <!-- OLD NOTES-->
         <ng-template #oldNotes>
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
         </ng-template>
@@ -107,7 +108,7 @@
 
       <ng-container *ngSwitchCase="'bodySection'">
         <!-- New Body section -->
-        <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsBody')">
+        <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsBody'); else oldBodySection">
           <app-body-section [techRecord]="techRecordEdited" mode="summary" />
         </ng-container>
 
