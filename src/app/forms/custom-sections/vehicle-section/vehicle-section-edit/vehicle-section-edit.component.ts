@@ -124,7 +124,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
 			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -152,7 +154,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -198,7 +202,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [this.commonValidators.date('Date of first use')]),
 			techRecord_suspensionType: this.fb.control<string | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_couplingType: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Coupling type (optional) must be less than or equal to 1 characters'),
 			]),
