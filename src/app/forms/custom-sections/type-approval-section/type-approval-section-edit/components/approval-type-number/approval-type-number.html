@@ -1,5 +1,5 @@
 <div class="govuk-form-group" *ngIf="form" [formGroup]="form">
-  <<label *ngIf="approvalType" class="govuk-label govuk-label--m">Approval type number</label>
+  <label *ngIf="approvalType" class="govuk-label govuk-label--m">Approval type number</label>
 
   <ng-container *ngIf="hasError">
     <p class="govuk-error-message" id="{{ errorId }}">
