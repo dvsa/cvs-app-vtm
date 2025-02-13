@@ -212,7 +212,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp Number must be less than or equal to 6 characters'),
+				this.commonValidators.maxLength(6, 'DTp number must be less than or equal to 6 characters'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
@@ -269,7 +269,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(30, 'Model Literal must be less than or equal to 30 characters'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.required('DTp Number is required'),
+				this.commonValidators.required('DTp number is required'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),

@@ -42,7 +42,7 @@
   <ng-container *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV">
     <govuk-form-group-autocomplete
       formControlName="techRecord_brakes_dtpNumber"
-      label="DTp Number"
+      label="DTp number"
       [options$]="dtpNumbers$"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       [width]="FormNodeWidth.L"
