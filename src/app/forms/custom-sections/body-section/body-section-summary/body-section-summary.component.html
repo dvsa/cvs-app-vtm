@@ -1,8 +1,8 @@
 <ng-container *ngIf="amendedTechRecord() as vm">
   <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV">
-    <!-- DTp Number -->
+    <!-- DTp number -->
     <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_brakes_dtpNumber')">
-      <dt class="govuk-summary-list__key">DTp Number</dt>
+      <dt class="govuk-summary-list__key">DTp number</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dtpNumber">
         {{ vm.techRecord_brakes_dtpNumber | defaultNullOrEmpty }}
       </dd>
