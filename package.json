@@ -1,6 +1,6 @@
 {
   "name": "cvs-app-vtm",
-  "version": "1.31",
+  "version": "1.32",
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
@@ -42,7 +42,7 @@
     "@angular/router": "^18.2.7",
     "@azure/msal-angular": "^3.0.24",
     "@azure/msal-browser": "^3.24.0",
-    "@dvsa/cvs-type-definitions": "^7.8.0",
+    "@dvsa/cvs-type-definitions": "^7.9.1",
     "@ngrx/effects": "^18.0.2",
     "@ngrx/entity": "^18.0.2",
     "@ngrx/operators": "^18.1.0",
