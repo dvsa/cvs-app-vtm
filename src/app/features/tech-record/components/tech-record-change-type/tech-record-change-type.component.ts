@@ -73,9 +73,11 @@ export class ChangeVehicleTypeComponent implements OnInit {
 	}
 
 	handleSubmit(selectedVehicleType: VehicleTypes): void {
+		this.form.markAllAsTouched();
+
 		if (!selectedVehicleType) {
 			return this.globalErrorService.setErrors([
-				{ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' },
+				{ error: 'Select a new vehicle type is required', anchorLink: 'change-vehicle-type-select' },
 			]);
 		}
 

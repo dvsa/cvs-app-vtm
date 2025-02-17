@@ -1,3 +1,4 @@
+import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
 	AbstractControl,
@@ -41,7 +42,7 @@ import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-t
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
@@ -100,6 +101,8 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				parent.addControl(key, control, { emitEvent: false });
 			}
 		}
+
+		this.handleUpdateVehicleConfiguration();
 	}
 
 	ngOnDestroy(): void {
@@ -121,7 +124,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
 			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -149,7 +154,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -195,7 +202,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [this.commonValidators.date('Date of first use')]),
 			techRecord_suspensionType: this.fb.control<string | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_couplingType: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Coupling type (optional) must be less than or equal to 1 characters'),
 			]),
@@ -276,6 +285,17 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 			return null;
 		};
+	}
+
+	handleUpdateVehicleConfiguration() {
+		const control = this.form.controls.techRecord_vehicleConfiguration;
+		control?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((vehicleConfiguration) => {
+			const techRecord = this.techRecord();
+			if (vehicleConfiguration && vehicleConfiguration !== techRecord.techRecord_vehicleConfiguration) {
+				this.store.dispatch(updateVehicleConfiguration({ vehicleConfiguration }));
+				control.markAsPristine();
+			}
+		});
 	}
 
 	setPassengerValue(smallPsv: boolean, control: AbstractControl) {
