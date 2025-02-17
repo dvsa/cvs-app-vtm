@@ -31,7 +31,7 @@
         </dd>
       </div>
     </dl>
-    
+
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <h3>Front of vehicle to 5th wheel coupling</h3>
@@ -77,16 +77,16 @@
           {{ vm.techRecord_dimensions_height }}
         </dd>
       </div>
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_width')">
-        <dt class="govuk-summary-list__key">Width</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
-          {{ vm.techRecord_dimensions_width }}
-        </dd>
-      </div>
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_length')">
         <dt class="govuk-summary-list__key">Length</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
           {{ vm.techRecord_dimensions_length }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_width')">
+        <dt class="govuk-summary-list__key">Width</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+          {{ vm.techRecord_dimensions_width }}
         </dd>
       </div>
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleToRearAxle')">
@@ -157,7 +157,7 @@
         <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMax">
           {{ vm.techRecord_couplingCenterToRearAxleMax }}
         </dd>
-      </div>    
+      </div>
     </dl>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
