@@ -114,6 +114,7 @@ export const addAxle = createAction(`${prefix} addAxle`);
 export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
 
 export const removeTC3TankInspection = createAction(`${prefix} removeTC3TankInspection`, props<{ index: number }>());
+export const removeUNNumber = createAction(`${prefix} removeUNNumber`, props<{ index: number }>());
 
 export const addSectionState = createAction(`${prefix} addSectionState`, props<{ section: string | number }>());
 export const removeSectionState = createAction(`${prefix} removeSectionState`, props<{ section: string | number }>());
@@ -158,6 +159,11 @@ export const generateContingencyADRCertificate = createAction(
 		createdTimestamp: string;
 		certificateType: string;
 	}>()
+);
+
+export const updateVehicleConfiguration = createAction(
+	`${prefix} updateVehicleConfiguration`,
+	props<{ vehicleConfiguration: string }>()
 );
 
 function createOutcomeAction<T extends boolean>(

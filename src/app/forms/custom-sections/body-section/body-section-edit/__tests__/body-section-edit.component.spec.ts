@@ -1,3 +1,4 @@
+import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectorRef, ComponentRef } from '@angular/core';
@@ -16,13 +17,15 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
-import { of } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { BodySectionEditComponent } from '../body-section-edit.component';
 
 const mockReferenceDataService = {
@@ -44,6 +47,8 @@ describe('BodySectionEditComponent', () => {
 	let store: MockStore;
 	let optionsService: MultiOptionsService;
 
+	const actions$ = new ReplaySubject<Action>();
+
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<
@@ -58,6 +63,7 @@ describe('BodySectionEditComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),
 				provideHttpClientTesting(),
+				provideMockActions(() => actions$),
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
@@ -124,6 +130,12 @@ describe('BodySectionEditComponent', () => {
 			expect(pipeSpy).toHaveBeenCalled();
 			expect(dtpSpy).toHaveBeenCalled();
 		});
+
+		it('should listen for vehicleConfiguration changes', () => {
+			const handleUpdateVehicleConfigurationSpy = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
+			component.ngOnInit();
+			expect(handleUpdateVehicleConfigurationSpy).toHaveBeenCalled();
+		});
 	});
 
 	describe('handleDTpNumberChange', () => {
@@ -139,6 +151,53 @@ describe('BodySectionEditComponent', () => {
 					expect(cdrSpy).toHaveBeenCalled();
 					expect(formSpy).toHaveBeenCalled();
 				});
+		});
+	});
+
+	describe('handleUpdateVehicleConfiguration', () => {
+		it('should, for HGVs, set the body type description to articulated and code to A if articulated is selected', () => {
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'articulated' }));
+			expect(formSpy).toHaveBeenCalledWith({
+				techRecord_bodyType_description: 'articulated',
+				techRecord_bodyType_code: 'a',
+			});
+		});
+
+		it('should, for HGVs set the function code to R if rigid is selected', () => {
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'rigid' }));
+			expect(formSpy).toHaveBeenCalledWith({
+				techRecord_functionCode: 'R',
+			});
+		});
+
+		it('should, for HGVs set the function code to A if articulated is selected', () => {
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'articulated' }));
+			expect(formSpy).toHaveBeenCalledWith({
+				techRecord_functionCode: 'A',
+			});
+		});
+
+		it('should, for TRLs, set the function code to A is semi-trailer is selected', () => {
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const mockTechRecord = mockVehicleTechnicalRecord('trl');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'semi-trailer' }));
+			expect(formSpy).toHaveBeenCalledWith({
+				techRecord_functionCode: 'A',
+			});
 		});
 	});
 

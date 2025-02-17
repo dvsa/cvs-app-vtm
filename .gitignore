@@ -52,5 +52,9 @@ testem.log
 Thumbs.db
 
 report.json
+
 # Sentry Config File
 .sentryclirc
+
+# Generated files
+scripts/test-type-groupings.json

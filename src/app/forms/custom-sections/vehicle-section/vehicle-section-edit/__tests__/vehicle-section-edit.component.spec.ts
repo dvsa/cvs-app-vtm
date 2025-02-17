@@ -1,3 +1,4 @@
+import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
@@ -72,9 +73,11 @@ describe('VehicleSectionEditComponent', () => {
 		it('should attach its form to its parent form', () => {
 			const vehicleTypeControlsSpy = jest.spyOn(component, 'addControlsBasedOffVehicleType');
 			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const handleUpdateVehicleConfiguration = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
 			component.ngOnInit();
 			expect(vehicleTypeControlsSpy).toHaveBeenCalled();
 			expect(parentFormSpy).toHaveBeenCalled();
+			expect(handleUpdateVehicleConfiguration).toHaveBeenCalled();
 		});
 	});
 
@@ -226,6 +229,17 @@ describe('VehicleSectionEditComponent', () => {
 			expect(validator).toBe(null);
 			expect(form.getRawValue().techRecord_vehicleSize).toBe(VehicleSizes.LARGE);
 			expect(form.getRawValue().techRecord_vehicleClass_description).toBe(VehicleClassDescription.LARGE_PSV);
+		});
+	});
+
+	describe('handleUpdateVehicleConfiguration', () => {
+		it('should dispatch the updateVehicleConfiguration action after an option is selected', () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			component.form.patchValue({ techRecord_vehicleConfiguration: 'rigid' });
+			expect(dispatchSpy).toHaveBeenCalledWith(updateVehicleConfiguration({ vehicleConfiguration: 'rigid' }));
 		});
 	});
 });

@@ -89,6 +89,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
 									args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' },
 								},
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
+								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reapplicationDate', value: 'fail' } },
 							],
 							asyncValidators: [
 								{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards },

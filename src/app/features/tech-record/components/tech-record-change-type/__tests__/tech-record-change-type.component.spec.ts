@@ -141,7 +141,7 @@ describe('TechRecordChangeTypeComponent', () => {
 			component.handleSubmit(null as unknown as VehicleTypes);
 
 			expect(setErrorsSpy).toHaveBeenCalledWith([
-				{ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' },
+				{ error: 'Select a new vehicle type is required', anchorLink: 'change-vehicle-type-select' },
 			]);
 		});
 
