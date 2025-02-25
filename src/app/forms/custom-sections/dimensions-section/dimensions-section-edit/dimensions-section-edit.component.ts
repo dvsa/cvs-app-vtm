@@ -209,7 +209,13 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	get couplingCenterToRearTrlWarning() {
+	get couplingCenterToRearTrlMinWarning() {
+		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMin')?.value, 10) > 12000
+			? 'The coupling center to rear axle minimum field value is greater than 12,000mm. Check your input before proceeding'
+			: '';
+	}
+
+	get couplingCenterToRearTrlMaxWarning() {
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMax')?.value, 10) > 12000
 			? 'The coupling center to rear axle maximum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
