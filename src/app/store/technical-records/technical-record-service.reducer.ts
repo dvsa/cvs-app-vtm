@@ -545,6 +545,16 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledExplosivesSubfields };
 			}
 
+			// Null body declaration type when permitted dangerous goods is NOT explosives type 3
+			if (
+				!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
+			) {
+				sanitisedEditingTechRecord = {
+					...sanitisedEditingTechRecord,
+					techRecord_adrDetails_bodyDeclaration_type: null,
+				};
+			}
+
 			// Null all tank details fields when ADR vehicle type does not include the words 'tank' or 'battery'
 			const adrVehicleTypes: string[] = Object.values(ADRBodyType).filter(
 				(value) => value.includes('battery') || value.includes('tank')
