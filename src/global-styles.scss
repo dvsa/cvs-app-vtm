@@ -21,6 +21,11 @@
   }
 }
 
+.whitespace-pre-wrap {
+  white-space: pre;
+  text-wrap: wrap;
+}
+
 /** Global govuk styles */
 .govuk-form-group-input {
   @extend .govuk-form-group;

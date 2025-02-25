@@ -441,8 +441,9 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 	if (editingTechRecord) {
 		const { techRecord_vehicleType: type } = editingTechRecord;
 		if (type === VehicleTypes.HGV || type === VehicleTypes.TRL || type === VehicleTypes.LGV) {
-			const nulledCompatibilityGroupJ = {
+			const nulledExplosivesSubfields = {
 				techRecord_adrDetails_compatibilityGroupJ: null,
+				techRecord_adrDetails_bodyDeclaration_type: null,
 			};
 
 			const nulledTankDetails = {
@@ -503,7 +504,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 						techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: null,
 						techRecord_adrDetails_vehicleDetails_approvalDate: null,
 						techRecord_adrDetails_permittedDangerousGoods: null,
-						...nulledCompatibilityGroupJ,
+						...nulledExplosivesSubfields,
 						techRecord_adrDetails_additionalExaminerNotes: null,
 						techRecord_adrDetails_applicantDetails_name: null,
 						techRecord_adrDetails_applicantDetails_street: null,
@@ -541,7 +542,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 					explosivesGroups.includes(value)
 				)
 			) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledCompatibilityGroupJ };
+				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledExplosivesSubfields };
 			}
 
 			// Null all tank details fields when ADR vehicle type does not include the words 'tank' or 'battery'
@@ -604,25 +605,6 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 			const { techRecord_adrDetails_brakeEndurance: brakeEndurance } = sanitisedEditingTechRecord;
 			if (!brakeEndurance) {
 				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
-			}
-
-			// If ADR body type does not require a body declaration or explosives type 3 is not selected, null the body declaration field
-			const bodyTypesRequiringDeclaration: string[] = [
-				ADRBodyType.RIGID_BOX_BODY,
-				ADRBodyType.FULL_DRAWBAR_BOX_BODY,
-				ADRBodyType.CENTRE_AXLE_BOX_BODY,
-				ADRBodyType.SEMI_TRAILER_BOX_BODY,
-			];
-
-			const adrBodyType = sanitisedEditingTechRecord.techRecord_adrDetails_vehicleDetails_type;
-			const permittedDangerousGoods = sanitisedEditingTechRecord.techRecord_adrDetails_permittedDangerousGoods;
-
-			if (
-				(adrBodyType && !bodyTypesRequiringDeclaration.includes(adrBodyType)) ||
-				!permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
-			) {
-				// @TO-DO: use null instead of undefined. This is a workaround for the type definitions validation rule
-				sanitisedEditingTechRecord.techRecord_adrDetails_bodyDeclaration_type = undefined;
 			}
 
 			return { ...state, editingTechRecord: sanitisedEditingTechRecord };

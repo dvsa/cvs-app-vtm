@@ -12,6 +12,7 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
@@ -106,7 +107,7 @@ describe('VehicleSectionEditComponent', () => {
 		it('should return the small trailer type', () => {
 			const mockTechRecord = {
 				techRecord_vehicleType: VehicleTypes.TRL,
-				techRecord_euVehicleCategory: 'o1',
+				techRecord_euVehicleCategory: EUVehicleCategory.O1,
 			} as V3TechRecordModel;
 			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);

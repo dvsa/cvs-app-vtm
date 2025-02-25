@@ -61,7 +61,6 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		this.checkGrossLadenWeightChanged(changes);
 		this.handleVehicleTechRecordChange(changes);
 	}
 
@@ -219,7 +218,9 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 			return;
 		}
 
-		this.techRecordAxles.setErrors({ length: 'Cannot have more than 10 axles' });
+		this.techRecordAxles.setErrors({
+			length: 'Cannot have more than 10 axles',
+		});
 	}
 
 	removeAxle(index: number) {
@@ -233,7 +234,9 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 			return;
 		}
 
-		this.techRecordAxles.setErrors({ length: `Cannot have less than ${minLength} axles` });
+		this.techRecordAxles.setErrors({
+			length: `Cannot have less than ${minLength} axles`,
+		});
 	}
 
 	checkAxleAdded() {
@@ -262,14 +265,6 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 			});
 	}
 
-	checkGrossLadenWeightChanged(changes: SimpleChanges): void {
-		const techRecord_grossLadenWeight = changes['techRecord']?.currentValue?.techRecord_grossLadenWeight;
-
-		if (techRecord_grossLadenWeight !== this.form.value.techRecord_grossLadenWeight) {
-			this.form.patchValue({ techRecord_grossLadenWeight }, { emitEvent: false });
-		}
-	}
-
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {
 		const { techRecord } = changes;
 		if (this.form && techRecord) {
@@ -288,6 +283,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 					if (grossLadenWeight !== currentValue.techRecord_grossLadenWeight) {
 						currentValue.techRecord_grossLadenWeight = grossLadenWeight;
 						if (currentValue.techRecord_grossLadenWeight !== previousValue?.techRecord_grossLadenWeight) {
+							this.form.patchValue({ techRecord_grossLadenWeight: grossLadenWeight }, { emitEvent: false });
 							this.technicalRecordService.updateEditingTechRecord(currentValue);
 						}
 					}

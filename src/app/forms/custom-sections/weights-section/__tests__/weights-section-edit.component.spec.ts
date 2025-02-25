@@ -101,6 +101,18 @@ describe('weightsSectionEditComponent', () => {
 		});
 	});
 
+	describe('ngOnChanges', () => {
+		it('should fire required methods when ngOnChanges is run', () => {
+			const axleAddedSpy = jest.spyOn(component, 'checkAxleAdded');
+			const axleRemovedSpy = jest.spyOn(component, 'checkAxleRemoved');
+
+			component.ngOnChanges({});
+
+			expect(axleAddedSpy).toHaveBeenCalled();
+			expect(axleRemovedSpy).toHaveBeenCalled();
+		});
+	});
+
 	describe('techRecordAxles', () => {
 		it('should return FormArray when techRecord_axles control exists', () => {
 			component.form.addControl('techRecord_axles', new FormArray([]));
