@@ -83,9 +83,6 @@
               [width]="Widths.XS"
               suffix="mm"
               type="number"
-              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
-                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
-                : []"
             ></govuk-form-group-input>
     
             <!-- Coupling center to rear axle maximum -->
@@ -95,6 +92,9 @@
               [width]="Widths.XS"
               suffix="mm"
               type="number"
+              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
+                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+                : []"
             ></govuk-form-group-input>
           </div>
         </div>
