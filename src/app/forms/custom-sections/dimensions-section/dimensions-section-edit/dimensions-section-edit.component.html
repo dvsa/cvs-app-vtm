@@ -72,11 +72,11 @@
       <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL">
         <div class="min-max-container">
           <span class="govuk-label govuk-label--m">
-            Coupling center to rear axle
+            Coupling centre to rear axle
           </span>
   
           <div class="min-max">
-            <!-- Coupling center to rear axle minimum -->
+            <!-- Coupling centre to rear axle minimum -->
             <govuk-form-group-input
               formControlName="techRecord_couplingCenterToRearAxleMin"
               label="Minimum"
@@ -88,7 +88,7 @@
                 : []"
             ></govuk-form-group-input>
     
-            <!-- Coupling center to rear axle maximum -->
+            <!-- Coupling centre to rear axle maximum -->
             <govuk-form-group-input
               formControlName="techRecord_couplingCenterToRearAxleMax"
               label="Maximum"
@@ -101,14 +101,14 @@
 
         <div class="min-max-container">
           <span class="govuk-label govuk-label--m">
-            Coupling center to rear trailer
+            Coupling centre to rear trailer
           </span>
 
           <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMinWarning"></app-field-warning-message>
           <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMaxWarning"></app-field-warning-message>
   
           <div class="min-max">
-            <!-- Coupling center to rear trailer minimum -->
+            <!-- Coupling centre to rear trailer minimum -->
             <govuk-form-group-input
               formControlName="techRecord_couplingCenterToRearTrlMin"
               label="Minimum"
@@ -117,7 +117,7 @@
               type="number"
             ></govuk-form-group-input>
   
-            <!-- Coupling center to rear trailer maximum -->
+            <!-- Coupling centre to rear trailer maximum -->
             <govuk-form-group-input
               formControlName="techRecord_couplingCenterToRearTrlMax"
               label="Maximum"
@@ -131,10 +131,10 @@
           </div>
         </div>
 
-        <!-- Center of rear axle to rear of trailer --> 
+        <!-- Centre of rear axle to rear of trailer --> 
         <govuk-form-group-input 
           formControlName="techRecord_centreOfRearmostAxleToRearOfTrl"
-          label="Center of rear axle to rear of trailer"
+          label="Centre of rear axle to rear of trailer"
           [width]="Widths.XS"
           suffix="mm"
           type="number"
