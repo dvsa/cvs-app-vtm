@@ -192,7 +192,7 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.max(99999, 'Rear axle to rear trailer must be less than or equal to 99999'),
 			]),
 			techRecord_centreOfRearmostAxleToRearOfTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Center of rear axle to rear of trailer must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Centre of rear axle to rear of trailer must be less than or equal to 99999'),
 			]),
 			techRecord_couplingCenterToRearAxleMin: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999'),
@@ -211,7 +211,7 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 
 	get couplingCenterToRearTrlWarning() {
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMax')?.value, 10) > 12000
-			? 'The coupling center to rear axle maximum field value is greater than 12,000mm. Check your input before proceeding'
+			? 'The coupling centre to rear axle maximum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
 }
