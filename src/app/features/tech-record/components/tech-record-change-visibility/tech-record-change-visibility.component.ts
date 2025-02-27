@@ -37,9 +37,15 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 		this.form = new CustomFormGroup(
 			{ name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
 			{
-				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [
-					Validators.required,
-				]),
+				reason: new CustomFormControl(
+					{
+						name: 'reason',
+						type: FormNodeTypes.CONTROL,
+						customErrorMessage: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+					},
+					undefined,
+					[Validators.required]
+				),
 			}
 		);
 		this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
@@ -76,13 +82,14 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 	}
 
 	handleSubmit(form: { reason: string }): void {
+		this.form.markAllAsTouched();
 		if (this.form.valid) {
 			this.errorService.clearErrors();
 		} else {
 			this.errorService.setErrors([
 				{
 					error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
-					anchorLink: 'reasonForChangingVisibility',
+					anchorLink: 'reason',
 				},
 			]);
 		}
