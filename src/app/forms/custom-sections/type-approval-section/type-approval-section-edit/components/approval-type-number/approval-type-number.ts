@@ -157,6 +157,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 		const group2: string[] = [
 			ApprovalType.ECTA,
 			ApprovalType.NSSTA,
+			ApprovalType.ECSSTA,
 			ApprovalType.GB_WVTA,
 			ApprovalType.UKNI_WVTA,
 			ApprovalType.EU_WVTA_PRE_23,
