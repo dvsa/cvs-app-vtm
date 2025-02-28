@@ -16,10 +16,7 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
-import { Store } from '@ngrx/store';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
-// eslint-disable-next-line import/no-cycle
-import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
 import { TagTypes } from '../../components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
@@ -233,13 +230,12 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 	constructor(
 		meta: FormNode,
 		controls: AbstractControl[],
-		store: Store<State>,
 		validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
 		asyncValidator?: AsyncValidatorOptions
 	) {
 		super(controls, validatorOrOpts, asyncValidator);
 		this.meta = meta;
-		this.dynamicFormService = new DynamicFormService(store);
+		this.dynamicFormService = new DynamicFormService();
 	}
 
 	getCleanValue = cleanValue.bind(this);

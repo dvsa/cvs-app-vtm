@@ -4,7 +4,7 @@ import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { State } from '@store/index';
@@ -12,7 +12,9 @@ import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { Observable, catchError, map, of, take, tap } from 'rxjs';
+import { catchError, map, Observable, of, take, tap } from 'rxjs';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -187,6 +189,27 @@ export class CustomAsyncValidators {
 				})
 			);
 	}
+
+  static filterEuCategoryOnVehicleType(store: Store<State>, technicalRecordService: TechnicalRecordService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(editingTechRecord),
+        map((form) => {
+          if (!form) return null;
+          const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(form);
+          if (vehicleType === VehicleTypes.CAR) {
+          } else if (vehicleType === VehicleTypes.TRL) {
+
+          } else if (vehicleType === VehicleTypes.LGV) {
+
+          } else if (vehicleType === VehicleTypes.SMALL_TRL) {
+
+          }
+          return null;
+        })
+      );
+  }
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
 		return this.requiredIfNotResult(store, resultOfTestEnum.fail);
