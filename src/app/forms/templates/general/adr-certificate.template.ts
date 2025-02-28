@@ -4,7 +4,7 @@ import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@services/dynamic-fo
 export const AdrCertificateTemplate: FormNode = {
 	name: 'adrCertificateSection',
 	type: FormNodeTypes.SECTION,
-	label: 'ADR Certificates',
+	label: 'ADR certificates',
 	children: [
 		{
 			name: 'techRecord_adrDetails_certificates',

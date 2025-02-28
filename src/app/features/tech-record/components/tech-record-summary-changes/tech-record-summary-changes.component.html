@@ -6,7 +6,7 @@
 
   <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
 
-  <!-- Vehicle Summary -->
+  <!-- Vehicle summary -->
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
@@ -94,12 +94,12 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'techRecordSummary'">
-        <!-- New Vehicle Summary section -->
+        <!-- New Vehicle summary section -->
         <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
           <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
         </ng-container>
 
-        <!-- Old Vehicle Summary section -->
+        <!-- Old Vehicle summary section -->
         <ng-template #oldTechRecordSummary>
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
         </ng-template>
