@@ -5,3 +5,12 @@
 #amend-test {
   margin-right: 10px;
 }
+
+.page-actions::ng-deep .govuk-button-group {
+  margin-bottom: 3rem;
+}
+
+.page-actions app-button::ng-deep #amend-test,
+.page-actions app-button::ng-deep #cancel-test {
+  margin-bottom: 0;
+}
