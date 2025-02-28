@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
@@ -25,8 +25,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 	providedIn: 'root',
 })
 export class DynamicFormService {
-  store = inject(Store<State>);
-  technicalRecordService = inject(TechnicalRecordService)
+  constructor(private store: Store<State>, private technicalRecordService: TechnicalRecordService) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
@@ -142,7 +141,7 @@ export class DynamicFormService {
 
 		const form: CustomFormGroup | CustomFormArray =
 			formNode.type === FormNodeTypes.ARRAY
-				? new CustomFormArray(formNode, [])
+				? new CustomFormArray(formNode, [], this.store, this.technicalRecordService)
 				: new CustomFormGroup(formNode, {});
 
 		data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});

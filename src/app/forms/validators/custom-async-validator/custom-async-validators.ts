@@ -6,7 +6,7 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
+import { CustomFormArray, CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { State } from '@store/index';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
@@ -15,6 +15,12 @@ import { getTestStationFromProperty } from '@store/test-stations';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+  CAR_EU_VEHICLE_CATEGORY_OPTIONS, LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+  SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+  TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+} from '@models/options.model';
 
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -198,13 +204,17 @@ export class CustomAsyncValidators {
         map((form) => {
           if (!form) return null;
           const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(form);
+          if (!(control instanceof CustomFormArray)) return null;
           if (vehicleType === VehicleTypes.CAR) {
+            control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
           } else if (vehicleType === VehicleTypes.TRL) {
-
+            control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
           } else if (vehicleType === VehicleTypes.LGV) {
-
+            control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
           } else if (vehicleType === VehicleTypes.SMALL_TRL) {
-
+            control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+          } else {
+            control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
           }
           return null;
         })
