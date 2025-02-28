@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -19,21 +19,20 @@ import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
 	templateUrl: './tech-record-change-visibility.component.html',
 	styleUrls: ['./tech-record-change-visibility.component.scss'],
 })
-export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
-	techRecord?: V3TechRecordModel;
+export class TechRecordChangeVisibilityComponent implements OnDestroy {
+	private store = inject(Store<State>);
+	private actions$ = inject(Actions);
+	private errorService = inject(GlobalErrorService);
+	private route = inject(ActivatedRoute);
+	private router = inject(Router);
+	private technicalRecordService = inject(TechnicalRecordService);
+	private routerService = inject(RouterService);
 
+	techRecord?: V3TechRecordModel = this.store.selectSignal(techRecord)();
 	form: CustomFormGroup;
 	private destroy$ = new Subject<void>();
 
-	constructor(
-		private actions$: Actions,
-		private errorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<State>,
-		private technicalRecordService: TechnicalRecordService,
-		private routerService: RouterService
-	) {
+	constructor() {
 		this.form = new CustomFormGroup(
 			{ name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
 			{
@@ -61,15 +60,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 
 	get buttonLabel(): string {
 		return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`;
-	}
-
-	ngOnInit(): void {
-		this.store
-			.select(techRecord)
-			.pipe(take(1))
-			.subscribe((record) => {
-				this.techRecord = record;
-			});
 	}
 
 	ngOnDestroy(): void {
