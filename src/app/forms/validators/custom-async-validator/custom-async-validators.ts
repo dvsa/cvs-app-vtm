@@ -12,7 +12,7 @@ import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { catchError, map, Observable, of, take, tap } from 'rxjs';
+import { catchError, map, Observable, of, skipWhile, take, tap } from 'rxjs';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
@@ -199,13 +199,23 @@ export class CustomAsyncValidators {
   static filterEuCategoryOnVehicleType(store: Store<State>, technicalRecordService: TechnicalRecordService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
+        skipWhile((form) => !form),
         take(1),
         select(editingTechRecord),
         map((form) => {
           console.log('test');
           if (!form) return null;
+          console.log('test 2');
           const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(form);
+          console.log('test 3');
           if (!(control instanceof CustomFormArray)) return null;
+          console.log('test 4');
+          // TODO uncomment this to enable filtering of eu vehicle category for hgvs and psvs in future ticket
+          // if (vehicleType === VehicleTypes.HGV) {
+          //   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+          // } else if (vehicleType === VehicleTypes.PSV) {
+          //   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+          // } else
           if (vehicleType === VehicleTypes.CAR) {
             control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
           } else if (vehicleType === VehicleTypes.TRL) {
@@ -217,6 +227,11 @@ export class CustomAsyncValidators {
           } else {
             control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
           }
+          // Mark the control as dirty to trigger change detection
+          console.log(control.meta.options);
+          control.markAsDirty({ onlySelf: true });
+          control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+          control.meta.changeDetection?.detectChanges();
           return null;
         })
       );
