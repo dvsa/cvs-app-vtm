@@ -1,5 +1,3 @@
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import {
@@ -9,6 +7,7 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
 
 export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
 	name: 'vehicleSection',
@@ -50,7 +49,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
-			options: getOptionsFromEnum(EUVehicleCategory),
+      asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
 			validators: [{ name: ValidatorNames.Required }],
 		},
 		{

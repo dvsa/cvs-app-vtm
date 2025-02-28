@@ -202,6 +202,7 @@ export class CustomAsyncValidators {
         take(1),
         select(editingTechRecord),
         map((form) => {
+          console.log('test');
           if (!form) return null;
           const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(form);
           if (!(control instanceof CustomFormArray)) return null;
