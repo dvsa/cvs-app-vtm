@@ -127,8 +127,8 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	get psvControls() {
 		return {
 			techRecord_speedRestriction: this.fb.control<number | null>(null, [
-				this.commonValidators.min(0, 'Speed Restriction must be greater than or equal to 0'),
-				this.commonValidators.max(99, 'Speed Restriction must be less than or equal to 99'),
+				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
+				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99'),
 			]),
 			techRecord_axles: this.fb.array([]),
 		};
