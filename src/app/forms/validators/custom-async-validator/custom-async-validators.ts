@@ -1,26 +1,27 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Condition, operatorEnum } from '@models/condition.model';
+import {
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+} from '@models/options.model';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { select, Store } from '@ngrx/store';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store, select } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormArray, CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
+import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { catchError, map, Observable, of, skipWhile, take, tap } from 'rxjs';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import {
-  ALL_EU_VEHICLE_CATEGORY_OPTIONS,
-  CAR_EU_VEHICLE_CATEGORY_OPTIONS, LGV_EU_VEHICLE_CATEGORY_OPTIONS,
-  SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-  TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-} from '@models/options.model';
+import { Observable, catchError, map, of, skipWhile, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -196,46 +197,52 @@ export class CustomAsyncValidators {
 			);
 	}
 
-  static filterEuCategoryOnVehicleType(store: Store<State>, technicalRecordService: TechnicalRecordService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> =>
-      store.pipe(
-        skipWhile((form) => !form),
-        take(1),
-        select(editingTechRecord),
-        map((form) => {
-          console.log('test');
-          if (!form) return null;
-          console.log('test 2');
-          const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(form);
-          console.log('test 3');
-          if (!(control instanceof CustomFormArray)) return null;
-          console.log('test 4');
-          // TODO uncomment this to enable filtering of eu vehicle category for hgvs and psvs in future ticket
-          // if (vehicleType === VehicleTypes.HGV) {
-          //   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
-          // } else if (vehicleType === VehicleTypes.PSV) {
-          //   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
-          // } else
-          if (vehicleType === VehicleTypes.CAR) {
-            control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
-          } else if (vehicleType === VehicleTypes.TRL) {
-            control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
-          } else if (vehicleType === VehicleTypes.LGV) {
-            control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
-          } else if (vehicleType === VehicleTypes.SMALL_TRL) {
-            control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
-          } else {
-            control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
-          }
-          // Mark the control as dirty to trigger change detection
-          console.log(control.meta.options);
-          control.markAsDirty({ onlySelf: true });
-          control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
-          control.meta.changeDetection?.detectChanges();
-          return null;
-        })
-      );
-  }
+	static filterEuCategoryOnVehicleType(
+		store: Store<State>,
+		technicalRecordService: TechnicalRecordService
+	): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> =>
+			technicalRecordService.techRecord$.pipe(
+				skipWhile((techRecord) => !techRecord),
+				take(1),
+				map((techRecord) => {
+					if (!techRecord) return null;
+					const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
+					if (!(control instanceof CustomFormControl)) return null;
+
+					switch (vehicleType) {
+						case VehicleTypes.CAR:
+							control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						case VehicleTypes.TRL:
+							control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						case VehicleTypes.LGV:
+							control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						case VehicleTypes.SMALL_TRL:
+							control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						// TODO uncomment these to enable HGV and PSV filtering
+						// case VehicleTypes.HGV:
+						//   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+						//   break;
+						// case VehicleTypes.PSV:
+						//   control.meta.options = PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+						//   break;
+						default:
+							control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+					}
+
+					control.markAsDirty({ onlySelf: true });
+					control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+					control.meta.changeDetection?.detectChanges();
+
+					return null;
+				})
+			);
+	}
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
 		return this.requiredIfNotResult(store, resultOfTestEnum.fail);
