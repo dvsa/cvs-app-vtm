@@ -40,12 +40,12 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'techRecordSummary'">
-          <!-- New Vehicle Summary section -->
+          <!-- New Vehicle summary section -->
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
             <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           </ng-container>
 
-          <!-- Old Vehicle Summary section -->
+          <!-- Old Vehicle summary section -->
           <ng-template #oldTechRecordSummary>
             <app-dynamic-form-group
               [data]="techRecordCalculated"

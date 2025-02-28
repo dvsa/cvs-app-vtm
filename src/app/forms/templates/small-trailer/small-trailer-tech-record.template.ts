@@ -16,7 +16,7 @@ import { TagType } from '../../../components/tag/tag.component';
 export const SmallTrailerTechRecord: FormNode = {
 	name: 'techRecordSummary',
 	type: FormNodeTypes.GROUP,
-	label: 'Vehicle Summary',
+	label: 'Vehicle summary',
 	children: [
 		{
 			name: 'techRecord_vehicleType',
