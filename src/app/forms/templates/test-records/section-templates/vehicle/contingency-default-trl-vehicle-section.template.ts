@@ -51,7 +51,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
-      asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
+			asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
 			validators: [{ name: ValidatorNames.Required }],
 		},
 		{

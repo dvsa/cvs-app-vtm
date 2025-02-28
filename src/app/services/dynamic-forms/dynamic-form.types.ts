@@ -16,14 +16,14 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
+import { Store } from '@ngrx/store';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
 import { TagTypes } from '../../components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
-import { State } from '@store/index';
-import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 export enum FormNodeViewTypes {
 	DATE = 'date',
@@ -233,10 +233,10 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 	constructor(
 		meta: FormNode,
 		controls: AbstractControl[],
-    store: Store<State>,
-    technicalRecordService: TechnicalRecordService,
+		store: Store<State>,
+		technicalRecordService: TechnicalRecordService,
 		validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-		asyncValidator?: AsyncValidatorOptions,
+		asyncValidator?: AsyncValidatorOptions
 	) {
 		super(controls, validatorOrOpts, asyncValidator);
 		this.meta = meta;

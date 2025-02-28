@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import {
@@ -7,7 +8,6 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 
 export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
 	name: 'vehicleSection',
@@ -47,7 +47,7 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
-      asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
+			asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
 			validators: [{ name: ValidatorNames.Required }],
 		},
 		{
