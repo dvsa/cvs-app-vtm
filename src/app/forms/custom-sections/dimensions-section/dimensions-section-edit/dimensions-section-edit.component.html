@@ -71,7 +71,7 @@
       <!-- TRL only fields -->
       <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL">
         <div class="min-max-container">
-          <span class="govuk-label govuk-label--m">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
             Coupling centre to rear axle
           </span>
   
@@ -97,7 +97,7 @@
         </div>
 
         <div class="min-max-container">
-          <span class="govuk-label govuk-label--m">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
             Coupling centre to rear of trailer
           </span>
 
@@ -144,7 +144,7 @@
       <!-- HGV only fields -->
       <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV">
         <div class="min-max-container">
-          <span class="govuk-label govuk-label--m">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
             Front of vehicle to 5th wheel coupling
           </span>
   
@@ -170,12 +170,12 @@
         </div>
 
         <div class="min-max-container">
-          <span class="govuk-label govuk-label--m">
-            Front axle to 5th wheel
+            <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Front axle to 5th wheel coupling
           </span>
   
           <div class="min-max">
-            <!-- Front axle to 5th wheel minimum -->
+            <!-- Front axle to 5th wheel coupling minimum -->
             <govuk-form-group-input
               formControlName="techRecord_frontAxleTo5thWheelMin"
               label="Minimum"
@@ -184,7 +184,7 @@
               type="number"
             ></govuk-form-group-input>
   
-            <!-- Front axle to 5th wheel maximum -->
+            <!-- Front axle to 5th wheel coupling maximum -->
             <govuk-form-group-input
               formControlName="techRecord_frontAxleTo5thWheelMax"
               label="Maximum"
