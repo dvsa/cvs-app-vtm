@@ -9,15 +9,13 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { State, initialAppState } from '@store/index';
-import { editingTechRecord } from '@store/technical-records';
+import { editingTechRecord, selectTechRecord, techRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
-import { Observable, firstValueFrom, lastValueFrom, of } from 'rxjs';
+import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
 import { CustomAsyncValidators } from '../custom-async-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { PSV_EU_VEHICLE_CATEGORY_OPTIONS, TRL_EU_VEHICLE_CATEGORY_OPTIONS } from '@models/options.model';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TRL_EU_VEHICLE_CATEGORY_OPTIONS } from '@models/options.model';
 
 describe('resultDependantOnCustomDefects', () => {
 	let form: FormGroup;
@@ -104,13 +102,12 @@ describe('filterEuCategoryOnVehicleType', () => {
   let form: FormGroup;
   let store: MockStore<State>;
   let techRecordService: TechnicalRecordService;
-  const trlTechRecord: V3TechRecordModel = mockVehicleTechnicalRecord('trl') as V3TechRecordModel;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         provideMockStore({ initialState: initialAppState }),
-        { provide: TechnicalRecordService, useValue: { getVehicleTypeWithSmallTrl: jest.fn(), techRecord$: jest.fn().mockReturnValue(of(trlTechRecord)) } },
+        TechnicalRecordService,
       ],
     });
 
@@ -123,8 +120,48 @@ describe('filterEuCategoryOnVehicleType', () => {
     });
   })
   it('should set control options to trl eu category list if vehicle type is trl', () => {
+    const trlTechRecord: TechRecordType<'trl', 'get'> = {
+      createdTimestamp: '',
+      systemNumber: '',
+      techRecord_bodyType_code: '',
+      techRecord_couplingCenterToRearAxleMax: 0,
+      techRecord_couplingCenterToRearAxleMin: 0,
+      techRecord_couplingCenterToRearTrlMax: 0,
+      techRecord_couplingCenterToRearTrlMin: 0,
+      techRecord_couplingType: '',
+      techRecord_createdAt: '',
+      techRecord_createdById: '',
+      techRecord_createdByName: '',
+      techRecord_dimensions_length: 0,
+      techRecord_dimensions_width: 0,
+      techRecord_euVehicleCategory: undefined,
+      techRecord_firstUseDate: '',
+      techRecord_frontAxleToRearAxle: 0,
+      techRecord_make: '',
+      techRecord_maxLoadOnCoupling: 0,
+      techRecord_model: '',
+      techRecord_notes: '',
+      techRecord_rearAxleToRearTrl: 0,
+      techRecord_roadFriendly: false,
+      techRecord_suspensionType: '',
+      techRecord_tyreUseCode: undefined,
+      techRecord_vehicleClass_code: 't',
+      techRecord_vehicleConfiguration: undefined,
+      trailerId: '',
+      techRecord_vehicleType: 'trl',
+      partialVin: '',
+      techRecord_bodyType_description: '',
+      techRecord_noOfAxles: 2,
+      techRecord_reasonForCreation: 'test',
+      techRecord_statusCode: 'provisional',
+      techRecord_vehicleClass_description: 'trailer',
+      vin: '',
+      techRecord_adrDetails_dangerousGoods: true
+    };
+    store.overrideSelector(techRecord, trlTechRecord);
+    store.overrideSelector(selectTechRecord, trlTechRecord);
     CustomAsyncValidators.filterEuCategoryOnVehicleType(store, techRecordService)(form.controls['euVehicleCategory'] as CustomFormControl);
-    expect((form.controls['euVehicleCategory'] as CustomFormControl).meta.options).toEqual(TRL_EU_VEHICLE_CATEGORY_OPTIONS);
+    expect((form.controls['euVehicleCategory'] as CustomFormControl).meta.options).toEqual(['o1', 'o2']);
   });
 })
 
