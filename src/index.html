@@ -21,6 +21,11 @@
       }
       gtag('js', new Date());
     </script>
+
+    <script type="module">
+      import * as Buffer from "node:buffer";
+      window.Buffer = Buffer;
+    </script>
   </head>
   <body class="govuk-template__body">
     <app-root></app-root>
