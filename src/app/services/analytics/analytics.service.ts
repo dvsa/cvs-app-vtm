@@ -1,4 +1,4 @@
-// biome-ignore lint/style/useNodejsImportProtocol: Jasmine error when importing from node protocol
+// @ts-ignore
 import { createHash } from 'node:crypto';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
