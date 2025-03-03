@@ -1,9 +1,9 @@
 // biome-ignore lint/style/useNodejsImportProtocol: Jasmine error when importing from node protocol
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
 import { UserService } from '@services/user-service/user-service';
-import { firstValueFrom, Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,7 +19,7 @@ export class AnalyticsService {
 
 	async setUserId(): Promise<void> {
 		const uniqueId = await this.createUniqueId();
-    this.pushToDataLayer({ UserIDDataLayer: uniqueId });
+		this.pushToDataLayer({ UserIDDataLayer: uniqueId });
 	}
 
 	async createUniqueId(): Promise<string> {
@@ -27,7 +27,7 @@ export class AnalyticsService {
 			const userEmail = await firstValueFrom(this.userService.userEmail$);
 			return createHash('sha256').update(userEmail).digest('hex');
 		}
-    const userId = await firstValueFrom(this.userService.id$);
+		const userId = await firstValueFrom(this.userService.id$);
 		if (environment.production && userId) {
 			return createHash('sha256').update(userId).digest('hex');
 		}
