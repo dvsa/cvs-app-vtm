@@ -40,7 +40,7 @@ export class TechRecordChangeVisibilityComponent implements OnDestroy {
 					{
 						name: 'reason',
 						type: FormNodeTypes.CONTROL,
-						customErrorMessage: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+						customErrorMessage: 'Why are you making this change?',
 					},
 					undefined,
 					[Validators.required]
@@ -78,7 +78,7 @@ export class TechRecordChangeVisibilityComponent implements OnDestroy {
 		} else {
 			this.errorService.setErrors([
 				{
-					error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+					error: 'Why are you making this change?',
 					anchorLink: 'reason',
 				},
 			]);
