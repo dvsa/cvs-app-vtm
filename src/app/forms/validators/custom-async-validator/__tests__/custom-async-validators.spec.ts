@@ -12,8 +12,12 @@ import { State, initialAppState } from '@store/index';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
-import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, lastValueFrom, of } from 'rxjs';
 import { CustomAsyncValidators } from '../custom-async-validators';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { PSV_EU_VEHICLE_CATEGORY_OPTIONS, TRL_EU_VEHICLE_CATEGORY_OPTIONS } from '@models/options.model';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('resultDependantOnCustomDefects', () => {
 	let form: FormGroup;
@@ -95,6 +99,34 @@ describe('resultDependantOnCustomDefects', () => {
 		expect(result).toBeNull();
 	});
 });
+
+describe('filterEuCategoryOnVehicleType', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+  let techRecordService: TechnicalRecordService;
+  const trlTechRecord: V3TechRecordModel = mockVehicleTechnicalRecord('trl') as V3TechRecordModel;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        { provide: TechnicalRecordService, useValue: { getVehicleTypeWithSmallTrl: jest.fn(), techRecord$: jest.fn().mockReturnValue(of(trlTechRecord)) } },
+      ],
+    });
+
+    store = TestBed.inject(MockStore);
+    techRecordService = TestBed.inject(TechnicalRecordService);
+
+
+    form = new FormGroup({
+      euVehicleCategory: new CustomFormControl({ name: 'euVehicleCategory', type: FormNodeTypes.CONTROL, children: [] }, null),
+    });
+  })
+  it('should set control options to trl eu category list if vehicle type is trl', () => {
+    CustomAsyncValidators.filterEuCategoryOnVehicleType(store, techRecordService)(form.controls['euVehicleCategory'] as CustomFormControl);
+    expect((form.controls['euVehicleCategory'] as CustomFormControl).meta.options).toEqual(TRL_EU_VEHICLE_CATEGORY_OPTIONS);
+  });
+})
 
 describe('passResultDependantOnCustomDefects', () => {
 	let form: FormGroup;
