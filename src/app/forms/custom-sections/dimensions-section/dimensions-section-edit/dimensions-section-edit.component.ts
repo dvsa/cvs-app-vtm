@@ -189,7 +189,7 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
 			]),
 			techRecord_rearAxleToRearTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Rear axle to rear trailer must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Rear axle to rear of trailer must be less than or equal to 99999'),
 			]),
 			techRecord_centreOfRearmostAxleToRearOfTrl: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Centre of rear axle to rear of trailer must be less than or equal to 99999'),
