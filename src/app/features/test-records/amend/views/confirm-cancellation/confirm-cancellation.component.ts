@@ -19,7 +19,13 @@ import { Observable, Subject, map, takeUntil } from 'rxjs';
 export class ConfirmCancellationComponent implements OnDestroy {
 	form = new CustomFormGroup(
 		{ name: 'cancellation-reason', type: FormNodeTypes.GROUP },
-		{ reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
+		{
+			reason: new CustomFormControl(
+				{ name: 'reason', type: FormNodeTypes.CONTROL, customErrorMessage: 'Reason for cancellation is required' },
+				undefined,
+				[Validators.required]
+			),
+		}
 	);
 
 	private destroy$ = new Subject<void>();
@@ -62,9 +68,24 @@ export class ConfirmCancellationComponent implements OnDestroy {
 	}
 
 	handleSubmit() {
-		if (!this.form.valid) {
-			this.form.markAllAsTouched();
+		this.form.markAllAsTouched();
+
+		if (this.form.invalid) {
+			const errors = [];
+			if (this.form.get('reason')?.invalid) {
+				errors.push({
+					error: 'Reason for cancellation is required',
+					anchorLink: 'reason',
+				});
+			}
+
+			this.errorService.setErrors(errors);
+
 			return;
+		}
+
+		if (this.form.valid) {
+			this.errorService.clearErrors();
 		}
 
 		const reason: string = this.form.get('reason')?.value;

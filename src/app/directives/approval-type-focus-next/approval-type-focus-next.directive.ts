@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
 	selector: '[appFocusNextApprovalType]',
+	standalone: true,
 })
 export class ApprovalTypeFocusNextDirective {
 	@Input('appFocusNextApprovalType') nextInputId = '';

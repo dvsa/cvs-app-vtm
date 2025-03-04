@@ -19,6 +19,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
@@ -156,6 +157,21 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+			// TODO: remove hacky solution
+			let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
+			if (
+				techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
+				techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
+				techRecord?.techRecord_vehicleType === VehicleTypes.TRL
+			) {
+				const axles = mergeWith(cloneDeep(techRecord.techRecord_axles), changes.techRecord_axles ?? []);
+				techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
+				techRecord.techRecord_axles = axles;
+				this.techRecordCalculated = techRecord;
+				this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+				return;
+			}
+
 			this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
 			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});

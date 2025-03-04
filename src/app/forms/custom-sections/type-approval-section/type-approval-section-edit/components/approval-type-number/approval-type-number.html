@@ -1,0 +1,470 @@
+<div class="govuk-form-group" *ngIf="form" [formGroup]="form">
+  <label *ngIf="approvalType" class="govuk-label govuk-label--m">Approval type number</label>
+
+  <ng-container *ngIf="hasError">
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  </ng-container>
+
+  <div class="approval-type-number-wrapper" [ngSwitch]="approvalType">
+    <!-- NTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.NTA">
+      <input
+        id="techRecord_approvalTypeNumber1-NTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-20"
+        [maxlength]="25"
+      />
+    </ng-container>
+
+    <!-- ECTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.ECTA">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-ecta"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecta'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-ecta"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ecta'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-ecta"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-ecta"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
+      />
+    </ng-container>
+
+    <!-- IVA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.IVA">
+      <input
+        id="techRecord_approvalTypeNumber1-IVA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-20"
+        [maxlength]="25"
+      />
+    </ng-container>
+
+    <!-- NSSTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.NSSTA">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-NSSTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-NSSTA'"
+      />
+      <span>*NKS*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-NSSTA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+      />
+    </ng-container>
+
+    <!-- ECSSTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.ECSSTA">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-ECSSTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECSSTA'"
+      />
+      <span>*KS</span>
+      <input
+        id="techRecord_approvalTypeNumber2-ECSSTA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECSSTA'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-ECSSTA"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-ECSSTA"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+      />
+    </ng-container>
+
+    <!-- GB WVTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.GB_WVTA">
+      <input
+        id="techRecord_approvalTypeNumber1-GB WVTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-3"
+        [maxlength]="3"
+        [characterLimit]="3"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-GB WVTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-GB WVTA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-GB WVTA'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-GB WVTA"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB WVTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-GB WVTA"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-7"
+        [maxlength]="7"
+        [characterLimit]="7"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB WVTA'"
+      />
+    </ng-container>
+
+    <!-- UKNI WVTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.UKNI_WVTA">
+      <input
+        id="techRecord_approvalTypeNumber1-UKNI WVTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="1"
+        [characterLimit]="1"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-UKNI WVTA'"
+      />
+      <span>11*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-UKNI WVTA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-UKNI WVTA'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-UKNI WVTA"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI WVTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-UKNI WVTA"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI WVTA'"
+      />
+    </ng-container>
+
+    <!-- EU WVTA Pre 23 Template -->
+    <ng-container *ngSwitchCase="ApprovalType.EU_WVTA_PRE_23">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-EU WVTA Pre 23"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU WVTA Pre 23'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-EU WVTA Pre 23"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU WVTA Pre 23'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-EU WVTA Pre 23"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA Pre 23'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-EU WVTA Pre 23"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA Pre 23'"
+      />
+    </ng-container>
+
+    <!-- EU WVTA 23 on Template -->
+    <ng-container *ngSwitchCase="ApprovalType.EU_WVTA_23_ON">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-EU WVTA 23 on"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU WVTA 23 on'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-EU WVTA 23 on"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU WVTA 23 on'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-EU WVTA 23 on"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA 23 on'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-EU WVTA 23 on"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA 23 on'"
+      />
+    </ng-container>
+    <!-- QNIG Template -->
+    <ng-container *ngSwitchCase="ApprovalType.QNIG">
+      <span>e</span>
+      <input
+        id="techRecord_approvalTypeNumber1-QNIG"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-QNIG'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-QNIG"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-QNIG'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-QNIG"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-QNIG"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+      />
+    </ng-container>
+
+    <!-- Prov.GB WVTA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.PROV_GB_WVTA">
+      <input
+        id="techRecord_approvalTypeNumber1-Prov.GB WVTA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-3"
+        [maxlength]="3"
+        [characterLimit]="3"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Prov.GB WVTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-Prov.GB WVTA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Prov.GB WVTA'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-Prov.GB WVTA"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov.GB WVTA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-Prov.GB WVTA"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov.GB WVTA'"
+      />
+    </ng-container>
+
+    <!-- Small series NKSXX Template -->
+    <ng-container *ngSwitchCase="ApprovalType.SMALL_SERIES_NKSXX">
+      <input
+        id="techRecord_approvalTypeNumber1-Small series NKSXX"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="1"
+        [characterLimit]="1"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKSXX'"
+      />
+      <span>11*NKS</span>
+      <input
+        id="techRecord_approvalTypeNumber2-Small series NKSXX"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Small series NKSXX'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber3-Small series NKSXX"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small series NKSXX'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber4-Small series NKSXX"
+        formControlName="approvalTypeNumber4"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small series NKSXX'"
+      />
+    </ng-container>
+
+    <ng-container *ngSwitchCase="ApprovalType.SMALL_SERIES_NKS">
+      <input
+        id="techRecord_approvalTypeNumber1-Small series NKS"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="1"
+        [characterLimit]="1"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKS'"
+      />
+      <span>11*NKS*</span>
+      <input
+        id="techRecord_approvalTypeNumber2-Small series NKS"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKS'"
+      />
+    </ng-container>
+
+    <!-- IVA – VCA Template -->
+    <ng-container *ngSwitchCase="ApprovalType.IVA_VCA">
+      <span>n11*NIV</span>
+      <input
+        id="techRecord_approvalTypeNumber1-IVA - VCA"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-2"
+        [maxlength]="2"
+        [characterLimit]="2"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA - VCA'"
+      />
+      <span>/</span>
+      <input
+        id="techRecord_approvalTypeNumber2-IVA - VCA"
+        formControlName="approvalTypeNumber2"
+        class="govuk-input govuk-input--width-4"
+        [maxlength]="4"
+        [characterLimit]="4"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA - VCA'"
+      />
+      <span>*</span>
+      <input
+        id="techRecord_approvalTypeNumber3-IVA - VCA"
+        formControlName="approvalTypeNumber3"
+        class="govuk-input govuk-input--width-6"
+        [maxlength]="6"
+        [characterLimit]="6"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA - VCA'"
+      />
+    </ng-container>
+
+    <!-- IVA – DVSA/NI Template -->
+    <ng-container *ngSwitchCase="ApprovalType.IVA_DVSA_NI">
+      <input
+        id="techRecord_approvalTypeNumber1-IVA - DVSA/NI"
+        formControlName="approvalTypeNumber1"
+        class="govuk-input govuk-input--width-20"
+        [maxlength]="25"
+        [characterLimit]="25"
+        [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA - VCA'"
+      />
+    </ng-container>
+  </div>
+</div>

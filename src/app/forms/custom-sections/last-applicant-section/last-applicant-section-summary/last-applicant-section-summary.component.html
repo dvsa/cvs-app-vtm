@@ -1,0 +1,60 @@
+<ng-container *ngIf="amendedTechRecord() as vm">
+  <dl class="govuk-summary-list" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
+    <!-- Name or company -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_name')">
+      <dt class="govuk-summary-list__key">Name or company</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_name">
+        {{ vm.techRecord_applicantDetails_name | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Address line 1 -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_address1')">
+      <dt class="govuk-summary-list__key">Address line 1</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address1">
+        {{ vm.techRecord_applicantDetails_address1 | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Address line 2 -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_address2')">
+      <dt class="govuk-summary-list__key">Address line 2</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address2">
+        {{ vm.techRecord_applicantDetails_address2 | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Town or city -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_postTown')">
+      <dt class="govuk-summary-list__key">Town or city</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_postTown">
+        {{ vm.techRecord_applicantDetails_postTown | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- County -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_address3')">
+      <dt class="govuk-summary-list__key">County</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address3">
+        {{ vm.techRecord_applicantDetails_address3 | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Postcode -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_postCode')">
+      <dt class="govuk-summary-list__key">Postcode</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_postCode">
+        {{ vm.techRecord_applicantDetails_postCode | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Telephone number -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_telephoneNumber')">
+      <dt class="govuk-summary-list__key">Telephone number</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_telephoneNumber">
+        {{ vm.techRecord_applicantDetails_telephoneNumber | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Email address -->
+    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_applicantDetails_emailAddress')">
+      <dt class="govuk-summary-list__key">Email address</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_emailAddress">
+        {{ vm.techRecord_applicantDetails_emailAddress | defaultNullOrEmpty }}
+      </dd>
+    </div>
+  </dl>
+</ng-container>
