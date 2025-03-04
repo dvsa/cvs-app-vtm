@@ -1,6 +1,5 @@
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
@@ -47,8 +46,10 @@ export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
-			asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
-			validators: [{ name: ValidatorNames.Required }],
+			asyncValidators: [
+				{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType },
+				{ name: AsyncValidatorNames.AsyncRequired },
+			],
 		},
 		{
 			name: 'odometerReading',

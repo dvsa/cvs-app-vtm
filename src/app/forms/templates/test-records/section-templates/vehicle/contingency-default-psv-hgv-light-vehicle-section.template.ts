@@ -53,8 +53,10 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
 			options: getOptionsFromEnum(EUVehicleCategory),
-			asyncValidators: [{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType }],
-			validators: [{ name: ValidatorNames.Required }],
+			asyncValidators: [
+				{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType },
+				{ name: AsyncValidatorNames.AsyncRequired },
+			],
 		},
 		{
 			name: 'odometerReading',

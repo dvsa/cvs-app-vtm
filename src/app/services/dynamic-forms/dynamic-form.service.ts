@@ -133,8 +133,9 @@ export class DynamicFormService {
 		[AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () =>
 			CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
 		[AsyncValidatorNames.FilterEuCategoryOnVehicleType]: () =>
-			CustomAsyncValidators.filterEuCategoryOnVehicleType(this.store, this.technicalRecordService),
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(this.technicalRecordService),
 		[AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
+		[AsyncValidatorNames.AsyncRequired]: () => CustomAsyncValidators.asyncRequired(),
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

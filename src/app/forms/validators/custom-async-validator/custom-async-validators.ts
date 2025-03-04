@@ -197,12 +197,17 @@ export class CustomAsyncValidators {
 			);
 	}
 
-	static filterEuCategoryOnVehicleType(
-		store: Store<State>,
-		technicalRecordService: TechnicalRecordService
-	): AsyncValidatorFn {
-		return (control: AbstractControl): Observable<ValidationErrors | null> =>
-			technicalRecordService.techRecord$.pipe(
+	static asyncRequired(): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return control.value === null || control.value === undefined || control.value === ''
+				? of({ required: true })
+				: of(null);
+		};
+	}
+
+	static filterEuCategoryOnVehicleType(technicalRecordService: TechnicalRecordService): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return technicalRecordService.techRecord$.pipe(
 				skipWhile((techRecord) => !techRecord),
 				take(1),
 				map((techRecord) => {
@@ -242,6 +247,7 @@ export class CustomAsyncValidators {
 					return null;
 				})
 			);
+		};
 	}
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {

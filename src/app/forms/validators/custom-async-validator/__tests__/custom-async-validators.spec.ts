@@ -164,10 +164,9 @@ describe('filterEuCategoryOnVehicleType', () => {
 		store.overrideSelector(techRecord, trlTechRecord);
 		store.overrideSelector(selectTechRecord, trlTechRecord);
 		await firstValueFrom(
-			CustomAsyncValidators.filterEuCategoryOnVehicleType(
-				store,
-				techRecordService
-			)(control) as Observable<ValidationErrors | null>
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(techRecordService)(
+				control
+			) as Observable<ValidationErrors | null>
 		);
 		expect(control.meta.options).toEqual(TRL_EU_VEHICLE_CATEGORY_OPTIONS);
 	});
