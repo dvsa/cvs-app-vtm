@@ -172,6 +172,24 @@ describe('filterEuCategoryOnVehicleType', () => {
 	});
 });
 
+describe('asyncRequired', () => {
+	it('should return null if the control is not empty', async () => {
+		const control = new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, children: [] }, null);
+		control.patchValue('test');
+		const result = await firstValueFrom(
+			CustomAsyncValidators.asyncRequired()(control) as Observable<ValidationErrors | null>
+		);
+		expect(result).toBeNull();
+	});
+	it('should return a validation error if the control is empty', async () => {
+		const control = new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, children: [] }, null);
+		const result = await firstValueFrom(
+			CustomAsyncValidators.asyncRequired()(control) as Observable<ValidationErrors | null>
+		);
+		expect(result).toEqual({ required: true });
+	});
+});
+
 describe('passResultDependantOnCustomDefects', () => {
 	let form: FormGroup;
 	let store: MockStore<State>;
