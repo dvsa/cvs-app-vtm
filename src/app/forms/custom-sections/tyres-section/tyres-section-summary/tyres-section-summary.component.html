@@ -1,9 +1,9 @@
 <ng-container *ngIf="amendedTechRecord() as vm">
   <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
-    <!-- Speed Restriction (PSV Only) -->
+    <!-- Speed restriction (PSV Only) -->
     <dl class="govuk-summary-list"  *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
       <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_speedRestriction')">
-        <dt class="govuk-summary-list__key">Speed Restriction</dt>
+        <dt class="govuk-summary-list__key">Speed restriction</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
           {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
         </dd>

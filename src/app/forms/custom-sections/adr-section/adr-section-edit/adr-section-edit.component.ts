@@ -294,7 +294,7 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 								return good !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && good !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
 							}),
 						techRecord_adrDetails_compatibilityGroupJ: null,
-						techRecord_adrDetails_bodyDeclaration_type: undefined,
+						techRecord_adrDetails_bodyDeclaration_type: null,
 					});
 
 					this.permittedDangerousGoodsOptions = options.filter(({ value }) => {

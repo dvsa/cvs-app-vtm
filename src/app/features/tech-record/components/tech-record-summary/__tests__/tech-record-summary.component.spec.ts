@@ -3,6 +3,7 @@ import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -150,7 +151,7 @@ describe('TechRecordSummaryComponent', () => {
 					createdTimestamp: 'bar',
 					vin: 'testVin',
 					techRecord_vehicleType: VehicleTypes.TRL,
-					techRecord_euVehicleCategory: 'o2',
+					techRecord_euVehicleCategory: EUVehicleCategory.O2,
 				} as V3TechRecordModel)
 			);
 			fixture.detectChanges();
