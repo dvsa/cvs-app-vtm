@@ -3,14 +3,13 @@ import { createHash } from 'node:crypto';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
 import { UserService } from '@services/user-service/user-service';
-import { Subject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AnalyticsService {
 	private userService = inject(UserService);
-	destroy$ = new Subject<void>();
 
 	pushToDataLayer(data: any): void {
 		// @ts-ignore
