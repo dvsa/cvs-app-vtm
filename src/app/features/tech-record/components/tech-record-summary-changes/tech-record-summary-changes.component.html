@@ -6,7 +6,7 @@
 
   <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
 
-  <!-- Vehicle Summary -->
+  <!-- Vehicle summary -->
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
@@ -94,12 +94,12 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'techRecordSummary'">
-        <!-- New Vehicle Summary section -->
+        <!-- New Vehicle summary section -->
         <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
           <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
         </ng-container>
 
-        <!-- Old Vehicle Summary section -->
+        <!-- Old Vehicle summary section -->
         <ng-template #oldTechRecordSummary>
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
         </ng-template>
@@ -137,7 +137,13 @@
             techRecordEdited.techRecord_vehicleType === 'trl'
           "
         >
-          <app-approval-type [techRecord]="techRecordEdited"></app-approval-type>
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsApprovalType'); else oldApprovalTypeSection">
+            <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
+          </ng-container>
+
+          <ng-template #oldApprovalTypeSection>
+            <app-approval-type [techRecord]="techRecordEdited"></app-approval-type>
+          </ng-template>
         </ng-container>
       </ng-container>
 
@@ -225,6 +231,18 @@
             <app-adr [techRecord]="techRecordEdited" [isReviewScreen]="true" />
           </ng-template>
         </ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'techRecord'">
+        <!-- New last applicant section -->
+        <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsLastApplicant'); else oldLastApplicantSection">
+          <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
+        </ng-container>
+
+        <!-- Old last applicant section -->
+        <ng-template #oldLastApplicantSection>
+          <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
+        </ng-template>
       </ng-container>
 
       <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>

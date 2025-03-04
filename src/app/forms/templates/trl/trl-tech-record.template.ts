@@ -17,7 +17,7 @@ import { TagType } from '../../../components/tag/tag.component';
 export const TrlTechRecordTemplate: FormNode = {
 	name: 'techRecordSummary',
 	type: FormNodeTypes.GROUP,
-	label: 'Vehicle Summary',
+	label: 'Vehicle summary',
 	children: [
 		{
 			name: 'techRecord_vehicleType',

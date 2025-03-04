@@ -9,5 +9,6 @@
   "FsDimensions": false,
   "FsTyres": true,
   "FsWeights": true,
-  "FsApprovalType": false
+  "FsApprovalType": true,
+  "FsLastApplicant": true
 }
