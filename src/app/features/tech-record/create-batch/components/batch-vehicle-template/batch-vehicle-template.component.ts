@@ -98,7 +98,7 @@ export class BatchVehicleTemplateComponent {
 
 		DynamicFormService.validate(this.form, errors);
 
-		this.globalErrorService.setErrors(errors);
+		this.globalErrorService.patchErrors(errors);
 
 		return this.form.valid;
 	}
