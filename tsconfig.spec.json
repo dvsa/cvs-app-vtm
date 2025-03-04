@@ -6,7 +6,7 @@
     "allowJs": true,
     "types": [
       "node",
-      "jest"
+      "jest",
     ],
     "esModuleInterop": true,
     "emitDecoratorMetadata": true

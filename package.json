@@ -53,9 +53,6 @@
     "@sentry/types": "^8.35.0",
     "accessible-autocomplete": "^2.0.4",
     "angular-google-tag-manager": "^1.10.0",
-    "assert": "^2.1.0",
-    "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.1",
     "deep-object-diff": "^1.1.9",
     "govuk-frontend": "^4.8.0",
     "jwt-decode": "^4.0.0",
@@ -64,7 +61,6 @@
     "lodash.merge": "^4.6.2",
     "ngrx-store-localstorage": "18.0.0",
     "rxjs": "^7.8.1",
-    "stream-browserify": "^3.0.0",
     "tslib": "^2.7.0",
     "uuid": "^9.0.1",
     "validate-govuk-date": "^1.0.3",
@@ -128,9 +124,6 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dvsa/cvs-app-vtm/issues"
-  },
-  "browser": {
-    "stream": "stream-browserify"
   },
   "homepage": "https://github.com/dvsa/cvs-app-vtm#readme"
 }

@@ -7,7 +7,6 @@ import { CoreModule } from '@core/core.module';
 import { GoogleAnalyticsServiceMock } from '@mocks/google-analytics-service.mock';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { AnalyticsService } from '@services/analytics/analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -33,7 +32,6 @@ describe('AppComponent', () => {
 				{ provide: UserService, useValue: MockUserService },
 				PageNotFoundComponent,
 				{ provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
-				{ provide: AnalyticsService, useValue: { pushToDataLayer: jest.fn(), setUserId: jest.fn() } },
 			],
 		}).compileComponents();
 		router = TestBed.inject(Router);
