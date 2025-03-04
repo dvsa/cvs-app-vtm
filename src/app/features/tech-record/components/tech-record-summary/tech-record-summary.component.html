@@ -3,15 +3,18 @@
   <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
-          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+        <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label"
+                       [isExpanded]="isSectionExpanded$(section.name) | async">
+          <ng-template [ngTemplateOutlet]="accordion"
+                       [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
         </app-accordion>
       </ng-container>
     </div>
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
         <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
-          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+          <ng-template [ngTemplateOutlet]="accordion"
+                       [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
         </app-accordion>
       </ng-container>
     </div>
@@ -25,7 +28,7 @@
         <ng-container *ngSwitchCase="'notesSection'">
           <!-- New Notes section -->
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsNotes'); else oldNotes">
-            <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           </ng-container>
 
           <!-- Old Notes section -->
@@ -42,7 +45,7 @@
         <ng-container *ngSwitchCase="'techRecordSummary'">
           <!-- New Vehicle summary section -->
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsVehicleSummary'); else oldTechRecordSummary">
-            <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           </ng-container>
 
           <!-- Old Vehicle summary section -->
@@ -60,7 +63,7 @@
         <ng-container *ngSwitchCase="'bodySection'">
           <!-- New Body section -->
           <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsBody'); else oldBodySection">
-            <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           </ng-container>
 
           <!-- Old Body section -->
@@ -87,16 +90,30 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'approvalSection'">
-          <app-approval-type
-            *ngIf="
+          <!-- New Type Approval section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsApprovalType'); else oldApprovalType;">
+            <app-type-approval-section
+              *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl' ||
+              techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+              techRecordCalculated.techRecord_vehicleType === 'psv'"
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'">
+            </app-type-approval-section>
+          </ng-container>
+
+          <!-- Old Type Approval section -->
+          <ng-template #oldApprovalType>
+            <app-approval-type
+              *ngIf="
               techRecordCalculated.techRecord_vehicleType === 'trl' ||
               techRecordCalculated.techRecord_vehicleType === 'hgv' ||
               techRecordCalculated.techRecord_vehicleType === 'psv'
             "
-            [techRecord]="techRecordCalculated"
-            [isEditing]="(isEditing$ | async) ?? false"
-            (formChange)="handleFormState($event)"
-          ></app-approval-type>
+              [techRecord]="techRecordCalculated"
+              [isEditing]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-approval-type>
+          </ng-template>
         </ng-container>
 
         <ng-container *ngSwitchCase="'psvBrakesSection'">
@@ -190,12 +207,12 @@
           >
             <!-- New ADR section -->
             <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsAdr'); else oldADRSection">
-              <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+              <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
             </ng-container>
 
             <!-- Old ADR section -->
             <ng-template #oldADRSection>
-              <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false" />
+              <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"/>
             </ng-template>
           </ng-container>
         </ng-container>
@@ -210,6 +227,24 @@
           >
             <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
           </ng-container>
+        </ng-container>
+
+
+        <ng-container *ngSwitchCase="'techRecord'">
+          <!-- New Last Applicant section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsLastApplicant'); else oldLastApplicantComponent">
+            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          </ng-container>
+
+          <!-- Old Last Applicant section -->
+          <ng-template #oldLastApplicantComponent>
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          </ng-template>
         </ng-container>
 
         <app-dynamic-form-group

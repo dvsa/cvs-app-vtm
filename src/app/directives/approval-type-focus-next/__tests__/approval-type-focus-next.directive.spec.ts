@@ -17,7 +17,8 @@ describe('ApprovalTypeFocusNext', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ApprovalTypeFocusNextDirective, TestComponent],
+			imports: [ApprovalTypeFocusNextDirective],
+			declarations: [TestComponent],
 			providers: [TemplateRef],
 		}).compileComponents();
 

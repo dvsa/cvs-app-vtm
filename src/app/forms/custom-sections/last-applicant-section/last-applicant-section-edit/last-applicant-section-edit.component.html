@@ -1,0 +1,57 @@
+<div [formGroup]="form">
+  <!--  Name or Company -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_name')"
+    label="Name or company"
+    formControlName="techRecord_applicantDetails_name"
+  ></govuk-form-group-input>
+
+  <!--  Address line 1 -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_address1')"
+    label="Address line 1"
+    formControlName="techRecord_applicantDetails_address1"
+  ></govuk-form-group-input>
+
+  <!--  Address line 2 -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_address2')"
+    label="Address line 2"
+    formControlName="techRecord_applicantDetails_address2"
+  ></govuk-form-group-input>
+
+  <!--  Town or City -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_postTown')"
+    label="Town or city"
+    formControlName="techRecord_applicantDetails_postTown"
+  ></govuk-form-group-input>
+
+  <!--  County -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_address3')"
+    label="County"
+    formControlName="techRecord_applicantDetails_address3"
+  ></govuk-form-group-input>
+
+  <!--  Postcode -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_postCode')"
+    label="Postcode"
+    formControlName="techRecord_applicantDetails_postCode"
+  ></govuk-form-group-input>
+
+  <!--  Telephone number -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')"
+    label="Telephone number"
+    formControlName="techRecord_applicantDetails_telephoneNumber"
+  ></govuk-form-group-input>
+
+  <!--  Email address -->
+  <govuk-form-group-input
+    *ngIf="shouldDisplayFormControl('techRecord_applicantDetails_emailAddress')"
+    label="Email address"
+    formControlName="techRecord_applicantDetails_emailAddress"
+  ></govuk-form-group-input>
+</div>
