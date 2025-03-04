@@ -14,7 +14,7 @@ export class AnalyticsService {
 
 	pushToDataLayer(data: any): void {
 		// @ts-ignore
-		window.dataLayer.push(data);
+		window.dataLayer?.push(data);
 	}
 
 	async setUserId(): Promise<void> {

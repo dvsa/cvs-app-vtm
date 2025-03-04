@@ -33,7 +33,7 @@ describe('AppComponent', () => {
 				{ provide: UserService, useValue: MockUserService },
 				PageNotFoundComponent,
 				{ provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
-				AnalyticsService,
+				{ provide: AnalyticsService, useValue: { pushToDataLayer: jest.fn(), setUserId: jest.fn() } },
 			],
 		}).compileComponents();
 		router = TestBed.inject(Router);
