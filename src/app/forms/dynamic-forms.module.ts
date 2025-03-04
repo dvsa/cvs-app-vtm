@@ -19,6 +19,15 @@ import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certi
 import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { LastApplicantSectionEditComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section-edit/last-applicant-section-edit.component';
+import { LastApplicantSectionSummaryComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section-summary/last-applicant-section-summary.component';
+import { LastApplicantSectionViewComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section-view/last-applicant-section-view.component';
+import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
+import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/components/approval-type-number/approval-type-number';
+import { TypeApprovalSectionEditComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/type-approval-section-edit.component';
+import { TypeApprovalSectionSummaryComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-summary/type-approval-section-summary.component';
+import { TypeApprovalSectionViewComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-view/type-approval-section-view.component';
+import { TypeApprovalSectionComponent } from '@forms/custom-sections/type-approval-section/type-approval-section.component';
 import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
 import { VehicleSectionSummaryComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-summary/vehicle-section-summary.component';
 import { VehicleSectionViewComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-view/vehicle-section-view.component';
@@ -151,7 +160,6 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		CheckboxComponent,
 		ApprovalTypeComponent,
 		ApprovalTypeInputComponent,
-		ApprovalTypeFocusNextDirective,
 		ModifiedWeightsComponent,
 		FieldWarningMessageComponent,
 		AdrComponent,
@@ -176,14 +184,25 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		VehicleSectionViewComponent,
 		VehicleSectionEditComponent,
 		AdrPermittedDangerousGoodsComponent,
+
 		BodySectionComponent,
 		BodySectionEditComponent,
 		BodySectionViewComponent,
 		BodySectionSummaryComponent,
+
 		NotesSectionComponent,
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+		LastApplicantSectionComponent,
+		LastApplicantSectionEditComponent,
+		LastApplicantSectionSummaryComponent,
+		LastApplicantSectionViewComponent,
+
+		TypeApprovalSectionComponent,
+		TypeApprovalSectionEditComponent,
+		TypeApprovalSectionViewComponent,
+		TypeApprovalSectionSummaryComponent,
 		TyresSectionComponent,
 		TyresSectionEditComponent,
 		TyresSectionViewComponent,
@@ -208,6 +227,8 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		GovukFormGroupDateComponent,
 		GovukFormGroupTextareaComponent,
 		GovukFormGroupAutocompleteComponent,
+		ApprovalTypeNumber,
+		ApprovalTypeFocusNextDirective,
 	],
 	exports: [
 		TextInputComponent,
@@ -274,14 +295,25 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
 		GovukFormGroupTextareaComponent,
+
 		BodySectionComponent,
 		BodySectionEditComponent,
 		BodySectionViewComponent,
 		BodySectionSummaryComponent,
+
 		NotesSectionComponent,
 		NotesSectionEditComponent,
 		NotesSectionViewComponent,
 		NotesSectionSummaryComponent,
+		LastApplicantSectionComponent,
+		LastApplicantSectionViewComponent,
+		LastApplicantSectionEditComponent,
+		LastApplicantSectionSummaryComponent,
+
+		TypeApprovalSectionComponent,
+		TypeApprovalSectionEditComponent,
+		TypeApprovalSectionViewComponent,
+		TypeApprovalSectionSummaryComponent,
 		TyresSectionComponent,
 		TyresSectionEditComponent,
 		TyresSectionViewComponent,

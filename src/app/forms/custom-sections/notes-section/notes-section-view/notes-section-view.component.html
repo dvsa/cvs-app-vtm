@@ -3,19 +3,19 @@
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType !== VehicleTypes.PSV">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_notes">
-        <p style='white-space: pre;'>{{ vm.techRecord_notes | defaultNullOrEmpty }}</p>
+        <p class="whitespace-pre-wrap">{{ vm.techRecord_notes | defaultNullOrEmpty }}</p>
       </dd>
     </div>
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_remarks">
-        <p style='white-space: pre;'>{{ vm.techRecord_remarks | defaultNullOrEmpty }}</p>
+        <p class="whitespace-pre-wrap">{{ vm.techRecord_remarks | defaultNullOrEmpty }}</p>
       </dd>
     </div>
     <div class="govuk-summary-list__row" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
       <dt class="govuk-summary-list__key">Dispensations</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_dispensations">
-        <p style='white-space: pre;'>{{ vm.techRecord_dispensations | defaultNullOrEmpty }}</p>
+        <p class="whitespace-pre-wrap">{{ vm.techRecord_dispensations | defaultNullOrEmpty }}</p>
       </dd>
     </div>
   </dl>

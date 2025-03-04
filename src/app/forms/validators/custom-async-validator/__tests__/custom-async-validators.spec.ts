@@ -1,15 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { operatorEnum } from '@models/condition.model';
+import { TRL_EU_VEHICLE_CATEGORY_OPTIONS } from '@models/options.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State, initialAppState } from '@store/index';
-import { editingTechRecord } from '@store/technical-records';
+import { editingTechRecord, selectTechRecord, techRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
 import { Observable, firstValueFrom, lastValueFrom } from 'rxjs';
@@ -93,6 +97,96 @@ describe('resultDependantOnCustomDefects', () => {
 		);
 
 		expect(result).toBeNull();
+	});
+});
+
+describe('filterEuCategoryOnVehicleType', () => {
+	let form: FormGroup;
+	let store: MockStore<State>;
+	let techRecordService: TechnicalRecordService;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [provideMockStore({ initialState: initialAppState }), TechnicalRecordService],
+			imports: [HttpClientTestingModule, RouterTestingModule],
+		});
+
+		store = TestBed.inject(MockStore);
+		techRecordService = TestBed.inject(TechnicalRecordService);
+
+		form = new FormGroup({
+			euVehicleCategory: new CustomFormControl(
+				{ name: 'euVehicleCategory', type: FormNodeTypes.CONTROL, children: [] },
+				null
+			),
+		});
+	});
+	it('should set control options to trl eu category list if vehicle type is trl', async () => {
+		const trlTechRecord: TechRecordType<'trl', 'get'> = {
+			createdTimestamp: '',
+			systemNumber: '',
+			techRecord_bodyType_code: '',
+			techRecord_couplingCenterToRearAxleMax: 0,
+			techRecord_couplingCenterToRearAxleMin: 0,
+			techRecord_couplingCenterToRearTrlMax: 0,
+			techRecord_couplingCenterToRearTrlMin: 0,
+			techRecord_couplingType: '',
+			techRecord_createdAt: '',
+			techRecord_createdById: '',
+			techRecord_createdByName: '',
+			techRecord_dimensions_length: 0,
+			techRecord_dimensions_width: 0,
+			techRecord_euVehicleCategory: undefined,
+			techRecord_firstUseDate: '',
+			techRecord_frontAxleToRearAxle: 0,
+			techRecord_make: '',
+			techRecord_maxLoadOnCoupling: 0,
+			techRecord_model: '',
+			techRecord_notes: '',
+			techRecord_rearAxleToRearTrl: 0,
+			techRecord_roadFriendly: false,
+			techRecord_suspensionType: '',
+			techRecord_tyreUseCode: undefined,
+			techRecord_vehicleClass_code: 't',
+			techRecord_vehicleConfiguration: undefined,
+			trailerId: '',
+			techRecord_vehicleType: 'trl',
+			partialVin: '',
+			techRecord_bodyType_description: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			techRecord_vehicleClass_description: 'trailer',
+			vin: '',
+			techRecord_adrDetails_dangerousGoods: true,
+		};
+		const control = form.controls['euVehicleCategory'] as CustomFormControl;
+		store.overrideSelector(techRecord, trlTechRecord);
+		store.overrideSelector(selectTechRecord, trlTechRecord);
+		await firstValueFrom(
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(techRecordService)(
+				control
+			) as Observable<ValidationErrors | null>
+		);
+		expect(control.meta.options).toEqual(TRL_EU_VEHICLE_CATEGORY_OPTIONS);
+	});
+});
+
+describe('asyncRequired', () => {
+	it('should return null if the control is not empty', async () => {
+		const control = new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, children: [] }, null);
+		control.patchValue('test');
+		const result = await firstValueFrom(
+			CustomAsyncValidators.asyncRequired()(control) as Observable<ValidationErrors | null>
+		);
+		expect(result).toBeNull();
+	});
+	it('should return a validation error if the control is empty', async () => {
+		const control = new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, children: [] }, null);
+		const result = await firstValueFrom(
+			CustomAsyncValidators.asyncRequired()(control) as Observable<ValidationErrors | null>
+		);
+		expect(result).toEqual({ required: true });
 	});
 });
 

@@ -17,7 +17,7 @@ import {
 export const HgvTechRecord: FormNode = {
 	name: 'techRecordSummary',
 	type: FormNodeTypes.GROUP,
-	label: 'Vehicle Summary',
+	label: 'Vehicle summary',
 	children: [
 		{
 			name: 'techRecord_vehicleType',

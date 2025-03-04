@@ -57,6 +57,9 @@ export class GovukFormGroupInputComponent implements ControlValueAccessor {
 	width?: FormNodeWidth;
 
 	@Input()
+	maxlength: string | number | null = null;
+
+	@Input()
 	suffix?: string;
 
 	controlContainer = inject(ControlContainer);

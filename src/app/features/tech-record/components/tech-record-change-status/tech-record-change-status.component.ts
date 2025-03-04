@@ -85,6 +85,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	}
 
 	handleSubmit(form: { reason: string }): void {
+		this.form.markAllAsTouched();
+
 		if (!this.techRecord) {
 			return;
 		}
