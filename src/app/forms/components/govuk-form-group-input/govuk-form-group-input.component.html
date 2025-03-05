@@ -31,7 +31,7 @@
       [class.govuk-radios__input--error]="hasError"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
-      (blur)="onBlur($event)"
+      (blur)="onTouched(); onBlur($event)"
       [class]="style"
       [disabled]="control?.disabled || false"
       [maxlength]="maxlength"
@@ -51,7 +51,7 @@
       type="number"
       appNumberOnly
       inputmode="numeric"
-      (blur)="onTouched()"
+      (blur)="onTouched(); onBlur($event)"
       [class]="style"
       [disabled]="control?.disabled || false"
     />
@@ -68,7 +68,7 @@
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
       appNumberOnly
-      (blur)="onBlur($event)"
+      (blur)="onTouched(); onBlur($event)"
       [class]="style"
       [disabled]="control?.disabled || false"
     />
@@ -88,7 +88,7 @@
         type="number"
         inputmode="decimal"
         pattern="^\d*\.?\d*$"
-        (blur)="onBlur($event)"
+        (blur)="onTouched(); onBlur($event)"
         [class]="style"
         [disabled]="control?.disabled || false"
       />

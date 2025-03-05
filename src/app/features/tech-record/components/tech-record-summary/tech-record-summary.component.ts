@@ -164,7 +164,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 				techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
 				techRecord?.techRecord_vehicleType === VehicleTypes.TRL
 			) {
-				const axles = mergeWith(cloneDeep(techRecord.techRecord_axles), changes.techRecord_axles ?? []);
+				const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
 				techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
 				techRecord.techRecord_axles = axles;
 				this.techRecordCalculated = techRecord;
