@@ -491,8 +491,6 @@ export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
 			...nulledWeight,
 		};
 
-		console.log('editingTechRecord', editingTechRecord);
-
 		if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
 			// vehicle doesn't carry dangerous goods so null this information
 			const record = {
@@ -527,8 +525,6 @@ export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
 				...nulledSubstancesPermittedUNNumber,
 			};
 
-			console.log('record', record);
-
 			return record;
 		}
 
@@ -538,7 +534,6 @@ export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
 
 		// Null compatibility group J when permitted dangerous goods is NOT explosives type 2/3
 		const explosivesGroups: string[] = [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3];
-		console.log(editingTechRecord);
 		if (
 			!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.some((value) =>
 				explosivesGroups.includes(value)
