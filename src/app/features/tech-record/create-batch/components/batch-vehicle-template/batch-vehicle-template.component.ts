@@ -130,11 +130,11 @@ export class BatchVehicleTemplateComponent {
 				)
 				.subscribe((vehicleList) => {
 					vehicleList.forEach((vehicle) => {
+						const cleansedVehicle = nullADRDetails(vehicle as unknown as TechRecordType<'put'>);
 						if (!vehicle.systemNumber) {
-							const cleansedVehicle = nullADRDetails(vehicle as unknown as TechRecordType<'put'>);
 							this.store.dispatch(createVehicleRecord({ vehicle: cleansedVehicle }));
 						} else {
-							this.technicalRecordService.updateEditingTechRecord(vehicle);
+							this.technicalRecordService.updateEditingTechRecord(cleansedVehicle);
 							this.store.dispatch(
 								updateTechRecord({ systemNumber: vehicle.systemNumber, createdTimestamp: vehicle.createdTimestamp })
 							);

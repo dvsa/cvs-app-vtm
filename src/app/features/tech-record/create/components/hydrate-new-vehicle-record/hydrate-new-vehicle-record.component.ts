@@ -17,7 +17,7 @@ import {
 	updateADRAdditionalExaminerNotes,
 } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/batch-create.reducer';
-import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
+import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
@@ -130,7 +130,8 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 			)
 			.subscribe(([vehicleList, isBatch]) => {
 				vehicleList.forEach((vehicle) => {
-					this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> }));
+					const cleansedVehicle = nullADRDetails(vehicle as unknown as TechRecordType<'put'>);
+					this.store.dispatch(createVehicleRecord({ vehicle: cleansedVehicle }));
 				});
 				this.technicalRecordService.clearSectionTemplateStates();
 				if (isBatch) this.navigate();
