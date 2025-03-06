@@ -50,3 +50,11 @@ import 'zone.js'; // Included with Angular CLI.
 /** *************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+(window as any).global = window;
+(window as any).process = {
+	env: { DEBUG: undefined },
+	version: '',
+};
+// biome-ignore lint/style/useNodejsImportProtocol: Not adding node protocol due to Jasmine error
+global.Buffer = global.Buffer || require('buffer').Buffer;

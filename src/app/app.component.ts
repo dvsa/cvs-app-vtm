@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
+import { AnalyticsService } from '@services/analytics/analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { startSendingLogs } from '@store/logs/logs.actions';
@@ -23,13 +24,15 @@ import { State } from './store';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
+	protected readonly version = packageInfo.version;
 
 	constructor(
 		public userService: UserService,
 		private loadingService: LoadingService,
 		private router: Router,
 		private gtmService: GoogleTagManagerService,
-		private store: Store<State>
+		private store: Store<State>,
+		private analyticsService: AnalyticsService
 	) {}
 
 	async ngOnInit() {
@@ -48,6 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
 		});
 
 		await this.gtmService.addGtmToDom();
+		this.analyticsService.pushToDataLayer({ AppVersionDataLayer: packageInfo.version });
+		await this.analyticsService.setUserId();
 		initAll();
 	}
 
