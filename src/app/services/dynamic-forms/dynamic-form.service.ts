@@ -15,6 +15,7 @@ import { Condition } from '@models/condition.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 
@@ -24,7 +25,10 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 	providedIn: 'root',
 })
 export class DynamicFormService {
-	constructor(private store: Store<State>) {}
+	constructor(
+		private store: Store<State>,
+		private technicalRecordService: TechnicalRecordService
+	) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
@@ -128,7 +132,10 @@ export class DynamicFormService {
 		[AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
 		[AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () =>
 			CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
+		[AsyncValidatorNames.FilterEuCategoryOnVehicleType]: () =>
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(this.technicalRecordService),
 		[AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
+		[AsyncValidatorNames.AsyncRequired]: () => CustomAsyncValidators.asyncRequired(),
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -139,7 +146,7 @@ export class DynamicFormService {
 
 		const form: CustomFormGroup | CustomFormArray =
 			formNode.type === FormNodeTypes.ARRAY
-				? new CustomFormArray(formNode, [], this.store)
+				? new CustomFormArray(formNode, [], this.store, this.technicalRecordService)
 				: new CustomFormGroup(formNode, {});
 
 		data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
