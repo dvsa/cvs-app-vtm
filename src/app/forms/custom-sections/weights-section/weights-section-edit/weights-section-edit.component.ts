@@ -4,10 +4,12 @@ import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/fo
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-weights-section-edit',
@@ -19,6 +21,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	protected readonly FormNodeWidth = FormNodeWidth;
 	fb = inject(FormBuilder);
 	store = inject(Store);
+	actions = inject(Actions);
 	controlContainer = inject(ControlContainer);
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
@@ -31,6 +34,8 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	ngOnInit(): void {
 		this.addControlsBasedOffVehicleType();
 		this.prepopulateAxles();
+		this.checkAxleAdded();
+		this.checkAxleRemoved();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -56,8 +61,6 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		this.checkAxleAdded(changes);
-		this.checkAxleRemoved(changes);
 		this.handleVehicleTechRecordChange(changes);
 	}
 
@@ -215,41 +218,51 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 			return;
 		}
 
-		this.techRecordAxles.setErrors({ length: 'Cannot have more than 10 axles' });
+		this.techRecordAxles.setErrors({
+			length: 'Cannot have more than 10 axles',
+		});
 	}
 
 	removeAxle(index: number) {
 		const techRecord = this.techRecord();
 		const minLength = techRecord.techRecord_vehicleType === VehicleTypes.TRL ? 1 : 2;
+		const axles = this.techRecordAxles.value;
 
-		if (techRecord.techRecord_axles && techRecord.techRecord_axles.length > minLength) {
+		if (Array.isArray(axles) && axles.length > minLength) {
 			this.techRecordAxles.setErrors(null);
 			this.store.dispatch(removeAxle({ index }));
 			return;
 		}
 
-		this.techRecordAxles.setErrors({ length: `Cannot have less than ${minLength} axles` });
+		this.techRecordAxles.setErrors({
+			length: `Cannot have less than ${minLength} axles`,
+		});
 	}
 
-	checkAxleAdded(changes: SimpleChanges) {
-		const current = changes['techRecord']?.currentValue?.techRecord_axles;
-		const previous = changes['techRecord']?.previousValue?.techRecord_axles;
-
-		if (this.techRecordAxles && current?.length > previous?.length) {
-			const control = this.getAxleForm();
-			control.patchValue(current[current.length - 1]);
-			this.techRecordAxles.push(control, { emitEvent: false });
-		}
+	checkAxleAdded() {
+		this.actions
+			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					const form = this.getAxleForm();
+					form.patchValue(axles[axles.length - 1], { emitEvent: false });
+					this.techRecordAxles.push(form, { emitEvent: false });
+					this.techRecordAxles.patchValue(axles, { emitEvent: false });
+				}
+			});
 	}
 
-	checkAxleRemoved(changes: SimpleChanges) {
-		const current = changes['techRecord']?.currentValue?.techRecord_axles;
-		const previous = changes['techRecord']?.previousValue?.techRecord_axles;
-
-		if (this.techRecordAxles && current < previous) {
-			this.techRecordAxles.removeAt(0);
-			this.techRecordAxles.patchValue(current, { emitEvent: false });
-		}
+	checkAxleRemoved() {
+		this.actions
+			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					this.techRecordAxles.removeAt(0, { emitEvent: false });
+					this.techRecordAxles.patchValue(axles, { emitEvent: false });
+				}
+			});
 	}
 
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {

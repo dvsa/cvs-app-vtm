@@ -6,9 +6,10 @@
   "FsVehicleSummary": true,
   "FsBody": true,
   "FsNotes": true,
-  "FsDimensions": false,
   "FsTyres": true,
   "FsWeights": true,
   "FsApprovalType": true,
-  "FsLastApplicant": true
+  "FsLastApplicant": true,
+  "FsPlates": false,
+  "FsDimensions": false
 }

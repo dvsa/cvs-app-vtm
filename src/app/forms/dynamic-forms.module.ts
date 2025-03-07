@@ -23,6 +23,9 @@ import { LastApplicantSectionEditComponent } from '@forms/custom-sections/last-a
 import { LastApplicantSectionSummaryComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section-summary/last-applicant-section-summary.component';
 import { LastApplicantSectionViewComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section-view/last-applicant-section-view.component';
 import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
+import { PlatesSectionEditComponent } from '@forms/custom-sections/plates-section/plates-section-edit/plates-section-edit.component';
+import { PlatesSectionViewComponent } from '@forms/custom-sections/plates-section/plates-section-view/plates-section-view.component';
+import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
 import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/components/approval-type-number/approval-type-number';
 import { TypeApprovalSectionEditComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/type-approval-section-edit.component';
 import { TypeApprovalSectionSummaryComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-summary/type-approval-section-summary.component';
@@ -90,6 +93,10 @@ import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-
 import { CustomFormControlComponent } from './custom-sections/custom-form-control/custom-form-control.component';
 import { DefectComponent } from './custom-sections/defect/defect.component';
 import { DefectsComponent } from './custom-sections/defects/defects.component';
+import { DimensionsSectionEditComponent } from './custom-sections/dimensions-section/dimensions-section-edit/dimensions-section-edit.component';
+import { DimenionsSectionSummaryComponent } from './custom-sections/dimensions-section/dimensions-section-summary/dimensions-section-summary.component';
+import { DimensionsSectionViewComponent } from './custom-sections/dimensions-section/dimensions-section-view/dimensions-section-view.component';
+import { DimensionsSectionComponent } from './custom-sections/dimensions-section/dimensions-section.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
 import { LettersComponent } from './custom-sections/letters/letters.component';
 import { ModifiedWeightsComponent } from './custom-sections/modified-weights/modified-weights.component';
@@ -211,6 +218,13 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		WeightsSectionEditComponent,
 		WeightsSectionViewComponent,
 		WeightsSectionSummaryComponent,
+		PlatesSectionComponent,
+		PlatesSectionEditComponent,
+		PlatesSectionViewComponent,
+		DimensionsSectionComponent,
+		DimensionsSectionEditComponent,
+		DimensionsSectionViewComponent,
+		DimenionsSectionSummaryComponent,
 	],
 	imports: [
 		CommonModule,
@@ -322,6 +336,13 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		WeightsSectionEditComponent,
 		WeightsSectionViewComponent,
 		WeightsSectionSummaryComponent,
+		PlatesSectionComponent,
+		PlatesSectionEditComponent,
+		PlatesSectionViewComponent,
+		DimensionsSectionComponent,
+		DimensionsSectionEditComponent,
+		DimensionsSectionViewComponent,
+		DimenionsSectionSummaryComponent,
 	],
 })
 export class DynamicFormsModule {}

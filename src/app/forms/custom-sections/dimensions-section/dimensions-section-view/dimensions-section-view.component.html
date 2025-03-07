@@ -1,0 +1,218 @@
+<ng-container *ngIf="techRecord() as tr">
+  <!-- HGV Dimensions -->
+  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Length
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_length">
+          {{ tr.techRecord_dimensions_length | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Width
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_width">
+          {{ tr.techRecord_dimensions_width | defaultNullOrEmpty}}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Front axle to rear axle
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontAxleToRearAxle">
+          {{ tr.techRecord_frontAxleToRearAxle | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <ng-container *ngFor="let axleSpacing of tr.techRecord_dimensions_axleSpacing; let i = index">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </ng-container>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front of vehicle to 5th wheel coupling</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Minimum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontVehicleTo5thWheelCoupling">
+          {{ tr.techRecord_frontVehicleTo5thWheelCouplingMin | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Maximum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontVehicleTo5thWheelCoupling">
+          {{ tr.techRecord_frontVehicleTo5thWheelCouplingMax | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front axle to 5th wheel coupling</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Minimum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontAxleTo5thWheel">
+          {{ tr.techRecord_frontAxleTo5thWheelMin | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Maximum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontAxleTo5thWheel">
+          {{ tr.techRecord_frontAxleTo5thWheelMax | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+
+  <!-- PSV Dimensions -->
+  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Height
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_height">
+          {{ tr.techRecord_dimensions_height | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Length
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_length">
+          {{ tr.techRecord_dimensions_length | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Width
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_width">
+          {{ tr.techRecord_dimensions_width | defaultNullOrEmpty}}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Front axle to rear axle
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontAxleToRearAxle">
+          {{ tr.techRecord_frontAxleToRearAxle | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+
+  <!-- TRL Dimensions -->
+  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Length
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_length">
+          {{ tr.techRecord_dimensions_length | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Width
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_dimensions_width">
+          {{ tr.techRecord_dimensions_width | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Front axle to rear axle
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_frontAxleToRearAxle">
+          {{ tr.techRecord_frontAxleToRearAxle | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Rear axle to rear of trailer
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_rearAxleToRearTrl">
+          {{ tr.techRecord_rearAxleToRearTrl | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <ng-container *ngFor="let axleSpacing of tr.techRecord_dimensions_axleSpacing; let i = index">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </ng-container>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear axle</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Minimum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_couplingCenterToRearAxleMin">
+          {{ tr.techRecord_couplingCenterToRearAxleMin | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Maximum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_couplingCenterToRearAxleMax">
+          {{ tr.techRecord_couplingCenterToRearAxleMax | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear of trailer</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Minimum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_couplingCenterToRearTrlMin">
+          {{ tr.techRecord_couplingCenterToRearTrlMin | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Maximum
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_couplingCenterToRearTrlMax">
+          {{ tr.techRecord_couplingCenterToRearTrlMax | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Centre of rear axle to rear of trailer
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_centreOfRearmostAxleToRearOfTrl">
+          {{ tr.techRecord_centreOfRearmostAxleToRearOfTrl | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+</ng-container>

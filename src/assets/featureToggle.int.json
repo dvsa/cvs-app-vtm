@@ -1,14 +1,15 @@
 {
-	"testToggle": false,
-	"adrCertToggle": true,
-	"requiredStandards": true,
-	"FsAdr": true,
-	"FsVehicleSummary": true,
-	"FsBody": true,
-	"FsNotes": true,
-	"FsDimensions": false,
-	"FsTyres": true,
-	"FsWeights": true,
-	"FsApprovalType": true,
-	"FsLastApplicant": true
+  "testToggle": false,
+  "adrCertToggle": true,
+  "requiredStandards": true,
+  "FsAdr": true,
+  "FsVehicleSummary": true,
+  "FsBody": true,
+  "FsNotes": true,
+  "FsTyres": true,
+  "FsWeights": true,
+  "FsApprovalType": true,
+  "FsLastApplicant": true,
+  "FsPlates": false,
+  "FsDimensions": false
 }

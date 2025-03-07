@@ -1,0 +1,200 @@
+<ng-container *ngIf="techRecord() as tr">
+  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL">
+    <div class="main-dimensions" [formGroup]="form">
+      <!-- Height (PSV only)-->
+      <govuk-form-group-input
+        *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV"
+        formControlName="techRecord_dimensions_height"
+        label="Height"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      ></govuk-form-group-input>
+
+      <!-- Length-->
+      <govuk-form-group-input
+        formControlName="techRecord_dimensions_length"
+        label="Length"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+        [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
+          ? []
+          : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+      ></govuk-form-group-input>
+
+      <!-- Width-->
+      <govuk-form-group-input
+        formControlName="techRecord_dimensions_width"
+        label="Width"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+        [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
+          ? []
+          : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+      ></govuk-form-group-input>
+
+      <!-- Front axle to rear axle-->
+      <govuk-form-group-input
+        formControlName="techRecord_frontAxleToRearAxle"
+        label="Front axle to rear axle"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      ></govuk-form-group-input>
+
+      <!-- Rear axle to rear of trailer (TRL only) -->
+      <govuk-form-group-input
+        *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL"
+        formControlName="techRecord_rearAxleToRearTrl"
+        label="Rear axle to rear of trailer"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      ></govuk-form-group-input>
+
+      <!-- Axles spacings (HGV and TRL) -->
+      <ng-container *ngIf="tr.techRecord_vehicleType !== VehicleTypes.PSV" formArrayName="techRecord_dimensions_axleSpacing">
+        <ng-container *ngFor="let axle of axleSpacings?.controls; let i = index" [formGroup]="axle">
+          <govuk-form-group-input
+            [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
+            formControlName="value"
+            label="Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)"
+            [width]="Widths.XS"
+            suffix="mm"
+            type="number"
+          ></govuk-form-group-input>
+        </ng-container>
+      </ng-container>
+
+      <!-- TRL only fields -->
+      <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL">
+        <div class="min-max-container">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Coupling centre to rear axle
+          </span>
+
+          <div class="min-max">
+            <!-- Coupling centre to rear axle minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_couplingCenterToRearAxleMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+
+            <!-- Coupling centre to rear axle maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_couplingCenterToRearAxleMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+
+        <div class="min-max-container">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Coupling centre to rear of trailer
+          </span>
+
+          <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMinWarning"></app-field-warning-message>
+          <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMaxWarning"></app-field-warning-message>
+
+          <div class="min-max">
+            <!-- Coupling centre to rear of trailer minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_couplingCenterToRearTrlMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
+                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+                : []"
+            ></govuk-form-group-input>
+
+            <!-- Coupling centre to rear of trailer maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_couplingCenterToRearTrlMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
+                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+                : []"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+
+        <!-- Centre of rear axle to rear of trailer -->
+        <govuk-form-group-input
+          formControlName="techRecord_centreOfRearmostAxleToRearOfTrl"
+          label="Centre of rear axle to rear of trailer"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        ></govuk-form-group-input>
+      </ng-container>
+
+      <!-- HGV only fields -->
+      <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV">
+        <div class="min-max-container">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Front of vehicle to 5th wheel coupling
+          </span>
+
+          <div class="min-max">
+            <!-- Front of vehicle to 5th wheel coupling minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+
+            <!-- Front of vehicle to 5th wheel coupling maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+
+        <div class="min-max-container">
+            <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Front axle to 5th wheel coupling
+          </span>
+
+          <div class="min-max">
+            <!-- Front axle to 5th wheel coupling minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontAxleTo5thWheelMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+
+            <!-- Front axle to 5th wheel coupling maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontAxleTo5thWheelMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>

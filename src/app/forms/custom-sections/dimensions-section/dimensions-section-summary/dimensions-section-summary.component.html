@@ -1,0 +1,178 @@
+<ng-container *ngIf="amendedTechRecord() as vm">
+  <!-- HGV Changes -->
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_length')">
+        <dt class="govuk-summary-list__key">Length</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+          {{ vm.techRecord_dimensions_length }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_width')">
+        <dt class="govuk-summary-list__key">Width</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+          {{ vm.techRecord_dimensions_width }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleToRearAxle')">
+        <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+          {{ vm.techRecord_frontAxleToRearAxle }}
+        </dd>
+      </div>
+      <ng-container *ngFor="let axleSpacing of vm.techRecord_dimensions_axleSpacing; let i = index">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </ng-container>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front of vehicle to 5th wheel coupling</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontVehicleTo5thWheelCouplingMin')">
+        <dt class="govuk-summary-list__key">Minimum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontVehicleTo5thWheelCouplingMin">
+          {{ vm.techRecord_frontVehicleTo5thWheelCouplingMin }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontVehicleTo5thWheelCouplingMax')">
+        <dt class="govuk-summary-list__key">Maximum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontVehicleTo5thWheelCouplingMax">
+          {{ vm.techRecord_frontVehicleTo5thWheelCouplingMax }}
+        </dd>
+      </div>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front axle to 5th wheel coupling</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleTo5thWheelMin')">
+        <dt class="govuk-summary-list__key">Minimum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleTo5thWheelMin">
+          {{ vm.techRecord_frontAxleTo5thWheelMin }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleTo5thWheelMax')">
+        <dt class="govuk-summary-list__key">Maximum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleTo5thWheelMax">
+          {{ vm.techRecord_frontAxleTo5thWheelMax }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+
+  <!-- PSV Changes -->
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_height')">
+        <dt class="govuk-summary-list__key">Height</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_height">
+          {{ vm.techRecord_dimensions_height }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_length')">
+        <dt class="govuk-summary-list__key">Length</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+          {{ vm.techRecord_dimensions_length }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_width')">
+        <dt class="govuk-summary-list__key">Width</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+          {{ vm.techRecord_dimensions_width }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleToRearAxle')">
+        <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+          {{ vm.techRecord_frontAxleToRearAxle }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+
+  <!-- TRL Changes -->
+  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_length')">
+        <dt class="govuk-summary-list__key">Length</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+          {{ vm.techRecord_dimensions_length }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_dimensions_width')">
+        <dt class="govuk-summary-list__key">Width</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+          {{ vm.techRecord_dimensions_width }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_frontAxleToRearAxle')">
+        <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+          {{ vm.techRecord_frontAxleToRearAxle }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_rearAxleToRearTrl')">
+        <dt class="govuk-summary-list__key">Rear axle to rear of trailer</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_rearAxleToRearTrl">
+          {{ vm.techRecord_rearAxleToRearTrl }}
+        </dd>
+      </div>
+      <ng-container *ngFor="let axleSpacing of vm.techRecord_dimensions_axleSpacing; let i = index">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </ng-container>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear axle</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearAxleMin')">
+        <dt class="govuk-summary-list__key">Minimum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMin">
+          {{ vm.techRecord_couplingCenterToRearAxleMin }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearAxleMax')">
+        <dt class="govuk-summary-list__key">Maximum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMax">
+          {{ vm.techRecord_couplingCenterToRearAxleMax }}
+        </dd>
+      </div>
+    </dl>
+
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear of trailer</h3>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearTrlMin')">
+        <dt class="govuk-summary-list__key">Minimum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearTrlMin">
+          {{ vm.techRecord_couplingCenterToRearTrlMin }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_couplingCenterToRearTrlMax')">
+        <dt class="govuk-summary-list__key">Maximum</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearTrlMax">
+          {{ vm.techRecord_couplingCenterToRearTrlMax }}
+        </dd>
+      </div>
+    </dl>
+
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_centreOfRearmostAxleToRearOfTrl')">
+        <dt class="govuk-summary-list__key">Centre of rear axle to rear of trailer</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_centreOfRearmostAxleToRearOfTrl">
+          {{ vm.techRecord_centreOfRearmostAxleToRearOfTrl }}
+        </dd>
+      </div>
+    </dl>
+  </ng-container>
+</ng-container>
