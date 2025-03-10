@@ -72,7 +72,7 @@
     </div>
   </dl>
 
-  <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
+  <app-accordion-control [sectionState]="sectionTemplatesState$ | async">
     <ng-container *ngFor="let section of customVehicleTemplate; let i = index">
       <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
         <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
