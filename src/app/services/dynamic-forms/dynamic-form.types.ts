@@ -107,7 +107,6 @@ export interface FormNode {
 	link?: string;
 	delimited?: { regex?: string; separator: string };
 	value?: unknown;
-	valueFormat?: FormNodeValueFormat;
 	path?: string;
 	options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
 	validators?: FormNodeValidator[];
@@ -131,10 +130,7 @@ export interface FormNode {
 	groups?: string[];
 	viewComponent?: typeof BaseControlComponent;
 	editComponent?: typeof BaseControlComponent;
-}
-
-export enum FormNodeValueFormat {
-	UPPERCASE = 'uppercase',
+	uppercase?: boolean;
 }
 
 export interface CustomTag {
