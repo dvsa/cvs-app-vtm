@@ -224,4 +224,24 @@ describe('CreateTestRecordComponent', () => {
 
 		expect(component.testMode).toEqual(TestModeEnum.Edit);
 	});
+
+	describe('shouldShowAbandonButton', () => {
+		it('should return true if test is not a desk based or LEC test', async () => {
+			component.testTypeId = '94'; // HGV - Annual Test
+
+			expect(component.shouldShowAbandonButton).toEqual(true);
+		});
+
+		it('should return false if test is an LEC test', async () => {
+			component.testTypeId = '45'; // HGV - LEC without linked test
+
+			expect(component.shouldShowAbandonButton).toEqual(false);
+		});
+
+		it('should return false if test is a desk based test', async () => {
+			component.testTypeId = '441'; // HGV - Type approved tractor unit Test
+
+			expect(component.shouldShowAbandonButton).toEqual(false);
+		});
+	});
 });

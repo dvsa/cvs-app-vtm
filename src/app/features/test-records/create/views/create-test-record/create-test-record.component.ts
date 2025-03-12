@@ -7,11 +7,11 @@ import { GlobalWarningService } from '@core/components/global-warning/global-war
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@models/testTypeId.enum';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
@@ -19,9 +19,8 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { State } from '@store/index';
 import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
-import { getTypeOfTest } from '@store/test-types/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, map, of, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, of, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -207,11 +206,11 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		}
 	}
 
-	get isDeskBased() {
-		return this.store.pipe(
-			select(getTypeOfTest(this.testTypeId)),
-			map((typeOfTest) => typeOfTest === TypeOfTest.DESK_BASED)
+	get shouldShowAbandonButton(): boolean {
+		const isDeskBasedOrLECTest = [...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(
+			this.testTypeId ?? ''
 		);
+		return !isDeskBasedOrLECTest;
 	}
 
 	public get TestModeEnum(): typeof TestModeEnum {
