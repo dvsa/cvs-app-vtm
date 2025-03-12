@@ -167,6 +167,10 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 			forms.push(this.baseTestRecordComponent.defects.form);
 		}
 
+		if (this.baseTestRecordComponent?.customDefects) {
+			forms.push(this.baseTestRecordComponent.customDefects.form);
+		}
+
 		if (this.testMode === TestModeEnum.Abandon && this.abandonDialog?.dynamicFormGroup) {
 			forms.push(this.abandonDialog.dynamicFormGroup.form);
 		}

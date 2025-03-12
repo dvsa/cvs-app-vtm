@@ -31,14 +31,20 @@
       <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
     </div>
     <div class="govuk-grid-column-one-third">
-      <app-button id="remove-defect" type="button" design="link" class="float-right" (clicked)="removeCustomDefect.emit(index)"
-        >Remove defect</app-button
-      >
+      <app-button id="remove-defect" type="button" design="link" class="float-right" (clicked)="removeCustomDefect.emit(index)">
+        Remove defect
+      </app-button>
     </div>
   </div>
   <ng-container [formGroup]="form">
-    <app-text-input *ngIf="templateName === 'customDefectsSection'" formControlName="referenceNumber" label="Reference Number" [width]="30"></app-text-input>
-    <app-text-input formControlName="defectName" label="Defect Name" [width]="30"></app-text-input>
-    <app-text-area formControlName="defectNotes" label="Defect Notes"></app-text-area>
+    <app-text-input 
+      *ngIf="templateName === 'customDefectsSection'" 
+      formControlName="referenceNumber" 
+      label="Reference Number" 
+      [width]="30"
+      customId="referenceNumber"
+    ></app-text-input>
+    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" customId="defectName"></app-text-input>
+    <app-text-area formControlName="defectNotes" label="Defect Notes" customId="defectNotes"></app-text-area>
   </ng-container>
 </ng-template>
