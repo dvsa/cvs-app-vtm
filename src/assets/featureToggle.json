@@ -11,5 +11,6 @@
   "FsApprovalType": true,
   "FsLastApplicant": true,
   "FsPlates": true,
-  "FsDimensions": true
+  "FsDimensions": true,
+  "FsPurchasers": true
 }
