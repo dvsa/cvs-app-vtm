@@ -136,6 +136,20 @@
         </ng-container>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'purchaserSection'">
+        <ng-container *ngIf="techRecordEdited.techRecord_vehicleType === 'trl'">
+          <!-- New Purchaser section -->
+          <ng-container *ngIf="featureToggleService.isFeatureEnabled('FsPurchasers'); else oldPurchaserSection">
+            <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+          </ng-container>
+
+          <!-- Old Purchaser section -->
+          <ng-template #oldPurchaserSection>
+            <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+
       <ng-container *ngSwitchCase="'approvalSection'">
         <ng-container
           *ngIf="
