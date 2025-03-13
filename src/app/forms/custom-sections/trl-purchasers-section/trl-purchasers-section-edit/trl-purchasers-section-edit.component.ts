@@ -93,7 +93,7 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(60, 'Address line 2 must be less than or equal to 60 characters'),
 			]),
 			techRecord_purchaserDetails_postTown: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Town or City must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Town or city must be less than or equal to 60 characters'),
 			]),
 			techRecord_purchaserDetails_address3: this.fb.control(null, [
 				this.commonValidators.maxLength(60, 'County must be less than or equal to 60 characters'),
@@ -112,7 +112,7 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 				),
 			]),
 			techRecord_purchaserDetails_faxNumber: this.fb.control(null, [
-				this.commonValidators.maxLength(25, 'Fax number must be less than or equal to 25 characters'),
+				this.commonValidators.maxLength(25, 'Fax Number must be less than or equal to 25 characters'),
 			]),
 			techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
 				this.commonValidators.maxLength(1024, 'Purchaser notes must be less than or equal to 1024 characters'),
