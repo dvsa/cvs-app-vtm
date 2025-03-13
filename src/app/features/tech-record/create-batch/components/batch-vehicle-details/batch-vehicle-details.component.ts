@@ -15,7 +15,7 @@ import {
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, take } from 'rxjs';
 
 @Component({
 	selector: 'app-batch-vehicle-details',
@@ -165,20 +165,27 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	async isFormValid(): Promise<boolean> {
+		console.log('test 1');
 		this.globalErrorService.clearErrors();
 		this.form.markAllAsTouched();
+		console.log('test 2');
 
 		const errors: GlobalError[] = [];
 
 		DynamicFormService.validate(this.form, errors, true);
-		await firstValueFrom(this.formStatus);
-
 		if (errors?.length) {
+			console.log('test 3');
 			this.globalErrorService.setErrors(errors);
 		}
-
+		console.log('test 4');
 		if (this.cleanEmptyValues(this.vehicles.value).length === 0) {
+			console.log('test 5');
 			this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
+			return false;
+		}
+		if (this.form.status !== 'VALID') {
+			console.log(this.form.status);
+			console.log(this.form);
 			return false;
 		}
 		const duplicates = this.checkDuplicateVins(this.vehicles.value);
@@ -189,6 +196,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 					anchorLink: `input-vin${element.anchor.toString()}`,
 				});
 			});
+			console.log('test 6');
 			return false;
 		}
 		return this.form.valid;
