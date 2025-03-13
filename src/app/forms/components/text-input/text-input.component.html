@@ -24,9 +24,11 @@
       [class]="style"
       [(ngModel)]="value"
       [disabled]="disabled"
-      (ngModelChange)="handleChange($event)"
+      (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event); blur.emit($event)"
       (focus)="handleEvent($event)"
+      appToUppercase
+      [uppercase]="uppercase || false"
     />
 
     <input

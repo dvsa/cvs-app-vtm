@@ -44,11 +44,11 @@ describe('BatchVehicleDetailsComponent', () => {
 	describe('isFormValid', () => {
 		it('should throw an error if there are no vehicles', async () => {
 			jest.spyOn(component, 'formStatus', 'get').mockImplementationOnce(() => of('VALID'));
-			component.vehicles.push(component.vehicleForm);
-			component.vehicleForm.get('vin')?.clearAsyncValidators();
+			component.vehicles.push(component.vehicleForm(0));
+			component.vehicleForm(0).get('vin')?.clearAsyncValidators();
 
 			await component.isFormValid();
-			component.vehicleForm.updateValueAndValidity();
+			component.vehicleForm(0).updateValueAndValidity();
 			expect(mockGlobalErrorService.addError).toHaveBeenCalledWith({
 				error: 'At least 1 vehicle must be created or updated in a batch',
 			});
