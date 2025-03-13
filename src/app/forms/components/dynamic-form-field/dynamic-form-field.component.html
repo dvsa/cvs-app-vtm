@@ -124,6 +124,7 @@
 
   <app-text-input
     *ngSwitchDefault
+    [uppercase]="control.value.meta.uppercase"
     [label]="control.value.meta.label"
     [width]="control.value.meta.width"
     [name]="control.value.meta.name"

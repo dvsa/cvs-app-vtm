@@ -40,7 +40,7 @@ export const CustomDefectsSection: FormNode = {
 											name: 'defectNotes',
 											label: 'Defect Notes',
 											type: FormNodeTypes.CONTROL,
-											validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 200 }],
+											validators: [{ name: ValidatorNames.MaxLength, args: 200 }],
 										},
 									],
 								},

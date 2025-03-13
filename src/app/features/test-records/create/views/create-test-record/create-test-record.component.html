@@ -21,7 +21,7 @@
 
       <app-button-group>
         <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
-        <app-button *ngIf="(isDeskBased | async) === false" id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()"
+        <app-button *ngIf="shouldShowAbandonButton" id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()"
           >Mark as abandoned</app-button
         >
       </app-button-group>
