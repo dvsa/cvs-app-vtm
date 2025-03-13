@@ -86,10 +86,10 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 		return FormNodeWidth;
 	}
 
-	get vehicleForm(): FormGroup {
+	vehicleForm(index: number): FormGroup {
 		return this.fb.group({
 			vin: new CustomFormControl(
-				{ name: 'vin', type: FormNodeTypes.CONTROL },
+				{ name: 'vin', type: FormNodeTypes.CONTROL, label: 'VIN', customId: `input-vin${index}` },
 				null,
 				[CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
 				this.batchTechRecordService.validateForBatch()
@@ -123,7 +123,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 
 	addVehicles(n: number): void {
 		for (let i = 0; i < n; i++) {
-			this.vehicles.push(this.vehicleForm);
+			this.vehicles.push(this.vehicleForm(i));
 		}
 	}
 
@@ -171,16 +171,14 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 		const errors: GlobalError[] = [];
 
 		DynamicFormService.validate(this.form, errors, true);
-		await firstValueFrom(this.formStatus);
-
 		if (errors?.length) {
 			this.globalErrorService.setErrors(errors);
 		}
-
 		if (this.cleanEmptyValues(this.vehicles.value).length === 0) {
 			this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
 			return false;
 		}
+		await firstValueFrom(this.formStatus);
 		const duplicates = this.checkDuplicateVins(this.vehicles.value);
 		if (duplicates.length > 0) {
 			duplicates.forEach((element) => {

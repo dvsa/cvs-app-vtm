@@ -324,7 +324,7 @@
               <ng-container *ngIf="pagination.paginationOptions | async as page">
                 <ng-container *ngFor="let note of notes.slice(page.start, page.end); let i = index">
                   <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                    <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                    <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
                     <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                     <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                   </tr>
