@@ -52,19 +52,15 @@ export class BatchTechnicalRecordService {
 				delete vinControl.meta.warning;
 
 				if (trailerIdOrVrm && vin) {
-					console.log('trailerIdOrVrm && vin');
 					return this.validateVinAndTrailerIdOrVrm(vin, trailerIdOrVrm, systemNumberControl, createdTimeStampControl);
 				}
 				if (!trailerIdOrVrm && vin) {
-					console.log('!trailerIdOrVrm && vin');
 					return this.validateVinForBatch(vinControl);
 				}
 				if (trailerIdOrVrm && !vin) {
-					console.log('trailerIdOrVrm && !vin');
 					return of({ validateForBatch: { message: 'VIN is required' } });
 				}
 			}
-			console.log('return of(null)');
 			return of(null);
 		};
 	}
