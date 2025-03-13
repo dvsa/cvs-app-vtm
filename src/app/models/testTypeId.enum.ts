@@ -225,6 +225,14 @@ export const TEST_TYPES_GROUP4_DESK_BASED_TEST: string[] = [
 ];
 export const TEST_TYPES_GROUP5_DESK_BASED_TEST: string[] = ['439', '441', '442', '449'];
 
+export const TEST_TYPES_ALL_DESK_BASED_TESTS = [
+	...TEST_TYPES_GROUP1_DESK_BASED_TEST,
+	...TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	...TEST_TYPES_GROUP3_DESK_BASED_TEST,
+	...TEST_TYPES_GROUP4_DESK_BASED_TEST,
+	...TEST_TYPES_GROUP5_DESK_BASED_TEST,
+];
+
 // Test Type IDs that generate VTP12/VTG12 documentation on test abandonment
 export const TEST_TYPES_VTP_VTG_12 = [...VTG_VTP_12_TEST.IDS];
 
