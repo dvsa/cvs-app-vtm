@@ -37,10 +37,9 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
 						{
 							name: 'additionalCommentsForAbandon',
 							type: FormNodeTypes.CONTROL,
-							required: true,
 							label: 'Additional notes as to why this test was abandoned',
 							editType: FormNodeEditTypes.TEXTAREA,
-							validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 500 }],
+							validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
 						},
 					],
 				},
