@@ -26,6 +26,10 @@ import { LastApplicantSectionComponent } from '@forms/custom-sections/last-appli
 import { PlatesSectionEditComponent } from '@forms/custom-sections/plates-section/plates-section-edit/plates-section-edit.component';
 import { PlatesSectionViewComponent } from '@forms/custom-sections/plates-section/plates-section-view/plates-section-view.component';
 import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
+import { TRLPurchasersSectionEditComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section-edit/trl-purchasers-section-edit.component';
+import { TRLPurchasersSectionSummaryComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section-summary/trl-purchasers-section-summary.component';
+import { TRLPurchasersSectionViewComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section-view/trl-purchasers-section-view.component';
+import { TRLPurchasersSectionComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/components/approval-type-number/approval-type-number';
 import { TypeApprovalSectionEditComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-edit/type-approval-section-edit.component';
 import { TypeApprovalSectionSummaryComponent } from '@forms/custom-sections/type-approval-section/type-approval-section-summary/type-approval-section-summary.component';
@@ -225,6 +229,10 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		DimensionsSectionEditComponent,
 		DimensionsSectionViewComponent,
 		DimenionsSectionSummaryComponent,
+		TRLPurchasersSectionComponent,
+		TRLPurchasersSectionEditComponent,
+		TRLPurchasersSectionSummaryComponent,
+		TRLPurchasersSectionViewComponent,
 	],
 	imports: [
 		CommonModule,
@@ -343,6 +351,10 @@ import { WeightsComponent } from './custom-sections/weights/weights.component';
 		DimensionsSectionEditComponent,
 		DimensionsSectionViewComponent,
 		DimenionsSectionSummaryComponent,
+		TRLPurchasersSectionComponent,
+		TRLPurchasersSectionEditComponent,
+		TRLPurchasersSectionSummaryComponent,
+		TRLPurchasersSectionViewComponent,
 	],
 })
 export class DynamicFormsModule {}
