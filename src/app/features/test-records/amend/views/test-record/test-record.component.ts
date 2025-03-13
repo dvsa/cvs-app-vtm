@@ -114,7 +114,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		const forms = [];
 
 		if (this.baseTestRecordComponent) {
-			const { sections, defects } = this.baseTestRecordComponent;
+			const { sections, defects, customDefects } = this.baseTestRecordComponent;
 			if (sections) {
 				sections.forEach((section) => {
 					forms.push(section.form);
@@ -123,6 +123,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
 			if (defects) {
 				forms.push(defects.form);
+			}
+
+			if (customDefects) {
+				forms.push(customDefects.form);
 			}
 		}
 

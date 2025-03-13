@@ -12,7 +12,7 @@
   <textarea
     class="govuk-textarea"
     rows="5"
-    id="{{ name }}"
+    [id]="customId ?? name"
     name="{{ name }}"
     [(ngModel)]="value"
     [disabled]="disabled"
