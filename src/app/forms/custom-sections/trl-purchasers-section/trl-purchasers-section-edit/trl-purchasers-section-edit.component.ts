@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
@@ -16,6 +17,7 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 	private readonly fb = inject(FormBuilder);
 	private readonly controlContainer = inject(ControlContainer);
 	private readonly technicalRecordService = inject(TechnicalRecordService);
+	private readonly commonValidators = inject(CommonValidatorsService);
 
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly VehicleTypes = VehicleTypes;
@@ -79,18 +81,42 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 		return null;
 	}
 
-	private get trlOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
+	private get trlOnlyFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
-			// techRecord_coifSerialNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			//   this.commonValidators.maxLength(8, 'COIF Serial number must be less than or equal to 8 characters'),
-			// ]),
-			// techRecord_coifCertifierName: this.fb.control<string | null>({ value: null, disabled: false }, [
-			//   this.commonValidators.maxLength(20, 'COIF Certifier name must be less than or equal to 20 characters'),
-			// ]),
-			// techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
-			//   this.commonValidators.date('COIF Certifier date'),
-			//   this.commonValidators.pastDate('COIF Certifier date must be in the past'),
-			// ]),
+			techRecord_purchaserDetails_name: this.fb.control(null, [
+				this.commonValidators.maxLength(150, 'Name or company must be less than or equal to 150 characters'),
+			]),
+			techRecord_purchaserDetails_address1: this.fb.control(null, [
+				this.commonValidators.maxLength(60, 'Address line 1 must be less than or equal to 60 characters'),
+			]),
+			techRecord_purchaserDetails_address2: this.fb.control(null, [
+				this.commonValidators.maxLength(60, 'Address line 2 must be less than or equal to 60 characters'),
+			]),
+			techRecord_purchaserDetails_postTown: this.fb.control(null, [
+				this.commonValidators.maxLength(60, 'Town or City must be less than or equal to 60 characters'),
+			]),
+			techRecord_purchaserDetails_address3: this.fb.control(null, [
+				this.commonValidators.maxLength(60, 'County must be less than or equal to 60 characters'),
+			]),
+			techRecord_purchaserDetails_postCode: this.fb.control(null, [
+				this.commonValidators.maxLength(12, 'Postcode must be less than or equal to 12 characters'),
+			]),
+			techRecord_purchaserDetails_telephoneNumber: this.fb.control(null, [
+				this.commonValidators.maxLength(25, 'Telephone number must be less than or equal to 25 characters'),
+			]),
+			techRecord_purchaserDetails_emailAddress: this.fb.control(null, [
+				this.commonValidators.maxLength(255, 'Email address must be less than or equal to 255 characters'),
+				this.commonValidators.pattern(
+					"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
+					'Email address Enter an email address in the correct format, like name@example.com'
+				),
+			]),
+			techRecord_purchaserDetails_faxNumber: this.fb.control(null, [
+				this.commonValidators.maxLength(25, 'Fax number must be less than or equal to 25 characters'),
+			]),
+			techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
+				this.commonValidators.maxLength(1024, 'Purchaser notes must be less than or equal to 1024 characters'),
+			]),
 		};
 	}
 }
