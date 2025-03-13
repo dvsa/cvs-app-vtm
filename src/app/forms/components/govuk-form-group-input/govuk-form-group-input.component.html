@@ -23,6 +23,7 @@
 
   <ng-container *ngIf="controlType === 'text'">
     <input
+      appNoEmojis
       id="{{ id }}"
       name="{{ id }}"
       [attr.aria-describedby]="hintId"
@@ -59,6 +60,7 @@
 
   <ng-container *ngIf="controlType === 'numericString'">
     <input
+      appNoEmojis
       id="{{ id }}"
       name="{{ id }}"
       [attr.aria-describedby]="hintId"

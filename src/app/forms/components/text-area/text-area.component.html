@@ -10,6 +10,7 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
   <textarea
+    appNoEmojis
     class="govuk-textarea"
     rows="5"
     [id]="customId ?? name"

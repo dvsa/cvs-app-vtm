@@ -40,7 +40,8 @@
           <label id="techRecord_adrDetails_applicantDetails_name-label"> Name </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_applicantDetails_name-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_name" />
-        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_name" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_applicantDetails_name" />
       </div>
 
       <!-- Applicant Details Street -->
@@ -49,7 +50,8 @@
           <label id="techRecord_adrDetails_applicantDetails_street-label"> Street </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_applicantDetails_street-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_street" />
-        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_street" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_applicantDetails_street" />
       </div>
 
       <!-- Applicant Details Town -->
@@ -58,7 +60,8 @@
           <label id="techRecord_adrDetails_applicantDetails_town"> Town </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_applicantDetails_town-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_town" />
-        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_town" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_applicantDetails_town" />
       </div>
 
       <!-- Applicant Details City -->
@@ -67,7 +70,8 @@
           <label id="techRecord_adrDetails_applicantDetails_city-label"> City </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_applicantDetails_city-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_city" />
-        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_city" class="govuk-input--width-20" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_applicantDetails_city" class="govuk-input--width-20" />
       </div>
 
       <!-- Applicant Details Postcode -->
@@ -76,7 +80,8 @@
           <label id="techRecord_adrDetails_applicantDetails_postcode-label"> Postcode </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_applicantDetails_postcode-error" [control]="form.controls.techRecord_adrDetails_applicantDetails_postcode" />
-        <input govukInput formControlName="techRecord_adrDetails_applicantDetails_postcode" class="govuk-input--width-10" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_applicantDetails_postcode" class="govuk-input--width-10" />
       </div>
     </ng-container>
 
@@ -133,19 +138,22 @@
               <div>
                 <div>
                   <label id="techRecord_adrDetails_vehicleDetails_approvalDate-day-label">Day</label>
-                  <input class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="day" />
+                  <input
+                    appNoEmojis class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="day" />
                 </div>
               </div>
               <div>
                 <div>
                   <label id="techRecord_adrDetails_vehicleDetails_approvalDate-month-label">Month</label>
-                  <input class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="month" />
+                  <input
+                    appNoEmojis class="govuk-input--width-2" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="month" />
                 </div>
               </div>
               <div>
                 <div>
                   <label id="techRecord_adrDetails_vehicleDetails_approvalDate-year-label">Year</label>
-                  <input class="govuk-input--width-4" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="year" />
+                  <input
+                    appNoEmojis class="govuk-input--width-4" govukDateInput="techRecord_adrDetails_vehicleDetails_approvalDate" formControlName="year" />
                 </div>
               </div>
             </div>
@@ -263,7 +271,8 @@
           <label id="techRecord_adrDetails_adrTypeApprovalNo-label"> ADR type approval number </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_adrTypeApprovalNo-error" [control]="form.controls.techRecord_adrDetails_adrTypeApprovalNo" />
-        <input govukInput formControlName="techRecord_adrDetails_adrTypeApprovalNo" class="govuk-input--width-10" />
+        <input
+          appNoEmojis govukInput formControlName="techRecord_adrDetails_adrTypeApprovalNo" class="govuk-input--width-10" />
       </div>
     </ng-container>
 
@@ -279,7 +288,8 @@
             <label id="techRecord_adrDetails_tank_tankDetails_tankManufacturer-label"> Tank Make </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankManufacturer-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
-          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer" />
         </div>
 
         <!-- Tank Year of manufacture -->
@@ -290,7 +300,8 @@
             </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_yearOfManufacture-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_yearOfManufacture" />
-          <input type="number" govukInput formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture" class="govuk-input--width-4" />
+          <input
+            appNoEmojis type="number" govukInput formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture" class="govuk-input--width-4" />
         </div>
 
         <!-- Tank manufacturer serial number -->
@@ -301,7 +312,8 @@
             </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" />
-          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" class="govuk-input--width-10" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo" class="govuk-input--width-10" />
         </div>
 
         <!-- Tank type approval number -->
@@ -310,7 +322,8 @@
             <label id="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo-label"> Tank type approval number </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" />
-          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" class="govuk-input--width-10" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo" class="govuk-input--width-10" />
         </div>
 
         <!-- Tank code -->
@@ -319,7 +332,8 @@
             <label id="techRecord_adrDetails_tank_tankDetails_tankCode-label"> Code </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankCode-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankCode" />
-          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankCode" class="govuk-input--width-10" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankCode" class="govuk-input--width-10" />
         </div>
 
         <!-- Substances permitted -->
@@ -385,7 +399,8 @@
                 </label>
               </h1>
               <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_statement-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
-              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
+              <input
+                appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement" />
             </div>
           </ng-container>
 
@@ -399,7 +414,8 @@
                 </label>
               </h1>
               <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
-              <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
+              <input
+                appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo" />
             </div>
 
             <!-- UN numbers -->
@@ -422,6 +438,7 @@
                       <tr class="govuk-table__row">
                         <td class="govuk-table__cell">
                           <input
+                            appNoEmojis
                             id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                             type="text"
                             name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
@@ -440,6 +457,7 @@
                  </ng-container>
                  <ng-template #singleUnNumber>
                     <input
+                      appNoEmojis
                       id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                       type="text"
                       name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
@@ -460,7 +478,7 @@
                 <label id="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-label">Additional Details </label>
               </h1>
               <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productList" />
-              <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"></textarea>
+              <textarea appNoEmojis govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"></textarea>
               <app-character-count for="techRecord_adrDetails_tank_tankDetails_tankStatement_productList" [limit]="1500" />
             </div>
           </ng-container>
@@ -473,7 +491,7 @@
           <label id="techRecord_adrDetails_tank_tankDetails_specialProvisions-label"> Special Provisions </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_specialProvisions-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_specialProvisions" />
-        <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
+        <textarea appNoEmojis govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
         <app-character-count for="techRecord_adrDetails_tank_tankDetails_specialProvisions" [limit]="1024" />
       </div>
 
@@ -490,7 +508,8 @@
             </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
-          <input govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo" />
         </div>
 
         <!-- TC2: Expiry Date -->
@@ -509,19 +528,22 @@
               <div>
                 <div>
                   <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-day-label">Day</label>
-                  <input class="govuk-input--width-2" formControlName="day" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                  <input
+                    appNoEmojis class="govuk-input--width-2" formControlName="day" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
                 </div>
               </div>
               <div>
                 <div>
                   <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-month-label">Month</label>
-                  <input class="govuk-input--width-2" formControlName="month" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                  <input
+                    appNoEmojis class="govuk-input--width-2" formControlName="month" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
                 </div>
               </div>
               <div>
                 <div>
                   <label id="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate-year-label">Year</label>
-                  <input class="govuk-input--width-4" formControlName="year" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
+                  <input
+                    appNoEmojis class="govuk-input--width-4" formControlName="year" govukDateInput="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate" />
                 </div>
               </div>
             </div>
@@ -556,6 +578,7 @@
               </h1>
               <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3PeriodicNumber-error" [control]="$any(inspection.get('tc3PeriodicNumber'))" />
               <input
+                appNoEmojis
                 type="text"
                 name="tc3PeriodicNumber"
                 formControlName="tc3PeriodicNumber"
@@ -575,19 +598,22 @@
                     <div>
                       <div>
                         <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-day"> Day </label>
-                        <input formControlName="day" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
+                        <input
+                          appNoEmojis formControlName="day" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
                       </div>
                     </div>
                     <div>
                       <div>
                         <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-month"> Month </label>
-                        <input formControlName="month" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
+                        <input
+                          appNoEmojis formControlName="month" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-2" />
                       </div>
                     </div>
                     <div>
                       <div>
                         <label for="tc3PeriodicExpiryDate-{{ i + 1 }}-year"> Year </label>
-                        <input formControlName="year" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-4" />
+                        <input
+                          appNoEmojis formControlName="year" govukDateInput="tc3PeriodicExpiryDate-{{ i + 1 }}" class="govuk-input--width-4" />
                       </div>
                     </div>
                   </div>
@@ -694,7 +720,8 @@
             <label id="techRecord_adrDetails_batteryListNumber-label"> Reference number </label>
           </h1>
           <app-control-errors elementId="techRecord_adrDetails_batteryListNumber-error" [control]="form.controls.techRecord_adrDetails_batteryListNumber" />
-          <input govukInput formControlName="techRecord_adrDetails_batteryListNumber" class="govuk-input--width-10" />
+          <input
+            appNoEmojis govukInput formControlName="techRecord_adrDetails_batteryListNumber" class="govuk-input--width-10" />
         </div>
       </ng-container>
     </ng-container>
@@ -734,7 +761,7 @@
           <label id="techRecord_adrDetails_brakeDeclarationIssuer-label"> Issuer </label>
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_brakeDeclarationIssuer-error" [control]="form.controls.techRecord_adrDetails_brakeDeclarationIssuer" />
-        <textarea govukTextarea formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
+        <textarea appNoEmojis govukTextarea formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
         <app-character-count for="techRecord_adrDetails_brakeDeclarationIssuer" [limit]="500" />
       </div>
 
@@ -766,7 +793,8 @@
         </h1>
         <app-control-errors elementId="techRecord_adrDetails_weight-error" [control]="form.controls.techRecord_adrDetails_weight" />
         <div class="govuk-input__wrapper">
-          <input type="number" govukInput appNumberOnly class="govuk-input--width-5" spellcheck="false" formControlName="techRecord_adrDetails_weight" />
+          <input
+            appNoEmojis type="number" govukInput appNumberOnly class="govuk-input--width-5" spellcheck="false" formControlName="techRecord_adrDetails_weight" />
           <div class="govuk-input__suffix" aria-hidden="true">Tonnes</div>
         </div>
       </div>
@@ -824,7 +852,7 @@
       </h1>
       <div id="techRecord_adrDetails_additionalExaminerNotes_note-hint" class="govuk-hint">Will not be present on the ADR certificate</div>
       <app-control-errors elementId="techRecord_adrDetails_additionalExaminerNotes_note-error" [control]="form.controls.techRecord_adrDetails_additionalExaminerNotes_note" />
-      <textarea govukTextarea formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
+      <textarea appNoEmojis govukTextarea formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
       <app-character-count for="techRecord_adrDetails_additionalExaminerNotes_note" [limit]="1024" />
     </div>
 
@@ -871,7 +899,7 @@
         <label id="techRecord_adrDetails_adrCertificateNotes-label"> ADR Certificate Notes </label>
       </h1>
       <app-control-errors elementId="techRecord_adrDetails_adrCertificateNotes-error" [control]="form.controls.techRecord_adrDetails_adrCertificateNotes" />
-      <textarea govukTextarea formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
+      <textarea appNoEmojis govukTextarea formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
       <app-character-count for="techRecord_adrDetails_adrCertificateNotes" [limit]="1500" />
     </div>
   </ng-container>

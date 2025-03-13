@@ -27,6 +27,7 @@ import { PaginationComponent } from '../components/pagination/pagination.compone
 import { RouterOutletComponent } from '../components/router-outlet/router-outlet.component';
 import { TagComponent } from '../components/tag/tag.component';
 import { TestCertificateComponent } from '../components/test-certificate/test-certificate.component';
+import { NoEmojisDirective } from '../directives/no-emojis/no-emojis.directive';
 import { DefaultNullOrEmpty } from '../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DigitGroupSeparatorPipe } from '../pipes/digit-group-separator/digit-group-separator.pipe';
 import { FormatVehicleTypePipe } from '../pipes/format-vehicle-type/format-vehicle-type.pipe';
@@ -73,6 +74,7 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukRadioDirective,
 		TagDirective,
 		MultiOptionPipe,
+		NoEmojisDirective,
 	],
 	imports: [CommonModule, RouterModule, GovukDateInputDirective],
 	exports: [
@@ -110,6 +112,7 @@ import { TyreAxleLoadPipe } from '../pipes/tyre-axle-load/tyre-axle-load.pipe';
 		GovukRadioDirective,
 		TagDirective,
 		MultiOptionPipe,
+		NoEmojisDirective,
 	],
 })
 export class SharedModule {}

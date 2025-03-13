@@ -17,6 +17,7 @@
         <div id="searchInput">
           <label class="govuk-label" for="searchFilter">Search Term</label>
           <input
+            appNoEmojis
             id="refSearch"
             #searchTerm
             [formControlName]="form.meta.children![1].name"
