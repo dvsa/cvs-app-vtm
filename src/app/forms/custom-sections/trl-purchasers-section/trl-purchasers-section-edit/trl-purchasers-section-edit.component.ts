@@ -115,7 +115,7 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(25, 'Fax Number must be less than or equal to 25 characters'),
 			]),
 			techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
-				this.commonValidators.maxLength(1024, 'Purchaser notes must be less than or equal to 1024 characters'),
+				this.commonValidators.maxLength(1024, 'Purchaser Notes must be less than or equal to 1024 characters'),
 			]),
 		};
 	}
