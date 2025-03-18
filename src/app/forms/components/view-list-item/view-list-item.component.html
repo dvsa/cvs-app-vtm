@@ -38,7 +38,7 @@
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all">
+      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all whitespace-pre-wrap">
         {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
       </td>
     </ng-container>

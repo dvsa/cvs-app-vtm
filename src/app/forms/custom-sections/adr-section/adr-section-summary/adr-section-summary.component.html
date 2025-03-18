@@ -184,7 +184,7 @@
               </div>
               <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')">
                 <dt class="govuk-summary-list__key">Special provisions</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
+                <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
                   {{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}
                 </dd>
               </div>
@@ -330,7 +330,7 @@
             <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Additional Examiner Notes</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalExaminerNotes">
+                <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_additionalExaminerNotes">
                   {{ amended.techRecord_adrDetails_additionalExaminerNotes_note | defaultNullOrEmpty }}
                 </dd>
               </div>
@@ -351,7 +351,7 @@
                 <ng-container *ngIf="pagination.paginationOptions | async as page">
                   <ng-container *ngFor="let note of notes.slice(page.start, page.end); let i = index">
                     <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                      <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                      <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
                       <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                       <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                     </tr>

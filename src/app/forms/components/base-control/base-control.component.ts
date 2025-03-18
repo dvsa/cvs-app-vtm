@@ -11,12 +11,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@directives/prefix/prefix.directive';
 import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { ValidatorNames } from '@models/validators.enum';
-import {
-	CustomControl,
-	FormNodeValueFormat,
-	FormNodeViewTypes,
-	FormNodeWidth,
-} from '@services/dynamic-forms/dynamic-form.types';
+import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -84,11 +79,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	}
 
 	set value(value) {
-		if (typeof value === 'string') {
-			this.control_value = this.formatString(value);
-		} else {
-			this.control_value = value;
-		}
+		this.control_value = value;
 	}
 
 	get disabled() {
@@ -126,14 +117,5 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
 	trackBy(i: number) {
 		return i;
-	}
-
-	formatString(value: string) {
-		switch (this.control?.meta.valueFormat) {
-			case FormNodeValueFormat.UPPERCASE:
-				return value.toUpperCase();
-			default:
-				return value;
-		}
 	}
 }

@@ -177,7 +177,7 @@
           </div>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Special provisions</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
+            <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
               {{ vm.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}
             </dd>
           </div>
@@ -202,7 +202,7 @@
             </dd>
           </div>
         </dl>
-        
+
         <!-- Subsequent inspections -->
         <dl class="govuk-summary-list" *ngIf="vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length">
           <ng-container *ngFor="let inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; let i = index">
@@ -324,7 +324,7 @@
               <ng-container *ngIf="pagination.paginationOptions | async as page">
                 <ng-container *ngFor="let note of notes.slice(page.start, page.end); let i = index">
                   <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                    <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                    <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
                     <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                     <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                   </tr>

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
-import { CustomFormControl, FormNodeTypes, FormNodeValueFormat } from '@services/dynamic-forms/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TextInputComponent } from '../text-input.component';
 
 describe('TextInputComponent', () => {
@@ -11,7 +11,6 @@ describe('TextInputComponent', () => {
 		name: 'foo',
 		type: FormNodeTypes.CONTROL,
 		children: [],
-		valueFormat: FormNodeValueFormat.UPPERCASE,
 	};
 
 	beforeEach(async () => {
@@ -37,16 +36,5 @@ describe('TextInputComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
-	});
-
-	describe('handleChange', () => {
-		it('should call the formatString method if the value is a string', () => {
-			const formatString = jest.spyOn(component, 'formatString');
-			const onChange = jest.spyOn(component, 'onChange');
-			component.handleChange('string');
-			expect(formatString).toHaveBeenCalled();
-			expect(onChange).toHaveBeenCalledWith('STRING');
-			expect(component.value).toBe('STRING');
-		});
 	});
 });
