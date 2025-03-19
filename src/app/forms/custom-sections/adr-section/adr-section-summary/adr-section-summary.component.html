@@ -185,7 +185,7 @@
               <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')">
                 <dt class="govuk-summary-list__key">Special provisions</dt>
                 <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}
+                  <span>{{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}</span>
                 </dd>
               </div>
             </dl>
