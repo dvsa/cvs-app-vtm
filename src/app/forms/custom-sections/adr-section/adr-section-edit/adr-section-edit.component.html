@@ -207,7 +207,7 @@
       <!-- Compatibility group J -->
 
       <ng-container *ngIf="adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))">
-        <div class="govuk-form-group-radio">
+        <div class="govuk-form-group-radio" id="techRecord_adrDetails_compatibilityGroupJ">
           <fieldset>
             <legend>
               <h1 id="techRecord_adrDetails_compatibilityGroupJ-label">Compatibility group J</h1>
@@ -842,7 +842,7 @@
             </tr>
             <ng-container *ngIf="pagination.paginationOptions | async as page">
               <tr class="govuk-table__row" *ngFor="let note of notes.slice(page.start, page.end)">
-                <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
                 <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                 <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                 <td class="govuk-table__cell">
