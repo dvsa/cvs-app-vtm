@@ -43,8 +43,9 @@
       label="Reference Number" 
       [width]="30"
       customId="referenceNumber"
+      name="referenceNumber_{{ index + 1 }}"
     ></app-text-input>
-    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" customId="defectName"></app-text-input>
-    <app-text-area formControlName="defectNotes" label="Defect Notes" customId="defectNotes"></app-text-area>
+    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" name="defectName_{{ index + 1 }}" customId="defectName"></app-text-input>
+    <app-text-area formControlName="defectNotes" label="Defect Notes" name="defectNotes{{ index + 1 }}"  customId="defectNotes"></app-text-area>
   </ng-container>
 </ng-template>

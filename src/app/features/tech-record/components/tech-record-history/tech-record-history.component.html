@@ -17,8 +17,8 @@
         <th scope="row" class="govuk-table__header" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
           {{ searchResult.techRecord_statusCode }}
         </th>
-        <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
-          {{ searchResult.techRecord_reasonForCreation }}
+        <td class="govuk-table__cell word-break whitespace-pre-wrap" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+          <span>{{ searchResult.techRecord_reasonForCreation }}</span>
         </td>
         <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
           {{ searchResult.techRecord_createdByName }}

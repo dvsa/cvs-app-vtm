@@ -39,7 +39,7 @@
 
     <ng-container *ngSwitchDefault>
       <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all whitespace-pre-wrap">
-        {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
+        <span>{{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}</span>
       </td>
     </ng-container>
   </ng-container>
