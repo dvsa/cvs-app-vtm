@@ -10,7 +10,7 @@
   "FsWeights": true,
   "FsApprovalType": true,
   "FsLastApplicant": true,
-  "FsPlates": false,
-  "FsDimensions": false,
+  "FsPlates": true,
+  "FsDimensions": true,
   "FsPurchasers": false
 }
