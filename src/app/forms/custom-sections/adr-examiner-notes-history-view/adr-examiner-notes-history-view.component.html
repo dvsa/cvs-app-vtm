@@ -1,4 +1,4 @@
-@if (control) {
+@if (control && control.meta) {
   @if (getAdditionalExaminerNotes(); as adrNotes) {
     <section class="govuk-!-margin-top-4">
       @if (control.meta.label) {
