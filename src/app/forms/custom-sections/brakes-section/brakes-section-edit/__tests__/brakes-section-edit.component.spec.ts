@@ -1,3 +1,6 @@
+import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
+import { selectBrakeByCode } from '@/src/app/store/reference-data';
+import { updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectorRef, ComponentRef } from '@angular/core';
@@ -31,12 +34,13 @@ describe('BrakesSectionEditComponent', () => {
 	let store: MockStore;
 	let optionsService: MultiOptionsService;
 
+	const mockTRL = mockVehicleTechnicalRecord('trl');
+	const mockPSV = mockVehicleTechnicalRecord('psv');
 	const actions$ = new ReplaySubject<Action>();
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'psv' | 'trl'>, FormControl>>>({});
-		const mockTechRecord = mockVehicleTechnicalRecord('psv');
 
 		await TestBed.configureTestingModule({
 			imports: [FormsModule, ReactiveFormsModule, BrakesSectionEditComponent],
@@ -66,7 +70,7 @@ describe('BrakesSectionEditComponent', () => {
 		fixture = TestBed.createComponent(BrakesSectionEditComponent);
 		component = fixture.componentInstance;
 		componentRef = fixture.componentRef;
-		componentRef.setInput('techRecord', mockTechRecord);
+		componentRef.setInput('techRecord', mockPSV);
 		component.form.reset();
 		fixture.detectChanges();
 	});
@@ -210,6 +214,49 @@ describe('BrakesSectionEditComponent', () => {
 		it('should round a negative number to the nearest integer (up)', () => {
 			const value = component.round(-6.3);
 			expect(value).toBe(-6);
+		});
+	});
+
+	describe('handleBrakeCodeChange', () => {
+		it('should early return for vehicles other than PSV', () => {
+			const spy = jest.spyOn(component.form, 'get');
+			fixture.componentRef.setInput('techRecord', mockTRL);
+			component.handleBrakeCodeChange();
+			expect(spy).not.toHaveBeenCalled();
+		});
+
+		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
+			jest.useFakeTimers();
+
+			const brakesData = {
+				resourceKey: '123',
+				resourceType: ReferenceDataResourceType.Brakes,
+				service: '123',
+				secondary: '123',
+				parking: '123',
+			};
+
+			const changes = {
+				techRecord_brakeCode: '000123',
+				techRecord_brakes_brakeCode: '000123',
+				techRecord_brakes_dataTrBrakeOne: brakesData.service,
+				techRecord_brakes_dataTrBrakeTwo: brakesData.secondary,
+				techRecord_brakes_dataTrBrakeThree: brakesData.parking,
+			};
+
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+			store.overrideSelector(selectBrakeByCode('123'), brakesData);
+			fixture.componentRef.setInput('techRecord', mockPSV);
+			component.handleBrakeCodeChange();
+			component.form.patchValue({
+				techRecord_brakes_brakeCodeOriginal: '123',
+			});
+
+			jest.advanceTimersByTime(401);
+
+			expect(dispatchSpy).toHaveBeenNthCalledWith(1, updateEditingTechRecord({ vehicleTechRecord: changes } as any));
 		});
 	});
 });
