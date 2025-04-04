@@ -1,6 +1,6 @@
 import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
-import { updateBrakeForces } from '@/src/app/store/technical-records';
+import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
@@ -162,28 +162,26 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 					const techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
 					const techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
 					const techRecord_brakes_dataTrBrakeThree = selectedBrake.parking;
-					this.form.patchValue(
-						{
-							techRecord_brakeCode,
-							techRecord_brakes_brakeCode,
-							techRecord_brakes_dataTrBrakeOne,
-							techRecord_brakes_dataTrBrakeTwo,
-							techRecord_brakes_dataTrBrakeThree,
-						},
-						{ emitEvent: false }
-					);
+
+					const changes = {
+						techRecord_brakeCode,
+						techRecord_brakes_brakeCode,
+						techRecord_brakes_dataTrBrakeOne,
+						techRecord_brakes_dataTrBrakeTwo,
+						techRecord_brakes_dataTrBrakeThree,
+					};
+
+					this.form.patchValue(changes, { emitEvent: false });
+					this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: changes } as any));
 				}
 
 				const axlesValue = this.form.get('techRecord_axles')?.value as PSVAxles[];
 
 				if (axlesValue && Array.isArray(axlesValue)) {
 					const techRecord_axles = axlesValue.filter((axle) => !!axle?.axleNumber);
-					this.form.patchValue(
-						{
-							techRecord_axles,
-						},
-						{ emitEvent: false }
-					);
+					const changes = { techRecord_axles };
+					this.form.patchValue(changes, { emitEvent: false });
+					this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: changes } as any));
 				}
 
 				if (value) {
