@@ -92,7 +92,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	private addControlsBasedOffVehicleType() {
+	addControlsBasedOffVehicleType() {
 		const vehicleControls = this.controlsBasedOffVehicleType;
 
 		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
@@ -206,7 +206,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		return null;
 	}
 
-	private get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl | FormArray>> {
+	public get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl | FormArray>> {
 		return {
 			techRecord_axles: this.fb.array([]),
 			techRecord_brakes_brakeCode: this.fb.control<string | null>(null, []),
@@ -219,7 +219,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	private get trlOnlyFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl | FormArray>> {
+	public get trlOnlyFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl | FormArray>> {
 		return {
 			techRecord_brakes_loadSensingValve: this.fb.control<boolean | null>(null, []),
 			techRecord_brakes_antilockBrakingSystem: this.fb.control<boolean | null>(null, []),
