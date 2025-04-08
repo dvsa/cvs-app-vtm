@@ -1,19 +1,17 @@
-<ng-container *ngIf="(searchResults$ | async)?.length; else noResults">
+@if ((searchResults$ | async)?.length) {
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <a class="govuk-back-link" id="multiple-search-results-back-link" (click)="navigateBack()">Back</a>
     </div>
-
-    <ng-container *ngFor="let searchResult of searchResults$ | async">
+    @for (searchResult of searchResults$ | async; track searchResult) {
       <app-single-search-result
         class="govuk-grid-column-full"
         [searchResult]="searchResult"
         *appRoleRequired="Roles.TechRecordView"
       ></app-single-search-result>
-    </ng-container>
+    }
   </div>
-</ng-container>
-
-<ng-template #noResults>
+} @else {
   <a class="govuk-link" routerLink="../../create" *appRoleRequired="Roles.TechRecordCreate">Create new tech record</a>
-</ng-template>
+}
+

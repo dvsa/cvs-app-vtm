@@ -1,21 +1,25 @@
-<ng-template [ngTemplateOutlet]="isEditing ? editCustomDefect : viewCustomDefect" [ngTemplateOutletContext]="{ data: form }"></ng-template>
+<ng-template [ngTemplateOutlet]="isEditing() ? editCustomDefect : viewCustomDefect" [ngTemplateOutletContext]="{ data: form() }" />
 
 <ng-template #viewCustomDefect let-data="data">
-  <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
-  <dl *ngIf="data.getCleanValue(data) as customDefect" class="govuk-summary-list">
-    <ng-template *ngIf="templateName === 'customDefectsSection'"
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Reference number', data: customDefect?.referenceNumber | defaultNullOrEmpty }"
-    ></ng-template>
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Defect name', data: customDefect?.defectName | defaultNullOrEmpty }"
-    ></ng-template>
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Defect notes', data: customDefect?.defectNotes | defaultNullOrEmpty }"
-    ></ng-template>
-  </dl>
+  <h3 class="govuk-heading-m">Defect {{ index() + 1 }}</h3>
+  @if (data.getCleanValue(data); as customDefect) {
+    <dl class="govuk-summary-list">
+      @if (templateName() === 'customDefectsSection') {
+        <ng-template
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Reference number', data: customDefect?.referenceNumber | defaultNullOrEmpty }"
+        ></ng-template>
+      }
+      <ng-template
+        [ngTemplateOutlet]="viewDefectRow"
+        [ngTemplateOutletContext]="{ label: 'Defect name', data: customDefect?.defectName | defaultNullOrEmpty }"
+      ></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="viewDefectRow"
+        [ngTemplateOutletContext]="{ label: 'Defect notes', data: customDefect?.defectNotes | defaultNullOrEmpty }"
+      ></ng-template>
+    </dl>
+  }
 </ng-template>
 
 <ng-template #viewDefectRow let-label="label" let-data="data">
@@ -28,23 +32,25 @@
 <ng-template #editCustomDefect>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
+      <h3 class="govuk-heading-m">Defect {{ index() + 1 }}</h3>
     </div>
     <div class="govuk-grid-column-one-third">
-      <app-button id="remove-defect" type="button" design="link" class="float-right" (clicked)="removeCustomDefect.emit(index)">
+      <app-button id="remove-defect" type="button" design="link" class="float-right" (clicked)="removeCustomDefect.emit(index())">
         Remove defect
       </app-button>
     </div>
   </div>
-  <ng-container [formGroup]="form">
-    <app-text-input 
-      *ngIf="templateName === 'customDefectsSection'" 
-      formControlName="referenceNumber" 
-      label="Reference Number" 
-      [width]="30"
-      customId="referenceNumber"
-    ></app-text-input>
-    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" customId="defectName"></app-text-input>
-    <app-text-area formControlName="defectNotes" label="Defect Notes" customId="defectNotes"></app-text-area>
+  <ng-container [formGroup]="form()">
+    @if (templateName() === 'customDefectsSection') {
+      <app-text-input
+        formControlName="referenceNumber"
+        label="Reference Number"
+        [width]="30"
+        customId="referenceNumber"
+        name="referenceNumber_{{ index() + 1 }}"
+      ></app-text-input>
+    }
+    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" name="defectName_{{ index() + 1 }}" customId="defectName"></app-text-input>
+    <app-text-area formControlName="defectNotes" label="Defect Notes" name="defectNotes{{ index() + 1 }}"  customId="defectNotes"></app-text-area>
   </ng-container>
 </ng-template>

@@ -1,13 +1,14 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { initialAppState } from '@store/index';
 
+import { provideHttpClient } from '@angular/common/http';
 import { SimpleChanges } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
@@ -33,9 +34,11 @@ describe('BodyComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BodyComponent],
-			imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
+			imports: [FormsModule, BodyComponent, ReactiveFormsModule],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataService,
 				{ provide: UserService, useValue: {} },
@@ -51,7 +54,7 @@ describe('BodyComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(BodyComponent);
 		component = fixture.componentInstance;
-		component.techRecord = {
+		fixture.componentRef.setInput('techRecord', {
 			systemNumber: 'foo',
 			createdTimestamp: 'bar',
 			vin: 'testVin',
@@ -60,7 +63,8 @@ describe('BodyComponent', () => {
 			techRecord_bodyModel: 'model',
 			techRecord_bodyType_description: 'type',
 			techRecord_chassisMake: 'chassisType',
-		} as unknown as TechRecordType<'psv'>;
+		} as unknown as TechRecordType<'psv'>);
+
 		fixture.detectChanges();
 	});
 	it('should create', () => {
@@ -69,28 +73,28 @@ describe('BodyComponent', () => {
 
 	describe('The DTpNumber value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect((component.techRecord as TechRecordType<'psv'>).techRecord_brakes_dtpNumber).toStrictEqual(
+			expect((component.techRecord() as TechRecordType<'psv'>).techRecord_brakes_dtpNumber).toStrictEqual(
 				component.form.value.techRecord_brakes_dtpNumber
 			);
 		});
 	});
 	describe('The bodyModel value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect((component.techRecord as TechRecordType<'psv'>).techRecord_bodyModel).toStrictEqual(
+			expect((component.techRecord() as TechRecordType<'psv'>).techRecord_bodyModel).toStrictEqual(
 				component.form.value.techRecord_bodyModel
 			);
 		});
 	});
 	describe('The bodyType value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect((component.techRecord as TechRecordType<'psv'>).techRecord_bodyType_description).toStrictEqual(
+			expect((component.techRecord() as TechRecordType<'psv'>).techRecord_bodyType_description).toStrictEqual(
 				component.form.controls['techRecord_bodyType_description']?.value
 			);
 		});
 	});
 	describe('The chassisMake value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect((component.techRecord as TechRecordType<'psv'>).techRecord_chassisMake).toStrictEqual(
+			expect((component.techRecord() as TechRecordType<'psv'>).techRecord_chassisMake).toStrictEqual(
 				component.form.controls['techRecord_chassisMake']?.value
 			);
 		});
@@ -108,7 +112,7 @@ describe('BodyComponent', () => {
 				techRecord_bodyModel: 'model',
 				techRecord_chassisMake: 'chassisType',
 			} as unknown as V3TechRecordModel;
-			component.techRecord = mockRecord;
+			fixture.componentRef.setInput('techRecord', mockRecord);
 
 			const dispatchSpy = jest.spyOn(asapScheduler, 'schedule');
 			component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
@@ -127,7 +131,7 @@ describe('BodyComponent', () => {
 				techRecord_chassisMake: 'chassisType',
 			} as unknown as V3TechRecordModel;
 
-			component.techRecord = mockRecord;
+			fixture.componentRef.setInput('techRecord', mockRecord);
 
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
 			component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
@@ -138,24 +142,24 @@ describe('BodyComponent', () => {
 	describe('loadOptions', () => {
 		it('should trigger the loading of HGV make ref data when viewing a HGV', () => {
 			const spy = jest.spyOn(multiOptionsService, 'loadOptions');
-			component.disableLoadOptions = false;
-			component.techRecord = createMockHgv(123);
+			fixture.componentRef.setInput('disableLoadOptions', false);
+			fixture.componentRef.setInput('techRecord', createMockHgv(123));
 			component.loadOptions();
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.HgvMake);
 		});
 
 		it('should trigger the loading of PSV make ref data when viewing a PSV', () => {
 			const spy = jest.spyOn(multiOptionsService, 'loadOptions');
-			component.disableLoadOptions = false;
-			component.techRecord = createMockPsv(123);
+			fixture.componentRef.setInput('disableLoadOptions', false);
+			fixture.componentRef.setInput('techRecord', createMockPsv(123));
 			component.loadOptions();
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.PsvMake);
 		});
 
 		it('should trigger the loading of TRL make ref data when viewing a TRL', () => {
 			const spy = jest.spyOn(multiOptionsService, 'loadOptions');
-			component.disableLoadOptions = false;
-			component.techRecord = createMockTrl(123);
+			fixture.componentRef.setInput('disableLoadOptions', false);
+			fixture.componentRef.setInput('techRecord', createMockTrl(123));
 			component.loadOptions();
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.TrlMake);
 		});
@@ -165,7 +169,7 @@ describe('BodyComponent', () => {
 		it('should use the PSV body type template to create the form when the vehicle type of the provided tech record is PSV', () => {
 			const techRecord = createMockPsv(123);
 			const dfsSpy = jest.spyOn(dynamicFormService, 'createForm');
-			component.techRecord = techRecord;
+			fixture.componentRef.setInput('techRecord', techRecord);
 			component.ngOnInit();
 			expect(dfsSpy).toHaveBeenCalledWith(PsvBodyTemplate, techRecord);
 		});
@@ -173,7 +177,7 @@ describe('BodyComponent', () => {
 		it('should use the HGV body type template to create the form when the vehicle type of the provided tech record is HGV', () => {
 			const techRecord = createMockHgv(123);
 			const dfsSpy = jest.spyOn(dynamicFormService, 'createForm');
-			component.techRecord = techRecord;
+			fixture.componentRef.setInput('techRecord', techRecord);
 			component.ngOnInit();
 			expect(dfsSpy).toHaveBeenCalledWith(HgvAndTrlBodyTemplate, techRecord);
 		});
@@ -215,7 +219,7 @@ describe('BodyComponent', () => {
 		it('should return an observable which emits PSV body make ref data when the tech record is a PSV', async () => {
 			const mockData = [{ label: 'PSV', value: 'psv' }];
 			const spy = jest.spyOn(multiOptionsService, 'getOptions').mockReturnValue(of(mockData));
-			component.techRecord = createMockPsv(123);
+			fixture.componentRef.setInput('techRecord', createMockPsv(123));
 			await expect(lastValueFrom(component.bodyMakes$)).resolves.toEqual(mockData);
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.PsvMake);
 		});
@@ -223,7 +227,7 @@ describe('BodyComponent', () => {
 		it('should return an observable which emits HGV body make ref data when the tech record is a HGV', async () => {
 			const mockData = [{ label: 'HGV', value: 'HGV' }];
 			const spy = jest.spyOn(multiOptionsService, 'getOptions').mockReturnValue(of(mockData));
-			component.techRecord = createMockHgv(123);
+			fixture.componentRef.setInput('techRecord', createMockHgv(123));
 			await expect(lastValueFrom(component.bodyMakes$)).resolves.toEqual(mockData);
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.HgvMake);
 		});
@@ -231,7 +235,7 @@ describe('BodyComponent', () => {
 		it('should return an observable which emits TRL body make ref data when the tech record is a TRL', async () => {
 			const mockData = [{ label: 'TRL', value: 'TRL' }];
 			const spy = jest.spyOn(multiOptionsService, 'getOptions').mockReturnValue(of(mockData));
-			component.techRecord = createMockTrl(123);
+			fixture.componentRef.setInput('techRecord', createMockTrl(123));
 			await expect(lastValueFrom(component.bodyMakes$)).resolves.toEqual(mockData);
 			expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.TrlMake);
 		});
@@ -244,7 +248,7 @@ describe('BodyComponent', () => {
 			const getPsvMakeDataLoadingSpy = jest
 				.spyOn(referenceDataService, 'getReferencePsvMakeDataLoading$')
 				.mockReturnValue(of(false));
-			component.techRecord = createMockPsv(123);
+			fixture.componentRef.setInput('techRecord', createMockPsv(123));
 			await expect(lastValueFrom(component.dtpNumbers$)).resolves.toEqual([{ value: 'psv', label: 'psv' }]);
 			expect(getAllSpy).toHaveBeenCalledWith(ReferenceDataResourceType.PsvMake);
 			expect(getPsvMakeDataLoadingSpy).toHaveBeenCalled();

@@ -1,5 +1,6 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -15,10 +16,35 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { amendVin, amendVinSuccess } from '@store/technical-records';
 import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { InputSpinnerComponent } from '../../../../components/input-spinner/input-spinner.component';
+import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
+import { NoSpaceDirective } from '../../../../directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '../../../../directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '../../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { SuffixDirective } from '../../../../directives/suffix/suffix.directive';
+import { TextInputComponent } from '../../../../forms/components/text-input/text-input.component';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-change-amend-vin',
 	templateUrl: './tech-record-amend-vin.component.html',
+	imports: [
+		NumberPlateComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		TextInputComponent,
+		ToUppercaseDirective,
+		NoSpaceDirective,
+		TrimWhitespaceDirective,
+		SuffixDirective,
+		InputSpinnerComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class AmendVinComponent implements OnDestroy, OnInit {
 	techRecord?: V3TechRecordModel;

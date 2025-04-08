@@ -1,8 +1,9 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { createMockHgv } from '@mocks/hgv-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AdrService } from '@services/adr/adr.service';
@@ -18,9 +19,10 @@ describe('AdrComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule],
+			imports: [FormsModule, ReactiveFormsModule, AdrComponent],
 			providers: [
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
 				{
@@ -32,7 +34,7 @@ describe('AdrComponent', () => {
 
 		fixture = TestBed.createComponent(AdrComponent);
 		component = fixture.componentInstance;
-		component.techRecord = hgv;
+		fixture.componentRef.setInput('techRecord', hgv);
 		fixture.detectChanges();
 	});
 
@@ -64,7 +66,7 @@ describe('AdrComponent', () => {
 		});
 
 		it('should not update the form if the techRecord is null', () => {
-			component.techRecord = null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+			fixture.componentRef.setInput('techRecord', null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			const testData = { test: 11 };
 			const spy = jest.spyOn(component.form, 'patchValue');
 			component.handleFormChange(testData);
@@ -74,33 +76,38 @@ describe('AdrComponent', () => {
 
 	describe('adr documentation methods', () => {
 		it('should return false if I do not have a document id', () => {
-			component.techRecord = {} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+			fixture.componentRef.setInput('techRecord', {} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			const res = component.hasAdrDocumentation();
 			expect(res).toBeFalsy();
 		});
 
 		it('should return true if I do have a document id', () => {
-			component.techRecord = { techRecord_adrDetails_documentId: '1234' } as unknown as TechRecordType<
-				'hgv' | 'lgv' | 'trl'
-			>;
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_adrDetails_documentId: '1234',
+			} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			const res = component.hasAdrDocumentation();
 			expect(res).toBeTruthy();
 		});
 
 		it('should return a map with filename in', () => {
 			const map = new Map([['adrDocumentId', 'filename']]);
-			component.techRecord.techRecord_adrDetails_documentId = 'filename';
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_adrDetails_documentId: 'filename',
+			} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			expect(component.documentParams).toStrictEqual(map);
 		});
 
 		it('should return the filename', () => {
-			component.techRecord.techRecord_adrDetails_documentId = 'filename';
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_adrDetails_documentId: 'filename',
+			} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			expect(component.fileName).toBe('filename');
 		});
 
 		it('should error if no filename', () => {
-			component.techRecord.techRecord_adrDetails_documentId = undefined;
-			// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_adrDetails_documentId: undefined,
+			} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>);
 			expect(() => {
 				component.fileName;
 			}).toThrow('Could not find ADR Documentation');

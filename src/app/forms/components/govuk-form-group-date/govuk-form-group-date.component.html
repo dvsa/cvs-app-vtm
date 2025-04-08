@@ -1,73 +1,75 @@
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset" role="group">
-   <ng-container *ngIf="controlLabel">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      <h1 class="govuk-fieldset__heading" tag>
-        {{ controlLabel }}
-        <ng-container *ngIf="tags?.length">
-          <div>
-            <app-tag *ngFor="let tag of tags" [type]="tag.colour">{{ tag.label }}</app-tag>
-          </div>
-        </ng-container>
-      </h1>
-    </legend>
-   </ng-container>
-  
-    <ng-container *ngIf="controlHint">
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
-    </ng-container>
+    @if (controlLabel()) {
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading" tag>
+          {{ controlLabel() }}
+          @if (tags().length) {
+            <div>
+              @for (tag of tags(); track tag) {
+                <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
+              }
+            </div>
+          }
+        </h1>
+      </legend>
+    }
 
-      <ng-container *ngIf="hasError">
-        <p class="govuk-error-message" id="{{ errorId }}">
-          <span class="govuk-visually-hidden">Error: </span>
-          <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
-        </p>
-      </ng-container>
-    
+    @if (controlHint()) {
+      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    }
+
+    @if (hasError) {
+      <p class="govuk-error-message" id="{{ errorId }}">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+      </p>
+    }
+
     <div [formGroup]="form" id="{{ id }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ id }}-day"> Day </label>
-          <input 
+          <input
             class="govuk-input--width-2 govuk-input govuk-date-input__input"
             id="{{ id }}-day"
             type="number"
-            inputmode="numeric" 
+            inputmode="numeric"
             formControlName="day"
             appFocusNext
             appNumberOnly
-            [disabled]="disabled"
-          />
+            [disabled]="disabled()"
+            />
         </div>
       </div>
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ id }}-month"> Month </label>
-          <input 
+          <input
             class="govuk-input--width-2 govuk-input govuk-date-input__input"
             id="{{ id }}-month"
             type="number"
-            inputmode="numeric"  
+            inputmode="numeric"
             formControlName="month"
             appFocusNext
             appNumberOnly
-            [disabled]="disabled"
-          />
+            [disabled]="disabled()"
+            />
         </div>
       </div>
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ id }}-year"> Year </label>
-          <input 
+          <input
             class="govuk-input--width-4 govuk-input govuk-date-input__input"
             id="{{ id }}-year"
             type="number"
-            inputmode="numeric" 
-            formControlName="year"             
+            inputmode="numeric"
+            formControlName="year"
             appFocusNext
             appNumberOnly
-            [disabled]="disabled"
-          />
+            [disabled]="disabled()"
+            />
         </div>
       </div>
     </div>

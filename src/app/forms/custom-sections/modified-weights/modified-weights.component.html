@@ -1,25 +1,28 @@
-<ng-container *ngIf="axleTemplate">
+@if (axleTemplate) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Axles
     </caption>
-
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th class="govuk-table__cell"></th>
-        <th *ngFor="let column of axleTemplate" scope="col" class="govuk-table__header">{{ column.label }}</th>
+        @for (column of axleTemplate; track column) {
+          <th scope="col" class="govuk-table__header">{{ column.label }}</th>
+        }
       </tr>
     </thead>
-
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let entry of changes.techRecord_axles | keyvalue">
-        <td class="govuk-table__cell">Axle {{ +entry.key + 1 }}</td>
-        <td *ngFor="let column of axleTemplate" class="govuk-table__cell">
-          {{ $any(entry.value)[column.name] }}
-        </td>
-      </tr>
-
-      <ng-container *ngIf="hgvAndtrlGrossAxleChanged && hgvChanges">
+      @for (entry of changes().techRecord_axles | keyvalue; track entry) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">Axle {{ +entry.key + 1 }}</td>
+          @for (column of axleTemplate; track column) {
+            <td class="govuk-table__cell">
+              {{ $any(entry.value)[column.name] }}
+            </td>
+          }
+        </tr>
+      }
+      @if (hgvAndtrlGrossAxleChanged && hgvChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Gross</b>
@@ -28,9 +31,8 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossEecWeight }}</td>
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossDesignWeight }}</td>
         </tr>
-      </ng-container>
-
-      <ng-container *ngIf="hgvAndtrlGrossAxleChanged && trlChanges">
+      }
+      @if (hgvAndtrlGrossAxleChanged && trlChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Gross</b>
@@ -39,9 +41,8 @@
           <td class="govuk-table__cell">{{ trlChanges.techRecord_grossEecWeight }}</td>
           <td class="govuk-table__cell">{{ trlChanges.techRecord_grossDesignWeight }}</td>
         </tr>
-      </ng-container>
-
-      <ng-container *ngIf="psvGrossAxleChanged && psvChanges">
+      }
+      @if (psvGrossAxleChanged && psvChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Gross</b>
@@ -51,9 +52,8 @@
           <td class="govuk-table__cell">{{ psvChanges.techRecord_grossGbWeight }}</td>
           <td class="govuk-table__cell">{{ psvChanges.techRecord_grossDesignWeight }}</td>
         </tr>
-      </ng-container>
-
-      <ng-container *ngIf="hgvTrainAxleChanged && hgvChanges">
+      }
+      @if (hgvTrainAxleChanged && hgvChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Train</b>
@@ -62,9 +62,8 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_trainEecWeight }}</td>
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_trainDesignWeight }}</td>
         </tr>
-      </ng-container>
-
-      <ng-container *ngIf="psvTrainAxleChanged && psvChanges">
+      }
+      @if (psvTrainAxleChanged && psvChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Train</b>
@@ -74,9 +73,8 @@
           <td class="govuk-table__cell">{{ psvChanges.techRecord_maxTrainGbWeight }}</td>
           <td class="govuk-table__cell">{{ psvChanges.techRecord_trainDesignWeight }}</td>
         </tr>
-      </ng-container>
-
-      <ng-container *ngIf="maxTrainAxleChanged && hgvChanges">
+      }
+      @if (maxTrainAxleChanged && hgvChanges) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <b>Max Train</b>
@@ -85,7 +83,7 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_maxTrainEecWeight }}</td>
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_maxTrainDesignWeight }}</td>
         </tr>
-      </ng-container>
+      }
     </tbody>
   </table>
-</ng-container>
+}

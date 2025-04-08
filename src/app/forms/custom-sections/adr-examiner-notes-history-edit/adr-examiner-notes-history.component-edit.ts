@@ -1,4 +1,4 @@
-import { KeyValue, ViewportScroller } from '@angular/common';
+import { DatePipe, KeyValue, ViewportScroller } from '@angular/common';
 import { AfterContentInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormArray, NgControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,11 +12,15 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { CollapsibleTextComponent } from '../../../components/collapsible-text/collapsible-text.component';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-adr-examiner-notes-history',
 	templateUrl: './adr-examiner-notes-history-edit.component.html',
 	styleUrls: ['adr-examiner-notes-history.component-edit.scss'],
+	imports: [CollapsibleTextComponent, PaginationComponent, DatePipe, DefaultNullOrEmpty],
 })
 export class AdrExaminerNotesHistoryEditComponent
 	extends BaseControlComponent
@@ -49,15 +53,16 @@ export class AdrExaminerNotesHistoryEditComponent
 		if (injectedControl) {
 			const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
 			if (ngControl.value) {
-				this.name = ngControl.key;
+				this.name.set(ngControl.key);
 				this.control = ngControl.value;
 			}
 		}
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }): void {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }): void {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
 

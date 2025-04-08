@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'node_modules/accessible-autocomplete';
-@import 'node_modules/govuk-frontend/govuk/all';
-@import './styles';
+@use 'node_modules/accessible-autocomplete';
+@use 'node_modules/govuk-frontend/govuk/all';
+@use './styles';
 
 .vehicle_heading {
   display: flex;

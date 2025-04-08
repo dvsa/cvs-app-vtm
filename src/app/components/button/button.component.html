@@ -1,31 +1,33 @@
-<ng-container [ngSwitch]="type">
-  <a
-    *ngSwitchCase="'link'"
-    role="button"
-    class="govuk-button"
-    data-module="govuk-button"
-    draggable="false"
-    [id]="id"
-    [ngClass]="design ? 'govuk-button--' + design : ''"
-  >
-    <ng-container [ngTemplateOutlet]="content"></ng-container>
-  </a>
 
-  <button
-    *ngSwitchDefault
-    appPreventDoubleClick
-    class="govuk-button"
-    data-module="govuk-button"
-    [id]="id"
-    [ngClass]="design ? 'govuk-button--' + design : ''"
-    [disabled]="disabled"
-    [attr.aria-disabled]="disabled"
-    (clicked)="clicked.emit()"
-  >
-    <ng-container [ngTemplateOutlet]="content"></ng-container>
-  </button>
-</ng-container>
+@switch (type()) {
+  @case ('link') {
+    <a
+      role="button"
+      class="govuk-button"
+      data-module="govuk-button"
+      draggable="false"
+      [id]="id()"
+      [ngClass]="design() ? 'govuk-button--' + design() : ''"
+      >
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    </a>
+  }
+  @default {
+    <button
+      appPreventDoubleClick
+      class="govuk-button"
+      data-module="govuk-button"
+      [id]="id()"
+      [ngClass]="design() ? 'govuk-button--' + design() : ''"
+      [disabled]="disabled()"
+      [attr.aria-disabled]="disabled()"
+      (clicked)="clicked.emit()"
+      >
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    </button>
+  }
+}
 
 <ng-template #content>
-  <ng-content></ng-content>
+  <ng-content />
 </ng-template>

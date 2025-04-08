@@ -1,7 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
 import { IconComponent } from '@components/icon/icon.component';
@@ -9,7 +10,7 @@ import { NumberPlateComponent } from '@components/number-plate/number-plate.comp
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
@@ -27,7 +28,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, ReplaySubject, of } from 'rxjs';
@@ -55,7 +56,7 @@ describe('CreateTestRecordComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [
+			imports: [
 				CreateTestRecordComponent,
 				BaseTestRecordComponent,
 				DefaultNullOrEmpty,
@@ -67,13 +68,15 @@ describe('CreateTestRecordComponent', () => {
 				VehicleHeaderComponent,
 				RoleRequiredDirective,
 			],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
 			providers: [
 				GlobalErrorService,
 				RouterService,
 				TestRecordsService,
 				HttpService,
 				{ provide: UserService, useValue: MockUserService },
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				provideMockActions(() => actions$),
 				{ provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
@@ -146,15 +149,20 @@ describe('CreateTestRecordComponent', () => {
 		});
 
 		it('should return true if some forms are invalid', () => {
-			component.abandonDialog = {
-				dynamicFormGroup: { form: { controls: { errors: 'foo' }, invalid: true } },
-			} as unknown as AbandonDialogComponent;
+			jest.spyOn(component, 'abandonDialog').mockReturnValue({
+				dynamicFormGroup: signal({ form: { controls: { errors: 'foo' }, invalid: true } }),
+			} as unknown as AbandonDialogComponent);
 			component.testMode = TestModeEnum.Abandon;
 			DynamicFormService.validate = jest.fn();
 			expect(component.isAnyFormInvalid()).toBe(true);
 		});
 
 		it('should return false if no forms are invalid', fakeAsync(() => {
+			jest.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
+				sections: jest.fn().mockReturnValue({ forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }),
+				defects: jest.fn(),
+				customDefects: jest.fn(),
+			} as unknown as BaseTestRecordComponent);
 			tick();
 			fixture.detectChanges();
 			expect(component.isAnyFormInvalid()).toBe(false);
@@ -164,6 +172,7 @@ describe('CreateTestRecordComponent', () => {
 
 	describe('CreateTestRecordComponent.prototype.abandon.name', () => {
 		it('should set testMode to be abandon', () => {
+			jest.spyOn(component, 'isAnyFormInvalid').mockReturnValue(false);
 			component.abandon();
 			expect(component.testMode).toEqual(TestModeEnum.Abandon);
 		});
@@ -188,9 +197,14 @@ describe('CreateTestRecordComponent', () => {
 	});
 
 	it('should combine forms', async () => {
-		component['baseTestRecordComponent'] = {
-			sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },
-		} as unknown as BaseTestRecordComponent;
+		jest.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
+			sections: jest.fn().mockReturnValue({ forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }),
+			defects: jest.fn(),
+			customDefects: jest.fn(),
+		} as unknown as BaseTestRecordComponent);
+		// component['baseTestRecordComponent'] = {
+		// 	sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },
+		// } as unknown as BaseTestRecordComponent;
 
 		// eslint-disable-next-line @typescript-eslint/no-misused-promises
 		const createTestResultSpy = jest

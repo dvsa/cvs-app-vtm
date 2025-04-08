@@ -1,1 +1,3 @@
-<p *ngIf="error" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+@if (error()) {
+  <p id="{{ name() }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ error() }}</p>
+}

@@ -1,30 +1,30 @@
-<div class="govuk-accordion__section" [ngClass]="{ 'govuk-accordion__section--expanded': isExpanded }">
+<div class="govuk-accordion__section" [ngClass]="{ 'govuk-accordion__section--expanded': isExpanded() }">
   <div class="govuk-accordion__section-header">
     <h2 class="govuk-accordion__section-heading">
       <button
-        id="accordion-control-{{ id }}"
+        id="accordion-control-{{ id() }}"
         type="button"
-        attr.aria-controls="accordion-details-{{ id }}"
+        attr.aria-controls="accordion-details-{{ id() }}"
         class="govuk-accordion__section-button"
-        [attr.aria-expanded]="isExpanded"
-        (click)="isExpanded ? close(id) : open(id)"
+        [attr.aria-expanded]="isExpanded()"
+        (click)="isExpanded() ? close(id()) : open(id())"
       >
-        <span class="govuk-accordion__section-heading-text" id="accordion-title-{{ id }}">
-          <span class="govuk-accordion__section-heading-text-focus">{{ title }}</span>
+        <span class="govuk-accordion__section-heading-text" id="accordion-title-{{ id() }}">
+          <span class="govuk-accordion__section-heading-text-focus">{{ title() }}</span>
         </span>
         <span class="govuk-visually-hidden govuk-accordion__section-heading-divider">, </span>
         <span class="govuk-accordion__section-toggle" data-nosnippet="">
           <span class="govuk-accordion__section-toggle-focus">
             <span [class]="iconStyle"></span>
             <span class="govuk-accordion__section-toggle-text">
-              {{ isExpanded ? 'Hide' : 'Show' }}<span class="govuk-visually-hidden"> this section</span>
+              {{ isExpanded() ? 'Hide' : 'Show' }}<span class="govuk-visually-hidden"> this section</span>
             </span>
           </span>
         </span>
       </button>
     </h2>
   </div>
-  <div id="accordion-details-{{ id }}" class="govuk-accordion__section-content" attr.aria-labelledby="accordion-title-{{ id }}">
+  <div id="accordion-details-{{ id() }}" class="govuk-accordion__section-content" attr.aria-labelledby="accordion-title-{{ id() }}">
     <ng-content></ng-content>
   </div>
 </div>

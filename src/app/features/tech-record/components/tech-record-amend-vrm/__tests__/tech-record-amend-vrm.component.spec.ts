@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
@@ -11,7 +10,6 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { selectRouteData } from '@store/router/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
@@ -50,9 +48,10 @@ describe('TechRecordChangeVrmComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AmendVrmComponent],
+			imports: [AmendVrmComponent, ReactiveFormsModule],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{
@@ -62,7 +61,6 @@ describe('TechRecordChangeVrmComponent', () => {
 				{ provide: DynamicFormService, useValue: mockDynamicFormService },
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
 			],
-			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule],
 		}).compileComponents();
 	});
 	beforeEach(() => {

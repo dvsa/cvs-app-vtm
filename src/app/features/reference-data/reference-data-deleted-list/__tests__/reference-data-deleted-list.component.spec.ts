@@ -1,7 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { Roles } from '@models/roles.enum';
@@ -18,9 +18,11 @@ describe('DataTypeListComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ReferenceDataDeletedListComponent, RoleRequiredDirective, PaginationComponent],
-			imports: [RouterTestingModule, HttpClientTestingModule, HttpClientModule],
+			imports: [ReferenceDataDeletedListComponent, RoleRequiredDirective, PaginationComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataService,
 				{

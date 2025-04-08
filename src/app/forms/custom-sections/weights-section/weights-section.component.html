@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-weights-section-view *ngSwitchCase="'view'" />
-  <app-weights-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()" />
-  <app-weights-section-summary *ngSwitchCase="'summary'" />
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-weights-section-view />
+  }
+  @case ('edit') {
+    <app-weights-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-weights-section-summary />
+  }
+}

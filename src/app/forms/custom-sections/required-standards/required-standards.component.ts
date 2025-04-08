@@ -1,28 +1,33 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Store, select } from '@ngrx/store';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { testResultInEdit } from '@store/test-records';
 import { isEqual } from 'lodash';
 import { Subject, Subscription, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-required-standards[template]',
 	templateUrl: './required-standards.component.html',
+	imports: [FormsModule, ReactiveFormsModule, RouterLink, TagComponent, ButtonComponent, TruncatePipe],
 })
 export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges {
-	@Input() isEditing = false;
-	@Input() template!: FormNode;
-	@Input() testData: Partial<TestResultModel> = {};
+	readonly isEditing = input(false);
+	readonly template = input.required<FormNode>();
+	readonly testData = input<Partial<TestResultModel>>({});
 
-	@Output() formChange = new EventEmitter();
-	@Output() validateEuVehicleCategory = new EventEmitter();
+	readonly formChange = output<Record<string, any> | [][]>();
+	readonly validateEuVehicleCategory = output();
 
 	public form!: CustomFormGroup;
 	private formSubscription = new Subscription();
@@ -41,7 +46,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
 	) {}
 
 	ngOnInit(): void {
-		this.form = this.dfs.createForm(this.template, this.testData) as CustomFormGroup;
+		this.form = this.dfs.createForm(this.template(), this.testData()) as CustomFormGroup;
 		this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
 			this.formChange.emit(event);
 		});
@@ -72,7 +77,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
 
 	onAddRequiredStandard(): void {
 		this.globalErrorService.clearErrors();
-		if (!this.testData?.euVehicleCategory) {
+		if (!this.testData()?.euVehicleCategory) {
 			this.validateEuVehicleCategory.emit();
 			this.viewportScroller.scrollToPosition([0, 0]);
 			return;

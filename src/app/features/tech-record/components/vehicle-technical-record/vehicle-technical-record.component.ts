@@ -1,5 +1,5 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AsyncPipe, ViewportScroller } from '@angular/common';
+import { Component, OnDestroy, OnInit, input, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -23,16 +23,30 @@ import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
+import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
+import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
+import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 
 @Component({
 	selector: 'app-vehicle-technical-record',
 	templateUrl: './vehicle-technical-record.component.html',
 	styleUrls: ['./vehicle-technical-record.component.scss'],
+	imports: [
+		TechRecordTitleComponent,
+		RoleRequiredDirective,
+		EditTechRecordButtonComponent,
+		TechRecordHistoryComponent,
+		TestRecordSummaryComponent,
+		TechRecordSummaryComponent,
+		AsyncPipe,
+	],
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
-	@ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-	@Input() techRecord?: V3TechRecordModel;
+	readonly summary = viewChild.required(TechRecordSummaryComponent);
+	readonly techRecord = input<V3TechRecordModel>();
 
 	testResults$: Observable<TestResultModel[]>;
 	editingReason?: ReasonForEditing;
@@ -74,8 +88,9 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 				`/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
 			]);
 		});
-		this.isArchived = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
-		this.isCurrent = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
+		const techRecord = this.techRecord();
+		this.isArchived = techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+		this.isCurrent = techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
 
 		this.userService.roles$.pipe(take(1)).subscribe((storedRoles) => {
 			this.hasTestResultAmend = storedRoles?.some((role) => {
@@ -85,7 +100,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 	}
 
 	get currentVrm(): string | undefined {
-		return this.techRecord?.techRecord_vehicleType !== 'trl' ? (this.techRecord?.primaryVrm ?? '') : undefined;
+		const techRecord = this.techRecord();
+		return techRecord?.techRecord_vehicleType !== 'trl' ? (techRecord?.primaryVrm ?? '') : undefined;
 	}
 
 	get roles(): typeof Roles {
@@ -154,7 +170,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 	}
 
 	async handleSubmit(): Promise<void> {
-		this.summary.checkForms();
+		this.summary().checkForms();
 		if (this.isInvalid) return;
 
 		await this.router.navigate(['change-summary'], { relativeTo: this.route });

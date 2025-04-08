@@ -8,16 +8,20 @@ import {
 } from '@/src/app/models/options.model';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { MultiOptionPipe } from '../../../../pipes/multi-option/multi-option.pipe';
 
 @Component({
 	selector: 'app-vehicle-section-summary',
 	templateUrl: './vehicle-section-summary.component.html',
 	styleUrls: ['./vehicle-section-summary.component.scss'],
+	imports: [DatePipe, DefaultNullOrEmpty, MultiOptionPipe],
 })
 export class VehicleSectionSummaryComponent {
 	readonly VehicleTypes = VehicleTypes;

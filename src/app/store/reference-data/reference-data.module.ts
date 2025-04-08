@@ -6,7 +6,6 @@ import { ReferenceDataEffects } from './reference-data.effects';
 import { STORE_FEATURE_REFERENCE_DATA_KEY, referenceDataReducer } from './reference-data.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_REFERENCE_DATA_KEY, referenceDataReducer),

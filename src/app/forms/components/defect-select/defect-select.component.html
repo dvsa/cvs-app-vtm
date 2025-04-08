@@ -1,67 +1,73 @@
-<ng-container *ngIf="defects.length; else noDefects">
+@if (defects.length) {
   <h1 class="govuk-heading-l">Select a defect</h1>
   <div class="defects">
     <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
       <ol class="list">
-        <li *ngFor="let defect of defects; let i = index">
-          <a
-            [id]="'defect-list-item-' + i"
-            class="browse__link browse__link--inactive"
-            [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
-            (click)="handleSelect(defect, types.Defect)"
-          >
-            {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
-          </a>
-        </li>
+        @for (defect of defects; track defect; let i = $index) {
+          <li>
+            <a
+              [id]="'defect-list-item-' + i"
+              class="browse__link browse__link--inactive"
+              [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
+              (click)="handleSelect(defect, types.Defect)"
+              >
+              {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
+            </a>
+          </li>
+        }
       </ol>
     </div>
+    @if (selectedDefect) {
+      <div class="list_container">
+        <ol class="list">
+          @for (item of selectedDefect.items; track i; let i = $index) {
+            <li>
+              <a
+                [id]="'defect-sub-list-item-' + i"
+                class="browse__link browse__link--inactive"
+                [ngClass]="{ 'browse__link--active': item === selectedItem }"
+                (click)="handleSelect(item, types.Item)"
+                >
+                {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
+              </a>
+            </li>
+          }
+        </ol>
+      </div>
+    }
+    @if (selectedItem) {
+      <div class="list_container">
+        <ol class="list">
+          @for (deficiency of selectedItem.deficiencies; track $index) {
+            <li>
+              <a
+                class="browse__normal-link govuk-link--no-visited-state"
+                [id]="'selectedDefect-' + deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
+                (click)="handleSelect(deficiency, types.Deficiency)"
+                >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
+                }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
+                >
+                <span>
+                  <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+                </span>
+                <span class="browse__description">{{ deficiency.deficiencyText }}</span>
+              </li>
+            }
+            <li>
+              <a class="browse__normal-link govuk-link--no-visited-state" id="selected-defect-advisory" (click)="handleSelect()"
+                >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a
+                >
+                <span>
+                  <app-tag class="browse__category" [type]="categoryColor('advisory')">advisory</app-tag>
+                </span>
+                <span class="browse__description">Advisory defect.</span>
+              </li>
+            </ol>
+          </div>
+        }
+      </div>
+    } @else {
+      <h1 class="govuk-heading-l">No defects found</h1>
+      <p class="govuk-body">No defects were found. Check the information on the technical record is correct, or try to refresh the page.</p>
+    }
 
-    <div *ngIf="selectedDefect" class="list_container">
-      <ol class="list">
-        <li *ngFor="let item of selectedDefect?.items; let i = index">
-          <a
-            [id]="'defect-sub-list-item-' + i"
-            class="browse__link browse__link--inactive"
-            [ngClass]="{ 'browse__link--active': item === selectedItem }"
-            (click)="handleSelect(item, types.Item)"
-          >
-            {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
-          </a>
-        </li>
-      </ol>
-    </div>
-
-    <div *ngIf="selectedItem" class="list_container">
-      <ol class="list">
-        <li *ngFor="let deficiency of selectedItem?.deficiencies">
-          <a
-            class="browse__normal-link govuk-link--no-visited-state"
-            [id]="'selectedDefect-' + deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
-            (click)="handleSelect(deficiency, types.Deficiency)"
-            >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
-            }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
-          >
-          <span>
-            <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
-          </span>
-          <span class="browse__description">{{ deficiency.deficiencyText }}</span>
-        </li>
-
-        <li>
-          <a class="browse__normal-link govuk-link--no-visited-state" id="selected-defect-advisory" (click)="handleSelect()"
-            >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a
-          >
-          <span>
-            <app-tag class="browse__category" [type]="categoryColor('advisory')">advisory</app-tag>
-          </span>
-          <span class="browse__description">Advisory defect.</span>
-        </li>
-      </ol>
-    </div>
-  </div>
-</ng-container>
-
-<ng-template #noDefects>
-  <h1 class="govuk-heading-l">No defects found</h1>
-  <p class="govuk-body">No defects were found. Check the information on the technical record is correct, or try to refresh the page.</p>
-</ng-template>

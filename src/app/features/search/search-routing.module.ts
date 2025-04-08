@@ -2,18 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NoQueryParamsGuard } from '@guards/no-query-params/no-query-params.guard';
 import { SearchRoutes } from '@models/routes.enum';
-import { MultipleSearchResultsComponent } from './multiple-search-results/multiple-search-results.component';
-import { SearchComponent } from './search.component';
 
 const routes: Routes = [
 	{
 		path: '',
 		pathMatch: 'prefix',
-		component: SearchComponent,
+		loadComponent: () => import('./search.component').then((m) => m.SearchComponent),
 	},
 	{
 		path: SearchRoutes.SEARCH_RESULT,
-		component: MultipleSearchResultsComponent,
+		loadComponent: () =>
+			import('./multiple-search-results/multiple-search-results.component').then(
+				(m) => m.MultipleSearchResultsComponent
+			),
 		canActivate: [NoQueryParamsGuard],
 		data: { title: 'Search Results' },
 	},

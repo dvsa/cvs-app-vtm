@@ -5,7 +5,7 @@ import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-recor
 import { AdrPermittedDangerousGoodsComponent } from '@forms/custom-sections/adr-permitted-dangerous-goods/adr-permitted-dangerous-goods.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 
 describe('AdrPermittedDangerousGoodsComponent', () => {
@@ -19,8 +19,7 @@ describe('AdrPermittedDangerousGoodsComponent', () => {
 	});
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrPermittedDangerousGoodsComponent],
-			imports: [SharedModule],
+			imports: [AdrPermittedDangerousGoodsComponent],
 			providers: [
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: NgControl, useValue: { control } },

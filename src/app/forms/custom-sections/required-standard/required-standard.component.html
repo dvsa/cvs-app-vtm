@@ -1,7 +1,7 @@
-<ng-template [ngTemplateOutlet]="isEditing ? editRs : viewRs" [ngTemplateOutletContext]="{ data: form }"></ng-template>
+<ng-template [ngTemplateOutlet]="isEditing ? editRs : viewRs" [ngTemplateOutletContext]="{ data: form }" />
 
 <ng-template #viewRs let-data="data">
-  <ng-container *ngIf="requiredStandard">
+  @if (requiredStandard) {
     <h1 class="govuk-heading-l">Required Standard</h1>
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
       <div class="govuk-grid-column-two-thirds">
@@ -9,7 +9,9 @@
         <h2 class="govuk-heading-s">
           {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
         </h2>
-        <app-tag *ngIf="requiredStandard.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
+        @if (requiredStandard.prs) {
+          <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
+        }
       </div>
     </div>
     <div class="govuk-grid-row">
@@ -26,10 +28,10 @@
         </dl>
       </div>
     </div>
-  </ng-container>
+  }
 </ng-template>
 <ng-template #editRs let-data="data">
-  <ng-container *ngIf="requiredStandard">
+  @if (requiredStandard) {
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Required Standard Details</h1>
@@ -37,14 +39,15 @@
         <h2 class="govuk-heading-s">
           {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
         </h2>
-        <app-tag *ngIf="requiredStandard.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
+        @if (requiredStandard.prs) {
+          <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
+        }
       </div>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <ng-container [formGroup]="form">
           <app-text-area name="additionalNotes" label="Additional Notes" formControlName="additionalNotes"></app-text-area>
-
           <div class="govuk-form-group">
             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
               <div class="govuk-checkboxes__item">
@@ -53,20 +56,21 @@
               </div>
             </div>
           </div>
-
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
               <app-button-group>
                 <app-button id="confirm-requierdStandard" (clicked)="handleSubmit()">Confirm</app-button>
-                <app-button *ngIf="index || index === 0" id="remove-requiredStandard" design="warning" (clicked)="handleRemove()"
-                  >Remove Required Standard</app-button
-                >
-                <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">Cancel</app-button>
-              </app-button-group>
+                @if (index || index === 0) {
+                  <app-button id="remove-requiredStandard" design="warning" (clicked)="handleRemove()"
+                    >Remove Required Standard</app-button
+                    >
+                  }
+                  <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">Cancel</app-button>
+                </app-button-group>
+              </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
-    </div>
-  </ng-container>
-</ng-template>
+    }
+  </ng-template>

@@ -1,19 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { PaginationComponent } from '../../../../components/pagination/pagination.component';
 
 @Component({
 	selector: 'app-tech-record-history',
 	templateUrl: './tech-record-history.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./tech-record-history.component.scss'],
+	imports: [ButtonComponent, RouterLink, PaginationComponent, AsyncPipe, DatePipe],
 })
 export class TechRecordHistoryComponent implements OnInit {
-	@Input() currentTechRecord?: V3TechRecordModel;
+	readonly currentTechRecord = input<V3TechRecordModel>();
 
 	pageStart?: number;
 	pageEnd?: number;
@@ -24,9 +29,10 @@ export class TechRecordHistoryComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		if (this.currentTechRecord) {
+		const currentTechRecord = this.currentTechRecord();
+		if (currentTechRecord) {
 			this.store.dispatch(
-				getBySystemNumber({ systemNumber: (this.currentTechRecord as TechRecordType<'get'>)?.systemNumber })
+				getBySystemNumber({ systemNumber: (currentTechRecord as TechRecordType<'get'>)?.systemNumber })
 			);
 		}
 	}
@@ -47,14 +53,11 @@ export class TechRecordHistoryComponent implements OnInit {
 		return new Date(date).getTime();
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }) {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }) {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
-	}
-
-	trackByFn(i: number, tr: TechRecordSearchSchema) {
-		return tr.createdTimestamp;
 	}
 
 	summaryLinkUrl(searchResult: TechRecordSearchSchema) {
@@ -62,6 +65,6 @@ export class TechRecordHistoryComponent implements OnInit {
 	}
 
 	get currentTimeStamp() {
-		return (this.currentTechRecord as TechRecordType<'get'>).createdTimestamp;
+		return (this.currentTechRecord() as TechRecordType<'get'>).createdTimestamp;
 	}
 }

@@ -1,9 +1,11 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit, input } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOption } from '@models/options.model';
 import { Observable, firstValueFrom, skipWhile, take } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
 	selector: 'app-suggestive-input',
@@ -17,15 +19,16 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 			multi: true,
 		},
 	],
+	imports: [NgClass, FieldErrorMessageComponent, NgTemplateOutlet, FormsModule, AsyncPipe],
 })
 export class SuggestiveInputComponent extends BaseControlComponent implements AfterContentInit, OnInit {
-	@Input() options$!: Observable<MultiOption[]>;
-	@Input() defaultValue = '';
+	readonly options$ = input.required<Observable<MultiOption[]>>();
+	readonly defaultValue = input('');
 
 	field_value = '';
 
 	ngOnInit(): void {
-		this.options$
+		this.options$()
 			.pipe(
 				skipWhile((options) => !options.length),
 				take(1)
@@ -42,7 +45,8 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
 	}
 
 	get style(): string {
-		return `govuk-input${this.width ? ` govuk-input--width-${this.width}` : ''}`;
+		const width = this.width();
+		return `govuk-input${width ? ` govuk-input--width-${width}` : ''}`;
 	}
 
 	async handleChangeForOption(value: string) {
@@ -63,16 +67,12 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
 	 * @returns `MultiOption | undefined`
 	 */
 	async findOption(val: string, key = 'label'): Promise<MultiOption | undefined> {
-		return firstValueFrom(this.options$).then((options) =>
+		return firstValueFrom(this.options$()).then((options) =>
 			options.find((option) => option[key as keyof MultiOption] === val)
 		);
 	}
 
 	addValidators() {
 		this.control?.addValidators([CustomValidators.invalidOption]);
-	}
-
-	trackByFn(i: number, option: MultiOption) {
-		return option.value ?? i;
 	}
 }

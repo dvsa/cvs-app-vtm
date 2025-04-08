@@ -1,17 +1,14 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { amendVin, amendVinSuccess } from '@store/technical-records';
@@ -44,16 +41,16 @@ describe('TechRecordChangeVinComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AmendVinComponent],
+			imports: [AmendVinComponent, ReactiveFormsModule],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
 				{ provide: DynamicFormService, useValue: mockDynamicFormService },
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
 			],
-			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule],
 		}).compileComponents();
 	});
 

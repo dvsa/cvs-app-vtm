@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-type-approval-section-view *ngSwitchCase="'view'"/>
-  <app-type-approval-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()"/>
-  <app-type-approval-section-summary *ngSwitchCase="'summary'"/>
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-type-approval-section-view/>
+  }
+  @case ('edit') {
+    <app-type-approval-section-edit [techRecord]="techRecord()"/>
+  }
+  @case ('summary') {
+    <app-type-approval-section-summary/>
+  }
+}

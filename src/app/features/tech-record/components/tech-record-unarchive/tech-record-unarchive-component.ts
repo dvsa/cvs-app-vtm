@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -16,10 +16,22 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
+import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
+import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 @Component({
 	selector: 'app-tech-record-unarchive',
 	templateUrl: './tech-record-unarchive.component.html',
+	imports: [
+		TechRecordTitleComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		RadioGroupComponent,
+		TextAreaComponent,
+		ButtonComponent,
+	],
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	techRecord: TechRecordType<'get'> | undefined;

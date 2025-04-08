@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-last-applicant-section-view *ngSwitchCase="'view'" />
-  <app-last-applicant-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()" />
-  <app-last-applicant-section-summary *ngSwitchCase="'summary'" />
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-last-applicant-section-view />
+  }
+  @case ('edit') {
+    <app-last-applicant-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-last-applicant-section-summary />
+  }
+}

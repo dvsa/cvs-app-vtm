@@ -1,14 +1,12 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, input } from '@angular/core';
 
-@Directive({
-	selector: '[appToUppercase]',
-})
+@Directive({ selector: '[appToUppercase]' })
 export class ToUppercaseDirective {
-	@Input() uppercase?: boolean = true;
+	readonly uppercase = input<boolean | undefined>(true);
 
 	@HostListener('focusout', ['$event.target'])
 	public onBlur(input: HTMLInputElement): void {
-		if (!this.uppercase) return;
+		if (!this.uppercase()) return;
 		input.value = input.value.toUpperCase();
 		input.dispatchEvent(new Event('input'));
 	}

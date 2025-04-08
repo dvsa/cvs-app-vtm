@@ -1,14 +1,13 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { QueryList } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,7 +15,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
@@ -33,10 +32,12 @@ describe('TechRecordSummaryComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordSummaryComponent],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+			imports: [TechRecordSummaryComponent],
 			providers: [
 				MultiOptionsService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: UserService,
@@ -189,7 +190,7 @@ describe('TechRecordSummaryComponent', () => {
 			} as unknown as TechRecordType<'put'>;
 			component.techRecordCalculated = mockTechRecord;
 			jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
-			component.sections = new QueryList<DynamicFormGroupComponent>();
+			jest.spyOn(component, 'sections').mockReturnValue([]);
 
 			component.handleFormState({});
 

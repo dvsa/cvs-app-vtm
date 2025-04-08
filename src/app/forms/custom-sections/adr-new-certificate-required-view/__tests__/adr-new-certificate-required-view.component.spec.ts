@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsM145ViewComponent } from '../../adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrNewCertificateRequiredViewComponent } from '../adr-new-certificate-required-view.component';
@@ -20,8 +18,7 @@ describe('AdrNewCertificateRequiredViewComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrNewCertificateRequiredViewComponent],
-			imports: [SharedModule],
+			imports: [AdrNewCertificateRequiredViewComponent],
 			providers: [
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsM145ViewComponent, multi: true },

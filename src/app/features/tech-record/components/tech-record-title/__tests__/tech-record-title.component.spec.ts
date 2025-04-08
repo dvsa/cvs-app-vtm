@@ -1,17 +1,18 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel, VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { editingTechRecord, selectTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
@@ -31,9 +32,11 @@ describe('TechRecordTitleComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordTitleComponent],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+			imports: [TechRecordTitleComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: UserService, useValue: MockUserService },
 				TechnicalRecordService,
@@ -63,7 +66,7 @@ describe('TechRecordTitleComponent', () => {
 				techRecord_vehicleType: VehicleTypes.LGV,
 			} as unknown as TechRecordType<'put'>;
 			jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
-			component.vehicle = mockRecord;
+			fixture.componentRef.setInput('vehicle', mockRecord);
 			store.overrideSelector(editingTechRecord, mockRecord);
 		});
 		it('should show primary VRM for current record', () => {
@@ -96,7 +99,7 @@ describe('TechRecordTitleComponent', () => {
 			const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
 			jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
 
-			component.vehicle = mockRecordTrailer;
+			fixture.componentRef.setInput('vehicle', mockRecordTrailer);
 
 			store.overrideSelector(selectTechRecord, mockRecordTrailer);
 			fixture.detectChanges();
@@ -111,7 +114,7 @@ describe('TechRecordTitleComponent', () => {
 			const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
 			jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
 			mockRecordTrailer.techRecord_euVehicleCategory = euVehicleCategory;
-			component.vehicle = mockRecordTrailer;
+			fixture.componentRef.setInput('vehicle', mockRecordTrailer);
 			store.overrideSelector(selectTechRecord, mockRecordTrailer);
 			fixture.detectChanges();
 

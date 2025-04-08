@@ -16,7 +16,7 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import {
 	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
@@ -46,8 +46,7 @@ describe('VehicleSectionEditComponent', () => {
 		const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 
 		await TestBed.configureTestingModule({
-			declarations: [VehicleSectionEditComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+			imports: [FormsModule, ReactiveFormsModule, VehicleSectionEditComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),

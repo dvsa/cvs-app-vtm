@@ -13,7 +13,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -41,8 +41,7 @@ describe('weightsSectionEditComponent', () => {
 		const mockTechRecord = mockVehicleTechnicalRecord('psv');
 
 		await TestBed.configureTestingModule({
-			declarations: [WeightsSectionEditComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+			imports: [FormsModule, ReactiveFormsModule, WeightsSectionEditComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),

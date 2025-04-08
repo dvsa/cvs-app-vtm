@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/required-standards/defects/enums/euVehicleCategory.enum.js';
 import {
 	RequiredStandard,
@@ -18,9 +17,8 @@ describe('RequiredStandardSelectComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [RouterTestingModule],
-			declarations: [RequiredStandardSelectComponent],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			imports: [RequiredStandardSelectComponent],
+			providers: [provideRouter([]), provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 

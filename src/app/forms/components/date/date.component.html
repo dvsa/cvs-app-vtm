@@ -1,27 +1,33 @@
-<div *ngIf="!displayTime; else displayTimeTemplate" class="govuk-form-group">
-  <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name }}-hint">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      {{ label }} <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+@if (!displayTime()) {
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name() }}-hint">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        {{ label() }} @for (tag of control?.meta?.customTags; track tag) {
+        <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+      }
     </legend>
-    <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-    <app-field-error-message
-      *ngIf="formSubmitted || customError || dayEl.touched || monthEl.touched || yearEl.touched"
-      [error]="error"
-      [name]="name"
-    ></app-field-error-message>
-    <div class="govuk-date-input" id="{{ name }}">
+    @if (hint()) {
+      <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+    }
+    @if (formSubmitted || customError() || dayEl.touched || monthEl.touched || yearEl.touched) {
+      <app-field-error-message
+        [error]="error"
+        [name]="name()"
+      ></app-field-error-message>
+    }
+    <div class="govuk-date-input" id="{{ name() }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-day"> Day </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-day"> Day </label>
           <input
             #dayEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
             [id]="dayId"
-            name="{{ name }}-day"
+            name="{{ name() }}-day"
             type="number"
             inputmode="numeric"
             [(ngModel)]="day"
@@ -29,22 +35,21 @@
             (ngModelChange)="onDayChange($event)"
             (blur)="onTouched(); handleEvent($event); validate(); blur.emit($event)"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-month"> Month </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-month"> Month </label>
           <input
             #monthEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             [id]="monthId"
-            name="{{ name }}-month"
+            name="{{ name() }}-month"
             type="number"
             inputmode="numeric"
             [(ngModel)]="month"
@@ -52,22 +57,21 @@
             (ngModelChange)="onMonthChange($event)"
             (blur)="onTouched(); handleEvent($event); validate()"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-year"> Year </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-year"> Year </label>
           <input
             #yearEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             [id]="yearId"
-            name="{{ name }}-year"
+            name="{{ name() }}-year"
             type="number"
             inputmode="numeric"
             [min]="1000"
@@ -76,35 +80,37 @@
             (ngModelChange)="onYearChange($event)"
             (blur)="onTouched(); handleEvent($event); validate()"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
     </div>
   </fieldset>
 </div>
-
-<ng-template #displayTimeTemplate>
-  <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name }}-hint">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
-    <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-    <app-field-error-message
-      *ngIf="formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched && hourEl.touched && minuteEl.touched)"
-      [error]="error"
-      [name]="name"
-    ></app-field-error-message>
-    <div class="govuk-date-input" id="{{ name }}">
+} @else {
+  <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name() }}-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label() }}</legend>
+    @if (hint()) {
+      <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+    }
+    @if (formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched && hourEl.touched && minuteEl.touched)) {
+      <app-field-error-message
+        [error]="error"
+        [name]="name()"
+      ></app-field-error-message>
+    }
+    <div class="govuk-date-input" id="{{ name() }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-day"> Day </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-day"> Day </label>
           <input
             #dayEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
             [id]="dayId"
-            name="{{ name }}-day"
+            name="{{ name() }}-day"
             type="number"
             inputmode="numeric"
             [(ngModel)]="day"
@@ -112,22 +118,21 @@
             (ngModelChange)="onDayChange($event)"
             (blur)="onTouched(); handleEvent($event); validate()"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-month"> Month </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-month"> Month </label>
           <input
             #monthEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             [id]="monthId"
-            name="{{ name }}-month"
+            name="{{ name() }}-month"
             type="number"
             inputmode="numeric"
             [(ngModel)]="month"
@@ -135,22 +140,21 @@
             (ngModelChange)="onMonthChange($event)"
             (blur)="onTouched(); handleEvent($event); validate()"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-year"> Year </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-year"> Year </label>
           <input
             #yearEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             [id]="yearId"
-            name="{{ name }}-year"
+            name="{{ name() }}-year"
             type="number"
             inputmode="numeric"
             [min]="1000"
@@ -159,24 +163,23 @@
             (ngModelChange)="onYearChange($event)"
             (blur)="onTouched(); handleEvent($event); validate()"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-hour"> Hour </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-hour"> Hour </label>
           <input
             #hourEl="ngModel"
             appNumberOnly
             appFocusNext
-            [displayTime]="displayTime"
+            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{
               'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
             }"
-            id="{{ name }}-hour"
-            name="{{ name }}-hour"
+            id="{{ name() }}-hour"
+            name="{{ name() }}-hour"
             type="number"
             inputmode="numeric"
             [min]="0"
@@ -186,13 +189,12 @@
             (ngModelChange)="onHourChange($event)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
-
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-minute"> Minute </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-minute"> Minute </label>
           <input
             #minuteEl="ngModel"
             appNumberOnly
@@ -200,8 +202,8 @@
             [ngClass]="{
               'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === minute || null === minute || minuteEl.invalid)
             }"
-            id="{{ name }}-minute"
-            name="{{ name }}-minute"
+            id="{{ name() }}-minute"
+            name="{{ name() }}-minute"
             type="number"
             inputmode="numeric"
             [min]="0"
@@ -211,9 +213,10 @@
             (ngModelChange)="onMinuteChange($event)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
-          />
+            />
         </div>
       </div>
     </div>
   </fieldset>
-</ng-template>
+}
+

@@ -1,85 +1,85 @@
+import { initialAppState } from '@/src/app/store';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import * as UserServiceActions from '@store/user/user-service.actions';
 import { Logout } from '@store/user/user-service.actions';
-import { UserServiceState } from '@store/user/user-service.reducer';
-import { of, take } from 'rxjs';
-import { AppModule } from '../../../app.module';
+import { of } from 'rxjs';
 import { UserService } from '../user-service';
 
 jest.mock('jwt-decode', () => ({
 	jwtDecode: () => ({ roles: ['12345'] }),
 }));
 
+// remove when we update: @azure/msal-angular see: https://www.reddit.com/r/angular/comments/1gq82zc/browserautherror_crypto_nonexistent_the_crypto/
+Object.defineProperty(global.self, 'crypto', {
+	value: {
+		// Needed for @azure/msal-browser
+		subtle: {
+			digest: jest.fn(),
+		},
+		getRandomValues: jest.fn(),
+	},
+});
+
 describe('User-Service', () => {
 	let service: UserService;
-
-	let mockStore: Store<{ userservice: UserServiceState }>;
-	let mockBroadcast: MsalBroadcastService;
-	let mockMsal: MsalService;
+	let store: MockStore;
+	let msalService: MsalService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [AppModule, RouterTestingModule],
-			providers: [Store, MsalService, MsalBroadcastService],
+			imports: [RouterTestingModule],
+			providers: [
+				{
+					provide: MsalService,
+					useValue: {
+						logout: jest.fn(),
+					},
+				},
+				{
+					provide: MsalBroadcastService,
+					useValue: {
+						msalSubject$: of(),
+					},
+				},
+				provideMockStore({ initialState: initialAppState }),
+			],
 		});
 
-		mockStore = TestBed.inject(Store);
-		mockBroadcast = TestBed.inject(MsalBroadcastService);
-		mockMsal = TestBed.inject(MsalService);
-
-		service = new UserService(mockStore, mockBroadcast, mockMsal);
+		service = TestBed.inject(UserService);
+		store = TestBed.inject(MockStore);
+		msalService = TestBed.inject(MsalService);
 	});
 
 	it('should create the user service', () => {
 		expect(service).toBeTruthy();
 	});
 
-	describe('User getters', () => {
-		const user = {
+	it('should dispatch the login action upon logging in', () => {
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		service.logIn({
 			name: 'name',
 			userEmail: 'name@mail.com',
 			oid: '123',
 			accessToken: '12345',
-		};
-
-		beforeEach(() => {
-			service.logIn(user);
 		});
 
-		it('should get the userEmail', (done) => {
-			service.userEmail$.pipe(take(1)).subscribe((data) => {
-				expect(data).toEqual(user.userEmail);
-				done();
-			});
-		});
-
-		it('should get the name', (done) => {
-			service.name$.pipe(take(1)).subscribe((data) => {
-				expect(data).toEqual(user.name);
-				done();
-			});
-		});
-
-		it('should get the id', (done) => {
-			service.id$.pipe(take(1)).subscribe((data) => {
-				expect(data).toEqual(user.oid);
-				done();
-			});
-		});
-
-		it('should get the roles', (done) => {
-			service.roles$.pipe(take(1)).subscribe((data) => {
-				expect(data).toEqual([user.accessToken]);
-				done();
-			});
-		});
+		expect(dispatchSpy).toHaveBeenCalledWith(
+			UserServiceActions.Login({
+				name: 'name',
+				userEmail: 'name@mail.com',
+				oid: '123',
+				roles: ['12345'],
+			})
+		);
 	});
 
 	it('should logout', () => {
-		const dispatchSpy = jest.spyOn(mockStore, 'dispatch');
-		const MsalSpy = jest.spyOn(mockMsal, 'logout').mockImplementation(() => of());
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const MsalSpy = jest.spyOn(msalService, 'logout').mockImplementation(() => of());
 		service.logOut();
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(Logout());

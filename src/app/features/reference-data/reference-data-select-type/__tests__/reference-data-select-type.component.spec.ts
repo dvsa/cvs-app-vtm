@@ -1,8 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
@@ -24,9 +24,17 @@ describe('ReferenceDataComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ReferenceDataSelectTypeComponent, RoleRequiredDirective, RadioGroupComponent, ButtonComponent],
-			imports: [HttpClientTestingModule, RouterTestingModule, FormsModule],
+			imports: [
+				ReferenceDataSelectTypeComponent,
+				RoleRequiredDirective,
+				RadioGroupComponent,
+				ButtonComponent,
+				FormsModule,
+			],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataService,
 				{ provide: UserService, useValue: { roles$: of([Roles.ReferenceDataView]) } },

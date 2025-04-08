@@ -1,6 +1,6 @@
-<ng-container *ngIf="techRecord() as tr">
+@if (techRecord(); as tr) {
   <!-- HGV Dimensions -->
-  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV">
+  @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -26,7 +26,7 @@
           {{ tr.techRecord_frontAxleToRearAxle | defaultNullOrEmpty }}
         </dd>
       </div>
-      <ng-container *ngFor="let axleSpacing of tr.techRecord_dimensions_axleSpacing; let i = index">
+      @for (axleSpacing of tr.techRecord_dimensions_axleSpacing; track axleSpacing; let i = $index) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
@@ -35,9 +35,8 @@
             {{ axleSpacing?.value | defaultNullOrEmpty }}
           </dd>
         </div>
-      </ng-container>
+      }
     </dl>
-
     <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front of vehicle to 5th wheel coupling</h3>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -57,7 +56,6 @@
         </dd>
       </div>
     </dl>
-
     <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front axle to 5th wheel coupling</h3>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -77,10 +75,9 @@
         </dd>
       </div>
     </dl>
-  </ng-container>
-
+  }
   <!-- PSV Dimensions -->
-  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.PSV">
+  @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -115,10 +112,9 @@
         </dd>
       </div>
     </dl>
-  </ng-container>
-
+  }
   <!-- TRL Dimensions -->
-  <ng-container *ngIf="tr.techRecord_vehicleType === VehicleTypes.TRL">
+  @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -152,7 +148,7 @@
           {{ tr.techRecord_rearAxleToRearTrl | defaultNullOrEmpty }}
         </dd>
       </div>
-      <ng-container *ngFor="let axleSpacing of tr.techRecord_dimensions_axleSpacing; let i = index">
+      @for (axleSpacing of tr.techRecord_dimensions_axleSpacing; track axleSpacing; let i = $index) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
@@ -161,9 +157,8 @@
             {{ axleSpacing?.value | defaultNullOrEmpty }}
           </dd>
         </div>
-      </ng-container>
+      }
     </dl>
-
     <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear axle</h3>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -183,7 +178,6 @@
         </dd>
       </div>
     </dl>
-
     <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear of trailer</h3>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -203,7 +197,6 @@
         </dd>
       </div>
     </dl>
-
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -214,5 +207,5 @@
         </dd>
       </div>
     </dl>
-  </ng-container>
-</ng-container>
+  }
+}

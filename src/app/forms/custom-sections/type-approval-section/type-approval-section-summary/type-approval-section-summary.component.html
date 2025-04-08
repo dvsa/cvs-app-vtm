@@ -1,71 +1,82 @@
-<ng-container *ngIf="amendedTechRecord() as vm">
-  <dl class="govuk-summary-list"
-      *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
-    <!-- Approval type -->
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_approvalType')">
-      <dt class="govuk-summary-list__key">Approval type</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_approvalType">
-        {{ vm.techRecord_approvalType | defaultNullOrEmpty }}
-      </dd>
-    </div>
-
-    <!-- Approval type number -->
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_approvalTypeNumber')">
-      <dt class="govuk-summary-list__key">Approval type number</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_approvalTypeNumber">
-        {{ vm.techRecord_approvalTypeNumber | defaultNullOrEmpty }}
-      </dd>
-    </div>
-
-    <!-- National type number (NTA) -->
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_ntaNumber')">
-      <dt class="govuk-summary-list__key">National type number</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_ntaNumber">
-        {{ vm.techRecord_ntaNumber | defaultNullOrEmpty }}
-      </dd>
-    </div>
-
-    <!-- PSV Only -->
-    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
-      <!-- COIF Serial number -->
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_coifSerialNumber')">
-        <dt class="govuk-summary-list__key">COIF Serial number</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_coifSerialNumber">
-          {{ vm.techRecord_coifSerialNumber | defaultNullOrEmpty }}
-        </dd>
-      </div>
-
-      <!-- COIF Certifier name -->
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_coifCertifierName')">
-        <dt class="govuk-summary-list__key">COIF Certifier name</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_coifCertifierName">
-          {{ vm.techRecord_coifCertifierName | defaultNullOrEmpty }}
-        </dd>
-      </div>
-
-      <!-- COIF Certifier date -->
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_coifDate')">
-        <dt class="govuk-summary-list__key">COIF Certifier date</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_coifDate">
-          {{ vm.techRecord_coifDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
-        </dd>
-      </div>
-    </ng-container>
-
-    <!-- Variant number -->
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_variantNumber')">
-      <dt class="govuk-summary-list__key">Variant number</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_variantNumber">
-        {{ vm.techRecord_variantNumber | defaultNullOrEmpty }}
-      </dd>
-    </div>
-
-    <!-- Variant version number -->
-    <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_variantVersionNumber')">
-      <dt class="govuk-summary-list__key">Variant version number</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_variantVersionNumber">
-        {{ vm.techRecord_variantVersionNumber | defaultNullOrEmpty }}
-      </dd>
-    </div>
-  </dl>
-</ng-container>
+@if (amendedTechRecord(); as vm) {
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    <dl class="govuk-summary-list"
+      >
+      <!-- Approval type -->
+      @if (hasChanged('techRecord_approvalType')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Approval type</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_approvalType">
+            {{ vm.techRecord_approvalType | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Approval type number -->
+      @if (hasChanged('techRecord_approvalTypeNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Approval type number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_approvalTypeNumber">
+            {{ vm.techRecord_approvalTypeNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- National type number (NTA) -->
+      @if (hasChanged('techRecord_ntaNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">National type number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_ntaNumber">
+            {{ vm.techRecord_ntaNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- PSV Only -->
+      @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+        <!-- COIF Serial number -->
+        @if (hasChanged('techRecord_coifSerialNumber')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">COIF Serial number</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_coifSerialNumber">
+              {{ vm.techRecord_coifSerialNumber | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+        <!-- COIF Certifier name -->
+        @if (hasChanged('techRecord_coifCertifierName')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">COIF Certifier name</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_coifCertifierName">
+              {{ vm.techRecord_coifCertifierName | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+        <!-- COIF Certifier date -->
+        @if (hasChanged('techRecord_coifDate')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">COIF Certifier date</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_coifDate">
+              {{ vm.techRecord_coifDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+      }
+      <!-- Variant number -->
+      @if (hasChanged('techRecord_variantNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Variant number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_variantNumber">
+            {{ vm.techRecord_variantNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Variant version number -->
+      @if (hasChanged('techRecord_variantVersionNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Variant version number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_variantVersionNumber">
+            {{ vm.techRecord_variantVersionNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+    </dl>
+  }
+}

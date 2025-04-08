@@ -13,19 +13,21 @@
     </thead>
     <tbody class="govuk-table__body">
       <tr class="govuk-table__row">
-        <td class="govuk-table__cell">{{ testRecord?.reasonForCancellation || testRecord?.reasonForCreation | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ getCreatedByName(testRecord) | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ testRecord?.createdAt | date | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ testRecord()?.reasonForCancellation || testRecord()?.reasonForCreation | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ getCreatedByName(testRecord()) | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ testRecord()?.createdAt | date | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell"></td>
       </tr>
-      <tr class="govuk-table__row" *ngFor="let amendedTest of sortedTestHistory$ | async; let i = index">
-        <td class="govuk-table__cell">{{ amendedTest.reasonForCreation | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ amendedTest.createdAt | date | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">
-          <a id="view-test-{{ i + 1 }}" routerLink="amended/{{ amendedTest.createdAt }}">View</a>
-        </td>
-      </tr>
+      @for (amendedTest of sortedTestHistory$ | async; track amendedTest; let i = $index) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">{{ amendedTest.reasonForCreation | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell">{{ amendedTest.createdAt | date | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell">
+            <a id="view-test-{{ i + 1 }}" routerLink="amended/{{ amendedTest.createdAt }}">View</a>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </section>

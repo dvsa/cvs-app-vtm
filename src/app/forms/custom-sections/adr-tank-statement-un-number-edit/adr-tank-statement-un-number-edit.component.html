@@ -1,9 +1,7 @@
-<ng-container *ngIf="control && formArray.controls.length">
-  <app-field-error-message [error]="control.touched ? control.getError('custom')?.message : ''"></app-field-error-message>
-
-  <ng-container *ngIf="formArray.controls.length === 1; else multiple">
-    <app-text-input
-      [id]="'UN_number_1'"
+@if (control && formArray.controls.length) {
+  <app-field-error-message [error]="control.touched ? control.getError('custom')?.message : ''" />
+  @if (formArray.controls.length === 1) {
+    <app-text-input [id]="'UN_number_1'"
       [name]="'UN number 1'"
       [label]="'UN number 1'"
       [customId]="'UN number 1'"
@@ -11,13 +9,11 @@
       [minlength]="1"
       [maxlength]="1500"
       (blur)="formArray.controls[0].markAsTouched(); control.markAsTouched()"
-    ></app-text-input>
-  </ng-container>
-
-  <ng-template #multiple>
+      />
+  } @else {
     <table class="govuk-table">
       <tbody class="govuk-table__body">
-        <ng-container *ngFor="let child of formArray.controls; let i = index">
+        @for (child of formArray.controls; track child; let i = $index) {
           <tr>
             <td class="govuk-table__cell">
               <app-text-input
@@ -35,12 +31,11 @@
               <a class="govuk-link link" (click)="removeControl(i)">Remove</a>
             </td>
           </tr>
-        </ng-container>
+        }
       </tbody>
     </table>
-  </ng-template>
-
+  }
   <p class="govuk-body">
     <a class="govuk-link link" (click)="addControl()">Add UN Number</a>
   </p>
-</ng-container>
+}

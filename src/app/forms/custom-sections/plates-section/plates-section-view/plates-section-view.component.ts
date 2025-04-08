@@ -1,4 +1,4 @@
-import { ViewportScroller } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -12,11 +12,24 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { PaginationComponent } from '../../../../components/pagination/pagination.component';
+import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
+import { RetrieveDocumentDirective } from '../../../../directives/retrieve-document/retrieve-document.directive';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-plates-section-view',
 	templateUrl: './plates-section-view.component.html',
 	styleUrls: ['./plates-section-view.component.scss'],
+	imports: [
+		RetrieveDocumentDirective,
+		PaginationComponent,
+		RoleRequiredDirective,
+		ButtonComponent,
+		DatePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class PlatesSectionViewComponent {
 	protected readonly VehicleTypes = VehicleTypes;
@@ -57,14 +70,11 @@ export class PlatesSectionViewComponent {
 		return this.sortedPlates?.length || 0;
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }) {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }) {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
-	}
-
-	trackByFn(i: number, tr: HGVPlates | TRLPlates) {
-		return tr.plateIssueDate;
 	}
 
 	get documentParams(): Map<string, string> {

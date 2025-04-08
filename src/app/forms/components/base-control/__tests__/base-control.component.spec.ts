@@ -20,8 +20,7 @@ describe('BaseControlComponent', () => {
 			};
 
 			await TestBed.configureTestingModule({
-				declarations: [BaseControlComponent],
-				imports: [FormsModule],
+				imports: [FormsModule, BaseControlComponent, BaseControlComponent],
 			})
 				.overrideComponent(BaseControlComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
 				.compileComponents();
@@ -98,14 +97,14 @@ describe('BaseControlComponent', () => {
 
 		describe('validation', () => {
 			it('should get mapped message for first validation error', () => {
-				component.label = 'Test control';
+				fixture.componentRef.setInput('label', 'Test control');
 				component.control?.markAsTouched();
 				fixture.detectChanges();
 				expect(component.error).toBe('Test control is required');
 			});
 
 			it('should get "" when control is valid', () => {
-				component.label = 'Test control';
+				fixture.componentRef.setInput('label', 'Test control');
 				component.control?.patchValue('test');
 				component.control?.markAsTouched();
 				fixture.detectChanges();
@@ -117,8 +116,7 @@ describe('BaseControlComponent', () => {
 	describe('does not have control binding', () => {
 		beforeEach(async () => {
 			await TestBed.configureTestingModule({
-				declarations: [BaseControlComponent],
-				imports: [FormsModule],
+				imports: [FormsModule, BaseControlComponent],
 			}).compileComponents();
 		});
 

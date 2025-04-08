@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, input, model } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
@@ -11,15 +11,19 @@ import { AdrSummaryTemplate } from '@forms/templates/general/adr-summary.templat
 import { AdrService } from '@services/adr/adr.service';
 import { ReplaySubject, skipWhile, takeUntil } from 'rxjs';
 
+import { RetrieveDocumentDirective } from '../../../directives/retrieve-document/retrieve-document.directive';
+import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
+
 @Component({
 	selector: 'app-adr',
 	templateUrl: './adr.component.html',
 	styleUrls: ['./adr.component.scss'],
+	imports: [RetrieveDocumentDirective, DynamicFormGroupComponent],
 })
 export class AdrComponent implements OnInit, OnDestroy {
-	@Input() techRecord!: TechRecordType<'hgv' | 'lgv' | 'trl'>;
-	@Input() isEditing = false;
-	@Input() isReviewScreen = false;
+	techRecord = model.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
+	readonly isEditing = input(false);
+	readonly isReviewScreen = input(false);
 
 	template!: FormNode;
 	form!: CustomFormGroup;
@@ -33,13 +37,14 @@ export class AdrComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.template = this.isReviewScreen ? AdrSummaryTemplate : AdrTemplate;
-		if (this.techRecord.techRecord_adrDetails_dangerousGoods && !this.isReviewScreen) {
-			this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select =
-				this.adrService.determineTankStatementSelect(this.techRecord);
+		this.template = this.isReviewScreen() ? AdrSummaryTemplate : AdrTemplate;
+		const techRecord = this.techRecord();
+		if (techRecord.techRecord_adrDetails_dangerousGoods && !this.isReviewScreen()) {
+			techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select =
+				this.adrService.determineTankStatementSelect(techRecord);
 		}
-		this.techRecord = this.adrService.preprocessTechRecord(this.techRecord);
-		this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
+		this.techRecord.set(this.adrService.preprocessTechRecord(techRecord));
+		this.form = this.dfs.createForm(this.template, techRecord) as CustomFormGroup;
 		this.handleSubmit();
 	}
 
@@ -50,10 +55,11 @@ export class AdrComponent implements OnInit, OnDestroy {
 
 	handleFormChange(event: Record<string, unknown>) {
 		if (event == null) return;
-		if (this.techRecord == null) return;
+		const techRecord = this.techRecord();
+		if (techRecord == null) return;
 
 		this.form.patchValue(event);
-		this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
+		this.technicalRecordService.updateEditingTechRecord({ ...techRecord, ...event } as TechRecordTypeVerb<'put'>);
 	}
 
 	get documentParams(): Map<string, string> {
@@ -62,13 +68,13 @@ export class AdrComponent implements OnInit, OnDestroy {
 
 	get fileName(): string {
 		if (this.hasAdrDocumentation()) {
-			return this.techRecord.techRecord_adrDetails_documentId ?? '';
+			return this.techRecord().techRecord_adrDetails_documentId ?? '';
 		}
 		throw new Error('Could not find ADR Documentation.');
 	}
 
 	hasAdrDocumentation(): boolean {
-		return !!this.techRecord.techRecord_adrDetails_documentId && !this.isEditing;
+		return !!this.techRecord().techRecord_adrDetails_documentId && !this.isEditing();
 	}
 
 	handleSubmit() {

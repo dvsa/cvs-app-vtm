@@ -6,7 +6,6 @@ import { DefectsEffects } from './defects.effects';
 import { STORE_FEATURE_DEFECTS_KEY, defectsReducer } from './defects.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_DEFECTS_KEY, defectsReducer),

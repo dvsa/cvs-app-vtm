@@ -1,13 +1,13 @@
 <form [formGroup]="form">
   <app-radio-group id="reason" formControlName="reason" [options]="reasons"></app-radio-group>
 
-  <ng-container *ngIf="emailAddress$ | async">
+  @if (emailAddress$ | async) {
     <p class="govuk-body">This letter will be sent to {{ emailAddress$ | async }}</p>
-  </ng-container>
-  <ng-container *ngIf="(emailAddress$ | async) === undefined">
+  }
+  @if ((emailAddress$ | async) === undefined) {
     <p class="govuk-body">This technical record does not have an applicant email address associated with it</p>
     <p class="govuk-body">This letter will instead be sent to {{ userService.userEmail$ | async }}</p>
-  </ng-container>
+  }
 
   <app-button-group>
     <app-button id="submit-plate-form" (clicked)="handleSubmit()">Generate and send</app-button>

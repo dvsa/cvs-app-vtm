@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { SharedModule } from '@shared/shared.module';
+
 import { TestRecordSummaryComponent } from '../test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
@@ -14,8 +14,8 @@ describe('TestRecordSummaryComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TestRecordSummaryComponent],
-			imports: [RouterTestingModule, SharedModule],
+			imports: [TestRecordSummaryComponent],
+			providers: [provideRouter([])],
 		}).compileComponents();
 	});
 
@@ -29,7 +29,7 @@ describe('TestRecordSummaryComponent', () => {
 	});
 
 	it('should not show table if no records found', () => {
-		component.testResults = [];
+		fixture.componentRef.setInput('testResults', []);
 		fixture.detectChanges();
 
 		const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -41,7 +41,7 @@ describe('TestRecordSummaryComponent', () => {
 	});
 
 	it('should show table if records found', () => {
-		component.testResults = [createMockTestResult()];
+		fixture.componentRef.setInput('testResults', [createMockTestResult()]);
 		fixture.detectChanges();
 
 		const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -103,7 +103,7 @@ describe('TestRecordSummaryComponent', () => {
 				],
 			},
 		] as TestResultModel[];
-		component.testResults = mockRecords;
+		fixture.componentRef.setInput('testResults', mockRecords);
 		const testFieldResults = component.sortedTestTypeFields;
 
 		expect(testFieldResults).toHaveLength(3);

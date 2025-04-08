@@ -1,5 +1,5 @@
 <div>
-  <app-dynamic-form-group [template]="template" [data]="testResult" [edit]="true" (formChange)="handleFormChange($event)"></app-dynamic-form-group>
+  <app-dynamic-form-group [template]="template" [data]="testResult()" [edit]="true" (formChange)="handleFormChange($event)"></app-dynamic-form-group>
   <app-button-group>
     <app-button id="confirm" (clicked)="handleAction('yes')">Confirm and save</app-button>
     <app-button id="cancel" type="button" design="link" (clicked)="handleAction('no')">Cancel</app-button>

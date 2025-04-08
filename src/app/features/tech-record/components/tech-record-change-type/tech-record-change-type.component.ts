@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
@@ -8,17 +8,31 @@ import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 
+import { UpperCasePipe } from '@angular/common';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
+import { SelectComponent } from '../../../../forms/components/select/select.component';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-change-vehicle-type',
 	templateUrl: './tech-record-change-type.component.html',
 	styleUrls: ['./tech-record-change-type.component.scss'],
+	imports: [
+		NumberPlateComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		SelectComponent,
+		ButtonComponent,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
 	techRecord?: V3TechRecordModel;

@@ -1,22 +1,21 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { PlatesSectionViewComponent } from '@forms/custom-sections/plates-section/plates-section-view/plates-section-view.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { hgvRequiredFields } from '@models/plateRequiredFields.model';
 import { Roles } from '@models/roles.enum';
 import { VehicleConfigurations } from '@models/vehicle-tech-record.model';
-import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { canGeneratePlate } from '@store/technical-records';
 import { of } from 'rxjs';
@@ -33,16 +32,11 @@ describe('PlatesComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				DynamicFormsModule,
-				SharedModule,
-				StoreModule.forRoot({}),
-				HttpClientTestingModule,
-				RouterModule.forRoot([]),
-				RouterTestingModule,
-			],
-			declarations: [PlatesSectionViewComponent],
+			imports: [PlatesSectionViewComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore<State>({ initialState: initialAppState }),
 				{
 					provide: UserService,

@@ -50,13 +50,30 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "validate-govuk-date"
+              "node:crypto",
+              "govuk-frontend",
+              "validate-govuk-date",
+              "lodash",
+              "lodash.merge",
+              "lodash.clonedeep",
+              "deepmerge",
+              "accessible-autocomplete",
+              "@dvsa/cvs-type-definitions",
+              "@dvsa/cvs-microservice-common"
             ],
             "browser": "src/main.ts",
             "stylePreprocessorOptions": {
               "includePaths": [
                 "."
-              ]
+              ],
+              "sass": {
+                "silenceDeprecations": [
+                  "import",
+                  "slash-div",
+                  "mixed-decls",
+                  "global-builtin"
+                ]
+              }
             }
           },
           "configurations": {

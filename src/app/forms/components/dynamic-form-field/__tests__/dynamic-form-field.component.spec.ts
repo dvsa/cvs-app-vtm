@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
@@ -18,9 +19,10 @@ describe('DynamicFormFieldComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [DynamicFormFieldComponent],
-			imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+			imports: [DynamicFormFieldComponent, FormsModule, ReactiveFormsModule],
 			providers: [
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataService,
 				TestStationsService,
@@ -34,14 +36,14 @@ describe('DynamicFormFieldComponent', () => {
 		fixture = TestBed.createComponent(DynamicFormFieldComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
-		component.control = {
+		fixture.componentRef.setInput('control', {
 			key: 'birthday',
 			value: new CustomFormControl({
 				name: 'test',
 				type: FormNodeTypes.CONTROL,
 				referenceData: ReferenceDataResourceType.CountryOfRegistration,
 			}),
-		};
+		});
 	});
 
 	it('should create', () => {
@@ -54,15 +56,15 @@ describe('DynamicFormFieldComponent', () => {
 	});
 
 	it('should return the metadata options', (done) => {
-		component.control = {
+		fixture.componentRef.setInput('control', {
 			key: 'birthday',
 			value: new CustomFormControl({
 				name: 'test',
 				type: FormNodeTypes.CONTROL,
 				options: [{ value: '1', label: 'test' }],
 			}),
-		};
-		component.form = new FormGroup({});
+		});
+		fixture.componentRef.setInput('form', new FormGroup({}));
 		component.options$.subscribe((value) => {
 			expect(value).toBeTruthy();
 			expect(value).toEqual([{ value: '1', label: 'test' }]);
@@ -72,7 +74,7 @@ describe('DynamicFormFieldComponent', () => {
 
 	it('should return the reference data options', (done) => {
 		service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
-		component.form = new FormGroup({});
+		fixture.componentRef.setInput('form', new FormGroup({}));
 		component.options$.subscribe((value) => {
 			expect(value).toBeTruthy();
 			expect(value).toEqual([{ value: '1', label: 'test' }]);

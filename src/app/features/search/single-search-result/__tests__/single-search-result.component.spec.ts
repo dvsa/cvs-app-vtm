@@ -1,8 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -18,9 +18,11 @@ describe('SingleSearchResultComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SingleSearchResultComponent, RoleRequiredDirective],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
+			imports: [SingleSearchResultComponent, RoleRequiredDirective],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				provideMockActions(() => actions$),
 				{
@@ -36,14 +38,14 @@ describe('SingleSearchResultComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(SingleSearchResultComponent);
 		component = fixture.componentInstance;
-		component.searchResult = {
+		fixture.componentRef.setInput('searchResult', {
 			systemNumber: '123',
 			createdTimestamp: '123',
 			vin: '76890',
 			techRecord_vehicleType: 'psv',
 			techRecord_statusCode: 'current',
 			techRecord_manufactureYear: 1998,
-		};
+		});
 	});
 
 	it('should create', () => {

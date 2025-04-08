@@ -1,6 +1,6 @@
-<ng-container *ngIf="control">
+@if (control) {
   <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-  <ng-container *ngFor="let inspection of formArray.controls; let i = index">
+  @for (inspection of formArray.controls; track inspection; let i = $index) {
     <div [formGroup]="inspection">
       <div class="subheading-container">
         <h2 class="govuk-heading-m">Subsequent: {{ i + 1 }}</h2>
@@ -15,7 +15,6 @@
         (blur)="handleChanges(i)"
         (changes)="handleChanges(i)"
       ></app-select>
-
       <!-- Inspection cerificate number -->
       <app-text-input
         [name]="inspection.meta.children![1].name"
@@ -25,7 +24,6 @@
         (blur)="handleChanges(i)"
         (changes)="handleChanges(i)"
       ></app-text-input>
-
       <!-- Expiry date -->
       <app-date
         [id]="inspection.meta.children![2].customId"
@@ -38,14 +36,13 @@
         [isoDate]="false"
         [customError]="true"
       ></app-date>
-
       <p class="flex justify-end govuk-body">
         <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeSubsequentInspection(i)">Remove</a>
       </p>
     </div>
     <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-  </ng-container>
+  }
   <p class="govuk-body">
     <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addSubsequentInspection()">Add subsequent inspection</a>
   </p>
-</ng-container>
+}

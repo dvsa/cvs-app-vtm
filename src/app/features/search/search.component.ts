@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -7,10 +8,25 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store } from '@ngrx/store';
 import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
+import { ButtonComponent } from '../../components/button/button.component';
+import { NoSpaceDirective } from '../../directives/app-no-space/app-no-space.directive';
+import { RoleRequiredDirective } from '../../directives/app-role-required/app-role-required.directive';
+import { ToUppercaseDirective } from '../../directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '../../directives/app-trim-whitespace/app-trim-whitespace.directive';
 
 @Component({
 	selector: 'app-search',
 	templateUrl: './search.component.html',
+	imports: [
+		RoleRequiredDirective,
+		NgClass,
+		NgTemplateOutlet,
+		ToUppercaseDirective,
+		NoSpaceDirective,
+		TrimWhitespaceDirective,
+		ButtonComponent,
+		AsyncPipe,
+	],
 })
 export class SearchComponent {
 	missingTermErrorMessage =

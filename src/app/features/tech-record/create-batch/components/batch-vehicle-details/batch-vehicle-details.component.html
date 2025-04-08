@@ -9,45 +9,44 @@
   </div>
 
   <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-    <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-vehicle-details" class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
-      </legend>
-
-      <app-text-input
-        appNoSpace
-        appTrimWhitespace
-        appToUppercase
-        formControlName="vin"
-        name="input-vin{{ i }}"
-        customId="input-vin{{ i }}"
-        label="VIN"
-        [width]="width.L"
-        [warning]="getVinControl(group)?.meta?.warning"
-      >
-        <ng-container
-          *ngIf="
+    @for (group of vehicles.controls; track group; let i = $index) {
+      <fieldset [formGroupName]="i" id="batch-vehicle-details" class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+          <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
+        </legend>
+        <app-text-input
+          appNoSpace
+          appTrimWhitespace
+          appToUppercase
+          formControlName="vin"
+          name="input-vin{{ i }}"
+          customId="input-vin{{ i }}"
+          label="VIN"
+          [width]="width.L"
+          [warning]="getVinControl(group)?.meta?.warning"
+          >
+          @if (
             getVinControl(group)?.dirty &&
             getVinControl(group)?.value &&
             (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')
-          "
-        >
-          <ng-template appSuffix>
-            <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
-          </ng-template>
-        </ng-container>
-      </app-text-input>
-      <app-text-input
-        appNoSpace
-        appTrimWhitespace
-        appToUppercase
-        formControlName="trailerIdOrVrm"
-        name="{{ vehicleType === 'trl' ? 'trailerId' : 'vrm' }}{{ i }}"
-        label="{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}"
-        [width]="width.L"
-        (focusout)="validate(group)"
-      ></app-text-input>
-    </fieldset>
+            ) {
+            <ng-template appSuffix>
+              <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
+            </ng-template>
+          }
+        </app-text-input>
+        <app-text-input
+          appNoSpace
+          appTrimWhitespace
+          appToUppercase
+          formControlName="trailerIdOrVrm"
+          name="{{ vehicleType === 'trl' ? 'trailerId' : 'vrm' }}{{ i }}"
+          label="{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}"
+          [width]="width.L"
+          (focusout)="validate(group)"
+        ></app-text-input>
+      </fieldset>
+    }
   </div>
 </form>
 

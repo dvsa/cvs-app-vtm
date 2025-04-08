@@ -1,11 +1,11 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, input } from '@angular/core';
 
 @Directive({
 	selector: '[appFocusNext]',
 	standalone: true,
 })
 export class DateFocusNextDirective {
-	@Input() displayTime = false;
+	readonly displayTime = input(false);
 
 	constructor(private el: ElementRef) {}
 
@@ -38,7 +38,7 @@ export class DateFocusNextDirective {
 					break;
 				default:
 			}
-		} else if (value.length === 4 && this.displayTime && currentSegment === 'year') {
+		} else if (value.length === 4 && this.displayTime() && currentSegment === 'year') {
 			nextEl = '-hour';
 		}
 

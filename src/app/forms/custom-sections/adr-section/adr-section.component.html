@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-adr-section-view *ngSwitchCase="'view'" />
-  <app-adr-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()" />
-  <app-adr-section-summary *ngSwitchCase="'summary'" />
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-adr-section-view />
+  }
+  @case ('edit') {
+    <app-adr-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-adr-section-summary />
+  }
+}

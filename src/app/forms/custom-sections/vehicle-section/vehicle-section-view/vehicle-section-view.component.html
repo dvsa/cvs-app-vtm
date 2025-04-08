@@ -1,4 +1,4 @@
-<ng-container *ngIf="techRecord() as vm">
+@if (techRecord(); as vm) {
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
@@ -6,233 +6,224 @@
         {{ vm.techRecord_vehicleType | defaultNullOrEmpty }}
       </dd>
     </div>
-    <ng-container *ngIf="technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL">
+    @if (technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date of first registration</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_regnDate">
           {{ vm.techRecord_regnDate | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Month of manufacture</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_manufactureMonth">
           {{ vm.techRecord_manufactureMonth | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
+    }
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Year of manufacture</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_manufactureYear">
         {{ vm.techRecord_manufactureYear | defaultNullOrEmpty }}
       </dd>
     </div>
-    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL && vm.techRecord_euVehicleCategory !== 'o1' && vm.techRecord_euVehicleCategory !== 'o2'">
-
-    <div class="govuk-summary-list__row">
+    @if (vm.techRecord_vehicleType === VehicleTypes.TRL && vm.techRecord_euVehicleCategory !== 'o1' && vm.techRecord_euVehicleCategory !== 'o2') {
+      <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date of first use</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_firstUseDate">
           {{ vm.techRecord_firstUseDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
+    }
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Number of axles</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_noOfAxles">
         {{ vm.techRecord_noOfAxles | defaultNullOrEmpty }}
       </dd>
     </div>
-    <ng-container *ngIf="
+    @if (
       (vm.techRecord_vehicleType === VehicleTypes.CAR ||
       vm.techRecord_vehicleType === VehicleTypes.LGV ||
       technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL)
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle subclass</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_vehicleSubclass">
           {{ $any(vm).techRecord_vehicleSubclass | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.PSV">
+      vm.techRecord_vehicleType === VehicleTypes.PSV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Speed limiter exempt</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_speedLimiterMrk">
           {{ vm.techRecord_speedLimiterMrk == null ? '-' : vm.techRecord_speedLimiterMrk ? 'Exempt' : 'Not exempt' }}
         </dd>
       </div>
-    </ng-container>
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.PSV">
+      vm.techRecord_vehicleType === VehicleTypes.PSV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Tacho exempt</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_tachoExemptMrk">
           {{ vm.techRecord_tachoExemptMrk == null ? '-' : vm.techRecord_tachoExemptMrk ? 'Exempt' : 'Not exempt' }}
         </dd>
       </div>
-    </ng-container>
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.PSV">
+      vm.techRecord_vehicleType === VehicleTypes.PSV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Euro standard</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_euroStandard">
           {{ vm.techRecord_euroStandard | defaultNullOrEmpty }}
         </dd>
       </div>
-  </ng-container>
-  <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      (vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL)">
+      (vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL)) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Road friendly suspension</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_roadFriendly">
           {{ vm.techRecord_roadFriendly | defaultNullOrEmpty }}
         </dd>
       </div>
-  </ng-container>
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Suspension type (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_suspensionType">
           {{ vm.techRecord_suspensionType | defaultNullOrEmpty | multiOption : SUSPENSION_TYRE_OPTIONS }}
         </dd>
       </div>
-    </ng-container>
-  <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.PSV">
+      vm.techRecord_vehicleType === VehicleTypes.PSV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Fuel / propulsion system</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_fuelPropulsionSystem">
           {{ vm.techRecord_fuelPropulsionSystem | defaultNullOrEmpty }}
         </dd>
       </div>
-  </ng-container>
-  <ng-container *ngIf="
-      vm.techRecord_vehicleType === VehicleTypes.HGV">
+    }
+    @if (
+      vm.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Drawbar coupling fitted</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_drawbarCouplingFitted">
           {{ vm.techRecord_drawbarCouplingFitted | defaultNullOrEmpty }}
         </dd>
       </div>
-  </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
-        {{ vm.techRecord_vehicleClass_description | multiOption : HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-      </dd>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_trailer">
-        {{ vm.techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-      </dd>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE || technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle class</dt>
-      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_misc">
-        {{ $any(vm).techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-      </dd>
-    </div>
-  </ng-container>
-    <ng-container
-      *ngIf="
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.HGV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle class</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass">
+          {{ vm.techRecord_vehicleClass_description | multiOption : HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle class</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_trailer">
+          {{ vm.techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE || technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle class</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_misc">
+          {{ $any(vm).techRecord_vehicleClass_description | multiOption : ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Coupling type (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_couplingType">
           {{ vm.techRecord_couplingType | defaultNullOrEmpty | multiOption : COUPLING_TYPE_OPTIONS }}
         </dd>
       </div>
-    </ng-container>
-    <ng-container
-      *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Max load on coupling (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_maxLoadOnCoupling">
           {{ vm.techRecord_maxLoadOnCoupling | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
+    }
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle configuration</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_vehicleConfiguration">
         {{ vm.techRecord_vehicleConfiguration | defaultNullOrEmpty }}
       </dd>
     </div>
-    <ng-container *ngIf="
-      vm.techRecord_vehicleType === VehicleTypes.HGV">
+    @if (
+      vm.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Off road vehicle</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_offRoad">
           {{ vm.techRecord_offRoad | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-
+    }
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">EU vehicle category</dt>
       <dd class="govuk-summary-list__value" id="test-techRecord_euVehicleCategory">
         {{ vm.techRecord_euVehicleCategory | defaultNullOrEmpty }}
       </dd>
     </div>
-
-    <ng-container *ngIf="
-      vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE">
+    @if (
+      vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Number of wheels</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_numberOfWheelsDriven">
           {{ vm.techRecord_numberOfWheelsDriven | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
-      vm.techRecord_vehicleType === VehicleTypes.PSV">
+      vm.techRecord_vehicleType === VehicleTypes.PSV) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Emission limit (m-1) (plate value)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_emissionsLimit">
           {{ vm.techRecord_emissionsLimit | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-
-    <ng-container
-      *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL &&
       technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
-    ">
+      ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Frame description (optional)</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_frameDescription">
           {{ vm.techRecord_frameDescription | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-
-    <ng-container *ngIf="
+    }
+    @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       (vm.techRecord_vehicleType === VehicleTypes.TRL &&
-      technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) ">
+      technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_departmentalVehicleMarker">
@@ -245,68 +236,69 @@
           {{ vm.techRecord_alterationMarker | defaultNullOrEmpty }}
         </dd>
       </div>
-    </ng-container>
-
-    <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV" class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <h3>
-          Seats:
-        </h3>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Upper deck</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_seatsUpperDeck">
-          {{ vm.techRecord_seatsUpperDeck | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Lower deck</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_seatsLowerDeck">
-          {{ vm.techRecord_seatsLowerDeck | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Standing capacity</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_standingCapacity">
-          {{ vm.techRecord_standingCapacity | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle class</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_psv">
-          {{ vm.techRecord_vehicleClass_description | multiOption : PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle size</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_vehicleSize">
-          {{ vm.techRecord_vehicleSize | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Number of seat belts</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_numberOfSeatbelts">
-          {{ vm.techRecord_numberOfSeatbelts | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Seatbelt installation approval date / type approved</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_seatbeltInstallationApprovalDate">
-          {{ vm.techRecord_seatbeltInstallationApprovalDate | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_departmentalVehicleMarker-psv">
-          {{ vm.techRecord_departmentalVehicleMarker | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Alteration marker</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_alterationMarker-psv">
-          {{ vm.techRecord_alterationMarker | defaultNullOrEmpty }}
-        </dd>
-      </div>
-    </ng-container>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <ng-container class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <h3>
+            Seats:
+          </h3>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Upper deck</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_seatsUpperDeck">
+            {{ vm.techRecord_seatsUpperDeck | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Lower deck</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_seatsLowerDeck">
+            {{ vm.techRecord_seatsLowerDeck | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Standing capacity</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_standingCapacity">
+            {{ vm.techRecord_standingCapacity | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vehicle class</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_psv">
+            {{ vm.techRecord_vehicleClass_description | multiOption : PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vehicle size</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_vehicleSize">
+            {{ vm.techRecord_vehicleSize | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Number of seat belts</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_numberOfSeatbelts">
+            {{ vm.techRecord_numberOfSeatbelts | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Seatbelt installation approval date / type approved</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_seatbeltInstallationApprovalDate">
+            {{ vm.techRecord_seatbeltInstallationApprovalDate | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_departmentalVehicleMarker-psv">
+            {{ vm.techRecord_departmentalVehicleMarker | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Alteration marker</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_alterationMarker-psv">
+            {{ vm.techRecord_alterationMarker | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </ng-container>
+    }
   </dl>
-</ng-container>
+}

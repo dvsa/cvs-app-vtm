@@ -1,6 +1,6 @@
 <button
   id="test-certificate-link"
-  [ngClass]="certNotNeeded || !isClickable ? 'text' : 'link'"
+  [ngClass]="certNotNeeded || !isClickable() ? 'text' : 'link'"
   appRetrieveDocument
   [params]="documentParams"
   [fileName]="fileName"

@@ -6,10 +6,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { techRecord } from '@store/technical-records';
 import { ReplaySubject } from 'rxjs';
 
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+
 @Component({
 	selector: 'app-tyres-section-view',
 	templateUrl: './tyres-section-view.component.html',
 	styleUrls: ['./tyres-section-view.component.scss'],
+	imports: [DefaultNullOrEmpty],
 })
 export class TyresSectionViewComponent {
 	protected readonly VehicleTypes = VehicleTypes;

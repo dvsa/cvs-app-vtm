@@ -9,7 +9,7 @@ import { GlobalWarningService } from '../global-warning.service';
 @Component({
 	selector: 'app-mock-component',
 	template: '<app-global-warning></app-global-warning><input id="test-input" type="text" />\n',
-	styles: [],
+	imports: [GlobalWarningComponent],
 })
 class MockComponent {}
 
@@ -19,8 +19,7 @@ describe('GlobalWarningComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [GlobalWarningComponent, MockComponent],
-			imports: [],
+			imports: [MockComponent],
 			providers: [GlobalWarningService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});

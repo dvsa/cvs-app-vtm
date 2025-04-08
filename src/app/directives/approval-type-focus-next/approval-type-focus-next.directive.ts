@@ -1,20 +1,20 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, input } from '@angular/core';
 
 @Directive({
 	selector: '[appFocusNextApprovalType]',
 	standalone: true,
 })
 export class ApprovalTypeFocusNextDirective {
-	@Input('appFocusNextApprovalType') nextInputId = '';
-	@Input() characterLimit = 0;
+	readonly nextInputId = input('', { alias: 'appFocusNextApprovalType' });
+	readonly characterLimit = input(0);
 
 	constructor(private el: ElementRef) {}
 
 	@HostListener('input', ['$event'])
 	onInput() {
 		const { value } = this.el.nativeElement;
-		if (value.length === this.characterLimit) {
-			const nextInput = document.getElementById(this.nextInputId);
+		if (value.length === this.characterLimit()) {
+			const nextInput = document.getElementById(this.nextInputId());
 			if (nextInput) {
 				nextInput.focus();
 			}

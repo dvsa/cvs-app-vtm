@@ -1,6 +1,13 @@
-import { ViewportScroller } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+	ControlContainer,
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
@@ -20,11 +27,42 @@ import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { PaginationComponent } from '../../../../components/pagination/pagination.component';
+import { NumberOnlyDirective } from '../../../../directives/app-number-only/app-number-only.directive';
+import { DateFocusNextDirective } from '../../../../directives/date-focus-next/date-focus-next.directive';
+import { GovukCheckboxDirective } from '../../../../directives/govuk-checkbox/govuk-checkbox.directive';
+import { GovukDateInputDirective } from '../../../../directives/govuk-date-input/govuk-date-input.directive';
+import { GovukInputDirective } from '../../../../directives/govuk-input/govuk-input.directive';
+import { GovukRadioDirective } from '../../../../directives/govuk-radio/govuk-radio.directive';
+import { GovukSelectDirective } from '../../../../directives/govuk-select/govuk-select.directive';
+import { GovukTextareaDirective } from '../../../../directives/govuk-textarea/govuk-textarea.directive';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { CharacterCountComponent } from '../../../components/character-count/character-count.component';
+import { ControlErrorsComponent } from '../../../components/control-errors/control-errors.component';
+import { DateControlsComponent } from '../../../components/date-controls/date-controls.component';
 
 @Component({
 	selector: 'app-adr-section-edit',
 	templateUrl: './adr-section-edit.component.html',
 	styleUrls: ['./adr-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukRadioDirective,
+		ControlErrorsComponent,
+		GovukInputDirective,
+		GovukSelectDirective,
+		DateControlsComponent,
+		DateFocusNextDirective,
+		NumberOnlyDirective,
+		GovukDateInputDirective,
+		GovukCheckboxDirective,
+		GovukTextareaDirective,
+		CharacterCountComponent,
+		PaginationComponent,
+		DatePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class AdrSectionEditComponent implements OnInit, OnDestroy {
 	fb = inject(FormBuilder);

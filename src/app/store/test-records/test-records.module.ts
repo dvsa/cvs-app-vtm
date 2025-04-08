@@ -6,7 +6,6 @@ import { TestResultsEffects } from './test-records.effects';
 import { STORE_FEATURE_TEST_RESULTS_KEY, testResultsReducer } from './test-records.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_TEST_RESULTS_KEY, testResultsReducer),

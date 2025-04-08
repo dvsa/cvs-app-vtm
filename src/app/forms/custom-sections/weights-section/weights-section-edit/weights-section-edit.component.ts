@@ -1,6 +1,7 @@
 import { addAxle, removeAxle } from '@/src/app/store/technical-records';
+import { KeyValuePipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -10,11 +11,14 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
+import { TagComponent } from '../../../../components/tag/tag.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 
 @Component({
 	selector: 'app-weights-section-edit',
 	templateUrl: './weights-section-edit.component.html',
 	styleUrls: ['./weights-section-edit.component.scss'],
+	imports: [FormsModule, ReactiveFormsModule, TagComponent, GovukFormGroupInputComponent, KeyValuePipe],
 })
 export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;

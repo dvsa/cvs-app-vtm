@@ -1,5 +1,5 @@
 import { Component, OnDestroy, inject } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -13,11 +13,14 @@ import { State } from '@store/index';
 import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
+import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
+import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 @Component({
 	selector: 'app-tech-record-change-visibility',
 	templateUrl: './tech-record-change-visibility.component.html',
 	styleUrls: ['./tech-record-change-visibility.component.scss'],
+	imports: [TechRecordTitleComponent, FormsModule, ReactiveFormsModule, TextAreaComponent],
 })
 export class TechRecordChangeVisibilityComponent implements OnDestroy {
 	private store = inject(Store<State>);

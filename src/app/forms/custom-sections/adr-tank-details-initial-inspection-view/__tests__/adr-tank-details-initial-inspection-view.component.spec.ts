@@ -16,7 +16,7 @@ describe('AdrTankDetailsInitialInspectionViewComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrTankDetailsInitialInspectionViewComponent],
+			imports: [AdrTankDetailsInitialInspectionViewComponent],
 			providers: [
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsInitialInspectionViewComponent, multi: true },

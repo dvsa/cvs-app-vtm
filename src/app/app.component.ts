@@ -1,7 +1,8 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
@@ -15,12 +16,31 @@ import { initAll } from 'govuk-frontend/govuk/all';
 import { Subject, map, take, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
+import { BreadcrumbsComponent } from './core/components/breadcrumbs/breadcrumbs.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { GlobalErrorComponent } from './core/components/global-error/global-error.component';
+import { GlobalWarningComponent } from './core/components/global-warning/global-warning.component';
+import { HeaderComponent } from './core/components/header/header.component';
+import { PhaseBannerComponent } from './core/components/phase-banner/phase-banner.component';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { State } from './store';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['app.component.scss'],
+	imports: [
+		HeaderComponent,
+		PhaseBannerComponent,
+		NgClass,
+		BreadcrumbsComponent,
+		GlobalErrorComponent,
+		GlobalWarningComponent,
+		SpinnerComponent,
+		RouterOutlet,
+		FooterComponent,
+		AsyncPipe,
+	],
 })
 export class AppComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();

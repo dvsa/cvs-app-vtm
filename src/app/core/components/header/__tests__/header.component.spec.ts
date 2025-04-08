@@ -11,7 +11,7 @@ describe('HeaderComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [HeaderComponent],
+			imports: [HeaderComponent],
 		}).compileComponents();
 	});
 
@@ -29,7 +29,7 @@ describe('HeaderComponent', () => {
 	});
 
 	it('Change username updates page', () => {
-		component.username = 'Test';
+		fixture.componentRef.setInput('username', 'Test');
 		fixture.detectChanges();
 		expect(userNameText.innerHTML).toBe('Test');
 	});

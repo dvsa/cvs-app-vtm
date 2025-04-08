@@ -1,27 +1,26 @@
-<ng-container *ngIf="refData$ | async">
+@if (refData$ | async) {
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
       <p class="govuk-heading-xl govuk-!-font-weight-bold">Delete this {{ (refDataAdminType$ | async).labelSingular }}</p>
-
       <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row" *ngFor="let column of (refDataAdminType$ | async).columns">
-          <dt class="govuk-summary-list__key">
-            {{ column.heading }}
-          </dt>
-          <dd class="govuk-summary-list__value">
-            {{ (refData$ | async)[column.name] }}
-          </dd>
-        </div>
+        @for (column of (refDataAdminType$ | async).columns; track column) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              {{ column.heading }}
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ (refData$ | async)[column.name] }}
+            </dd>
+          </div>
+        }
       </dl>
-
       <br />
       <app-dynamic-form-group [template]="reasonTemplate" [data]="" [edit]="true" (formChange)="handleFormChange($event)"></app-dynamic-form-group>
-
       <app-button-group>
         <app-button id="submit" design="warning" (clicked)="handleSubmit()">Delete</app-button>
         <app-button id="cancel" design="link" (clicked)="navigateBack()">Cancel</app-button>
       </app-button-group>
     </div>
   </div>
-  <ng-container> </ng-container
-></ng-container>
+  <ng-container />
+}

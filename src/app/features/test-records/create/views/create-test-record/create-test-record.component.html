@@ -1,54 +1,50 @@
-<app-banner *ngIf="(canCreate$ | async) === false">
-  <ng-container title>Important</ng-container>
+@if ((canCreate$ | async) === false) {
+  <app-banner>
+    <ng-container title>Important</ng-container>
+    <ng-container content
+      ><p>Creating this type of test is not currently supported</p>
+      <app-button id="test-back" type="link" design="link" [routerLink]="['..']">Back</app-button></ng-container
+      >
+    </app-banner>
+  }
 
-  <ng-container content
-    ><p>Creating this type of test is not currently supported</p>
-    <app-button id="test-back" type="link" design="link" [routerLink]="['..']">Back</app-button></ng-container
-  >
-</app-banner>
-
-<ng-container *ngIf="canCreate$ | async">
-  <ng-container *ngIf="testResult$ | async as testResult" [ngSwitch]="testMode">
-    <ng-container *ngSwitchCase="TestModeEnum.Edit">
-      <app-base-test-record
-        [isEditing]="true"
-        [testResult]="testResult"
-        [expandSections]="true"
-        (newTestResult)="handleNewTestResult($event)"
-      ></app-base-test-record>
-
-      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-
-      <app-button-group>
-        <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
-        <app-button *ngIf="shouldShowAbandonButton" id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()"
-          >Mark as abandoned</app-button
-        >
-      </app-button-group>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="TestModeEnum.View">
-      <app-banner>
-        <ng-container title>Important</ng-container>
-
-        <ng-container content>Check your answers before submitting the test</ng-container>
-      </app-banner>
-      <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true"></app-base-test-record>
-
-      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-
-      <app-button-group>
-        <app-button id="submit-test-result" (clicked)="handleSave()">Accept and send</app-button>
-        <app-button id="cancel" type="button" design="link" (clicked)="handleCancel()">Cancel</app-button>
-      </app-button-group>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="TestModeEnum.Abandon">
-      <app-abandon-dialog
-        [testResult]="testResult"
-        (newTestResult)="handleNewTestResult($event)"
-        (action)="handleAbandonAction($event)"
-      ></app-abandon-dialog>
-    </ng-container>
-  </ng-container>
-</ng-container>
+  @if (canCreate$ | async) {
+    @if (testResult$ | async; as testResult) {
+      @switch (testMode) {
+        @case (TestModeEnum.Edit) {
+          <app-base-test-record [isEditing]="true"
+            [testResult]="testResult"
+            [expandSections]="true"
+            (newTestResult)="handleNewTestResult($event)"
+            />
+          <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+          <app-button-group>
+            <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
+            @if (shouldShowAbandonButton) {
+              <app-button id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()"
+                >Mark as abandoned</app-button
+                >
+              }
+            </app-button-group>
+          }
+          @case (TestModeEnum.View) {
+            <app-banner>
+              <ng-container title>Important</ng-container>
+              <ng-container content>Check your answers before submitting the test</ng-container>
+            </app-banner>
+            <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true" />
+            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+            <app-button-group>
+              <app-button id="submit-test-result" (clicked)="handleSave()">Accept and send</app-button>
+              <app-button id="cancel" type="button" design="link" (clicked)="handleCancel()">Cancel</app-button>
+            </app-button-group>
+          }
+          @case (TestModeEnum.Abandon) {
+            <app-abandon-dialog [testResult]="testResult"
+              (newTestResult)="handleNewTestResult($event)"
+              (action)="handleAbandonAction($event)"
+              />
+          }
+        }
+      }
+    }

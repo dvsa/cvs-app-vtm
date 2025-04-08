@@ -1,26 +1,25 @@
 <div [formGroup]="form">
 
   <!-- PSV Notes -->
-  <ng-container *ngIf="getVehicleType() === VehicleTypes.PSV">
+  @if (getVehicleType() === VehicleTypes.PSV) {
     <govuk-form-group-textarea
       label="Notes"
       [maxLength]="1024"
       formControlName="techRecord_remarks"
     ></govuk-form-group-textarea>
-
     <govuk-form-group-textarea
       label="Dispensations"
       [maxLength]="160"
       formControlName="techRecord_dispensations"
     ></govuk-form-group-textarea>
-  </ng-container>
+  }
 
   <!-- Other Notes -->
-  <ng-container *ngIf="getVehicleType() !== VehicleTypes.PSV">
+  @if (getVehicleType() !== VehicleTypes.PSV) {
     <govuk-form-group-textarea
       label="Notes"
       [maxLength]="1024"
       formControlName="techRecord_notes"
     ></govuk-form-group-textarea>
-  </ng-container>
+  }
 </div>

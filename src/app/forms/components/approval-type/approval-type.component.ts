@@ -3,17 +3,20 @@ import {
 	ChangeDetectorRef,
 	Component,
 	Injector,
-	Input,
 	OnChanges,
 	OnDestroy,
 	OnInit,
+	input,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { TagComponent } from '../../../components/tag/tag.component';
+import { ApprovalTypeFocusNextDirective } from '../../../directives/approval-type-focus-next/approval-type-focus-next.directive';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 const patterns: Record<string, RegExp> = {
 	NTA: /^(.+)$/i, // 25
@@ -115,14 +118,15 @@ const characterLimitGeneric: Record<string, number> = {
 			multi: true,
 		},
 	],
+	imports: [FieldErrorMessageComponent, TagComponent, FormsModule, ApprovalTypeFocusNextDirective],
 })
 export class ApprovalTypeInputComponent
 	extends BaseControlComponent
 	implements OnChanges, OnInit, OnDestroy, AfterContentInit
 {
-	@Input() isEditing = false;
-	@Input() approvalType?: string;
-	@Input() approvalTypeChange: boolean | undefined;
+	isEditing = input(false);
+	approvalType = input<string>();
+	approvalTypeChange = input<boolean>();
 
 	private approvalTypeNumber_1: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(
 		undefined
@@ -177,7 +181,7 @@ export class ApprovalTypeInputComponent
 	ngOnChanges(): void {
 		this.valueWriteBack(this.value);
 
-		if (this.approvalTypeChange) {
+		if (this.approvalTypeChange()) {
 			this.clearInput();
 		}
 	}
@@ -212,7 +216,8 @@ export class ApprovalTypeInputComponent
 	}
 
 	valueWriteBack(value: string | null): void {
-		if (!value || !this.approvalType) {
+		const approvalType = this.approvalType();
+		if (!value || !approvalType) {
 			return;
 		}
 
@@ -232,23 +237,24 @@ export class ApprovalTypeInputComponent
 			'Small series NKS',
 		];
 
-		if (NTA_IVA_Types.includes(this.approvalType)) {
-			this.extractValuesNtaIva(value, patterns[this.approvalType]);
-		} else if (OtherTypes.includes(this.approvalType)) {
+		if (NTA_IVA_Types.includes(approvalType)) {
+			this.extractValuesNtaIva(value, patterns[approvalType]);
+		} else if (OtherTypes.includes(approvalType)) {
 			this.extractValues(value);
 		}
 	}
 
 	private extractValues(value: string): void {
-		if (!value || !this.approvalType) return;
+		const approvalType = this.approvalType();
+		if (!value || !approvalType) return;
 
 		const getMatchedValues = (_value: string, pattern: RegExp) => {
 			const result = _value.match(pattern);
 			return result ? result.slice(1) : [];
 		};
 
-		const pattern = patterns[this.approvalType];
-		const patternPartial = patternsPartialMatch[this.approvalType] || /^$/;
+		const pattern = patterns[approvalType];
+		const patternPartial = patternsPartialMatch[approvalType] || /^$/;
 
 		let matches = getMatchedValues(value, pattern);
 		if (matches) {
@@ -256,22 +262,22 @@ export class ApprovalTypeInputComponent
 		}
 
 		if (!matches.length) {
-			const limit = characterLimit[this.approvalType];
+			const limit = characterLimit[approvalType];
 			const limitedValue = value.length > limit ? value.substring(0, limit) : value;
 			matches = getMatchedValues(limitedValue, patternPartial);
 			this.setTypeApprovalNumbers(matches.filter((x) => x));
 		}
 
 		if (!matches.length) {
-			const limit = characterLimitGeneric[this.approvalType];
+			const limit = characterLimitGeneric[approvalType];
 			const limitedValue = value.length > limit ? value.substring(0, limit) : value;
-			const genericPattern = patternsGenericPartialMatch[this.approvalType] || /^$/;
+			const genericPattern = patternsGenericPartialMatch[approvalType] || /^$/;
 			matches = getMatchedValues(limitedValue, genericPattern);
 			this.setTypeApprovalNumbers(matches.filter((x) => x));
 		}
 
 		if (!matches.length) {
-			console.error('Unknown approvalType:', this.approvalType);
+			console.error('Unknown approvalType:', approvalType);
 		}
 	}
 
@@ -334,12 +340,12 @@ export class ApprovalTypeInputComponent
 			};
 		};
 
-		const oneRequired = () => !this.approvalTypeNumber1 && this.approvalType;
+		const oneRequired = () => !this.approvalTypeNumber1 && this.approvalType();
 		const twoRequired = () => oneRequired() || !this.approvalTypeNumber2;
 		const threeRequired = () => twoRequired() || !this.approvalTypeNumber3;
 		const fourRequired = () => threeRequired() || !this.approvalTypeNumber4;
 
-		switch (this.approvalType) {
+		switch (this.approvalType()) {
 			case ApprovalType.NTA:
 			case ApprovalType.IVA:
 			case ApprovalType.IVA_DVSA_NI:
@@ -404,7 +410,7 @@ export class ApprovalTypeInputComponent
 		approvalTypeNumber3: string | undefined,
 		approvalTypeNumber4: string | undefined
 	) {
-		switch (this.approvalType) {
+		switch (this.approvalType()) {
 			case ApprovalType.NTA:
 				return approvalTypeNumber1 || null;
 
@@ -477,7 +483,7 @@ export class ApprovalTypeInputComponent
 	}
 
 	getId(name: string) {
-		const id = `${name}-approvalTypeNumber1-${this.approvalType}`;
+		const id = `${name}-approvalTypeNumber1-${this.approvalType()}`;
 		if (this.control) {
 			this.control.meta.customId = id;
 		}

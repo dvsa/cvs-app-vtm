@@ -1,19 +1,18 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { Roles } from '@models/roles.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { LettersComponent } from '../letters.component';
@@ -37,16 +36,11 @@ describe('LettersComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				DynamicFormsModule,
-				SharedModule,
-				StoreModule.forRoot({}),
-				HttpClientTestingModule,
-				RouterModule.forRoot([]),
-				RouterTestingModule,
-			],
-			declarations: [LettersComponent],
+			imports: [LettersComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore<State>({ initialState: initialAppState }),
 				{
 					provide: UserService,
@@ -75,12 +69,12 @@ describe('LettersComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(LettersComponent);
 		component = fixture.componentInstance;
-		component.techRecord = {
+		fixture.componentRef.setInput('techRecord', {
 			systemNumber: 'foo',
 			createdTimestamp: 'bar',
 			vin: 'testVin',
 			techRecord_statusCode: 'current',
-		} as TechRecordType<'trl'>;
+		} as TechRecordType<'trl'>);
 		fixture.detectChanges();
 	});
 
@@ -89,18 +83,24 @@ describe('LettersComponent', () => {
 	});
 	describe('eligibleForLetter', () => {
 		it('should return true if the approval type is valid', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.EU_WVTA_23_ON;
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_approvalType: ApprovalType.EU_WVTA_23_ON,
+			} as TechRecordType<'trl'>);
 			expect(component.eligibleForLetter).toBeTruthy();
 		});
 
 		it('should return false if the approval type is valid', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.NTA;
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_approvalType: ApprovalType.NTA,
+			} as TechRecordType<'trl'>);
 			expect(component.eligibleForLetter).toBeFalsy();
 		});
 
 		it('should return false if the statuscode is archived', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.GB_WVTA;
-			(component.techRecord as TechRecordType<'trl'>).techRecord_statusCode = StatusCodes.ARCHIVED;
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_approvalType: ApprovalType.GB_WVTA,
+				techRecord_statusCode: StatusCodes.ARCHIVED,
+			} as TechRecordType<'trl'>);
 			expect(component.eligibleForLetter).toBeFalsy();
 		});
 	});
@@ -111,7 +111,9 @@ describe('LettersComponent', () => {
 		});
 
 		it('should return true if the provisional technical record history has current status', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_statusCode = 'provisional';
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_statusCode: 'provisional',
+			} as TechRecordType<'trl'>);
 			component.ngOnInit();
 			expect(component.hasCurrent).toBeTruthy();
 		});
@@ -119,16 +121,20 @@ describe('LettersComponent', () => {
 
 	describe('letter', () => {
 		it('should return the letter if it exists', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = 'trailer acceptance';
-			(component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
-			(component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_letterOfAuth_letterType: 'trailer acceptance',
+				techRecord_letterOfAuth_paragraphId: 3,
+				techRecord_letterOfAuth_letterIssuer: 'issuer',
+			} as TechRecordType<'trl'>);
 			expect(component.letter).toBeTruthy();
 			expect(component.letter?.paragraphId).toBe(3);
 			expect(component.letter?.letterIssuer).toBe('issuer');
 		});
 
 		it('should return undefined if it does not exist', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = undefined;
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_letterOfAuth_letterType: undefined,
+			} as TechRecordType<'trl'>);
 
 			expect(component.letter).toBeUndefined();
 		});

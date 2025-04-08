@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -14,14 +15,28 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { BannerComponent } from '../../../../../components/banner/banner.component';
+import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../../components/button/button.component';
+import { RoleRequiredDirective } from '../../../../../directives/app-role-required/app-role-required.directive';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 
 @Component({
 	selector: 'app-test-records',
 	templateUrl: './test-record.component.html',
+	imports: [
+		BannerComponent,
+		BaseTestRecordComponent,
+		RoleRequiredDirective,
+		ButtonGroupComponent,
+		ButtonComponent,
+		VehicleHeaderComponent,
+		AsyncPipe,
+	],
 })
 export class TestRecordComponent implements OnInit, OnDestroy {
-	@ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
+	readonly baseTestRecordComponent = viewChild(BaseTestRecordComponent);
 
 	private destroy$ = new Subject<void>();
 
@@ -113,8 +128,16 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		const errors: GlobalError[] = [];
 		const forms = [];
 
-		if (this.baseTestRecordComponent) {
-			const { sections, defects, customDefects } = this.baseTestRecordComponent;
+		const baseTestRecordComponent = this.baseTestRecordComponent();
+		if (baseTestRecordComponent) {
+			const {
+				sections: sectionsInput,
+				defects: defectsInput,
+				customDefects: customDefectsInput,
+			} = baseTestRecordComponent;
+			const sections = sectionsInput();
+			const defects = defectsInput();
+			const customDefects = customDefectsInput();
 			if (sections) {
 				sections.forEach((section) => {
 					forms.push(section.form);

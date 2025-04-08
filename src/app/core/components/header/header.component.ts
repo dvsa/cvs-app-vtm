@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import packageInfo from '../../../../../package.json';
 
 @Component({
@@ -7,8 +7,8 @@ import packageInfo from '../../../../../package.json';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-	@Output() logOutEvent = new EventEmitter<void>();
-	@Input() username: string | null = '';
+	readonly logOutEvent = output<void>();
+	readonly username = input<string | null>('');
 	protected readonly version = packageInfo.version;
 
 	logout() {

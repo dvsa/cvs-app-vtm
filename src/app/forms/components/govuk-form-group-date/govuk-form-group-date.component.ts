@@ -1,9 +1,9 @@
 import { NumberOnlyDirective } from '@/src/app/directives/app-number-only/app-number-only.directive';
 import { DateFocusNextDirective } from '@/src/app/directives/date-focus-next/date-focus-next.directive';
 import { CustomTag } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@/src/app/shared/shared.module';
+
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, forwardRef, inject, input, model, output } from '@angular/core';
 import {
 	ControlContainer,
 	ControlValueAccessor,
@@ -12,12 +12,21 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
+import { TagDirective } from '@directives/tag/tag.directive';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-date',
-	standalone: true,
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, DateFocusNextDirective, NumberOnlyDirective],
+	imports: [
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		TagComponent,
+		TagDirective,
+		DateFocusNextDirective,
+		NumberOnlyDirective,
+	],
 	templateUrl: './govuk-form-group-date.component.html',
 	styleUrls: ['./govuk-form-group-date.component.scss'],
 	providers: [
@@ -29,35 +38,25 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	],
 })
 export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit, OnDestroy {
-	@Output()
-	blur = new EventEmitter<FocusEvent>();
+	readonly blur = output<FocusEvent>();
 
-	@Output()
-	focus = new EventEmitter<FocusEvent>();
+	readonly focus = output<FocusEvent>();
 
-	@Input()
-	value: string | null = null;
+	value = model<string | null>(null);
 
-	@Input()
-	tags: CustomTag[] = [];
+	readonly tags = input<CustomTag[]>([]);
 
-	@Input()
-	disabled = false;
+	disabled = model(false);
 
-	@Input()
-	mode: Format = 'yyyy-mm-dd';
+	readonly mode = input<Format>('yyyy-mm-dd');
 
-	@Input({ alias: 'hint' })
-	controlHint = '';
+	readonly controlHint = input('', { alias: 'hint' });
 
-	@Input({ alias: 'formControlName' })
-	controlName = '';
+	readonly controlName = input('', { alias: 'formControlName' });
 
-	@Input({ alias: 'label' })
-	controlLabel = '';
+	readonly controlLabel = input('', { alias: 'label' });
 
-	@Input({ alias: 'id' })
-	controlId = '';
+	readonly controlId = input('', { alias: 'id' });
 
 	fb = inject(FormBuilder);
 	controlContainer = inject(ControlContainer);
@@ -77,7 +76,7 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 	onTouched = () => {};
 
 	writeValue(obj: any): void {
-		this.value = obj;
+		this.value.set(obj);
 
 		if (obj && typeof obj === 'string') {
 			const date = new Date(obj);
@@ -102,12 +101,12 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 	}
 
 	setDisabledState?(isDisabled: boolean): void {
-		this.disabled = isDisabled;
+		this.disabled.set(isDisabled);
 		isDisabled ? this.form.disable() : this.form.enable();
 	}
 
 	get id() {
-		return this.controlId || this.controlName;
+		return this.controlId() || this.controlName();
 	}
 
 	get hintId() {
@@ -119,7 +118,7 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 	}
 
 	get control() {
-		return this.controlContainer.control?.get(this.controlName);
+		return this.controlContainer.control?.get(this.controlName());
 	}
 
 	get hasError() {
@@ -149,7 +148,7 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 			const minsStr = minutes?.toString().padStart(2, '0');
 			const secsStr = seconds?.toString().padStart(2, '0');
 
-			switch (this.mode) {
+			switch (this.mode()) {
 				case 'iso':
 					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}`);
 					break;

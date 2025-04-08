@@ -12,7 +12,14 @@ import { NumberInputComponent } from '../number-input.component';
 	template: `<form [formGroup]="form">
     <app-number-input name="foo" label="Foo" formControlName="foo"></app-number-input>
   </form> `,
-	styles: [],
+	imports: [
+		NumberInputComponent,
+		BaseControlComponent,
+		FieldErrorMessageComponent,
+		FieldWarningMessageComponent,
+		FormsModule,
+		ReactiveFormsModule,
+	],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -26,14 +33,7 @@ describe('NumberInputComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [
-				HostComponent,
-				NumberInputComponent,
-				BaseControlComponent,
-				FieldErrorMessageComponent,
-				FieldWarningMessageComponent,
-			],
-			imports: [FormsModule, ReactiveFormsModule],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 

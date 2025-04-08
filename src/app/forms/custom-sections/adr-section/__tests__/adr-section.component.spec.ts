@@ -1,4 +1,3 @@
-import { SharedModule } from '@/src/app/shared/shared.module';
 import { initialAppState } from '@/src/app/store';
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
@@ -8,7 +7,6 @@ import { ControlContainer } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
-import { DynamicFormsModule } from '../../../dynamic-forms.module';
 import { AdrSectionComponent } from '../adr-section.component';
 
 describe('AdrSectionComponent', () => {
@@ -18,8 +16,7 @@ describe('AdrSectionComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrSectionComponent],
-			imports: [SharedModule, DynamicFormsModule],
+			imports: [AdrSectionComponent],
 			providers: [
 				ControlContainer,
 				provideHttpClient(),

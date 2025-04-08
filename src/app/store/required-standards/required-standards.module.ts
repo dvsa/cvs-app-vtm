@@ -6,7 +6,6 @@ import { RequiredStandardsEffects } from './required-standards.effects';
 import { STORE_FEATURE_REQUIRED_STANDARDS_KEY, requiredStandardsReducer } from './required-standards.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_REQUIRED_STANDARDS_KEY, requiredStandardsReducer),

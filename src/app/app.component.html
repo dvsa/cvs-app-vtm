@@ -1,5 +1,5 @@
-<app-header [username]="userService.name$ | async" (logOutEvent)="userService.logOut()"></app-header>
-<app-phase-banner></app-phase-banner>
+<app-header [username]="userService.name$ | async" (logOutEvent)="userService.logOut()" />
+<app-phase-banner />
 
 <div
   [ngClass]="{
@@ -17,4 +17,4 @@
   </main>
 </div>
 
-<app-footer></app-footer>
+<app-footer />

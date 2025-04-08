@@ -6,7 +6,7 @@
       [type]="types.NUMBER"
       name="techRecord_speedRestriction"
       label="Speed restriction"
-      [isEditing]="isEditing"
+      [isEditing]="isEditing()"
       [width]="widths.XS"
       suffix="mph"
     ></app-switchable-input>
@@ -45,8 +45,8 @@
         <th scope="col" class="govuk-table__header tyre-table-ld-index__header">Load Index</th>
         <th *ngIf="isPsv" scope="col" class="govuk-table__header">SR</th>
         <th scope="col" class="govuk-table__header">S/D</th>
-        <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
-        <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
+        <th *ngIf="isEditing()" scope="col" class="govuk-table__header"></th>
+        <th *ngIf="isEditing()" scope="col" class="govuk-table__header"></th>
       </tr>
     </thead>
 
@@ -85,11 +85,11 @@
             [ngTemplateOutletContext]="{ name: 'tyres_fitmentCode', type: types.DROPDOWN, width: widths.XS, options: fitmentCode }"
           ></ng-template>
 
-          <td *ngIf="isEditing" class="govuk-table__cell">
+          <td *ngIf="isEditing()" class="govuk-table__cell">
             <a class="axleButton" (click)="getTyreSearchPage(axle.value.axleNumber)">Search</a>
           </td>
 
-          <td *ngIf="isEditing" class="govuk-table__cell">
+          <td *ngIf="isEditing()" class="govuk-table__cell">
             <a class="axleButton" (click)="removeAxle(i)">Remove</a>
           </td>
 
@@ -100,7 +100,7 @@
                 [type]="type"
                 [name]="name"
                 [idExtension]="i + 1"
-                [isEditing]="isEditing"
+                [isEditing]="isEditing()"
                 [width]="width"
                 [options]="options"
                 (focusout)="getTyresRefData(i + 1)"
@@ -109,14 +109,14 @@
           </ng-template>
       </tr>
 
-      <tr *ngIf="isEditing">
+      <tr *ngIf="isEditing()">
         <a class="axleButton" role="button" id="tyresAddAxle" (click)="addAxle()">Add Axle</a>
         <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
       </tr>
 
       <ng-template #tdNumberInput let-name="name">
         <td class="govuk-table__cell">
-          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
+          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing()"></app-switchable-input>
         </td>
       </ng-template>
     </tbody>
@@ -131,7 +131,7 @@
       name="techRecord_tyreUseCode"
       label="Tyre Use Code"
       [width]="widths.UNSET"
-      [isEditing]="isEditing"
+      [isEditing]="isEditing()"
       [options]="tyreUseCode"
     ></app-switchable-input>
   </ng-container>

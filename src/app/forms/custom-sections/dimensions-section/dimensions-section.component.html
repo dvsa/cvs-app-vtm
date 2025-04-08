@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-dimensions-section-view *ngSwitchCase="'view'" />
-  <app-dimensions-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()" />
-  <app-dimensions-section-summary *ngSwitchCase="'summary'" />
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-dimensions-section-view />
+  }
+  @case ('edit') {
+    <app-dimensions-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-dimensions-section-summary />
+  }
+}

@@ -1,45 +1,49 @@
-<ng-container *ngIf="(selectAllTestTypes$ | async)?.length; else noTestTypes">
+@if ((selectAllTestTypes$ | async)?.length) {
   <h1 class="govuk-heading-l">Select a test type</h1>
   <div class="categories">
     <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
       <ol class="list">
-        <li *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn">
-          <button
-            [id]="'test-list-item-' + [type.id]"
-            class="list__item"
-            [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
-            (click)="handleCategory(type, 0)"
-          >
-            {{ type.name }}
-          </button>
-        </li>
-      </ol>
-    </div>
-    <div
-      *ngFor="let category of categories; trackBy: tackByFn; let i = index"
-      class="list_container"
-      [ngClass]="{ 'list_container--shrink': categories.length > i + 2 }"
-    >
-      <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
-      <ol class="list">
-        <ng-container *ngIf="hasNext(category)">
-          <li *ngFor="let type of category.nextTestTypesOrCategories; trackBy: tackByFn">
+        @for (type of selectAllTestTypes$ | async; track tackByFn($index, type)) {
+          <li>
             <button
-              [id]="'browse-list-item-' + [type.id]"
+              [id]="'test-list-item-' + [type.id]"
               class="list__item"
               [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
-              (click)="handleCategory(type, i + 1)"
-            >
+              (click)="handleCategory(type, 0)"
+              >
               {{ type.name }}
             </button>
           </li>
-        </ng-container>
+        }
       </ol>
     </div>
+    @for (category of categories; track tackByFn(i, category); let i = $index) {
+      <div
+        class="list_container"
+        [ngClass]="{ 'list_container--shrink': categories.length > i + 2 }"
+        >
+        <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
+        <ol class="list">
+          @if (hasNext(category)) {
+            @for (type of category.nextTestTypesOrCategories; track tackByFn($index, type)) {
+              <li>
+                <button
+                  [id]="'browse-list-item-' + [type.id]"
+                  class="list__item"
+                  [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
+                  (click)="handleCategory(type, i + 1)"
+                  >
+                  {{ type.name }}
+                </button>
+              </li>
+            }
+          }
+        </ol>
+      </div>
+    }
   </div>
-</ng-container>
-
-<ng-template #noTestTypes>
+} @else {
   <h1 class="govuk-heading-l">No test types found</h1>
   <p class="govuk-body">No test types were found. Check the information on the technical record is correct, or try to refresh the page.</p>
-</ng-template>
+}
+

@@ -10,26 +10,11 @@ import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tec
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
-import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
-import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
-import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
-import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
-import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
-import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
-import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
-import { TechRecordEditAdditionalExaminerNoteComponent } from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
-import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
-import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
-import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
-import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
-import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
-import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: TechRecordComponent,
+		loadComponent: () => import('./tech-record.component').then((m) => m.TechRecordComponent),
 		data: { roles: Roles.TechRecordView, isCustomLayout: true },
 		canActivateChild: [MsalGuard, RoleGuard],
 		canActivate: [CancelEditTechGuard],
@@ -40,7 +25,7 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.CORRECT_ERROR,
-		component: TechRecordComponent,
+		loadComponent: () => import('./tech-record.component').then((m) => m.TechRecordComponent),
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
@@ -56,7 +41,7 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED,
-		component: TechRecordComponent,
+		loadComponent: () => import('./tech-record.component').then((m) => m.TechRecordComponent),
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
@@ -73,73 +58,102 @@ const routes: Routes = [
 
 	{
 		path: TechRecordRoutes.CHANGE_VIN,
-		component: AmendVinComponent,
+		loadComponent: () =>
+			import('./components/tech-record-amend-vin/tech-record-amend-vin.component').then((m) => m.AmendVinComponent),
 		data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
 		path: TechRecordRoutes.CHANGE_VRM,
-		component: AmendVrmReasonComponent,
+		loadComponent: () =>
+			import('./components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component').then(
+				(m) => m.AmendVrmReasonComponent
+			),
 		data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
 		path: TechRecordRoutes.REASON_TO_CHANGE_VRM,
-		component: AmendVrmComponent,
+		loadComponent: () =>
+			import('./components/tech-record-amend-vrm/tech-record-amend-vrm.component').then((m) => m.AmendVrmComponent),
 		data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
 		path: TechRecordRoutes.GENERATE_PLATE,
-		component: GeneratePlateComponent,
+		loadComponent: () =>
+			import('./components/tech-record-generate-plate/tech-record-generate-plate.component').then(
+				(m) => m.GeneratePlateComponent
+			),
 		data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.GENERATE_LETTER,
-		component: GenerateLetterComponent,
+		loadComponent: () =>
+			import('./components/tech-record-generate-letter/tech-record-generate-letter.component').then(
+				(m) => m.GenerateLetterComponent
+			),
 		data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.AMEND_REASON,
-		component: TechRecordAmendReasonComponent,
+		loadComponent: () =>
+			import('./components/tech-record-amend-reason/tech-record-amend-reason.component').then(
+				(m) => m.TechRecordAmendReasonComponent
+			),
 		data: { roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
 		path: TechRecordRoutes.CHANGE_STATUS,
-		component: TechRecordChangeStatusComponent,
+		loadComponent: () =>
+			import('./components/tech-record-change-status/tech-record-change-status.component').then(
+				(m) => m.TechRecordChangeStatusComponent
+			),
 		data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.UNARCHIVE_RECORD,
-		component: TechRecordUnarchiveComponent,
+		loadComponent: () =>
+			import('./components/tech-record-unarchive/tech-record-unarchive-component').then(
+				(m) => m.TechRecordUnarchiveComponent
+			),
 		data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.CHANGE_VEHICLE_TYPE,
-		component: ChangeVehicleTypeComponent,
+		loadComponent: () =>
+			import('./components/tech-record-change-type/tech-record-change-type.component').then(
+				(m) => m.ChangeVehicleTypeComponent
+			),
 		data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { techRecord: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.CHANGE_VTA_VISIBILITY,
-		component: TechRecordChangeVisibilityComponent,
+		loadComponent: () =>
+			import('./components/tech-record-change-visibility/tech-record-change-visibility.component').then(
+				(m) => m.TechRecordChangeVisibilityComponent
+			),
 		data: { roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { techRecord: techRecordViewResolver },
 	},
 	{
 		path: TechRecordRoutes.CORRECT_ERROR_TYRE_SEARCH,
-		component: TechRecordSearchTyresComponent,
+		loadComponent: () =>
+			import('./components/tech-record-search-tyres/tech-record-search-tyres.component').then(
+				(m) => m.TechRecordSearchTyresComponent
+			),
 		data: {
 			title: 'Tyre search',
 			roles: Roles.TechRecordAmend,
@@ -151,7 +165,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.CORRECT_ERROR_CHANGE_SUMMARY,
-		component: TechRecordSummaryChangesComponent,
+		loadComponent: () =>
+			import('./components/tech-record-summary-changes/tech-record-summary-changes.component').then(
+				(m) => m.TechRecordSummaryChangesComponent
+			),
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
@@ -160,7 +177,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.CORRECT_ERROR_EDIT_ADDITIONAL_EXAMINER_NOTE,
-		component: TechRecordEditAdditionalExaminerNoteComponent,
+		loadComponent: () =>
+			import(
+				'./components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component'
+			).then((m) => m.TechRecordEditAdditionalExaminerNoteComponent),
 		data: {
 			title: 'Edit Additional Examiner Note',
 			roles: Roles.TechRecordAmend,
@@ -172,7 +192,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY,
-		component: TechRecordSummaryChangesComponent,
+		loadComponent: () =>
+			import('./components/tech-record-summary-changes/tech-record-summary-changes.component').then(
+				(m) => m.TechRecordSummaryChangesComponent
+			),
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
@@ -181,7 +204,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_TYRE_SEARCH,
-		component: TechRecordSearchTyresComponent,
+		loadComponent: () =>
+			import('./components/tech-record-search-tyres/tech-record-search-tyres.component').then(
+				(m) => m.TechRecordSearchTyresComponent
+			),
 		data: {
 			title: 'Tyre search',
 			roles: Roles.TechRecordAmend,
@@ -193,7 +219,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.NOTIFIABLE_ALTERNATION_NEEDED_EDIT_ADDITIONAL_EXAMINER_NOTE,
-		component: TechRecordEditAdditionalExaminerNoteComponent,
+		loadComponent: () =>
+			import(
+				'./components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component'
+			).then((m) => m.TechRecordEditAdditionalExaminerNoteComponent),
 		data: {
 			title: 'Edit Additional Examiner Note',
 			roles: Roles.TechRecordAmend,
@@ -220,7 +249,10 @@ const routes: Routes = [
 	},
 	{
 		path: TechRecordRoutes.ADR_CERTIFICATE,
-		component: AdrGenerateCertificateComponent,
+		loadComponent: () =>
+			import('./components/adr-generate-certificate/adr-generate-certificate.component').then(
+				(m) => m.AdrGenerateCertificateComponent
+			),
 		data: { title: 'Generate ADR Certificate', roles: Roles.TestResultCreateDeskAssessment },
 		canActivate: [MsalGuard, RoleGuard],
 	},

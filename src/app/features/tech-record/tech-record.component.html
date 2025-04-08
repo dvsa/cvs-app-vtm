@@ -1,18 +1,19 @@
-<ng-container *ngIf="techRecord$ | async as techRecord; else noVehicle">
-  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [techRecord]="techRecord"></app-vehicle-technical-record>
-</ng-container>
-
-<ng-template #noVehicle>
+@if (techRecord$ | async; as techRecord) {
+  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [techRecord]="techRecord" />
+} @else {
   <h1 class="govuk-heading-l">Vehicle not found</h1>
   <p class="govuk-body">Check the vehicle registration mark, trailer ID or vehicle identification number</p>
   <p class="govuk-body">You can <a class="govuk-link" href="/">browse from the homepage</a> to find the information you need.</p>
-</ng-template>
+}
+
 
 <ng-template #error let-name>
-  <ng-container *ngIf="errorService.errors$ | async as errorMessages">
-    <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
-      <span class="govuk-visually-hidden">Error:</span>
-      <p class="white-space--normal">{{ errorMessage.error }}</p>
-    </span>
-  </ng-container>
+  @if (errorService.errors$ | async; as errorMessages) {
+    @if (getErrorByName(errorMessages, name); as errorMessage) {
+      <span id="search-term-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span>
+        <p class="white-space--normal">{{ errorMessage.error }}</p>
+      </span>
+    }
+  }
 </ng-template>

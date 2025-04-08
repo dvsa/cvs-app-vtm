@@ -3,14 +3,14 @@
     <div class="subheading-container">
       <div class="subheading">
         <h2 class="govuk-heading-m">Technical Record</h2>
-        <a 
-          class="govuk-link" 
-          id="select-/tech-records/{{searchResult.systemNumber}}/{{searchResult.createdTimestamp}}-link" 
-          routerLink="/tech-records/{{searchResult.systemNumber}}/{{searchResult.createdTimestamp}}">
+        <a
+          class="govuk-link"
+          id="select-/tech-records/{{searchResult().systemNumber}}/{{searchResult().createdTimestamp}}-link"
+          routerLink="/tech-records/{{searchResult().systemNumber}}/{{searchResult().createdTimestamp}}">
           Select technical record
         </a>
       </div>
-      <app-tag [type]="tagType">{{ searchResult.techRecord_statusCode | uppercase }}</app-tag>
+      <app-tag [type]="tagType">{{ searchResult().techRecord_statusCode | uppercase }}</app-tag>
     </div>
 
     <dl class="govuk-summary-list">
@@ -19,26 +19,35 @@
           Vehicle identification number (VIN):
         </dt>
         <dd class="govuk-summary-list__value" id="test-vin">
-          {{ searchResult.vin | defaultNullOrEmpty }}
+          {{ searchResult().vin | defaultNullOrEmpty }}
         </dd>
       </div>
-      <ng-container *ngIf="searchResult.techRecord_vehicleType === 'trl'; else vrm">
+      @if (searchResult().techRecord_vehicleType === 'trl') {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             TrailerID:
           </dt>
           <dd class="govuk-summary-list__value" id="test-trailerId">
-          <app-number-plate [vrm]="searchResult.trailerId"></app-number-plate>
+            <app-number-plate [vrm]="searchResult().trailerId"></app-number-plate>
           </dd>
         </div>
-      </ng-container>
+      } @else {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Vehicle registration mark (VRM):
+          </dt>
+          <dd class="govuk-summary-list__value" id="test-vrm">
+            <app-number-plate [vrm]="searchResult().primaryVrm"></app-number-plate>
+          </dd>
+        </div>
+      }
       <ng-template #vrm>
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Vehicle registration mark (VRM):
           </dt>
           <dd class="govuk-summary-list__value" id="test-vrm">
-          <app-number-plate [vrm]="searchResult.primaryVrm"></app-number-plate>
+            <app-number-plate [vrm]="searchResult().primaryVrm"></app-number-plate>
           </dd>
         </div>
       </ng-template>
@@ -47,7 +56,7 @@
           Vehicle type:
         </dt>
         <dd class="govuk-summary-list__value" id="test-vehicleType">
-          {{ $any(searchResult.techRecord_vehicleType) | formatVehicleType }}
+          {{ $any(searchResult().techRecord_vehicleType) | formatVehicleType }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -55,7 +64,7 @@
           Year of manufacture:
         </dt>
         <dd class="govuk-summary-list__value" id="test-manufactureYear">
-          {{ searchResult.techRecord_manufactureYear | defaultNullOrEmpty }}
+          {{ searchResult().techRecord_manufactureYear | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -63,10 +72,12 @@
           Make:
         </dt>
         <dd class="govuk-summary-list__value" id="test-make">
-          <ng-container *ngIf="searchResult.techRecord_vehicleType === 'psv'; else make">
-            {{ searchResult.techRecord_chassisMake | defaultNullOrEmpty }}
-          </ng-container>
-          <ng-template #make>{{ searchResult.techRecord_make | defaultNullOrEmpty }}</ng-template>
+          @if (searchResult().techRecord_vehicleType === 'psv') {
+            {{ searchResult().techRecord_chassisMake | defaultNullOrEmpty }}
+          } @else {
+            {{ searchResult().techRecord_make | defaultNullOrEmpty }}
+          }
+          <ng-template #make>{{ searchResult().techRecord_make | defaultNullOrEmpty }}</ng-template>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -74,10 +85,12 @@
           Model:
         </dt>
         <dd class="govuk-summary-list__value" id="test-model">
-          <ng-container *ngIf="searchResult.techRecord_vehicleType === 'psv'; else model">
-            {{ searchResult.techRecord_chassisModel | defaultNullOrEmpty }}
-          </ng-container>
-          <ng-template #model>{{ searchResult.techRecord_model | defaultNullOrEmpty }}</ng-template>
+          @if (searchResult().techRecord_vehicleType === 'psv') {
+            {{ searchResult().techRecord_chassisModel | defaultNullOrEmpty }}
+          } @else {
+            {{ searchResult().techRecord_model | defaultNullOrEmpty }}
+          }
+          <ng-template #model>{{ searchResult().techRecord_model | defaultNullOrEmpty }}</ng-template>
         </dd>
       </div>
     </dl>

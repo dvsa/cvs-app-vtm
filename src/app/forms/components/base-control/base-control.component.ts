@@ -3,9 +3,10 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
-	ContentChild,
 	Injector,
-	Input,
+	contentChild,
+	input,
+	model,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@directives/prefix/prefix.directive';
@@ -21,18 +22,18 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
-	@ContentChild(PrefixDirective) prefix?: PrefixDirective;
-	@ContentChild(SuffixDirective) suffix?: SuffixDirective;
+	readonly prefix = contentChild(PrefixDirective);
+	readonly suffix = contentChild(SuffixDirective);
 
-	@Input() name = '';
-	@Input() customId?: string;
-	@Input() hint?: string;
-	@Input() link?: string;
-	@Input() label?: string;
-	@Input() width?: FormNodeWidth;
-	@Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
-	@Input() noBottomMargin = false;
-	@Input() warning?: string | null = null;
+	name = model('');
+	readonly customId = input<string>();
+	readonly hint = input<string>();
+	readonly link = input<string>();
+	readonly label = input<string>();
+	readonly width = input<FormNodeWidth>();
+	readonly viewType = input<FormNodeViewTypes>(FormNodeViewTypes.STRING);
+	readonly noBottomMargin = input(false);
+	readonly warning = input<(string | null) | undefined>(null);
 
 	public onChange: (event: unknown) => void = () => {};
 	public onTouched = () => {};
@@ -47,7 +48,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 		protected injector: Injector,
 		protected cdr: ChangeDetectorRef
 	) {
-		this.name = '';
+		this.name.set('');
 	}
 
 	ngAfterContentInit(): void {
@@ -58,7 +59,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 				this.control.meta.changeDetection = this.cdr;
 			}
 		} else {
-			throw new Error(`No control binding for ${this.name}`);
+			throw new Error(`No control binding for ${this.name()}`);
 		}
 	}
 
@@ -68,7 +69,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 			if (errors) {
 				const errorList = Object.keys(errors);
 				const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
-				return this.control.meta.customErrorMessage ?? firstError(errors[errorList[0]], this.label);
+				return this.control.meta.customErrorMessage ?? firstError(errors[errorList[0]], this.label());
 			}
 		}
 		return '';
@@ -113,9 +114,5 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
 	registerOnTouched(fn: () => void): void {
 		this.onTouched = fn;
-	}
-
-	trackBy(i: number) {
-		return i;
 	}
 }

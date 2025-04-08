@@ -1,47 +1,46 @@
-<div *ngIf="techRecord">
-  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
-
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle type</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ vehicleType | defaultNullOrEmpty | uppercase }}
-      </dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VRM</dt>
-      <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
-    </div>
-  </dl>
-
-  <form [formGroup]="form">
-    <app-text-input
-      appToUppercase
-      appNoSpace
-      appTrimWhitespace
-      formControlName="vin"
-      name="vin"
-      label="VIN"
-      hint="VIN should usually be 17 characters long."
-      [width]="width"
-      (focusout)="isFormValid()"
-    >
-      <ng-container *ngIf="form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING'">
-        <ng-template appSuffix>
-          <app-input-spinner [isValid]="form.controls['vin'].status"></app-input-spinner>
-        </ng-template>
-      </ng-container>
-    </app-text-input>
-  </form>
-
-  <app-button-group>
-    <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
-    <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-  </app-button-group>
-</div>
+@if (techRecord) {
+  <div>
+    <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle type</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">
+          {{ vehicleType | defaultNullOrEmpty | uppercase }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VRM</dt>
+        @if (currentVrm) {
+          <app-number-plate [vrm]="currentVrm"></app-number-plate>
+        }
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
+      </div>
+    </dl>
+    <form [formGroup]="form">
+      <app-text-input
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="vin"
+        name="vin"
+        label="VIN"
+        hint="VIN should usually be 17 characters long."
+        [width]="width"
+        (focusout)="isFormValid()"
+        >
+        @if (form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING') {
+          <ng-template appSuffix>
+            <app-input-spinner [isValid]="form.controls['vin'].status"></app-input-spinner>
+          </ng-template>
+        }
+      </app-text-input>
+    </form>
+    <app-button-group>
+      <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
+      <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
+  </div>
+}

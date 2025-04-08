@@ -29,7 +29,7 @@ describe('AdrExaminerNotesHistoryViewComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AdrExaminerNotesHistoryViewComponent],
+			imports: [AdrExaminerNotesHistoryViewComponent],
 			providers: [
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },

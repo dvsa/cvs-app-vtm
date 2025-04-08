@@ -13,9 +13,9 @@ import {
 import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
 import { addAxle, removeAxle, updateScrollPosition } from '@/src/app/store/technical-records';
-import { ViewportScroller } from '@angular/common';
+import { KeyValuePipe, ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -26,11 +26,24 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep } from 'lodash';
 import { ReplaySubject, combineLatest, filter, takeUntil, withLatestFrom } from 'rxjs';
+import { TagComponent } from '../../../../components/tag/tag.component';
+import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
 
 @Component({
 	selector: 'app-tyres-section-edit',
 	templateUrl: './tyres-section-edit.component.html',
 	styleUrls: ['./tyres-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupInputComponent,
+		TagComponent,
+		FieldWarningMessageComponent,
+		GovukFormGroupSelectComponent,
+		KeyValuePipe,
+	],
 })
 export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;

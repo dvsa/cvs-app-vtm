@@ -1,4 +1,5 @@
 import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
 	AbstractControl,
@@ -6,6 +7,8 @@ import {
 	FormBuilder,
 	FormControl,
 	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
 	ValidationErrors,
 	ValidatorFn,
 } from '@angular/forms';
@@ -46,6 +49,11 @@ import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { GovukCheckboxGroupComponent } from '../../../components/govuk-checkbox-group/govuk-checkbox-group.component';
+import { GovukFormGroupDateComponent } from '../../../components/govuk-form-group-date/govuk-form-group-date.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupRadioComponent } from '../../../components/govuk-form-group-radio/govuk-form-group-radio.component';
+import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
@@ -53,6 +61,16 @@ type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'p
 	selector: 'app-vehicle-section-edit',
 	templateUrl: './vehicle-section-edit.component.html',
 	styleUrls: ['./vehicle-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupInputComponent,
+		GovukFormGroupDateComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupRadioComponent,
+		NgTemplateOutlet,
+		GovukCheckboxGroupComponent,
+	],
 })
 export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	readonly CouplingTypeOptions = CouplingTypeOptions;

@@ -1,13 +1,13 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { VehicleHeaderComponent } from '../vehicle-header.component';
@@ -24,10 +24,12 @@ describe('VehicleHeaderComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [VehicleHeaderComponent],
-			imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
+			imports: [VehicleHeaderComponent],
 			providers: [
 				HttpService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ResultOfTestService,
 				{ provide: TechnicalRecordService, useValue: mockTechnicalRecordService },

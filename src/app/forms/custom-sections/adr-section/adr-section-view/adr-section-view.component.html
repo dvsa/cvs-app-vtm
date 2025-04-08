@@ -1,5 +1,5 @@
-<ng-container *ngIf="techRecord() as vm">
-  <ng-container *ngIf="vm.techRecord_vehicleType === 'hgv' || vm.techRecord_vehicleType === 'trl' || vm.techRecord_vehicleType === 'lgv'">
+@if (techRecord(); as vm) {
+  @if (vm.techRecord_vehicleType === 'hgv' || vm.techRecord_vehicleType === 'trl' || vm.techRecord_vehicleType === 'lgv') {
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Able to carry dangerous goods</dt>
@@ -8,7 +8,7 @@
         </dd>
       </div>
     </dl>
-    <ng-container *ngIf="adrService.canDisplayDangerousGoodsSection(vm)">
+    @if (adrService.canDisplayDangerousGoodsSection(vm)) {
       <!-- Applicant details section -->
       <h2 class="govuk-heading-m">Applicant Details</h2>
       <dl class="govuk-summary-list">
@@ -43,7 +43,6 @@
           </dd>
         </div>
       </dl>
-
       <!-- ADR details section -->
       <h2 class="govuk-heading-m">ADR Details</h2>
       <dl class="govuk-summary-list">
@@ -71,18 +70,22 @@
             {{ vm.techRecord_adrDetails_permittedDangerousGoods | defaultNullOrEmpty }}
           </dd>
         </div>
-        <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayBodyDeclarationSection(vm)">
-          <dt class="govuk-summary-list__key">Body declaration</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
-            {{ vm.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayCompatibilityGroupJSection(vm)">
-          <dt class="govuk-summary-list__key">Compatibility Group J</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
-            {{ vm.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
-          </dd>
-        </div>
+        @if (adrService.canDisplayBodyDeclarationSection(vm)) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Body declaration</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
+              {{ vm.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+        @if (adrService.canDisplayCompatibilityGroupJSection(vm)) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Compatibility Group J</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
+              {{ vm.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
+            </dd>
+          </div>
+        }
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             <a class="govuk-link--no-visited-state" target="_blank" href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx">
@@ -100,9 +103,8 @@
           </dd>
         </div>
       </dl>
-
       <!-- Tank Details -->
-      <ng-container *ngIf="adrService.canDisplayTankOrBatterySection(vm)">
+      @if (adrService.canDisplayTankOrBatterySection(vm)) {
         <h2 class="govuk-heading-m">Tank Details</h2>
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
@@ -147,28 +149,32 @@
               {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_select | defaultNullOrEmpty }}
             </dd>
           </div>
-          <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayTankStatementStatementSection(vm)">
-            <dt class="govuk-summary-list__key">Reference number</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
-              {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
-            </dd>
-          </div>
-          <ng-container *ngIf="adrService.canDisplayTankStatementProductListSection(vm)">
+          @if (adrService.canDisplayTankStatementStatementSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Reference number</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
+                {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayTankStatementProductListSection(vm)) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Reference number</dt>
               <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
                 {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo | defaultNullOrEmpty }}
               </dd>
             </div>
-            <ng-container *ngIf="vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
-              <div class="govuk-summary-list__row" *ngFor="let unNo of vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; let i = index">
-                <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
-                  {{ unNo | defaultNullOrEmpty }}
-                </dd>
-              </div>
-            </ng-container>
-          </ng-container>
+            @if (vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo) {
+              @for (unNo of vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; track unNo; let i = $index) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
+                    {{ unNo | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+            }
+          }
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Additional Details</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
@@ -182,10 +188,8 @@
             </dd>
           </div>
         </dl>
-
         <!-- Tank Inspections -->
         <h2 class="govuk-heading-m">Tank Inspections</h2>
-
         <!-- Initial inspection -->
         <dl class="govuk-summary-list">
           <h2 class="govuk-heading-s">Initial</h2>
@@ -202,32 +206,32 @@
             </dd>
           </div>
         </dl>
-
         <!-- Subsequent inspections -->
-        <dl class="govuk-summary-list" *ngIf="vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length">
-          <ng-container *ngFor="let inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; let i = index">
-            <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Inspection type</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
-                {{ inspection.tc3Type | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Certificate number</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
-                {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Expiry date</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
-                {{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
-              </dd>
-            </div>
-          </ng-container>
-        </dl>
-
+        @if (vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length) {
+          <dl class="govuk-summary-list">
+            @for (inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+              <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Inspection type</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
+                  {{ inspection.tc3Type | defaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Certificate number</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
+                  {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Expiry date</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
+                  {{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+          </dl>
+        }
         <!-- Miscellaneous -->
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
@@ -243,10 +247,9 @@
             </dd>
           </div>
         </dl>
-      </ng-container>
-
+      }
       <!-- Battery list applicable -->
-      <ng-container *ngIf="adrService.canDisplayBatterySection(vm)">
+      @if (adrService.canDisplayBatterySection(vm)) {
         <h2 class="govuk-heading-m">Battery List Applicable</h2>
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
@@ -255,15 +258,16 @@
               {{ vm.techRecord_adrDetails_listStatementApplicable | defaultNullOrEmpty }}
             </dd>
           </div>
-          <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayBatteryListNumberSection(vm)">
-            <dt class="govuk-summary-list__key">Reference number</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
-              {{ vm.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
-            </dd>
-          </div>
+          @if (adrService.canDisplayBatteryListNumberSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Reference number</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
+                {{ vm.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
         </dl>
-      </ng-container>
-
+      }
       <!-- Declarations -->
       <dl class="govuk-summary-list">
         <h2 class="govuk-heading-m">Declarations seen</h2>
@@ -274,24 +278,30 @@
               {{ vm.techRecord_adrDetails_brakeDeclarationsSeen | defaultNullOrEmpty }}
             </dd>
           </div>
-          <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayIssueSection(vm)">
-            <dt class="govuk-summary-list__key">Issuer</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
-              {{ vm.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayIssueSection(vm)">
-            <dt class="govuk-summary-list__key">Brake endurance</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
-              {{ vm.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="adrService.canDisplayWeightSection(vm)">
-            <dt class="govuk-summary-list__key">Weight</dt>
-            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
-              {{ vm.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
-            </dd>
-          </div>
+          @if (adrService.canDisplayIssueSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Issuer</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
+                {{ vm.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayIssueSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Brake endurance</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
+                {{ vm.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayWeightSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Weight</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
+                {{ vm.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
+              </dd>
+            </div>
+          }
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
@@ -300,7 +310,6 @@
           </div>
         </dl>
       </dl>
-
       <h2 class="govuk-heading-m">New Certificate required</h2>
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
@@ -310,10 +319,9 @@
           </dd>
         </div>
       </dl>
-
       <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
-      <ng-container *ngIf="vm.techRecord_adrDetails_additionalExaminerNotes as notes; else noExaminerNotes">
-        <ng-container *ngIf="notes?.length as notesCount; else noExaminerNotes">
+      @if (vm.techRecord_adrDetails_additionalExaminerNotes; as notes) {
+        @if (notes?.length; as notesCount) {
           <table class="govuk-table">
             <tbody class="govuk-table__body">
               <tr class="govuk-table__row">
@@ -321,21 +329,30 @@
                 <th scope="col" class="govuk-table__header">Created By</th>
                 <th scope="col" class="govuk-table__header">Date</th>
               </tr>
-              <ng-container *ngIf="pagination.paginationOptions | async as page">
-                <ng-container *ngFor="let note of notes.slice(page.start, page.end); let i = index">
+              @if (pagination.paginationOptions(); as page) {
+                @for (note of notes.slice(page.start, page.end); track note; let i = $index) {
                   <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                    <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
+                    <td class="govuk-table__cell whitespace-pre-wrap">
+                      <span>{{ note.note | defaultNullOrEmpty }}</span>
+                    </td>
                     <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                     <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                   </tr>
-                </ng-container>
-              </ng-container>
+                }
+              }
             </tbody>
           </table>
           <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
-        </ng-container>
-      </ng-container>
-      <ng-template #noExaminerNotes>
+        } @else {
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key" id="no-additional-examiner-notes-history">
+                No additional examiner notes history available
+              </dt>
+            </div>
+          </dl>
+        }
+      } @else {
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key" id="no-additional-examiner-notes-history">
@@ -343,8 +360,7 @@
             </dt>
           </div>
         </dl>
-      </ng-template>
-
+      }
       <h2 class="govuk-heading-m">ADR Certificate Notes</h2>
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
@@ -354,6 +370,6 @@
           </dd>
         </div>
       </dl>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

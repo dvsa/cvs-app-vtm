@@ -1,6 +1,11 @@
+import { AsyncPipe, DatePipe, NgClass, NgComponentOutlet } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { NumberPlateComponent } from '../../../components/number-plate/number-plate.component';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { GetControlLabelPipe } from '../../../pipes/get-control-label/get-control-label.pipe';
+import { RefDataDecodePipe } from '../../../pipes/ref-data-decode/ref-data-decode.pipe';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -14,6 +19,16 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 		},
 	],
 	styleUrls: ['./view-list-item.component.scss'],
+	imports: [
+		NgClass,
+		NumberPlateComponent,
+		NgComponentOutlet,
+		AsyncPipe,
+		DatePipe,
+		DefaultNullOrEmpty,
+		RefDataDecodePipe,
+		GetControlLabelPipe,
+	],
 })
 export class ViewListItemComponent extends BaseControlComponent {
 	customFormControlInjector?: Injector;
@@ -23,7 +38,8 @@ export class ViewListItemComponent extends BaseControlComponent {
 	}
 
 	get displayAsRow() {
-		return !(this.viewType === this.formNodeViewTypes.FULLWIDTH || this.viewType === this.formNodeViewTypes.CUSTOM);
+		const viewType = this.viewType();
+		return !(viewType === this.formNodeViewTypes.FULLWIDTH || viewType === this.formNodeViewTypes.CUSTOM);
 	}
 
 	override ngAfterContentInit(): void {

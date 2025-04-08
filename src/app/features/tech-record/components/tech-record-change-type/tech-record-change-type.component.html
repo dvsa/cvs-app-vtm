@@ -10,7 +10,9 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">VRM</dt>
-    <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+    @if (currentVrm) {
+      <app-number-plate [vrm]="currentVrm"></app-number-plate>
+    }
   </div>
 
   <div class="govuk-summary-list__row">
@@ -28,13 +30,12 @@
     [options]="vehicleTypeOptions"
   ></app-select>
 
-  <ng-container *ngIf="selectVehicleType.value">
+  @if (selectVehicleType.value) {
     <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
-
     <p class="govuk-body">
       You are about to change a {{ vehicleType | uppercase }} to a {{ selectVehicleType.value | uppercase }} provisional technical record.
     </p>
-  </ng-container>
+  }
 
   <div class="buttons-row">
     <app-button id="confirm-and-continue-button" (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>

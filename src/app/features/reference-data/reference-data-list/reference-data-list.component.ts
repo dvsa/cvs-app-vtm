@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import {
@@ -17,11 +19,26 @@ import {
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
 import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
+import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
+import { SelectComponent } from '../../../forms/components/select/select.component';
 
 @Component({
 	selector: 'app-reference-data-list',
 	templateUrl: './reference-data-list.component.html',
 	styleUrls: ['./reference-data-list.component.scss'],
+	imports: [
+		RoleRequiredDirective,
+		FormsModule,
+		ReactiveFormsModule,
+		SelectComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		PaginationComponent,
+		AsyncPipe,
+	],
 })
 export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	type!: ReferenceDataResourceType;
@@ -133,9 +150,10 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		void this.router.navigate([`${key}/delete`], { relativeTo: this.route });
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }) {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }) {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
 

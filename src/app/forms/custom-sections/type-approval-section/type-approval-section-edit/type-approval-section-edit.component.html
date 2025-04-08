@@ -1,72 +1,74 @@
-<ng-container *ngIf="techRecord() as tr">
-  <div [formGroup]="form" *ngIf="tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL">
-    <!-- Approval type -->
-    <govuk-form-group-select
-      *ngIf="shouldDisplayFormControl('techRecord_approvalType')"
-      label="Approval type"
-      formControlName="techRecord_approvalType"
-      [options]="approvalTypes"
-    ></govuk-form-group-select>
-
-    <!-- Approval type number -->
-    <approval-type-number-input
-      *ngIf="shouldDisplayFormControl('techRecord_approvalTypeNumber')"
-      label="Approval type number"
-      formControlName="techRecord_approvalTypeNumber"
-      [width]="FormNodeWidth.XL"
-      [approvalType]="tr.techRecord_approvalType || null"
-    ></approval-type-number-input>
-
-    <!-- National type number (NTA) -->
-    <govuk-form-group-input
-      *ngIf="shouldDisplayFormControl('techRecord_ntaNumber')"
-      label="National type number"
-      [width]="FormNodeWidth.XL"
-      formControlName="techRecord_ntaNumber"
-    ></govuk-form-group-input>
-
-    <!--  PSV Only-->
-    <ng-container *ngIf="vehicleType === VehicleTypes.PSV">
-      <!-- COIF Serial number -->
-      <govuk-form-group-input
-        *ngIf="shouldDisplayFormControl('techRecord_coifSerialNumber')"
-        label="COIF Serial number"
-        [width]="FormNodeWidth.XL"
-        formControlName="techRecord_coifSerialNumber"
-      ></govuk-form-group-input>
-
-      <!-- COIF Certifier name -->
-      <govuk-form-group-input
-        *ngIf="shouldDisplayFormControl('techRecord_coifCertifierName')"
-        label="COIF Certifier name"
-        [width]="FormNodeWidth.XL"
-        formControlName="techRecord_coifCertifierName"
-      ></govuk-form-group-input>
-
-      <!-- COIF Certifier date -->
-      <govuk-form-group-date
-        *ngIf="shouldDisplayFormControl('techRecord_coifDate')"
-        label="COIF Certifier date"
-        formControlName="techRecord_coifDate"
-      ></govuk-form-group-date>
-    </ng-container>
-
-    <!-- Variant number -->
-    <govuk-form-group-input
-      *ngIf="shouldDisplayFormControl('techRecord_variantNumber')"
-      label="Variant number"
-      [width]="FormNodeWidth.XL"
-      [tags]="vehicleType === VehicleTypes.PSV ? [] : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
-      formControlName="techRecord_variantNumber"
-    ></govuk-form-group-input>
-
-    <!-- Variant version number -->
-    <govuk-form-group-input
-      *ngIf="shouldDisplayFormControl('techRecord_variantVersionNumber')"
-      label="Variant version number"
-      [width]="FormNodeWidth.XL"
-      formControlName="techRecord_variantVersionNumber"
-    ></govuk-form-group-input>
-</div>
-
-</ng-container>
+@if (techRecord(); as tr) {
+  @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+    <div [formGroup]="form">
+      <!-- Approval type -->
+      @if (shouldDisplayFormControl('techRecord_approvalType')) {
+        <govuk-form-group-select
+          label="Approval type"
+          formControlName="techRecord_approvalType"
+          [options]="approvalTypes"
+        ></govuk-form-group-select>
+      }
+      <!-- Approval type number -->
+      @if (shouldDisplayFormControl('techRecord_approvalTypeNumber')) {
+        <approval-type-number-input
+          label="Approval type number"
+          formControlName="techRecord_approvalTypeNumber"
+          [width]="FormNodeWidth.XL"
+          [approvalType]="tr.techRecord_approvalType || null"
+        ></approval-type-number-input>
+      }
+      <!-- National type number (NTA) -->
+      @if (shouldDisplayFormControl('techRecord_ntaNumber')) {
+        <govuk-form-group-input
+          label="National type number"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_ntaNumber"
+        ></govuk-form-group-input>
+      }
+      <!--  PSV Only-->
+      @if (vehicleType === VehicleTypes.PSV) {
+        <!-- COIF Serial number -->
+        @if (shouldDisplayFormControl('techRecord_coifSerialNumber')) {
+          <govuk-form-group-input
+            label="COIF Serial number"
+            [width]="FormNodeWidth.XL"
+            formControlName="techRecord_coifSerialNumber"
+          ></govuk-form-group-input>
+        }
+        <!-- COIF Certifier name -->
+        @if (shouldDisplayFormControl('techRecord_coifCertifierName')) {
+          <govuk-form-group-input
+            label="COIF Certifier name"
+            [width]="FormNodeWidth.XL"
+            formControlName="techRecord_coifCertifierName"
+          ></govuk-form-group-input>
+        }
+        <!-- COIF Certifier date -->
+        @if (shouldDisplayFormControl('techRecord_coifDate')) {
+          <govuk-form-group-date
+            label="COIF Certifier date"
+            formControlName="techRecord_coifDate"
+          ></govuk-form-group-date>
+        }
+      }
+      <!-- Variant number -->
+      @if (shouldDisplayFormControl('techRecord_variantNumber')) {
+        <govuk-form-group-input
+          label="Variant number"
+          [width]="FormNodeWidth.XL"
+          [tags]="vehicleType === VehicleTypes.PSV ? [] : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+          formControlName="techRecord_variantNumber"
+        ></govuk-form-group-input>
+      }
+      <!-- Variant version number -->
+      @if (shouldDisplayFormControl('techRecord_variantVersionNumber')) {
+        <govuk-form-group-input
+          label="Variant version number"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_variantVersionNumber"
+        ></govuk-form-group-input>
+      }
+    </div>
+  }
+}

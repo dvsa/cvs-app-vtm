@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	CustomFormControl,
@@ -7,11 +7,13 @@ import {
 	FormNodeOption,
 	FormNodeTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
+import { RadioGroupComponent } from '../../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-test-amend-reason',
 	templateUrl: './test-amend-reason.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent],
 })
 export class TestAmendReasonComponent {
 	private routes: Record<number, string> = { 1: 'incorrect-test-type', 2: 'amend-test-details' };

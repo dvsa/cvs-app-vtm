@@ -1,5 +1,6 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -13,11 +14,26 @@ import {
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, take, takeUntil } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
+import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-amend-vrm-reason',
 	templateUrl: './tech-record-amend-vrm-reason.component.html',
 	styleUrls: ['./tech-record-amend-vrm-reason.component.scss'],
+	imports: [
+		NumberPlateComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		RadioGroupComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 	techRecord?: VehiclesOtherThan<'trl'>;

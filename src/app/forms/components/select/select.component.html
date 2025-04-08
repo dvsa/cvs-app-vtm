@@ -1,29 +1,37 @@
-<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <label *ngIf="label" class="flex flex-wrap gap-2 govuk-label govuk-label--m" for="{{ name }}">
-    {{ label }}
-    <div class="flex flex-wrap gap-2">
-      <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-    </div>
-  </label>
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
+  @if (label()) {
+    <label class="flex flex-wrap gap-2 govuk-label govuk-label--m" for="{{ name() }}">
+      {{ label() }}
+      <div class="flex flex-wrap gap-2">
+        @for (tag of control?.meta?.customTags; track tag) {
+          <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+        }
+      </div>
+    </label>
+  }
 
-  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  @if (hint()) {
+    <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+  }
 
-  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-  <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
+  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
+  <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
 
   <select
     [class]="style"
     class="govuk-select"
-    [id]="customId || name"
-    name="{{ name }}"
+    [id]="customId() || name()"
+    name="{{ name() }}"
     [(ngModel)]="value"
     [disabled]="disabled"
-    attr.aria-describedby="{{ name }}-hint"
+    attr.aria-describedby="{{ name() }}-hint"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event); blur.emit($event)"
     (focus)="handleEvent($event)"
-  >
+    >
     <option [ngValue]="null" selected></option>
-    <option *ngFor="let option of options; trackBy: trackBy" [ngValue]="option.value" [selected]="value === option.value">{{ option.label }}</option>
+    @for (option of options(); track $index) {
+      <option [ngValue]="option.value" [selected]="value === option.value">{{ option.label }}</option>
+    }
   </select>
 </div>

@@ -1,5 +1,5 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { FormArray, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
@@ -14,6 +14,10 @@ import {
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
 
+import { DateComponent } from '../../components/date/date.component';
+import { SelectComponent } from '../../components/select/select.component';
+import { TextInputComponent } from '../../components/text-input/text-input.component';
+
 @Component({
 	selector: 'app-adr-tank-details-subsequent-inspections',
 	templateUrl: './adr-tank-details-subsequent-inspections-edit.component.html',
@@ -21,6 +25,7 @@ import { CustomFormControlComponent } from '../custom-form-control/custom-form-c
 	providers: [
 		{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsEditComponent, multi: true },
 	],
+	imports: [FormsModule, ReactiveFormsModule, SelectComponent, TextInputComponent, DateComponent],
 })
 export class AdrTankDetailsSubsequentInspectionsEditComponent
 	extends CustomFormControlComponent
@@ -44,7 +49,7 @@ export class AdrTankDetailsSubsequentInspectionsEditComponent
 	override ngAfterContentInit() {
 		super.ngAfterContentInit();
 		if (this.form) {
-			const value = this.form?.get(this.name)?.value;
+			const value = this.form?.get(this.name())?.value;
 			const values = Array.isArray(value) && value.length ? value : [];
 
 			values.forEach(

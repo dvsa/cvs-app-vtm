@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -8,10 +8,13 @@ import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-fo
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
 
+import { GovukFormGroupTextareaComponent } from '../../../components/govuk-form-group-textarea/govuk-form-group-textarea.component';
+
 @Component({
 	selector: 'app-notes-section-edit',
 	templateUrl: './notes-section-edit.component.html',
 	styleUrls: ['./notes-section-edit.component.scss'],
+	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupTextareaComponent],
 })
 export class NotesSectionEditComponent implements OnInit, OnDestroy {
 	fb = inject(FormBuilder);

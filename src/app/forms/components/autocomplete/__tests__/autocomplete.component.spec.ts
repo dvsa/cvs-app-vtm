@@ -17,8 +17,12 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
 
 @Component({
 	selector: 'app-host-component',
-	template:
-		'<form [formGroup]="form"><app-autocomplete [name]="name" [options$]="options$" formControlName="foo"></app-autocomplete></form>',
+	template: `
+    <form [formGroup]="form">
+      <app-autocomplete [name]="name" [options$]="options$" formControlName="foo"></app-autocomplete>
+    </form>
+  `,
+	imports: [AutocompleteComponent, FieldErrorMessageComponent, FormsModule, ReactiveFormsModule],
 })
 class HostComponent {
 	name = 'autocomplete';
@@ -36,8 +40,7 @@ describe('AutocompleteComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AutocompleteComponent, HostComponent, FieldErrorMessageComponent],
-			imports: [FormsModule, ReactiveFormsModule],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 
@@ -56,7 +59,7 @@ describe('AutocompleteComponent', () => {
 		['option1', of([{ label: 'option1', value: 'option1' }]), 'option1'],
 		[undefined, of([{ label: 'option1', value: 'option1' }]), 'option3'],
 	])('should return %s for %o when looking for $s', (expected, options$, label) => {
-		autocompleteComponent.options$ = options$;
+		fixture.componentRef.setInput('options$', options$);
 		expect(autocompleteComponent.findOptionValue(label)).toBe(expected);
 	});
 

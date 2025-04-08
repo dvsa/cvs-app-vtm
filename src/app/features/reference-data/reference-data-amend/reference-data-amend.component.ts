@@ -1,4 +1,5 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,10 +12,23 @@ import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, first } from 'rxjs';
+import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
+import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../forms/components/dynamic-form-group/dynamic-form-group.component';
+import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
 	selector: 'app-reference-data-amend',
 	templateUrl: './reference-data-amend.component.html',
+	imports: [
+		RoleRequiredDirective,
+		DynamicFormGroupComponent_1,
+		ButtonGroupComponent,
+		ButtonComponent,
+		ReferenceDataAmendHistoryComponent,
+		AsyncPipe,
+	],
 })
 export class ReferenceDataAmendComponent implements OnInit {
 	type!: ReferenceDataResourceType;
@@ -25,7 +39,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	amendedData: any;
 
-	@ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+	readonly sections = viewChildren(DynamicFormGroupComponent);
 
 	constructor(
 		public globalErrorService: GlobalErrorService,
@@ -80,7 +94,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 	}
 
 	checkForms(): void {
-		const forms = this.sections.map((section) => section.form) as Array<CustomFormGroup>;
+		const forms = this.sections().map((section) => section.form) as Array<CustomFormGroup>;
 
 		this.isFormDirty = forms.some((form) => form.dirty);
 
@@ -115,7 +129,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 			})
 		);
 
-		this.sections.forEach((form) => {
+		this.sections().forEach((form) => {
 			form.ngOnDestroy();
 		});
 

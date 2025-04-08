@@ -1,12 +1,13 @@
-<button
-  *ngIf="hasAdrDocumentation()"
-  [id]="'adr-doc-link'"
-  class="link"
-  appRetrieveDocument
-  [params]="documentParams"
-  [fileName]="fileName"
-  [fileType]="'zip'"
->
-  Download ADR Documentation
-</button>
-<app-dynamic-form-group [parentForm]="form" [template]="template" [data]="techRecord" [edit]="isEditing" (formChange)="handleFormChange($event)"></app-dynamic-form-group>
+@if (hasAdrDocumentation()) {
+  <button
+    [id]="'adr-doc-link'"
+    class="link"
+    appRetrieveDocument
+    [params]="documentParams"
+    [fileName]="fileName"
+    [fileType]="'zip'"
+    >
+    Download ADR Documentation
+  </button>
+}
+<app-dynamic-form-group [parentForm]="form" [template]="template" [data]="techRecord()" [edit]="isEditing()" (formChange)="handleFormChange($event)" />

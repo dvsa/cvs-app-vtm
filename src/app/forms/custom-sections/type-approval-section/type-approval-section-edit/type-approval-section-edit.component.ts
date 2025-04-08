@@ -6,6 +6,8 @@ import {
 	FormBuilder,
 	FormControl,
 	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
 	ValidationErrors,
 	ValidatorFn,
 } from '@angular/forms';
@@ -19,12 +21,25 @@ import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.mod
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
 
+import { GovukFormGroupDateComponent } from '../../../components/govuk-form-group-date/govuk-form-group-date.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
+import { ApprovalTypeNumber } from './components/approval-type-number/approval-type-number';
+
 type TypeApprovalSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>;
 
 @Component({
 	selector: 'app-type-approval-section-edit',
 	templateUrl: './type-approval-section-edit.component.html',
 	styleUrls: ['./type-approval-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupSelectComponent,
+		ApprovalTypeNumber,
+		GovukFormGroupInputComponent,
+		GovukFormGroupDateComponent,
+	],
 })
 export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 	private readonly fb = inject(FormBuilder);

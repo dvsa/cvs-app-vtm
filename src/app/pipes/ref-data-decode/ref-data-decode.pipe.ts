@@ -17,9 +17,7 @@ import {
 import { getSingleVehicleType } from '@store/technical-records';
 import { Observable, Subject, asapScheduler, combineLatest, map, of, take } from 'rxjs';
 
-@Pipe({
-	name: 'refDataDecode$',
-})
+@Pipe({ name: 'refDataDecode$' })
 export class RefDataDecodePipe implements PipeTransform, OnDestroy {
 	constructor(private store: Store<State>) {}
 

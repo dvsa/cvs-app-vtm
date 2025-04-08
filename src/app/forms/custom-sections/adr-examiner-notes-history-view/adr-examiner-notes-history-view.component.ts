@@ -1,3 +1,4 @@
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -6,6 +7,9 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { CollapsibleTextComponent } from '../../../components/collapsible-text/collapsible-text.component';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-adr-examiner-notes-history-view',
@@ -18,6 +22,7 @@ import { Observable, Subject, map, takeUntil } from 'rxjs';
 			multi: true,
 		},
 	],
+	imports: [CollapsibleTextComponent, PaginationComponent, AsyncPipe, DatePipe, DefaultNullOrEmpty],
 })
 export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent implements OnInit, OnDestroy {
 	technicalRecordService = inject(TechnicalRecordService);
@@ -37,9 +42,10 @@ export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent i
 		return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }): void {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }): void {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
 

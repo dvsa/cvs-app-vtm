@@ -1,7 +1,8 @@
 /* eslint-disable jest/no-conditional-expect */
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -16,10 +17,16 @@ import { DateComponent } from '../date.component';
 	template: `<form [formGroup]="form">
     <app-date name="foo" label="Foo" formControlName="foo"></app-date>
   </form> `,
-	styles: [],
+	imports: [
+		BaseControlComponent,
+		DateComponent,
+		FieldErrorMessageComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		DateFocusNextDirective,
+	],
 })
 class HostComponent {
-	@ViewChild(DateComponent, { static: true }) dateComponent?: DateComponent;
 	form = new FormGroup({
 		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
 	});
@@ -28,11 +35,11 @@ class HostComponent {
 describe('DateComponent', () => {
 	let component: HostComponent;
 	let fixture: ComponentFixture<HostComponent>;
+	let dateComponent: DateComponent;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BaseControlComponent, DateComponent, FieldErrorMessageComponent, HostComponent],
-			imports: [FormsModule, ReactiveFormsModule, DateFocusNextDirective],
+			imports: [HostComponent],
 			providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
@@ -40,6 +47,7 @@ describe('DateComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
+		dateComponent = fixture.debugElement.query(By.directive(DateComponent)).componentInstance;
 	});
 
 	it('should create', () => {
@@ -47,7 +55,7 @@ describe('DateComponent', () => {
 	});
 
 	it('should add validators', () => {
-		const addValidatorsSpy = jest.spyOn(component.dateComponent as DateComponent, 'addValidators');
+		const addValidatorsSpy = jest.spyOn(dateComponent, 'addValidators');
 		fixture.detectChanges();
 
 		expect(addValidatorsSpy).toHaveBeenCalledTimes(1);
@@ -73,18 +81,17 @@ describe('DateComponent', () => {
 				minute: number | undefined,
 				displayTime = false
 			) => {
-				if (component.dateComponent) {
-					component.dateComponent.originalDate = '2022-01-01T01:06:00.000';
-					component.dateComponent.displayTime = displayTime;
-				}
+				dateComponent.originalDate = '2022-01-01T01:06:00.000';
+				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
 
 				fixture.detectChanges();
 
-				component.dateComponent?.onDayChange(day);
-				component.dateComponent?.onMonthChange(month);
-				component.dateComponent?.onYearChange(year);
-				component.dateComponent?.onHourChange(hour);
-				component.dateComponent?.onMinuteChange(minute);
+				dateComponent.onDayChange(day);
+				dateComponent.onMonthChange(month);
+				dateComponent.onYearChange(year);
+				dateComponent.onHourChange(hour);
+				dateComponent.onMinuteChange(minute);
+
 				if (expected === undefined) {
 					expect(component.form.get('foo')?.value).toBeNull();
 				} else {
@@ -112,19 +119,17 @@ describe('DateComponent', () => {
 				minute: number | undefined,
 				displayTime = false
 			) => {
-				if (component.dateComponent) {
-					component.dateComponent.originalDate = '2022-01-01T01:06:00.000';
-					component.dateComponent.displayTime = displayTime;
-					component.dateComponent.isoDate = false;
-				}
+				dateComponent.originalDate = '2022-01-01T01:06:00.000';
+				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				jest.spyOn(dateComponent, 'isoDate').mockReturnValue(false);
 
 				fixture.detectChanges();
 
-				component.dateComponent?.onDayChange(day);
-				component.dateComponent?.onMonthChange(month);
-				component.dateComponent?.onYearChange(year);
-				component.dateComponent?.onHourChange(hour);
-				component.dateComponent?.onMinuteChange(minute);
+				dateComponent.onDayChange(day);
+				dateComponent.onMonthChange(month);
+				dateComponent.onYearChange(year);
+				dateComponent.onHourChange(hour);
+				dateComponent.onMinuteChange(minute);
 				if (expected === undefined) {
 					expect(component.form.get('foo')?.value).toBeNull();
 				} else {
@@ -135,59 +140,57 @@ describe('DateComponent', () => {
 
 		it('should propagate control value to subjects', fakeAsync(() => {
 			const date = new Date('1995-12-17T03:24:00');
-			component.dateComponent?.control?.patchValue(date.toISOString());
+			dateComponent.control?.patchValue(date.toISOString());
 
-			component.dateComponent?.valueWriteBack(date.toISOString());
+			dateComponent.valueWriteBack(date.toISOString());
 
 			tick();
-			component.dateComponent?.control?.meta.changeDetection?.detectChanges();
+			dateComponent.control?.meta.changeDetection?.detectChanges();
 
-			expect(component.dateComponent?.day).toEqual(date.getDate());
-			expect(component.dateComponent?.month).toEqual(date.getMonth() + 1);
-			expect(component.dateComponent?.year).toEqual(date.getFullYear());
-			expect(component.dateComponent?.hour).toEqual(date.getUTCHours());
-			expect(component.dateComponent?.minute).toEqual(date.getUTCMinutes());
+			expect(dateComponent.day).toEqual(date.getDate());
+			expect(dateComponent.month).toEqual(date.getMonth() + 1);
+			expect(dateComponent.year).toEqual(date.getFullYear());
+			expect(dateComponent.hour).toEqual(date.getUTCHours());
+			expect(dateComponent.minute).toEqual(date.getUTCMinutes());
 		}));
 	});
 
 	describe('error handling', () => {
 		it('should return empty if the day, month and year are not defined', () => {
-			if (component.dateComponent) {
-				component.dateComponent.errors = {
+			if (dateComponent) {
+				dateComponent.errors = {
 					error: true,
 					date: new Date(),
 					errors: [{ error: false, reason: 'foo', index: 1 }],
 				};
 			}
-			expect(component.dateComponent?.elementHasErrors(1)).toBe(false);
+			expect(dateComponent.elementHasErrors(1)).toBe(false);
 		});
 
 		it('should return true if there are some errors with the same index', () => {
-			if (component.dateComponent) {
-				component.dateComponent.day = 2;
-				component.dateComponent.year = 2021;
-				component.dateComponent.month = 2;
-				component.dateComponent.errors = {
-					error: true,
-					date: new Date(),
-					errors: [{ error: false, reason: 'foo', index: 1 }],
-				};
-			}
-			expect(component.dateComponent?.elementHasErrors(1)).toBe(true);
+			dateComponent.day = 2;
+			dateComponent.year = 2021;
+			dateComponent.month = 2;
+			dateComponent.errors = {
+				error: true,
+				date: new Date(),
+				errors: [{ error: false, reason: 'foo', index: 1 }],
+			};
+
+			expect(dateComponent.elementHasErrors(1)).toBe(true);
 		});
 
 		it('should return false if there are no errors with the same index', () => {
-			if (component.dateComponent) {
-				component.dateComponent.day = 2;
-				component.dateComponent.year = 2021;
-				component.dateComponent.month = 2;
-				component.dateComponent.errors = {
-					error: true,
-					date: new Date(),
-					errors: [{ error: false, reason: 'foo', index: 1 }],
-				};
-			}
-			expect(component.dateComponent?.elementHasErrors(2)).toBe(false);
+			dateComponent.day = 2;
+			dateComponent.year = 2021;
+			dateComponent.month = 2;
+			dateComponent.errors = {
+				error: true,
+				date: new Date(),
+				errors: [{ error: false, reason: 'foo', index: 1 }],
+			};
+
+			expect(dateComponent.elementHasErrors(2)).toBe(false);
 		});
 	});
 });

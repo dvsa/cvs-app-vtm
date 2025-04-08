@@ -1,52 +1,66 @@
-<ng-container *ngIf="amendedTechRecord() as vm">
-  <ng-container *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
+@if (amendedTechRecord(); as vm) {
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
     <!-- Speed restriction (PSV Only) -->
-    <dl class="govuk-summary-list"  *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_speedRestriction')">
-        <dt class="govuk-summary-list__key">Speed restriction</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
-          {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
-        </dd>
-      </div>
-    </dl>
-
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <dl class="govuk-summary-list" >
+        @if (hasChanged('techRecord_speedRestriction')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Speed restriction</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
+              {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
     <!-- Tyre Details -->
-    <table class="govuk-table" *ngIf="shouldShowTable">
-      <caption class="govuk-table__caption govuk-table__caption--m">Tyre details</caption>
-      <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header"></th>
-        <th scope="col" class="govuk-table__header">Code</th>
-        <th scope="col" class="govuk-table__header">Size</th>
-        <th scope="col" class="govuk-table__header">Ply</th>
-        <th scope="col" class="govuk-table__header">Load Index</th>
-        <th *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV" scope="col" class="govuk-table__header">SR</th>
-        <th scope="col" class="govuk-table__header">S/D</th>
-      </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-        <ng-container *ngFor="let axle of vm.techRecord_axles; let i = index">
-          <tr class="govuk-table__row" *ngIf="hasAxleChanged(i)">
-            <th scope="row" class="govuk-table__header">T{{ axle.axleNumber }}</th>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreCode | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_tyreSize | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_plyRating | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell" *ngIf="vm.techRecord_vehicleType === VehicleTypes.PSV">{{ $any(axle).tyres_speedCategorySymbol | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ axle.tyres_fitmentCode | defaultNullOrEmpty  }}</td>
+    @if (shouldShowTable) {
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Tyre details</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header"></th>
+            <th scope="col" class="govuk-table__header">Code</th>
+            <th scope="col" class="govuk-table__header">Size</th>
+            <th scope="col" class="govuk-table__header">Ply</th>
+            <th scope="col" class="govuk-table__header">Load Index</th>
+            @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+              <th scope="col" class="govuk-table__header">SR</th>
+            }
+            <th scope="col" class="govuk-table__header">S/D</th>
           </tr>
-        </ng-container>
-      </tbody>
-    </table>
-
+        </thead>
+        <tbody class="govuk-table__body">
+          @for (axle of vm.techRecord_axles; track axle; let i = $index) {
+            @if (hasAxleChanged(i)) {
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">T{{ axle.axleNumber }}</th>
+                <td class="govuk-table__cell">{{ axle.tyres_tyreCode | defaultNullOrEmpty  }}</td>
+                <td class="govuk-table__cell">{{ axle.tyres_tyreSize | defaultNullOrEmpty  }}</td>
+                <td class="govuk-table__cell">{{ axle.tyres_plyRating | defaultNullOrEmpty  }}</td>
+                <td class="govuk-table__cell">{{ axle.tyres_dataTrAxles | defaultNullOrEmpty  }}</td>
+                @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+                  <td class="govuk-table__cell">{{ $any(axle).tyres_speedCategorySymbol | defaultNullOrEmpty  }}</td>
+                }
+                <td class="govuk-table__cell">{{ axle.tyres_fitmentCode | defaultNullOrEmpty  }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
     <!-- Tyre Use Code (HGV/TRL Only) -->
-    <dl class="govuk-summary-list"  *ngIf="vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL">
-      <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_tyreUseCode')">
-        <dt class="govuk-summary-list__key">Tyre Use Code</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
-          {{ vm.techRecord_tyreUseCode | defaultNullOrEmpty }}
-        </dd>
-      </div>
-    </dl>
-  </ng-container>
-</ng-container>
+    @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+      <dl class="govuk-summary-list" >
+        @if (hasChanged('techRecord_tyreUseCode')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Tyre Use Code</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
+              {{ vm.techRecord_tyreUseCode | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+  }
+}

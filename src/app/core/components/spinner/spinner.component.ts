@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
 	selector: 'app-spinner',
 	templateUrl: './spinner.component.html',
 	styleUrls: ['./spinner.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [],
 })
 export class SpinnerComponent {
-	@Input() loading: boolean | null = false;
+	readonly loading = input<boolean | null>(false);
 }

@@ -1,7 +1,7 @@
 <ng-container *ngIf="currentTechRecord$ | async as editableTechRecord">
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
-      <span>{{ customTitle || vehicleMakeAndModel }}</span>
+      <span>{{ customTitle() || vehicleMakeAndModel }}</span>
       <app-icon [icon]="editableTechRecord.techRecord_vehicleType || ''"></app-icon>
     </h1>
   </div>
@@ -13,7 +13,7 @@
         {{ getVehicleType(editableTechRecord) | uppercase | defaultNullOrEmpty }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">
-        <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
+        <dd *ngIf="!hideActions()" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
               *ngIf="
@@ -33,10 +33,10 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
       <dd id="vin" class="govuk-summary-list__value">
-        {{ vehicle?.vin | defaultNullOrEmpty }}
+        {{ vehicle()?.vin | defaultNullOrEmpty }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">
-        <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
+        <dd *ngIf="!hideActions()" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
               *ngIf="
@@ -56,7 +56,7 @@
       <div *ngSwitchCase="'trl'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
         <dd id="trailer-id" class="govuk-summary-list__value">
-          {{ vehicle.trailerId | defaultNullOrEmpty }}
+          {{ vehicle().trailerId | defaultNullOrEmpty }}
         </dd>
       </div>
 
@@ -100,7 +100,7 @@
       <dd id="status-code" class="govuk-summary-list__value">
         <strong class="govuk-tag govuk-phase-banner__content__tag">{{ currentTechRecord.techRecord_statusCode | defaultNullOrEmpty }}</strong>
       </dd>
-      <ng-container *ngIf="!hideActions">
+      <ng-container *ngIf="!hideActions()">
         <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
@@ -149,7 +149,7 @@
             {{ currentTechRecord.techRecord_hiddenInVta ? 'HIDDEN' : 'VISIBLE' }}
           </app-tag>
         </dd>
-        <ng-container *ngIf="!hideActions">
+        <ng-container *ngIf="!hideActions()">
           <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
               <app-button design="link" id="change-record-visibility-in-vta-link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>

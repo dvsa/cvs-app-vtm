@@ -1,14 +1,14 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { PaginationComponent } from '../pagination.component';
 
 @Component({
 	selector: 'app-host',
 	template: '<app-pagination [tableName]="tableName" [numberOfItems]="numberOfItems"></app-pagination>',
+	imports: [PaginationComponent],
 })
 class HostComponent {
 	tableName = 'test-pagination';
@@ -32,8 +32,8 @@ describe('PaginationComponent', () => {
 
 	beforeEach(waitForAsync(() => {
 		TestBed.configureTestingModule({
-			declarations: [HostComponent, PaginationComponent],
-			imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])],
+			imports: [HostComponent],
+			providers: [provideRouter([{ path: '', component: PaginationComponent }])],
 		}).compileComponents();
 	}));
 
@@ -57,7 +57,7 @@ describe('PaginationComponent', () => {
 		[5, 10],
 	])('should return an array length of %d when items per page is %d', (arrayLength: number, itemsPerPage: number) => {
 		hostComponent.numberOfItems = 50;
-		component.itemsPerPage = itemsPerPage;
+		jest.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
 		fixture.detectChanges();
 		expect(component.pages).toHaveLength(arrayLength);
 	});
@@ -118,13 +118,13 @@ describe('PaginationComponent', () => {
 			done
 		) => {
 			component.paginationOptions.subscribe((opts) => {
-				expect(opts.currentPage).toBe(currentPage);
-				expect(opts.start).toBe(start);
-				expect(opts.end).toBe(end);
+				expect(opts?.currentPage).toBe(currentPage);
+				expect(opts?.start).toBe(start);
+				expect(opts?.end).toBe(end);
 				done();
 			});
 
-			component.itemsPerPage = itemsPerPage;
+			jest.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
 			component.currentPageSubject.next(currentPage);
 		}
 	);
@@ -138,13 +138,13 @@ describe('PaginationComponent', () => {
 				router.initialNavigation();
 			});
 
-			const next: HTMLLinkElement = el.query(By.css(`#${component.tableName}-next-page`)).nativeElement;
+			const next: HTMLLinkElement = el.query(By.css(`#${component.tableName()}-next-page`)).nativeElement;
 			next.click();
 
 			tick();
 			fixture.detectChanges();
 
-			expect(router.url).toBe(`/?${component.tableName}-page=2`);
+			expect(router.url).toBe(`/?${component.tableName()}-page=2`);
 		}));
 
 		it('should not render "next" link when already on last page', fakeAsync(() => {
@@ -158,7 +158,7 @@ describe('PaginationComponent', () => {
 				fixture.detectChanges();
 			});
 
-			const next = el.query(By.css(`#${component.tableName}-next-page`));
+			const next = el.query(By.css(`#${component.tableName()}-next-page`));
 
 			expect(next).toBeNull();
 		}));
@@ -176,13 +176,13 @@ describe('PaginationComponent', () => {
 				fixture.detectChanges();
 			});
 
-			const prev: HTMLLinkElement = el.query(By.css(`#${component.tableName}-prev-page`)).nativeElement;
+			const prev: HTMLLinkElement = el.query(By.css(`#${component.tableName()}-prev-page`)).nativeElement;
 			prev.click();
 
 			tick();
 			fixture.detectChanges();
 
-			expect(router.url).toBe(`/?${component.tableName}-page=3`);
+			expect(router.url).toBe(`/?${component.tableName()}-page=3`);
 		}));
 
 		it('should not render "prev" link when already on first page', fakeAsync(() => {
@@ -193,7 +193,7 @@ describe('PaginationComponent', () => {
 				router.initialNavigation();
 			});
 
-			const prev = el.query(By.css(`#${component.tableName}-prev-page`));
+			const prev = el.query(By.css(`#${component.tableName()}-prev-page`));
 
 			expect(prev).toBeNull();
 		}));

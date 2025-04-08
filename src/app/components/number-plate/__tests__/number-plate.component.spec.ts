@@ -8,7 +8,7 @@ describe('NumberPlateComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [NumberPlateComponent, DefaultNullOrEmpty],
+			imports: [NumberPlateComponent, DefaultNullOrEmpty],
 		}).compileComponents();
 	});
 

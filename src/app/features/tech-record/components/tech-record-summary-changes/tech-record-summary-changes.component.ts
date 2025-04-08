@@ -1,3 +1,4 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -32,12 +33,72 @@ import {
 	updateTechRecordSuccess,
 } from '@store/technical-records';
 import { Subject, combineLatest, map, take, takeUntil } from 'rxjs';
+import { AccordionControlComponent } from '../../../../components/accordion-control/accordion-control.component';
+import { AccordionComponent } from '../../../../components/accordion/accordion.component';
+import { BannerComponent } from '../../../../components/banner/banner.component';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { IconComponent } from '../../../../components/icon/icon.component';
+import { DynamicFormGroupComponent } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
+import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
+import { AdrComponent } from '../../../../forms/custom-sections/adr/adr.component';
+import { ApprovalTypeComponent } from '../../../../forms/custom-sections/approval-type/approval-type.component';
+import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
+import { BodyComponent } from '../../../../forms/custom-sections/body/body.component';
+import { DimensionsSectionComponent } from '../../../../forms/custom-sections/dimensions-section/dimensions-section.component';
+import { DimensionsComponent } from '../../../../forms/custom-sections/dimensions/dimensions.component';
+import { LastApplicantSectionComponent } from '../../../../forms/custom-sections/last-applicant-section/last-applicant-section.component';
+import { ModifiedWeightsComponent } from '../../../../forms/custom-sections/modified-weights/modified-weights.component';
+import { NotesSectionComponent } from '../../../../forms/custom-sections/notes-section/notes-section.component';
+import { PsvBrakesComponent } from '../../../../forms/custom-sections/psv-brakes/psv-brakes.component';
+import { TrlBrakesComponent } from '../../../../forms/custom-sections/trl-brakes/trl-brakes.component';
+import { TRLPurchasersSectionComponent } from '../../../../forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
+import { TypeApprovalSectionComponent } from '../../../../forms/custom-sections/type-approval-section/type-approval-section.component';
+import { TyresSectionComponent } from '../../../../forms/custom-sections/tyres-section/tyres-section.component';
+import { TyresComponent } from '../../../../forms/custom-sections/tyres/tyres.component';
+import { VehicleSectionComponent } from '../../../../forms/custom-sections/vehicle-section/vehicle-section.component';
+import { WeightsSectionComponent } from '../../../../forms/custom-sections/weights-section/weights-section.component';
+import { WeightsComponent } from '../../../../forms/custom-sections/weights/weights.component';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @Component({
 	selector: 'app-tech-record-summary-changes',
 	templateUrl: './tech-record-summary-changes.component.html',
 	styleUrls: ['./tech-record-summary-changes.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		BannerComponent,
+		IconComponent,
+		AccordionControlComponent,
+		AccordionComponent,
+		NgTemplateOutlet,
+		NotesSectionComponent,
+		DynamicFormGroupComponent,
+		VehicleSectionComponent,
+		BodySectionComponent,
+		BodyComponent,
+		DimensionsSectionComponent,
+		DimensionsComponent,
+		TRLPurchasersSectionComponent,
+		TypeApprovalSectionComponent,
+		ApprovalTypeComponent,
+		PsvBrakesComponent,
+		TrlBrakesComponent,
+		TyresSectionComponent,
+		TyresComponent,
+		WeightsSectionComponent,
+		WeightsComponent,
+		ModifiedWeightsComponent,
+		AdrSectionComponent,
+		AdrComponent,
+		LastApplicantSectionComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		AsyncPipe,
+		DefaultNullOrEmpty,
+		FormatVehicleTypePipe,
+	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 	destroy$ = new Subject<void>();

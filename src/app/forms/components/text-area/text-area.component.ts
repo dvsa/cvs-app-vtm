@@ -1,7 +1,10 @@
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ValidatorNames } from '@models/validators.enum';
+import { TagComponent } from '../../../components/tag/tag.component';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
 	selector: 'app-text-area',
@@ -13,6 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 			multi: true,
 		},
 	],
+	imports: [TagComponent, FieldErrorMessageComponent, FormsModule, NgClass],
 })
 export class TextAreaComponent extends BaseControlComponent {
 	get maxLength(): number | undefined {

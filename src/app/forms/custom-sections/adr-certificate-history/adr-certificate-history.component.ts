@@ -1,5 +1,5 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { DatePipe, ViewportScroller } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -11,14 +11,18 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { RouterService } from '@services/router/router.service';
 import { cloneDeep } from 'lodash';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
+import { RetrieveDocumentDirective } from '../../../directives/retrieve-document/retrieve-document.directive';
 
 @Component({
 	selector: 'app-adr-certificate-history',
 	templateUrl: './adr-certificate-history.html',
 	styleUrls: ['./adr-certificate-history.scss'],
+	imports: [RetrieveDocumentDirective, PaginationComponent, RoleRequiredDirective, DatePipe],
 })
 export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
-	@Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
+	readonly currentTechRecord = input<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
 	isEditing = false;
 	private destroy$ = new Subject<void>();
 	routerService = inject(RouterService);
@@ -46,7 +50,7 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
 	}
 
 	get sortedCertificates(): ADRCertificateDetails[] | undefined {
-		return cloneDeep(this.currentTechRecord?.techRecord_adrPassCertificateDetails)?.sort((a, b) =>
+		return cloneDeep(this.currentTechRecord()?.techRecord_adrPassCertificateDetails)?.sort((a, b) =>
 			a.generatedTimestamp && b.generatedTimestamp
 				? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime()
 				: 0
@@ -55,10 +59,6 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
 
 	get adrCertificateHistory(): ADRCertificateDetails[] {
 		return this.sortedCertificates?.slice(this.pageStart, this.pageEnd) || [];
-	}
-
-	trackByFn(i: number, tr: ADRCertificateDetails) {
-		return tr.generatedTimestamp;
 	}
 
 	get numberOfADRCertificates(): number {
@@ -73,7 +73,7 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
 	}
 
 	get isArchived(): boolean {
-		return this.currentTechRecord?.techRecord_statusCode === 'archived';
+		return this.currentTechRecord()?.techRecord_statusCode === 'archived';
 	}
 
 	showTable(): boolean {
@@ -92,8 +92,9 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
 
 	validateADRDetailsAndNavigate(): void {
 		this.globalErrorService.clearErrors();
-		if (this.currentTechRecord) {
-			if (!this.adrService.carriesDangerousGoods(this.currentTechRecord)) {
+		const currentTechRecord = this.currentTechRecord();
+		if (currentTechRecord) {
+			if (!this.adrService.carriesDangerousGoods(currentTechRecord)) {
 				this.viewportScroller.scrollToPosition([0, 0]);
 				this.globalErrorService.addError({
 					error:
@@ -106,9 +107,10 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
 		void this.router.navigate(['adr-certificate'], { relativeTo: this.route });
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }) {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }) {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
 }

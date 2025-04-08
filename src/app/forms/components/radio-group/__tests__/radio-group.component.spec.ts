@@ -15,7 +15,7 @@ import { RadioGroupComponent } from '../radio-group.component';
 	template: `<form [formGroup]="form">
     <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
   </form> `,
-	styles: [],
+	imports: [RadioGroupComponent, BaseControlComponent, FieldErrorMessageComponent, FormsModule, ReactiveFormsModule],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -34,8 +34,7 @@ describe('RadioGroupComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [HostComponent, RadioGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
-			imports: [FormsModule, ReactiveFormsModule],
+			imports: [HostComponent],
 			providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});

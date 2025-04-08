@@ -1,56 +1,61 @@
-<ng-container *ngIf="requiredStandards?.length || normalAndBasic; else noRequiredStandards">
+@if (requiredStandards?.length || normalAndBasic) {
   <h1 class="govuk-heading-l">Select a required standard</h1>
   <div class="requiredStandards">
-    <div *ngIf="normalAndBasic">
-      <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic }">
-        <ol class="list">
-          <li *ngFor="let type of inspectionTypes; let i = index">
-            <a
-              [id]="'normal-or-basic-list-item-' + i"
-              class="browse__link browse__link--inactive"
-              [ngClass]="{ 'browse__link--active': type === selectedInspectionType }"
-              (click)="handleSelect(type, types.InspectionType)"
-            >
-              {{ type | defaultNullOrEmpty }} <span [ngClass]="{ 'list__item--more': true }"></span>
-            </a>
-          </li>
-        </ol>
+    @if (normalAndBasic) {
+      <div>
+        <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic }">
+          <ol class="list">
+            @for (type of inspectionTypes; track type; let i = $index) {
+              <li>
+                <a
+                  [id]="'normal-or-basic-list-item-' + i"
+                  class="browse__link browse__link--inactive"
+                  [ngClass]="{ 'browse__link--active': type === selectedInspectionType }"
+                  (click)="handleSelect(type, types.InspectionType)"
+                  >
+                  {{ type | defaultNullOrEmpty }} <span [ngClass]="{ 'list__item--more': true }"></span>
+                </a>
+              </li>
+            }
+          </ol>
+        </div>
       </div>
-    </div>
-
+    }
     <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedInspectionType }">
       <ol class="list">
-        <li *ngFor="let section of requiredStandards; let i = index">
-          <a
-            [id]="'section-list-item-' + i"
-            class="browse__link browse__link--inactive"
-            [ngClass]="{ 'browse__link--active': section === selectedSection }"
-            (click)="handleSelect(section, types.Section)"
-          >
-            {{ section.sectionNumber }}. {{ section.sectionDescription }} <span [ngClass]="{ 'list__item--more': true }"></span>
-          </a>
-        </li>
+        @for (section of requiredStandards; track section; let i = $index) {
+          <li>
+            <a
+              [id]="'section-list-item-' + i"
+              class="browse__link browse__link--inactive"
+              [ngClass]="{ 'browse__link--active': section === selectedSection }"
+              (click)="handleSelect(section, types.Section)"
+              >
+              {{ section.sectionNumber }}. {{ section.sectionDescription }} <span [ngClass]="{ 'list__item--more': true }"></span>
+            </a>
+          </li>
+        }
       </ol>
     </div>
-
     <div class="list_container">
       <ol class="list">
-        <li *ngFor="let rs of selectedSection?.requiredStandards; let i = index">
-          <a
-            [id]="'rs-list-item-' + i"
-            class="browse__normal-link browse__normal-link--inactive"
-            [ngClass]="{ 'browse__normal-link--active': rs === selectedRequiredStandard }"
-            (click)="handleSelect(rs, types.RequiredStandard)"
-          >
-            {{ rs.refCalculation }} {{ rs.requiredStandard }}
-          </a>
-        </li>
+        @for (rs of selectedSection?.requiredStandards; track rs; let i = $index) {
+          <li>
+            <a
+              [id]="'rs-list-item-' + i"
+              class="browse__normal-link browse__normal-link--inactive"
+              [ngClass]="{ 'browse__normal-link--active': rs === selectedRequiredStandard }"
+              (click)="handleSelect(rs, types.RequiredStandard)"
+              >
+              {{ rs.refCalculation }} {{ rs.requiredStandard }}
+            </a>
+          </li>
+        }
       </ol>
     </div>
   </div>
-</ng-container>
-
-<ng-template #noRequiredStandards>
+} @else {
   <h1 class="govuk-heading-l">No Required Standards Found</h1>
   <p class="govuk-body">No required standards were found. Check the information on the technical record is correct, or try to refresh the page.</p>
-</ng-template>
+}
+

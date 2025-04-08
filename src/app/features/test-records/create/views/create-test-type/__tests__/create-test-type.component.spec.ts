@@ -1,7 +1,7 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { TestType } from '@models/test-types/testType';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -21,13 +21,13 @@ describe('CreateTestTypeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [CreateTestTypeComponent, TestTypeSelectComponent],
-			imports: [HttpClientTestingModule, RouterTestingModule],
+			imports: [CreateTestTypeComponent, TestTypeSelectComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
-				{
-					provide: TechnicalRecordService,
-				},
+				{ provide: TechnicalRecordService },
 				{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } },
 			],
 		}).compileComponents();

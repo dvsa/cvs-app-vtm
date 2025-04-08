@@ -23,8 +23,7 @@ describe('TextInputComponent', () => {
 		};
 
 		await TestBed.configureTestingModule({
-			declarations: [TextInputComponent, FieldErrorMessageComponent],
-			imports: [FormsModule],
+			imports: [FormsModule, TextInputComponent, FieldErrorMessageComponent],
 		})
 			.overrideComponent(TextInputComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
 			.compileComponents();

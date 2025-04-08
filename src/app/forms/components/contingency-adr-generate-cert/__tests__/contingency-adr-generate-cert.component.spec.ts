@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -49,17 +50,18 @@ describe('AdrGenerateCertTestComponent', () => {
 	let fixture: ComponentFixture<ContingencyAdrGenerateCertComponent>;
 	let store: Store<State>;
 	let techRecordService: TechnicalRecordService;
-	let actions$: ReplaySubject<Action>;
+	const actions$: ReplaySubject<Action> = new ReplaySubject<Action>(1);
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ContingencyAdrGenerateCertComponent],
+			imports: [ContingencyAdrGenerateCertComponent],
 			providers: [
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				provideMockActions(() => actions$),
 				TechnicalRecordService,
 			],
-			imports: [HttpClientTestingModule],
 			schemas: [CUSTOM_ELEMENTS_SCHEMA],
 		}).compileComponents();
 	});

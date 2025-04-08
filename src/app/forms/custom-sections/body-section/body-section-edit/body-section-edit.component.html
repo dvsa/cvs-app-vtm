@@ -1,7 +1,7 @@
 <div [formGroup]="form">
-  <ng-container *ngIf="
-  techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
-  techRecord().techRecord_vehicleType === VehicleTypes.TRL">
+  @if (
+    techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+    techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
     <govuk-form-group-input
       type="text"
       formControlName="techRecord_brakes_dtpNumber"
@@ -9,7 +9,6 @@
       [width]="FormNodeWidth.L"
       [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
     ></govuk-form-group-input>
-
     <div class="node-row">
       <govuk-form-group-select
         type="text"
@@ -18,7 +17,7 @@
         [options]="$any(bodyMakes$ | async) ?? []"
         [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-select>
       <govuk-form-group-input
         type="text"
@@ -26,10 +25,9 @@
         label="Body model"
         [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
     </div>
-
     <govuk-form-group-select
       type="text"
       formControlName="techRecord_bodyType_description"
@@ -37,11 +35,10 @@
       [width]="FormNodeWidth.L"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       [options]="bodyTypes"
-    >
+      >
     </govuk-form-group-select>
-
-  </ng-container>
-  <ng-container *ngIf="techRecord().techRecord_vehicleType === VehicleTypes.PSV">
+  }
+  @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
     <govuk-form-group-autocomplete
       formControlName="techRecord_brakes_dtpNumber"
       label="DTp number"
@@ -55,14 +52,14 @@
         formControlName="techRecord_chassisMake"
         label="Chassis make"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_chassisModel"
         label="Chassis model"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
     </div>
     <div class="node-row">
@@ -71,34 +68,33 @@
         formControlName="techRecord_bodyMake"
         label="Body make"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_bodyModel"
         label="Body model"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
     </div>
-
     <div class="node-row">
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_bodyType_description"
         label="Body type"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_modelLiteral"
         label="Model literal"
         [width]="FormNodeWidth.L"
-      >
+        >
       </govuk-form-group-input>
     </div>
-  </ng-container>
+  }
   <govuk-form-group-select
     formControlName="techRecord_functionCode"
     label="Function code"

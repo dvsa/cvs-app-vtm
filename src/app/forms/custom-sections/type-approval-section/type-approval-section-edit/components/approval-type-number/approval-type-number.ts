@@ -7,8 +7,8 @@ import {
 	APPROVAL_TYPE_NUMBER_REGEX_GENERIC_PARTIAL_MATCH,
 	APPROVAL_TYPE_NUMBER_REGEX_PARTIAL_MATCH,
 } from '@/src/app/models/approval-type.model';
-import { KeyValuePipe, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, forwardRef, inject } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
+import { Component, OnChanges, OnDestroy, SimpleChanges, forwardRef, inject, input, model } from '@angular/core';
 import {
 	AbstractControl,
 	ControlContainer,
@@ -20,25 +20,14 @@ import {
 } from '@angular/forms';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'approval-type-number-input',
 	templateUrl: 'approval-type-number.html',
 	styleUrls: ['./approval-type-number.scss'],
-	standalone: true,
-	imports: [
-		FormsModule,
-		NgSwitchCase,
-		SharedModule,
-		KeyValuePipe,
-		NgIf,
-		NgSwitch,
-		ReactiveFormsModule,
-		ReactiveFormsModule,
-		ApprovalTypeFocusNextDirective,
-	],
+	imports: [FormsModule, KeyValuePipe, ReactiveFormsModule, ReactiveFormsModule, ApprovalTypeFocusNextDirective],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
@@ -48,23 +37,17 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	],
 })
 export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDestroy {
-	@Input({ required: true })
-	width!: FormNodeWidth;
+	readonly width = input.required<FormNodeWidth>();
 
-	@Input({ alias: 'label', required: true })
-	controlLabel = '';
+	readonly controlLabel = input.required<string>({ alias: 'label' });
 
-	@Input({ alias: 'formControlName', required: true })
-	controlName = '';
+	readonly controlName = input.required<string>({ alias: 'formControlName' });
 
-	@Input()
-	disabled = false;
+	readonly disabled = input(false);
 
-	@Input({ required: true })
-	approvalType!: string | null;
+	readonly approvalType = input.required<string | null>();
 
-	@Input()
-	value: string | null | undefined = null;
+	value = model<string | null | undefined>(null);
 
 	readonly ApprovalType = ApprovalType;
 	readonly FormNodeWidth = FormNodeWidth;
@@ -82,7 +65,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	});
 
 	get id() {
-		return this.controlName;
+		return this.controlName();
 	}
 
 	get errorId() {
@@ -90,7 +73,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	}
 
 	get control() {
-		return this.controlContainer.control?.get(this.controlName) as AbstractControl;
+		return this.controlContainer.control?.get(this.controlName()) as AbstractControl;
 	}
 
 	get hasError() {
@@ -101,7 +84,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	onTouched = () => {};
 
 	writeValue(value: string | null): void {
-		this.value = value;
+		this.value.set(value);
 		this.parseApprovalTypeNumber(value);
 		this.onChange(value);
 	}
@@ -144,12 +127,13 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	}
 
 	parseApprovalTypeNumber(approvalTypeNumber: string | null) {
-		if (!approvalTypeNumber || !this.approvalType) return;
+		const approvalType = this.approvalType();
+		if (!approvalTypeNumber || !approvalType) return;
 
 		// Handle NTA/IVA/IVA DVSA-NI approval type numbers
 		const group1: string[] = [ApprovalType.NTA, ApprovalType.IVA, ApprovalType.IVA_DVSA_NI];
 
-		if (group1.includes(this.approvalType)) {
+		if (group1.includes(approvalType)) {
 			return this.parseGroup1ApprovalTypeNumber(approvalTypeNumber);
 		}
 
@@ -169,32 +153,34 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 			ApprovalType.SMALL_SERIES_NKS,
 		];
 
-		if (group2.includes(this.approvalType)) {
+		if (group2.includes(approvalType)) {
 			return this.parseGroup2ApprovalTypeNumber(approvalTypeNumber);
 		}
 	}
 
 	parseGroup1ApprovalTypeNumber(value: string) {
-		if (!this.approvalType) return;
-		const pattern = APPROVAL_NUMBER_TYPE_REGEX[this.approvalType];
+		const approvalType = this.approvalType();
+		if (!approvalType) return;
+		const pattern = APPROVAL_NUMBER_TYPE_REGEX[approvalType];
 		const matches = value.match(pattern)?.map((x) => (x.length > 25 ? x.substring(0, 25) : x)) || [];
 		this.patchApprovalTypeNumberFromMatches(matches);
 	}
 
 	parseGroup2ApprovalTypeNumber(value: string) {
-		if (!this.approvalType) return;
+		const approvalType = this.approvalType();
+		if (!approvalType) return;
 
 		let matches: string[] = [];
 
 		// Step 1: try to match pattern exactly
-		const pattern1 = APPROVAL_NUMBER_TYPE_REGEX[this.approvalType];
+		const pattern1 = APPROVAL_NUMBER_TYPE_REGEX[approvalType];
 		matches = value.match(pattern1)?.slice(1)?.filter(Boolean) || [];
 		this.patchApprovalTypeNumberFromMatches(matches);
 
 		// Step 2: if no matches, match leading characters against the partial pattern
 		if (!matches.length) {
-			const pattern2 = APPROVAL_TYPE_NUMBER_REGEX_PARTIAL_MATCH[this.approvalType] || /^$/;
-			const limit = APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT[this.approvalType];
+			const pattern2 = APPROVAL_TYPE_NUMBER_REGEX_PARTIAL_MATCH[approvalType] || /^$/;
+			const limit = APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT[approvalType];
 			const limitedValue = value.length > limit ? value.substring(0, limit) : value;
 			matches = limitedValue.match(pattern2)?.slice(1)?.filter(Boolean) || [];
 			this.patchApprovalTypeNumberFromMatches(matches);
@@ -202,8 +188,8 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 
 		// Step 3: if no matches, match leading characters against the generic pattern
 		if (!matches.length) {
-			const pattern3 = APPROVAL_TYPE_NUMBER_REGEX_GENERIC_PARTIAL_MATCH[this.approvalType] || /^$/;
-			const limit = APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT_GENERIC[this.approvalType];
+			const pattern3 = APPROVAL_TYPE_NUMBER_REGEX_GENERIC_PARTIAL_MATCH[approvalType] || /^$/;
+			const limit = APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT_GENERIC[approvalType];
 			const limitedValue = value.length > limit ? value.substring(0, limit) : value;
 			matches = limitedValue.match(pattern3)?.slice(1)?.filter(Boolean) || [];
 			this.patchApprovalTypeNumberFromMatches(matches);
@@ -211,7 +197,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 
 		// Step 4: if still not matches, error to report unparseable approval type number
 		if (!matches.length) {
-			console.error('Unknown approval type number:', this.approvalType, value);
+			console.error('Unknown approval type number:', approvalType, value);
 		}
 	}
 
@@ -230,7 +216,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 		approvalTypeNumber3: string | undefined,
 		approvalTypeNumber4: string | undefined
 	) {
-		switch (this.approvalType) {
+		switch (this.approvalType()) {
 			case ApprovalType.NTA:
 				return approvalTypeNumber1 || null;
 

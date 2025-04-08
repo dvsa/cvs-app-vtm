@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import {
+	TechRecordPSV,
+	TechRecordType,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MultiOptions } from '@models/options.model';
@@ -20,16 +23,19 @@ import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, debounceTime, of, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 
+import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
+
 @Component({
 	selector: 'app-psv-brakes',
 	templateUrl: './psv-brakes.component.html',
 	styleUrls: ['./psv-brakes.component.scss'],
+	imports: [SwitchableInputComponent],
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-	@Input() vehicleTechRecord?: TechRecordType<'psv'>;
-	@Input() isEditing = false;
+	readonly vehicleTechRecord = input<TechRecordType<'psv'>>();
+	readonly isEditing = input(false);
 
-	@Output() formChange = new EventEmitter();
+	readonly formChange = output<Partial<TechRecordPSV>>();
 
 	form!: CustomFormGroup;
 	template!: FormNode;
@@ -46,7 +52,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
+		this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord()) as CustomFormGroup;
 
 		(this.form.cleanValueChanges as Observable<Partial<TechRecordType<'psv'>>>)
 			.pipe(
@@ -133,10 +139,11 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	get brakeCodePrefix(): string {
-		if (!this.vehicleTechRecord?.techRecord_grossLadenWeight) {
+		const vehicleTechRecord = this.vehicleTechRecord();
+		if (!vehicleTechRecord?.techRecord_grossLadenWeight) {
 			return '';
 		}
-		const prefix = `${Math.round(this.vehicleTechRecord.techRecord_grossLadenWeight / 100)}`;
+		const prefix = `${Math.round(vehicleTechRecord.techRecord_grossLadenWeight / 100)}`;
 
 		return prefix.length <= 2 ? `0${prefix}` : prefix;
 	}

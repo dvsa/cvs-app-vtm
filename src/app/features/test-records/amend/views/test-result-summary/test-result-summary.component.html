@@ -1,4 +1,4 @@
-<ng-container *ngIf="testResult$ | async as testResult">
-  <app-base-test-record [testResult]="testResult"> </app-base-test-record>
-  <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
-</ng-container>
+@if (testResult$ | async; as testResult) {
+  <app-base-test-record [testResult]="testResult" />
+  <app-test-amendment-history class="section" [testRecord]="testResult" />
+}

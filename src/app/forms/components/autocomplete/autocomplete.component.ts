@@ -1,10 +1,12 @@
-import { DOCUMENT } from '@angular/common';
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, Inject, Injector, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, Inject, Injector, input } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { Observable, lastValueFrom, takeWhile } from 'rxjs';
+import { TagComponent } from '../../../components/tag/tag.component';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
 	selector: 'app-autocomplete',
@@ -17,11 +19,12 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 			multi: true,
 		},
 	],
+	imports: [TagComponent, FieldErrorMessageComponent, NgTemplateOutlet, FormsModule],
 })
 export class AutocompleteComponent extends BaseControlComponent implements AfterViewInit, AfterContentInit {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	@Input() options$!: Observable<any[]>;
-	@Input() defaultValue = '';
+	readonly options$ = input.required<Observable<any[]>>();
+	readonly defaultValue = input('');
 
 	// eslint-disable-next-line max-len
 	DROP_DOWN_ARROW =
@@ -41,13 +44,14 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this;
 
-		lastValueFrom(this.options$.pipe(takeWhile((options) => !options || options.length === 0, true)))
+		lastValueFrom(this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)))
 			.then((options) => {
 				this.options = options;
 				this.cdr.detectChanges();
 
+				const name = this.name();
 				enhanceSelectElement({
-					selectElement: this.document.querySelector(`#${this.name}`),
+					selectElement: this.document.querySelector(`#${name}`),
 					autoselect: false,
 					defaultValue: '',
 					showAllValues: true,
@@ -58,7 +62,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 					},
 				});
 
-				window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
+				window.document.querySelector(`#${name}`)?.addEventListener('change', (event) => this.handleChange(event));
 			})
 			.catch(() => {});
 	}
@@ -69,11 +73,12 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 	}
 
 	get style(): string {
-		return `autocomplete__wrapper${this.noBottomMargin ? '' : ' extra-margin'}`;
+		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
 	}
 
 	get innerStyle(): string {
-		return this.width ? ` govuk-input--width-${this.width}` : ' internal-wrapper';
+		const width = this.width();
+		return width ? ` govuk-input--width-${width}` : ' internal-wrapper';
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

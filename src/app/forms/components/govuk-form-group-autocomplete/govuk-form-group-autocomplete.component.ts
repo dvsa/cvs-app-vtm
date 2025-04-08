@@ -4,12 +4,12 @@ import {
 	AfterViewInit,
 	ChangeDetectorRef,
 	Component,
-	EventEmitter,
-	Input,
 	OnDestroy,
-	Output,
 	forwardRef,
 	inject,
+	input,
+	model,
+	output,
 } from '@angular/core';
 import {
 	ControlContainer,
@@ -19,17 +19,18 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
+import { TagDirective } from '@directives/tag/tag.directive';
 import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
 } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
+import { TagComponent } from '../../../components/tag/tag.component';
 import { CommonValidatorsService } from '../../validators/common-validators.service';
 @Component({
 	selector: 'govuk-form-group-autocomplete',
-	standalone: true,
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective],
 	templateUrl: './govuk-form-group-autocomplete.component.html',
 	styleUrls: ['./govuk-form-group-autocomplete.component.scss'],
 	providers: [
@@ -39,33 +40,33 @@ import { CommonValidatorsService } from '../../validators/common-validators.serv
 export class GovukFormGroupAutocompleteComponent
 	implements ControlValueAccessor, AfterViewInit, AfterContentInit, OnDestroy
 {
-	@Output() blur = new EventEmitter<FocusEvent>();
+	readonly blur = output<FocusEvent>();
 
-	@Output() focus = new EventEmitter<FocusEvent>();
+	readonly focus = output<FocusEvent>();
 
-	@Input() isCreateMode = false;
+	readonly isCreateMode = input(false);
 
-	@Input() value: string | number | boolean | null = null;
+	value = model<string | number | boolean | null>(null);
 
-	@Input() disabled = false;
+	disabled = model(false);
 
-	@Input() tags: CustomTag[] = [];
+	readonly tags = input<CustomTag[]>([]);
 
-	@Input({ alias: 'hint' }) controlHint = '';
+	readonly controlHint = input('', { alias: 'hint' });
 
-	@Input({ alias: 'formControlName', required: true }) controlName = '';
+	readonly controlName = input.required<string>({ alias: 'formControlName' });
 
-	@Input({ alias: 'label', required: true }) controlLabel = '';
+	readonly controlLabel = input.required<string>({ alias: 'label' });
 
-	@Input({ alias: 'id' }) controlId = '';
+	readonly controlId = input('', { alias: 'id' });
 
-	@Input() allowNull = true;
+	readonly allowNull = input(true);
 
-	@Input() width?: FormNodeWidth;
+	readonly width = input<FormNodeWidth>();
 
-	@Input() noBottomMargin = false;
+	readonly noBottomMargin = input(false);
 
-	@Input() options$!: Observable<any[]>;
+	readonly options$ = input.required<Observable<any[]>>();
 
 	document = inject(DOCUMENT);
 	cdr = inject(ChangeDetectorRef);
@@ -78,7 +79,7 @@ export class GovukFormGroupAutocompleteComponent
 	valueSub = new BehaviorSubject<unknown>(null);
 
 	ngAfterViewInit(): void {
-		combineLatest([this.options$.pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
+		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
 			.pipe(takeUntil(this.destroy))
 			.subscribe(([options, latest]) => {
 				this.options = options;
@@ -93,8 +94,8 @@ export class GovukFormGroupAutocompleteComponent
 					source: this.options,
 					dropdownArrow: () => `
             <svg class="autocomplete__dropdown-arrow-down"style="height: 17px;" viewBox="0 0 512 512">
-              <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>            
-            </svg>          
+              <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>
+            </svg>
           `,
 					onConfirm: (selected) => {
 						this.handleChangeForOption(selected);
@@ -121,11 +122,11 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	get control() {
-		return this.controlContainer.control?.get(this.controlName);
+		return this.controlContainer.control?.get(this.controlName());
 	}
 
 	get id() {
-		return this.controlId || this.controlName;
+		return this.controlId() || this.controlName();
 	}
 
 	get hintId() {
@@ -145,18 +146,19 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	get style(): string {
-		return `autocomplete__wrapper${this.noBottomMargin ? '' : ' extra-margin'}`;
+		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
 	}
 
 	get innerStyle(): string {
-		return this.width ? ` govuk-input--width-${this.width}` : ' internal-wrapper';
+		const width = this.width();
+		return width ? ` govuk-input--width-${width}` : ' internal-wrapper';
 	}
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
 
 	writeValue(obj: any): void {
-		this.value = obj;
+		this.value.set(obj);
 		this.valueSub.next(obj);
 		this.onChange(obj);
 	}
@@ -170,7 +172,7 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	setDisabledState?(isDisabled: boolean): void {
-		this.disabled = isDisabled;
+		this.disabled.set(isDisabled);
 	}
 
 	handleChange(event: Event) {
@@ -189,6 +191,6 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	addValidators() {
-		this.control?.addValidators(this.commonValidators.invalidOption(`${this.controlLabel} is invalid`));
+		this.control?.addValidators(this.commonValidators.invalidOption(`${this.controlLabel()} is invalid`));
 	}
 }

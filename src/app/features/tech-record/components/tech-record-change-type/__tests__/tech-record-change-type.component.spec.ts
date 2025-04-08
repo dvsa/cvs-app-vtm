@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -12,7 +10,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
-import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
@@ -45,20 +42,15 @@ describe('TechRecordChangeTypeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ChangeVehicleTypeComponent],
+			imports: [ChangeVehicleTypeComponent, FixNavigationTriggeredOutsideAngularZoneNgModule],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				{ provide: DynamicFormService, useValue: mockDynamicFormService },
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
-			],
-			imports: [
-				DynamicFormsModule,
-				RouterTestingModule,
-				SharedModule,
-				FixNavigationTriggeredOutsideAngularZoneNgModule,
 			],
 		}).compileComponents();
 	});
