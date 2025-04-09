@@ -1,5 +1,5 @@
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
-import { selectBrakeByCode } from '@/src/app/store/reference-data';
+import { STORE_FEATURE_REFERENCE_DATA_KEY } from '@/src/app/store/reference-data';
 import { updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -237,17 +237,26 @@ describe('BrakesSectionEditComponent', () => {
 			};
 
 			const changes = {
-				techRecord_brakeCode: '000123',
-				techRecord_brakes_brakeCode: '000123',
+				techRecord_brakeCode: '00123',
+				techRecord_brakes_brakeCode: '00123',
 				techRecord_brakes_dataTrBrakeOne: brakesData.service,
 				techRecord_brakes_dataTrBrakeTwo: brakesData.secondary,
 				techRecord_brakes_dataTrBrakeThree: brakesData.parking,
 			};
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-			store.overrideSelector(selectBrakeByCode('123'), brakesData);
+			store.setState({
+				...initialAppState,
+				[STORE_FEATURE_REFERENCE_DATA_KEY]: {
+					...initialAppState.referenceData,
+					[ReferenceDataResourceType.Brakes]: {
+						ids: [brakesData.resourceKey],
+						entities: { [brakesData.resourceKey]: brakesData },
+					},
+				},
+			});
+
 			fixture.componentRef.setInput('techRecord', mockPSV);
 			component.handleBrakeCodeChange();
 			component.form.patchValue({

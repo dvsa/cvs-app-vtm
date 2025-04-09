@@ -1,6 +1,6 @@
 import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
-import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
+import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
@@ -16,6 +16,7 @@ import { CommonValidatorsService } from '@forms/validators/common-validators.ser
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Retarders, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -37,6 +38,7 @@ import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, take
 export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 	fb = inject(FormBuilder);
 	store = inject(Store);
+	actions = inject(Actions);
 	controlContainer = inject(ControlContainer);
 	technicalRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
@@ -65,6 +67,8 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 
 		this.addControlsBasedOffVehicleType();
 		this.prepopulateAxles();
+		this.checkAxleAdded();
+		this.checkAxleRemoved();
 		this.handleBrakeCodeChange();
 
 		// Attach all form controls to parent
@@ -106,6 +110,32 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 			form.patchValue(axle as any, { emitEvent: false });
 			this.axles.push(form, { emitEvent: false });
 		});
+	}
+
+	checkAxleAdded() {
+		this.actions
+			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					const form = this.getAxleForm();
+					form.patchValue(axles[axles.length - 1], { emitEvent: false });
+					this.axles.push(form, { emitEvent: false });
+					this.axles.patchValue(axles, { emitEvent: false });
+				}
+			});
+	}
+
+	checkAxleRemoved() {
+		this.actions
+			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					this.axles.removeAt(0, { emitEvent: false });
+					this.axles.patchValue(axles, { emitEvent: false });
+				}
+			});
 	}
 
 	getAxleForm() {
@@ -155,6 +185,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 				distinctUntilChanged()
 			)
 			.subscribe(([selectedBrake, value]) => {
+				console.log(selectedBrake, value, techRecord.techRecord_grossLadenWeight);
 				// Set the brake details automatically based selection
 				if (selectedBrake && value) {
 					const techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
@@ -181,7 +212,6 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 					const techRecord_axles = axlesValue.filter((axle) => !!axle?.axleNumber);
 					const changes = { techRecord_axles };
 					this.form.patchValue(changes, { emitEvent: false });
-					this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: changes } as any));
 				}
 
 				if (value) {
