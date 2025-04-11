@@ -1,7 +1,7 @@
 import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
@@ -62,6 +62,8 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 
 	form: FormGroup = this.fb.group({});
 
+	readonly formChange = output<Record<string, unknown>>();
+
 	ngOnInit(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
 
@@ -70,6 +72,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
 		this.handleBrakeCodeChange();
+		this.handleAxleChanges();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -152,7 +155,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 			brakes_leverLength: this.fb.control<number | null>(null, [
 				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
 			]),
-			brakes_springBrakeParking: this.fb.control<string | null>(null, []),
+			brakes_springBrakeParking: this.fb.control<boolean | null>(null, []),
 			parkingBrakeMrk: this.fb.control<boolean | null>(false, []),
 			axleNumber: this.fb.control<number | null>(null, []),
 		});
@@ -185,7 +188,6 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 				distinctUntilChanged()
 			)
 			.subscribe(([selectedBrake, value]) => {
-				console.log(selectedBrake, value, techRecord.techRecord_grossLadenWeight);
 				// Set the brake details automatically based selection
 				if (selectedBrake && value) {
 					const techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
@@ -218,6 +220,16 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 					this.store.dispatch(updateBrakeForces({}));
 				}
 			});
+	}
+
+	handleAxleChanges() {
+		const techRecord = this.techRecord();
+
+		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+			this.axles.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((axles) => {
+				this.formChange.emit({ techRecord_axles: axles });
+			});
+		}
 	}
 
 	get vehicleType(): VehicleTypes {

@@ -3,7 +3,7 @@
     <app-brakes-section-view />
   }
   @case ('edit') {
-    <app-brakes-section-edit [techRecord]="techRecord()" />
+    <app-brakes-section-edit [techRecord]="techRecord()" (formChange)="formChange.emit($event)" />
   }
   @case ('summary') {
     <app-brakes-section-summary />

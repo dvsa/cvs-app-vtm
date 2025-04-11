@@ -135,7 +135,11 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New PSV Brakes section -->
-              <app-brakes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+              <app-brakes-section 
+                [techRecord]="techRecordCalculated" 
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
             } @else {
               <!-- Old PSV Brakes section -->
               <app-psv-brakes
@@ -150,7 +154,11 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New TRL Brakes section -->
-              <app-brakes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+              <app-brakes-section 
+                [techRecord]="techRecordCalculated" 
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
             } @else {
               <!-- Old TRL Brakes section -->
               <app-trl-brakes
