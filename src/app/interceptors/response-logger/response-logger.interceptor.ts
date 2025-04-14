@@ -53,8 +53,8 @@ export class ResponseLoggerInterceptor implements HttpInterceptor {
 					});
 
 					try {
-						// check if the response headers contain the 'X-Content-Encoding' header with the value 'base64+gzip'
-						if (typeof event.body === 'string' && event.headers?.get('X-Content-Encoding') === 'base64+gzip') {
+						// check if the response headers contain the 'Content-Encoding' header with the value 'base64+gzip'
+						if (typeof event.body === 'string' && event.headers?.get('Content-Encoding') === 'base64+gzip') {
 							return event.clone({ body: this.compression.extract(event.body) });
 						}
 					} catch (err) {

@@ -86,7 +86,7 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 			status: 200,
 			statusText: 'OK',
 			url: 'https://example.com',
-			headers: new HttpHeaders().set('X-Content-Encoding', 'base64+gzip'),
+			headers: new HttpHeaders().set('Content-Encoding', 'base64+gzip'),
 			body: 'H4sIAAAAAAAAA6tWykjNyclXslIqyUgtSlWqBQD9aiCXEQAAAA==',
 		});
 
@@ -107,7 +107,7 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 			throw new Error('Decompression failed');
 		});
 
-		const headers = new HttpHeaders().set('X-Content-Encoding', 'base64+gzip');
+		const headers = new HttpHeaders().set('Content-Encoding', 'base64+gzip');
 
 		const mockResponse = new HttpResponse({
 			status: 200,

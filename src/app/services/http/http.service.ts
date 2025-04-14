@@ -31,7 +31,7 @@ import { lastValueFrom, timeout } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-	private http = inject(HttpClient);
+	private readonly http = inject(HttpClient);
 	private static readonly TIMEOUT = 30000;
 
 	addProvisionalTechRecord(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
