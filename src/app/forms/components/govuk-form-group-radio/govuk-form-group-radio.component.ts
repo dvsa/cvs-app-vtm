@@ -36,7 +36,7 @@ export class GovukFormGroupRadioComponent implements ControlValueAccessor {
 
 	readonly tags = input<CustomTag[]>([]);
 
-	readonly options = input.required<MultiOption[]>();
+	readonly options = input.required<MultiOption<unknown>[]>();
 
 	readonly controlHint = input('', { alias: 'hint' });
 

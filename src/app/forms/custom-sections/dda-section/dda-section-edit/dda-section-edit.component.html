@@ -14,6 +14,7 @@
       <govuk-form-group-textarea
         formControlName="techRecord_dda_wheelchairFittings"
         label="Wheelchair fittings"
+        [maxLength]="250"
       ></govuk-form-group-textarea>
       <govuk-form-group-radio
         formControlName="techRecord_dda_wheelchairLiftPresent"
@@ -23,6 +24,7 @@
       <govuk-form-group-textarea
         formControlName="techRecord_dda_wheelchairLiftInformation"
         label="Wheelchair lift information"
+        [maxLength]="250"
       ></govuk-form-group-textarea>
       <govuk-form-group-radio
         formControlName="techRecord_dda_wheelchairRampPresent"
@@ -32,6 +34,7 @@
       <govuk-form-group-textarea
         formControlName="techRecord_dda_wheelchairRampInformation"
         label="Wheelchair ramp information"
+        [maxLength]="250"
       ></govuk-form-group-textarea>
       <govuk-form-group-input
         formControlName="techRecord_dda_minEmergencyExits"
@@ -41,10 +44,12 @@
       <govuk-form-group-textarea
         formControlName="techRecord_dda_outswing"
         label="Outswing"
+        [maxLength]="250"
       ></govuk-form-group-textarea>
       <govuk-form-group-textarea
         formControlName="techRecord_dda_ddaSchedules"
         label="DDA schedules"
+        [maxLength]="250"
       ></govuk-form-group-textarea>
       <govuk-form-group-input
         formControlName="techRecord_dda_seatbeltsFitted"
@@ -54,6 +59,7 @@
       <govuk-form-group-textarea
         formControlName="techRecord_dda_ddaNotes"
         label="DDA notes"
+        [maxLength]="1024"
       ></govuk-form-group-textarea>
     </div>
   }
