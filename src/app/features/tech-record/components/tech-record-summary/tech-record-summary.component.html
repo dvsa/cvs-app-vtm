@@ -149,12 +149,13 @@
             ></app-trl-brakes>
           }
         }
-        @case('ddaSection') {
+        @case('dda') {
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             <!-- New Tyres section -->
             @if (featureToggleService.isFeatureEnabled('FsDDA')) {
               <app-dda-section
                 [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
               ></app-dda-section>
             } @else {
               <app-dynamic-form-group
