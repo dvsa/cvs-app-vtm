@@ -4,7 +4,7 @@
     <app-dda-section-view />
   }
   @case ('edit') {
-    <app-dda-section-edit />
+    <app-dda-section-edit [techRecord]="techRecord()"/>
   }
   @case ('summary') {
     <app-dda-section-summary />

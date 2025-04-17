@@ -35,6 +35,12 @@ export const YES_NO_OPTIONS: MultiOptions = [
 	{ value: false, label: 'No' },
 ];
 
+export const YES_NO_NULL_OPTIONS = [
+  { value: true, label: 'Yes' },
+  { value: false, label: 'No' },
+  { value: null, label: 'I do not know' },
+];
+
 export const EXEMPT_OR_NOT_OPTIONS: MultiOptions = [
 	{ value: true, label: 'Exempt' },
 	{ value: false, label: 'Not exempt' },
