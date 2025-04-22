@@ -250,7 +250,9 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		return {
 			techRecord_axles: this.fb.array([]),
 			techRecord_brakes_brakeCode: this.fb.control<string | null>(null, []),
-			techRecord_brakes_brakeCodeOriginal: this.fb.control<string | null>(null, []),
+			techRecord_brakes_brakeCodeOriginal: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(6, 'Brake code must be 6 characters or less'),
+			]),
 			techRecord_brakes_dataTrBrakeOne: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_brakes_dataTrBrakeTwo: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_brakes_dataTrBrakeThree: this.fb.control<string | null>({ value: null, disabled: true }, []),
