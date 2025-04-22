@@ -13,5 +13,6 @@
   "FsPlates": true,
   "FsDimensions": true,
   "FsPurchasers": true,
-  "FsDDA": false
+  "FsDDA": false,
+  "FsDocuments": true
 }
