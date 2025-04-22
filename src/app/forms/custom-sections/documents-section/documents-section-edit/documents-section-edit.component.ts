@@ -58,7 +58,7 @@ export class DocumentsSectionEditComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	get documentTypes$() {
+	documentTypes$() {
 		return of(DOCUMENT_TYPES.map((doc) => doc.value));
 	}
 

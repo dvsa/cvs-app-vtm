@@ -4,7 +4,7 @@
       <govuk-form-group-autocomplete
         formControlName="techRecord_microfilm_microfilmDocumentType"
         label="Microfilm document type"
-        [options$]="documentTypes$"
+        [options$]="documentTypes$()"
         [width]="FormNodeWidth.L"></govuk-form-group-autocomplete>
       <govuk-form-group-input
         formControlName="techRecord_microfilm_microfilmRollNumber"
