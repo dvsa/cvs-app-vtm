@@ -3,7 +3,9 @@
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Brake code</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_brakeCode"> {{ tr.techRecord_brakes_brakeCode | defaultNullOrEmpty }}</dd>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_brakeCode">
+          {{ trs.getBrakeCode(tr) | defaultNullOrEmpty }}
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Service</dt>

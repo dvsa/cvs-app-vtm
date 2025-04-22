@@ -1,3 +1,4 @@
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { Component, inject } from '@angular/core';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/skeleton';
@@ -18,6 +19,7 @@ export class BrakesSectionViewComponent {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly store = inject<Store<State>>(Store);
 
+	trs = inject(TechnicalRecordService);
 	techRecord = this.store.selectSignal(techRecord);
 
 	// TODO: potentially improve this

@@ -422,7 +422,7 @@ export class TechnicalRecordService {
 		this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
 	}
 
-	getBrakeCode(techRecord: TechRecordTypeVehicle<'psv', 'put'>) {
+	getBrakeCode(techRecord: TechRecordTypeVehicle<'psv', 'get' | 'put'>) {
 		const prefix = techRecord.techRecord_grossLadenWeight
 			? `${Math.round(techRecord.techRecord_grossLadenWeight / 100)}`
 			: '';
