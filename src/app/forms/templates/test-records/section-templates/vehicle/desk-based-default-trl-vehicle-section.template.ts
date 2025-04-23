@@ -59,6 +59,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
 			value: '',
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
 		},
 		{
 			name: 'preparerId',
@@ -66,6 +67,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
 			value: '',
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
 		},
 		{
 			name: 'make',
