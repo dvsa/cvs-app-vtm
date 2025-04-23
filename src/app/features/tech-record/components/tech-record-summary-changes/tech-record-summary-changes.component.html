@@ -232,6 +232,23 @@
           }
         }
       }
+
+      @case ('authorizationIntoServiceSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+          <!-- New Authorization into service section -->
+          @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
+            <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
+          } @else {
+          <!-- Old Authorization into service section -->
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+        }
+      }
+
       @case ('adrSection') {
         @if (
           techRecordEdited.techRecord_vehicleType === 'hgv' ||

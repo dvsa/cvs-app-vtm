@@ -235,6 +235,24 @@
             <!-- Old Plates Section -->
           }
         }
+
+        @case ('authorizationIntoServiceSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+            <!-- New Authorization into service section -->
+            @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
+              <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            } @else {
+              <!-- Old Authorization into service section -->
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+          }
+        }
+
         @case ('adrSection') {
           @if (
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
