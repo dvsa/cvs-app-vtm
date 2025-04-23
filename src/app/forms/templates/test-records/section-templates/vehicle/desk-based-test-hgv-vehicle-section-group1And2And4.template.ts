@@ -73,6 +73,7 @@ export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
 			value: '',
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
 		},
 		{
 			name: 'preparerId',
@@ -80,6 +81,7 @@ export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
 			value: '',
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
 		},
 		{
 			name: 'make',
