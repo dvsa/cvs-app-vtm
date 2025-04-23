@@ -166,6 +166,23 @@
           <app-trl-brakes [vehicleTechRecord]="techRecordEdited" />
         }
       }
+      @case('dda') {
+        @if (techRecordEdited.techRecord_vehicleType === 'psv') {
+          <!-- New Tyres section -->
+          @if (featureToggleService.isFeatureEnabled('FsDDA')) {
+            <app-dda-section
+              [techRecord]="techRecordEdited"
+              [mode]="'summary'"
+            ></app-dda-section>
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+        }
+      }
       @case ('tyreSection') {
         @if (
           techRecordEdited.techRecord_vehicleType === 'hgv' ||

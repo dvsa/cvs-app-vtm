@@ -22,6 +22,7 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
+import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
@@ -103,6 +104,7 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		AdrCertificateHistoryComponent,
 		LastApplicantSectionComponent,
 		AsyncPipe,
+		DDASectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {

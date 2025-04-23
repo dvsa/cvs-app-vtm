@@ -7,6 +7,7 @@
           <li>
             <button
               [id]="'test-list-item-' + [type.id]"
+              [attr.data-testid]="type.id"
               class="list__item"
               [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
               (click)="handleCategory(type, 0)"
@@ -29,6 +30,7 @@
               <li>
                 <button
                   [id]="'browse-list-item-' + [type.id]"
+                  [attr.data-testid]="type.id"
                   class="list__item"
                   [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
                   (click)="handleCategory(type, i + 1)"

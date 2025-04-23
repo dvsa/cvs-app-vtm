@@ -9,6 +9,7 @@
               <li>
                 <a
                   [id]="'normal-or-basic-list-item-' + i"
+                  [attr.data-testid]="type"
                   class="browse__link browse__link--inactive"
                   [ngClass]="{ 'browse__link--active': type === selectedInspectionType }"
                   (click)="handleSelect(type, types.InspectionType)"
@@ -27,6 +28,7 @@
           <li>
             <a
               [id]="'section-list-item-' + i"
+              [attr.data-testid]=" section.sectionNumber + '. ' + section.sectionDescription"
               class="browse__link browse__link--inactive"
               [ngClass]="{ 'browse__link--active': section === selectedSection }"
               (click)="handleSelect(section, types.Section)"
@@ -43,6 +45,7 @@
           <li>
             <a
               [id]="'rs-list-item-' + i"
+              [attr.data-testid]="rs.refCalculation + ' ' + rs.requiredStandard"
               class="browse__normal-link browse__normal-link--inactive"
               [ngClass]="{ 'browse__normal-link--active': rs === selectedRequiredStandard }"
               (click)="handleSelect(rs, types.RequiredStandard)"

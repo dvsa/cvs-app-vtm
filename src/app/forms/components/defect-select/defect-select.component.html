@@ -10,6 +10,7 @@
               class="browse__link browse__link--inactive"
               [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
               (click)="handleSelect(defect, types.Defect)"
+              [attr.data-testid]="defect.imDescription"
               >
               {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
             </a>
@@ -27,6 +28,7 @@
                 class="browse__link browse__link--inactive"
                 [ngClass]="{ 'browse__link--active': item === selectedItem }"
                 (click)="handleSelect(item, types.Item)"
+                [attr.data-testid]="item.itemDescription"
                 >
                 {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
               </a>
@@ -43,6 +45,7 @@
               <a
                 class="browse__normal-link govuk-link--no-visited-state"
                 [id]="'selectedDefect-' + deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
+                [attr.data-testid]=" deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
                 (click)="handleSelect(deficiency, types.Deficiency)"
                 >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
                 }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
@@ -54,9 +57,14 @@
               </li>
             }
             <li>
-              <a class="browse__normal-link govuk-link--no-visited-state" id="selected-defect-advisory" (click)="handleSelect()"
-                >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a
+              <a 
+                class="browse__normal-link govuk-link--no-visited-state"
+                id="selected-defect-advisory" 
+                (click)="handleSelect()"
+                [attr.data-testid]="selectedDefect?.imNumber + '.' + selectedItem.itemNumber"
                 >
+                {{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}
+              </a>
                 <span>
                   <app-tag class="browse__category" [type]="categoryColor('advisory')">advisory</app-tag>
                 </span>
