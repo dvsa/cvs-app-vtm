@@ -35,6 +35,7 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
+	readonly VehicleTypes = VehicleTypes;
 	techRecord?: V3TechRecordModel;
 	makeAndModel?: string;
 

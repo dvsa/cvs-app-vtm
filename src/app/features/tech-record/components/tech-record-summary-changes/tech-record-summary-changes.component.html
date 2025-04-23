@@ -16,7 +16,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">TrailerID</dt>
         <dd class="govuk-summary-list__value" id="test-trailerId">
-          {{ techRecordEdited.trailerId | defaultNullOrEmpty }}
+          <app-number-plate [vrm]="techRecordEdited.trailerId | defaultNullOrEmpty" />
         </dd>
       </div>
     }
@@ -24,7 +24,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd class="govuk-summary-list__value" id="test-primaryVrm">
-          {{ techRecordEdited.primaryVrm | defaultNullOrEmpty }}
+          <app-number-plate [vrm]="techRecordEdited.primaryVrm | defaultNullOrEmpty" />
         </dd>
       </div>
     }

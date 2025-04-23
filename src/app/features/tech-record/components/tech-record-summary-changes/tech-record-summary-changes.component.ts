@@ -1,3 +1,4 @@
+import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -100,6 +101,7 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		DefaultNullOrEmpty,
 		FormatVehicleTypePipe,
 		DDASectionComponent,
+		NumberPlateComponent,
 	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
