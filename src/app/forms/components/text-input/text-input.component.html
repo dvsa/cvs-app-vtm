@@ -36,6 +36,7 @@
         (blur)="onTouched(); handleEvent($event); blur.emit($event)"
         (focus)="handleEvent($event)"
         appToUppercase
+        appNoEmojis
         [uppercase]="uppercase() || false"
         />
     }
@@ -52,6 +53,7 @@
         (blur)="onTouched(); handleEvent($event); blur.emit($event)"
         (focus)="handleEvent($event)"
         appNumberOnly
+        appNoEmojis
         />
     }
 

@@ -13,6 +13,7 @@
           }</label
           >
           <input
+            appNoEmojis
             maxlength="25"
             class="govuk-input govuk-input--width-20"
             [id]="getId(name())"
@@ -40,6 +41,7 @@
                 <div class="ecta-template separator">
                   <span class="separator approvalTypeFormatting">e</span>
                   <input
+                    appNoEmojis
                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecta'"
                     [characterLimit]="2"
                     [maxlength]="2"
@@ -51,6 +53,7 @@
                     />
                   <span class="separator approvalTypeFormatting">*</span>
                   <input
+                    appNoEmojis
                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ecta'"
                     [characterLimit]="4"
                     [maxlength]="4"
@@ -62,6 +65,7 @@
                     />
                   <span class="separator approvalTypeFormatting">/</span>
                   <input
+                    appNoEmojis
                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
                     id="techRecord_approvalTypeNumber3-ecta"
                     [maxlength]="4"
@@ -73,6 +77,7 @@
                     />
                   <span class="separator approvalTypeFormatting">*</span>
                   <input
+                    appNoEmojis
                     id="techRecord_approvalTypeNumber4-ecta"
                     [maxlength]="6"
                     class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
@@ -99,6 +104,7 @@
               }</label
               >
               <input
+                appNoEmojis
                 maxlength="25"
                 class="govuk-input govuk-date-input__input govuk-input--width-20"
                 [id]="getId(name())"
@@ -119,13 +125,15 @@
               <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
                   <label class="govuk-label govuk-label--m">
-                    Approval type number @for (tag of control?.meta?.customTags; track tag) {
-                    <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-                    }</label
-                    >
+                    Approval type number 
+                    @for (tag of control?.meta?.customTags; track tag) {
+                      <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+                    }
+                    </label>
                     <div class="ecta-template separator">
                       <span class="separator approvalTypeFormatting">e</span>
                       <input
+                        appNoEmojis
                         [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-nssta'"
                         [characterLimit]="2"
                         [maxlength]="2"
@@ -137,6 +145,7 @@
                         />
                       <span class="separator approvalTypeFormatting">*NKS*</span>
                       <input
+                        appNoEmojis
                         id="techRecord_approvalTypeNumber2-nssta"
                         class="govuk-input govuk-date-input__input govuk-input--width-5"
                         name="techRecord_approvalTypeNumber2"
@@ -167,6 +176,7 @@
                       <div class="ecta-template separator">
                         <span class="separator approvalTypeFormatting">e</span>
                         <input
+                          appNoEmojis
                           [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecssta'"
                           [characterLimit]="2"
                           [maxlength]="2"
@@ -178,6 +188,7 @@
                           />
                         <span class="separator approvalTypeFormatting">*KS</span>
                         <input
+                          appNoEmojis
                           [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ecssta'"
                           [characterLimit]="2"
                           [maxlength]="2"
@@ -189,6 +200,7 @@
                           />
                         <span class="separator approvalTypeFormatting">/</span>
                         <input
+                          appNoEmojis
                           [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecssta'"
                           [characterLimit]="4"
                           [maxlength]="4"
@@ -229,6 +241,7 @@
                         >
                         <div class="ecta-template separator">
                           <input
+                            appNoEmojis
                             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-gbwvta'"
                             [characterLimit]="3"
                             [maxlength]="3"
@@ -240,6 +253,7 @@
                             />
                           <span class="separator approvalTypeFormatting">*</span>
                           <input
+                            appNoEmojis
                             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-gbwvta'"
                             [characterLimit]="4"
                             [maxlength]="4"
@@ -251,6 +265,7 @@
                             />
                           <span class="separator approvalTypeFormatting">/</span>
                           <input
+                            appNoEmojis
                             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-gbwvta'"
                             [characterLimit]="4"
                             [maxlength]="4"
@@ -262,6 +277,7 @@
                             />
                           <span class="separator approvalTypeFormatting">*</span>
                           <input
+                            appNoEmojis
                             [maxlength]="7"
                             id="techRecord_approvalTypeNumber4-gbwvta"
                             class="govuk-input govuk-date-input__input govuk-input--width-5"
@@ -291,6 +307,7 @@
                           >
                           <div class="ecta-template separator">
                             <input
+                              appNoEmojis
                               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ukniwvta'"
                               [characterLimit]="1"
                               [maxlength]="1"
@@ -302,6 +319,7 @@
                               />
                             <span class="separator approvalTypeFormatting">11*</span>
                             <input
+                              appNoEmojis
                               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ukniwvta'"
                               [characterLimit]="4"
                               [maxlength]="4"
@@ -313,6 +331,7 @@
                               />
                             <span class="separator approvalTypeFormatting">/</span>
                             <input
+                              appNoEmojis
                               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ukniwvta'"
                               [characterLimit]="4"
                               [maxlength]="4"
@@ -324,6 +343,7 @@
                               />
                             <span class="separator approvalTypeFormatting">*</span>
                             <input
+                              appNoEmojis
                               [maxlength]="6"
                               id="techRecord_approvalTypeNumber4-ukniwvta"
                               class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -354,6 +374,7 @@
                             <div class="ecta-template separator">
                               <span class="separator approvalTypeFormatting">e</span>
                               <input
+                                appNoEmojis
                                 [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvtapre'"
                                 [characterLimit]="2"
                                 [maxlength]="2"
@@ -365,6 +386,7 @@
                                 />
                               <span class="separator approvalTypeFormatting">*</span>
                               <input
+                                appNoEmojis
                                 [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-euwvtapre'"
                                 [characterLimit]="4"
                                 [maxlength]="4"
@@ -376,6 +398,7 @@
                                 />
                               <span class="separator approvalTypeFormatting">/</span>
                               <input
+                                appNoEmojis
                                 [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-euwvtapre'"
                                 [characterLimit]="4"
                                 [maxlength]="4"
@@ -387,6 +410,7 @@
                                 />
                               <span class="separator approvalTypeFormatting">*</span>
                               <input
+                                appNoEmojis
                                 [maxlength]="6"
                                 id="techRecord_approvalTypeNumber4-euwvtapre"
                                 class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -417,6 +441,7 @@
                               <div class="ecta-template separator">
                                 <span class="separator approvalTypeFormatting">e</span>
                                 <input
+                                  appNoEmojis
                                   [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvta'"
                                   [characterLimit]="2"
                                   [maxlength]="2"
@@ -428,6 +453,7 @@
                                   />
                                 <span class="separator approvalTypeFormatting">*</span>
                                 <input
+                                  appNoEmojis
                                   [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-euwvta'"
                                   [characterLimit]="4"
                                   [maxlength]="4"
@@ -439,6 +465,7 @@
                                   />
                                 <span class="separator approvalTypeFormatting">/</span>
                                 <input
+                                  appNoEmojis
                                   [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-euwvta'"
                                   [characterLimit]="4"
                                   [maxlength]="4"
@@ -450,6 +477,7 @@
                                   />
                                 <span class="separator approvalTypeFormatting">*</span>
                                 <input
+                                  appNoEmojis
                                   [maxlength]="6"
                                   id="techRecord_approvalTypeNumber4-euwvta"
                                   class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -480,6 +508,7 @@
                                 <div class="ecta-template separator">
                                   <span class="separator approvalTypeFormatting">e</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-qnig'"
                                     [characterLimit]="2"
                                     [maxlength]="2"
@@ -491,6 +520,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">*</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-qnig'"
                                     [characterLimit]="4"
                                     [maxlength]="4"
@@ -502,6 +532,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">/</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-qnig'"
                                     [characterLimit]="4"
                                     [maxlength]="4"
@@ -513,6 +544,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">*</span>
                                   <input
+                                    appNoEmojis
                                     [maxlength]="6"
                                     id="techRecord_approvalTypeNumber4-qnig"
                                     class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -542,6 +574,7 @@
                                   >
                                   <div class="ecta-template separator">
                                     <input
+                                      appNoEmojis
                                       [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-provgbwvta'"
                                       [characterLimit]="3"
                                       [maxlength]="3"
@@ -553,6 +586,7 @@
                                       />
                                     <span class="separator approvalTypeFormatting">*</span>
                                     <input
+                                      appNoEmojis
                                       [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-provgbwvta'"
                                       [characterLimit]="4"
                                       [maxlength]="4"
@@ -564,6 +598,7 @@
                                       />
                                     <span class="separator approvalTypeFormatting">/</span>
                                     <input
+                                      appNoEmojis
                                       [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-provgbwvta'"
                                       [characterLimit]="4"
                                       [maxlength]="4"
@@ -575,6 +610,7 @@
                                       />
                                     <span class="separator approvalTypeFormatting">*</span>
                                     <input
+                                      appNoEmojis
                                       [maxlength]="6"
                                       id="techRecord_approvalTypeNumber4-provgbwvta"
                                       class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -604,6 +640,7 @@
                                 </label>
                                 <div class="ecta-template separator">
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries-NKSXX'"
                                     [characterLimit]="1"
                                     [maxlength]="1"
@@ -615,6 +652,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">11*NKS</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-smallseries-NKSXX'"
                                     [characterLimit]="2"
                                     [maxlength]="2"
@@ -626,6 +664,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">/</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-smallseries-NKSXX'"
                                     [characterLimit]="4"
                                     [maxlength]="4"
@@ -637,6 +676,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">*</span>
                                   <input
+                                    appNoEmojis
                                     [maxlength]="6"
                                     id="techRecord_approvalTypeNumber4-smallseries-NKSXX"
                                     class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -665,6 +705,7 @@
                               </label>
                               <div class="ecta-template separator">
                                 <input
+                                  appNoEmojis
                                   [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries-NKS'"
                                   [characterLimit]="1"
                                   [maxlength]="1"
@@ -676,6 +717,7 @@
                                   />
                                 <span class="separator approvalTypeFormatting">11*NKS*</span>
                                 <input
+                                  appNoEmojis
                                   [maxlength]="6"
                                   id="techRecord_approvalTypeNumber2-smallseries-NKS"
                                   class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -706,6 +748,7 @@
                                 <div class="ecta-template separator">
                                   <span class="separator approvalTypeFormatting">n11*NIV</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ivavca'"
                                     [characterLimit]="2"
                                     [maxlength]="2"
@@ -717,6 +760,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">/</span>
                                   <input
+                                    appNoEmojis
                                     [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ivavca'"
                                     [characterLimit]="4"
                                     [maxlength]="4"
@@ -728,6 +772,7 @@
                                     />
                                   <span class="separator approvalTypeFormatting">*</span>
                                   <input
+                                    appNoEmojis
                                     [maxlength]="6"
                                     id="techRecord_approvalTypeNumber3-ivavca"
                                     class="govuk-input govuk-date-input__input govuk-input--width-4"
@@ -754,6 +799,7 @@
                               }</label
                               >
                               <input
+                                appNoEmojis
                                 maxlength="25"
                                 class="govuk-input govuk-input--width-20"
                                 [id]="getId(name())"

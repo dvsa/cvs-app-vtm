@@ -13,6 +13,7 @@
   "FsPlates": true,
   "FsDimensions": true,
   "FsPurchasers": false,
+  "FsBrakes": false,
   "FsDDA": false,
   "FsAuthorisationIntoService": false
 }

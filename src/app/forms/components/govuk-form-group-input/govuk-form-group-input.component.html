@@ -27,6 +27,7 @@
 
   @if (controlType() === 'text') {
     <input
+      appNoEmojis
       id="{{ id }}"
       name="{{ id }}"
       [attr.aria-describedby]="hintId"
@@ -63,6 +64,7 @@
 
   @if (controlType() === 'numericString') {
     <input
+      appNoEmojis
       id="{{ id }}"
       name="{{ id }}"
       [attr.aria-describedby]="hintId"

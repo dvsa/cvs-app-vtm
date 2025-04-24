@@ -68,6 +68,8 @@ export class GovukFormGroupAutocompleteComponent
 
 	readonly options$ = input.required<Observable<any[]>>();
 
+	readonly prefix = input<string>();
+
 	document = inject(DOCUMENT);
 	cdr = inject(ChangeDetectorRef);
 	controlContainer = inject(ControlContainer);
@@ -147,11 +149,6 @@ export class GovukFormGroupAutocompleteComponent
 
 	get style(): string {
 		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
-	}
-
-	get innerStyle(): string {
-		const width = this.width();
-		return width ? ` govuk-input--width-${width}` : ' internal-wrapper';
 	}
 
 	onChange = (_: any) => {};
