@@ -10,6 +10,7 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -99,6 +100,7 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		AsyncPipe,
 		DefaultNullOrEmpty,
 		FormatVehicleTypePipe,
+		BrakesSectionComponent,
 		DDASectionComponent,
 	],
 })

@@ -59,7 +59,8 @@ describe('AutocompleteComponent', () => {
 		['option1', of([{ label: 'option1', value: 'option1' }]), 'option1'],
 		[undefined, of([{ label: 'option1', value: 'option1' }]), 'option3'],
 	])('should return %s for %o when looking for $s', (expected, options$, label) => {
-		fixture.componentRef.setInput('options$', options$);
+		component.options$ = options$;
+		fixture.detectChanges();
 		expect(autocompleteComponent.findOptionValue(label)).toBe(expected);
 	});
 

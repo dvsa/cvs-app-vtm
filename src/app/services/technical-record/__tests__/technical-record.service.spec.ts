@@ -9,6 +9,7 @@ import {
 	TechRecordGETHGV,
 	TechRecordGETPSV,
 	TechRecordGETTRL,
+	TechRecordType as TechRecordTypeVehicle,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { ReferenceDataResourceType, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
@@ -1041,6 +1042,23 @@ describe('TechnicalRecordService', () => {
 			expect(service.getVehicleSubClass(hgv)).toBeUndefined();
 			expect(service.getVehicleSubClass(trl)).toBeUndefined();
 			expect(service.getVehicleSubClass(motorcycle)).toBeUndefined();
+		});
+	});
+
+	describe('getBrakeCode', () => {
+		it('should use the brake code original if no gross laden weight is provided', () => {
+			expect(
+				service.getBrakeCode({ techRecord_brakes_brakeCodeOriginal: '12345' } as TechRecordTypeVehicle<'psv', 'put'>)
+			).toBe('00012345');
+		});
+
+		it('should prefix the brake code orignal with the gross laden weight if it is provided', () => {
+			expect(
+				service.getBrakeCode({
+					techRecord_brakes_brakeCodeOriginal: '12345',
+					techRecord_grossLadenWeight: 4440,
+				} as TechRecordTypeVehicle<'psv', 'put'>)
+			).toBe('04412345');
 		});
 	});
 });

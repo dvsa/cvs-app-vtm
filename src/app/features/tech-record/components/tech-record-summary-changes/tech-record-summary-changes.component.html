@@ -158,12 +158,24 @@
       }
       @case ('psvBrakesSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'psv') {
-          <app-psv-brakes [vehicleTechRecord]="techRecordEdited" />
+          @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+            <!-- New PSV Brakes section -->
+            <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+          } @else {
+            <!-- Old PSV Brakes section -->
+            <app-psv-brakes [vehicleTechRecord]="techRecordEdited" />
+          }
         }
       }
       @case ('trlBrakesSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
-          <app-trl-brakes [vehicleTechRecord]="techRecordEdited" />
+          @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+            <!-- New TRL Brakes section -->
+            <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+          } @else {
+            <!-- Old TRL Brakes section -->
+            <app-trl-brakes [vehicleTechRecord]="techRecordEdited" />
+          }
         }
       }
       @case('dda') {

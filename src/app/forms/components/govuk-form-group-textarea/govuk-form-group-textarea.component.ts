@@ -9,12 +9,13 @@ import {
 } from '@angular/forms';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { TagDirective } from '@directives/tag/tag.directive';
 import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-textarea',
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective, NoEmojisDirective],
 	templateUrl: './govuk-form-group-textarea.component.html',
 	styleUrls: ['./govuk-form-group-textarea.component.scss'],
 	providers: [

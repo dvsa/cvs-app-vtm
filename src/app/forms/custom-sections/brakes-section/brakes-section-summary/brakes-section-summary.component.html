@@ -1,0 +1,155 @@
+@if (amendedTechRecord(); as vm) {  
+  <!-- PSV only fields -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Brake code</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakeCode">
+          {{ technicalRecordService.getBrakeCode(vm) }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Service</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeOne">
+          {{ vm.techRecord_brakes_dataTrBrakeOne | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Secondary</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeTwo">
+          {{ vm.techRecord_brakes_dataTrBrakeTwo | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Parking</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeThree">            
+          {{ vm.techRecord_brakes_dataTrBrakeThree | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Retarder 1</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_retarderBrakeOne">
+          {{ vm.techRecord_brakes_retarderBrakeOne | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Retarder 2</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_retarderBrakeTwo">
+          {{ vm.techRecord_brakes_retarderBrakeTwo | defaultNullOrEmpty }}
+        </dd>
+      </div> 
+    </dl>
+  }
+
+  <!-- PSV Axle table -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header">No wheels locked</th>
+          <th scope="col" class="govuk-table__header">Up to and including half wheels locked</th>
+        </tr>
+      </thead>
+    
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Service</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
+            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
+            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+          </td>
+        </tr>
+    
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Secondary</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">
+            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 22.5) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedSecondaryCell">
+            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 25) / 100) }}
+          </td>
+        </tr>
+    
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Parking</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
+            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
+            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  }
+
+  <!-- TRL Axle table -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header">Brake actuator</th>
+          <th scope="col" class="govuk-table__header">Lever length</th>
+          <th scope="col" class="govuk-table__header">Spring brake parking</th>
+        </tr>
+      </thead>
+    
+      <tbody class="govuk-table__body">
+        @for (axle of vm.techRecord_axles; track $index) {
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Axle {{ axle.axleNumber }}</th>
+            <td class="govuk-table__cell" id="brakes_brakeActuator-{{ $index }}">
+              {{ axle.brakes_brakeActuator | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell" id="brakes_leverLength-{{ $index }}">
+              {{ axle.brakes_leverLength | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell" id="brakes_springBrakeParking-{{ $index }}">
+              {{ axle.brakes_springBrakeParking | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <!-- TRL only fields -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Load sensing valve</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_loadSensingValve">
+          {{ vm.techRecord_brakes_loadSensingValve | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Antilock braking system</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_antilockBrakingSystem">
+          {{ vm.techRecord_brakes_antilockBrakingSystem | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+  }
+
+  <!-- Parking brake states -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    @if (vm.techRecord_axles?.length) {
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Parking brake</h3>
+      
+      <dl class="govuk-summary-list">
+        @for (axle of vm.techRecord_axles; track $index) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Axle {{ axle.axleNumber }}</dt>
+            <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk-{{ $index }}">
+              {{ axle.parkingBrakeMrk | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+  }
+}

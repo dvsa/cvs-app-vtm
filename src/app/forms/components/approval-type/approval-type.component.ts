@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import {
 	AfterContentInit,
 	ChangeDetectorRef,
@@ -118,7 +119,7 @@ const characterLimitGeneric: Record<string, number> = {
 			multi: true,
 		},
 	],
-	imports: [FieldErrorMessageComponent, TagComponent, FormsModule, ApprovalTypeFocusNextDirective],
+	imports: [FieldErrorMessageComponent, TagComponent, FormsModule, ApprovalTypeFocusNextDirective, NoEmojisDirective],
 })
 export class ApprovalTypeInputComponent
 	extends BaseControlComponent

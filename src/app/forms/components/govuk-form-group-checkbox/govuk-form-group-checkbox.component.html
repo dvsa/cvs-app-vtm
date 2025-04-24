@@ -1,0 +1,47 @@
+
+<div class="govuk-form-group" id="{{ id }}">
+  <fieldset class="govuk-fieldset">
+    @if (controlTitle()) {
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 tag class="govuk-fieldset__heading" id="{{ labelId }}">
+          {{ controlTitle() }}
+          @if (tags().length) {
+            <div>
+              @for (tag of tags(); track tag) {
+                <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
+              }
+            </div>
+          }
+        </h1>
+      </legend>
+    }
+
+    @if (controlHint()) {
+      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    }
+
+    @if (hasError) {
+      <p class="govuk-error-message" id="{{ errorId }}">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+      </p>
+    }
+
+    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <input
+          id="{{ id }}-{{ value() }}-checkbox"
+          name="{{ id }}-{{ value() }}-checkbox"
+          type="checkbox"
+          class="govuk-checkboxes__input"
+          [(ngModel)]="value"
+          (ngModelChange)="onChange($event)"
+          [attr.aria-labelledby]="controlId() + '-' + value() + '-label'"
+        />
+        <label class="govuk-label govuk-checkboxes__label" id="{{ id }}-{{ value() }}-label" for="{{ id }}-{{ value() }}-checkbox">
+          {{ controlLabel() }}
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</div>

@@ -1,0 +1,164 @@
+@if (techRecord(); as tr) {
+  <div [formGroup]="form">
+    @if(tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header"></th>
+            <th scope="col" class="govuk-table__header">Brake actuator</th>
+            <th scope="col" class="govuk-table__header">Lever length</th>
+            <th scope="col" class="govuk-table__header">Spring brake parking</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          <ng-container formArrayName="techRecord_axles">
+            @for(axle of axles.controls; track axle; let i = $index) {
+              <tr class="govuk-table__row" formGroupName="{{ i }}">
+                <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                  id="brakes_brakeActuator-{{ i + 1 }}"
+                  type="number"
+                  formControlName="brakes_brakeActuator"
+                  ></govuk-form-group-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                  id="brakes_leverLength-{{ i + 1 }}"
+                  type="number"
+                  formControlName="brakes_leverLength"
+                  ></govuk-form-group-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-select
+                  id="brakes_springBrakeParking-{{ i + 1 }}"
+                  formControlName="brakes_springBrakeParking"
+                  [options]="booleanOptions"
+                  ></govuk-form-group-select>
+                </td>
+              </tr>
+            }
+          </ng-container>
+        </tbody>
+      </table>
+
+      <div class="radio-buttons">
+        <govuk-form-group-radio
+          label="Load sensing valve"
+          formControlName="techRecord_brakes_loadSensingValve"
+          [options]="booleanOptions">
+        </govuk-form-group-radio>
+
+        <govuk-form-group-radio
+          label="Antilock braking system"
+          formControlName="techRecord_brakes_antilockBrakingSystem"
+          [options]="booleanOptions">
+        </govuk-form-group-radio>
+      </div>
+
+    }
+
+    @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+      @let psv = getPSV(tr);
+
+      <govuk-form-group-autocomplete
+        formControlName="techRecord_brakes_brakeCodeOriginal"
+        label="Brake code"
+        hint="If year of manufacture is 1988, check your brake code"
+        [width]="FormNodeWidth.XL"
+        [prefix]="brakeCodePrefix"
+        [options$]="brakeCodeOptions$"
+      />
+
+      <govuk-form-group-input
+        formControlName="techRecord_brakes_dataTrBrakeOne"
+        label="Service"
+        [width]="FormNodeWidth.XL"
+        />
+      
+      <govuk-form-group-input
+        formControlName="techRecord_brakes_dataTrBrakeTwo"
+        label="Secondary"
+        [width]="FormNodeWidth.XL"
+        />
+      
+      <govuk-form-group-input
+        formControlName="techRecord_brakes_dataTrBrakeThree"
+        label="Parking"
+        [width]="FormNodeWidth.XL"
+        />
+      
+      <div class="radio-buttons">
+        <govuk-form-group-radio
+          label="Retarder 1"
+          formControlName="techRecord_brakes_retarderBrakeOne"
+          [options]="retarderOptions"/>
+
+        <govuk-form-group-radio
+          label="Retarder 2"
+          formControlName="techRecord_brakes_retarderBrakeTwo"
+          [options]="retarderOptions"/>
+      </div>
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header">No wheels locked</th>
+          <th scope="col" class="govuk-table__header">Up to and including half wheels locked</th>
+        </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Service</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
+            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
+            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+          </td>
+        </tr>
+
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Secondary</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">
+            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 22.5) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedSecondaryCell">
+            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 25) / 100) }}
+          </td>
+        </tr>
+
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Parking</th>
+          <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
+            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+          </td>
+          <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
+            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    }
+
+    <div class="checkboxes">
+      <label class="govuk-label govuk-label--m" for="parking-brake">Parking brake</label>
+
+      <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
+
+        @for (axle of axles.controls; track axle; let i = $index) {
+          <ng-container formGroupName="{{ i }}">
+            <govuk-form-group-checkbox
+              formControlName="parkingBrakeMrk"
+              id="parkingBrakeMrk-{{ axle.value }}-checkbox"
+              [value]="true"
+              label="Axle {{ i + 1 }}"
+            ></govuk-form-group-checkbox>
+          </ng-container>
+        }
+      </div>
+    </div>
+  </div>
+}

@@ -13,6 +13,7 @@ import { NoSpaceDirective } from '../../directives/app-no-space/app-no-space.dir
 import { RoleRequiredDirective } from '../../directives/app-role-required/app-role-required.directive';
 import { ToUppercaseDirective } from '../../directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '../../directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { NoEmojisDirective } from '../../directives/no-emojis/no-emojis.directive';
 
 @Component({
 	selector: 'app-search',
@@ -26,6 +27,7 @@ import { TrimWhitespaceDirective } from '../../directives/app-trim-whitespace/ap
 		TrimWhitespaceDirective,
 		ButtonComponent,
 		AsyncPipe,
+		NoEmojisDirective,
 	],
 })
 export class SearchComponent {

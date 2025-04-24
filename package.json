@@ -58,6 +58,7 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "deep-object-diff": "^1.1.9",
+    "emoji-regex": "^10.4.0",
     "govuk-frontend": "^4.8.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",

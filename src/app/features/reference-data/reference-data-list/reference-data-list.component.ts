@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +39,7 @@ import { SelectComponent } from '../../../forms/components/select/select.compone
 		ButtonComponent,
 		PaginationComponent,
 		AsyncPipe,
+		NoEmojisDirective,
 	],
 })
 export class ReferenceDataListComponent implements OnInit, OnDestroy {
