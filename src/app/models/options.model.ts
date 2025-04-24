@@ -23,16 +23,22 @@ import {
 	VehicleSubclass,
 } from './vehicle-tech-record.model';
 
-export interface MultiOption {
+export interface MultiOption<T = string | number | boolean> {
 	label: string;
-	value: string | number | boolean;
+	value: T;
 	hint?: string;
 }
-export type MultiOptions = Array<MultiOption>;
+export type MultiOptions<T = string | number | boolean> = Array<MultiOption<T>>;
 
 export const YES_NO_OPTIONS: MultiOptions = [
 	{ value: true, label: 'Yes' },
 	{ value: false, label: 'No' },
+];
+
+export const YES_NO_NULL_OPTIONS: MultiOptions<boolean | null> = [
+	{ value: true, label: 'Yes' },
+	{ value: false, label: 'No' },
+	{ value: null, label: 'I do not know' },
 ];
 
 export const EXEMPT_OR_NOT_OPTIONS: MultiOptions = [

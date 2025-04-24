@@ -26,6 +26,11 @@
   text-wrap: wrap;
 }
 
+.whitespace-pre-line {
+  white-space: pre-line;
+  text-wrap: wrap;
+}
+
 /** Global govuk styles */
 .govuk-form-group-input {
   @extend .govuk-form-group;
