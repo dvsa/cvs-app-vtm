@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
 	ControlContainer,
 	FormBuilder,
@@ -7,17 +7,10 @@ import {
 	FormsModule,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { MultiOptionsService } from '@services/multi-options/multi-options.service';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { ReplaySubject } from 'rxjs';
 
 @Component({
@@ -27,20 +20,9 @@ import { ReplaySubject } from 'rxjs';
 	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupDateComponent],
 })
 export class AuthorisationIntoServiceSectionEditComponent implements OnInit, OnDestroy {
-	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly TagTypeLabels = TagTypeLabels;
-	protected readonly TagType = TagType;
-	protected readonly VehicleTypes = VehicleTypes;
-
 	fb = inject(FormBuilder);
-	store = inject(Store);
-	actions = inject(Actions);
 	controlContainer = inject(ControlContainer);
 	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
-	referenceDataService = inject(ReferenceDataService);
-	optionsService = inject(MultiOptionsService);
-	cdr = inject(ChangeDetectorRef);
 	techRecord = input.required<V3TechRecordModel>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -80,6 +62,26 @@ export class AuthorisationIntoServiceSectionEditComponent implements OnInit, OnD
 	}
 
 	get trailerFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
-		return {};
+		return {
+			techRecord_authIntoService_cocIssueDate: this.fb.control<string | null>(null, [
+				this.commonValidators.pastDate('COC issue date must be in the past'),
+				this.commonValidators.date('COC issue date'),
+			]),
+			techRecord_authIntoService_dateReceived: this.fb.control<string | null>(null, [
+				this.commonValidators.pastDate('Date received must be in the past'),
+				this.commonValidators.date('Date received'),
+			]),
+			techRecord_authIntoService_datePending: this.fb.control<string | null>(null, [
+				this.commonValidators.date('Date pending'),
+			]),
+			techRecord_authIntoService_dateAuthorised: this.fb.control<string | null>(null, [
+				this.commonValidators.pastDate('Date authorised must be in the past'),
+				this.commonValidators.date('Date authorised'),
+			]),
+			techRecord_authIntoService_dateRejected: this.fb.control<string | null>(null, [
+				this.commonValidators.pastDate('Date rejected must be in the past'),
+				this.commonValidators.date('Date rejected'),
+			]),
+		};
 	}
 }
