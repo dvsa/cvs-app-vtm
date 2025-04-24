@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
@@ -23,7 +24,7 @@ import { ReplaySubject } from 'rxjs';
 	selector: 'app-authorisation-into-service-section-edit',
 	templateUrl: './authorisation-into-service-section-edit.component.html',
 	styleUrls: ['./authorisation-into-service-section-edit.component.scss'],
-	imports: [FormsModule, ReactiveFormsModule],
+	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupDateComponent],
 })
 export class AuthorisationIntoServiceSectionEditComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
