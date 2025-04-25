@@ -34,6 +34,7 @@
     (ngModelChange)="onChange($event)"
     (blur)="onBlur($event)"
     [class]="style"
+    [disabled]="disabled()"
     >
     @if (allowNull()) {
       <option [ngValue]="null"></option>

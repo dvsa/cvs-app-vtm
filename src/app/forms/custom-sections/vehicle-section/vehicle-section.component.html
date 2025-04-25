@@ -4,7 +4,7 @@
     <app-vehicle-section-view />
   }
   @case ('edit') {
-    <app-vehicle-section-edit [techRecord]="techRecord()" />
+    <app-vehicle-section-edit [isCreateMode]="isCreateMode()" [techRecord]="techRecord()" />
   }
   @case ('summary') {
     <app-vehicle-section-summary />
