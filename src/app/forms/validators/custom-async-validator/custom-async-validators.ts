@@ -21,7 +21,8 @@ import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { Observable, catchError, map, of, skipWhile, take, tap } from 'rxjs';
+import { Observable, catchError, map, of, skipWhile, take, tap, combineLatestWith } from 'rxjs';
+import { RouterService } from '@services/router/router.service';
 
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -205,12 +206,13 @@ export class CustomAsyncValidators {
 		};
 	}
 
-	static filterEuCategoryOnVehicleType(technicalRecordService: TechnicalRecordService): AsyncValidatorFn {
+	static filterEuCategoryOnVehicleType(technicalRecordService: TechnicalRecordService, routerService: RouterService): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> => {
 			return technicalRecordService.techRecord$.pipe(
 				skipWhile((techRecord) => !techRecord),
 				take(1),
-				map((techRecord) => {
+        combineLatestWith(routerService.routeData$),
+				map(([techRecord, routeData]) => {
 					if (!techRecord) return null;
 					const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
 					if (!(control instanceof CustomFormControl)) return null;
@@ -218,12 +220,18 @@ export class CustomAsyncValidators {
 					switch (vehicleType) {
 						case VehicleTypes.CAR:
 							control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
+              if (routeData['mode'] === 'create') {
+                control.disable();
+              }
 							break;
 						case VehicleTypes.TRL:
 							control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
 							break;
 						case VehicleTypes.LGV:
 							control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+              if (routeData['mode'] === 'create') {
+                control.disable();
+              }
 							break;
 						case VehicleTypes.SMALL_TRL:
 							control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;

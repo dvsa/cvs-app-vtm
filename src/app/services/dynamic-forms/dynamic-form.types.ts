@@ -24,6 +24,7 @@ import { Observable, map } from 'rxjs';
 import { TagTypes } from '../../components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
+import { RouterService } from '@services/router/router.service';
 
 export enum FormNodeViewTypes {
 	DATE = 'date',
@@ -231,12 +232,13 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 		controls: AbstractControl[],
 		store: Store<State>,
 		technicalRecordService: TechnicalRecordService,
+    routerService: RouterService,
 		validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-		asyncValidator?: AsyncValidatorOptions
+		asyncValidator?: AsyncValidatorOptions,
 	) {
 		super(controls, validatorOrOpts, asyncValidator);
 		this.meta = meta;
-		this.dynamicFormService = new DynamicFormService(store, technicalRecordService);
+		this.dynamicFormService = new DynamicFormService(store, technicalRecordService, routerService);
 	}
 
 	getCleanValue = cleanValue.bind(this);
