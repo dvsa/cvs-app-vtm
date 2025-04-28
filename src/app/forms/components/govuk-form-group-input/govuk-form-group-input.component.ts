@@ -10,12 +10,21 @@ import {
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { TagDirective } from '@directives/tag/tag.directive';
 import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-input',
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective, NumberOnlyDirective],
+	imports: [
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		TagComponent,
+		TagDirective,
+		NumberOnlyDirective,
+		NoEmojisDirective,
+	],
 	templateUrl: './govuk-form-group-input.component.html',
 	styleUrls: ['./govuk-form-group-input.component.scss'],
 	providers: [

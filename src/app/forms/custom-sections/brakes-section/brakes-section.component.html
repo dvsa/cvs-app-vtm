@@ -1,0 +1,11 @@
+@switch (mode()) {
+  @case ('view') {
+    <app-brakes-section-view />
+  }
+  @case ('edit') {
+    <app-brakes-section-edit [techRecord]="techRecord()" (formChange)="formChange.emit($event)" />
+  }
+  @case ('summary') {
+    <app-brakes-section-summary />
+  }
+}

@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
@@ -62,6 +63,7 @@ import { DateControlsComponent } from '../../../components/date-controls/date-co
 		PaginationComponent,
 		DatePipe,
 		DefaultNullOrEmpty,
+		NoEmojisDirective,
 	],
 })
 export class AdrSectionEditComponent implements OnInit, OnDestroy {
