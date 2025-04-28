@@ -38,7 +38,7 @@
                 >
                 <dt class="govuk-summary-list__key">Trailer ID</dt>
                 <dd id="test-testTypeId" class="govuk-summary-list__value">
-                  {{ testResult()?.trailerId | defaultNullOrEmpty }}
+                  <app-number-plate [vrm]="testResult()?.trailerId | defaultNullOrEmpty" />
                 </dd>
               </div>
             }
@@ -137,7 +137,7 @@
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Trailer ID</dt>
               <dd id="test-testTypeId" class="govuk-summary-list__value">
-                {{ testResult()?.trailerId | defaultNullOrEmpty }}
+                <app-number-plate [vrm]="testResult()?.trailerId | defaultNullOrEmpty" />
               </dd>
             </div>
           }

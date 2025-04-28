@@ -320,10 +320,17 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 	) {
 		newAxle.weights_eecWeight = null;
 	}
+
 	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.PSV) {
 		newAxle.weights_kerbWeight = null;
 		newAxle.weights_ladenWeight = null;
 		newAxle.tyres_speedCategorySymbol = null;
+	}
+
+	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+		newAxle.brakes_brakeActuator = null;
+		newAxle.brakes_leverLength = null;
+		newAxle.brakes_springBrakeParking = null;
 	}
 
 	newState.editingTechRecord.techRecord_axles.push(newAxle);

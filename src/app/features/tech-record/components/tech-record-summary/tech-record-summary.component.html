@@ -133,20 +133,40 @@
         }
         @case ('psvBrakesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
-            <app-psv-brakes
-              [vehicleTechRecord]="techRecordCalculated"
-              [isEditing]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-psv-brakes>
+            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+              <!-- New PSV Brakes section -->
+              <app-brakes-section 
+                [techRecord]="techRecordCalculated" 
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
+            } @else {
+              <!-- Old PSV Brakes section -->
+              <app-psv-brakes
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-psv-brakes>
+            }
           }
         }
         @case ('trlBrakesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-            <app-trl-brakes
-              [vehicleTechRecord]="techRecordCalculated"
-              [isEditing]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-trl-brakes>
+            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+              <!-- New TRL Brakes section -->
+              <app-brakes-section 
+                [techRecord]="techRecordCalculated" 
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
+            } @else {
+              <!-- Old TRL Brakes section -->
+              <app-trl-brakes
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-trl-brakes>
+            }
           }
         }
         @case('dda') {

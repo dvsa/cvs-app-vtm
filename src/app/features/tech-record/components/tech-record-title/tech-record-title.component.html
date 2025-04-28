@@ -56,7 +56,7 @@
       <div *ngSwitchCase="'trl'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
         <dd id="trailer-id" class="govuk-summary-list__value">
-          {{ vehicle().trailerId | defaultNullOrEmpty }}
+          <app-number-plate [vrm]="vehicle().trailerId | defaultNullOrEmpty" />
         </dd>
       </div>
 

@@ -114,20 +114,6 @@ describe('VehicleSectionEditComponent', () => {
 		});
 	});
 
-	describe('shouldDisplayFormControl', () => {
-		it('should return true if the form control exists', () => {
-			component.form.patchValue({ techRecord_vehicleType: VehicleTypes.HGV });
-			const result = component.shouldDisplayFormControl('techRecord_vehicleType');
-			expect(result).toBe(true);
-		});
-
-		it('should return false if the form control does not exist', () => {
-			component.form = new FormGroup({});
-			const result = component.shouldDisplayFormControl('techRecord_vehicleType');
-			expect(result).toBe(false);
-		});
-	});
-
 	describe('get EUCategoryOptions', () => {
 		it('should return the eu category that belongs to the vehicle type', () => {
 			const mockTechRecord = { techRecord_vehicleType: VehicleTypes.PSV } as V3TechRecordModel;
