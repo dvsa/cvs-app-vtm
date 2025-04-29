@@ -125,6 +125,39 @@ describe('filterEuCategoryOnVehicleType', () => {
 			),
 		});
 	});
+	it('should not disable the control if it is amend mode and the vehicle type is car', async () => {
+		const carTechRecord: TechRecordType<'car', 'get'> = {
+			primaryVrm: '',
+			techRecord_vehicleSubclass: undefined,
+			createdTimestamp: '',
+			systemNumber: '',
+			techRecord_createdAt: '',
+			techRecord_createdById: '',
+			techRecord_createdByName: '',
+			techRecord_euVehicleCategory: undefined,
+			techRecord_notes: '',
+			techRecord_vehicleConfiguration: undefined,
+			techRecord_vehicleType: 'car',
+			partialVin: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			vin: '',
+		};
+
+		const control = form.controls['euVehicleCategory'] as CustomFormControl;
+		store.overrideSelector(techRecord, carTechRecord);
+		store.overrideSelector(selectTechRecord, carTechRecord);
+		const routeData = { mode: 'amend' };
+		store.overrideSelector(selectRouteData, routeData);
+		await firstValueFrom(
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(
+				techRecordService,
+				routerService
+			)(control) as Observable<ValidationErrors | null>
+		);
+		expect(control.disabled).toEqual(false);
+	});
 	it('should disable the control if it is create mode and vehicle type is car', async () => {
 		const carTechRecord: TechRecordType<'car', 'get'> = {
 			primaryVrm: '',
