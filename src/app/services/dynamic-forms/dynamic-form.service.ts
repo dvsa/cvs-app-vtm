@@ -15,10 +15,10 @@ import { Condition } from '@models/condition.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
-import { RouterService } from '@services/router/router.service';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
@@ -29,7 +29,7 @@ export class DynamicFormService {
 	constructor(
 		private store: Store<State>,
 		private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService
+		private routerService: RouterService
 	) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

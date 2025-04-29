@@ -215,7 +215,6 @@ export class CustomAsyncValidators {
 			return technicalRecordService.techRecord$.pipe(
 				skipWhile((techRecord) => !techRecord),
 				take(1),
-				// mergeWith(() => routerService.routeData$),
 				combineLatestWith(routerService.routeData$),
 				skipWhile((routeData) => !routeData),
 				take(1),
