@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,7 +20,7 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 			multi: true,
 		},
 	],
-	imports: [NgClass, FieldErrorMessageComponent, NgTemplateOutlet, FormsModule, AsyncPipe],
+	imports: [NgClass, FieldErrorMessageComponent, NgTemplateOutlet, FormsModule, AsyncPipe, NoEmojisDirective],
 })
 export class SuggestiveInputComponent extends BaseControlComponent implements AfterContentInit, OnInit {
 	readonly options$ = input.required<Observable<MultiOption[]>>();

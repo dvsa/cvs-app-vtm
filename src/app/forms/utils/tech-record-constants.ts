@@ -4,8 +4,6 @@ import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval
 import { Audit } from '@forms/templates/general/audit.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
-import { LettersTemplate } from '@forms/templates/general/letters.template';
-import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
@@ -29,14 +27,16 @@ import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
-import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
-import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
-import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
-import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
-import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
-import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
-import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { LettersTemplate } from '../templates/general/letters.template';
+import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
+import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
+import { TrlBrakesTemplate } from '../templates/trl/trl-brakes.template';
+import { TrlDimensionsTemplate } from '../templates/trl/trl-dimensions.template';
+import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
+import { TrlTechRecordTemplate } from '../templates/trl/trl-tech-record.template';
+import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
+import { TrlWeight } from '../templates/trl/trl-weight.template';
 
 // The map below initializes the array of sections that the *ngFor in tech summary component's template will iterate over.
 // The order in which each section is introduced in the array will determine its order on the page when rendered.

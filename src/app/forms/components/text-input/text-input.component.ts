@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -26,6 +27,7 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 		FormsModule,
 		ToUppercaseDirective,
 		NumberOnlyDirective,
+		NoEmojisDirective,
 	],
 })
 export class TextInputComponent extends BaseControlComponent {

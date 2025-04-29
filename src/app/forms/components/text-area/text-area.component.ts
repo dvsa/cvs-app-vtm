@@ -1,3 +1,4 @@
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -16,7 +17,7 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 			multi: true,
 		},
 	],
-	imports: [TagComponent, FieldErrorMessageComponent, FormsModule, NgClass],
+	imports: [TagComponent, FieldErrorMessageComponent, FormsModule, NgClass, NoEmojisDirective],
 })
 export class TextAreaComponent extends BaseControlComponent {
 	get maxLength(): number | undefined {

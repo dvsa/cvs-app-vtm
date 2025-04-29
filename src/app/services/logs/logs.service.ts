@@ -41,6 +41,13 @@ export class LogsProvider {
 
 		const pageName = document.title.replace(/Vehicle Testing Management - /, '');
 
-		this.store$.dispatch(saveLog({ ...log, url, pageName }));
+		this.store$.dispatch(
+			saveLog({
+				...log,
+				url,
+				pageName,
+				timestamp: log.timestamp ?? Date.now(),
+			})
+		);
 	}
 }

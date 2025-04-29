@@ -12,6 +12,7 @@
       <ng-container *ngTemplateOutlet="error; context: { $implicit: 'search-term' }"></ng-container>
 
       <input
+        appNoEmojis
         #searchTerm
         appToUppercase
         appNoSpace

@@ -1,8 +1,9 @@
-import { HttpErrorResponse, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHandler, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ResponseLoggerInterceptor } from '@interceptors/response-logger/response-logger.interceptor';
 import { LogType } from '@models/logs/logs.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { CompressionService } from '@services/compression/compression.service';
 import { LogsProvider } from '@services/logs/logs.service';
 import { id, initialState } from '@store/user/user-service.reducer';
 import { of, throwError } from 'rxjs';
@@ -10,6 +11,7 @@ import { of, throwError } from 'rxjs';
 describe('Interceptor: ResponseLoggerInterceptor', () => {
 	let interceptor: ResponseLoggerInterceptor;
 	let logsProvider: jest.Mocked<LogsProvider>;
+	let compressionService: jest.Mocked<CompressionService>;
 	let mockStore: MockStore;
 	const mockThreshold = 10000;
 	const mockReq = new HttpRequest('GET', 'https://example.com');
@@ -22,10 +24,15 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 			dispatchLog: jest.fn(),
 		};
 
+		const compressionServiceMock = {
+			extract: jest.fn(),
+		};
+
 		TestBed.configureTestingModule({
 			providers: [
 				ResponseLoggerInterceptor,
 				{ provide: LogsProvider, useValue: logsProviderMock },
+				{ provide: CompressionService, useValue: compressionServiceMock },
 				provideMockStore({ initialState }),
 			],
 		});
@@ -33,6 +40,7 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 		interceptor = TestBed.inject(ResponseLoggerInterceptor);
 		logsProvider = TestBed.inject(LogsProvider) as jest.Mocked<LogsProvider>;
 		mockStore = TestBed.inject(MockStore);
+		compressionService = TestBed.inject(CompressionService) as jest.Mocked<CompressionService>;
 
 		jest.spyOn(interceptor, 'threshold', 'get').mockReturnValue(mockThreshold);
 
@@ -68,6 +76,63 @@ describe('Interceptor: ResponseLoggerInterceptor', () => {
 				timestamp: expect.any(Number),
 			});
 			done();
+		});
+	});
+
+	it('should decompress payload when header detected and body is a string', () => {
+		jest.spyOn(compressionService, 'extract');
+
+		const mockResponse = new HttpResponse({
+			status: 200,
+			statusText: 'OK',
+			url: 'https://example.com',
+			headers: new HttpHeaders().set('Content-Encoding', 'base64+gzip'),
+			body: 'H4sIAAAAAAAAA6tWykjNyclXslIqyUgtSlWqBQD9aiCXEQAAAA==',
+		});
+
+		jest.spyOn(mockNext, 'handle').mockReturnValue(of(mockResponse));
+
+		interceptor.intercept(mockReq, mockNext).subscribe(() => {
+			expect(logsProvider.dispatchLog).toHaveBeenCalledWith({
+				type: LogType.INFO,
+				message: '200 OK for API call to https://example.com',
+				timestamp: jasmine.any(Number),
+			});
+			expect(compressionService.extract).toHaveBeenCalled();
+		});
+	});
+
+	it('should attempt to decompress payload, but fail and return data as API sent it', () => {
+		jest.spyOn(compressionService, 'extract').mockImplementation(() => {
+			throw new Error('Decompression failed');
+		});
+
+		const headers = new HttpHeaders().set('Content-Encoding', 'base64+gzip');
+
+		const mockResponse = new HttpResponse({
+			status: 200,
+			statusText: 'OK',
+			url: 'https://example.com',
+			headers,
+			body: 'bad string',
+		});
+
+		jest.spyOn(mockNext, 'handle').mockReturnValue(of(mockResponse));
+
+		interceptor.intercept(mockReq, mockNext).subscribe(() => {
+			expect(logsProvider.dispatchLog).toHaveBeenCalledWith({
+				type: LogType.INFO,
+				message: '200 OK for API call to https://example.com',
+				timestamp: jasmine.any(Number),
+			});
+			expect(compressionService.extract).toHaveBeenCalled();
+			expect(logsProvider.dispatchLog).toHaveBeenCalledWith({
+				type: LogType.ERROR,
+				message: 'Could not decompress payload',
+				body: 'bad string',
+				headers,
+				err: new Error('Decompression failed'),
+			});
 		});
 	});
 
