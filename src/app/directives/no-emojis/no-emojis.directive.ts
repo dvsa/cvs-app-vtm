@@ -7,14 +7,16 @@ import emojiRegex from 'emoji-regex';
 })
 export class NoEmojisDirective implements OnInit {
 	private readonly el = inject(ElementRef);
-	private readonly ngControl = inject(NgControl);
+	private readonly ngControl = inject(NgControl, { optional: true });
 	private readonly emojiRegex = emojiRegex();
 
 	ngOnInit() {
 		// Prevents emojis being kept in ngModel see: https://angular.love/angular-forms-why-is-ngmodelchange-late-when-updating-ngmodel-value
-		const initialOnChange = (this.ngControl.valueAccessor as any).onChange;
-		(this.ngControl.valueAccessor as any).onChange = (value: string) =>
-			initialOnChange(value.replace(this.emojiRegex, ''));
+		if (this.ngControl) {
+			const initialOnChange = (this.ngControl.valueAccessor as any).onChange;
+			(this.ngControl.valueAccessor as any).onChange = (value: string) =>
+				initialOnChange(value.replace(this.emojiRegex, ''));
+		}
 	}
 
 	@HostListener('input', ['$event'])
