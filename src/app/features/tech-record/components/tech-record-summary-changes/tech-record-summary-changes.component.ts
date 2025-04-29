@@ -1,6 +1,7 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -17,7 +18,6 @@ import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { FormNode, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -111,22 +111,19 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 	techRecordEdited?: TechRecordType<'put'>;
 	techRecordChanges?: Partial<TechRecordType<'get'>>;
 	techRecordDeletions?: Partial<TechRecordType<'get'>>;
-	techRecordChangesKeys: string[] = [];
 
-	sectionsWhitelist: string[] = [];
 	username = '';
 
-	constructor(
-		public store$: Store<State>,
-		public technicalRecordService: TechnicalRecordService,
-		public router: Router,
-		public globalErrorService: GlobalErrorService,
-		public route: ActivatedRoute,
-		public routerService: RouterService,
-		public actions$: Actions,
-		public userService$: UserService,
-		public featureToggleService: FeatureToggleService
-	) {}
+	store$ = inject(Store<State>);
+	technicalRecordService = inject(TechnicalRecordService);
+	router = inject(Router);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	routerService = inject(RouterService);
+	actions$ = inject(Actions);
+	userService$ = inject(UserService);
+	featureToggleService = inject(FeatureToggleService);
+	techRecordChangesService = inject(TechnicalRecordChangesService);
 
 	ngOnInit(): void {
 		this.navigateUponSuccess();
@@ -180,8 +177,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 						this.techRecordEdited as TechRecordGETCar | TechRecordGETLGV
 					).techRecord_vehicleSubclass;
 				}
-				this.techRecordChangesKeys = this.getTechRecordChangesKeys();
-				this.sectionsWhitelist = this.getSectionsWhitelist();
 			});
 
 		this.store$
@@ -247,24 +242,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 		void this.router.navigate(['..'], { relativeTo: this.route });
 	}
 
-	getTechRecordChangesKeys(): string[] {
-		const entries = Object.entries(this.techRecordChanges ?? {});
-		const filter = entries.filter(([, value]) => this.isNotEmpty(value));
-		const changeMap = filter.map(([key]) => key);
-		return changeMap;
-	}
-
-	getSectionsWhitelist() {
-		const whitelist: string[] = [];
-		if (this.vehicleType == null) return whitelist;
-		if (this.techRecordChanges == null) return whitelist;
-		if (this.technicalRecordService.haveAxlesChanged(this.vehicleType, this.techRecordChanges)) {
-			whitelist.push('weightsSection');
-		}
-
-		return whitelist;
-	}
-
 	get changesForWeights() {
 		if (this.techRecordEdited == null) return undefined;
 
@@ -277,32 +254,5 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 		return vehicleTemplateMap
 			.get(this.techRecordEdited?.techRecord_vehicleType as VehicleTypes)
 			?.filter((template) => template.name !== 'technicalRecordSummary');
-	}
-
-	get customVehicleTemplate() {
-		return this.vehicleTemplates
-			?.map((vehicleTemplate) => ({
-				...this.toVisibleFormNode(vehicleTemplate),
-				children: vehicleTemplate.children
-					?.filter((child) => {
-						return this.techRecordChangesKeys.includes(child.name);
-					})
-					.map((child) => this.toVisibleFormNode(child)),
-			}))
-			.filter(
-				(section) =>
-					Boolean(section && section.children && section.children.length > 0) ||
-					this.sectionsWhitelist.includes(section.name)
-			);
-	}
-
-	toVisibleFormNode(node: FormNode): FormNode {
-		return { ...node, viewType: node.viewType === FormNodeViewTypes.HIDDEN ? FormNodeViewTypes.STRING : node.viewType };
-	}
-
-	isNotEmpty(value: unknown): boolean {
-		if (value === '' || value === undefined) return false;
-		if (typeof value === 'object' && value !== null) return Object.values(value).length > 0;
-		return true;
 	}
 }
