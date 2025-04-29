@@ -135,8 +135,8 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New PSV Brakes section -->
-              <app-brakes-section 
-                [techRecord]="techRecordCalculated" 
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"
                 (formChange)="handleFormState($event)"
               ></app-brakes-section>
@@ -154,8 +154,8 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New TRL Brakes section -->
-              <app-brakes-section 
-                [techRecord]="techRecordCalculated" 
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"
                 (formChange)="handleFormState($event)"
               ></app-brakes-section>
@@ -227,15 +227,26 @@
             <!-- Old Weights Section -->
           }
         }
+
+
         @case ('lettersSection') {
+          <!-- New LettersSection -->
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-            <app-letters
-              [techRecord]="techRecordCalculated"
-              [isEditing]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-letters>
+          @if (featureToggleService.isFeatureEnabled('FsLetters')) {
+            <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          } @else {
+          <app-letters
+            [techRecord]="techRecordCalculated"
+            [isEditing]="(isEditing$ | async) ?? false"
+            (formChange)="handleFormState($event)"
+          ></app-letters>
           }
         }
+          <!-- Old Letters section -->
+        }
+
+
+
         @case ('platesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Plates Section -->
@@ -293,6 +304,7 @@
           }
           <!-- Old Last Applicant section -->
         }
+
         @default {
           <app-dynamic-form-group
             [data]="techRecordCalculated"
