@@ -4,11 +4,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
+import { ActivatedRoute } from '@angular/router';
 import { createMockHgv } from '@mocks/hgv-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
+import { of } from 'rxjs';
 import { AdrComponent } from '../adr.component';
 
 describe('AdrComponent', () => {
@@ -29,6 +31,7 @@ describe('AdrComponent', () => {
 					provide: AdrService,
 					useValue: { preprocessTechRecord: jest.fn().mockReturnValue(hgv), determineTankStatementSelect: jest.fn() },
 				},
+				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 			],
 		}).compileComponents();
 

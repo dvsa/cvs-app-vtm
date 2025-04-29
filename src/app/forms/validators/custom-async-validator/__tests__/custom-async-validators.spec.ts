@@ -11,6 +11,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State, initialAppState } from '@store/index';
 import { editingTechRecord, selectTechRecord, techRecord } from '@store/technical-records';
@@ -25,7 +26,7 @@ describe('resultDependantOnCustomDefects', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [provideMockStore({ initialState: initialAppState })],
+			providers: [provideMockStore({ initialState: initialAppState }), RouterService],
 		});
 
 		store = TestBed.inject(MockStore);
@@ -104,15 +105,17 @@ describe('filterEuCategoryOnVehicleType', () => {
 	let form: FormGroup;
 	let store: MockStore<State>;
 	let techRecordService: TechnicalRecordService;
+	let routerService: RouterService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [provideMockStore({ initialState: initialAppState }), TechnicalRecordService],
+			providers: [provideMockStore({ initialState: initialAppState }), TechnicalRecordService, RouterService],
 			imports: [HttpClientTestingModule, RouterTestingModule],
 		});
 
 		store = TestBed.inject(MockStore);
 		techRecordService = TestBed.inject(TechnicalRecordService);
+		routerService = TestBed.inject(RouterService);
 
 		form = new FormGroup({
 			euVehicleCategory: new CustomFormControl(
@@ -164,9 +167,10 @@ describe('filterEuCategoryOnVehicleType', () => {
 		store.overrideSelector(techRecord, trlTechRecord);
 		store.overrideSelector(selectTechRecord, trlTechRecord);
 		await firstValueFrom(
-			CustomAsyncValidators.filterEuCategoryOnVehicleType(techRecordService)(
-				control
-			) as Observable<ValidationErrors | null>
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(
+				techRecordService,
+				routerService
+			)(control) as Observable<ValidationErrors | null>
 		);
 		expect(control.meta.options).toEqual(TRL_EU_VEHICLE_CATEGORY_OPTIONS);
 	});
