@@ -14,6 +14,7 @@ import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynami
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State, initialAppState } from '@store/index';
+import { selectRouteData } from '@store/router/router.selectors';
 import { editingTechRecord, selectTechRecord, techRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
@@ -123,6 +124,71 @@ describe('filterEuCategoryOnVehicleType', () => {
 				null
 			),
 		});
+	});
+	it('should disable the control if it is create mode and vehicle type is car', async () => {
+		const carTechRecord: TechRecordType<'car', 'get'> = {
+			primaryVrm: '',
+			techRecord_vehicleSubclass: undefined,
+			createdTimestamp: '',
+			systemNumber: '',
+			techRecord_createdAt: '',
+			techRecord_createdById: '',
+			techRecord_createdByName: '',
+			techRecord_euVehicleCategory: undefined,
+			techRecord_notes: '',
+			techRecord_vehicleConfiguration: undefined,
+			techRecord_vehicleType: 'car',
+			partialVin: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			vin: '',
+		};
+
+		const control = form.controls['euVehicleCategory'] as CustomFormControl;
+		store.overrideSelector(techRecord, carTechRecord);
+		store.overrideSelector(selectTechRecord, carTechRecord);
+		const routeData = { mode: 'create' };
+		store.overrideSelector(selectRouteData, routeData);
+		await firstValueFrom(
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(
+				techRecordService,
+				routerService
+			)(control) as Observable<ValidationErrors | null>
+		);
+		expect(control.disabled).toEqual(true);
+	});
+	it('should disable the control if it is create mode and vehicle type is lgv', async () => {
+		const lgvTechRecord: TechRecordType<'lgv', 'get'> = {
+			createdTimestamp: '',
+			systemNumber: '',
+			techRecord_createdAt: '',
+			techRecord_createdById: '',
+			techRecord_createdByName: '',
+			techRecord_euVehicleCategory: undefined,
+			techRecord_notes: '',
+			techRecord_vehicleConfiguration: undefined,
+			techRecord_vehicleType: 'lgv',
+			partialVin: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			vin: '',
+			techRecord_adrDetails_dangerousGoods: true,
+		};
+
+		const control = form.controls['euVehicleCategory'] as CustomFormControl;
+		store.overrideSelector(techRecord, lgvTechRecord);
+		store.overrideSelector(selectTechRecord, lgvTechRecord);
+		const routeData = { mode: 'create' };
+		store.overrideSelector(selectRouteData, routeData);
+		await firstValueFrom(
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(
+				techRecordService,
+				routerService
+			)(control) as Observable<ValidationErrors | null>
+		);
+		expect(control.disabled).toEqual(true);
 	});
 	it('should set control options to trl eu category list if vehicle type is trl', async () => {
 		const trlTechRecord: TechRecordType<'trl', 'get'> = {
