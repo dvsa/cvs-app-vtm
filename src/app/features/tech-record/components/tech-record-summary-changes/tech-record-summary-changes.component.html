@@ -250,11 +250,7 @@
           techRecordEdited.techRecord_vehicleType === 'trl' ||
           techRecordEdited.techRecord_vehicleType === 'lgv'
           ) {
-          @if (featureToggleService.isFeatureEnabled('FsAdr')) {
-            <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
-          } @else {
-            <app-adr [techRecord]="techRecordEdited" [isReviewScreen]="true" />
-          }
+          <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
         }
       }
       @case ('techRecord') {

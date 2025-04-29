@@ -44,7 +44,6 @@ import { ButtonComponent } from '../../../../components/button/button.component'
 import { IconComponent } from '../../../../components/icon/icon.component';
 import { DynamicFormGroupComponent } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
 import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
-import { AdrComponent } from '../../../../forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '../../../../forms/custom-sections/approval-type/approval-type.component';
 import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
 import { BodyComponent } from '../../../../forms/custom-sections/body/body.component';
@@ -94,7 +93,6 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		WeightsComponent,
 		ModifiedWeightsComponent,
 		AdrSectionComponent,
-		AdrComponent,
 		LastApplicantSectionComponent,
 		ButtonGroupComponent,
 		ButtonComponent,
