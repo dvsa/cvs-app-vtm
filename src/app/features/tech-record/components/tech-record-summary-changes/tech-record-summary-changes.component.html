@@ -100,13 +100,7 @@
         }
       }
       @case ('techRecordSummary') {
-        <!-- New Vehicle summary section -->
-        @if (featureToggleService.isFeatureEnabled('FsVehicleSummary')) {
-          <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
-        <!-- Old Vehicle summary section -->
+        <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('bodySection') {
         <!-- New Body section -->

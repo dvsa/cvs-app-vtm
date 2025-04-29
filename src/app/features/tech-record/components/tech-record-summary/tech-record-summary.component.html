@@ -44,18 +44,7 @@
           <!-- Old Notes section -->
         }
         @case ('techRecordSummary') {
-          <!-- New Vehicle summary section -->
-          @if (featureToggleService.isFeatureEnabled('FsVehicleSummary')) {
-            <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
-          <!-- Old Vehicle summary section -->
+          <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('bodySection') {
           <!-- New Body section -->
@@ -135,8 +124,8 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New PSV Brakes section -->
-              <app-brakes-section 
-                [techRecord]="techRecordCalculated" 
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"
                 (formChange)="handleFormState($event)"
               ></app-brakes-section>
@@ -154,8 +143,8 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
               <!-- New TRL Brakes section -->
-              <app-brakes-section 
-                [techRecord]="techRecordCalculated" 
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"
                 (formChange)="handleFormState($event)"
               ></app-brakes-section>

@@ -3,7 +3,6 @@
   "adrCertToggle": true,
   "requiredStandards": true,
   "FsAdr": true,
-  "FsVehicleSummary": true,
   "FsBody": true,
   "FsNotes": true,
   "FsTyres": true,
