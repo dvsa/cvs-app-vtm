@@ -419,7 +419,6 @@ describe('TechnicalRecordServiceEffects', () => {
 				techRecord_lastUpdatedById: null,
 				techRecord_lastUpdatedByName: null,
 				techRecord_adrDetails_certificates: undefined,
-				techRecord_adrDetails_dangerousGoods: false,
 			};
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(editingTechRecord, carTechRecord);
