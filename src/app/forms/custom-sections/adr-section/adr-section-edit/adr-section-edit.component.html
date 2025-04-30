@@ -434,6 +434,7 @@
                               name="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                               formControlName="{{ i }}"
                               class="govuk-input"
+                              appNoEmojis
                               />
                           </td>
                           <td class="govuk-table__cell">
@@ -467,7 +468,7 @@
               <label id="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-label">Additional Details </label>
             </h1>
             <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_tankStatement_productList-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productList" />
-            <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"></textarea>
+            <textarea govukTextarea appNoEmojis formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"></textarea>
             <app-character-count for="techRecord_adrDetails_tank_tankDetails_tankStatement_productList" [limit]="1500" />
           </div>
         }
@@ -479,7 +480,7 @@
         <label id="techRecord_adrDetails_tank_tankDetails_specialProvisions-label"> Special Provisions </label>
       </h1>
       <app-control-errors elementId="techRecord_adrDetails_tank_tankDetails_specialProvisions-error" [control]="form.controls.techRecord_adrDetails_tank_tankDetails_specialProvisions" />
-      <textarea govukTextarea formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
+      <textarea govukTextarea appNoEmojis formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"></textarea>
       <app-character-count for="techRecord_adrDetails_tank_tankDetails_specialProvisions" [limit]="1024" />
     </div>
     <!-- Tank Inspections section -->
@@ -737,7 +738,7 @@
         <label id="techRecord_adrDetails_brakeDeclarationIssuer-label"> Issuer </label>
       </h1>
       <app-control-errors elementId="techRecord_adrDetails_brakeDeclarationIssuer-error" [control]="form.controls.techRecord_adrDetails_brakeDeclarationIssuer" />
-      <textarea govukTextarea formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
+      <textarea govukTextarea appNoEmojis formControlName="techRecord_adrDetails_brakeDeclarationIssuer"></textarea>
       <app-character-count for="techRecord_adrDetails_brakeDeclarationIssuer" [limit]="500" />
     </div>
     <!-- Brake endurance -->
@@ -825,7 +826,7 @@
     </h1>
     <div id="techRecord_adrDetails_additionalExaminerNotes_note-hint" class="govuk-hint">Will not be present on the ADR certificate</div>
     <app-control-errors elementId="techRecord_adrDetails_additionalExaminerNotes_note-error" [control]="form.controls.techRecord_adrDetails_additionalExaminerNotes_note" />
-    <textarea govukTextarea formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
+    <textarea govukTextarea appNoEmojis formControlName="techRecord_adrDetails_additionalExaminerNotes_note"></textarea>
     <app-character-count for="techRecord_adrDetails_additionalExaminerNotes_note" [limit]="1024" />
   </div>
   <!-- ADR Additional Examiner Note History -->
@@ -879,7 +880,7 @@
       <label id="techRecord_adrDetails_adrCertificateNotes-label"> ADR Certificate Notes </label>
     </h1>
     <app-control-errors elementId="techRecord_adrDetails_adrCertificateNotes-error" [control]="form.controls.techRecord_adrDetails_adrCertificateNotes" />
-    <textarea govukTextarea formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
+    <textarea govukTextarea appNoEmojis formControlName="techRecord_adrDetails_adrCertificateNotes"></textarea>
     <app-character-count for="techRecord_adrDetails_adrCertificateNotes" [limit]="1500" />
   </div>
 }
