@@ -13,6 +13,7 @@ import { VehicleSectionViewComponent } from './vehicle-section-view/vehicle-sect
 })
 export class VehicleSectionComponent {
 	mode = input<Mode>('edit');
+	isCreateMode = input.required<boolean>();
 	techRecord = input.required<V3TechRecordModel>();
 }
 

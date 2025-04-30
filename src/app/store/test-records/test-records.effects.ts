@@ -1,13 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -308,6 +310,11 @@ export class TestResultsEffects {
 					merge(mergedForms, form.getCleanValue(form));
 				});
 
+				if (vehicleType === VehicleTypes.LGV) {
+					mergedForms.euVehicleCategory = EUVehicleCategoryLGV.N1;
+				} else if (vehicleType === VehicleTypes.CAR) {
+					mergedForms.euVehicleCategory = EUVehicleCategoryCAR.M1;
+				}
 				mergedForms.testTypes[0].testTypeId = id;
 				mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
 				mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';

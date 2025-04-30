@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <app-tech-record-summary (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
+      <app-tech-record-summary [isCreateMode]="false" (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
       <app-edit-tech-record-button
         class="right"
         *appRoleRequired="roles.TechRecordAmend"

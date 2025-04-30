@@ -44,7 +44,7 @@
           <!-- Old Notes section -->
         }
         @case ('techRecordSummary') {
-          <app-vehicle-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('bodySection') {
           <!-- New Body section -->

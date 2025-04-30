@@ -102,7 +102,7 @@
         }
       }
       @case ('techRecordSummary') {
-        <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
+        <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
       }
       @case ('bodySection') {
         <!-- New Body section -->
