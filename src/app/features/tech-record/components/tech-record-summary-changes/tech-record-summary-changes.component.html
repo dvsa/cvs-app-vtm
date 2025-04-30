@@ -82,10 +82,12 @@
     }
   </dl>
   <app-accordion-control [sectionState]="sectionTemplatesState$ | async">
-    @for (section of customVehicleTemplate; track section; let i = $index) {
-      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
-        <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }" />
-      </app-accordion>
+    @for (section of vehicleTemplates; track section; let i = $index) {
+      @if (techRecordChangesService.hasSectionChanged(section.name)) {
+        <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }" />
+        </app-accordion>
+      }
     }
   </app-accordion-control>
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
@@ -250,11 +252,7 @@
           techRecordEdited.techRecord_vehicleType === 'trl' ||
           techRecordEdited.techRecord_vehicleType === 'lgv'
           ) {
-          @if (featureToggleService.isFeatureEnabled('FsAdr')) {
-            <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
-          } @else {
-            <app-adr [techRecord]="techRecordEdited" [isReviewScreen]="true" />
-          }
+          <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
         }
       }
       @case ('techRecord') {

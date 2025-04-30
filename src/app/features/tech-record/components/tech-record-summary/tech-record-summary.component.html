@@ -261,13 +261,7 @@
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
             ) {
-            <!-- New ADR section -->
-            @if (featureToggleService.isFeatureEnabled('FsAdr')) {
               <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"/>
-            }
-            <!-- Old ADR section -->
           }
         }
         @case ('adrCertificateSection') {
