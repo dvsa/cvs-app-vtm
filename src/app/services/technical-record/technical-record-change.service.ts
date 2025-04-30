@@ -43,7 +43,7 @@ export class TechnicalRecordChangesService {
 		switch (sectionName) {
 			case 'requiredSection':
 			case 'reasonForCreationSection':
-				return false;
+				return true;
 			case 'notesSection':
 				return this.hasNotesSectionChanged();
 			case 'techRecordSummary':

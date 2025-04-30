@@ -1,4 +1,5 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
+import { FormNodeViewTypes } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
@@ -251,8 +252,14 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 	}
 
 	get vehicleTemplates() {
-		return vehicleTemplateMap
-			.get(this.techRecordEdited?.techRecord_vehicleType as VehicleTypes)
-			?.filter((template) => template.name !== 'technicalRecordSummary');
+		const template = vehicleTemplateMap.get(this.techRecordEdited?.techRecord_vehicleType as VehicleTypes);
+
+		// TODO: remove this once reason for creation is under DFS
+		const reasonForCreation = template?.find((section) => section.name === 'reasonForCreationSection');
+		if (reasonForCreation && reasonForCreation.children?.length) {
+			reasonForCreation.children[0].viewType = FormNodeViewTypes.STRING;
+		}
+
+		return template;
 	}
 }
