@@ -31,8 +31,11 @@ import { lastValueFrom, timeout } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
-	private http = inject(HttpClient);
+	private readonly http = inject(HttpClient);
 	private static readonly TIMEOUT = 30000;
+	private static readonly gzippedHeader = new HttpHeaders({
+		'x-accept-encoding': 'base64+gzip',
+	});
 
 	addProvisionalTechRecord(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
 		if (body === null || body === undefined) {
@@ -105,7 +108,7 @@ export class HttpService {
 	}
 
 	fetchDefects() {
-		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`);
+		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, { headers: HttpService.gzippedHeader });
 	}
 
 	fetchDefect(id: number) {

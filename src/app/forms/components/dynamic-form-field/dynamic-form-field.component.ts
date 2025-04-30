@@ -1,4 +1,4 @@
-import { AsyncPipe, KeyValue, NgComponentOutlet, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, KeyValue, NgComponentOutlet } from '@angular/common';
 import { AfterContentInit, Component, InjectionToken, Injector, OnInit, input } from '@angular/core';
 import { FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 // eslint-disable-next-line import/no-cycle
@@ -26,11 +26,8 @@ import { TextInputComponent } from '../text-input/text-input.component';
 	templateUrl: './dynamic-form-field.component.html',
 	providers: [MultiOptionsService],
 	imports: [
-		NgIf,
-		NgSwitch,
 		FormsModule,
 		ReactiveFormsModule,
-		NgSwitchCase,
 		AutocompleteComponent,
 		DateComponent,
 		NumberInputComponent,
@@ -42,7 +39,6 @@ import { TextInputComponent } from '../text-input/text-input.component';
 		CheckboxGroupComponent,
 		TextInputComponent,
 		NgComponentOutlet,
-		NgSwitchDefault,
 		AsyncPipe,
 	],
 })

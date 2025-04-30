@@ -3,7 +3,7 @@ export type LogsModel = Log[];
 export type Log = {
 	type: string;
 	message: string;
-	timestamp: number;
+	timestamp?: number;
 	[propName: string]: unknown;
 };
 

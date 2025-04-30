@@ -105,7 +105,7 @@ describe('TechRecordTitleComponent', () => {
 			fixture.detectChanges();
 
 			const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
-			expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+			expect(trailerIdField.nativeElement.textContent).toContain('Tes tId');
 		});
 
 		const smallTrailerEuVehicleCategories = [EUVehicleCategory.O1, EUVehicleCategory.O2];
@@ -119,7 +119,7 @@ describe('TechRecordTitleComponent', () => {
 			fixture.detectChanges();
 
 			const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
-			expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+			expect(trailerIdField.nativeElement.textContent).toContain('Tes tId');
 			const secondaryVrmField = fixture.debugElement.query(By.css('#previous-vrm'));
 			expect(secondaryVrmField).toBeNull();
 		});

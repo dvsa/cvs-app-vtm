@@ -55,6 +55,7 @@
     "accessible-autocomplete": "^2.0.4",
     "angular-google-tag-manager": "^1.10.0",
     "assert": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "deep-object-diff": "^1.1.9",

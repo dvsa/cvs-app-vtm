@@ -25,7 +25,6 @@ import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-tra
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 
 import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
-import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { LettersTemplate } from '../templates/general/letters.template';
@@ -73,7 +72,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  9 */ tyresTemplateHgv,
 			/* 10 */ HgvDimensionsTemplate,
 			/* 11 */ PlatesTemplate,
-			/* 12 */ AdrTemplate,
+			/* 12 */ { name: 'adrSection', label: 'ADR' } as FormNode,
 			/* 13 */ AdrCertificateTemplate,
 		],
 	],
@@ -96,7 +95,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 14 */ PlatesTemplate,
 			/* 15 */ TrlAuthIntoServiceTemplate,
 			/* 16 */ ManufacturerTemplate,
-			/* 17 */ AdrTemplate,
+			/* 17 */ { name: 'adrSection', label: 'ADR' } as FormNode,
 			/* 18 */ AdrCertificateTemplate,
 		],
 	],
@@ -118,7 +117,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 3 */ ApplicantDetails,
 			/* 4 */ NotesTemplate,
 			/* 5 */ Audit,
-			/* 6 */ AdrTemplate,
+			/* 6 */ { name: 'adrSection', label: 'ADR' } as FormNode,
 			/* 7 */ AdrCertificateTemplate,
 		],
 	],

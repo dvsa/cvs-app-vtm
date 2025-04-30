@@ -81,10 +81,6 @@ export class GovukFormGroupTextareaComponent implements ControlValueAccessor {
 		return `govuk-input ${width ? `govuk-input--width-${width}` : ''}`;
 	}
 
-	get length() {
-		return this.value()?.length ?? 0;
-	}
-
 	onChange = (event: any) => {};
 
 	onTouched = () => {};

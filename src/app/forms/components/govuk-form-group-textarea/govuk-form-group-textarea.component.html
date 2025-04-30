@@ -31,7 +31,7 @@
     name="{{ id }}"
     [attr.aria-labelledby]="labelId"
     [attr.data-testid]="id"
-    [ngModel]="value()"
+    [(ngModel)]="value"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"
@@ -40,6 +40,7 @@
   ></textarea>
 
   @if (maxLength(); as maxLength) {
+    @let length = value()?.length ?? 0;
     @if (maxLength - length >= 0) {
       <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint">
         You have {{ maxLength - length }} character{{ maxLength - length !== 1 ? 's' : '' }} remaining
