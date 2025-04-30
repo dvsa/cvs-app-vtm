@@ -9,7 +9,7 @@ import { GlobalErrorService } from '../global-error.service';
 @Component({
 	selector: 'app-mock-component',
 	template: '<app-global-error></app-global-error><input id="test-input" type="text" />\n',
-	styles: [],
+	imports: [GlobalErrorComponent],
 })
 class MockComponent {}
 
@@ -19,8 +19,7 @@ describe('GlobalErrorComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [GlobalErrorComponent, MockComponent],
-			imports: [],
+			imports: [MockComponent],
 			providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});

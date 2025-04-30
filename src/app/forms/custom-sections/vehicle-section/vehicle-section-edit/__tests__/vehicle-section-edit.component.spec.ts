@@ -1,3 +1,4 @@
+import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
@@ -11,10 +12,11 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleSectionEditComponent } from '@forms/custom-sections/vehicle-section/vehicle-section-edit/vehicle-section-edit.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import {
 	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
@@ -44,8 +46,7 @@ describe('VehicleSectionEditComponent', () => {
 		const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 
 		await TestBed.configureTestingModule({
-			declarations: [VehicleSectionEditComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+			imports: [FormsModule, ReactiveFormsModule, VehicleSectionEditComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),
@@ -72,9 +73,11 @@ describe('VehicleSectionEditComponent', () => {
 		it('should attach its form to its parent form', () => {
 			const vehicleTypeControlsSpy = jest.spyOn(component, 'addControlsBasedOffVehicleType');
 			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const handleUpdateVehicleConfiguration = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
 			component.ngOnInit();
 			expect(vehicleTypeControlsSpy).toHaveBeenCalled();
 			expect(parentFormSpy).toHaveBeenCalled();
+			expect(handleUpdateVehicleConfiguration).toHaveBeenCalled();
 		});
 	});
 
@@ -103,25 +106,11 @@ describe('VehicleSectionEditComponent', () => {
 		it('should return the small trailer type', () => {
 			const mockTechRecord = {
 				techRecord_vehicleType: VehicleTypes.TRL,
-				techRecord_euVehicleCategory: 'o1',
+				techRecord_euVehicleCategory: EUVehicleCategory.O1,
 			} as V3TechRecordModel;
 			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
-		});
-	});
-
-	describe('shouldDisplayFormControl', () => {
-		it('should return true if the form control exists', () => {
-			component.form.patchValue({ techRecord_vehicleType: VehicleTypes.HGV });
-			const result = component.shouldDisplayFormControl('techRecord_vehicleType');
-			expect(result).toBe(true);
-		});
-
-		it('should return false if the form control does not exist', () => {
-			component.form = new FormGroup({});
-			const result = component.shouldDisplayFormControl('techRecord_vehicleType');
-			expect(result).toBe(false);
 		});
 	});
 
@@ -226,6 +215,17 @@ describe('VehicleSectionEditComponent', () => {
 			expect(validator).toBe(null);
 			expect(form.getRawValue().techRecord_vehicleSize).toBe(VehicleSizes.LARGE);
 			expect(form.getRawValue().techRecord_vehicleClass_description).toBe(VehicleClassDescription.LARGE_PSV);
+		});
+	});
+
+	describe('handleUpdateVehicleConfiguration', () => {
+		it('should dispatch the updateVehicleConfiguration action after an option is selected', () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			component.form.patchValue({ techRecord_vehicleConfiguration: 'rigid' });
+			expect(dispatchSpy).toHaveBeenCalledWith(updateVehicleConfiguration({ vehicleConfiguration: 'rigid' }));
 		});
 	});
 });

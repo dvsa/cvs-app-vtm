@@ -3,9 +3,7 @@ import { ControlContainer } from '@angular/forms';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-@Directive({
-	selector: '[govukInput]',
-})
+@Directive({ selector: '[govukInput]' })
 export class GovukInputDirective implements OnInit, OnDestroy {
 	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 	controlContainer = inject(ControlContainer);

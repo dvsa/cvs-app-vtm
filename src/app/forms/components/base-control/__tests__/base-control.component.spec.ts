@@ -1,11 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
-import {
-	CustomFormControl,
-	FormNode,
-	FormNodeTypes,
-	FormNodeValueFormat,
-} from '@services/dynamic-forms/dynamic-form.types';
+import { CustomFormControl, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control.component';
 
 describe('BaseControlComponent', () => {
@@ -16,7 +11,6 @@ describe('BaseControlComponent', () => {
 
 	describe('has control binding', () => {
 		beforeEach(async () => {
-			controlMetaData.valueFormat = undefined;
 			const NG_CONTROL_PROVIDER = {
 				provide: NgControl,
 				useClass: class extends NgControl {
@@ -26,8 +20,7 @@ describe('BaseControlComponent', () => {
 			};
 
 			await TestBed.configureTestingModule({
-				declarations: [BaseControlComponent],
-				imports: [FormsModule],
+				imports: [FormsModule, BaseControlComponent, BaseControlComponent],
 			})
 				.overrideComponent(BaseControlComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
 				.compileComponents();
@@ -90,19 +83,6 @@ describe('BaseControlComponent', () => {
 			expect(state).toBeNull();
 		});
 
-		describe('formatString', () => {
-			it('should return the value if it has no valueFormat property', () => {
-				const newValue = component.formatString('string');
-				expect(newValue).toBe('string');
-			});
-
-			it('should uppercase the value if it has valueFormat as uppercase', () => {
-				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
-				const newValue = component.formatString('string');
-				expect(newValue).toBe('STRING');
-			});
-		});
-
 		describe('interacting with the value', () => {
 			it('writeValue should set the value', () => {
 				component.writeValue('anything');
@@ -113,24 +93,18 @@ describe('BaseControlComponent', () => {
 				component.value = 'anything';
 				expect(component.value).toBe('anything');
 			});
-
-			it('should set and uppercase the value', () => {
-				controlMetaData.valueFormat = FormNodeValueFormat.UPPERCASE;
-				component.value = 'anything';
-				expect(component.value).toBe('ANYTHING');
-			});
 		});
 
 		describe('validation', () => {
 			it('should get mapped message for first validation error', () => {
-				component.label = 'Test control';
+				fixture.componentRef.setInput('label', 'Test control');
 				component.control?.markAsTouched();
 				fixture.detectChanges();
 				expect(component.error).toBe('Test control is required');
 			});
 
 			it('should get "" when control is valid', () => {
-				component.label = 'Test control';
+				fixture.componentRef.setInput('label', 'Test control');
 				component.control?.patchValue('test');
 				component.control?.markAsTouched();
 				fixture.detectChanges();
@@ -142,8 +116,7 @@ describe('BaseControlComponent', () => {
 	describe('does not have control binding', () => {
 		beforeEach(async () => {
 			await TestBed.configureTestingModule({
-				declarations: [BaseControlComponent],
-				imports: [FormsModule],
+				imports: [FormsModule, BaseControlComponent],
 			}).compileComponents();
 		});
 

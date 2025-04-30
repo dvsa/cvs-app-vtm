@@ -1,0 +1,219 @@
+@if (amendedTechRecord(); as vm) {
+  <!-- HGV Changes -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.HGV) {
+    <dl class="govuk-summary-list">
+      @if (hasChanged('techRecord_dimensions_length')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Length</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+            {{ vm.techRecord_dimensions_length }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_dimensions_width')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Width</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+            {{ vm.techRecord_dimensions_width }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_frontAxleToRearAxle')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+            {{ vm.techRecord_frontAxleToRearAxle }}
+          </dd>
+        </div>
+      }
+      @for (axleSpacing of vm.techRecord_dimensions_axleSpacing; track axleSpacing; let i = $index) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+    </dl>
+    @if (hasChanged('techRecord_frontVehicleTo5thWheelCouplingMin') || hasChanged('techRecord_frontVehicleTo5thWheelCouplingMax')) {
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front of vehicle to 5th wheel coupling</h3>
+      <dl class="govuk-summary-list">
+        @if (hasChanged('techRecord_frontVehicleTo5thWheelCouplingMin')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Minimum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_frontVehicleTo5thWheelCouplingMin">
+              {{ vm.techRecord_frontVehicleTo5thWheelCouplingMin }}
+            </dd>
+          </div>
+        }
+        @if (hasChanged('techRecord_frontVehicleTo5thWheelCouplingMax')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Maximum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_frontVehicleTo5thWheelCouplingMax">
+              {{ vm.techRecord_frontVehicleTo5thWheelCouplingMax }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+    @if (hasChanged('techRecord_frontAxleTo5thWheelMin') || hasChanged('techRecord_frontAxleTo5thWheelMax')) {
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Front axle to 5th wheel coupling</h3>
+      <dl class="govuk-summary-list">
+        @if (hasChanged('techRecord_frontAxleTo5thWheelMin')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Minimum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleTo5thWheelMin">
+              {{ vm.techRecord_frontAxleTo5thWheelMin }}
+            </dd>
+          </div>
+        }
+        @if (hasChanged('techRecord_frontAxleTo5thWheelMax')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Maximum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleTo5thWheelMax">
+              {{ vm.techRecord_frontAxleTo5thWheelMax }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+  }
+  <!-- PSV Changes -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+    <dl class="govuk-summary-list">
+      @if (hasChanged('techRecord_dimensions_height')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Height</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_height">
+            {{ vm.techRecord_dimensions_height }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_dimensions_length')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Length</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+            {{ vm.techRecord_dimensions_length }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_dimensions_width')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Width</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+            {{ vm.techRecord_dimensions_width }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_frontAxleToRearAxle')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+            {{ vm.techRecord_frontAxleToRearAxle }}
+          </dd>
+        </div>
+      }
+    </dl>
+  }
+  <!-- TRL Changes -->
+  @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    <dl class="govuk-summary-list">
+      @if (hasChanged('techRecord_dimensions_length')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Length</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_length">
+            {{ vm.techRecord_dimensions_length }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_dimensions_width')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Width</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_dimensions_width">
+            {{ vm.techRecord_dimensions_width }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_frontAxleToRearAxle')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Front axle to rear axle</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_frontAxleToRearAxle">
+            {{ vm.techRecord_frontAxleToRearAxle }}
+          </dd>
+        </div>
+      }
+      @if (hasChanged('techRecord_rearAxleToRearTrl')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Rear axle to rear of trailer</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_rearAxleToRearTrl">
+            {{ vm.techRecord_rearAxleToRearTrl }}
+          </dd>
+        </div>
+      }
+      @for (axleSpacing of vm.techRecord_dimensions_axleSpacing; track axleSpacing; let i = $index) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)
+          </dt>
+          <dd class="govuk-summary-list__value" id="techRecord_dimensions_axleSpacing-{{ i + 1 }}">
+            {{ axleSpacing?.value | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+    </dl>
+    @if (hasChanged('techRecord_couplingCenterToRearAxleMin') || hasChanged('techRecord_couplingCenterToRearAxleMax')) {
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear axle</h3>
+      <dl class="govuk-summary-list">
+        @if (hasChanged('techRecord_couplingCenterToRearAxleMin')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Minimum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMin">
+              {{ vm.techRecord_couplingCenterToRearAxleMin }}
+            </dd>
+          </div>
+        }
+        @if (hasChanged('techRecord_couplingCenterToRearAxleMax')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Maximum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearAxleMax">
+              {{ vm.techRecord_couplingCenterToRearAxleMax }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+    @if (hasChanged('techRecord_couplingCenterToRearTrlMin') || hasChanged('techRecord_couplingCenterToRearTrlMax')) {
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Coupling centre to rear of trailer</h3>
+      <dl class="govuk-summary-list">
+        @if (hasChanged('techRecord_couplingCenterToRearTrlMin')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Minimum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearTrlMin">
+              {{ vm.techRecord_couplingCenterToRearTrlMin }}
+            </dd>
+          </div>
+        }
+        @if (hasChanged('techRecord_couplingCenterToRearTrlMax')) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Maximum</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_couplingCenterToRearTrlMax">
+              {{ vm.techRecord_couplingCenterToRearTrlMax }}
+            </dd>
+          </div>
+        }
+      </dl>
+    }
+    <dl class="govuk-summary-list">
+      @if (hasChanged('techRecord_centreOfRearmostAxleToRearOfTrl')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Centre of rear axle to rear of trailer</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_centreOfRearmostAxleToRearOfTrl">
+            {{ vm.techRecord_centreOfRearmostAxleToRearOfTrl }}
+          </dd>
+        </div>
+      }
+    </dl>
+  }
+}

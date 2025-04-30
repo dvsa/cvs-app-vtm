@@ -1,13 +1,27 @@
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, filter, race, take, withLatestFrom } from 'rxjs';
+import { BannerComponent } from '../../../../../components/banner/banner.component';
+import { TagComponent } from '../../../../../components/tag/tag.component';
+import { DefaultNullOrEmpty } from '../../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { FormatVehicleTypePipe } from '../../../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @Component({
 	selector: 'app-batch-vehicle-results',
 	templateUrl: './batch-vehicle-results.component.html',
+	imports: [
+		BannerComponent,
+		TagComponent,
+		RouterLink,
+		AsyncPipe,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+		FormatVehicleTypePipe,
+	],
 })
 export class BatchVehicleResultsComponent implements OnDestroy {
 	private destroy$ = new Subject<void>();

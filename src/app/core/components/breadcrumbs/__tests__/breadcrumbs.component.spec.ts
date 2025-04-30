@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { RouterReducerState } from '@ngrx/router-store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
@@ -15,9 +15,8 @@ describe('BreadcrumbsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BreadcrumbsComponent],
-			imports: [RouterTestingModule],
-			providers: [RouterService, provideMockStore({ initialState: initialAppState })],
+			imports: [BreadcrumbsComponent],
+			providers: [RouterService, provideRouter([]), provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 

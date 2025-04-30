@@ -1,19 +1,18 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { hgvRequiredFields } from '@models/plateRequiredFields.model';
 import { Roles } from '@models/roles.enum';
 import { VehicleConfigurations } from '@models/vehicle-tech-record.model';
-import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { canGeneratePlate } from '@store/technical-records';
 import { of } from 'rxjs';
@@ -30,16 +29,11 @@ describe('PlatesComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				DynamicFormsModule,
-				SharedModule,
-				StoreModule.forRoot({}),
-				HttpClientTestingModule,
-				RouterModule.forRoot([]),
-				RouterTestingModule,
-			],
-			declarations: [PlatesComponent],
+			imports: [PlatesComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore<State>({ initialState: initialAppState }),
 				{
 					provide: UserService,
@@ -67,9 +61,11 @@ describe('PlatesComponent', () => {
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);
 		errorService = TestBed.inject(GlobalErrorService);
-		component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<
-			'hgv' | 'trl'
-		>;
+		fixture.componentRef.setInput('techRecord', {
+			systemNumber: 'foo',
+			createdTimestamp: 'bar',
+			vin: 'testVin',
+		} as TechRecordType<'hgv' | 'trl'>);
 		store = TestBed.inject(MockStore);
 		fixture.detectChanges();
 	});
@@ -80,14 +76,16 @@ describe('PlatesComponent', () => {
 
 	describe('mostRecentPlate', () => {
 		it('should fetch the plate if only 1 exists', () => {
-			(component.techRecord as TechRecordType<'trl'>).techRecord_plates = [
-				{
-					plateIssueDate: new Date().toISOString(),
-					plateSerialNumber: '123456',
-					plateIssuer: 'issuer',
-					plateReasonForIssue: 'Replacement',
-				},
-			];
+			fixture.componentRef.setInput('techRecord', {
+				techRecord_plates: [
+					{
+						plateIssueDate: new Date().toISOString(),
+						plateSerialNumber: '123456',
+						plateIssuer: 'issuer',
+						plateReasonForIssue: 'Replacement',
+					},
+				],
+			});
 			const plateFetched = component.mostRecentPlate;
 
 			expect(plateFetched).toBeDefined();
@@ -95,7 +93,7 @@ describe('PlatesComponent', () => {
 		});
 
 		it('should fetch the latest plate if more than 1 exists', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				techRecord_plates: [
 					{
 						plateIssueDate: new Date(new Date().getTime()).toISOString(),
@@ -116,7 +114,7 @@ describe('PlatesComponent', () => {
 						plateReasonForIssue: 'Replacement',
 					},
 				],
-			} as TechRecordType<'trl'>;
+			} as TechRecordType<'trl'>);
 
 			const plateFetched = component.mostRecentPlate;
 
@@ -125,7 +123,7 @@ describe('PlatesComponent', () => {
 		});
 
 		it('should return null if plates are empty', () => {
-			component.techRecord = { techRecord_plates: [] } as unknown as TechRecordType<'trl'>;
+			fixture.componentRef.setInput('techRecord', { techRecord_plates: [] } as unknown as TechRecordType<'trl'>);
 
 			const plateFetched = component.mostRecentPlate;
 
@@ -135,19 +133,19 @@ describe('PlatesComponent', () => {
 
 	describe('hasPlates', () => {
 		it('should return false if plates is undefined', () => {
-			component.techRecord = { techRecord_plates: undefined } as unknown as TechRecordType<'trl'>;
+			fixture.componentRef.setInput('techRecord', { techRecord_plates: undefined } as unknown as TechRecordType<'trl'>);
 
 			expect(component.hasPlates).toBeFalsy();
 		});
 
 		it('should return false if plates is empty', () => {
-			component.techRecord = { techRecord_plates: [] } as unknown as TechRecordType<'trl'>;
+			fixture.componentRef.setInput('techRecord', { techRecord_plates: [] } as unknown as TechRecordType<'trl'>);
 
 			expect(component.hasPlates).toBeFalsy();
 		});
 
 		it('should return true if plates is not empty', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				techRecord_plates: [
 					{
 						plateIssueDate: new Date().toISOString(),
@@ -156,7 +154,7 @@ describe('PlatesComponent', () => {
 						plateReasonForIssue: 'Replacement',
 					},
 				],
-			} as TechRecordType<'trl'>;
+			} as TechRecordType<'trl'>);
 
 			expect(component.hasPlates).toBeTruthy();
 		});
@@ -164,7 +162,7 @@ describe('PlatesComponent', () => {
 
 	describe('validateTechRecordPlates', () => {
 		beforeEach(() => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: '123456',
 				techRecord_approvalType: 'NTA',
 				techRecord_approvalTypeNumber: '1',
@@ -201,32 +199,32 @@ describe('PlatesComponent', () => {
 				techRecord_roadFriendly: true,
 				techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
 				vin: 'HGVTEST01',
-				techRecord_axles: [],
-			} as unknown as TechRecordType<'hgv' | 'trl'>;
-
-			component.techRecord.techRecord_axles = [
-				{
-					parkingBrakeMrk: true,
-					axleNumber: 1,
-					brakes_brakeActuator: 1,
-					brakes_leverLength: 1,
-					brakes_springBrakeParking: true,
-					weights_gbWeight: 1,
-					weights_designWeight: 2,
-					weights_ladenWeight: 3,
-					weights_kerbWeight: 4,
-					weights_eecWeight: 5,
-					tyres_tyreCode: 1,
-					tyres_tyreSize: '2',
-					tyres_plyRating: '3',
-					tyres_fitmentCode: 'single',
-					tyres_dataTrAxles: 1,
-					tyres_speedCategorySymbol: 'a7',
-				},
-			];
+				techRecord_axles: [
+					{
+						parkingBrakeMrk: true,
+						axleNumber: 1,
+						brakes_brakeActuator: 1,
+						brakes_leverLength: 1,
+						brakes_springBrakeParking: true,
+						weights_gbWeight: 1,
+						weights_designWeight: 2,
+						weights_ladenWeight: 3,
+						weights_kerbWeight: 4,
+						weights_eecWeight: 5,
+						tyres_tyreCode: 1,
+						tyres_tyreSize: '2',
+						tyres_plyRating: '3',
+						tyres_fitmentCode: 'single',
+						tyres_dataTrAxles: 1,
+						tyres_speedCategorySymbol: 'a7',
+					},
+				],
+			} as unknown as TechRecordType<'hgv' | 'trl'>);
 		});
 		it('should show an error if tech record is not valid for plates', () => {
-			component.techRecord.vin = '';
+			const techRecord = component.techRecord();
+			techRecord.vin = '';
+			fixture.componentRef.setInput('techRecord', techRecord);
 			const plateFieldsErrorMessage = 'All fields marked plate are mandatory to generate a plate.';
 			const errorSpy = jest.spyOn(errorService, 'addError');
 			component.validateTechRecordPlates();
@@ -250,7 +248,7 @@ describe('PlatesComponent', () => {
 
 	describe('cannotGeneratePlate', () => {
 		it('should not generate if missing a tyre fitment code', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -282,12 +280,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate if both axles missing a tyre fitment code', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -318,12 +316,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate if missing a tyre size', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -355,12 +353,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate if a load/plyRating', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -391,12 +389,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate if missing axles', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -416,12 +414,12 @@ describe('PlatesComponent', () => {
 				techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
 				techRecord_axles: [],
 				techRecord_noOfAxles: 0,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate without gbWeight on axle 1', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -452,12 +450,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should not generate with a missing required hgv validation field', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -489,12 +487,12 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeTruthy();
 		});
 		it('should generate with a hgv plate', () => {
-			component.techRecord = {
+			fixture.componentRef.setInput('techRecord', {
 				primaryVrm: 'thing',
 				vin: 'thing',
 				techRecord_brakes_dtpNumber: 'thing',
@@ -527,7 +525,7 @@ describe('PlatesComponent', () => {
 					},
 				],
 				techRecord_noOfAxles: 2,
-			} as unknown as TechRecordType<'hgv'>;
+			} as unknown as TechRecordType<'hgv'>);
 			const res = component.cannotGeneratePlate(hgvRequiredFields);
 			expect(res).toBeFalsy();
 		});

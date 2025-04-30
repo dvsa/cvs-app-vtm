@@ -4,7 +4,6 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { ErrorInterceptor, HTTP_RESPONSE_REDIRECT, HttpResponseRedirectConfig } from './error-handling.interceptor';
 
 @NgModule({
-	declarations: [],
 	imports: [CommonModule],
 	providers: [
 		{

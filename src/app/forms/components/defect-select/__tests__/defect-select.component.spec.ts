@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Defect } from '@models/defects/defect.model';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { Item } from '@models/defects/item.model';
@@ -7,6 +6,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
+import { provideRouter } from '@angular/router';
 import { DefectSelectComponent } from '../defect-select.component';
 
 describe('DefectSelectComponent', () => {
@@ -40,9 +40,8 @@ describe('DefectSelectComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [RouterTestingModule],
-			declarations: [DefectSelectComponent],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			imports: [DefectSelectComponent],
+			providers: [provideRouter([]), provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 

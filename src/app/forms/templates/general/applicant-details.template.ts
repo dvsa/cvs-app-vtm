@@ -4,7 +4,7 @@ import { FormNode, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/
 export const ApplicantDetails: FormNode = {
 	name: 'techRecord',
 	type: FormNodeTypes.GROUP,
-	label: 'Last Applicant',
+	label: 'Last applicant',
 	children: [
 		{
 			name: 'techRecord_applicantDetails_name',

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
+import { Component, forwardRef, inject, input, model, output } from '@angular/core';
 import {
 	ControlContainer,
 	ControlValueAccessor,
@@ -9,12 +9,13 @@ import {
 } from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
+import { TagDirective } from '@directives/tag/tag.directive';
+import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-select',
-	standalone: true,
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective],
 	templateUrl: './govuk-form-group-select.component.html',
 	styleUrls: ['./govuk-form-group-select.component.scss'],
 	providers: [
@@ -26,47 +27,37 @@ import { SharedModule } from '@shared/shared.module';
 	],
 })
 export class GovukFormGroupSelectComponent implements ControlValueAccessor {
-	@Output() blur = new EventEmitter<FocusEvent>();
-	@Output() focus = new EventEmitter<FocusEvent>();
+	readonly blur = output<FocusEvent>();
+	readonly focus = output<FocusEvent>();
 
-	@Input()
-	value: string | number | boolean | null = null;
+	value = model<string | number | boolean | null>(null);
 
-	@Input()
-	disabled = false;
+	disabled = model(false);
 
-	@Input()
-	tags: CustomTag[] = [];
+	readonly tags = input<CustomTag[]>([]);
 
-	@Input({ required: true })
-	options!: MultiOptions;
+	readonly options = input.required<MultiOptions>();
 
-	@Input({ alias: 'hint' })
-	controlHint = '';
+	readonly controlHint = input('', { alias: 'hint' });
 
-	@Input({ alias: 'formControlName', required: true })
-	controlName = '';
+	readonly controlName = input.required<string>({ alias: 'formControlName' });
 
-	@Input({ alias: 'label' })
-	controlLabel = '';
+	readonly controlLabel = input('', { alias: 'label' });
 
-	@Input({ alias: 'id' })
-	controlId = '';
+	readonly controlId = input('', { alias: 'id' });
 
-	@Input()
-	allowNull = true;
+	readonly allowNull = input(true);
 
-	@Input()
-	width?: FormNodeWidth;
+	readonly width = input<FormNodeWidth>();
 
 	controlContainer = inject(ControlContainer);
 
 	get control() {
-		return this.controlContainer.control?.get(this.controlName);
+		return this.controlContainer.control?.get(this.controlName());
 	}
 
 	get id() {
-		return this.controlId || this.controlName;
+		return this.controlId() || this.controlName();
 	}
 
 	get hintId() {
@@ -86,10 +77,11 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	}
 
 	get style(): string {
-		return `govuk-select ${this.width ? `govuk-input--width-${this.width}` : ''}`;
+		const width = this.width();
+		return `govuk-select ${width ? `govuk-input--width-${width}` : ''}`;
 	}
 
-	onChange = (_: any) => {};
+	onChange = (event: any) => {};
 	onTouched = () => {};
 
 	onBlur(event: FocusEvent) {
@@ -98,7 +90,7 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	}
 
 	writeValue(obj: any): void {
-		this.value = obj;
+		this.value.set(obj);
 		this.onChange(obj);
 	}
 
@@ -111,6 +103,6 @@ export class GovukFormGroupSelectComponent implements ControlValueAccessor {
 	}
 
 	setDisabledState?(isDisabled: boolean): void {
-		this.disabled = isDisabled;
+		this.disabled.set(isDisabled);
 	}
 }

@@ -1,3 +1,5 @@
+import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
 	AbstractControl,
@@ -5,6 +7,8 @@ import {
 	FormBuilder,
 	FormControl,
 	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
 	ValidationErrors,
 	ValidatorFn,
 } from '@angular/forms';
@@ -18,6 +22,7 @@ import {
 	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
 	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	ALL_VEHICLE_CONFIGURATION_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
 	EMISSION_STANDARD_OPTIONS,
 	EXEMPT_OR_NOT_OPTIONS,
 	FRAME_DESCRIPTION_OPTIONS,
@@ -25,11 +30,13 @@ import {
 	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
 	HGV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	MONTHS,
 	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
 	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	SUSPENSION_TYRE_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	TRL_VEHICLE_CONFIGURATION_OPTIONS,
 	VEHICLE_SIZE_OPTIONS,
@@ -41,7 +48,12 @@ import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-t
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { GovukCheckboxGroupComponent } from '../../../components/govuk-checkbox-group/govuk-checkbox-group.component';
+import { GovukFormGroupDateComponent } from '../../../components/govuk-form-group-date/govuk-form-group-date.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupRadioComponent } from '../../../components/govuk-form-group-radio/govuk-form-group-radio.component';
+import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
 
 type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
@@ -49,6 +61,16 @@ type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'p
 	selector: 'app-vehicle-section-edit',
 	templateUrl: './vehicle-section-edit.component.html',
 	styleUrls: ['./vehicle-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupInputComponent,
+		GovukFormGroupDateComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupRadioComponent,
+		NgTemplateOutlet,
+		GovukCheckboxGroupComponent,
+	],
 })
 export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	readonly CouplingTypeOptions = CouplingTypeOptions;
@@ -100,6 +122,8 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				parent.addControl(key, control, { emitEvent: false });
 			}
 		}
+
+		this.handleUpdateVehicleConfiguration();
 	}
 
 	ngOnDestroy(): void {
@@ -121,7 +145,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
 			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -149,7 +175,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value) must be less than or equal to 99'),
 				this.commonValidators.pattern(/^\d*(\.\d{0,5})?$/, 'Emission limit (m-1) (plate value) Max 5 decimal places'),
@@ -195,7 +223,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [this.commonValidators.date('Date of first use')]),
 			techRecord_suspensionType: this.fb.control<string | null>(null),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
 			techRecord_couplingType: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Coupling type (optional) must be less than or equal to 1 characters'),
 			]),
@@ -278,6 +308,17 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 		};
 	}
 
+	handleUpdateVehicleConfiguration() {
+		const control = this.form.controls.techRecord_vehicleConfiguration;
+		control?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((vehicleConfiguration) => {
+			const techRecord = this.techRecord();
+			if (vehicleConfiguration && vehicleConfiguration !== techRecord.techRecord_vehicleConfiguration) {
+				this.store.dispatch(updateVehicleConfiguration({ vehicleConfiguration }));
+				control.markAsPristine();
+			}
+		});
+	}
+
 	setPassengerValue(smallPsv: boolean, control: AbstractControl) {
 		const classControl = control.parent?.get('techRecord_vehicleClass_description');
 		const sizeControl = control.parent?.get('techRecord_vehicleSize');
@@ -296,8 +337,14 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
 			case VehicleTypes.PSV:
 				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.TRL:
+				return TRL_EU_VEHICLE_CATEGORY_OPTIONS;
 			case VehicleTypes.SMALL_TRL:
 				return SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.LGV:
+				return LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.CAR:
+				return CAR_EU_VEHICLE_CATEGORY_OPTIONS;
 			default:
 				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
 		}

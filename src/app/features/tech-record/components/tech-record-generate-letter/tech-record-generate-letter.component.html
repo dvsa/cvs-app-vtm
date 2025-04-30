@@ -1,18 +1,18 @@
-<div *ngIf="techRecord?.techRecord_vehicleType && techRecord?.techRecord_vehicleType === 'trl'">
-  <form [formGroup]="form">
-    <app-radio-group #letterType formControlName="letterType" [options]="reasons"></app-radio-group>
-
-    <ng-container *ngIf="emailAddress">
-      <p class="govuk-body">This letter will be sent to {{ emailAddress }}</p>
-    </ng-container>
-    <ng-container *ngIf="!emailAddress">
-      <p class="govuk-body">This technical record does not have an applicant email address associated with it</p>
-      <p class="govuk-body">This letter will instead be sent to {{ userService.userEmail$ | async }}</p>
-    </ng-container>
-
-    <app-button-group>
-      <app-button id="submit-letter-form" (clicked)="handleSubmit()">Generate and send</app-button>
-      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-    </app-button-group>
-  </form>
-</div>
+@if (techRecord?.techRecord_vehicleType && techRecord?.techRecord_vehicleType === 'trl') {
+  <div>
+    <form [formGroup]="form">
+      <app-radio-group #letterType formControlName="letterType" [options]="reasons"></app-radio-group>
+      @if (emailAddress) {
+        <p class="govuk-body">This letter will be sent to {{ emailAddress }}</p>
+      }
+      @if (!emailAddress) {
+        <p class="govuk-body">This technical record does not have an applicant email address associated with it</p>
+        <p class="govuk-body">This letter will instead be sent to {{ userService.userEmail$ | async }}</p>
+      }
+      <app-button-group>
+        <app-button id="submit-letter-form" (clicked)="handleSubmit()">Generate and send</app-button>
+        <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      </app-button-group>
+    </form>
+  </div>
+}

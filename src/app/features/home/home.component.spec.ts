@@ -1,12 +1,12 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
 import { ReplaySubject, of } from 'rxjs';
 import { HomeButtonComponent } from './components/home-button/home-button.component';
 import { HomeComponent } from './home.component';
@@ -18,10 +18,12 @@ describe('HomeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [HomeComponent, HomeButtonComponent, RoleRequiredDirective],
-			imports: [RouterTestingModule, SharedModule, HttpClientModule],
+			imports: [HomeComponent, HomeButtonComponent, RoleRequiredDirective],
 			providers: [
 				FormBuilder,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				{
 					provide: UserService,

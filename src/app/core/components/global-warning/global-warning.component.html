@@ -1,11 +1,15 @@
-<ng-container *ngIf="globalWarningService.warnings$ | async as warningMessages">
-  <div *ngIf="warningMessages && warningMessages.length > 0" class="govuk-warning-text">
-    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-    <strong class="govuk-warning-text__text">
-      <span class="govuk-warning-text__assistive">Warning</span>
-      <div *ngFor="let warning of warningMessages">
-        <a [routerLink]="" queryParamsHandling="preserve" [fragment]="warning.anchorLink" (click)="goto(warning)">{{ warning.warning }}</a>
-      </div>
-    </strong>
-  </div>
-</ng-container>
+@if (globalWarningService.warnings$ | async; as warningMessages) {
+  @if (warningMessages && warningMessages.length > 0) {
+    <div class="govuk-warning-text">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        @for (warning of warningMessages; track warning) {
+          <div>
+            <a [routerLink]="" queryParamsHandling="preserve" [fragment]="warning.anchorLink" (click)="goto(warning)">{{ warning.warning }}</a>
+          </div>
+        }
+      </strong>
+    </div>
+  }
+}

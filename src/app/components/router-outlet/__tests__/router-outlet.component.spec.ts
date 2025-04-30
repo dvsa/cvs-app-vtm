@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { RouterOutletComponent } from '../router-outlet.component';
 
 describe('RouterOutletComponent', () => {
@@ -8,8 +8,8 @@ describe('RouterOutletComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [RouterOutletComponent],
-			imports: [RouterTestingModule],
+			imports: [RouterOutletComponent],
+			providers: [provideRouter([])],
 		}).compileComponents();
 	});
 

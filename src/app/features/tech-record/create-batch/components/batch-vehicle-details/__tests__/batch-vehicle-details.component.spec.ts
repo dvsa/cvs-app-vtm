@@ -1,11 +1,12 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { provideMockStore } from '@ngrx/store/testing';
-import { SharedModule } from '@shared/shared.module';
+
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { BatchVehicleDetailsComponent } from '../batch-vehicle-details.component';
@@ -21,11 +22,13 @@ describe('BatchVehicleDetailsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BatchVehicleDetailsComponent],
-			imports: [DynamicFormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+			imports: [ReactiveFormsModule, BatchVehicleDetailsComponent],
 			providers: [
 				FormBuilder,
 				{ provide: GlobalErrorService, useValue: mockGlobalErrorService },
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 			],
 		}).compileComponents();
@@ -44,11 +47,11 @@ describe('BatchVehicleDetailsComponent', () => {
 	describe('isFormValid', () => {
 		it('should throw an error if there are no vehicles', async () => {
 			jest.spyOn(component, 'formStatus', 'get').mockImplementationOnce(() => of('VALID'));
-			component.vehicles.push(component.vehicleForm);
-			component.vehicleForm.get('vin')?.clearAsyncValidators();
+			component.vehicles.push(component.vehicleForm(0));
+			component.vehicleForm(0).get('vin')?.clearAsyncValidators();
 
 			await component.isFormValid();
-			component.vehicleForm.updateValueAndValidity();
+			component.vehicleForm(0).updateValueAndValidity();
 			expect(mockGlobalErrorService.addError).toHaveBeenCalledWith({
 				error: 'At least 1 vehicle must be created or updated in a batch',
 			});

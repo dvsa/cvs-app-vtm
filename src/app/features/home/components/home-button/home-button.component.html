@@ -1,6 +1,6 @@
 <div class="govuk-grid-column-one-third home-button">
   <h2 class="govuk-heading-m">
-    <a class="govuk-link" data-module="govuk-button" [id]="linkId" [routerLink]="[url]">{{ linkText }}</a>
+    <a class="govuk-link" data-module="govuk-button" [id]="linkId()" [routerLink]="[url()]">{{ linkText() }}</a>
   </h2>
-  <p class="govuk-body">{{ description }}</p>
+  <p class="govuk-body">{{ description() }}</p>
 </div>

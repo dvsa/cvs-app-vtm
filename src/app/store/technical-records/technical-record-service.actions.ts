@@ -161,6 +161,11 @@ export const generateContingencyADRCertificate = createAction(
 	}>()
 );
 
+export const updateVehicleConfiguration = createAction(
+	`${prefix} updateVehicleConfiguration`,
+	props<{ vehicleConfiguration: string }>()
+);
+
 function createOutcomeAction<T extends boolean>(
 	title: string,
 	isSuccess: T

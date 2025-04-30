@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TextAreaComponent } from '../text-area.component';
 
@@ -9,7 +9,7 @@ import { TextAreaComponent } from '../text-area.component';
 	template: `<form [formGroup]="form">
     <app-text-area name="foo" formControlName="foo"></app-text-area>
   </form> `,
-	styles: [],
+	imports: [TextAreaComponent, FormsModule, ReactiveFormsModule],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -23,7 +23,7 @@ describe('TextAreaComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TextAreaComponent],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 

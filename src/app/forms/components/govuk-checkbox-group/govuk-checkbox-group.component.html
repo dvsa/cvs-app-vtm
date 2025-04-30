@@ -1,45 +1,49 @@
 
 <div class="govuk-form-group" id="{{ id }}">
   <fieldset class="govuk-fieldset">
-    <ng-container *ngIf="controlLabel">
+    @if (controlLabel()) {
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
         <h1 tag class="govuk-fieldset__heading" id="{{ labelId }}">
-          {{ controlLabel }}
-          <ng-container *ngIf="tags?.length">
+          {{ controlLabel() }}
+          @if (tags().length) {
             <div>
-              <app-tag *ngFor="let tag of tags" [type]="tag.colour">{{ tag.label }}</app-tag>
+              @for (tag of tags(); track tag) {
+                <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
+              }
             </div>
-          </ng-container>
+          }
         </h1>
       </legend>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="controlHint">
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint }} </div>
-    </ng-container>
+    @if (controlHint()) {
+      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    }
 
-    <ng-container *ngIf="hasError">
+    @if (hasError) {
       <p class="govuk-error-message" id="{{ errorId }}">
         <span class="govuk-visually-hidden">Error: </span>
         <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
       </p>
-    </ng-container>
-    
+    }
+
     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-      <div class="govuk-checkboxes__item" *ngFor="let option of options">
-        <input
-          id="{{ id }}-{{ option.value }}-checkbox"
-          name="{{ id }}-{{ option.value }}-checkbox"
-          type="checkbox"
-          class="govuk-checkboxes__input"
-          [checked]="isChecked(option.value)"
-          (input)="toggle(option.value)"
-          [attr.aria-labelledby]="controlId + '-' + option.value + '-label'"
-        />
-        <label class="govuk-label govuk-checkboxes__label" id="{{ id }}-{{ option.value }}-label" for="{{ id }}-{{ option.value }}-checkbox">
-          {{ option.label }}
-        </label>
-      </div>
+      @for (option of options(); track option) {
+        <div class="govuk-checkboxes__item">
+          <input
+            id="{{ id }}-{{ option.value }}-checkbox"
+            name="{{ id }}-{{ option.value }}-checkbox"
+            type="checkbox"
+            class="govuk-checkboxes__input"
+            [checked]="isChecked(option.value)"
+            (input)="toggle(option.value)"
+            [attr.aria-labelledby]="controlId() + '-' + option.value + '-label'"
+            />
+          <label class="govuk-label govuk-checkboxes__label" id="{{ id }}-{{ option.value }}-label" for="{{ id }}-{{ option.value }}-checkbox">
+            {{ option.label }}
+          </label>
+        </div>
+      }
     </div>
   </fieldset>
 </div>

@@ -4,7 +4,6 @@ import { StoreModule } from '@ngrx/store';
 import { STORE_FEATURE_SPINNER_KEY, spinnerReducer } from '@store/spinner/spinner.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_SPINNER_KEY, spinnerReducer)],
 })
 export class SpinnerStateModule {}

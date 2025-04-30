@@ -7,6 +7,7 @@ import { NoSpaceDirective } from '../app-no-space.directive';
 @Component({
 	template: ` <form [formGroup]="form"><input id="bar" appNoSpace formControlName="foo" /></form>
     <input id="baz" appNoSpace />`,
+	imports: [FormsModule, ReactiveFormsModule, NoSpaceDirective],
 })
 class TestComponent {
 	form = new FormGroup({
@@ -22,8 +23,7 @@ describe('NoSpaceDirective', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule],
-			declarations: [NoSpaceDirective, TestComponent],
+			imports: [TestComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(TestComponent);

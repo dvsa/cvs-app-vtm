@@ -40,7 +40,10 @@
       "@shared/*": ["src/app/shared/*"],
       "@store/*": ["src/app/store/*"],
       "@mocks/*": ["src/mocks/*"],
-      "govuk-frontend/*": ["node_modules/govuk-frontend/*"]
+      "govuk-frontend/*": ["node_modules/govuk-frontend/*"],
+      "node:crypto": ["node_modules/crypto-browserify"],
+      "stream": ["node_modules/stream-browserify"],
+      "zlib": ["node_modules/browserify-zlib"]
     }
   },
   "angularCompilerOptions": {

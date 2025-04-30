@@ -7,7 +7,7 @@ describe('CollapsibleTextComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [CollapsibleTextComponent],
+			imports: [CollapsibleTextComponent],
 		}).compileComponents();
 	});
 
@@ -22,14 +22,14 @@ describe('CollapsibleTextComponent', () => {
 	});
 
 	it('should open when open method is called', () => {
-		component.isCollapsed = true;
+		component.isCollapsed.set(true);
 		component.open();
-		expect(component.isCollapsed).toBe(false);
+		expect(component.isCollapsed()).toBe(false);
 	});
 
 	it('should close when close method is called', () => {
-		component.isCollapsed = false;
+		component.isCollapsed.set(false);
 		component.close();
-		expect(component.isCollapsed).toBe(true);
+		expect(component.isCollapsed()).toBe(true);
 	});
 });

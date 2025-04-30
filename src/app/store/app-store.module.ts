@@ -14,7 +14,7 @@ import { DefectsStateModule } from './defects/defects-state.module';
 import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { RequiredStandardsStateModule } from './required-standards/required-standards.module';
-import { RetryInterceptorStateModule } from './retry-interceptor/retry-interceptor.module';
+
 import { RouterStateModule } from './router/router-state.module';
 import { TechRecordSearchStateModule } from './tech-record-search/tech-record-search-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
@@ -28,7 +28,6 @@ function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any
 }
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forRoot(reducers, { metaReducers: [localStorageSyncReducer] }),
@@ -52,7 +51,6 @@ function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any
 		TestTypesStateModule,
 		UserStateModule,
 		TechRecordSearchStateModule,
-		RetryInterceptorStateModule,
 		RequiredStandardsStateModule,
 		LogsModule,
 	],

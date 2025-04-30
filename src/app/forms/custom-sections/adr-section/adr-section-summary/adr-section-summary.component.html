@@ -1,8 +1,6 @@
-<ng-container *ngIf="currentTechRecord() as current">
-  <ng-container *ngIf="amendedTechRecord() as amended">
-    <ng-container
-      *ngIf="amended.techRecord_vehicleType === 'hgv' || amended.techRecord_vehicleType === 'trl' || amended.techRecord_vehicleType === 'lgv'"
-    >
+@if (currentTechRecord(); as current) {
+  @if (amendedTechRecord(); as amended) {
+    @if (amended.techRecord_vehicleType === 'hgv' || amended.techRecord_vehicleType === 'trl' || amended.techRecord_vehicleType === 'lgv') {
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Able to carry dangerous goods</dt>
@@ -11,308 +9,377 @@
           </dd>
         </div>
       </dl>
-
-      <ng-container *ngIf="adrService.canDisplayDangerousGoodsSection(amended)">
+      @if (adrService.canDisplayDangerousGoodsSection(amended)) {
         <!-- Applicant details section -->
-        <ng-container *ngIf="haveAnyApplicantDetailItemsChanged()">
+        @if (haveAnyApplicantDetailItemsChanged()) {
           <h2 class="govuk-heading-m">Applicant Details</h2>
           <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_applicantDetails_name')">
-              <dt class="govuk-summary-list__key">Name</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_name">
-                {{ amended.techRecord_adrDetails_applicantDetails_name | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_applicantDetails_street')">
-              <dt class="govuk-summary-list__key">Street</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_street">
-                {{ amended.techRecord_adrDetails_applicantDetails_street | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_applicantDetails_town')">
-              <dt class="govuk-summary-list__key">Town</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_town">
-                {{ amended.techRecord_adrDetails_applicantDetails_town | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_applicantDetails_city')">
-              <dt class="govuk-summary-list__key">City</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_city">
-                {{ amended.techRecord_adrDetails_applicantDetails_city | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_applicantDetails_postcode')">
-              <dt class="govuk-summary-list__key">Postcode</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_postcode">
-                {{ amended.techRecord_adrDetails_applicantDetails_postcode | defaultNullOrEmpty }}
-              </dd>
-            </div>
+            @if (hasChanged('techRecord_adrDetails_applicantDetails_name')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Name</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_name">
+                  {{ amended.techRecord_adrDetails_applicantDetails_name | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_applicantDetails_street')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Street</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_street">
+                  {{ amended.techRecord_adrDetails_applicantDetails_street | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_applicantDetails_town')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Town</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_town">
+                  {{ amended.techRecord_adrDetails_applicantDetails_town | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_applicantDetails_city')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">City</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_city">
+                  {{ amended.techRecord_adrDetails_applicantDetails_city | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_applicantDetails_postcode')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Postcode</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_postcode">
+                  {{ amended.techRecord_adrDetails_applicantDetails_postcode | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
           </dl>
-        </ng-container>
-
+        }
         <!-- ADR details section -->
-        <ng-container *ngIf="haveAnyADRDetailItemsChanged()">
+        @if (haveAnyADRDetailItemsChanged()) {
           <h2 class="govuk-heading-m">ADR Details</h2>
           <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_vehicleDetails_type')">
-              <dt class="govuk-summary-list__key">ADR body type</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_type">
-                {{ amended.techRecord_adrDetails_vehicleDetails_type | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')">
-              <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
-                {{ amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_vehicleDetails_approvalDate')">
-              <dt class="govuk-summary-list__key">Date processed</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_approvalDate">
-                {{ amended.techRecord_adrDetails_vehicleDetails_approvalDate | defaultNullOrEmpty | date : 'dd/MM/yyyy' }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_permittedDangerousGoods')">
-              <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_permittedDangerousGoods">
-                {{ amended.techRecord_adrDetails_permittedDangerousGoods | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_bodyDeclaration_type')">
-              <dt class="govuk-summary-list__key">Body declaration</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
-                {{ amended.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_compatibilityGroupJ')">
-              <dt class="govuk-summary-list__key">Compatibility group J</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
-                {{ amended.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_additionalNotes_number')">
-              <dt class="govuk-summary-list__key">Guidance notes</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalNotes_number">
-                {{ amended.techRecord_adrDetails_additionalNotes_number | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_adrTypeApprovalNo')">
-              <dt class="govuk-summary-list__key">ADR type approval number</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrTypeApprovalNo">
-                {{ amended.techRecord_adrDetails_adrTypeApprovalNo | defaultNullOrEmpty }}
-              </dd>
-            </div>
+            @if (hasChanged('techRecord_adrDetails_vehicleDetails_type')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">ADR body type</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_type">
+                  {{ amended.techRecord_adrDetails_vehicleDetails_type | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
+                  {{ amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_vehicleDetails_approvalDate')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Date processed</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_approvalDate">
+                  {{ amended.techRecord_adrDetails_vehicleDetails_approvalDate | defaultNullOrEmpty | date : 'dd/MM/yyyy' }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_permittedDangerousGoods')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_permittedDangerousGoods">
+                  {{ amended.techRecord_adrDetails_permittedDangerousGoods | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_bodyDeclaration_type')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Body declaration</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
+                  {{ amended.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_compatibilityGroupJ')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Compatibility group J</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
+                  {{ amended.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_additionalNotes_number')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Guidance notes</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalNotes_number">
+                  {{ amended.techRecord_adrDetails_additionalNotes_number | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_adrTypeApprovalNo')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">ADR type approval number</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrTypeApprovalNo">
+                  {{ amended.techRecord_adrDetails_adrTypeApprovalNo | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
           </dl>
-        </ng-container>
-
+        }
         <!-- Tank and Battery Sections -->
-        <ng-container *ngIf="adrService.canDisplayTankOrBatterySection(amended)">
-
+        @if (adrService.canDisplayTankOrBatterySection(amended)) {
           <!-- Tank Details -->
-          <ng-container *ngIf="haveAnyTankDetailItemsChanged()">
+          @if (haveAnyTankDetailItemsChanged()) {
             <h2 class="govuk-heading-m">Tank Details</h2>
             <dl class="govuk-summary-list">
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturer')">
-                <dt class="govuk-summary-list__key">Tank Make</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturer | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')">
-                <dt class="govuk-summary-list__key">Tank Year of manufacture</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_yearOfManufacture | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')">
-                <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')">
-                <dt class="govuk-summary-list__key">Tank type approval number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode')">
-                <dt class="govuk-summary-list__key">Code</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankCode">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankCode | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')">
-                <dt class="govuk-summary-list__key">Substances permitted</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_select')">
-                <dt class="govuk-summary-list__key">Select</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_select | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')">
-                <dt class="govuk-summary-list__key">Reference number</dt>
-                <dd class="govuk-summary-list__value" id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')">
-                <dt class="govuk-summary-list__key">Reference number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <ng-container *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')">
-                <ng-container *ngFor="let unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; let i = index">
-                  <div class="govuk-summary-list__row" *ngIf="hasUNNumberChanged(i)">
-                    <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
-                      {{ unNo | defaultNullOrEmpty }}
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Tank Make</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturer | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Tank Year of manufacture</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_yearOfManufacture | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Tank type approval number</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Code</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankCode">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankCode | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Substances permitted</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Select</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_select | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Reference number</dt>
+                  <dd class="govuk-summary-list__value" id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Reference number</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
+                @for (unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; track unNo; let i = $index) {
+                  @if (hasUNNumberChanged(i)) {
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
+                      <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
+                        {{ unNo | defaultNullOrEmpty }}
+                      </dd>
+                    </div>
+                  }
+                }
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Additional Details</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
+                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productList | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Special provisions</dt>
+                  <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
+                    <span>{{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}</span>
+                  </dd>
+                </div>
+              }
+            </dl>
+          }
+          <!-- Tank Inspections -->
+          @if (haveAnyTankInspectionItemsChanged()) {
+            <h2 class="govuk-heading-m">Tank Inspections</h2>
+            <!-- Initial inspection -->
+            @if (hasInitialInspectionChanged()) {
+              <dl class="govuk-summary-list">
+                <h2 class="govuk-heading-s">Initial</h2>
+                @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Certificate number</dt>
+                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
+                      {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
+                    </dd>
+                  </div>
+                }
+                @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Expiry date</dt>
+                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+                      {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
+                    </dd>
+                  </div>
+                }
+              </dl>
+            }
+            <!-- Subsequent inspections -->
+            @for (inspection of amended.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+              <dl class="govuk-summary-list">
+                <ng-container>
+                  <h2 class="govuk-heading-s ">Subsequent {{ i + 1 }}</h2>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Inspection type</dt>
+                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
+                      {{ inspection.tc3Type | defaultNullOrEmpty }}
+                    </dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Certificate number</dt>
+                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
+                      {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
+                    </dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Expiry date</dt>
+                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
+                      {{ inspection.tc3PeriodicExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
                     </dd>
                   </div>
                 </ng-container>
-              </ng-container>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')">
-                <dt class="govuk-summary-list__key">Additional Details</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productList | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')">
-                <dt class="govuk-summary-list__key">Special provisions</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}
-                </dd>
-              </div>
-            </dl>
-          </ng-container>
-
-          <!-- Tank Inspections -->
-          <ng-container *ngIf="haveAnyTankInspectionItemsChanged()">
-            <h2 class="govuk-heading-m">Tank Inspections</h2>
-
-            <!-- Initial inspection -->
-            <dl class="govuk-summary-list" *ngIf="hasInitialInspectionChanged()">
-              <h2 class="govuk-heading-s">Initial</h2>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')">
-                <dt class="govuk-summary-list__key">Certificate number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')">
-                <dt class="govuk-summary-list__key">Expiry date</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
-                  {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
-                </dd>
-              </div>
-            </dl>
-
-            <!-- Subsequent inspections -->
-            <dl class="govuk-summary-list" *ngFor="let inspection of amended.techRecord_adrDetails_tank_tankDetails_tc3Details; let i = index">
-              <ng-container>
-                <h2 class="govuk-heading-s ">Subsequent {{ i + 1 }}</h2>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Inspection type</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
-                    {{ inspection.tc3Type | defaultNullOrEmpty }}
-                  </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Certificate number</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
-                    {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
-                  </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Expiry date</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
-                    {{ inspection.tc3PeriodicExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
-                  </dd>
-                </div>
-              </ng-container>
-            </dl>
-          </ng-container>
-
+              </dl>
+            }
+          }
           <!-- Miscellaneous -->
-          <dl class="govuk-summary-list" *ngIf="haveAnyMiscellaneousItemsChanged()">
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_memosApply')">
-              <dt class="govuk-summary-list__key">Memo 07/09 (3 month extension) can be applied</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_memosApply">
-                {{ amended.techRecord_adrDetails_memosApply | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_m145Statement')">
-              <dt class="govuk-summary-list__key">M145</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_m145Statement">
-                {{ amended.techRecord_adrDetails_m145Statement | defaultNullOrEmpty }}
-              </dd>
-            </div>
-          </dl>
-        </ng-container>
-
+          @if (haveAnyMiscellaneousItemsChanged()) {
+            <dl class="govuk-summary-list">
+              @if (hasChanged('techRecord_adrDetails_memosApply')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Memo 07/09 (3 month extension) can be applied</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_memosApply">
+                    {{ amended.techRecord_adrDetails_memosApply | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_m145Statement')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">M145</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_m145Statement">
+                    {{ amended.techRecord_adrDetails_m145Statement | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+            </dl>
+          }
+        }
         <!-- Battery list applicable -->
-        <ng-container *ngIf="adrService.canDisplayBatterySection(amended) && haveAnyBatteryListItemsChanged()">
+        @if (adrService.canDisplayBatterySection(amended) && haveAnyBatteryListItemsChanged()) {
           <h2 class="govuk-heading-m">Battery List Applicable</h2>
           <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_listStatementApplicable')">
-              <dt class="govuk-summary-list__key">Battery List Applicable</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_listStatementApplicable">
-                {{ amended.techRecord_adrDetails_listStatementApplicable | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_batteryListNumber')">
-              <dt class="govuk-summary-list__key">Reference number</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
-                {{ amended.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
-              </dd>
-            </div>
+            @if (hasChanged('techRecord_adrDetails_listStatementApplicable')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Battery List Applicable</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_listStatementApplicable">
+                  {{ amended.techRecord_adrDetails_listStatementApplicable | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @if (hasChanged('techRecord_adrDetails_batteryListNumber')) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Reference number</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
+                  {{ amended.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
           </dl>
-        </ng-container>
-
+        }
         <!-- Declarations -->
-        <dl class="govuk-summary-list" *ngIf="haveAnyDeclarationsSeenItemsChanged()">
-          <h2 class="govuk-heading-m">Declarations seen</h2>
+        @if (haveAnyDeclarationsSeenItemsChanged()) {
           <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')">
-              <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationsSeen">
-                {{ amended.techRecord_adrDetails_brakeDeclarationsSeen | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')">
-              <dt class="govuk-summary-list__key">Issuer</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
-                {{ amended.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_brakeEndurance')">
-              <dt class="govuk-summary-list__key">Brake endurance</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
-                {{ amended.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_weight')">
-              <dt class="govuk-summary-list__key">Weight</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
-                {{ amended.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
-              </dd>
-            </div>
-            <div class="govuk-summary-list__row" *ngIf="hasChanged('techRecord_adrDetails_declarationsSeen')">
-              <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
-                {{ amended.techRecord_adrDetails_declarationsSeen | defaultNullOrEmpty }}
-              </dd>
-            </div>
+            <h2 class="govuk-heading-m">Declarations seen</h2>
+            <dl class="govuk-summary-list">
+              @if (hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationsSeen">
+                    {{ amended.techRecord_adrDetails_brakeDeclarationsSeen | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Issuer</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
+                    {{ amended.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_brakeEndurance')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Brake endurance</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
+                    {{ amended.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_weight')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Weight</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
+                    {{ amended.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
+                  </dd>
+                </div>
+              }
+              @if (hasChanged('techRecord_adrDetails_declarationsSeen')) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
+                    {{ amended.techRecord_adrDetails_declarationsSeen | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+            </dl>
           </dl>
-        </dl>
-
+        }
         <!-- New Certificate required -->
-        <ng-container *ngIf="hasChanged('techRecord_adrDetails_newCertificateRequested')">
+        @if (hasChanged('techRecord_adrDetails_newCertificateRequested')) {
           <h2 class="govuk-heading-m">New Certificate required</h2>
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
@@ -322,25 +389,23 @@
               </dd>
             </div>
           </dl>
-        </ng-container>
-
-          <!-- additional Examiner Notes -->
-         <ng-container *ngIf="amended.techRecord_adrDetails_additionalExaminerNotes_note">
-            <h2 class="govuk-heading-m">Additional Examiner Notes</h2>
-            <dl class="govuk-summary-list">
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Additional Examiner Notes</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalExaminerNotes">
-                  {{ amended.techRecord_adrDetails_additionalExaminerNotes_note | defaultNullOrEmpty }}
-                </dd>
-              </div>
-            </dl>
-          </ng-container>
-
-          <!-- Additional Examiner Notes History -->
+        }
+        <!-- additional Examiner Notes -->
+        @if (amended.techRecord_adrDetails_additionalExaminerNotes_note) {
+          <h2 class="govuk-heading-m">Additional Examiner Notes</h2>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Additional Examiner Notes</dt>
+              <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_additionalExaminerNotes">
+                {{ amended.techRecord_adrDetails_additionalExaminerNotes_note | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          </dl>
+        }
+        <!-- Additional Examiner Notes History -->
         <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
-        <ng-container *ngIf="amended.techRecord_adrDetails_additionalExaminerNotes as notes; else noExaminerNotes">
-          <ng-container *ngIf="notes?.length as notesCount; else noExaminerNotes">
+        @if (amended.techRecord_adrDetails_additionalExaminerNotes; as notes) {
+          @if (notes?.length; as notesCount) {
             <table class="govuk-table">
               <tbody class="govuk-table__body">
                 <tr class="govuk-table__row">
@@ -348,41 +413,45 @@
                   <th scope="col" class="govuk-table__header">Created By</th>
                   <th scope="col" class="govuk-table__header">Date</th>
                 </tr>
-                <ng-container *ngIf="pagination.paginationOptions | async as page">
-                  <ng-container *ngFor="let note of notes.slice(page.start, page.end); let i = index">
+                @if (pagination.paginationOptions(); as page) {
+                  @for (note of notes.slice(page.start, page.end); track note; let i = $index) {
                     <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                      <td class="govuk-table__cell">{{ note.note | defaultNullOrEmpty }}</td>
+                      <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
                       <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                       <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                     </tr>
-                  </ng-container>
-                </ng-container>
+                  }
+                }
               </tbody>
             </table>
             <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
-          </ng-container>
-        </ng-container>
-        <ng-template #noExaminerNotes>
+          } @else {
+            <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row border-b-0">
+                <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+              </div>
+            </dl>
+          }
+        } @else {
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row border-b-0">
               <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
             </div>
           </dl>
-        </ng-template>
-
+        }
         <!-- ADR Certificate Notes -->
-        <ng-container *ngIf="hasChanged('techRecord_adrDetails_adrCertificateNotes')">
+        @if (hasChanged('techRecord_adrDetails_adrCertificateNotes')) {
           <h2 class="govuk-heading-m">ADR Certificate Notes</h2>
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">ADR Certificate Notes</dt>
               <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrCertificateNotes">
-                {{ amended.techRecord_adrDetails_adrCertificateNotes | defaultNullOrEmpty }}
+                <span class="whitespace-pre-wrap">{{ amended.techRecord_adrDetails_adrCertificateNotes | defaultNullOrEmpty }}</span>
               </dd>
             </div>
           </dl>
-        </ng-container>
-      </ng-container>
-    </ng-container>
-  </ng-container>
-</ng-container>
+        }
+      }
+    }
+  }
+}

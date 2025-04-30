@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -10,11 +11,13 @@ import { Store } from '@ngrx/store';
 import { RequiredStandardState } from '@store/required-standards/required-standards.reducer';
 import { getRequiredStandardsState } from '@store/required-standards/required-standards.selector';
 import { Subject, takeUntil } from 'rxjs';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-required-standard-select',
 	templateUrl: './required-standard-select.component.html',
 	styleUrls: ['./required-standard-select.component.scss'],
+	imports: [NgClass, DefaultNullOrEmpty],
 })
 export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	requiredStandards?: RequiredStandardTaxonomySection[];

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
@@ -38,18 +39,21 @@ import {
 	take,
 	takeUntil,
 } from 'rxjs';
+import { TrimWhitespaceDirective } from '../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
 
 @Component({
 	selector: 'app-body',
 	templateUrl: './body.component.html',
 	styleUrls: ['./body.component.scss'],
+	imports: [SwitchableInputComponent, TrimWhitespaceDirective, AsyncPipe],
 })
 export class BodyComponent implements OnInit, OnChanges, OnDestroy {
-	@Input() techRecord!: V3TechRecordModel;
-	@Input() isEditing = false;
-	@Input() disableLoadOptions = false;
+	readonly techRecord = input.required<V3TechRecordModel>();
+	readonly isEditing = input(false);
+	readonly disableLoadOptions = input(false);
 
-	@Output() formChange = new EventEmitter();
+	readonly formChange = output();
 
 	public form!: CustomFormGroup;
 	private template!: FormNode;
@@ -64,8 +68,8 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
 	ngOnInit(): void {
 		this.template =
-			this.techRecord.techRecord_vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
-		this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
+			this.techRecord().techRecord_vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
+		this.form = this.dfs.createForm(this.template, this.techRecord()) as CustomFormGroup;
 		this.form.cleanValueChanges
 			.pipe(
 				debounceTime(400),
@@ -85,10 +89,11 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 				// Set the body type code automatically based selection
 				if (event?.techRecord_bodyType_description) {
 					// body type codes are specific to the vehicle type
+					const techRecord = this.techRecord();
 					const vehicleType =
-						this.techRecord.techRecord_vehicleType === 'hgv'
-							? `${this.techRecord.techRecord_vehicleConfiguration}Hgv`
-							: this.techRecord.techRecord_vehicleType;
+						techRecord.techRecord_vehicleType === 'hgv'
+							? `${techRecord.techRecord_vehicleConfiguration}Hgv`
+							: techRecord.techRecord_vehicleType;
 					const bodyTypes = vehicleBodyTypeDescriptionMap.get(vehicleType as VehicleTypes) as Map<
 						BodyTypeDescription,
 						BodyTypeCode
@@ -99,7 +104,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 				this.formChange.emit(event);
 
 				if (
-					this.techRecord.techRecord_vehicleType === VehicleTypes.PSV &&
+					this.techRecord().techRecord_vehicleType === VehicleTypes.PSV &&
 					event?.techRecord_brakes_dtpNumber &&
 					event.techRecord_brakes_dtpNumber.length >= 4 &&
 					psvMake
@@ -133,11 +138,12 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	get bodyTypes(): MultiOptions {
-		let vehicleType: string = this.techRecord.techRecord_vehicleType;
+		let vehicleType: string = this.techRecord().techRecord_vehicleType;
 
-		if (this.techRecord.techRecord_vehicleType === 'hgv') {
-			vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
-			this.updateHgvVehicleBodyType(this.techRecord);
+		const techRecord = this.techRecord();
+		if (techRecord.techRecord_vehicleType === 'hgv') {
+			vehicleType = `${techRecord.techRecord_vehicleConfiguration}Hgv`;
+			this.updateHgvVehicleBodyType(techRecord);
 		}
 		const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
 		const values = [...optionsMap.values()];
@@ -145,10 +151,11 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	get bodyMakes$(): Observable<MultiOptions | undefined> {
-		if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
+		const techRecord = this.techRecord();
+		if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
 			return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
 		}
-		if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
 			return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
 		}
 		return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
@@ -168,11 +175,12 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	loadOptions(): void {
-		if (this.disableLoadOptions) return;
+		if (this.disableLoadOptions()) return;
 
-		if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
+		const techRecord = this.techRecord();
+		if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
 			this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
-		} else if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+		} else if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
 			this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
 		} else {
 			this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
@@ -185,7 +193,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 				this.store.dispatch(
 					updateEditingTechRecord({
 						vehicleTechRecord: {
-							...this.techRecord,
+							...this.techRecord(),
 							techRecord_bodyType_description: 'articulated',
 							techRecord_bodyType_code: 'a',
 						} as TechRecordType<'put'>,

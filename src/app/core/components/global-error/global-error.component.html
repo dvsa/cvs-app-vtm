@@ -1,18 +1,21 @@
-<ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
-  <div
-    *ngIf="errorMessages && errorMessages.length > 0"
-    class="govuk-error-summary"
-    aria-labelledby="error-summary-title"
-    role="alert"
-    data-module="govuk-error-summary"
-  >
-    <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
-    <div class="govuk-error-summary__body">
-      <ul class="govuk-list govuk-error-summary__list">
-        <li *ngFor="let error of errorMessages">
-          <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)">{{ error.error }}</a>
-        </li>
-      </ul>
+@if (globalErrorService.errors$ | async; as errorMessages) {
+  @if (errorMessages && errorMessages.length > 0) {
+    <div
+      class="govuk-error-summary"
+      aria-labelledby="error-summary-title"
+      role="alert"
+      data-module="govuk-error-summary"
+      >
+      <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          @for (error of errorMessages; track error) {
+            <li>
+              <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)">{{ error.error }}</a>
+            </li>
+          }
+        </ul>
+      </div>
     </div>
-  </div>
-</ng-container>
+  }
+}

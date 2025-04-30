@@ -1,9 +1,7 @@
 import { Directive, ElementRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 
-@Directive({
-	selector: '[govukFormGroup]',
-})
+@Directive({ selector: '[govukFormGroup]' })
 export class GovukFormGroupDirective implements OnInit, OnDestroy {
 	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 	destroy$ = new ReplaySubject<boolean>(1);

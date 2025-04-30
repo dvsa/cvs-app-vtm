@@ -1,14 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
+import { Component, input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-control-errors',
 	templateUrl: './control-errors.component.html',
+	imports: [KeyValuePipe],
 })
 export class ControlErrorsComponent {
-	@Input({ required: true })
-	elementId!: string;
+	readonly elementId = input.required<string>();
 
-	@Input({ required: true })
-	control!: FormControl;
+	readonly control = input.required<FormControl>();
 }

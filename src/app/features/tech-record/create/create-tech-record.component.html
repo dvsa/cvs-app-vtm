@@ -13,19 +13,22 @@
     (ngModelChange)="ngOnChanges()"
   ></app-text-input>
 
-  <app-text-input
-    *ngIf="!generateID.value"
-    formControlName="vrmTrm"
-    name="input-vrm-or-trailer-id"
-    label="VRM / Trailer ID"
-    appToUppercase
-    appNoSpace
-    appTrimWhitespace
-    [width]="30"
-    (ngModelChange)="ngOnChanges()"
-  ></app-text-input>
+  @if (!generateID.value) {
+    <app-text-input
+      formControlName="vrmTrm"
+      name="input-vrm-or-trailer-id"
+      label="VRM / Trailer ID"
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      [width]="30"
+      (ngModelChange)="ngOnChanges()"
+    ></app-text-input>
+  }
 
-  <span *ngIf="!generateID.value" class="govuk-list">Or</span>
+  @if (!generateID.value) {
+    <span class="govuk-list">Or</span>
+  }
 
   <app-checkbox-group
     #generateID
@@ -51,9 +54,11 @@
     (ngModelChange)="ngOnChanges()"
   ></app-select>
 
-  <p *ngIf="this.isVinUniqueCheckComplete && !this.vinUnique" class="govuk-error-message">
-    The Vin you are about to submit is a duplicate, if you are happy to continue please press continue
-  </p>
+  @if (isVinUniqueCheckComplete && !vinUnique) {
+    <p class="govuk-error-message">
+      The Vin you are about to submit is a duplicate, if you are happy to continue please press continue
+    </p>
+  }
 
   <app-button id="create-record-continue" (clicked)="handleSubmit()">Continue</app-button>
 

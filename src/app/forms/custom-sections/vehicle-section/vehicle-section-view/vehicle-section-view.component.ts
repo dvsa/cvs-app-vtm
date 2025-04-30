@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
 	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
@@ -11,11 +12,14 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
+import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { MultiOptionPipe } from '../../../../pipes/multi-option/multi-option.pipe';
 
 @Component({
 	selector: 'app-vehicle-section-view',
 	templateUrl: './vehicle-section-view.component.html',
 	styleUrls: ['./vehicle-section-view.component.scss'],
+	imports: [DatePipe, DefaultNullOrEmpty, MultiOptionPipe],
 })
 export class VehicleSectionViewComponent {
 	readonly VehicleTypes = VehicleTypes;

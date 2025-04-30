@@ -4,6 +4,7 @@ import { PrefixDirective } from '../prefix.directive';
 
 @Component({
 	template: '<ng-template appPrefix></ng-template>',
+	imports: [PrefixDirective],
 })
 class TestComponent {}
 
@@ -13,7 +14,7 @@ describe('PrefixDirective', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [PrefixDirective, TestComponent],
+			imports: [TestComponent],
 			providers: [TemplateRef],
 		}).compileComponents();
 

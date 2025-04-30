@@ -1,5 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
@@ -7,11 +8,11 @@ import { GlobalWarningService } from '@core/components/global-warning/global-war
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@models/testTypeId.enum';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
@@ -19,18 +20,30 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { State } from '@store/index';
 import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
-import { getTypeOfTest } from '@store/test-types/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, map, of, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, of, take, takeUntil, tap } from 'rxjs';
+import { BannerComponent } from '../../../../../components/banner/banner.component';
+import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../../components/button/button.component';
+import { AbandonDialogComponent as AbandonDialogComponent_1 } from '../../../../../forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
 	selector: 'app-create-test-record',
 	templateUrl: './create-test-record.component.html',
+	imports: [
+		BannerComponent,
+		ButtonComponent,
+		RouterLink,
+		BaseTestRecordComponent,
+		ButtonGroupComponent,
+		AbandonDialogComponent_1,
+		AsyncPipe,
+	],
 })
 export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
-	@ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
-	@ViewChild(AbandonDialogComponent) abandonDialog?: AbandonDialogComponent;
+	baseTestRecordComponent = viewChild(BaseTestRecordComponent);
+	abandonDialog = viewChild(AbandonDialogComponent);
 
 	private destroy$ = new Subject<void>();
 
@@ -159,16 +172,27 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		const errors: GlobalError[] = [];
 		const forms = [];
 
-		if (this.baseTestRecordComponent?.sections) {
-			this.baseTestRecordComponent.sections.forEach((section) => forms.push(section.form));
+		const baseTestRecordComponent = this.baseTestRecordComponent();
+
+		const sectionsbaseTestRecordComponent = baseTestRecordComponent?.sections();
+		if (sectionsbaseTestRecordComponent) {
+			sectionsbaseTestRecordComponent.forEach((section) => forms.push(section.form));
 		}
 
-		if (this.baseTestRecordComponent?.defects) {
-			forms.push(this.baseTestRecordComponent.defects.form);
+		const defectsbaseTestRecordComponent = baseTestRecordComponent?.defects();
+		if (defectsbaseTestRecordComponent) {
+			forms.push(defectsbaseTestRecordComponent.form);
 		}
 
-		if (this.testMode === TestModeEnum.Abandon && this.abandonDialog?.dynamicFormGroup) {
-			forms.push(this.abandonDialog.dynamicFormGroup.form);
+		const customDefectsbaseTestRecordComponent = baseTestRecordComponent?.customDefects();
+		if (customDefectsbaseTestRecordComponent) {
+			forms.push(customDefectsbaseTestRecordComponent.form);
+		}
+
+		const abandonDialogDynamicFormGroup = this.abandonDialog();
+		const dynamicFormGroup = abandonDialogDynamicFormGroup?.dynamicFormGroup();
+		if (this.testMode === TestModeEnum.Abandon && dynamicFormGroup) {
+			forms.push(dynamicFormGroup.form);
 		}
 
 		forms.forEach((form) => {
@@ -198,7 +222,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 				await this.handleSave();
 				break;
 			case 'no':
-				this.abandonDialog?.dynamicFormGroup?.form.reset();
+				this.abandonDialog()?.dynamicFormGroup()?.form.reset();
 				this.resultOfTestService.toggleAbandoned(resultOfTestEnum.pass);
 				this.testMode = TestModeEnum.Edit;
 				break;
@@ -207,11 +231,11 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		}
 	}
 
-	get isDeskBased() {
-		return this.store.pipe(
-			select(getTypeOfTest(this.testTypeId)),
-			map((typeOfTest) => typeOfTest === TypeOfTest.DESK_BASED)
+	get shouldShowAbandonButton(): boolean {
+		const isDeskBasedOrLECTest = [...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(
+			this.testTypeId ?? ''
 		);
+		return !isDeskBasedOrLECTest;
 	}
 
 	public get TestModeEnum(): typeof TestModeEnum {

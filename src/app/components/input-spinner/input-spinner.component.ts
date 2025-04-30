@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
 	selector: 'app-input-spinner',
 	templateUrl: './input-spinner.component.html',
 	styleUrls: ['./input-spinner.component.scss'],
+	imports: [],
 })
 export class InputSpinnerComponent {
-	@Input() isValid = '';
+	readonly isValid = input('');
 }

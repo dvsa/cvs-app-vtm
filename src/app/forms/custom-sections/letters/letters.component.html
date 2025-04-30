@@ -1,7 +1,7 @@
 <form [formGroup]="form">
-  <ng-container *ngIf="eligibleForLetter">
+  @if (eligibleForLetter) {
     <dl class="govuk-summary-list">
-      <ng-container *ngIf="letter">
+      @if (letter) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Letter issuer</dt>
           <dd id="letter-issuer" class="govuk-summary-list__value">{{ letter.letterIssuer }}</dd>
@@ -21,25 +21,27 @@
           <dt class="govuk-summary-list__key">Date requested</dt>
           <dd id="letter-date" class="govuk-summary-list__value">{{ letter.letterDateRequested | date : 'dd/MM/yyyy HH:mm' }}</dd>
         </div>
-      </ng-container>
-
-      <div *ngIf="!letter">
-        <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
-      </div>
+      }
+      @if (!letter) {
+        <div>
+          <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
+        </div>
+      }
     </dl>
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <app-button id="generate-letters-link" (clicked)="generateLetter()" *appRoleRequired="roles.TechRecordAmend"
           >Generate and send letter</app-button
-        >
+          >
+        </div>
       </div>
-    </div>
-  </ng-container>
+    }
 
-  <dl class="govuk-summary-list" *ngIf="!eligibleForLetter">
-    <div>
-      <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
-    </div>
-  </dl>
-</form>
+    @if (!eligibleForLetter) {
+      <dl class="govuk-summary-list">
+        <div>
+          <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
+        </div>
+      </dl>
+    }
+  </form>

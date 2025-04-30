@@ -1,10 +1,11 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import {
 	TechRecordTRL,
 	TechRecordType,
@@ -18,17 +19,21 @@ describe('BrakesComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TrlBrakesComponent],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			imports: [TrlBrakesComponent],
+			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(TrlBrakesComponent);
 		component = fixture.componentInstance;
-		component.vehicleTechRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
-		component.vehicleTechRecord.techRecord_axles = [
+		const techRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
+		techRecord.techRecord_axles = [
 			{
 				parkingBrakeMrk: true,
 				axleNumber: 1,
@@ -81,6 +86,7 @@ describe('BrakesComponent', () => {
 				tyres_speedCategorySymbol: 'a7',
 			},
 		];
+		fixture.componentRef.setInput('vehicleTechRecord', techRecord);
 		fixture.detectChanges();
 	});
 
@@ -89,14 +95,14 @@ describe('BrakesComponent', () => {
 	});
 	describe('The brake code value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect(component.vehicleTechRecord.techRecord_brakes_loadSensingValve).toStrictEqual(
+			expect(component.vehicleTechRecord().techRecord_brakes_loadSensingValve).toStrictEqual(
 				component.form.value.techRecord_brakes_loadSensingValve
 			);
 		});
 	});
 	describe('The dataTrBrakeOne value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			expect(component.vehicleTechRecord.techRecord_brakes_antilockBrakingSystem).toStrictEqual(
+			expect(component.vehicleTechRecord().techRecord_brakes_antilockBrakingSystem).toStrictEqual(
 				component.form.value.techRecord_brakes_antilockBrakingSystem
 			);
 		});
@@ -104,7 +110,7 @@ describe('BrakesComponent', () => {
 
 	describe('The axle value on this.form', () => {
 		it('should match the corresponding values on vehicleTechRecord', () => {
-			const axles = component.vehicleTechRecord.techRecord_axles as NonNullable<TechRecordTRL['techRecord_axles']>;
+			const axles = component.vehicleTechRecord().techRecord_axles as NonNullable<TechRecordTRL['techRecord_axles']>;
 			expect(axles[0]).toEqual(expect.objectContaining(component.form.controls['techRecord_axles']?.value[0]));
 		});
 	});

@@ -3,9 +3,7 @@ import { ControlContainer } from '@angular/forms';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-@Directive({
-	selector: '[govukCheckbox]',
-})
+@Directive({ selector: '[govukCheckbox]' })
 export class GovukCheckboxDirective implements OnInit, OnDestroy {
 	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 	controlContainer = inject(ControlContainer);

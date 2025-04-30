@@ -9,6 +9,7 @@ import { AccordionComponent } from '../accordion.component';
 @Component({
 	selector: 'app-host',
 	template: '<app-accordion id="test" title="Test"> <div id="content">Details</div> </app-accordion>',
+	imports: [AccordionComponent],
 })
 class HostComponent {}
 
@@ -18,7 +19,7 @@ describe('AccordionComponent', () => {
 	let store: MockStore<State>;
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AccordionComponent, HostComponent],
+			imports: [HostComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 		store = TestBed.inject(MockStore);
@@ -43,10 +44,10 @@ describe('AccordionComponent', () => {
 		const button: HTMLButtonElement = fixture.debugElement.query(By.css('#accordion-control-test')).nativeElement;
 
 		button.click();
-		expect(component.isExpanded).toBeTruthy();
+		expect(component.isExpanded()).toBeTruthy();
 
 		button.click();
-		expect(component.isExpanded).toBeFalsy();
+		expect(component.isExpanded()).toBeFalsy();
 	});
 
 	it('should set expanded value to true', () => {
@@ -64,9 +65,9 @@ describe('AccordionComponent', () => {
 		const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
 		const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-		component.isExpanded = true;
+		component.isExpanded.set(true);
 		component.close('TEST_SECTION');
-		expect(component.isExpanded).toBeFalsy();
+		expect(component.isExpanded()).toBeFalsy();
 		expect(markForCheckSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(removeSectionState({ section: 'TEST_SECTION' }));

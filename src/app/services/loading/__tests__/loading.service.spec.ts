@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { SpinnerComponent } from '@core/components/spinner/spinner.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
@@ -17,9 +17,8 @@ describe('Spinner-Service', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [SpinnerComponent],
-			imports: [RouterTestingModule],
-			providers: [LoadingService, provideMockStore({ initialState: initialAppState })],
+			imports: [SpinnerComponent],
+			providers: [LoadingService, provideRouter([]), provideMockStore({ initialState: initialAppState })],
 		});
 
 		service = TestBed.inject(LoadingService);

@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
@@ -23,9 +21,9 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordEditAdditionalExaminerNoteComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
+			imports: [TechRecordEditAdditionalExaminerNoteComponent, FormsModule, ReactiveFormsModule],
 			providers: [
+				provideRouter([]),
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },

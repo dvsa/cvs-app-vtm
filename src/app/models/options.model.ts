@@ -1,6 +1,9 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { EUVehicleCategory as CARCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { EUVehicleCategory as LGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { EUVehicleCategory as PSVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { EUVehicleCategory as TRLCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TyreUseCode as HGVTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TRLTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { CouplingTypeCodeEnum } from '@models/coupling-type-enum';
@@ -20,16 +23,22 @@ import {
 	VehicleSubclass,
 } from './vehicle-tech-record.model';
 
-export interface MultiOption {
+export interface MultiOption<T = string | number | boolean> {
 	label: string;
-	value: string | number | boolean;
+	value: T;
 	hint?: string;
 }
-export type MultiOptions = Array<MultiOption>;
+export type MultiOptions<T = string | number | boolean> = Array<MultiOption<T>>;
 
 export const YES_NO_OPTIONS: MultiOptions = [
 	{ value: true, label: 'Yes' },
 	{ value: false, label: 'No' },
+];
+
+export const YES_NO_NULL_OPTIONS: MultiOptions<boolean | null> = [
+	{ value: true, label: 'Yes' },
+	{ value: false, label: 'No' },
+	{ value: null, label: 'I do not know' },
 ];
 
 export const EXEMPT_OR_NOT_OPTIONS: MultiOptions = [
@@ -43,10 +52,17 @@ export const HGV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(
 
 export const PSV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(PSVCategories);
 
-export const SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = [
-	{ label: 'O1', value: EUVehicleCategory.O1 },
-	{ label: 'O2', value: EUVehicleCategory.O2 },
-];
+export const TRL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(TRLCategories).filter(
+	(option) => option.value !== EUVehicleCategory.O1 && option.value !== EUVehicleCategory.O2
+);
+
+export const SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(TRLCategories).filter(
+	(option) => option.value !== EUVehicleCategory.O3 && option.value !== EUVehicleCategory.O4
+);
+
+export const LGV_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(LGVCategories);
+
+export const CAR_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(CARCategories);
 
 export const ALL_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(EUVehicleCategory);
 

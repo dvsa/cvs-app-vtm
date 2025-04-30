@@ -1,8 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -25,9 +25,14 @@ describe('RequiredStandardComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
-			declarations: [RequiredStandardComponent],
-			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
+			imports: [FormsModule, ReactiveFormsModule, RequiredStandardComponent],
+			providers: [
+				DynamicFormService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		}).compileComponents();
 	});
 

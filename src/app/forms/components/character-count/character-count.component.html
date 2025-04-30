@@ -1,10 +1,13 @@
-<div id="{{ for() }}-max-length" class="govuk-hint govuk-character-count__message" *ngIf="(control()?.value?.length ?? 0) <= limit()">
-  You have {{ limit() - (control()?.value?.length ?? 0) }} characters remaining
-</div>
-<div
-  id="{{ for() }}-max-length-exceeded"
-  class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
-  *ngIf="(control()?.value?.length ?? 0) > limit()"
->
-  You have {{ (control()?.value?.length ?? limit()) - limit() }} characters too many
-</div>
+@if ((control()?.value?.length ?? 0) <= limit()) {
+  <div id="{{ for() }}-max-length" class="govuk-hint govuk-character-count__message">
+    You have {{ limit() - (control()?.value?.length ?? 0) }} characters remaining
+  </div>
+}
+@if ((control()?.value?.length ?? 0) > limit()) {
+  <div
+    id="{{ for() }}-max-length-exceeded"
+    class="govuk-hint govuk-character-count__message govuk-character-count__status govuk-error-message"
+    >
+    You have {{ (control()?.value?.length ?? limit()) - limit() }} characters too many
+  </div>
+}

@@ -18,7 +18,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
-// eslint-disable-next-line import/no-cycle
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
 import { TagTypes } from '../../components/tag/tag.component';
@@ -107,7 +107,6 @@ export interface FormNode {
 	link?: string;
 	delimited?: { regex?: string; separator: string };
 	value?: unknown;
-	valueFormat?: FormNodeValueFormat;
 	path?: string;
 	options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
 	validators?: FormNodeValidator[];
@@ -131,10 +130,7 @@ export interface FormNode {
 	groups?: string[];
 	viewComponent?: typeof BaseControlComponent;
 	editComponent?: typeof BaseControlComponent;
-}
-
-export enum FormNodeValueFormat {
-	UPPERCASE = 'uppercase',
+	uppercase?: boolean;
 }
 
 export interface CustomTag {
@@ -234,12 +230,13 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 		meta: FormNode,
 		controls: AbstractControl[],
 		store: Store<State>,
+		technicalRecordService: TechnicalRecordService,
 		validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
 		asyncValidator?: AsyncValidatorOptions
 	) {
 		super(controls, validatorOrOpts, asyncValidator);
 		this.meta = meta;
-		this.dynamicFormService = new DynamicFormService(store);
+		this.dynamicFormService = new DynamicFormService(store, technicalRecordService);
 	}
 
 	getCleanValue = cleanValue.bind(this);

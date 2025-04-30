@@ -13,12 +13,14 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { WeightsSectionEditComponent } from '../weights-section-edit/weights-section-edit.component';
 
 describe('weightsSectionEditComponent', () => {
@@ -29,6 +31,8 @@ describe('weightsSectionEditComponent', () => {
 	let formGroupDirective: FormGroupDirective;
 	let store: MockStore;
 
+	const actions$ = new Observable<Action>();
+
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>(
@@ -37,11 +41,11 @@ describe('weightsSectionEditComponent', () => {
 		const mockTechRecord = mockVehicleTechnicalRecord('psv');
 
 		await TestBed.configureTestingModule({
-			declarations: [WeightsSectionEditComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+			imports: [FormsModule, ReactiveFormsModule, WeightsSectionEditComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),
+				provideMockActions(() => actions$),
 				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
@@ -93,20 +97,6 @@ describe('weightsSectionEditComponent', () => {
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalledWith(true);
 			expect(completeSpy).toHaveBeenCalled();
-		});
-	});
-
-	describe('ngOnChanges', () => {
-		it('should fire required methods when ngOnChanges is run', () => {
-			const axleAddedSpy = jest.spyOn(component, 'checkAxleAdded');
-			const axleRemovedSpy = jest.spyOn(component, 'checkAxleRemoved');
-			const ladenWeightSpy = jest.spyOn(component, 'checkGrossLadenWeightChanged');
-
-			component.ngOnChanges({});
-
-			expect(axleAddedSpy).toHaveBeenCalled();
-			expect(axleRemovedSpy).toHaveBeenCalled();
-			expect(ladenWeightSpy).toHaveBeenCalled();
 		});
 	});
 

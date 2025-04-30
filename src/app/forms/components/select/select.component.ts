@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { Component, input, output } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
+import { TagComponent } from '../../../components/tag/tag.component';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
 	selector: 'app-select[options]',
@@ -14,12 +17,14 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 			multi: true,
 		},
 	],
+	imports: [NgClass, TagComponent, FieldErrorMessageComponent, FormsModule],
 })
 export class SelectComponent extends BaseControlComponent {
-	@Input() options!: Array<FormNodeOption<string | number | boolean>>;
-	@Output() blur = new EventEmitter<FocusEvent>();
+	readonly options = input.required<Array<FormNodeOption<string | number | boolean>>>();
+	readonly blur = output<FocusEvent>();
 
 	get style(): string {
-		return `govuk-select ${this.width ? `govuk-input--width-${this.width}` : ''}`;
+		const width = this.width();
+		return `govuk-select ${width ? `govuk-input--width-${width}` : ''}`;
 	}
 }

@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="mode()">
-  <app-tyres-section-view *ngSwitchCase="'view'" />
-  <app-tyres-section-edit *ngSwitchCase="'edit'" [techRecord]="techRecord()" />
-  <app-tyres-section-summary *ngSwitchCase="'summary'" />
-</ng-container>
+
+@switch (mode()) {
+  @case ('view') {
+    <app-tyres-section-view />
+  }
+  @case ('edit') {
+    <app-tyres-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-tyres-section-summary />
+  }
+}

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { AmendTestComponent } from '../amend-test.component';
 
 describe('AmendTestComponent', () => {
@@ -8,8 +8,8 @@ describe('AmendTestComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AmendTestComponent],
-			imports: [RouterTestingModule],
+			imports: [AmendTestComponent],
+			providers: [provideRouter([])],
 		}).compileComponents();
 	});
 

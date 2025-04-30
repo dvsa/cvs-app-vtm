@@ -1,56 +1,52 @@
-<ng-container [ngSwitch]="testMode">
-  <ng-container *ngSwitchCase="TestModeEnum.Edit">
-    <app-banner *ngIf="(isTestTypeGroupEditable$ | async) === false">
-      <ng-container title>Important</ng-container>
 
-      <ng-container content>Editing this record is not currently supported</ng-container>
-    </app-banner>
-
-    <ng-container *ngIf="testResult$ | async as testResult">
-      <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)"></app-base-test-record>
-
-      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-
-      <ng-container *appRoleRequired="Roles.TestResultAmend">
-        <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
-          <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
-          <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
-        </app-button-group>
-      </ng-container>
-    </ng-container>
-  </ng-container>
-
-  <ng-container *ngSwitchCase="TestModeEnum.View">
-    <ng-container *ngIf="testResult$ | async as testResult">
+@switch (testMode) {
+  @case (TestModeEnum.Edit) {
+    @if ((isTestTypeGroupEditable$ | async) === false) {
       <app-banner>
         <ng-container title>Important</ng-container>
-
+        <ng-container content>Editing this record is not currently supported</ng-container>
+      </app-banner>
+    }
+    @if (testResult$ | async; as testResult) {
+      <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)" />
+      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+      <ng-container *appRoleRequired="Roles.TestResultAmend">
+        @if (isTestTypeGroupEditable$ | async) {
+          <app-button-group>
+            <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
+            <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
+          </app-button-group>
+        }
+      </ng-container>
+    }
+  }
+  @case (TestModeEnum.View) {
+    @if (testResult$ | async; as testResult) {
+      <app-banner>
+        <ng-container title>Important</ng-container>
         <ng-container content>Check your answers before submitting the test</ng-container>
       </app-banner>
-
-      <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true"></app-base-test-record>
-
+      <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true" />
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-
       <ng-container *appRoleRequired="Roles.TestResultAmend">
-        <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
-          <app-button id="save-test-result" (clicked)="handleSave()">Accept and send</app-button>
-          <app-button id="cancel-review" design="link" (clicked)="handleCancel()">Cancel</app-button>
-        </app-button-group>
+        @if (isTestTypeGroupEditable$ | async) {
+          <app-button-group>
+            <app-button id="save-test-result" (clicked)="handleSave()">Accept and send</app-button>
+            <app-button id="cancel-review" design="link" (clicked)="handleCancel()">Cancel</app-button>
+          </app-button-group>
+        }
       </ng-container>
-    </ng-container></ng-container
-  >
-
-  <ng-container *ngSwitchCase="TestModeEnum.Cancel">
-    <ng-container *ngIf="testResult$ | async as testResult">
-      <app-vehicle-header [isEditing]="true" [testResult]="testResult" [testNumber]="testNumber$ | async"></app-vehicle-header>
-    </ng-container>
+    }
+  }
+  @case (TestModeEnum.Cancel) {
+    @if (testResult$ | async; as testResult) {
+      <app-vehicle-header [isEditing]="true" [testResult]="testResult" [testNumber]="testNumber$ | async" />
+    }
     <h1 class="govuk-heading-l">Are you sure you want to cancel these changes?</h1>
     <p class="govuk-heading-s">You will lose all the changes you made to the technical record in this session.</p>
-
     <app-button-group>
       <app-button id="confirm-cancel-amend" design="warning" (clicked)="handleConfirmCancel()">Cancel changes</app-button>
       <app-button id="retract-cancel-amend" design="link" (clicked)="handleCancel()">Back</app-button>
     </app-button-group>
-  </ng-container>
-</ng-container>
+  }
+}

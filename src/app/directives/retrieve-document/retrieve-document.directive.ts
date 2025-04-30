@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { Directive, HostListener, Input, inject } from '@angular/core';
+import { Directive, HostListener, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
@@ -8,34 +8,34 @@ import { takeWhile } from 'rxjs';
 
 @Directive({ selector: '[appRetrieveDocument][params][fileName]' })
 export class RetrieveDocumentDirective {
-	@Input() params: Map<string, string> = new Map();
-	@Input() fileName = '';
-	@Input() loading?: boolean;
-	@Input() certNotNeeded = false;
-	@Input() fileType = 'pdf';
+	readonly params = input<Map<string, string>>(new Map());
+	readonly fileName = input('');
+	readonly loading = input<boolean>();
+	readonly certNotNeeded = input(false);
+	readonly fileType = input('pdf');
 
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 	private documentsService = inject(DocumentsService);
 
 	@HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
-		if (this.certNotNeeded) return;
+		if (this.certNotNeeded()) return;
 		event.preventDefault();
 		event.stopPropagation();
 
-		if (this.loading) {
+		if (this.loading()) {
 			this.store.dispatch(setSpinnerState({ showSpinner: true }));
 		}
 
 		this.httpService
-			.getDocument(this.params)
+			.getDocument(this.params())
 			.pipe(takeWhile((doc) => doc.type !== HttpEventType.Response, true))
 			.subscribe((response) => {
 				switch (response.type) {
 					case HttpEventType.DownloadProgress:
 						break;
 					case HttpEventType.Response:
-						this.documentsService.openDocumentFromResponse(this.fileName, response.body, this.fileType);
+						this.documentsService.openDocumentFromResponse(this.fileName(), response.body, this.fileType());
 						this.store.dispatch(setSpinnerState({ showSpinner: false }));
 						break;
 					default:

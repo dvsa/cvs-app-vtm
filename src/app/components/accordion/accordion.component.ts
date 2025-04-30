@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, input, model } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addSectionState, removeSectionState } from '@store/technical-records';
 
@@ -7,12 +8,13 @@ import { addSectionState, removeSectionState } from '@store/technical-records';
 	templateUrl: './accordion.component.html',
 	styleUrls: ['./accordion.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [NgClass],
 })
 export class AccordionComponent {
-	@Input() title: string | undefined = '';
-	@Input() id: string | number = '';
+	readonly title = input<string | undefined>('');
+	readonly id = input<string | number>('');
 
-	@Input() isExpanded: boolean | null | undefined = false;
+	isExpanded = model<boolean | null | undefined>(false);
 
 	constructor(
 		private cdr: ChangeDetectorRef,
@@ -20,17 +22,17 @@ export class AccordionComponent {
 	) {}
 
 	get iconStyle(): string {
-		return `govuk-accordion-nav__chevron${this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down'}`;
+		return `govuk-accordion-nav__chevron${this.isExpanded() ? '' : ' govuk-accordion-nav__chevron--down'}`;
 	}
 
 	open(sectionName: string | number | undefined): void {
-		this.isExpanded = true;
+		this.isExpanded.set(true);
 		this.cdr.markForCheck();
 		if (sectionName) this.store.dispatch(addSectionState({ section: sectionName }));
 	}
 
 	close(sectionName: string | number | undefined): void {
-		this.isExpanded = false;
+		this.isExpanded.set(false);
 		this.cdr.markForCheck();
 		if (sectionName) this.store.dispatch(removeSectionState({ section: sectionName }));
 	}

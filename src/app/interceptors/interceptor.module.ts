@@ -4,7 +4,6 @@ import { DelayedRetryModule } from './delayed-retry/delayed-retry.module';
 import { ErrorInterceptorModule } from './error-handling/error-handling.module';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		DelayedRetryModule.forRoot({

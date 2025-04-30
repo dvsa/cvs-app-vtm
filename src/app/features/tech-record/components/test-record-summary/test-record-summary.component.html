@@ -1,4 +1,4 @@
-<ng-container *ngIf="testResults?.length; else noTestResults">
+@if (testResults().length) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Test Records
@@ -12,24 +12,25 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr *ngFor="let test of paginatedTestFields; trackBy: trackByFn; let i = index">
-        <th scope="row" class="govuk-table__header" [id]="'test-record-summary-date-' + i">
-          {{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy HH:mm' }}
-        </th>
-        <td class="govuk-table__cell" [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</td>
-        <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ getResult(test) }}</td>
-        <ng-container *ngIf="!isEditing">
-          <td class="govuk-table__cell">
-            <a id="view-test-{{ i + 1 }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
-          </td>
-        </ng-container>
-      </tr>
+      @for (test of paginatedTestFields; track i; let i = $index) {
+        <tr>
+          <th scope="row" class="govuk-table__header" [id]="'test-record-summary-date-' + i">
+            {{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+          </th>
+          <td class="govuk-table__cell" [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</td>
+          <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ getResult(test) }}</td>
+          @if (!isEditing()) {
+            <td class="govuk-table__cell">
+              <a id="view-test-{{ i + 1 }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
+            </td>
+          }
+        </tr>
+      }
     </tbody>
   </table>
-  <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
-</ng-container>
-
-<ng-template #noTestResults>
+  <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptionsChange)="handlePaginationChange($event)" />
+} @else {
   <h2 class="govuk-heading-m">Test Records</h2>
   <h3 class="govuk-heading-s">No test records found.</h3>
-</ng-template>
+}
+

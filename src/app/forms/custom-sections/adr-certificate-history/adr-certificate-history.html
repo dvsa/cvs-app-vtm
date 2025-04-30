@@ -1,4 +1,4 @@
-<ng-container *ngIf="showTable(); else noTable">
+@if (showTable()) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       ADR Certificates History
@@ -12,37 +12,39 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let certificate of adrCertificateHistory trackBy: trackByFn; let i = index">
-        <td class="govuk-table__cell" [id]="'adr-generated-timestamp-' + i">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
-        <td class="govuk-table__cell" [id]="'adr-created-by-name-' + i">{{certificate.createdByName}}</td>
-        <td class="govuk-table__cell" [id]="'adr-certificate-type-' + i">{{certificate.certificateType}}</td>
-        <td class="govuk-table__cell" [id]="'adr-view-certificate-link-' + i">
-          <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">View</button>
-        </td>
-      </tr>
+      @for (certificate of adrCertificateHistory; track i; let i = $index) {
+        <tr>
+          <td class="govuk-table__cell" [id]="'adr-generated-timestamp-' + i">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="govuk-table__cell" [id]="'adr-created-by-name-' + i">{{certificate.createdByName}}</td>
+          <td class="govuk-table__cell" [id]="'adr-certificate-type-' + i">{{certificate.certificateType}}</td>
+          <td class="govuk-table__cell" [id]="'adr-view-certificate-link-' + i">
+            <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">View</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
-  <app-pagination
-    tableName="adr-certificate-history"
+  <app-pagination tableName="adr-certificate-history"
     [numberOfItems]="numberOfADRCertificates"
-    (paginationOptions)="handlePaginationChange($event)"
-  ></app-pagination>
-</ng-container>
-
-<ng-template #noTable>
+    (paginationOptionsChange)="handlePaginationChange($event)"
+    />
+} @else {
   <dl class="govuk-summary-list">
     <div>
       <dt class="govuk-summary-list__key">{{ reasonForNoRecords }}</dt>
     </div>
   </dl>
-</ng-template>
+}
 
-<div class="govuk-button-group" *ngIf="!isEditing && !isArchived">
-  <a
-    id="generate-adr-cert"
-    *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
-    class="govuk-button"
-    (click)="validateADRDetailsAndNavigate()"
-    >Generate an ADR Certificate for this vehicle</a
-  >
-</div>
+
+@if (!isEditing && !isArchived) {
+  <div class="govuk-button-group">
+    <a
+      id="generate-adr-cert"
+      *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
+      class="govuk-button"
+      (click)="validateADRDetailsAndNavigate()"
+      >Generate an ADR Certificate for this vehicle</a
+      >
+    </div>
+  }

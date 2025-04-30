@@ -8,7 +8,7 @@ describe('CustomFormControlComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [CustomFormControlComponent],
+			imports: [CustomFormControlComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(CustomFormControlComponent);

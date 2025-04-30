@@ -6,7 +6,7 @@ import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveF
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -25,8 +25,7 @@ describe('AdrSectionEditComponent', () => {
 		formGroupDirective.form = new FormGroup({});
 
 		await TestBed.configureTestingModule({
-			declarations: [AdrSectionEditComponent],
-			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+			imports: [FormsModule, ReactiveFormsModule, AdrSectionEditComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),

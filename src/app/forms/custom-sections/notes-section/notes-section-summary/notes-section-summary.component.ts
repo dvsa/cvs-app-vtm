@@ -10,6 +10,7 @@ import { isEqual } from 'lodash';
 	selector: 'app-notes-section-summary',
 	templateUrl: './notes-section-summary.component.html',
 	styleUrls: ['./notes-section-summary.component.scss'],
+	imports: [],
 })
 export class NotesSectionSummaryComponent {
 	store = inject(Store);

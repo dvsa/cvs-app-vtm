@@ -6,7 +6,6 @@ import { TechSearchResultsEffects } from './tech-record-search.effect';
 import { STORE_FEATURE_SEARCH_TECH_RESULTS_KEY, techSearchResultReducer } from './tech-record-search.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_SEARCH_TECH_RESULTS_KEY, techSearchResultReducer),

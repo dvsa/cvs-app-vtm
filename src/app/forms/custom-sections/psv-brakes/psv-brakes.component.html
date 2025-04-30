@@ -1,48 +1,45 @@
-<app-switchable-input
-  *ngIf="isEditing; else view"
-  [form]="form"
-  [type]="editTypes.AUTOCOMPLETE"
-  name="techRecord_brakes_brakeCodeOriginal"
-  label="Brake code"
-  [hint]="'If year of manufacture is 1988, check your brake code'"
-  [isEditing]="isEditing"
-  [prefix]="brakeCodePrefix"
-  [propOptions$]="brakeCodeOptions$"
-></app-switchable-input>
-
-<ng-template #view>
+@if (isEditing()) {
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.AUTOCOMPLETE"
+    name="techRecord_brakes_brakeCodeOriginal"
+    label="Brake code"
+    [hint]="'If year of manufacture is 1988, check your brake code'"
+    [isEditing]="isEditing()"
+    [prefix]="brakeCodePrefix"
+    [propOptions$]="brakeCodeOptions$"
+    />
+} @else {
   <div>
     <label class="govuk-label govuk-label--m" for="brake-code">Brake code</label>
     <span class="govuk-body" id="brake-code">{{ brakeCode }}</span>
   </div>
-</ng-template>
+}
 
-<app-switchable-input
-  [form]="form"
+
+<app-switchable-input [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeOne"
   label="Service"
-  [isEditing]="isEditing"
+  [isEditing]="isEditing()"
   [width]="widths.XL"
-></app-switchable-input>
+  />
 
-<app-switchable-input
-  [form]="form"
+<app-switchable-input [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeTwo"
   label="Secondary"
-  [isEditing]="isEditing"
+  [isEditing]="isEditing()"
   [width]="widths.XL"
-></app-switchable-input>
+  />
 
-<app-switchable-input
-  [form]="form"
+<app-switchable-input [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeThree"
   label="Parking"
-  [isEditing]="isEditing"
+  [isEditing]="isEditing()"
   [width]="widths.XL"
-></app-switchable-input>
+  />
 
 <div class="row">
   <app-switchable-input
@@ -50,7 +47,7 @@
     [type]="editTypes.RADIO"
     name="techRecord_brakes_retarderBrakeOne"
     label="Retarder 1"
-    [isEditing]="isEditing"
+    [isEditing]="isEditing()"
     [options]="retarderOptions"
   ></app-switchable-input>
 
@@ -59,7 +56,7 @@
     [type]="editTypes.RADIO"
     name="techRecord_brakes_retarderBrakeTwo"
     label="Retarder 2"
-    [isEditing]="isEditing"
+    [isEditing]="isEditing()"
     [options]="retarderOptions"
   ></app-switchable-input>
 </div>
@@ -77,30 +74,30 @@
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Service</th>
       <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
       </td>
       <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
       </td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Secondary</th>
       <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossLadenWeight ?? 0) * 22.5) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossLadenWeight ?? 0) * 22.5) / 100) }}
       </td>
       <td class="govuk-table__cell" id="halfWheelsLockedSecondaryCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossKerbWeight ?? 0) * 25) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossKerbWeight ?? 0) * 25) / 100) }}
       </td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Parking</th>
       <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
       </td>
       <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
-        {{ round(((vehicleTechRecord?.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+        {{ round(((vehicleTechRecord()?.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
       </td>
     </tr>
   </tbody>
@@ -110,14 +107,15 @@
   <label class="govuk-label govuk-label--m" for="parking-brake">Parking Brake</label>
 
   <div id="parking-brake" class="govuk-checkboxes">
-    <app-switchable-input
-      *ngFor="let axle of axles.controls; let i = index"
-      [form]="getAxleForm(i)"
-      [type]="editTypes.CHECKBOX"
-      [customId]="'parkingBrakeMrk' + (i + 1)"
-      name="parkingBrakeMrk"
-      [label]="'Axle ' + (i + 1)"
-      [isEditing]="isEditing"
-    ></app-switchable-input>
+    @for (axle of axles.controls; track axle; let i = $index) {
+      <app-switchable-input
+        [form]="getAxleForm(i)"
+        [type]="editTypes.CHECKBOX"
+        [customId]="'parkingBrakeMrk' + (i + 1)"
+        name="parkingBrakeMrk"
+        [label]="'Axle ' + (i + 1)"
+        [isEditing]="isEditing()"
+      ></app-switchable-input>
+    }
   </div>
 </div>

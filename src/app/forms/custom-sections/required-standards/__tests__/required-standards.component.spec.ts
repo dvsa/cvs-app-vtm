@@ -1,10 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
@@ -22,14 +22,28 @@ describe('RequiredStandardsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
-			declarations: [RequiredStandardsComponent, ButtonComponent, TruncatePipe, TagComponent],
-			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
+			imports: [
+				FormsModule,
+				ReactiveFormsModule,
+				RequiredStandardsComponent,
+				ButtonComponent,
+				TruncatePipe,
+				TagComponent,
+			],
+			providers: [
+				DynamicFormService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(RequiredStandardsComponent);
+		fixture.componentRef.setInput('template', {});
+		fixture.detectChanges();
 		router = TestBed.inject(Router);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;
@@ -67,9 +81,9 @@ describe('RequiredStandardsComponent', () => {
 		it('should let me add a RS and call the navigator', () => {
 			const spy = jest.spyOn(router, 'navigate');
 
-			component.testData = {
+			fixture.componentRef.setInput('testData', {
 				euVehicleCategory: EUVehicleCategory.M1,
-			};
+			});
 
 			component.onAddRequiredStandard();
 
@@ -79,9 +93,9 @@ describe('RequiredStandardsComponent', () => {
 			const spy = jest.spyOn(router, 'navigate');
 			const emitSpy = jest.spyOn(component.validateEuVehicleCategory, 'emit');
 
-			component.testData = {
+			fixture.componentRef.setInput('testData', {
 				testerName: 'bar',
-			};
+			});
 
 			component.onAddRequiredStandard();
 

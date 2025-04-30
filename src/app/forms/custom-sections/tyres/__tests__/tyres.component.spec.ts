@@ -1,11 +1,11 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { provideRouter } from '@angular/router';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Axles, Tyres } from '@models/vehicle-tech-record.model';
-import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -30,9 +30,11 @@ describe('TyresComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
-			declarations: [TyresComponent],
+			imports: [TyresComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: ReferenceDataService, useValue: mockReferenceDataService },
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
@@ -43,8 +45,8 @@ describe('TyresComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(TyresComponent);
 		component = fixture.componentInstance;
-		component.vehicleTechRecord = mockVehicleTechnicalRecord('psv');
-		component.vehicleTechRecord.techRecord_axles = [
+		const techRecord = mockVehicleTechnicalRecord('psv');
+		techRecord.techRecord_axles = [
 			{
 				axleNumber: 1,
 				tyres_tyreSize: '295/80-22.5',
@@ -97,7 +99,7 @@ describe('TyresComponent', () => {
 				weights_designWeight: 5,
 			},
 		];
-
+		fixture.componentRef.setInput('vehicleTechRecord', techRecord);
 		fixture.detectChanges();
 		spy = jest.spyOn(component, 'addTyreToTechRecord');
 	});
@@ -134,10 +136,10 @@ describe('TyresComponent', () => {
 					firstChange: false,
 				},
 			} as unknown as SimpleChanges;
-			component.isEditing = true;
+			fixture.componentRef.setInput('isEditing', true);
 		});
 		it('should return if isEditing is false', () => {
-			component.isEditing = false;
+			fixture.componentRef.setInput('isEditing', false);
 			component.checkAxleWeights(simpleChanges);
 			expect(mockTechRecordService.getAxleFittingWeightValueFromLoadIndex).not.toHaveBeenCalled();
 		});
@@ -294,7 +296,7 @@ describe('TyresComponent', () => {
 
 			component.addTyreToTechRecord(tyre, 1);
 
-			const axles = component.vehicleTechRecord.techRecord_axles as Axles;
+			const axles = component.vehicleTechRecord().techRecord_axles as Axles;
 
 			expect(axles[0]?.tyres_tyreSize).toBe(tyre.tyreSize);
 			expect(axles[0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);

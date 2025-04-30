@@ -1,41 +1,39 @@
-<div class="govuk-grid-row" *ngIf="techRecord">
-  <div class="govuk-grid-column-one-third">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-        <app-tech-record-title [vehicle]="techRecord" [actions]="getActions(techRecord)" [hideActions]="isEditing"></app-tech-record-title>
-
-        <app-edit-tech-record-button
-          *appRoleRequired="roles.TechRecordAmend"
-          [(isEditing)]="isEditing"
-          [isDirty]="isDirty"
-          (submitChange)="handleSubmit()"
-        ></app-edit-tech-record-button>
-
-        <app-tech-record-history [currentTechRecord]="techRecord"></app-tech-record-history>
-
-        <app-test-record-summary
-          *appRoleRequired="roles.TestResultView"
-          [testResults]="(testResults$ | async) || []"
-          [isEditing]="isEditing"
-        ></app-test-record-summary>
-
-        <ng-container *ngIf="showCreateTestButton()">
-          <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
-            <a id="create-test" class="govuk-button" (click)="createTest(techRecord)">Create a test for this vehicle</a>
-          </div>
-        </ng-container>
+@if (techRecord()) {
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <app-tech-record-title [vehicle]="techRecord()" [actions]="getActions(techRecord())" [hideActions]="isEditing"></app-tech-record-title>
+          <app-edit-tech-record-button
+            *appRoleRequired="roles.TechRecordAmend"
+            [(isEditing)]="isEditing"
+            [isDirty]="isDirty"
+            (submitChange)="handleSubmit()"
+          ></app-edit-tech-record-button>
+          <app-tech-record-history [currentTechRecord]="techRecord()"></app-tech-record-history>
+          <app-test-record-summary
+            *appRoleRequired="roles.TestResultView"
+            [testResults]="(testResults$ | async) || []"
+            [isEditing]="isEditing"
+          ></app-test-record-summary>
+          @if (showCreateTestButton()) {
+            <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
+              <a id="create-test" class="govuk-button" (click)="createTest(techRecord())">Create a test for this vehicle</a>
+            </div>
+          }
+        </div>
       </div>
     </div>
+    <div class="govuk-grid-column-two-thirds">
+      <app-tech-record-summary (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
+      <app-edit-tech-record-button
+        class="right"
+        *appRoleRequired="roles.TechRecordAmend"
+        [(isEditing)]="isEditing"
+        [isDirty]="isDirty"
+        customId="bottom"
+        (submitChange)="handleSubmit()"
+      ></app-edit-tech-record-button>
+    </div>
   </div>
-  <div class="govuk-grid-column-two-thirds">
-    <app-tech-record-summary (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
-    <app-edit-tech-record-button
-      class="right"
-      *appRoleRequired="roles.TechRecordAmend"
-      [(isEditing)]="isEditing"
-      [isDirty]="isDirty"
-      customId="bottom"
-      (submitChange)="handleSubmit()"
-    ></app-edit-tech-record-button>
-  </div>
-</div>
+}

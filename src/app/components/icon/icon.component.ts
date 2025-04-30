@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
 	selector: 'app-icon',
 	templateUrl: './icon.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [],
 })
 export class IconComponent {
-	@Input() icon = '';
+	readonly icon = input('');
 }

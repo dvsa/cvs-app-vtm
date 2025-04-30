@@ -1,16 +1,22 @@
-<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <div *ngIf="hint" id="{{ customId ?? name }}-hint" class="govuk-hint">{{ hint }}</div>
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
+  @if (hint()) {
+    <div id="{{ customId() ?? name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+  }
 
-  <app-field-error-message *ngIf="error" [error]="error" [name]="name"></app-field-error-message>
+  @if (error) {
+    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
+  }
 
   <div class="govuk-checkboxes__item">
-    <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
-      <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
-    </div>
+    @if (prefix(); as prefix) {
+      <div class="govuk-input__suffix prefix" aria-hidden="true">
+        <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
+      </div>
+    }
 
     <input
-      [id]="customId ?? name"
-      [name]="name"
+      [id]="customId() ?? name()"
+      [name]="name()"
       type="checkbox"
       class="govuk-checkboxes__input"
       [(ngModel)]="value"
@@ -18,12 +24,14 @@
       (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
-    />
+      />
 
-    <label class="govuk-label govuk-checkboxes__label" [for]="customId ?? name">{{ label }}</label>
+    <label class="govuk-label govuk-checkboxes__label" [for]="customId() ?? name()">{{ label() }}</label>
 
-    <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
-      <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
-    </div>
+    @if (suffix(); as suffix) {
+      <div class="govuk-input__suffix" aria-hidden="true">
+        <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
+      </div>
+    }
   </div>
 </div>

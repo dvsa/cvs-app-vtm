@@ -1,9 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
@@ -17,9 +18,14 @@ describe('CustomDefectsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
-			declarations: [CustomDefectsComponent, CustomDefectComponent],
-			providers: [DynamicFormService, provideMockStore({})],
+			imports: [FormsModule, ReactiveFormsModule, CustomDefectsComponent, CustomDefectComponent],
+			providers: [
+				DynamicFormService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({}),
+			],
 		}).compileComponents();
 	});
 
@@ -27,7 +33,7 @@ describe('CustomDefectsComponent', () => {
 		fixture = TestBed.createComponent(CustomDefectsComponent);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;
-		component.template = { name: 'test component', type: FormNodeTypes.GROUP };
+		fixture.componentRef.setInput('template', { name: 'test component', type: FormNodeTypes.GROUP });
 		fixture.detectChanges();
 	});
 

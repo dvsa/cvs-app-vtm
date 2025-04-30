@@ -1,5 +1,3 @@
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
@@ -52,8 +50,10 @@ export const ContingencyIvaMsvaVehicleSection: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			editType: FormNodeEditTypes.SELECT,
 			width: FormNodeWidth.S,
-			options: getOptionsFromEnum(EUVehicleCategory),
-			validators: [{ name: ValidatorNames.Required }],
+			asyncValidators: [
+				{ name: AsyncValidatorNames.FilterEuCategoryOnVehicleType },
+				{ name: AsyncValidatorNames.AsyncRequired },
+			],
 		},
 		{
 			name: 'odometerReading',

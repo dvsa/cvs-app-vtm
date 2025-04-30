@@ -1,47 +1,52 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <ng-container *ngIf="form && defectCount; else noDefects" [formGroup]="form">
-      <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
-      <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-table__caption--m">
-          Defects
-        </caption>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Reference</th>
-            <th scope="col" class="govuk-table__header">Description</th>
-            <th scope="col" class="govuk-table__header">Category</th>
-            <th scope="col" class="govuk-table__header">PRS?</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <tr *ngFor="let defect of testDefects; let i = index" class="govuk-table__row">
-            <td class="govuk-table__cell">
-              <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
-                >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a
-              >
-            </td>
-            <td class="govuk-table__cell">
-              {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + defect.deficiencyText | truncate : 47 }}
-            </td>
-            <td class="govuk-table__cell">
-              <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
-            </td>
-            <td class="govuk-table__cell">
-              <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ng-container>
+    @if (form && defectCount) {
+      <ng-container [formGroup]="form">
+        <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
+        <table class="govuk-table">
+          <caption class="govuk-table__caption govuk-table__caption--m">
+            Defects
+          </caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Reference</th>
+              <th scope="col" class="govuk-table__header">Description</th>
+              <th scope="col" class="govuk-table__header">Category</th>
+              <th scope="col" class="govuk-table__header">PRS?</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            @for (defect of testDefects; track defect; let i = $index) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                  <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
+                    >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a
+                    >
+                  </td>
+                  <td class="govuk-table__cell">
+                    {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + defect.deficiencyText | truncate : 47 }}
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </ng-container>
+      } @else {
+        <h2 class="govuk-heading-m">Defects</h2>
+        <p class="govuk-body">No defects</p>
+      }
 
-    <ng-template #noDefects>
-      <h2 class="govuk-heading-m">Defects</h2>
-      <p class="govuk-body">No defects</p>
-    </ng-template>
+    </div>
   </div>
-</div>
 
-<app-button *ngIf="isEditing" type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge"
-  >Add defect</app-button
->
+  @if (isEditing()) {
+    <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge"
+      >Add defect</app-button
+      >
+    }

@@ -1,14 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { provideRouter } from '@angular/router';
+
 import { mockDefectList } from '@mocks/mock-defects';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
 import { of } from 'rxjs';
@@ -23,10 +24,12 @@ describe('AmendedTestRecordComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent],
-			imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, RouterTestingModule],
+			imports: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent],
 			providers: [
 				TestRecordsService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: UserService,

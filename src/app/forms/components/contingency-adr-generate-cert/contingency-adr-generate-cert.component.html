@@ -9,7 +9,7 @@
   <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
 </ng-container>
 
-<ng-container *ngIf="fileName">
+@if (fileName) {
   <div id="link-div">
     <app-field-error-message for="view-button" [error]="errorString"></app-field-error-message>
     <app-button
@@ -21,6 +21,6 @@
       type="link"
       design="link"
       >View certificate</app-button
-    >
-  </div>
-</ng-container>
+      >
+    </div>
+  }

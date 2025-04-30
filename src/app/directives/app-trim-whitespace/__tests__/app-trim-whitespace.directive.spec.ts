@@ -7,6 +7,7 @@ import { TrimWhitespaceDirective } from '../app-trim-whitespace.directive';
 @Component({
 	template: ` <form [formGroup]="form"><input id="bar" appTrimWhitespace formControlName="foo" /></form>
     <input id="baz" appTrimWhitespace />`,
+	imports: [FormsModule, ReactiveFormsModule, TrimWhitespaceDirective],
 })
 class TestComponent {
 	form = new FormGroup({
@@ -22,8 +23,7 @@ describe('TrimWhitespaceDirective', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule],
-			declarations: [TrimWhitespaceDirective, TestComponent],
+			imports: [TestComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(TestComponent);

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { Component, OnInit, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestType } from '@models/test-types/testType';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
@@ -11,9 +12,10 @@ import { Observable } from 'rxjs';
 	selector: 'app-test-type-select',
 	templateUrl: './test-type-select.component.html',
 	styleUrls: ['./test-type-select.component.scss'],
+	imports: [NgClass, AsyncPipe],
 })
 export class TestTypeSelectComponent implements OnInit {
-	@Output() testTypeSelected = new EventEmitter<TestType>();
+	readonly testTypeSelected = output<TestType>();
 
 	categories: Array<TestTypeCategory> = [];
 

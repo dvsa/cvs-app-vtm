@@ -1,59 +1,61 @@
-<div *ngIf="vehicle$ | async as vehicle" class="govuk-grid-row">
-  <div class="govuk-grid-column-one-third">
-    <div class="govuk-grid-row">
+@if (vehicle$ | async; as vehicle) {
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <h2 class="govuk-heading-m">Type approved vehicle</h2>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Vehicle type</dt>
+              <dd id="batch-vehicle-type" class="govuk-summary-list__value">
+                {{ vehicleType$ | async | uppercase | defaultNullOrEmpty }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Vehicle Status</dt>
+              <dd id="batch-vehicle-status" class="govuk-summary-list__value">
+                <form [formGroup]="form">
+                  <app-select
+                    formControlName="vehicleStatus"
+                    name="change-vehicle-status-select"
+                    [options]="vehicleStatusOptions"
+                    (ngModelChange)="statusChange()"
+                  ></app-select>
+                </form>
+              </dd>
+            </div>
+            @if (isBatch$ | async) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Application ID</dt>
+                <dd id="batch-application-id" class="govuk-summary-list__value">{{ applicationId$ | async }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Vehicles in batch</dt>
+                <dd id="batch-vehicleCount" class="govuk-summary-list__value">
+                  {{ (batchCount$ | async) ?? 0 }}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  <app-button id="manage-batch" type="link" design="link" [routerLink]="['details']">Manage batch</app-button>
+                </dd>
+              </div>
+            }
+          </dl>
+          <app-button-group>
+            @if ((isBatch$ | async) === false) {
+              <app-button id="add-to-batch" type="link" routerLink="details">Add to batch</app-button>
+            }
+            @if (isBatch$ | async) {
+              <app-button id="submit-create-batch" (clicked)="handleSubmit()">Save and process batch</app-button>
+            }
+            <app-button id="cancel-create-batch" type="link" design="link" routerLink="../">Cancel</app-button>
+          </app-button-group>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
       <div class="govuk-grid-column-full">
-        <h2 class="govuk-heading-m">Type approved vehicle</h2>
-        <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Vehicle type</dt>
-            <dd id="batch-vehicle-type" class="govuk-summary-list__value">
-              {{ vehicleType$ | async | uppercase | defaultNullOrEmpty }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Vehicle Status</dt>
-            <dd id="batch-vehicle-status" class="govuk-summary-list__value">
-              <form [formGroup]="form">
-                <app-select
-                  formControlName="vehicleStatus"
-                  name="change-vehicle-status-select"
-                  [options]="vehicleStatusOptions"
-                  (ngModelChange)="statusChange()"
-                ></app-select>
-              </form>
-            </dd>
-          </div>
-
-          <ng-container *ngIf="isBatch$ | async">
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Application ID</dt>
-              <dd id="batch-application-id" class="govuk-summary-list__value">{{ applicationId$ | async }}</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Vehicles in batch</dt>
-              <dd id="batch-vehicleCount" class="govuk-summary-list__value">
-                {{ (batchCount$ | async) ?? 0 }}
-              </dd>
-              <dd class="govuk-summary-list__actions">
-                <app-button id="manage-batch" type="link" design="link" [routerLink]="['details']">Manage batch</app-button>
-              </dd>
-            </div>
-          </ng-container>
-        </dl>
-
-        <app-button-group>
-          <app-button *ngIf="(isBatch$ | async) === false" id="add-to-batch" type="link" routerLink="details">Add to batch</app-button>
-          <app-button *ngIf="isBatch$ | async" id="submit-create-batch" (clicked)="handleSubmit()">Save and process batch</app-button>
-
-          <app-button id="cancel-create-batch" type="link" design="link" routerLink="../">Cancel</app-button>
-        </app-button-group>
+        <app-tech-record-summary (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
       </div>
     </div>
   </div>
-
-  <div class="govuk-grid-column-two-thirds">
-    <div class="govuk-grid-column-full">
-      <app-tech-record-summary (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
-    </div>
-  </div>
-</div>
+}

@@ -8,11 +8,13 @@ import { State } from '@store/.';
 import { clearAllSectionStates } from '@store/technical-records';
 import { contingencyTestTypeSelected } from '@store/test-records';
 import { take } from 'rxjs';
+import { TestTypeSelectComponent } from '../../../components/test-type-select/test-type-select.component';
 
 @Component({
 	selector: 'app-create-test-type',
 	templateUrl: './create-test-type.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [TestTypeSelectComponent],
 })
 export class CreateTestTypeComponent implements AfterContentInit {
 	constructor(

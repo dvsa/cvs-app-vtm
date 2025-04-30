@@ -2,9 +2,7 @@ import { Directive, ElementRef, OnDestroy, OnInit, inject, input } from '@angula
 import { ControlContainer } from '@angular/forms';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-@Directive({
-	selector: '[govukRadio]',
-})
+@Directive({ selector: '[govukRadio]' })
 export class GovukRadioDirective implements OnInit, OnDestroy {
 	elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 	controlContainer = inject(ControlContainer);

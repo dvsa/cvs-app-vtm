@@ -1,13 +1,14 @@
 import { CustomTag } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
+import { Component, forwardRef, inject, input, model, output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared.module';
+
+import { TagDirective } from '@directives/tag/tag.directive';
+import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-checkbox-group',
-	standalone: true,
-	imports: [CommonModule, FormsModule, SharedModule],
+	imports: [CommonModule, FormsModule, TagComponent, TagDirective],
 	templateUrl: './govuk-checkbox-group.component.html',
 	styleUrls: ['./govuk-checkbox-group.component.scss'],
 	providers: [
@@ -19,41 +20,39 @@ import { SharedModule } from '../../../shared/shared.module';
 	],
 })
 export class GovukCheckboxGroupComponent implements ControlValueAccessor {
-	@Output() blur = new EventEmitter<FocusEvent>();
-	@Output() focus = new EventEmitter<FocusEvent>();
+	readonly blur = output<FocusEvent>();
+	readonly focus = output<FocusEvent>();
 
-	@Input()
-	value: unknown[] | null = null;
+	value = model<unknown[] | null>(null);
 
-	@Input()
-	disabled = false;
+	disabled = model(false);
 
-	@Input()
-	tags: CustomTag[] = [];
+	readonly tags = input<CustomTag[]>([]);
 
-	@Input({ required: true })
-	options!: { value: any; label: string }[];
+	readonly options =
+		input.required<
+			{
+				value: any;
+				label: string;
+			}[]
+		>();
 
-	@Input({ alias: 'hint' })
-	controlHint = '';
+	readonly controlHint = input('', { alias: 'hint' });
 
-	@Input({ alias: 'formControlName' })
-	controlName = '';
+	readonly controlName = input('', { alias: 'formControlName' });
 
-	@Input({ alias: 'label' })
-	controlLabel = '';
+	readonly controlLabel = input('', { alias: 'label' });
 
-	@Input({ alias: 'id' })
-	controlId = '';
+	readonly controlId = input('', { alias: 'id' });
 
 	controlContainer = inject(ControlContainer);
 
 	get control() {
-		return this.controlContainer.control?.get(this.controlName);
+		return this.controlContainer.control?.get(this.controlName());
 	}
 
 	get id() {
-		return this.controlId || this.controlName;
+		return this.controlId() || this.controlName();
 	}
 
 	get hintId() {
@@ -76,7 +75,7 @@ export class GovukCheckboxGroupComponent implements ControlValueAccessor {
 	onTouched = () => {};
 
 	writeValue(obj: any): void {
-		this.value = obj;
+		this.value.set(obj);
 		this.onChange(obj);
 	}
 
@@ -89,25 +88,25 @@ export class GovukCheckboxGroupComponent implements ControlValueAccessor {
 	}
 
 	setDisabledState?(isDisabled: boolean): void {
-		this.disabled = isDisabled;
+		this.disabled.set(isDisabled);
 	}
 
 	toggle(option: any) {
-		const value = this.value;
+		const value = this.value();
 
 		if (!value) {
-			this.value = [option];
-			this.onChange(this.value);
+			this.value.set([option]);
+			this.onChange(this.value());
 			return;
 		}
 
 		const arr = [...value];
 		arr.includes(option) ? arr.splice(arr.indexOf(option), 1) : arr.push(option);
-		this.value = arr;
-		this.onChange(this.value);
+		this.value.set(arr);
+		this.onChange(this.value());
 	}
 
 	isChecked(value: unknown) {
-		return this.value?.includes(value?.toString());
+		return this.value()?.includes(value?.toString());
 	}
 }

@@ -1,8 +1,6 @@
 import { Directive, HostListener } from '@angular/core';
 
-@Directive({
-	selector: '[appTrimWhitespace]',
-})
+@Directive({ selector: '[appTrimWhitespace]' })
 export class TrimWhitespaceDirective {
 	@HostListener('focusout', ['$event.target'])
 	public onBlur(input: HTMLInputElement): void {

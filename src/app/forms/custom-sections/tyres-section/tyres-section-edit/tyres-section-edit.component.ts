@@ -13,23 +13,37 @@ import {
 import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
 import { addAxle, removeAxle, updateScrollPosition } from '@/src/app/store/technical-records';
-import { ViewportScroller } from '@angular/common';
+import { KeyValuePipe, ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep } from 'lodash';
-import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
+import { ReplaySubject, combineLatest, filter, takeUntil, withLatestFrom } from 'rxjs';
+import { TagComponent } from '../../../../components/tag/tag.component';
+import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
+import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
 
 @Component({
 	selector: 'app-tyres-section-edit',
 	templateUrl: './tyres-section-edit.component.html',
 	styleUrls: ['./tyres-section-edit.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupInputComponent,
+		TagComponent,
+		FieldWarningMessageComponent,
+		GovukFormGroupSelectComponent,
+		KeyValuePipe,
+	],
 })
 export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
@@ -43,6 +57,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 
 	fb = inject(FormBuilder);
 	store = inject(Store);
+	actions = inject(Actions);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	controlContainer = inject(ControlContainer);
@@ -64,6 +79,8 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		this.addControlsBasedOffVehicleType();
 		this.prepopulateAxles();
 		this.loadReferenceData();
+		this.checkAxleAdded();
+		this.checkAxleRemoved();
 
 		this.editingReason = this.route.snapshot.data['reason'];
 
@@ -91,8 +108,6 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		this.checkAxleAdded(changes);
-		this.checkAxleRemoved(changes);
 		this.checkFitmentCodeHasChanged(changes);
 		this.checkAxleWeights(changes);
 	}
@@ -127,8 +142,8 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	get psvControls() {
 		return {
 			techRecord_speedRestriction: this.fb.control<number | null>(null, [
-				this.commonValidators.min(0, 'Speed Restriction must be greater than or equal to 0'),
-				this.commonValidators.max(99, 'Speed Restriction must be less than or equal to 99'),
+				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
+				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99'),
 			]),
 			techRecord_axles: this.fb.array([]),
 		};
@@ -265,13 +280,15 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 				lastAxle.tyres_fitmentCode === FitmentCode.SINGLE
 					? Number.parseInt(String(refData.loadIndexSingleLoad), 10)
 					: Number.parseInt(String(refData.loadIndexTwinLoad), 10);
+
 			const tyre = new Tyre({
 				tyreCode: lastAxle.tyres_tyreCode,
 				tyreSize: refData.tyreSize,
 				plyRating: refData.plyRating,
 				dataTrAxles: indexLoad,
-				fitmentCode: lastAxle.tyres_fitmentCode,
+				fitmentCode: lastAxle.tyres_fitmentCode as FitmentCode,
 			});
+
 			if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
 				tyre.speedCategorySymbol = lastAxle.tyres_speedCategorySymbol;
 			}
@@ -301,8 +318,9 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 	removeAxle(index: number) {
 		const techRecord = this.techRecord();
 		const minLength = techRecord.techRecord_vehicleType === VehicleTypes.TRL ? 1 : 2;
+		const axles = this.techRecordAxles.value;
 
-		if (techRecord.techRecord_axles && techRecord.techRecord_axles.length > minLength) {
+		if (Array.isArray(axles) && axles.length > minLength) {
 			this.techRecordAxles.setErrors(null);
 			this.store.dispatch(removeAxle({ index }));
 			return;
@@ -329,6 +347,7 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		axle.tyres_plyRating = tyre.plyRating;
 		axle.tyres_dataTrAxles = tyre.dataTrAxles;
 		axle.tyres_fitmentCode = tyre.fitmentCode;
+
 		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
 			(axle as PSVAxles).tyres_speedCategorySymbol = tyre.speedCategorySymbol;
 		}
@@ -337,25 +356,28 @@ export class TyresSectionEditComponent implements OnInit, OnDestroy, OnChanges {
 		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);
 	}
 
-	checkAxleAdded(changes: SimpleChanges) {
-		const current = changes['techRecord']?.currentValue?.techRecord_axles;
-		const previous = changes['techRecord']?.previousValue?.techRecord_axles;
-
-		if (this.techRecordAxles && current?.length > previous?.length) {
-			const control = this.getAxleForm();
-			control.patchValue(current[current.length - 1]);
-			this.techRecordAxles.push(control, { emitEvent: false });
-		}
+	checkAxleAdded() {
+		this.actions
+			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					this.techRecordAxles.push(this.getAxleForm(), { emitEvent: false });
+					this.techRecordAxles.patchValue(axles, { emitEvent: false });
+				}
+			});
 	}
 
-	checkAxleRemoved(changes: SimpleChanges) {
-		const current = changes['techRecord']?.currentValue?.techRecord_axles;
-		const previous = changes['techRecord']?.previousValue?.techRecord_axles;
-
-		if (this.techRecordAxles && current < previous) {
-			this.techRecordAxles.removeAt(0);
-			this.techRecordAxles.patchValue(current, { emitEvent: false });
-		}
+	checkAxleRemoved() {
+		this.actions
+			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
+			.subscribe(([_, techRecord]) => {
+				if (techRecord) {
+					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
+					this.techRecordAxles.removeAt(0, { emitEvent: false });
+					this.techRecordAxles.patchValue(axles, { emitEvent: false });
+				}
+			});
 	}
 
 	checkFitmentCodeHasChanged(changes: SimpleChanges) {

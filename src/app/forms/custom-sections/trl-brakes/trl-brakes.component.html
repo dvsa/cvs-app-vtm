@@ -9,32 +9,31 @@
   </thead>
 
   <tbody class="govuk-table__body">
-    <tr class="govuk-table__row" *ngFor="let axle of axles.controls; let i = index">
-      <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
-
-      <td class="govuk-table__cell">
-        <app-switchable-input
-          [form]="getAxleForm(i)"
-          [type]="types.NUMBER"
-          name="brakes_brakeActuator"
-          [isEditing]="isEditing"
-        ></app-switchable-input>
-      </td>
-
-      <td class="govuk-table__cell">
-        <app-switchable-input [form]="getAxleForm(i)" [type]="types.NUMBER" name="brakes_leverLength" [isEditing]="isEditing"></app-switchable-input>
-      </td>
-
-      <td class="govuk-table__cell">
-        <app-switchable-input
-          [form]="getAxleForm(i)"
-          [type]="types.DROPDOWN"
-          name="brakes_springBrakeParking"
-          [isEditing]="isEditing"
-          [options]="booleanOptions"
-        ></app-switchable-input>
-      </td>
-    </tr>
+    @for (axle of axles.controls; track axle; let i = $index) {
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+        <td class="govuk-table__cell">
+          <app-switchable-input
+            [form]="getAxleForm(i)"
+            [type]="types.NUMBER"
+            name="brakes_brakeActuator"
+            [isEditing]="isEditing()"
+          ></app-switchable-input>
+        </td>
+        <td class="govuk-table__cell">
+          <app-switchable-input [form]="getAxleForm(i)" [type]="types.NUMBER" name="brakes_leverLength" [isEditing]="isEditing()"></app-switchable-input>
+        </td>
+        <td class="govuk-table__cell">
+          <app-switchable-input
+            [form]="getAxleForm(i)"
+            [type]="types.DROPDOWN"
+            name="brakes_springBrakeParking"
+            [isEditing]="isEditing()"
+            [options]="booleanOptions"
+          ></app-switchable-input>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 
@@ -49,7 +48,7 @@
       [type]="types.RADIO"
       [name]="name"
       [label]="stripName(name)"
-      [isEditing]="isEditing"
+      [isEditing]="isEditing()"
       [options]="booleanOptions"
     ></app-switchable-input>
   </ng-template>
@@ -59,14 +58,15 @@
   <label class="govuk-label govuk-label--m" for="parking-brake">Parking Brake</label>
 
   <div id="parking-brake" class="govuk-checkboxes">
-    <app-switchable-input
-      *ngFor="let axle of axles.controls; let i = index"
-      [form]="getAxleForm(i)"
-      [type]="types.CHECKBOX"
-      [customId]="'parkingBrakeMrk' + (i + 1)"
-      name="parkingBrakeMrk"
-      [label]="'Axle ' + (i + 1)"
-      [isEditing]="isEditing"
-    ></app-switchable-input>
+    @for (axle of axles.controls; track axle; let i = $index) {
+      <app-switchable-input
+        [form]="getAxleForm(i)"
+        [type]="types.CHECKBOX"
+        [customId]="'parkingBrakeMrk' + (i + 1)"
+        name="parkingBrakeMrk"
+        [label]="'Axle ' + (i + 1)"
+        [isEditing]="isEditing()"
+      ></app-switchable-input>
+    }
   </div>
 </div>

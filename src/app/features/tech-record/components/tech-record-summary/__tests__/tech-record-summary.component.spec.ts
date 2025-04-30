@@ -1,23 +1,21 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { QueryList } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MultiOptionsService } from '@services/multi-options/multi-options.service';
-
-import { FormControl, FormGroup } from '@angular/forms';
+import { provideRouter } from '@angular/router';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
+
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
@@ -34,10 +32,12 @@ describe('TechRecordSummaryComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordSummaryComponent],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+			imports: [TechRecordSummaryComponent],
 			providers: [
 				MultiOptionsService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: UserService,
@@ -152,7 +152,7 @@ describe('TechRecordSummaryComponent', () => {
 					createdTimestamp: 'bar',
 					vin: 'testVin',
 					techRecord_vehicleType: VehicleTypes.TRL,
-					techRecord_euVehicleCategory: 'o2',
+					techRecord_euVehicleCategory: EUVehicleCategory.O2,
 				} as V3TechRecordModel)
 			);
 			fixture.detectChanges();
@@ -190,31 +190,11 @@ describe('TechRecordSummaryComponent', () => {
 			} as unknown as TechRecordType<'put'>;
 			component.techRecordCalculated = mockTechRecord;
 			jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
-			component.sections = new QueryList<DynamicFormGroupComponent>();
+			jest.spyOn(component, 'sections').mockReturnValue([]);
 
 			component.handleFormState({});
 
 			expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockTechRecord }));
-		});
-	});
-
-	describe('handleVehicleConfigurationChanges', () => {
-		it('should update various form fields once the vehicle configuration changes', () => {
-			const form = new FormGroup({
-				techRecord_vehicleConfiguration: new FormControl(''),
-				techRecord_bodyType_description: new FormControl(''),
-				techRecord_bodyType_code: new FormControl(''),
-				techRecord_functionCode: new FormControl(''),
-			});
-			const subscriptionSpy = jest
-				.spyOn(form.get('techRecord_vehicleConfiguration')!.valueChanges, 'pipe')
-				.mockReturnValue(of('articulated'));
-			const formPatchSpy = jest.spyOn(form, 'patchValue');
-			component.form = form;
-			component.form.get('techRecord_vehicleConfiguration')?.markAsDirty();
-			component.handleVehicleConfigurationChanges();
-			expect(subscriptionSpy).toHaveBeenCalled();
-			expect(formPatchSpy).toHaveBeenCalled();
 		});
 	});
 });

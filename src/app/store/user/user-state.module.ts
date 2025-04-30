@@ -12,7 +12,6 @@ export function localStorageSyncReducer(reducer: ActionReducer<unknown>): Action
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
-	declarations: [],
 	imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_USER_KEY, userServiceReducer, { metaReducers })],
 })
 export class UserStateModule {}

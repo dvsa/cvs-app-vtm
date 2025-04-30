@@ -1,0 +1,28 @@
+.approval-type-number-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.approval-type-number-wrapper > span {
+  padding-right: 0%;
+  margin-right: 0%;
+  font-family: GDS Transport;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 24px;
+  color: #0b0c0c;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.govuk-input--width-6 {
+  width: 6.25rem;
+}
+
+.govuk-input--width-7 {
+  width: 7.125rem;
+}

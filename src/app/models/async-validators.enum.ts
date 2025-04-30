@@ -11,4 +11,6 @@ export enum AsyncValidatorNames {
 	PassResultDependantOnCustomDefects = 'passResultDependantOnCustomDefects',
 	RequiredWhenCarryingDangerousGoods = 'requiredWhenCarryingDangerousGoods',
 	Custom = 'custom',
+	FilterEuCategoryOnVehicleType = 'filterEuCategoryOnVehicleType',
+	AsyncRequired = 'asyncRequired',
 }

@@ -1,0 +1,9 @@
+
+@switch (mode()) {
+  @case ('view') {
+    <app-plates-section-view [techRecord]="techRecord()" />
+  }
+  @case ('edit') {
+    <app-plates-section-edit/>
+  }
+}
