@@ -41,6 +41,9 @@ export class TechnicalRecordChangesService {
 
 	hasSectionChanged(sectionName: string): boolean {
 		switch (sectionName) {
+			case 'requiredSection':
+			case 'reasonForCreationSection':
+				return false;
 			case 'notesSection':
 				return this.hasNotesSectionChanged();
 			case 'techRecordSummary':
@@ -58,7 +61,7 @@ export class TechnicalRecordChangesService {
 				return this.hasBrakesSectionChanged();
 			case 'dda':
 				return this.hasDDASectionChanged();
-			case 'tyresSection':
+			case 'tyreSection':
 				return this.hasTyresSectionChanged();
 			case 'weightsSection':
 				return this.hasWeightSectionChanged();
