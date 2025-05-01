@@ -11,7 +11,7 @@
   "FsLastApplicant": true,
   "FsPlates": true,
   "FsDimensions": true,
-  "FsPurchasers": false,
-  "FsBrakes": false,
+  "FsPurchasers": true,
+  "FsBrakes": true,
   "FsDDA": false
 }
