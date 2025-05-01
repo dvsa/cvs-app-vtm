@@ -1,23 +1,19 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Roles } from '@models/roles.enum';
-import {
-	LettersIntoAuthApprovalType,
-	LettersOfAuth,
-	StatusCodes,
-	VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord, updateScrollPosition } from '@store/technical-records';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-letters-section-view',
@@ -25,19 +21,25 @@ import { techRecord, updateScrollPosition } from '@store/technical-records';
 	styleUrls: ['./letters-section-view.component.scss'],
 	imports: [ButtonComponent, DatePipe, DefaultNullOrEmpty, RetrieveDocumentDirective, RoleRequiredDirective],
 })
-export class LettersSectionViewComponent {
-	protected readonly VehicleTypes = VehicleTypes;
+export class LettersSectionViewComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);
+	viewportScroller = inject(ViewportScroller);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
 	techRecord = this.store.selectSignal(techRecord);
-	protected hasCurrent = false;
-	constructor(
-		private dynamicFormService: DynamicFormService,
-		private techRecordService: TechnicalRecordService,
-		private viewportScroller: ViewportScroller,
-		private router: Router,
-		private route: ActivatedRoute
-	) {}
+	hasCurrent = false;
+	private destroy$ = new ReplaySubject<boolean>(1);
+
+	ngOnInit(): void {
+		this.checkForCurrentRecordInHistory();
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next(true);
+		this.destroy$.unsubscribe();
+	}
 
 	get roles(): typeof Roles {
 		return Roles;
@@ -49,11 +51,11 @@ export class LettersSectionViewComponent {
 	}
 
 	get correctApprovalType(): boolean {
-		const techRecord = this.techRecord();
+		const techRecord = this.techRecord() as TechRecordType<'trl'>;
 		return (
-			!!(techRecord as any)?.techRecord_approvalType &&
+			!!techRecord?.techRecord_approvalType &&
 			(Object.values(LettersIntoAuthApprovalType) as string[]).includes(
-				(techRecord as any).techRecord_approvalType.valueOf()
+				techRecord.techRecord_approvalType?.valueOf() ?? ''
 			)
 		);
 	}
@@ -64,7 +66,7 @@ export class LettersSectionViewComponent {
 			throw new Error('Could not find vehicle record associated with this technical record.');
 		}
 		return new Map([
-			['systemNumber', (techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>)?.systemNumber],
+			['systemNumber', techRecord?.systemNumber],
 			['vinNumber', techRecord?.vin],
 		]);
 	}
@@ -77,11 +79,11 @@ export class LettersSectionViewComponent {
 		if (!techRecord) {
 			return '';
 		}
-		return `letter_${(techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>).systemNumber}_${techRecord.vin}`;
+		return `letter_${techRecord.systemNumber}_${techRecord.vin}`;
 	}
 
 	get letter(): LettersOfAuth | undefined {
-		const techRecord = this.techRecord() as any; // Use 'any' to bypass type errors
+		const techRecord = this.techRecord() as TechRecordType<'trl'>;
 		return techRecord?.techRecord_letterOfAuth_letterType
 			? {
 					letterType: techRecord?.techRecord_letterOfAuth_letterType,
@@ -114,5 +116,20 @@ export class LettersSectionViewComponent {
 		}
 
 		return '';
+	}
+
+	checkForCurrentRecordInHistory() {
+		this.technicalRecordService.techRecordHistory$
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
+				historyArray?.forEach((history: TechRecordSearchSchema) => {
+					if (
+						history.techRecord_statusCode === StatusCodes.CURRENT &&
+						this.techRecord()?.techRecord_statusCode === StatusCodes.PROVISIONAL
+					) {
+						this.hasCurrent = true;
+					}
+				});
+			});
 	}
 }
