@@ -9,6 +9,7 @@ import {
 	TechRecordGETHGV,
 	TechRecordGETPSV,
 	TechRecordGETTRL,
+	TechRecordType as TechRecordTypeVehicle,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
@@ -419,5 +420,15 @@ export class TechnicalRecordService {
 
 	searchBy(type: SEARCH_TYPES | undefined, term: string): void {
 		this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
+	}
+
+	getBrakeCode(techRecord: TechRecordTypeVehicle<'psv', 'get' | 'put'>) {
+		const prefix = techRecord.techRecord_grossLadenWeight
+			? `${Math.round(techRecord.techRecord_grossLadenWeight / 100)}`
+			: '';
+
+		return techRecord.techRecord_brakes_brakeCodeOriginal
+			? `${prefix.padStart(3, '0')}${techRecord.techRecord_brakes_brakeCodeOriginal}`
+			: '-';
 	}
 }

@@ -18,6 +18,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
@@ -231,12 +232,13 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 		controls: AbstractControl[],
 		store: Store<State>,
 		technicalRecordService: TechnicalRecordService,
+		routerService: RouterService,
 		validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
 		asyncValidator?: AsyncValidatorOptions
 	) {
 		super(controls, validatorOrOpts, asyncValidator);
 		this.meta = meta;
-		this.dynamicFormService = new DynamicFormService(store, technicalRecordService);
+		this.dynamicFormService = new DynamicFormService(store, technicalRecordService, routerService);
 	}
 
 	getCleanValue = cleanValue.bind(this);

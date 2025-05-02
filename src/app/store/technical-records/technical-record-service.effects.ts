@@ -1,9 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
+	TechRecordGETCar,
 	TechRecordGETHGV,
+	TechRecordGETLGV,
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -221,7 +225,13 @@ export class TechnicalRecordServiceEffects {
 
 					if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
 						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
+						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategoryTRL.O1;
+					}
+					if (techRecord_vehicleType === VehicleTypes.LGV) {
+						(techRecord as TechRecordGETLGV).techRecord_euVehicleCategory = EUVehicleCategoryLGV.N1;
+					}
+					if (techRecord_vehicleType === VehicleTypes.CAR) {
+						(techRecord as TechRecordGETCar).techRecord_euVehicleCategory = EUVehicleCategoryCAR.M1;
 					}
 					if (
 						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
@@ -260,7 +270,7 @@ export class TechnicalRecordServiceEffects {
 
 					if (techRecord.techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
 						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
+						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategoryTRL.O1;
 					}
 
 					if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {

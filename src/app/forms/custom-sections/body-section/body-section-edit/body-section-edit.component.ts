@@ -30,7 +30,7 @@ import { MultiOptionsService } from '@services/multi-options/multi-options.servi
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, ReplaySubject, combineLatest, map, skipWhile, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
 import { GovukFormGroupAutocompleteComponent } from '../../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
@@ -64,6 +64,8 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	form: FormGroup = this.fb.group({});
 
+	bodyMakes$ = of<MultiOptions | undefined>([]);
+
 	ngOnInit(): void {
 		this.addControlsBasedOffVehicleType();
 		// Attach all form controls to parent
@@ -75,6 +77,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		}
 
 		this.loadOptions();
+		this.loadBodyMakes();
 
 		if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
 			this.form
@@ -104,6 +107,20 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 			});
 
 		this.handleUpdateVehicleConfiguration();
+	}
+
+	loadBodyMakes() {
+		switch (this.techRecord().techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				this.bodyMakes$ = this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
+				break;
+			case VehicleTypes.PSV:
+				this.bodyMakes$ = this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
+				break;
+			case VehicleTypes.TRL:
+				this.bodyMakes$ = this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
+				break;
+		}
 	}
 
 	handleUpdateVehicleConfiguration() {
@@ -218,7 +235,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
+	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv' | 'trl'>, FormControl>> {
 		return {
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
@@ -244,16 +261,6 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 				),
 			]),
 		};
-	}
-
-	get bodyMakes$() {
-		if (this.techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
-			return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
-		}
-		if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-			return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
-		}
-		return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
 	}
 
 	get bodyTypes(): MultiOptions {

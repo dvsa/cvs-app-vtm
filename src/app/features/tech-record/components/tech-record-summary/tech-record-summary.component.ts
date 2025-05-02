@@ -6,6 +6,7 @@ import {
 	OnDestroy,
 	OnInit,
 	inject,
+	input,
 	output,
 	viewChild,
 	viewChildren,
@@ -19,9 +20,9 @@ import { GlobalWarningService } from '@core/components/global-warning/global-war
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
+import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
@@ -49,7 +50,6 @@ import { AccordionComponent } from '../../../../components/accordion/accordion.c
 import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
 import { AdrCertificateHistoryComponent } from '../../../../forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
-import { AdrComponent as AdrComponent_1 } from '../../../../forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent as ApprovalTypeComponent_1 } from '../../../../forms/custom-sections/approval-type/approval-type.component';
 import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
 import { BodyComponent as BodyComponent_1 } from '../../../../forms/custom-sections/body/body.component';
@@ -101,10 +101,10 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		PlatesSectionComponent,
 		PlatesComponent,
 		AdrSectionComponent,
-		AdrComponent_1,
 		AdrCertificateHistoryComponent,
 		LastApplicantSectionComponent,
 		AsyncPipe,
+		BrakesSectionComponent,
 		DDASectionComponent,
 		DocumentsSectionComponent,
 	],
@@ -119,10 +119,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	readonly weights = viewChild(WeightsComponent);
 	readonly letters = viewChild(LettersComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
-	readonly adr = viewChild(AdrComponent);
 
 	readonly isFormDirty = output<boolean>();
 	readonly isFormInvalid = output<boolean>();
+	readonly isCreateMode = input.required<boolean>();
 
 	techRecordCalculated?: V3TechRecordModel;
 	sectionTemplates: Array<FormNode> = [];
@@ -285,7 +285,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
 		const commonCustomSections = this.addCustomSectionsBasedOffFlag();
-		const adr = this.adr();
 		const trlBrakes = this.trlBrakes();
 		const letters = this.letters();
 		const psvBrakes = this.psvBrakes();
@@ -295,20 +294,15 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 				if (!psvBrakes?.form) return [];
 				return [...commonCustomSections, psvBrakes.form];
 			}
+			case VehicleTypes.LGV:
 			case VehicleTypes.HGV: {
-				if (!adr?.form) return commonCustomSections;
-				return [...commonCustomSections, adr.form];
+				return commonCustomSections;
 			}
 			case VehicleTypes.TRL: {
 				const arr = [...commonCustomSections];
 				if (trlBrakes?.form) arr.push(trlBrakes.form);
 				if (letters?.form) arr.push(letters.form);
-				if (adr?.form) arr.push(adr.form);
 				return arr;
-			}
-			case VehicleTypes.LGV: {
-				if (!adr?.form) return commonCustomSections;
-				return [adr.form];
 			}
 			default:
 				return [];

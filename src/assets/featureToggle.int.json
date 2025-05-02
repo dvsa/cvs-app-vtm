@@ -2,7 +2,6 @@
   "testToggle": false,
   "adrCertToggle": true,
   "requiredStandards": true,
-  "FsAdr": true,
   "FsVehicleSummary": true,
   "FsBody": true,
   "FsNotes": true,
@@ -12,6 +11,7 @@
   "FsLastApplicant": true,
   "FsPlates": true,
   "FsDimensions": true,
-  "FsPurchasers": false,
+  "FsPurchasers": true,
+  "FsBrakes": true,
   "FsDDA": false
 }

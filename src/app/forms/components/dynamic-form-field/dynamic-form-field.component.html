@@ -1,142 +1,156 @@
-<ng-container *ngIf="form() as form">
-  <ng-container *ngIf="control() as control" [ngSwitch]="control.value.meta.editType">
-    <div *ngIf="control.value && control.value.meta.editType !== formNodeEditTypes.HIDDEN" [formGroup]="form">
-      <app-autocomplete
-        *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [options$]="options$"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [width]="control.value.meta.width"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-autocomplete>
-
-      <app-date
-        *ngSwitchCase="formNodeEditTypes.DATE"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [isoDate]="control.value.meta.isoDate ?? true"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-date>
-
-      <app-date
-        *ngSwitchCase="formNodeEditTypes.DATETIME"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [displayTime]="true"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-date>
-
-      <app-number-input
-        *ngSwitchCase="formNodeEditTypes.NUMBER"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [width]="control.value.meta.width"
-        [customId]="control.value.meta.customId"
-        [enableDecimals]="control.value.meta.enableDecimals"
-        [warning]="control.value.meta.warning"
-      >
-        <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
-      </app-number-input>
-
-      <app-radio-group
-        *ngSwitchCase="formNodeEditTypes.RADIO"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [options]="(options$ | async) || []"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-radio-group>
-
-      <app-select
-        *ngSwitchCase="formNodeEditTypes.SELECT"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [options]="(options$ | async) || []"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [width]="control.value.meta.width"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-select>
-
-      <app-text-area
-        *ngSwitchCase="formNodeEditTypes.TEXTAREA"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-text-area>
-
-      <app-checkbox
-        *ngSwitchCase="formNodeEditTypes.CHECKBOX"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-checkbox>
-
-      <app-checkbox-group
-        *ngSwitchCase="formNodeEditTypes.CHECKBOXGROUP"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [options]="(options$ | async) || []"
-        [formControlName]="control.key"
-        [delimited]="control.value.meta.delimited"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      ></app-checkbox-group>
-
-      <app-text-input
-        *ngSwitchCase="formNodeEditTypes.NUMERICSTRING"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [numeric]="true"
-        [hint]="control.value.meta.hint"
-        [width]="control.value.meta.width"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      >
-        <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
-      </app-text-input>
-
-      <ng-container *ngSwitchCase="formNodeEditTypes.CUSTOM">
-        <ng-container *ngIf="control.value.meta.editComponent">
-          <ng-container [ngComponentOutlet]="control.value.meta.editComponent" [ngComponentOutletInputs]="customFormControlInputs" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
-        </ng-container>
+@if (form(); as form) {
+  @if (control(); as control) {
+    @if (control.value && control.value.meta.editType !== formNodeEditTypes.HIDDEN) {
+      <ng-container [formGroup]="form">
+        @switch (control.value.meta.editType) {
+          @case (formNodeEditTypes.AUTOCOMPLETE) {
+            <app-autocomplete
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [options$]="options$"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [width]="control.value.meta.width"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-autocomplete>
+          }
+          @case(formNodeEditTypes.DATE) {
+            <app-date
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [isoDate]="control.value.meta.isoDate ?? true"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-date>
+          }
+          @case(formNodeEditTypes.DATETIME) {
+            <app-date
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [displayTime]="true"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-date>
+          }
+          @case(formNodeEditTypes.NUMBER) {
+            <app-number-input
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [width]="control.value.meta.width"
+              [customId]="control.value.meta.customId"
+              [enableDecimals]="control.value.meta.enableDecimals"
+              [warning]="control.value.meta.warning"
+            >
+              @if(control.value.meta.suffix) {
+                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+              }
+            </app-number-input>
+          }
+          @case(formNodeEditTypes.RADIO) {
+            <app-radio-group
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [options]="(options$ | async) || []"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-radio-group>
+          }
+          @case(formNodeEditTypes.SELECT) {
+            <app-select
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [options]="(options$ | async) || []"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [width]="control.value.meta.width"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-select>
+          }
+          @case(formNodeEditTypes.TEXTAREA) {
+            <app-text-area
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-text-area>
+          }
+          @case(formNodeEditTypes.CHECKBOX) {
+            <app-checkbox
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-checkbox>
+          }
+          @case(formNodeEditTypes.CHECKBOXGROUP) {
+            <app-checkbox-group
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [options]="(options$ | async) || []"
+              [formControlName]="control.key"
+              [delimited]="control.value.meta.delimited"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            ></app-checkbox-group>
+          }
+          @case(formNodeEditTypes.NUMERICSTRING) {
+            <app-text-input
+              [label]="control.value.meta.label"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [numeric]="true"
+              [hint]="control.value.meta.hint"
+              [width]="control.value.meta.width"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            >
+              @if(control.value.meta.suffix) {
+                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+              }
+            </app-text-input>
+          }
+          @case(formNodeEditTypes.CUSTOM) {
+            @if(control.value.meta.editComponent) {
+              <ng-container 
+                [ngComponentOutlet]="control.value.meta.editComponent" 
+                [ngComponentOutletInputs]="customFormControlInputs" 
+                [ngComponentOutletInjector]="customFormControlInjector"
+              ></ng-container>
+            }
+          }
+          @default {
+            <app-text-input
+              [uppercase]="control.value.meta.uppercase"
+              [label]="control.value.meta.label"
+              [width]="control.value.meta.width"
+              [name]="control.value.meta.name"
+              [formControlName]="control.key"
+              [hint]="control.value.meta.hint"
+              [customId]="control.value.meta.customId"
+              [warning]="control.value.meta.warning"
+            >
+              @if (control.value.meta.suffix) {
+                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+              }
+            </app-text-input>
+          }
+        }
       </ng-container>
-
-      <app-text-input
-        *ngSwitchDefault
-        [uppercase]="control.value.meta.uppercase"
-        [label]="control.value.meta.label"
-        [width]="control.value.meta.width"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-        [hint]="control.value.meta.hint"
-        [customId]="control.value.meta.customId"
-        [warning]="control.value.meta.warning"
-      >
-        <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
-      >
-    </div>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

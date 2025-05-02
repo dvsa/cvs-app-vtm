@@ -58,7 +58,7 @@ const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						data: { title: 'Test details', roles: Roles.TestResultAmend },
+						data: { title: 'Test details', roles: Roles.TestResultAmend, mode: 'amend' },
 						resolve: {
 							load: testResultResolver,
 							testTypeTaxonomy: testTypeTaxonomyResolver,
