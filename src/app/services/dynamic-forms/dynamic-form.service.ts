@@ -15,6 +15,7 @@ import { Condition } from '@models/condition.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
@@ -27,7 +28,8 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 export class DynamicFormService {
 	constructor(
 		private store: Store<State>,
-		private technicalRecordService: TechnicalRecordService
+		private technicalRecordService: TechnicalRecordService,
+		private routerService: RouterService
 	) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -133,7 +135,7 @@ export class DynamicFormService {
 		[AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () =>
 			CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
 		[AsyncValidatorNames.FilterEuCategoryOnVehicleType]: () =>
-			CustomAsyncValidators.filterEuCategoryOnVehicleType(this.technicalRecordService),
+			CustomAsyncValidators.filterEuCategoryOnVehicleType(this.technicalRecordService, this.routerService),
 		[AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
 		[AsyncValidatorNames.AsyncRequired]: () => CustomAsyncValidators.asyncRequired(),
 	};
@@ -146,7 +148,7 @@ export class DynamicFormService {
 
 		const form: CustomFormGroup | CustomFormArray =
 			formNode.type === FormNodeTypes.ARRAY
-				? new CustomFormArray(formNode, [], this.store, this.technicalRecordService)
+				? new CustomFormArray(formNode, [], this.store, this.technicalRecordService, this.routerService)
 				: new CustomFormGroup(formNode, {});
 
 		data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});

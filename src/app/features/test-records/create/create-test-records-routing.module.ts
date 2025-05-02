@@ -40,7 +40,12 @@ const routes: Routes = [
 					testCode: testCodeResolver,
 					recalls: recallsResolver,
 				},
-				data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
+				data: {
+					title: 'Test details',
+					roles: Roles.TestResultCreateContingency,
+					breadcrumbPreserveQueryParams: true,
+					mode: 'create',
+				},
 				canActivate: [RoleGuard],
 				children: [
 					{
