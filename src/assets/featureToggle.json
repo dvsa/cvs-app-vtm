@@ -13,6 +13,6 @@
   "FsDimensions": true,
   "FsPurchasers": true,
   "FsDDA": true,
-  "FsDocuments": true
-  "FsBrakes": true,
+  "FsDocuments": true,
+  "FsBrakes": true
 }
