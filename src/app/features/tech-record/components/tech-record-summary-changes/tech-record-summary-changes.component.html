@@ -104,7 +104,7 @@
       @case ('techRecordSummary') {
         <!-- New Vehicle summary section -->
         @if (featureToggleService.isFeatureEnabled('FsVehicleSummary')) {
-          <app-vehicle-section [techRecord]="techRecordEdited" mode="summary" />
+          <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
         } @else {
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
         }

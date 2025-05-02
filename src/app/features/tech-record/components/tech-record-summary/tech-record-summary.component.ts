@@ -6,6 +6,7 @@ import {
 	OnDestroy,
 	OnInit,
 	inject,
+	input,
 	output,
 	viewChild,
 	viewChildren,
@@ -121,6 +122,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	readonly isFormDirty = output<boolean>();
 	readonly isFormInvalid = output<boolean>();
+	readonly isCreateMode = input.required<boolean>();
 
 	techRecordCalculated?: V3TechRecordModel;
 	sectionTemplates: Array<FormNode> = [];

@@ -1,4 +1,5 @@
 import { ApprovalTypeFocusNextDirective } from '@/src/app/directives/approval-type-focus-next/approval-type-focus-next.directive';
+import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import {
 	APPROVAL_NUMBER_TYPE_REGEX,
@@ -27,7 +28,14 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	selector: 'approval-type-number-input',
 	templateUrl: 'approval-type-number.html',
 	styleUrls: ['./approval-type-number.scss'],
-	imports: [FormsModule, KeyValuePipe, ReactiveFormsModule, ReactiveFormsModule, ApprovalTypeFocusNextDirective],
+	imports: [
+		FormsModule,
+		KeyValuePipe,
+		ReactiveFormsModule,
+		ReactiveFormsModule,
+		ApprovalTypeFocusNextDirective,
+		NoEmojisDirective,
+	],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,

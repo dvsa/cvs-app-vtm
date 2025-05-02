@@ -366,6 +366,94 @@ describe('TestResultsEffects', () => {
 			store.resetSelectors();
 			jest.resetModules();
 		});
+		it('should automatically set the euVehicleCategory to M1 if vehicleType is Car', () => {
+			const testResult = createMockTestResult({
+				vehicleType: VehicleTypes.CAR,
+				testTypes: [createMockTestType({ testTypeId: '1' })],
+			});
+			testScheduler.run(({ hot, expectObservable }) => {
+				store.overrideSelector(testResultInEdit, testResult);
+
+				actions$ = hot('-a', {
+					a: contingencyTestTypeSelected({
+						testType: '1',
+					}),
+				});
+
+				expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
+					b: templateSectionsChanged({
+						sectionTemplates: Object.values(contingencyTestTemplates.car.default as Record<string, FormNode>),
+						sectionsValue: {
+							bodyType: undefined,
+							countryOfRegistration: '',
+							createdAt: '',
+							createdById: undefined,
+							createdByName: undefined,
+							euVehicleCategory: 'm1',
+							firstUseDate: null,
+							lastUpdatedAt: undefined,
+							lastUpdatedById: undefined,
+							lastUpdatedByName: undefined,
+							make: undefined,
+							model: undefined,
+							noOfAxles: undefined,
+							numberOfWheelsDriven: undefined,
+							odometerReading: 0,
+							odometerReadingUnits: 'kilometres',
+							preparerId: '',
+							preparerName: '',
+							reasonForCancellation: undefined,
+							reasonForCreation: undefined,
+							recalls: undefined,
+							regnDate: undefined,
+							shouldEmailCertificate: undefined,
+							source: undefined,
+							systemNumber: '',
+							testResultId: '',
+							testStartTimestamp: '',
+							testStationName: '',
+							testStationPNumber: '',
+							testStationType: 'atf',
+							testStatus: undefined,
+							testTypes: [
+								{
+									additionalCommentsForAbandon: null,
+									additionalNotesRecorded: '',
+									certificateLink: undefined,
+									certificateNumber: '',
+									defects: [],
+									deletionFlag: undefined,
+									name: '',
+									prohibitionIssued: false,
+									reasonForAbandoning: '',
+									secondaryCertificateNumber: null,
+									testAnniversaryDate: 'testAnniversaryDate',
+									testCode: 'testCode',
+									testExpiryDate: '',
+									testNumber: 'testNumber',
+									testResult: 'fail',
+									testTypeEndTimestamp: '',
+									testTypeId: '1',
+									testTypeName: '',
+									testTypeStartTimestamp: '',
+								},
+							],
+							testerEmailAddress: '',
+							testerName: '',
+							testerStaffId: '',
+							typeOfTest: 'contingency',
+							vehicleClass: null,
+							vehicleConfiguration: null,
+							vehicleSize: undefined,
+							vehicleSubclass: [],
+							vehicleType: 'car',
+							vin: '',
+							vrm: '',
+						} as unknown as TestResultModel,
+					}),
+				});
+			});
+		});
 
 		it('should dispatch templateSectionsChanged with new sections and test result', () => {
 			const testResult = createMockTestResult({

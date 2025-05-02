@@ -54,7 +54,7 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-grid-column-full">
-        <app-tech-record-summary (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
+        <app-tech-record-summary [isCreateMode]="true" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
       </div>
     </div>
   </div>
