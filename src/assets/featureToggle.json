@@ -14,5 +14,5 @@
   "FsPurchasers": true,
   "FsBrakes": true,
   "FsDDA": false,
-  "FsLetters": true
+  "FsLetters": false
 }
