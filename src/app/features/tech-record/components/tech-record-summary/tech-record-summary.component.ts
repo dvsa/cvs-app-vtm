@@ -25,8 +25,8 @@ import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
-import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
+import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
@@ -107,8 +107,8 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		AsyncPipe,
 		BrakesSectionComponent,
 		DDASectionComponent,
-    LettersSectionComponent,
-    DocumentsSectionComponent,
+		LettersSectionComponent,
+		DocumentsSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
