@@ -14,5 +14,7 @@
   "FsPurchasers": true,
   "FsBrakes": true,
   "FsDDA": false,
+  "FsLetters": false,
+  "FsDocuments": false,
   "FsAuthorisationIntoService": false
 }

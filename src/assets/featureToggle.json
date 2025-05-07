@@ -12,7 +12,9 @@
   "FsPlates": true,
   "FsDimensions": true,
   "FsPurchasers": true,
-  "FsBrakes": true,
   "FsDDA": false,
+  "FsLetters": false,
+  "FsDocuments": false,
+  "FsBrakes": true,
   "FsAuthorisationIntoService": false
 }
