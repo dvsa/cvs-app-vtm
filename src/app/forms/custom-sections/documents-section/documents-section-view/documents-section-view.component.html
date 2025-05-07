@@ -1,0 +1,33 @@
+@if (techRecord(); as tr) {
+  @if (tr.techRecord_vehicleType === VehicleTypes.HGV
+  || tr.techRecord_vehicleType === VehicleTypes.TRL
+  || tr.techRecord_vehicleType === VehicleTypes.PSV) {
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Microfilm document type
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_microfilm_microfilmDocumentType">
+          {{ tr.techRecord_microfilm_microfilmDocumentType | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Microfilm roll number
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_microfilm_microfilmRollNumber">
+          {{ tr.techRecord_microfilm_microfilmRollNumber | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Microfilm serial number
+        </dt>
+        <dd class="govuk-summary-list__value" id="techRecord_microfilm_microfilmSerialNumber">
+          {{ tr.techRecord_microfilm_microfilmSerialNumber | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+
+  }
+}

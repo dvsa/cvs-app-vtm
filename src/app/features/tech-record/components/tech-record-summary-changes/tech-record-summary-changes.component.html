@@ -134,6 +134,26 @@
           }
         }
       }
+
+      @case ('documentsSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'trl' ||
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv'
+          ) {
+          <!-- New documents section-->
+          @if (featureToggleService.isFeatureEnabled('FsDocuments')) {
+            <app-documents-section [techRecord]="techRecordEdited" mode="summary"></app-documents-section>
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+          <!-- Old documents section-->
+        }
+      }
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
