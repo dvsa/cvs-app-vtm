@@ -195,7 +195,11 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 
 	// Remove recalls from non HGV/PSV/TRL tests
 	const vehicleType = testResult.vehicleType;
-	if (!(vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV || vehicleType === VehicleTypes.TRL)) {
+	const isHGV = vehicleType === VehicleTypes.HGV;
+	const isPSV = vehicleType === VehicleTypes.PSV;
+	const isTRL = vehicleType === VehicleTypes.TRL;
+
+	if (!(isHGV || isPSV || isTRL)) {
 		delete testResult.recalls;
 	}
 
@@ -218,7 +222,10 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		}
 
 		// If test type has issueRequired set to true, but not HGV/TRL IVA test, set the cert number to 000000
-		if (testType.centralDocs?.issueRequired && !TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL.includes(testType.testTypeId)) {
+		if (
+			testType.centralDocs?.issueRequired &&
+			!(TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL.includes(testType.testTypeId) && (isHGV || isTRL))
+		) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
 		}
