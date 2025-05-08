@@ -3,7 +3,7 @@
     <app-manufacturer-section-view/>
   }
   @case ('edit') {
-    <app-manufacturer-section-edit/>
+    <app-manufacturer-section-edit [techRecord]="techRecord()"/>
   }
   @case ('summary') {
     <app-manufacturer-section-summary/>
