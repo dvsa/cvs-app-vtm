@@ -13,6 +13,7 @@ import {
 	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP15_16,
+	TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL,
 } from '@models/testTypeId.enum';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
@@ -216,8 +217,8 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 			testType.centralDocs.issueRequired = false;
 		}
 
-		// If test type has issueRequired set to true, set the certificateNumber/secondaryCertificateNumber to 000000
-		if (testType.centralDocs?.issueRequired) {
+		// If test type has issueRequired set to true, but not HGV/TRL IVA test, set the cert number to 000000
+		if (testType.centralDocs?.issueRequired && !TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL.includes(testType.testTypeId)) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
 		}
