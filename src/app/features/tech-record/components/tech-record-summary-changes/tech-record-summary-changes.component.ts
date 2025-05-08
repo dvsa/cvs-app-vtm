@@ -17,6 +17,7 @@ import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
+import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -107,6 +108,7 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		DocumentsSectionComponent,
 		NumberPlateComponent,
 		AuthorisationIntoServiceSectionComponent,
+		ManufacturerSectionComponent,
 	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
