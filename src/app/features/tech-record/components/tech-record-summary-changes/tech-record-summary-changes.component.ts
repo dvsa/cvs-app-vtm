@@ -1,4 +1,5 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
+import { AuditSectionComponent } from '@/src/app/forms/custom-sections/audit-section/audit-section.component';
 import { FormNodeViewTypes } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
@@ -107,6 +108,7 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		DocumentsSectionComponent,
 		NumberPlateComponent,
 		AuthorisationIntoServiceSectionComponent,
+		AuditSectionComponent,
 	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {

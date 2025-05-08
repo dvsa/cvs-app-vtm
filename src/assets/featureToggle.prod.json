@@ -16,5 +16,6 @@
   "FsDDA": false,
   "FsLetters": false,
   "FsDocuments": false,
-  "FsAuthorisationIntoService": false
+  "FsAuthorisationIntoService": false,
+  "FsAudit": false
 }

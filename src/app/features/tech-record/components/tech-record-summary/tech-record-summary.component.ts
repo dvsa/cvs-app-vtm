@@ -1,3 +1,4 @@
+import { AuditSectionComponent } from '@/src/app/forms/custom-sections/audit-section/audit-section.component';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -111,6 +112,7 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		LettersSectionComponent,
 		DocumentsSectionComponent,
 		AuthorisationIntoServiceSectionComponent,
+		AuditSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {

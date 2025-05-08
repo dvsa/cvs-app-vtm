@@ -1,0 +1,53 @@
+@if (techRecord(); as vm) {
+  <dl class="govuk-summary-list">
+    <!-- Reason for creation -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Reason for creation</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_reasonForCreation">
+        {{ vm.techRecord_reasonForCreation | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Created at -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Created at</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_createdAt">
+        {{ vm.techRecord_createdAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Created by -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Created by</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_createdByName">
+        {{ vm.techRecord_createdByName | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Created by ID -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Created by ID</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_createdById">
+        {{ vm.techRecord_createdById | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Last updated at -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last updated at</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedAt">
+        {{ vm.techRecord_lastUpdatedAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Last updated by -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last updated by</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedByName">
+        {{ vm.techRecord_lastUpdatedByName | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <!-- Last updated by ID -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last updated by ID</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedById">
+        {{ vm.techRecord_lastUpdatedById | defaultNullOrEmpty }}
+      </dd> 
+    </div>
+  </dl>
+}

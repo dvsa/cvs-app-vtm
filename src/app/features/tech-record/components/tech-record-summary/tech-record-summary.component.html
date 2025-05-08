@@ -34,6 +34,7 @@
           @if (featureToggleService.isFeatureEnabled('FsNotes')) {
             <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           } @else {
+            <!-- Old Notes section -->
             <app-dynamic-form-group
               [data]="techRecordCalculated"
               [template]="section"
@@ -41,7 +42,18 @@
               (formChange)="handleFormState($event)"
             ></app-dynamic-form-group>
           }
-          <!-- Old Notes section -->
+        }
+        @case ('audit') {
+          @if (featureToggleService.isFeatureEnabled('FsAudit')) {
+            <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          }
         }
         @case ('techRecordSummary') {
           <!-- New Vehicle summary section -->
