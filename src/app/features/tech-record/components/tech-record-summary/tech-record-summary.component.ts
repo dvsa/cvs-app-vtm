@@ -29,6 +29,7 @@ import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimension
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
 import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
+import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
@@ -111,6 +112,7 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		LettersSectionComponent,
 		DocumentsSectionComponent,
 		AuthorisationIntoServiceSectionComponent,
+		ManufacturerSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
