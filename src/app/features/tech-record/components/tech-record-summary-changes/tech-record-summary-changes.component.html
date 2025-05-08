@@ -128,6 +128,26 @@
           }
         }
       }
+
+      @case ('documentsSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'trl' ||
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv'
+          ) {
+          <!-- New documents section-->
+          @if (featureToggleService.isFeatureEnabled('FsDocuments')) {
+            <app-documents-section [techRecord]="techRecordEdited" mode="summary"></app-documents-section>
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+          <!-- Old documents section-->
+        }
+      }
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
@@ -240,6 +260,23 @@
           }
         }
       }
+
+      @case ('authorizationIntoServiceSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+          <!-- New Authorization into service section -->
+          @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
+            <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
+          } @else {
+          <!-- Old Authorization into service section -->
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+        }
+      }
+
       @case ('adrSection') {
         @if (
           techRecordEdited.techRecord_vehicleType === 'hgv' ||

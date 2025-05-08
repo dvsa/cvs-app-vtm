@@ -236,6 +236,9 @@ export const TEST_TYPES_ALL_DESK_BASED_TESTS = [
 // Test Type IDs that generate VTP12/VTG12 documentation on test abandonment
 export const TEST_TYPES_VTP_VTG_12 = [...VTG_VTP_12_TEST.IDS];
 
+// Test Type IDs that are non-voluntary IVA tests for HGV/TRL
+export const TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL = ['186', '188', '130', '192', '194', '163'];
+
 export const TEST_TYPES = {
 	testTypesGroup1: TEST_TYPES_GROUP1,
 	testTypesGroup2: TEST_TYPES_GROUP2,

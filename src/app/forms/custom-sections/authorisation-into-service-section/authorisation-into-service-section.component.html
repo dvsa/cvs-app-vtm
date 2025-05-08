@@ -1,0 +1,11 @@
+@switch (mode()) {
+  @case ('view') {
+    <app-authorisation-into-service-section-view />
+  }
+  @case ('edit') {
+    <app-authorisation-into-service-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-authorisation-into-service-section-summary />
+  }
+}
