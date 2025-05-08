@@ -40,10 +40,10 @@
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Service</th>
         <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
-          {{ round(((tr?.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+          {{ round(((tr?.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
         </td>
         <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
-          {{ round(((tr?.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+          {{ round(((tr?.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
         </td>
       </tr>
       <tr class="govuk-table__row">
@@ -58,10 +58,10 @@
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Parking</th>
         <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
-          {{ round(((tr?.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+          {{ round(((tr?.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
         </td>
         <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
-          {{ round(((tr?.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+          {{ round(((tr?.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
         </td>
       </tr>
       </tbody>

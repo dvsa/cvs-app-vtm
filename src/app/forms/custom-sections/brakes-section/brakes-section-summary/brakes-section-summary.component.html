@@ -1,4 +1,4 @@
-@if (amendedTechRecord(); as vm) {  
+@if (amendedTechRecord(); as vm) {
   <!-- PSV only fields -->
   @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
     <dl class="govuk-summary-list">
@@ -22,7 +22,7 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Parking</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeThree">            
+        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeThree">
           {{ vm.techRecord_brakes_dataTrBrakeThree | defaultNullOrEmpty }}
         </dd>
       </div>
@@ -37,7 +37,7 @@
         <dd class="govuk-summary-list__value" id="test-techRecord_brakes_retarderBrakeTwo">
           {{ vm.techRecord_brakes_retarderBrakeTwo | defaultNullOrEmpty }}
         </dd>
-      </div> 
+      </div>
     </dl>
   }
 
@@ -51,18 +51,18 @@
           <th scope="col" class="govuk-table__header">Up to and including half wheels locked</th>
         </tr>
       </thead>
-    
+
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Service</th>
           <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
-            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
           </td>
           <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
-            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
           </td>
         </tr>
-    
+
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Secondary</th>
           <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">
@@ -72,14 +72,14 @@
             {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 25) / 100) }}
           </td>
         </tr>
-    
+
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Parking</th>
           <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
-            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+            {{ round(((vm.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
           </td>
           <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
-            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+            {{ round(((vm.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
           </td>
         </tr>
       </tbody>
@@ -97,7 +97,7 @@
           <th scope="col" class="govuk-table__header">Spring brake parking</th>
         </tr>
       </thead>
-    
+
       <tbody class="govuk-table__body">
         @for (axle of vm.techRecord_axles; track $index) {
           <tr class="govuk-table__row">
@@ -139,7 +139,7 @@
   @if (vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
     @if (vm.techRecord_axles?.length) {
       <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Parking brake</h3>
-      
+
       <dl class="govuk-summary-list">
         @for (axle of vm.techRecord_axles; track $index) {
           <div class="govuk-summary-list__row">
