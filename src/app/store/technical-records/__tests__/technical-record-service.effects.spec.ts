@@ -273,6 +273,21 @@ describe('TechnicalRecordServiceEffects', () => {
 		it('should generate new techRecord based on vehicle type', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
 			const expectedTechRecord = getEmptyTechRecord();
+			expectedTechRecord.techRecord_vehicleType = VehicleTypes.CAR;
+
+			store.overrideSelector(editingTechRecord, {
+				vin: 'foo',
+				primaryVrm: 'bar',
+				systemNumber: 'foobar',
+				createdTimestamp: 'barfoo',
+				techRecord_vehicleType: 'lgv',
+			} as unknown as TechRecordType<'put'>);
+
+			actions$ = of(
+				changeVehicleType({
+					techRecord_vehicleType: VehicleTypes.CAR,
+				})
+			);
 
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(editingTechRecord, {
@@ -565,8 +580,8 @@ function getEmptyHGVRecord(): V3TechRecordModel {
 		techRecord_tyreUseCode: null,
 		techRecord_variantNumber: undefined,
 		techRecord_variantVersionNumber: undefined,
-		// techRecord_vehicleClass_description: 'heavy goods vehicle',
-		// techRecord_vehicleConfiguration: null,
-		// techRecord_vehicleType: 'hgv',
+		techRecord_vehicleClass_description: 'heavy goods vehicle',
+		techRecord_vehicleConfiguration: null,
+		techRecord_vehicleType: 'hgv',
 	} as unknown as V3TechRecordModel;
 }

@@ -244,7 +244,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 				take(1)
 			)
 			.subscribe((techRecord) => {
-				if (this.isEditing && techRecord) this.form.patchValue({ ...techRecord });
+				if (this.isEditing && techRecord) {
+					// Ensure small TRL is saved as TRL in the back-end
+					if ((techRecord.techRecord_vehicleType as VehicleTypes) === VehicleTypes.SMALL_TRL) {
+						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
+					}
+
+					this.form.patchValue({ ...techRecord });
+				}
 			});
 	}
 

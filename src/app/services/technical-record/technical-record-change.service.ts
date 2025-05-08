@@ -124,7 +124,8 @@ export class TechnicalRecordChangesService {
 			'techRecord_couplingType',
 			'techRecord_maxLoadOnCoupling',
 			'techRecord_frameDescription',
-			'techRecord_manufactureMonth'
+			'techRecord_manufactureMonth',
+			'techRecord_numberOfWheelsDriven'
 		);
 	}
 
