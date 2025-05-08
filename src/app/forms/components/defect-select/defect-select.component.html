@@ -12,7 +12,7 @@
               (click)="handleSelect(defect, types.Defect)"
               [attr.data-testid]="defect.imDescription"
               >
-              {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
+              {{ defect.imNumber }}. {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
             </a>
           </li>
         }
@@ -30,7 +30,7 @@
                 (click)="handleSelect(item, types.Item)"
                 [attr.data-testid]="item.itemDescription"
                 >
-                {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
+                {{ selectedDefect.imNumber }}.{{ item.itemNumber }}. {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
               </a>
             </li>
           }
