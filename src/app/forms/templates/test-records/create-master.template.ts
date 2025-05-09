@@ -35,6 +35,7 @@ import { ContingencyTestSectionGroup9And10CentralDocs } from './section-template
 import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency/contingency-test-section-group12and14.template';
 import { ContingencyTestSectionGroup15and16 } from './section-templates/test/contingency/contingency-test-section-group15and16.template';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/contingency-test-section-specialist-group1.template';
+import { ContingencyTestSectionSpecialistGroup1HgvAndTrl } from './section-templates/test/contingency/contingency-test-section-specialist-group1HgvAndTrl';
 import { ContingencyTestSectionSpecialistGroup2 } from './section-templates/test/contingency/contingency-test-section-specialist-group2.template';
 import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency/contingency-test-section-specialist-group3And4.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
@@ -334,7 +335,7 @@ export const contingencyTestTemplates: Record<
 		},
 		testTypesSpecialistGroup1: {
 			vehicle: ContingencyIvaMsvaVehicleSection,
-			test: ContingencyTestSectionSpecialistGroup1,
+			test: ContingencyTestSectionSpecialistGroup1HgvAndTrl,
 			visit: ContingencyVisitSection,
 			notes: NotesSection,
 			requiredStandards: RequiredStandardsTpl,
@@ -523,7 +524,7 @@ export const contingencyTestTemplates: Record<
 		},
 		testTypesSpecialistGroup1: {
 			vehicle: ContingencyVehicleSectionDefaultTrl,
-			test: ContingencyTestSectionSpecialistGroup1,
+			test: ContingencyTestSectionSpecialistGroup1HgvAndTrl,
 			visit: ContingencyVisitSection,
 			notes: NotesSection,
 			requiredStandards: RequiredStandardsTpl,

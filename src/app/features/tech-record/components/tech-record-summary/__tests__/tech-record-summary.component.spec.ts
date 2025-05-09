@@ -7,7 +7,6 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
-
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,7 +14,6 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
@@ -64,18 +62,17 @@ describe('TechRecordSummaryComponent', () => {
 		techRecordService = TestBed.inject(TechnicalRecordService);
 		featureToggleService = TestBed.inject(FeatureToggleService);
 		component = fixture.componentInstance;
+		fixture.componentRef.setInput('isCreateMode', false);
+		fixture.detectChanges();
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 
-	function checkHeadingAndForm(): void {
+	function checkHeading(): void {
 		const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
 		expect(heading).toBeFalsy();
-
-		const form = fixture.nativeElement.querySelector('app-dynamic-form-group');
-		expect(form).toBeTruthy();
 	}
 
 	describe('TechRecordSummaryComponent View', () => {
@@ -90,7 +87,8 @@ describe('TechRecordSummaryComponent', () => {
 				} as V3TechRecordModel)
 			);
 			fixture.detectChanges();
-			checkHeadingAndForm();
+			component.ngOnInit();
+			checkHeading();
 			expect(component.vehicleType).toEqual(VehicleTypes.PSV);
 		});
 
@@ -104,9 +102,10 @@ describe('TechRecordSummaryComponent', () => {
 					techRecord_vehicleType: VehicleTypes.PSV,
 				} as V3TechRecordModel)
 			);
+			component.ngOnInit();
 			fixture.detectChanges();
 
-			checkHeadingAndForm();
+			checkHeading();
 			expect(
 				(component.techRecordCalculated as TechRecordTypeByVehicle<'psv'>).techRecord_dimensions_height
 			).toBeUndefined();
@@ -122,9 +121,10 @@ describe('TechRecordSummaryComponent', () => {
 					techRecord_vehicleType: VehicleTypes.HGV,
 				} as V3TechRecordModel)
 			);
+			component.ngOnInit();
 			fixture.detectChanges();
 
-			checkHeadingAndForm();
+			checkHeading();
 			expect(component.vehicleType).toEqual(VehicleTypes.HGV);
 		});
 
@@ -138,9 +138,10 @@ describe('TechRecordSummaryComponent', () => {
 					techRecord_vehicleType: VehicleTypes.HGV,
 				} as V3TechRecordModel)
 			);
+			component.ngOnInit();
 			fixture.detectChanges();
 
-			checkHeadingAndForm();
+			checkHeading();
 			expect(component.vehicleType).toEqual(VehicleTypes.HGV);
 		});
 
@@ -155,9 +156,10 @@ describe('TechRecordSummaryComponent', () => {
 					techRecord_euVehicleCategory: EUVehicleCategory.O2,
 				} as V3TechRecordModel)
 			);
+			component.ngOnInit();
 			fixture.detectChanges();
 
-			checkHeadingAndForm();
+			checkHeading();
 			expect(component.vehicleType).toEqual(VehicleTypes.SMALL_TRL);
 		});
 
@@ -171,9 +173,10 @@ describe('TechRecordSummaryComponent', () => {
 					techRecord_vehicleType: VehicleTypes.TRL,
 				} as V3TechRecordModel)
 			);
+			component.ngOnInit();
 			fixture.detectChanges();
 
-			checkHeadingAndForm();
+			checkHeading();
 			expect(component.vehicleType).toEqual(VehicleTypes.TRL);
 		});
 	});

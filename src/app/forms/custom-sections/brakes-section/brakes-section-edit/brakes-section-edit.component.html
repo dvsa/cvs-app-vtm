@@ -75,19 +75,19 @@
         label="Service"
         [width]="FormNodeWidth.XL"
         />
-      
+
       <govuk-form-group-input
         formControlName="techRecord_brakes_dataTrBrakeTwo"
         label="Secondary"
         [width]="FormNodeWidth.XL"
         />
-      
+
       <govuk-form-group-input
         formControlName="techRecord_brakes_dataTrBrakeThree"
         label="Parking"
         [width]="FormNodeWidth.XL"
         />
-      
+
       <div class="radio-buttons">
         <govuk-form-group-radio
           label="Retarder 1"
@@ -113,10 +113,10 @@
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Service</th>
           <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">
-            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
+            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
           </td>
           <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">
-            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
+            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
           </td>
         </tr>
 
@@ -133,10 +133,10 @@
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Parking</th>
           <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">
-            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 45) / 100) }}
+            {{ round(((psv.techRecord_grossLadenWeight ?? 0) * 16) / 100) }}
           </td>
           <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">
-            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 50) / 100) }}
+            {{ round(((psv.techRecord_grossKerbWeight ?? 0) * 16) / 100) }}
           </td>
         </tr>
         </tbody>

@@ -1,0 +1,96 @@
+@if (amendedTechRecord(); as vm) {
+  @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
+    <dl class="govuk-summary-list">
+      <!-- Name or company -->
+      @if (hasChanged('techRecord_manufacturerDetails_name')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Name or company</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_name">
+            {{ vm.techRecord_manufacturerDetails_name | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Address line 1 -->
+      @if (hasChanged('techRecord_manufacturerDetails_address1')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Address line 1</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_address1">
+            {{ vm.techRecord_manufacturerDetails_address1 | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Address line 2 -->
+      @if (hasChanged('techRecord_manufacturerDetails_address2')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Address line 2</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_address2">
+            {{ vm.techRecord_manufacturerDetails_address2 | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Town or city -->
+      @if (hasChanged('techRecord_manufacturerDetails_postTown')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Town or city</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_postTown">
+            {{ vm.techRecord_manufacturerDetails_postTown | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- County -->
+      @if (hasChanged('techRecord_manufacturerDetails_address3')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">County</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_address3">
+            {{ vm.techRecord_manufacturerDetails_address3 | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Postcode -->
+      @if (hasChanged('techRecord_manufacturerDetails_postCode')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Postcode</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_postCode">
+            {{ vm.techRecord_manufacturerDetails_postCode | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Telephone number -->
+      @if (hasChanged('techRecord_manufacturerDetails_telephoneNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Telephone number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_telephoneNumber">
+            {{ vm.techRecord_manufacturerDetails_telephoneNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Email address -->
+      @if (hasChanged('techRecord_manufacturerDetails_emailAddress')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Email address</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_emailAddress">
+            {{ vm.techRecord_manufacturerDetails_emailAddress | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Fax number -->
+      @if (hasChanged('techRecord_manufacturerDetails_faxNumber')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Fax number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_faxNumber">
+            {{ vm.techRecord_manufacturerDetails_faxNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      <!-- Email address -->
+      @if (hasChanged('techRecord_manufacturerDetails_manufacturerNotes')) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Manufacturer notes</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_manufacturerDetails_manufacturerNotes">
+            {{ vm.techRecord_manufacturerDetails_manufacturerNotes | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+    </dl>
+  }
+}

@@ -101,14 +101,16 @@
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
         }
       }
-      @case ('techRecordSummary') {
-        <!-- New Vehicle summary section -->
-        @if (featureToggleService.isFeatureEnabled('FsVehicleSummary')) {
-          <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
+      @case ('audit') {
+        <!-- New Audit section -->
+        @if (featureToggleService.isFeatureEnabled('FsAudit')) {
+          <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
         } @else {
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
         }
-        <!-- Old Vehicle summary section -->
+      }
+      @case ('techRecordSummary') {
+        <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
       }
       @case ('bodySection') {
         <!-- New Body section -->
@@ -274,6 +276,23 @@
             <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
           } @else {
           <!-- Old Authorization into service section -->
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+        }
+      }
+
+      @case('manufacturerSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+
+          <!-- New manufacturer section -->
+          @if (featureToggleService.isFeatureEnabled('FsManufacturer')) {
+            <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
+          } @else {
+            <!-- Old manufacturer section -->
             <app-dynamic-form-group
               [data]="techRecordEdited"
               [template]="section"

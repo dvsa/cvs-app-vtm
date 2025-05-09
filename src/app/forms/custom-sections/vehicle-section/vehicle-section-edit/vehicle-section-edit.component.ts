@@ -13,6 +13,7 @@ import {
 	ValidatorFn,
 } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -109,7 +110,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			),
 		]),
 		techRecord_statusCode: this.fb.control<string | null>(null),
-		techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: null, disabled: true }),
 	});
 
 	ngOnInit(): void {
@@ -142,6 +142,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.HGV, disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
@@ -159,7 +160,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
 			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
-			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
+			techRecord_vehicleClass_description: this.fb.control<string | null>(VehicleClassDescription.HeavyGoodsVehicle, [
 				this.commonValidators.required('Vehicle class is required'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
@@ -171,6 +172,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.PSV, disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
 			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
@@ -217,8 +219,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.TRL, disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
+			techRecord_vehicleClass_description: this.fb.control<string | null>(VehicleClassDescription.Trailer, [
 				this.commonValidators.required('Vehicle class is required'),
 			]),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
@@ -246,7 +249,8 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 
 	get smallTrlFields(): Partial<Record<any, FormControl>> {
 		return {
-			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.SMALL_TRL, disabled: true }),
+			techRecord_euVehicleCategory: this.fb.control<string | null>(EUVehicleCategory.O1),
 			techRecord_vehicleSubclass: this.fb.control<string[] | null>([]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
@@ -259,18 +263,43 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	get lgvAndCarFields(): Partial<Record<keyof TechRecordType<'lgv' | 'car'>, FormControl>> {
+	get lgvFields(): Partial<Record<keyof TechRecordType<'lgv'>, FormControl>> {
 		return {
-			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: this.isCreateMode() }),
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.LGV, disabled: true }),
+			techRecord_euVehicleCategory: this.fb.control<string | null>({
+				value: EUVehicleCategory.N1,
+				disabled: this.isCreateMode(),
+			}),
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [
+				this.commonValidators.max(99, 'Number of axles must be less than or equal to 99'),
+			]),
+		};
+	}
+
+	get carFields(): Partial<Record<keyof TechRecordType<'car'>, FormControl>> {
+		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
+			techRecord_euVehicleCategory: this.fb.control<string | null>({
+				value: EUVehicleCategory.M1,
+				disabled: this.isCreateMode(),
+			}),
+			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
+			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
+			techRecord_regnDate: this.fb.control<string | null>(null, [
+				this.commonValidators.date('Date of first registration'),
+			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [
 				this.commonValidators.max(99, 'Number of axles must be less than or equal to 99'),
 			]),
 		};
@@ -280,6 +309,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	// get motorcycleFields(): Partial<Record<keyof TechRecordType<'motorcycle'>, FormControl>> {
 	get motorcycleFields(): Partial<Record<string, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [
 				this.commonValidators.max(9999, 'Number of wheels driven must be less than or equal to 9999'),
@@ -293,7 +323,7 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [
 				this.commonValidators.max(99, 'Number of axles must be less than or equal to 99'),
 			]),
 		};
@@ -399,8 +429,9 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 			case VehicleTypes.SMALL_TRL:
 				return this.smallTrlFields;
 			case VehicleTypes.LGV:
+				return this.lgvFields;
 			case VehicleTypes.CAR:
-				return this.lgvAndCarFields;
+				return this.carFields;
 			case VehicleTypes.MOTORCYCLE:
 				return this.motorcycleFields;
 			default:

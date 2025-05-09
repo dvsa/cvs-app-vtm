@@ -2,7 +2,6 @@
   "testToggle": false,
   "adrCertToggle": true,
   "requiredStandards": true,
-  "FsVehicleSummary": true,
   "FsBody": true,
   "FsNotes": true,
   "FsTyres": true,
@@ -16,5 +15,7 @@
   "FsLetters": false,
   "FsDocuments": false,
   "FsBrakes": true,
-  "FsAuthorisationIntoService": false
+  "FsManufacturer": false,
+  "FsAuthorisationIntoService": false,
+  "FsAudit": false
 }

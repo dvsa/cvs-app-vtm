@@ -256,7 +256,6 @@ export class CustomAsyncValidators {
 
 					control.markAsDirty({ onlySelf: true });
 					control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
-					control.meta.changeDetection?.detectChanges();
 
 					return null;
 				})

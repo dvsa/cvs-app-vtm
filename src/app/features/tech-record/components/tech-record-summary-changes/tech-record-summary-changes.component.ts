@@ -1,4 +1,5 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
+import { AuditSectionComponent } from '@/src/app/forms/custom-sections/audit-section/audit-section.component';
 import { FormNodeViewTypes } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
@@ -17,6 +18,7 @@ import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
+import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -107,6 +109,8 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		DocumentsSectionComponent,
 		NumberPlateComponent,
 		AuthorisationIntoServiceSectionComponent,
+		ManufacturerSectionComponent,
+		AuditSectionComponent,
 	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
