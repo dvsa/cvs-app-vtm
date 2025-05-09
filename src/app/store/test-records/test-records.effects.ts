@@ -12,6 +12,7 @@ import { TEST_TYPES } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
@@ -59,6 +60,7 @@ export class TestResultsEffects {
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
 	private featureToggleService = inject(FeatureToggleService);
+	private analyticsService = inject(AnalyticsService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -354,6 +356,27 @@ export class TestResultsEffects {
 				switchMap((techRecord) =>
 					this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])
 				)
+			),
+		{ dispatch: false }
+	);
+
+	sendReasonsForAbandonmentAnalytic$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createTestResult),
+				map((action) => {
+					const testResult = action.value;
+					const testType = testResult.testTypes[0];
+					const reasonsForAbandonment = testType.reasonForAbandoning;
+					if (reasonsForAbandonment && reasonsForAbandonment.length > 0) {
+						const reasons = reasonsForAbandonment.split('. ');
+						if (reasons.length > 0) {
+							reasons.forEach((reason, index) => {
+								this.analyticsService.pushToDataLayer({ [`abandoned_reason_${index + 1}`]: reason });
+							});
+						}
+					}
+				})
 			),
 		{ dispatch: false }
 	);
