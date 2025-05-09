@@ -1,0 +1,67 @@
+@if (amendedTechRecord(); as vm) {
+  <dl class="govuk-summary-list">
+    <!-- Reason for creation -->
+    @if (tcs.hasChanged('techRecord_reasonForCreation')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Reason for creation</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_reasonForCreation">
+          {{ vm.techRecord_reasonForCreation | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Created at -->
+    @if (tcs.hasChanged('techRecord_createdAt')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Created at</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_createdAt">
+          {{ vm.techRecord_createdAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Created by -->
+    @if (tcs.hasChanged('techRecord_createdByName')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Created by</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_createdByName">
+          {{ vm.techRecord_createdByName | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Created by ID -->
+    @if (tcs.hasChanged('techRecord_createdById')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Created by ID</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_createdById">
+          {{ vm.techRecord_createdById | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Last updated at -->
+    @if (tcs.hasChanged('techRecord_lastUpdatedAt')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Last updated at</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedAt">
+          {{ vm.techRecord_lastUpdatedAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Last updated by -->
+    @if (tcs.hasChanged('techRecord_lastUpdatedByName')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Last updated by</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedByName">
+          {{ vm.techRecord_lastUpdatedByName | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    <!-- Last updated by ID -->
+    @if (tcs.hasChanged('techRecord_lastUpdatedById')) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Last updated by ID</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedById">
+          {{ vm.techRecord_lastUpdatedById | defaultNullOrEmpty }}
+        </dd> 
+      </div>
+    }
+  </dl>
+}

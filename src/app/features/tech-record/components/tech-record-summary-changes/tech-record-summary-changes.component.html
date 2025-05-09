@@ -101,6 +101,14 @@
           <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
         }
       }
+      @case ('audit') {
+        <!-- New Audit section -->
+        @if (featureToggleService.isFeatureEnabled('FsAudit')) {
+          <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
+        } @else {
+          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
+        }
+      }
       @case ('techRecordSummary') {
         <!-- New Vehicle summary section -->
         @if (featureToggleService.isFeatureEnabled('FsVehicleSummary')) {
