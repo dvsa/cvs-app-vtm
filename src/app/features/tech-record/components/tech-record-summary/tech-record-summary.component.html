@@ -338,7 +338,12 @@
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
             ) {
-            <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
+            @if (this.featureToggleService.isFeatureEnabled('FsAdrCerts')) {
+              <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+
+            } @else {
+              <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
+            }
           }
         }
         @case ('techRecord') {

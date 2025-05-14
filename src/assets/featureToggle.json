@@ -15,7 +15,8 @@
   "FsLetters": false,
   "FsDocuments": false,
   "FsBrakes": true,
-  "FsManufacturer": false,
   "FsAuthorisationIntoService": false,
-  "FsAudit": false
+  "FsAudit": false,
+  "FsManufacturer": false,
+  "FsAdrCerts": true
 }
