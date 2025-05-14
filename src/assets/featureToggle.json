@@ -18,5 +18,5 @@
   "FsAuthorisationIntoService": false,
   "FsAudit": false,
   "FsManufacturer": false,
-  "FsAdrCerts": true
+  "FsAdrCerts": false
 }
