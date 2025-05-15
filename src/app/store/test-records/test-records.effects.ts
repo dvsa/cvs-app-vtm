@@ -11,6 +11,7 @@ import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -25,6 +26,7 @@ import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -37,6 +39,10 @@ import {
 	fetchTestResultsBySystemNumber,
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
+	patchEditingTestResult,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -379,5 +385,32 @@ export class TestResultsEffects {
 				})
 			),
 		{ dispatch: false }
+	);
+
+	onGetRecalls$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(getRecalls),
+			concatLatestFrom(() => this.store.select(techRecord)),
+			filter(
+				([_, techRecord]) =>
+					!!techRecord &&
+					(techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL)
+			),
+			switchMap(([_, techRecord]) =>
+				this.httpService.getRecalls(techRecord!.vin).pipe(
+					map((recalls) => getRecallsSuccess({ recalls })),
+					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+				)
+			)
+		)
+	);
+
+	onGetRecallsSuccess$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(getRecallsSuccess),
+			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
+		)
 	);
 }

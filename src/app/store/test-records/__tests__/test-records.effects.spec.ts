@@ -37,14 +37,19 @@ import {
 	fetchTestResultsBySystemNumber,
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
+	isTestTypeOldIvaOrMsva,
+	selectedTestResultState,
 	templateSectionsChanged,
+	testResultInEdit,
 	testTypeIdChanged,
 	updateResultOfTest,
 	updateTestResult,
 	updateTestResultFailed,
 	updateTestResultSuccess,
 } from '@store/test-records';
-import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '@store/test-records';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestResultsEffects } from '../test-records.effects';
@@ -135,7 +140,11 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 }));
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
+import { createMockHgv } from '@/src/mocks/hgv-record.mock';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { techRecord } from '../../technical-records';
 
 describe('TestResultsEffects', () => {
 	let effects: TestResultsEffects;
@@ -144,6 +153,7 @@ describe('TestResultsEffects', () => {
 	let testResultsService: TestRecordsService;
 	let store: MockStore<State>;
 	let featureToggleService: FeatureToggleService;
+	let httpService: HttpService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -180,7 +190,10 @@ describe('TestResultsEffects', () => {
 				FeatureToggleService,
 				{
 					provide: HttpService,
-					useValue: { getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())) },
+					useValue: {
+						getRecalls: jest.fn(),
+						getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())),
+					},
 				},
 			],
 		});
@@ -189,6 +202,7 @@ describe('TestResultsEffects', () => {
 		effects = TestBed.inject(TestResultsEffects);
 		testResultsService = TestBed.inject(TestRecordsService);
 		featureToggleService = TestBed.inject(FeatureToggleService);
+		httpService = TestBed.inject(HttpService);
 	});
 
 	beforeEach(() => {
@@ -976,6 +990,43 @@ describe('TestResultsEffects', () => {
 
 				expectObservable(effects.createTestResult$).toBe('----b', {
 					b: createTestResultFailed({ errors: expectedErrors }),
+				});
+			});
+		});
+	});
+
+	describe('getRecalls$', () => {
+		it('should return getRecallsSuccess action on a successful API call', () => {
+			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
+
+			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				// mock action to trigger effect
+				actions$ = hot('-a--', { a: getRecalls() });
+
+				// mock service call
+				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--a|', { a: recalls }));
+
+				// expect effect to return success action
+				expectObservable(effects.onGetRecalls$).toBe('---b', {
+					b: getRecallsSuccess({ recalls }),
+				});
+			});
+		});
+
+		it('should return getRecallsFailed action on API error', () => {
+			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a--', { a: getRecalls() });
+
+				const expectedError = new Error('Bad Gateway');
+
+				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--#|', {}, expectedError));
+
+				expectObservable(effects.onGetRecalls$).toBe('---b', {
+					b: getRecallsFailure({ error: 'Bad Gateway' }),
 				});
 			});
 		});

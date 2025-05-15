@@ -1,4 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -119,3 +120,10 @@ export const removeRequiredStandard = createAction(
 );
 
 export const updateResultOfTestRequiredStandards = createAction('[test-results] update test result required standards');
+
+export const getRecalls = createAction('[test-results] get recalls');
+export const getRecallsSuccess = createAction(
+	'[test-results] get recalls success',
+	props<{ recalls: RecallsSchema }>()
+);
+export const getRecallsFailure = createAction('[test-results] get recalls failed', props<GlobalError>());

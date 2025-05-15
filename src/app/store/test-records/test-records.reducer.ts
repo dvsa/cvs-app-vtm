@@ -38,6 +38,9 @@ import {
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
 	initialContingencyTest,
 	patchEditingTestResult,
 	removeDefect,
@@ -166,7 +169,10 @@ export const testResultsReducer = createReducer(
 		editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult),
 	})),
 
-	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) }))
+	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
+
+	on(getRecalls, (state) => ({ ...state, loading: true })),
+	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
