@@ -391,13 +391,6 @@ export class TestResultsEffects {
 		this.actions$.pipe(
 			ofType(getRecalls),
 			concatLatestFrom(() => this.store.select(techRecord)),
-			filter(
-				([_, techRecord]) =>
-					!!techRecord &&
-					(techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
-						techRecord.techRecord_vehicleType === VehicleTypes.TRL)
-			),
 			switchMap(([_, techRecord]) =>
 				this.httpService.getRecalls(techRecord!.vin).pipe(
 					map((recalls) => getRecallsSuccess({ recalls })),
