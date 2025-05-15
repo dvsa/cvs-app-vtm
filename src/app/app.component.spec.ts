@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalModule } from '@azure/msal-angular';
@@ -135,5 +135,40 @@ describe('AppComponent', () => {
 
 			expect(currentComponent).toBeTruthy();
 		});
+	});
+
+	describe('checkDateChange', () => {
+		let component: AppComponent;
+
+		beforeEach(() => {
+			const fixture = TestBed.createComponent(AppComponent);
+			component = fixture.componentInstance;
+			fixture.detectChanges();
+		});
+
+		it('should reinitialize app if date changes', fakeAsync(() => {
+			jest.useFakeTimers().setSystemTime(new Date(2020, 1, 1, 0, 0, 0)); // pretend its 1st Jan 2020
+			jest.spyOn(component, 'reinitializeApp');
+			component.checkDateChange();
+			jest.advanceTimersByTime(21600000);
+			jest.setSystemTime(new Date(2020, 1, 2, 0, 0, 0)); // now its 2nd Jan 2020
+			expect(component.reinitializeApp).toHaveBeenCalledTimes(1);
+			jest.advanceTimersByTime(21600000); // Simulate another 6 hours passing
+			expect(component.reinitializeApp).toHaveBeenCalledTimes(2);
+			jest.useRealTimers();
+		}));
+
+		it('should not reinitialize app if date does not change', fakeAsync(() => {
+			jest.useFakeTimers().setSystemTime(new Date(2020, 1, 1, 0, 0, 0)); // pretend its 1st Jan 2020
+			jest.spyOn(component, 'reinitializeApp');
+			component.checkDateChange();
+			jest.advanceTimersByTime(10800000); // Simulate 3 hours passing
+			jest.setSystemTime(new Date(2020, 1, 2, 3, 0, 0));
+			expect(component.reinitializeApp).toHaveBeenCalledTimes(0);
+			jest.advanceTimersByTime(10800000 - 1); // Simulate 2 hours, 59 minutes and 59 seconds passing
+			jest.setSystemTime(new Date(2020, 1, 2, 5, 59, 59));
+			expect(component.reinitializeApp).toHaveBeenCalledTimes(0);
+			jest.useRealTimers();
+		}));
 	});
 });
