@@ -13,7 +13,7 @@ import { SuggestiveInputComponent } from '../suggestive-input.component';
 	template: `<form [formGroup]="form">
     <app-suggestive-input name="foo" formControlName="foo" [options$]="options$"></app-suggestive-input>
   </form> `,
-	styles: [],
+	imports: [FormsModule, ReactiveFormsModule, SuggestiveInputComponent, FieldErrorMessageComponent],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -32,8 +32,7 @@ describe('SuggestiveInputComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [HostComponent, SuggestiveInputComponent, FieldErrorMessageComponent],
-			imports: [FormsModule, ReactiveFormsModule],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 
@@ -50,9 +49,9 @@ describe('SuggestiveInputComponent', () => {
 
 	describe('getters', () => {
 		it('should retutn the correct class', () => {
-			suggestiveInput.width = FormNodeWidth.L;
+			jest.spyOn(suggestiveInput, 'width').mockReturnValue(FormNodeWidth.L);
 			expect(suggestiveInput.style).toBe('govuk-input govuk-input--width-10');
-			suggestiveInput.width = undefined;
+			jest.spyOn(suggestiveInput, 'width').mockReturnValue(undefined);
 			expect(suggestiveInput.style).toBe('govuk-input');
 		});
 	});

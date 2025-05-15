@@ -26,3 +26,7 @@
     color: govuk-colour('dark-blue', $legacy: 'light-blue');
   }
 }
+
+.word-break {
+  word-break: break-all;
+}

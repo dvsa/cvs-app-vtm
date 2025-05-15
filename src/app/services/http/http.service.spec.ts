@@ -380,4 +380,16 @@ describe('HttpService', () => {
 			expect(req.request.body).toHaveProperty('secondaryVrms');
 		});
 	});
+
+	describe('sendLogs', () => {
+		it('should send a logs array and report back a success', async () => {
+			httpService.sendLogs([]).then((response) => {
+				expect(response.body).toEqual([]);
+			});
+
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/log`);
+			expect(req.request.method).toBe('POST');
+			req.flush([], { status: 200, statusText: 'OK' });
+		});
+	});
 });

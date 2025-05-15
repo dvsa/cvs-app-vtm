@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { CheckboxComponent } from '../checkbox.component';
 
@@ -9,7 +9,7 @@ import { CheckboxComponent } from '../checkbox.component';
 	template: `<form [formGroup]="form">
     <app-checkbox name="foo" formControlName="foo"></app-checkbox>
   </form> `,
-	styles: [],
+	imports: [CheckboxComponent, FormsModule, ReactiveFormsModule],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -23,7 +23,7 @@ describe('CheckboxComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [CheckboxComponent],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 

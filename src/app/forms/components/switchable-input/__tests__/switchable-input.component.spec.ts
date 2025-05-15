@@ -19,7 +19,9 @@ describe('SwitchableInputComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [
+			imports: [
+				FormsModule,
+				ReactiveFormsModule,
 				AutocompleteComponent,
 				DateComponent,
 				FieldErrorMessageComponent,
@@ -32,16 +34,18 @@ describe('SwitchableInputComponent', () => {
 				TextAreaComponent,
 				TextInputComponent,
 			],
-			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(SwitchableInputComponent);
 		component = fixture.componentInstance;
-		component.type = FormNodeEditTypes.TEXT;
-		component.form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
-		component.name = 'foo';
+		fixture.componentRef.setInput('type', FormNodeEditTypes.TEXT);
+		fixture.componentRef.setInput(
+			'form',
+			new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') })
+		);
+		fixture.componentRef.setInput('name', 'foo');
 		fixture.detectChanges();
 	});
 

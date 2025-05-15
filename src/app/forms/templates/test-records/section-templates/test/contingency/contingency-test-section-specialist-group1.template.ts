@@ -5,7 +5,6 @@ import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
-	FormNodeValueFormat,
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
@@ -44,6 +43,26 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
 			validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }],
 		},
 		{
+			name: 'recalls',
+			type: FormNodeTypes.GROUP,
+			children: [
+				{
+					name: 'hasRecall',
+					value: false,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+				{
+					name: 'manufacturer',
+					value: null,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+			],
+		},
+		{
 			name: 'testTypes',
 			label: 'Test Types',
 			type: FormNodeTypes.ARRAY,
@@ -63,6 +82,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
 								{ value: 'prs', label: 'PRS' },
 							],
 							validators: [
+								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reapplicationDate', value: 'fail' } },
 								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
 							],
 							asyncValidators: [
@@ -138,7 +158,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
 							type: FormNodeTypes.CONTROL,
 							viewType: FormNodeViewTypes.STRING,
 							editType: FormNodeEditTypes.TEXT,
-							valueFormat: FormNodeValueFormat.UPPERCASE,
+							uppercase: true,
 							validators: [
 								{ name: ValidatorNames.Alphanumeric },
 								// Make required if test result is pass/prs, but issue documents centrally is false

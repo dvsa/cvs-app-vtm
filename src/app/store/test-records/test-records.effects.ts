@@ -1,15 +1,19 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
+import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
@@ -22,6 +26,7 @@ import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -34,6 +39,10 @@ import {
 	fetchTestResultsBySystemNumber,
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
+	patchEditingTestResult,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -57,6 +66,7 @@ export class TestResultsEffects {
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
 	private featureToggleService = inject(FeatureToggleService);
+	private analyticsService = inject(AnalyticsService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -308,10 +318,16 @@ export class TestResultsEffects {
 					merge(mergedForms, form.getCleanValue(form));
 				});
 
+				if (vehicleType === VehicleTypes.LGV) {
+					mergedForms.euVehicleCategory = EUVehicleCategoryLGV.N1;
+				} else if (vehicleType === VehicleTypes.CAR) {
+					mergedForms.euVehicleCategory = EUVehicleCategoryCAR.M1;
+				}
 				mergedForms.testTypes[0].testTypeId = id;
 				mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
 				mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
 				mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
+				mergedForms.recalls = editedTestResult.recalls;
 
 				const now = new Date().toISOString();
 
@@ -348,5 +364,53 @@ export class TestResultsEffects {
 				)
 			),
 		{ dispatch: false }
+	);
+
+	sendReasonsForAbandonmentAnalytic$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createTestResult),
+				map((action) => {
+					const testResult = action.value;
+					const testType = testResult.testTypes[0];
+					const reasonsForAbandonment = testType.reasonForAbandoning;
+					if (reasonsForAbandonment && reasonsForAbandonment.length > 0) {
+						const reasons = reasonsForAbandonment.split('. ');
+						if (reasons.length > 0) {
+							reasons.forEach((reason, index) => {
+								this.analyticsService.pushToDataLayer({ [`abandoned_reason_${index + 1}`]: reason });
+							});
+						}
+					}
+				})
+			),
+		{ dispatch: false }
+	);
+
+	onGetRecalls$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(getRecalls),
+			concatLatestFrom(() => this.store.select(techRecord)),
+			filter(
+				([_, techRecord]) =>
+					!!techRecord &&
+					(techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL)
+			),
+			switchMap(([_, techRecord]) =>
+				this.httpService.getRecalls(techRecord!.vin).pipe(
+					map((recalls) => getRecallsSuccess({ recalls })),
+					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+				)
+			)
+		)
+	);
+
+	onGetRecallsSuccess$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(getRecallsSuccess),
+			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
+		)
 	);
 }

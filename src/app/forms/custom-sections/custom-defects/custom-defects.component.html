@@ -1,20 +1,24 @@
-<ng-container *ngIf="form && defectCount; else noDefects" [formGroup]="form">
-  <h2 class="govuk-heading-m">{{ defectNameType }}s</h2>
-  <app-custom-defect
-    *ngFor="let customDefect of customDefects; let i = index; trackBy: trackByFn"
-    [isEditing]="isEditing"
-    [form]="getCustomDefectForm(i)"
-    [index]="i"
-    [templateName]="template.name"
-    (removeCustomDefect)="handleRemoveDefect($event)"
-  ></app-custom-defect>
-</ng-container>
-
-<ng-template #noDefects>
-  <ng-container *ngIf="!isEditing">
+@if (form && defectCount) {
+  <ng-container [formGroup]="form">
+    <h2 class="govuk-heading-m">{{ defectNameType }}s</h2>
+    @for (customDefect of customDefects; track i; let i = $index) {
+      <app-custom-defect
+        [isEditing]="isEditing()"
+        [form]="getCustomDefectForm(i)"
+        [index]="i"
+        [templateName]="template().name"
+        (removeCustomDefect)="handleRemoveDefect($event)"
+        />
+    }
+  </ng-container>
+} @else {
+  @if (!isEditing()) {
     <h2 class="govuk-heading-m">{{ defectNameType }}s</h2>
     <p class="govuk-body">No {{ defectNameType }}s</p>
-  </ng-container>
-</ng-template>
+  }
+}
 
-<app-button *ngIf="isEditing" id="add-custom-defect" (clicked)="handleAddCustomDefect()">Add {{ defectNameType }}</app-button>
+
+@if (isEditing()) {
+  <app-button id="add-custom-defect" (clicked)="handleAddCustomDefect()">Add {{ defectNameType }}</app-button>
+}

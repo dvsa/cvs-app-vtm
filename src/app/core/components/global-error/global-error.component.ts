@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
@@ -5,6 +6,7 @@ import { GlobalErrorService } from './global-error.service';
 @Component({
 	selector: 'app-global-error',
 	templateUrl: './global-error.component.html',
+	imports: [AsyncPipe],
 })
 export class GlobalErrorComponent {
 	constructor(public globalErrorService: GlobalErrorService) {}

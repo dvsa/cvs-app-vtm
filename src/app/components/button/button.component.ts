@@ -1,17 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLinkWithHref } from '@angular/router';
+import { PreventDoubleClickDirective } from '../../directives/prevent-double-click/prevent-double-click.directive';
 
 @Component({
 	selector: 'app-button',
 	templateUrl: './button.component.html',
 	styleUrls: ['./button.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [NgClass, NgTemplateOutlet, PreventDoubleClickDirective],
 })
 export class ButtonComponent extends RouterLinkWithHref {
-	@Input() id?: string;
-	@Input() disabled = false;
-	@Input() type: 'link' | 'button' = 'button';
-	@Input() design: '' | 'secondary' | 'warning' | 'link' = '';
+	readonly id = input<string>();
+	readonly disabled = input(false);
+	readonly type = input<'link' | 'button'>('button');
+	readonly design = input<'' | 'secondary' | 'warning' | 'link'>('');
 
-	@Output() clicked = new EventEmitter();
+	readonly clicked = output();
 }

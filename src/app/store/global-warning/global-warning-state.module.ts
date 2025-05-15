@@ -7,7 +7,6 @@ import {
 } from '@store/global-warning/global-warning-service.reducers';
 
 @NgModule({
-	declarations: [],
 	imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_GLOBAL_WARNING_KEY, globalWarningReducer)],
 })
 export class GlobalWarningStateModule {}

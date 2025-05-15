@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
-import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
+
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
@@ -75,14 +74,16 @@ const routes: Routes = [
 			{
 				path: RootRoutes.ERROR,
 				pathMatch: 'full',
-				component: ServerErrorComponent,
+				loadComponent: () =>
+					import('@core/components/server-error/server-error.component').then((m) => m.ServerErrorComponent),
 			},
 		],
 	},
 	{
 		path: RootRoutes.WILDCARD,
 		pathMatch: 'full',
-		component: PageNotFoundComponent,
+		loadComponent: () =>
+			import('@core/components/page-not-found/page-not-found.component').then((m) => m.PageNotFoundComponent),
 	},
 ];
 @NgModule({

@@ -1,0 +1,31 @@
+<div [class]="style">
+  <label tag for="{{ id }}" [id]="labelId" class="govuk-label govuk-label--m">
+    {{ controlLabel() }}
+    @if (tags().length) {
+      <div class="flex gap-2">
+        @for (tag of tags(); track tag) {
+          <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
+        }
+      </div>
+    }
+  </label>
+
+  @if (controlHint()) {
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+  }
+
+  @if (hasError) {
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  }
+
+  <div class="govuk-input--width-{{ width() }} internal-wrapper">
+    @if (prefix()) {
+      <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
+    }
+
+    <select id="{{ id }}"></select>
+  </div>
+</div>

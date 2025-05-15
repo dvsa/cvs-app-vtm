@@ -1,3 +1,4 @@
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
@@ -6,10 +7,13 @@ import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { fetchReferenceDataAudit, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
 import { Observable, map, take } from 'rxjs';
+import { PaginationComponent } from '../../../components/pagination/pagination.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
 
 @Component({
 	selector: 'app-reference-data-deleted-list',
 	templateUrl: './reference-data-deleted-list.component.html',
+	imports: [RoleRequiredDirective, PaginationComponent, AsyncPipe, DatePipe],
 })
 export class ReferenceDataDeletedListComponent implements OnInit {
 	type!: ReferenceDataResourceType;
@@ -47,9 +51,10 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 		return Roles;
 	}
 
-	handlePaginationChange({ start, end }: { start: number; end: number }) {
-		this.pageStart = start;
-		this.pageEnd = end;
+	handlePaginationChange(event?: { start: number; end: number }) {
+		if (!event) return;
+		this.pageStart = event.start;
+		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
 

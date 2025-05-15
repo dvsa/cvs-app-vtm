@@ -13,7 +13,7 @@ import { SelectComponent } from '../select.component';
 	template: `<form [formGroup]="form">
     <app-select name="foo" label="Foo" [options]="options" formControlName="foo"></app-select>
   </form> `,
-	styles: [],
+	imports: [FormsModule, ReactiveFormsModule, BaseControlComponent, FieldErrorMessageComponent, SelectComponent],
 })
 class HostComponent {
 	@ViewChild(SelectComponent) select?: SelectComponent;
@@ -34,8 +34,7 @@ describe('SelectComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BaseControlComponent, FieldErrorMessageComponent, HostComponent, SelectComponent],
-			imports: [FormsModule, ReactiveFormsModule],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 

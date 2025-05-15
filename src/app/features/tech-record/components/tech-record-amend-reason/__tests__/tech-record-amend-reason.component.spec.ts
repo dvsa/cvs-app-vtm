@@ -1,11 +1,10 @@
+import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { StoreModule } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TechRecordAmendReasonComponent } from '../tech-record-amend-reason.component';
 
 describe('TechRecordAmendReasonComponent', () => {
@@ -16,14 +15,12 @@ describe('TechRecordAmendReasonComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordAmendReasonComponent],
-			imports: [
-				RouterTestingModule.withRoutes([{ path: 'test-reason', component: jest.fn() }]),
-				DynamicFormsModule,
-				ReactiveFormsModule,
-				StoreModule.forRoot({}),
+			imports: [TechRecordAmendReasonComponent, ReactiveFormsModule],
+			providers: [
+				GlobalErrorService,
+				provideRouter([{ path: 'test-reason', component: jest.fn() }]),
+				provideMockStore({ initialState: initialAppState }),
 			],
-			providers: [GlobalErrorService],
 		}).compileComponents();
 
 		route = TestBed.inject(ActivatedRoute);

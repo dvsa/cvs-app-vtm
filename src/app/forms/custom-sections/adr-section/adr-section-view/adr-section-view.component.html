@@ -1,0 +1,375 @@
+@if (techRecord(); as vm) {
+  @if (vm.techRecord_vehicleType === 'hgv' || vm.techRecord_vehicleType === 'trl' || vm.techRecord_vehicleType === 'lgv') {
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Able to carry dangerous goods</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_dangerousGoods">
+          {{ vm.techRecord_adrDetails_dangerousGoods | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </dl>
+    @if (adrService.canDisplayDangerousGoodsSection(vm)) {
+      <!-- Applicant details section -->
+      <h2 class="govuk-heading-m">Applicant Details</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Name</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_name">
+            {{ vm.techRecord_adrDetails_applicantDetails_name | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Street</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_street">
+            {{ vm.techRecord_adrDetails_applicantDetails_street | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Town</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_town">
+            {{ vm.techRecord_adrDetails_applicantDetails_town | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">City</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_city">
+            {{ vm.techRecord_adrDetails_applicantDetails_city | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Postcode</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_postcode">
+            {{ vm.techRecord_adrDetails_applicantDetails_postcode | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </dl>
+      <!-- ADR details section -->
+      <h2 class="govuk-heading-m">ADR Details</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">ADR body type</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_type">
+            {{ vm.techRecord_adrDetails_vehicleDetails_type | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
+            {{ vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Date processed</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_approvalDate">
+            {{ vm.techRecord_adrDetails_vehicleDetails_approvalDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_permittedDangerousGoods">
+            {{ vm.techRecord_adrDetails_permittedDangerousGoods | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        @if (adrService.canDisplayBodyDeclarationSection(vm)) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Body declaration</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
+              {{ vm.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
+        @if (adrService.canDisplayCompatibilityGroupJSection(vm)) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Compatibility Group J</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
+              {{ vm.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
+            </dd>
+          </div>
+        }
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            <a class="govuk-link--no-visited-state" target="_blank" href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx">
+              Guidance notes
+            </a>
+          </dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalNotes_number">
+            {{ vm.techRecord_adrDetails_additionalNotes_number | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">ADR type approval number</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrTypeApprovalNo">
+            {{ vm.techRecord_adrDetails_adrTypeApprovalNo | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </dl>
+      <!-- Tank Details -->
+      @if (adrService.canDisplayTankOrBatterySection(vm)) {
+        <h2 class="govuk-heading-m">Tank Details</h2>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Tank Make</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankManufacturer | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Tank Year of manufacture</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_yearOfManufacture | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Tank type approval number</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Code</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankCode">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankCode | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Substances permitted</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Select</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_select | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          @if (adrService.canDisplayTankStatementStatementSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Reference number</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
+                {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayTankStatementProductListSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Reference number</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
+                {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo | defaultNullOrEmpty }}
+              </dd>
+            </div>
+            @if (vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo) {
+              @for (unNo of vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; track unNo; let i = $index) {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
+                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
+                    {{ unNo | defaultNullOrEmpty }}
+                  </dd>
+                </div>
+              }
+            }
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Additional Details</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tankStatement_productList | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Special provisions</dt>
+            <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        </dl>
+        <!-- Tank Inspections -->
+        <h2 class="govuk-heading-m">Tank Inspections</h2>
+        <!-- Initial inspection -->
+        <dl class="govuk-summary-list">
+          <h2 class="govuk-heading-s">Initial</h2>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Certificate number</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Expiry date</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
+              {{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        </dl>
+        <!-- Subsequent inspections -->
+        @if (vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length) {
+          <dl class="govuk-summary-list">
+            @for (inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+              <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Inspection type</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
+                  {{ inspection.tc3Type | defaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Certificate number</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
+                  {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Expiry date</dt>
+                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
+                  {{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+          </dl>
+        }
+        <!-- Miscellaneous -->
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Memo 07/09 (3 month extension) can be applied</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_memosApply">
+              {{ vm.techRecord_adrDetails_memosApply | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">M145</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_m145Statement">
+              {{ vm.techRecord_adrDetails_m145Statement | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        </dl>
+      }
+      <!-- Battery list applicable -->
+      @if (adrService.canDisplayBatterySection(vm)) {
+        <h2 class="govuk-heading-m">Battery List Applicable</h2>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Battery List Applicable</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_listStatementApplicable">
+              {{ vm.techRecord_adrDetails_listStatementApplicable | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          @if (adrService.canDisplayBatteryListNumberSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Reference number</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
+                {{ vm.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+        </dl>
+      }
+      <!-- Declarations -->
+      <dl class="govuk-summary-list">
+        <h2 class="govuk-heading-m">Declarations seen</h2>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationsSeen">
+              {{ vm.techRecord_adrDetails_brakeDeclarationsSeen | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          @if (adrService.canDisplayIssueSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Issuer</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
+                {{ vm.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayIssueSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Brake endurance</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
+                {{ vm.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
+              </dd>
+            </div>
+          }
+          @if (adrService.canDisplayWeightSection(vm)) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Weight</dt>
+              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
+                {{ vm.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
+              </dd>
+            </div>
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
+            <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
+              {{ vm.techRecord_adrDetails_declarationsSeen | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        </dl>
+      </dl>
+      <h2 class="govuk-heading-m">New Certificate required</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">New Certificate required</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_newCertificateRequested">
+            {{ vm.techRecord_adrDetails_newCertificateRequested ? 'Yes' : 'No' }}
+          </dd>
+        </div>
+      </dl>
+      <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
+      @if (vm.techRecord_adrDetails_additionalExaminerNotes; as notes) {
+        @if (notes?.length; as notesCount) {
+          <table class="govuk-table">
+            <tbody class="govuk-table__body">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Notes</th>
+                <th scope="col" class="govuk-table__header">Created By</th>
+                <th scope="col" class="govuk-table__header">Date</th>
+              </tr>
+              @if (pagination.paginationOptions(); as page) {
+                @for (note of notes.slice(page.start, page.end); track note; let i = $index) {
+                  <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
+                    <td class="govuk-table__cell whitespace-pre-wrap">
+                      <span>{{ note.note | defaultNullOrEmpty }}</span>
+                    </td>
+                    <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
+                    <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+          <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+        } @else {
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key" id="no-additional-examiner-notes-history">
+                No additional examiner notes history available
+              </dt>
+            </div>
+          </dl>
+        }
+      } @else {
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key" id="no-additional-examiner-notes-history">
+              No additional examiner notes history available
+            </dt>
+          </div>
+        </dl>
+      }
+      <h2 class="govuk-heading-m">ADR Certificate Notes</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">ADR Certificate Notes</dt>
+          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrCertificateNotes">
+            <span class="whitespace-pre-wrap">{{ vm.techRecord_adrDetails_adrCertificateNotes | defaultNullOrEmpty }}</span>
+          </dd>
+        </div>
+      </dl>
+    }
+  }
+}

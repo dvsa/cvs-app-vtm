@@ -1,10 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -15,7 +15,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
-import { SharedModule } from '@shared/shared.module';
+
 import { State, initialAppState } from '@store/index';
 import { fetchReferenceDataByKeySearchSuccess } from '@store/reference-data';
 import { Observable, ReplaySubject, of } from 'rxjs';
@@ -52,15 +52,11 @@ describe('TechRecordSearchTyresComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordSearchTyresComponent],
-			imports: [
-				DynamicFormsModule,
-				RouterTestingModule,
-				SharedModule,
-				HttpClientTestingModule,
-				FixNavigationTriggeredOutsideAngularZoneNgModule,
-			],
+			imports: [TechRecordSearchTyresComponent, FixNavigationTriggeredOutsideAngularZoneNgModule],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ReferenceDataService, useValue: mockReferenceDataService },
@@ -225,12 +221,6 @@ describe('TechRecordSearchTyresComponent', () => {
 		it('should get the number of results', () => {
 			component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
 			expect(component.numberOfResults).toEqual(component.searchResults?.length);
-		});
-	});
-
-	describe('trackByFn', () => {
-		it('should return the resourceKey', () => {
-			expect(component.trackByFn(12, { resourceKey: 'foo' } as unknown as ReferenceDataTyre)).toBe('foo');
 		});
 	});
 

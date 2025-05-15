@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ADRCertificateTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCertificateTypes.enum.js';
@@ -15,10 +15,14 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
 import { Subject, take, takeUntil } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-adr-generate-certificate',
 	templateUrl: './adr-generate-certificate.component.html',
+	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent, ButtonGroupComponent, ButtonComponent],
 })
 export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
 	systemNumber?: string;

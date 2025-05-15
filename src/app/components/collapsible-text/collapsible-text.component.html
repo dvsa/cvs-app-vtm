@@ -1,20 +1,22 @@
-<ng-container *ngIf="isCollapsed">
-  <div class="break-all">{{ text | slice: 0 : maxChars }}<span *ngIf="text.length > maxChars">...</span></div>
-
-  <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()" *ngIf="text.length > maxChars">
-    <span class="govuk-accordion__section-toggle" data-nosnippet="">
-      <span class="govuk-accordion__section-toggle-focus">
-        <span class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span>
-        <span class="govuk-accordion__section-toggle-text"> Show </span>
+@if (isCollapsed()) {
+  <div class="break-all">{{ text() | slice: 0 : maxChars() }}@if (text().length > maxChars()) {
+    <span>...</span>
+  }</div>
+  @if (text().length > maxChars()) {
+    <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()">
+      <span class="govuk-accordion__section-toggle" data-nosnippet="">
+        <span class="govuk-accordion__section-toggle-focus">
+          <span class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span>
+          <span class="govuk-accordion__section-toggle-text"> Show </span>
+        </span>
       </span>
-    </span>
-  </button>
-</ng-container>
-<ng-container *ngIf="!isCollapsed">
+    </button>
+  }
+}
+@if (!isCollapsed()) {
   <div class="break-all">
-    {{ text }}
+    {{ text() }}
   </div>
-
   <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="true" (click)="close()">
     <span class="govuk-accordion__section-toggle" data-nosnippet="">
       <span class="govuk-accordion__section-toggle-focus">
@@ -23,4 +25,4 @@
       </span>
     </span>
   </button>
-</ng-container>
+}

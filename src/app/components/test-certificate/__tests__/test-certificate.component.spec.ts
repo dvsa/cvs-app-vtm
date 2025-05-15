@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -18,9 +19,14 @@ describe('TestCertificateComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [RetrieveDocumentDirective, TestCertificateComponent],
-			imports: [HttpClientTestingModule],
-			providers: [HttpService, provideMockStore({ initialState: initialAppState }), FeatureToggleService],
+			imports: [RetrieveDocumentDirective, TestCertificateComponent],
+			providers: [
+				HttpService,
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+				FeatureToggleService,
+			],
 		}).compileComponents();
 	});
 
@@ -29,6 +35,8 @@ describe('TestCertificateComponent', () => {
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);
 		featureToggleService = TestBed.inject(FeatureToggleService);
+		fixture.componentRef.setInput('testNumber', 'testNumber');
+		fixture.componentRef.setInput('vin', 'vin');
 		fixture.detectChanges();
 	});
 

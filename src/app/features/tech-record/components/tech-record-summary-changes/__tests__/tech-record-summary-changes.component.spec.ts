@@ -1,18 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { FormNode, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
+
 import { initialAppState } from '@store/index';
 import {
 	amendVrmSuccess,
@@ -34,9 +31,11 @@ describe('TechRecordSummaryChangesComponent', () => {
 	beforeEach(async () => {
 		actions$ = new ReplaySubject<Action>();
 		await TestBed.configureTestingModule({
-			declarations: [TechRecordSummaryChangesComponent],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+			imports: [TechRecordSummaryChangesComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{
@@ -160,42 +159,6 @@ describe('TechRecordSummaryChangesComponent', () => {
 			component.cancel();
 			expect(clearErrorsSpy).toHaveBeenCalled();
 			expect(navigateSpy).toHaveBeenCalled();
-		});
-	});
-
-	describe('getTechRecordChangesKeys', () => {
-		it('should return a list of all of the populated keys', () => {
-			component.techRecordChanges = { techRecord_grossEecWeight: 1, techRecord_grossDesignWeight: 1 };
-			const keys = component.getTechRecordChangesKeys();
-			expect(keys).toEqual(['techRecord_grossEecWeight', 'techRecord_grossDesignWeight']);
-		});
-	});
-
-	describe('getSectionsWhitelist', () => {
-		it('should return an empty array if vehicleType is null', () => {
-			component.techRecordEdited = undefined;
-			const value = component.getSectionsWhitelist();
-			expect(value).toEqual([]);
-		});
-		it('should return an empty array if techRecordChanges is null', () => {
-			component.techRecord = undefined;
-			const value = component.getSectionsWhitelist();
-			expect(value).toEqual([]);
-		});
-		it('should call haveAxlesChanged if vehicleType and techRecordChanges are defined', () => {
-			const localTechRecordEdited = getEmptyTechRecord();
-			component.techRecordEdited = localTechRecordEdited as TechRecordType<'put'>;
-			component.techRecordChanges = { techRecord_grossEecWeight: 1, techRecord_grossDesignWeight: 1 };
-			const value = component.getSectionsWhitelist();
-			expect(value).toEqual(['weightsSection']);
-		});
-	});
-
-	describe('toVisibleFormNode', () => {
-		it('updates the viewType property from hidden to string', () => {
-			const children = TechRecordReasonForCreationSection.children as FormNode[];
-			const formNode = component.toVisibleFormNode(children[0]);
-			expect(formNode.viewType).toEqual(FormNodeViewTypes.STRING);
 		});
 	});
 });

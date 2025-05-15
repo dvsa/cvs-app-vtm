@@ -1,7 +1,7 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -25,8 +25,10 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [HydrateNewVehicleRecordComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{
@@ -36,7 +38,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 					},
 				},
 			],
-			imports: [HttpClientTestingModule, RouterTestingModule],
+			imports: [HydrateNewVehicleRecordComponent],
 		}).compileComponents();
 	});
 

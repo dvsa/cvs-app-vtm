@@ -1,0 +1,38 @@
+@if (techRecord(); as tr) {
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">COC issue date</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_cocIssueDate">
+        {{ tr.techRecord_authIntoService_cocIssueDate | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date received</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateReceived">
+        {{ tr.techRecord_authIntoService_dateReceived | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date pending</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_datePending">
+        {{ tr.techRecord_authIntoService_datePending | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date authorised</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateAuthorised">
+        {{ tr.techRecord_authIntoService_dateAuthorised | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date rejected</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateRejected">
+        {{ tr.techRecord_authIntoService_dateRejected | date: 'dd/MM/yyyy'  | defaultNullOrEmpty }}
+      </dd>
+    </div>
+  </dl>
+}

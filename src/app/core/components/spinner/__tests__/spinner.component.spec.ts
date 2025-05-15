@@ -8,7 +8,7 @@ describe('SpinnerComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SpinnerComponent],
+			imports: [SpinnerComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(SpinnerComponent);
@@ -23,14 +23,14 @@ describe('SpinnerComponent', () => {
 	});
 
 	it('should show', () => {
-		component.loading = true;
+		fixture.componentRef.setInput('loading', true);
 		fixture.detectChanges();
 		spinner = fixture.debugElement.nativeElement.querySelector('.spinner');
 		expect(spinner).toBeTruthy();
 	});
 
 	it('should NOT show', () => {
-		component.loading = false;
+		fixture.componentRef.setInput('loading', false);
 		fixture.detectChanges();
 		spinner = fixture.debugElement.nativeElement.querySelector('.spinner');
 		expect(spinner).toBeNull();

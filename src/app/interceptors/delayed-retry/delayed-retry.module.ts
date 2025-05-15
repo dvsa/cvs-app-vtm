@@ -4,7 +4,6 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG, HttpRetryConfig } from './delayed-retry.interceptor';
 
 @NgModule({
-	declarations: [],
 	imports: [CommonModule],
 	providers: [
 		{

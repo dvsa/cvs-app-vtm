@@ -1,87 +1,84 @@
-<div *ngIf="techRecord">
-  <app-field-warning-message
-    *ngIf="showWarning"
+@if (techRecord) {
+  <div>
+    @if (showWarning) {
+      <app-field-warning-message
     [warningMessage]="
       'Cherished transfers will update the VRM on the most recent test record for HGVs and PSVs, where an annual test certificate has been generated'
     "
-  ></app-field-warning-message>
-  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
-
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle type</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ vehicleType | defaultNullOrEmpty | uppercase }}
-      </dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VRM</dt>
-      <app-number-plate *ngIf="techRecord.primaryVrm" [vrm]="techRecord.primaryVrm"></app-number-plate>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
-    </div>
-  </dl>
-
-  <ng-container *ngIf="!isCherishedTransfer">
-    <form [formGroup]="correctingAnErrorForm">
-      <app-text-input
-        #newVrm
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        name="new-vrm"
-        formControlName="newVrm"
-        [width]="width"
-        label="New VRM"
-      ></app-text-input>
-    </form>
-  </ng-container>
-
-  <ng-container *ngIf="isCherishedTransfer">
-    <form [formGroup]="cherishedTransferForm">
-      <app-text-input
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        formControlName="previousVrm"
-        name="previous-vrm"
-        [disabled]="true"
-        [width]="width"
-        label="Previous VRM"
-      ></app-text-input>
-
-      <app-text-input
-        #currentVrm
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        formControlName="currentVrm"
-        name="current-vrm"
-        [width]="width"
-        label="Current VRM"
-        (focusout)="handleFormChange()"
-      ></app-text-input>
-
-      <app-text-input
-        #thirdMark
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        formControlName="thirdMark"
-        name="third-mark"
-        [width]="width"
-        label="Third mark"
-        (focusout)="handleFormChange()"
-      ></app-text-input>
-    </form>
-  </ng-container>
-
-  <app-button-group>
-    <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
-    <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-  </app-button-group>
-</div>
+      ></app-field-warning-message>
+    }
+    <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle type</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">
+          {{ vehicleType | defaultNullOrEmpty | uppercase }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VRM</dt>
+        @if (techRecord.primaryVrm) {
+          <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
+        }
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
+      </div>
+    </dl>
+    @if (!isCherishedTransfer) {
+      <form [formGroup]="correctingAnErrorForm">
+        <app-text-input
+          #newVrm
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          name="new-vrm"
+          formControlName="newVrm"
+          [width]="width"
+          label="New VRM"
+        ></app-text-input>
+      </form>
+    }
+    @if (isCherishedTransfer) {
+      <form [formGroup]="cherishedTransferForm">
+        <app-text-input
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="previousVrm"
+          name="previous-vrm"
+          [disabled]="true"
+          [width]="width"
+          label="Previous VRM"
+        ></app-text-input>
+        <app-text-input
+          #currentVrm
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="currentVrm"
+          name="current-vrm"
+          [width]="width"
+          label="Current VRM"
+          (focusout)="handleFormChange()"
+        ></app-text-input>
+        <app-text-input
+          #thirdMark
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="thirdMark"
+          name="third-mark"
+          [width]="width"
+          label="Third mark"
+          (focusout)="handleFormChange()"
+        ></app-text-input>
+      </form>
+    }
+    <app-button-group>
+      <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
+      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
+  </div>
+}

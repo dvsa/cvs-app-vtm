@@ -1,6 +1,22 @@
 {
-    "testToggle": false,
-    "adrToggle": true,
-    "adrCertToggle": true,
-    "requiredStandards": true
-  }
+  "testToggle": false,
+  "adrCertToggle": true,
+  "requiredStandards": true,
+  "FsBody": true,
+  "FsNotes": true,
+  "FsTyres": true,
+  "FsWeights": true,
+  "FsApprovalType": true,
+  "FsLastApplicant": true,
+  "FsPlates": true,
+  "FsDimensions": true,
+  "FsPurchasers": true,
+  "FsBrakes": true,
+  "FsDDA": false,
+  "FsLetters": false,
+  "FsDocuments": false,
+  "FsAuthorisationIntoService": false,
+  "FsAudit": false,
+  "FsManufacturer": false,
+  "FsAdrCerts": false
+}

@@ -1,16 +1,14 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { ReplaySubject, of } from 'rxjs';
 import { AmendVrmReasonComponent } from '../tech-record-amend-vrm-reason.component';
@@ -28,16 +26,18 @@ describe('TechRecordChangeVrmComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AmendVrmReasonComponent],
+			imports: [AmendVrmReasonComponent, ReactiveFormsModule],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore<State>({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
 				{ provide: DynamicFormService, useValue: mockDynamicFormService },
 				TechnicalRecordService,
 			],
-			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
 	});
 

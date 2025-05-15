@@ -1,35 +1,41 @@
-<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }" [id]="control?.meta?.name">
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }" [id]="control?.meta?.name">
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h1 class="govuk-fieldset__heading">
-        {{ label }}
-        <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+        {{ label() }}
+        @for (tag of control?.meta?.customTags; track tag) {
+          <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+        }
       </h1>
 
-      <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+      @if (hint()) {
+        <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+      }
     </legend>
 
-    <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-    <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
+    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
+    <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
 
-    <div class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline }" data-module="govuk-radios">
-      <div *ngFor="let option of options; trackBy: trackByFn" class="govuk-radios__item">
-        <input
-          class="govuk-radios__input"
-          [id]="getId(option.value, name)"
-          [name]="name"
-          [attr.checked]="option.value === value"
-          type="radio"
-          [value]="option.value"
-          [(ngModel)]="value"
-          (ngModelChange)="onChange($event)"
-          (blur)="control?.markAsTouched()"
-        />
-
-        <label class="govuk-label govuk-radios__label" [for]="name + '-' + option.value + '-radio'"> {{ option.label }} </label>
-
-        <div *ngIf="option.hint" id="{{ name }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
-      </div>
+    <div class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline() }" data-module="govuk-radios">
+      @for (option of options(); track $index) {
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            [id]="getId(option.value, name())"
+            [name]="name()"
+            [attr.checked]="option.value === value"
+            type="radio"
+            [value]="option.value"
+            [(ngModel)]="value"
+            (ngModelChange)="onChange($event)"
+            (blur)="control?.markAsTouched()"
+            />
+          <label class="govuk-label govuk-radios__label" [for]="name() + '-' + option.value + '-radio'"> {{ option.label }} </label>
+          @if (option.hint) {
+            <div id="{{ name() }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
+          }
+        </div>
+      }
     </div>
   </fieldset>
 </div>

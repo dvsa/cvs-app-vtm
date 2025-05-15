@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -18,10 +18,14 @@ import {
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectTechRecord } from '@store/technical-records';
 import { take } from 'rxjs';
+import { RadioGroupComponent } from '../../../../../forms/components/radio-group/radio-group.component';
+
+import { ButtonComponent } from '../../../../../components/button/button.component';
 
 @Component({
 	selector: 'app-select-vehicle-type',
 	templateUrl: './select-vehicle-type.component.html',
+	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent, ButtonComponent],
 })
 export class SelectVehicleTypeComponent {
 	form: CustomFormGroup = new CustomFormGroup(

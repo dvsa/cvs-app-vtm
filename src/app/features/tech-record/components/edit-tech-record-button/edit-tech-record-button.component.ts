@@ -1,5 +1,5 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { AsyncPipe, ViewportScroller } from '@angular/common';
+import { Component, OnDestroy, input, model, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
@@ -8,18 +8,21 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { clearAllSectionStates, clearScrollPosition, updateEditingTechRecordCancel } from '@store/technical-records';
 import { Observable, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
 
 @Component({
 	selector: 'app-edit-tech-record-button',
 	templateUrl: './edit-tech-record-button.component.html',
+	imports: [ButtonComponent, ButtonGroupComponent, AsyncPipe],
 })
 export class EditTechRecordButtonComponent implements OnDestroy {
-	@Input() isEditing = false;
-	@Input() isDirty = false;
-	@Input() customId = '';
+	isEditing = model(false);
+	readonly isDirty = input(false);
+	readonly customId = input('');
 
-	@Output() isEditingChange = new EventEmitter<boolean>();
-	@Output() submitChange = new EventEmitter();
+	readonly isEditingChange = output<boolean>();
+	readonly submitChange = output();
 	destroy$ = new Subject();
 
 	constructor(
@@ -67,13 +70,13 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 	}
 
 	toggleEditMode() {
-		this.isEditing = !this.isEditing;
-		this.isEditingChange.emit(this.isEditing);
+		this.isEditing.set(!this.isEditing());
+		this.isEditingChange.emit(this.isEditing());
 	}
 
 	cancel() {
 		// eslint-disable-next-line no-restricted-globals, no-alert
-		if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
+		if (!this.isDirty() || confirm('Your changes will not be saved. Are you sure?')) {
 			this.toggleEditMode();
 			this.errorService.clearErrors();
 			this.store.dispatch(updateEditingTechRecordCancel());

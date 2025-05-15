@@ -1,0 +1,100 @@
+@if (techRecord(); as vm) {
+  <dl class="govuk-summary-list">
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">DDA certificate issued</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_certificateIssued">
+          {{ vm.techRecord_dda_certificateIssued | multiOption:YES_NO_NULL_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair capacity</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairCapacity">
+          {{ vm.techRecord_dda_wheelchairCapacity | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair fittings</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairFittings">
+          {{ vm.techRecord_dda_wheelchairFittings | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair lift present</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairLiftPresent">
+          {{ vm.techRecord_dda_wheelchairLiftPresent | multiOption:YES_NO_NULL_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair lift information</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairLiftInformation">
+          {{ vm.techRecord_dda_wheelchairLiftInformation | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair ramp present</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairRampPresent">
+          {{ vm.techRecord_dda_wheelchairRampPresent | multiOption:YES_NO_NULL_OPTIONS }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Wheelchair ramp information</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairRampInformation">
+          {{ vm.techRecord_dda_wheelchairRampInformation | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Minimum emergency exits needed</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_minEmergencyExits">
+          {{ vm.techRecord_dda_minEmergencyExits | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Outswing</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_outswing">
+          {{ vm.techRecord_dda_outswing | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">DDA schedules</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_ddaSchedules">
+          {{ vm.techRecord_dda_ddaSchedules | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Seatbelts fitted</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_seatbeltsFitted">
+          {{ vm.techRecord_dda_seatbeltsFitted | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">DDA notes</dt>
+        <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_ddaNotes">
+          {{ vm.techRecord_dda_ddaSchedules | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+  </dl>
+}

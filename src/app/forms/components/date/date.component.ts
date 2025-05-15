@@ -1,23 +1,27 @@
+import { NgClass } from '@angular/common';
 /* eslint-disable no-underscore-dangle */
 import {
 	AfterContentInit,
 	ChangeDetectorRef,
 	Component,
-	EventEmitter,
 	Injector,
-	Input,
 	OnDestroy,
 	OnInit,
-	Output,
-	ViewChild,
+	input,
+	output,
+	viewChild,
 } from '@angular/core';
-import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractControlDirective, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ValidatorNames } from '@models/validators.enum';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import validateDate from 'validate-govuk-date';
+import { TagComponent } from '../../../components/tag/tag.component';
+import { NumberOnlyDirective } from '../../../directives/app-number-only/app-number-only.directive';
+import { DateFocusNextDirective } from '../../../directives/date-focus-next/date-focus-next.directive';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 type Segments = {
 	day: Observable<number | undefined>;
@@ -36,13 +40,21 @@ type Segments = {
 			multi: true,
 		},
 	],
+	imports: [
+		TagComponent,
+		FieldErrorMessageComponent,
+		FormsModule,
+		NumberOnlyDirective,
+		DateFocusNextDirective,
+		NgClass,
+	],
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
-	@Input() displayTime = false;
-	@Input() isoDate = true;
-	@Input() customError? = false;
-	@ViewChild('dayModel') dayModel?: AbstractControlDirective;
-	@Output() blur = new EventEmitter<FocusEvent>();
+	readonly displayTime = input(false);
+	readonly isoDate = input(true);
+	readonly customError = input<boolean | undefined>(false);
+	readonly dayModel = viewChild<AbstractControlDirective>('dayModel');
+	readonly blur = output<FocusEvent>();
 
 	private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
 	private month_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
@@ -90,9 +102,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
 	ngOnInit(): void {
 		this.subscriptions.push(this.subscribeAndPropagateChanges());
-		this.dayId = `${this.customId ?? this.name}-day`;
-		this.monthId = `${this.customId ?? this.name}-month`;
-		this.yearId = `${this.customId ?? this.name}-year`;
+		this.dayId = `${this.customId() ?? this.name()}-day`;
+		this.monthId = `${this.customId() ?? this.name()}-month`;
+		this.yearId = `${this.customId() ?? this.name()}-year`;
 	}
 
 	override ngAfterContentInit(): void {
@@ -152,7 +164,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 	 * @returns Subscription
 	 */
 	subscribeAndPropagateChanges() {
-		const dateFields: Segments = this.displayTime
+		const dateFields: Segments = this.displayTime()
 			? {
 					day: this.day$,
 					month: this.month$,
@@ -167,8 +179,8 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 					this.onChange(null);
 					return;
 				}
-				hour = this.displayTime ? hour : this.dateFieldOrDefault?.hours;
-				minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
+				hour = this.displayTime() ? hour : this.dateFieldOrDefault?.hours;
+				minute = this.displayTime() ? minute : this.dateFieldOrDefault?.minutes;
 				const second = this.dateFieldOrDefault?.seconds;
 				this.onChange(this.processDate(year, month, day, hour, minute, second));
 			},
@@ -183,7 +195,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 		minute: number | string | undefined,
 		second: number | string | undefined
 	) {
-		if (this.isoDate) {
+		if (this.isoDate()) {
 			return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
 		}
 		return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
@@ -197,15 +209,17 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 	 * Note: This function is not testable because `validDate` returns a reference that can't be compared to in spec file with `hasValidator` function.
 	 */
 	addValidators() {
-		this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
+		const label = this.label();
+		const displayTime = this.displayTime();
+		this.control?.addValidators([DateValidators.validDate(displayTime, label)]);
 		this.control?.meta.validators?.push({
 			name: ValidatorNames.Custom,
-			args: DateValidators.validDate(this.displayTime, this.label),
+			args: DateValidators.validDate(displayTime, label),
 		});
 	}
 
 	validate() {
-		this.errors = validateDate(this.day || '', this.month || '', this.year || '', this.label);
+		this.errors = validateDate(this.day || '', this.month || '', this.year || '', this.label());
 	}
 
 	elementHasErrors(i: number) {

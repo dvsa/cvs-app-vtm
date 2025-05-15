@@ -1,0 +1,12 @@
+
+@switch (mode()) {
+  @case ('view') {
+    <app-last-applicant-section-view />
+  }
+  @case ('edit') {
+    <app-last-applicant-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-last-applicant-section-summary />
+  }
+}

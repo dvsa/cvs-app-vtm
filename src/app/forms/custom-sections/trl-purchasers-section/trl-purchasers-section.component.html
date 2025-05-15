@@ -1,0 +1,12 @@
+
+@switch (mode()) {
+  @case ('view') {
+    <app-trl-purchasers-section-view/>
+  }
+  @case ('edit') {
+    <app-trl-purchasers-section-edit [techRecord]="techRecord()"/>
+  }
+  @case ('summary') {
+    <app-trl-purchasers-section-summary/>
+  }
+}

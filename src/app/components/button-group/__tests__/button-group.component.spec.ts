@@ -7,7 +7,7 @@ describe('ButtonGroupComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ButtonGroupComponent],
+			imports: [ButtonGroupComponent],
 		}).compileComponents();
 	});
 

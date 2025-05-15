@@ -1,10 +1,10 @@
-<ng-container *ngIf="(isArchived$ | async) === false">
-  <app-button *ngIf="!isEditing; else editing" [id]="customId + 'edit'" (clicked)="checkIfEditableReasonRequired()">Amend</app-button>
-
-  <ng-template #editing>
+@if ((isArchived$ | async) === false) {
+  @if (!isEditing()) {
+    <app-button [id]="customId() + 'edit'" (clicked)="checkIfEditableReasonRequired()">Amend</app-button>
+  } @else {
     <app-button-group>
-      <app-button [id]="customId + 'submit'" (clicked)="submit()">Review</app-button>
-      <app-button [id]="customId + 'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
+      <app-button [id]="customId() + 'submit'" (clicked)="submit()">Review</app-button>
+      <app-button [id]="customId() + 'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
     </app-button-group>
-  </ng-template>
-</ng-container>
+  }
+}

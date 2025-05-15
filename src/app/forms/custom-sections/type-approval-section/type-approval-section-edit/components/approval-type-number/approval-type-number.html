@@ -1,0 +1,507 @@
+@if (form) {
+  <div class="govuk-form-group" [formGroup]="form">
+    @if (approvalType()) {
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+    }
+    @if (hasError) {
+      <p class="govuk-error-message" id="{{ errorId }}">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ (control.errors | keyvalue)?.[0]?.value }}</span>
+      </p>
+    }
+    <div class="approval-type-number-wrapper">
+      @switch (approvalType()) {
+        <!-- NTA Template -->
+        @case (ApprovalType.NTA) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-NTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-20"
+            [maxlength]="25"
+            />
+        }
+        <!-- ECTA Template -->
+        @case (ApprovalType.ECTA) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-ecta"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecta'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-ecta"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ecta'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-ecta"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-ecta"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
+            />
+        }
+        <!-- IVA Template -->
+        @case (ApprovalType.IVA) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-IVA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-20"
+            [maxlength]="25"
+            />
+        }
+        <!-- NSSTA Template -->
+        @case (ApprovalType.NSSTA) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-NSSTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-NSSTA'"
+            />
+          <span>*NKS*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-NSSTA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            />
+        }
+        <!-- ECSSTA Template -->
+        @case (ApprovalType.ECSSTA) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-ECSSTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECSSTA'"
+            />
+          <span>*KS</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-ECSSTA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECSSTA'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-ECSSTA"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-ECSSTA"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+            />
+        }
+        <!-- GB WVTA Template -->
+        @case (ApprovalType.GB_WVTA) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-GB WVTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-3"
+            [maxlength]="3"
+            [characterLimit]="3"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-GB WVTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-GB WVTA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-GB WVTA'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-GB WVTA"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB WVTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-GB WVTA"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-7"
+            [maxlength]="7"
+            [characterLimit]="7"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB WVTA'"
+            />
+        }
+        <!-- UKNI WVTA Template -->
+        @case (ApprovalType.UKNI_WVTA) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-UKNI WVTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="1"
+            [characterLimit]="1"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-UKNI WVTA'"
+            />
+          <span>11*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-UKNI WVTA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-UKNI WVTA'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-UKNI WVTA"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI WVTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-UKNI WVTA"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI WVTA'"
+            />
+        }
+        <!-- EU WVTA Pre 23 Template -->
+        @case (ApprovalType.EU_WVTA_PRE_23) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-EU WVTA Pre 23"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU WVTA Pre 23'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-EU WVTA Pre 23"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU WVTA Pre 23'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-EU WVTA Pre 23"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA Pre 23'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-EU WVTA Pre 23"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA Pre 23'"
+            />
+        }
+        <!-- EU WVTA 23 on Template -->
+        @case (ApprovalType.EU_WVTA_23_ON) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-EU WVTA 23 on"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU WVTA 23 on'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-EU WVTA 23 on"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU WVTA 23 on'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-EU WVTA 23 on"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA 23 on'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-EU WVTA 23 on"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU WVTA 23 on'"
+            />
+        }
+        <!-- QNIG Template -->
+        @case (ApprovalType.QNIG) {
+          <span>e</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-QNIG"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-QNIG'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-QNIG"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-QNIG'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-QNIG"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-QNIG"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+            />
+        }
+        <!-- Prov.GB WVTA Template -->
+        @case (ApprovalType.PROV_GB_WVTA) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-Prov.GB WVTA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-3"
+            [maxlength]="3"
+            [characterLimit]="3"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Prov.GB WVTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-Prov.GB WVTA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Prov.GB WVTA'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-Prov.GB WVTA"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov.GB WVTA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-Prov.GB WVTA"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov.GB WVTA'"
+            />
+        }
+        <!-- Small series NKSXX Template -->
+        @case (ApprovalType.SMALL_SERIES_NKSXX) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-Small series NKSXX"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="1"
+            [characterLimit]="1"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKSXX'"
+            />
+          <span>11*NKS</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-Small series NKSXX"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Small series NKSXX'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-Small series NKSXX"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small series NKSXX'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber4-Small series NKSXX"
+            formControlName="approvalTypeNumber4"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small series NKSXX'"
+            />
+        }
+        @case (ApprovalType.SMALL_SERIES_NKS) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-Small series NKS"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="1"
+            [characterLimit]="1"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKS'"
+            />
+          <span>11*NKS*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-Small series NKS"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small series NKS'"
+            />
+        }
+        <!-- IVA – VCA Template -->
+        @case (ApprovalType.IVA_VCA) {
+          <span>n11*NIV</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-IVA - VCA"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-2"
+            [maxlength]="2"
+            [characterLimit]="2"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA - VCA'"
+            />
+          <span>/</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber2-IVA - VCA"
+            formControlName="approvalTypeNumber2"
+            class="govuk-input govuk-input--width-4"
+            [maxlength]="4"
+            [characterLimit]="4"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA - VCA'"
+            />
+          <span>*</span>
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber3-IVA - VCA"
+            formControlName="approvalTypeNumber3"
+            class="govuk-input govuk-input--width-6"
+            [maxlength]="6"
+            [characterLimit]="6"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA - VCA'"
+            />
+        }
+        <!-- IVA – DVSA/NI Template -->
+        @case (ApprovalType.IVA_DVSA_NI) {
+          <input
+            appNoEmojis
+            id="techRecord_approvalTypeNumber1-IVA - DVSA/NI"
+            formControlName="approvalTypeNumber1"
+            class="govuk-input govuk-input--width-20"
+            [maxlength]="25"
+            [characterLimit]="25"
+            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA - VCA'"
+            />
+        }
+      }
+    </div>
+  </div>
+}

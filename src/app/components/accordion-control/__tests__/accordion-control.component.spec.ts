@@ -11,6 +11,7 @@ import { AccordionControlComponent } from '../accordion-control.component';
 	template: `<app-accordion-control>
     <app-accordion id="test" title="Test"> <div id="content">Details</div> </app-accordion>
   </app-accordion-control>`,
+	imports: [AccordionControlComponent, AccordionComponent],
 })
 class HostComponent {}
 
@@ -20,7 +21,7 @@ describe('AccordionControlComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AccordionControlComponent, HostComponent, AccordionComponent],
+			imports: [HostComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
@@ -38,10 +39,10 @@ describe('AccordionControlComponent', () => {
 
 	it('should open and close child accordions', () => {
 		expect(component.accordions?.length).toBe(1);
-		expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
+		expect(component.accordions?.get(0)?.isExpanded()).toBeFalsy();
 		component.toggle();
-		expect(component.accordions?.get(0)?.isExpanded).toBeTruthy();
+		expect(component.accordions?.get(0)?.isExpanded()).toBeTruthy();
 		component.toggle();
-		expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
+		expect(component.accordions?.get(0)?.isExpanded()).toBeFalsy();
 	});
 });

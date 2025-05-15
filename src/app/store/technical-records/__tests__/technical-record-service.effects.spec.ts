@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -18,6 +19,7 @@ import {
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	changeVehicleType,
+	createVehicle,
 	createVehicleRecord,
 	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
@@ -267,9 +269,25 @@ describe('TechnicalRecordServiceEffects', () => {
 			jest.resetModules();
 		});
 
+		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should generate new techRecord based on vehicle type', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
 			const expectedTechRecord = getEmptyTechRecord();
+			expectedTechRecord.techRecord_vehicleType = VehicleTypes.CAR;
+
+			store.overrideSelector(editingTechRecord, {
+				vin: 'foo',
+				primaryVrm: 'bar',
+				systemNumber: 'foobar',
+				createdTimestamp: 'barfoo',
+				techRecord_vehicleType: 'lgv',
+			} as unknown as TechRecordType<'put'>);
+
+			actions$ = of(
+				changeVehicleType({
+					techRecord_vehicleType: VehicleTypes.CAR,
+				})
+			);
 
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(editingTechRecord, {
@@ -295,6 +313,151 @@ describe('TechnicalRecordServiceEffects', () => {
 			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
 			expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
 		}));
+
+		// TODO: move test logic into tech-record-summary component once other section templates are removed
+		it('should default EU vehicle category to M1 if the vehicle type is a car', fakeAsync(() => {
+			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+
+			const carTechRecord: V3TechRecordType<'car', 'put'> = {
+				vin: 'foo',
+				primaryVrm: 'bar',
+				techRecord_vehicleSubclass: undefined,
+				techRecord_euVehicleCategory: undefined,
+				techRecord_notes: '',
+				techRecord_vehicleConfiguration: undefined,
+				techRecord_vehicleType: 'car',
+				techRecord_noOfAxles: 2,
+				techRecord_reasonForCreation: 'test',
+				techRecord_regnDate: null,
+				techRecord_statusCode: 'provisional',
+				techRecord_applicantDetails_address1: null,
+				techRecord_applicantDetails_address2: null,
+				techRecord_applicantDetails_address3: null,
+				techRecord_applicantDetails_emailAddress: null,
+				techRecord_applicantDetails_name: null,
+				techRecord_applicantDetails_postCode: null,
+				techRecord_applicantDetails_postTown: null,
+				techRecord_applicantDetails_telephoneNumber: null,
+				techRecord_manufactureYear: null,
+			};
+			const prepopulatedTechRecord = {
+				// techRecord_vehicleSubclass: undefined,
+				techRecord_notes: '',
+				// techRecord_vehicleConfiguration: undefined,
+				// techRecord_vehicleType: 'car',
+				// techRecord_noOfAxles: 2,
+				techRecord_reasonForCreation: 'test',
+				// techRecord_regnDate: null,
+				// techRecord_statusCode: 'provisional',
+				techRecord_applicantDetails_address1: null,
+				techRecord_applicantDetails_address2: null,
+				techRecord_applicantDetails_address3: null,
+				techRecord_applicantDetails_emailAddress: null,
+				techRecord_applicantDetails_name: null,
+				techRecord_applicantDetails_postCode: null,
+				techRecord_applicantDetails_postTown: null,
+				techRecord_applicantDetails_telephoneNumber: null,
+				// techRecord_manufactureYear: null,
+				techRecord_createdAt: '',
+				techRecord_createdById: null,
+				techRecord_createdByName: null,
+				// techRecord_euVehicleCategory: EUVehicleCategory.M1,
+				techRecord_lastUpdatedAt: null,
+				techRecord_lastUpdatedById: null,
+				techRecord_lastUpdatedByName: null,
+			};
+			testScheduler.run(({ hot, expectObservable }) => {
+				store.overrideSelector(editingTechRecord, carTechRecord);
+				// mock action to trigger effect
+				actions$ = hot('-a--', {
+					a: createVehicle({
+						techRecord_vehicleType: VehicleTypes.CAR,
+					}),
+				});
+
+				expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
+					b: prepopulatedTechRecord,
+				});
+			});
+
+			flush();
+			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+			expect(techRecordServiceSpy).toHaveBeenCalledWith(prepopulatedTechRecord);
+		}));
+
+		// TODO: move test logic into tech-record-summary component once other section templates are removed
+		it('should default the eu vehicle category to N1 if the vehicle type is an lgv', fakeAsync(() => {
+			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+
+			const carTechRecord: V3TechRecordType<'lgv', 'put'> = {
+				vin: 'foo',
+				primaryVrm: 'bar',
+				techRecord_vehicleSubclass: undefined,
+				techRecord_euVehicleCategory: undefined,
+				techRecord_notes: '',
+				techRecord_vehicleConfiguration: undefined,
+				techRecord_vehicleType: 'lgv',
+				techRecord_noOfAxles: 2,
+				techRecord_reasonForCreation: 'test',
+				techRecord_regnDate: null,
+				techRecord_statusCode: 'provisional',
+				techRecord_applicantDetails_address1: null,
+				techRecord_applicantDetails_address2: null,
+				techRecord_applicantDetails_address3: null,
+				techRecord_applicantDetails_emailAddress: null,
+				techRecord_applicantDetails_name: null,
+				techRecord_applicantDetails_postCode: null,
+				techRecord_applicantDetails_postTown: null,
+				techRecord_applicantDetails_telephoneNumber: null,
+				techRecord_manufactureYear: null,
+			};
+			const prepopulatedTechRecord = {
+				// techRecord_vehicleSubclass: undefined,
+				techRecord_notes: '',
+				// techRecord_vehicleConfiguration: undefined,
+				// techRecord_vehicleType: 'lgv',
+				// techRecord_noOfAxles: 2,
+				techRecord_reasonForCreation: 'test',
+				// techRecord_regnDate: null,
+				// techRecord_statusCode: 'provisional',
+				techRecord_applicantDetails_address1: null,
+				techRecord_applicantDetails_address2: null,
+				techRecord_applicantDetails_address3: null,
+				techRecord_applicantDetails_emailAddress: null,
+				techRecord_applicantDetails_name: null,
+				techRecord_applicantDetails_postCode: null,
+				techRecord_applicantDetails_postTown: null,
+				techRecord_applicantDetails_telephoneNumber: null,
+				// techRecord_manufactureYear: null,
+				techRecord_createdAt: '',
+				techRecord_createdById: null,
+				techRecord_createdByName: null,
+				// techRecord_euVehicleCategory: EUVehicleCategoryLGV.N1,
+				techRecord_lastUpdatedAt: null,
+				techRecord_lastUpdatedById: null,
+				techRecord_lastUpdatedByName: null,
+				techRecord_adrDetails_certificates: undefined,
+			};
+			testScheduler.run(({ hot, expectObservable }) => {
+				store.overrideSelector(editingTechRecord, carTechRecord);
+				// mock action to trigger effect
+				actions$ = hot('-a--', {
+					a: createVehicle({
+						techRecord_vehicleType: VehicleTypes.LGV,
+					}),
+				});
+
+				expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
+					b: prepopulatedTechRecord,
+				});
+			});
+
+			flush();
+			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+			expect(techRecordServiceSpy).toHaveBeenCalledWith(prepopulatedTechRecord);
+		}));
+
+		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should default to heavy goods vehicle class when vehicle type is changed to hgv', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
 			const expectedTechRecord = getEmptyHGVRecord();
@@ -330,12 +493,12 @@ function getEmptyTechRecord(): V3TechRecordModel {
 		techRecord_createdAt: '',
 		techRecord_createdById: null,
 		techRecord_createdByName: null,
-		techRecord_euVehicleCategory: null,
+		// techRecord_euVehicleCategory: null,
 		techRecord_lastUpdatedAt: null,
 		techRecord_lastUpdatedById: null,
 		techRecord_lastUpdatedByName: null,
-		techRecord_manufactureYear: null,
-		techRecord_noOfAxles: 2,
+		// techRecord_manufactureYear: null,
+		// techRecord_noOfAxles: 2,
 		techRecord_notes: undefined,
 		techRecord_applicantDetails_address1: null,
 		techRecord_applicantDetails_address2: null,
@@ -346,17 +509,17 @@ function getEmptyTechRecord(): V3TechRecordModel {
 		techRecord_applicantDetails_postTown: null,
 		techRecord_applicantDetails_telephoneNumber: null,
 		techRecord_reasonForCreation: '',
-		techRecord_regnDate: null,
-		techRecord_statusCode: '',
-		techRecord_vehicleConfiguration: 'other',
-		techRecord_vehicleSubclass: undefined,
-		techRecord_vehicleType: 'car',
+		// techRecord_regnDate: null,
+		// techRecord_statusCode: '',
+		// techRecord_vehicleConfiguration: 'other',
+		// techRecord_vehicleSubclass: undefined,
+		// techRecord_vehicleType: 'car',
 	} as unknown as V3TechRecordModel;
 }
 function getEmptyHGVRecord(): V3TechRecordModel {
 	return {
-		techRecord_adrDetails_dangerousGoods: false,
-		techRecord_alterationMarker: null,
+		techRecord_adrDetails_certificates: undefined,
+		// techRecord_alterationMarker: null,
 		techRecord_applicantDetails_address1: null,
 		techRecord_applicantDetails_address2: null,
 		techRecord_applicantDetails_address3: null,
@@ -372,26 +535,26 @@ function getEmptyHGVRecord(): V3TechRecordModel {
 		techRecord_bodyType_description: null,
 		techRecord_brakes_dtpNumber: null,
 		techRecord_conversionRefNo: null,
-		techRecord_departmentalVehicleMarker: null,
+		// techRecord_departmentalVehicleMarker: null,
 		techRecord_dimensions_axleSpacing: [],
 		techRecord_dimensions_length: null,
 		techRecord_dimensions_width: null,
-		techRecord_drawbarCouplingFitted: null,
-		techRecord_emissionsLimit: null,
-		techRecord_euVehicleCategory: null,
-		techRecord_euroStandard: undefined,
+		// techRecord_drawbarCouplingFitted: null,
+		// techRecord_emissionsLimit: null,
+		// techRecord_euVehicleCategory: null,
+		// techRecord_euroStandard: undefined,
 		techRecord_frontAxleTo5thWheelMax: null,
 		techRecord_frontAxleTo5thWheelMin: null,
 		techRecord_frontAxleToRearAxle: null,
 		techRecord_frontVehicleTo5thWheelCouplingMax: null,
 		techRecord_frontVehicleTo5thWheelCouplingMin: null,
-		techRecord_fuelPropulsionSystem: null,
+		// techRecord_fuelPropulsionSystem: null,
 		techRecord_functionCode: null,
 		techRecord_grossDesignWeight: null,
 		techRecord_grossEecWeight: null,
 		techRecord_grossGbWeight: null,
 		techRecord_make: null,
-		techRecord_manufactureYear: null,
+		// techRecord_manufactureYear: null,
 		techRecord_maxTrainDesignWeight: null,
 		techRecord_maxTrainEecWeight: null,
 		techRecord_maxTrainGbWeight: null,
@@ -399,18 +562,18 @@ function getEmptyHGVRecord(): V3TechRecordModel {
 		techRecord_microfilm_microfilmRollNumber: undefined,
 		techRecord_microfilm_microfilmSerialNumber: undefined,
 		techRecord_model: null,
-		techRecord_noOfAxles: null,
+		// techRecord_noOfAxles: null,
 		techRecord_notes: undefined,
 		techRecord_ntaNumber: undefined,
-		techRecord_numberOfWheelsDriven: null,
-		techRecord_offRoad: null,
+		// techRecord_numberOfWheelsDriven: null,
+		// techRecord_offRoad: null,
 		techRecord_plates: [],
 		techRecord_reasonForCreation: undefined,
-		techRecord_regnDate: null,
-		techRecord_roadFriendly: null,
-		techRecord_speedLimiterMrk: null,
-		techRecord_statusCode: '',
-		techRecord_tachoExemptMrk: null,
+		// techRecord_regnDate: null,
+		// techRecord_roadFriendly: null,
+		// techRecord_speedLimiterMrk: null,
+		// techRecord_statusCode: '',
+		// techRecord_tachoExemptMrk: null,
 		techRecord_trainDesignWeight: null,
 		techRecord_trainEecWeight: null,
 		techRecord_trainGbWeight: null,

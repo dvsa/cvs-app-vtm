@@ -1,0 +1,66 @@
+@if (techRecord(); as tr) {
+  @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+    <div class="main-dda" [formGroup]="form">
+      <govuk-form-group-radio
+        formControlName="techRecord_dda_certificateIssued"
+        [options]="YES_NO_NULL_OPTIONS"
+        label="DDA certificate issued"
+      ></govuk-form-group-radio>
+      <govuk-form-group-input
+        formControlName="techRecord_dda_wheelchairCapacity"
+        type="number"
+        label="Wheelchair capacity"
+      ></govuk-form-group-input>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_wheelchairFittings"
+        label="Wheelchair fittings"
+        [maxLength]="250"
+      ></govuk-form-group-textarea>
+      <govuk-form-group-radio
+        formControlName="techRecord_dda_wheelchairLiftPresent"
+        [options]="YES_NO_NULL_OPTIONS"
+        label="Wheelchair lift present"
+      ></govuk-form-group-radio>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_wheelchairLiftInformation"
+        label="Wheelchair lift information"
+        [maxLength]="250"
+      ></govuk-form-group-textarea>
+      <govuk-form-group-radio
+        formControlName="techRecord_dda_wheelchairRampPresent"
+        [options]="YES_NO_NULL_OPTIONS"
+        label="Wheelchair ramp present"
+      ></govuk-form-group-radio>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_wheelchairRampInformation"
+        label="Wheelchair ramp information"
+        [maxLength]="250"
+      ></govuk-form-group-textarea>
+      <govuk-form-group-input
+        formControlName="techRecord_dda_minEmergencyExits"
+        type="number"
+        label="Minimum emergency exits needed"
+      ></govuk-form-group-input>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_outswing"
+        label="Outswing"
+        [maxLength]="250"
+      ></govuk-form-group-textarea>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_ddaSchedules"
+        label="DDA schedules"
+        [maxLength]="250"
+      ></govuk-form-group-textarea>
+      <govuk-form-group-input
+        formControlName="techRecord_dda_seatbeltsFitted"
+        type="number"
+        label="Seatbelts fitted"
+      ></govuk-form-group-input>
+      <govuk-form-group-textarea
+        formControlName="techRecord_dda_ddaNotes"
+        label="DDA notes"
+        [maxLength]="1024"
+      ></govuk-form-group-textarea>
+    </div>
+  }
+}

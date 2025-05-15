@@ -2,9 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TestType } from '@models/test-types/testType';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 
-@Pipe({
-	name: 'testTypeName',
-})
+@Pipe({ name: 'testTypeName' })
 export class TestTypeNamePipe implements PipeTransform {
 	findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): TestType | undefined {
 		function idMatch(testType: TestType | TestTypeCategory) {

@@ -6,9 +6,14 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_4_8,
+	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP15_16,
+	TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL,
 } from '@models/testTypeId.enum';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
@@ -16,6 +21,7 @@ import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 import {
 	cancelEditingTestResult,
 	cleanTestResult,
@@ -32,7 +38,11 @@ import {
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
 	initialContingencyTest,
+	patchEditingTestResult,
 	removeDefect,
 	removeRequiredStandard,
 	setResultOfTest,
@@ -109,6 +119,11 @@ export const testResultsReducer = createReducer(
 		editingTestResult: setTestResult(state.editingTestResult, action.result),
 	})),
 
+	on(patchEditingTestResult, (state, action) => ({
+		...state,
+		editingTestResult: merge({}, state.editingTestResult, action.testResult),
+	})),
+
 	on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, action.testResult) })),
 	on(cancelEditingTestResult, (state) => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
 
@@ -154,7 +169,10 @@ export const testResultsReducer = createReducer(
 		editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult),
 	})),
 
-	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) }))
+	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
+
+	on(getRecalls, (state) => ({ ...state, loading: true })),
+	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
@@ -181,6 +199,16 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		return testResult;
 	}
 
+	// Remove recalls from non HGV/PSV/TRL tests
+	const vehicleType = testResult.vehicleType;
+	const isHGV = vehicleType === VehicleTypes.HGV;
+	const isPSV = vehicleType === VehicleTypes.PSV;
+	const isTRL = vehicleType === VehicleTypes.TRL;
+
+	if (!(isHGV || isPSV || isTRL)) {
+		delete testResult.recalls;
+	}
+
 	const testTypes = testResult.testTypes.map((testType, index) => {
 		// Remove empty requiredStandards from pass/prs non-voluntary IVA/MVSA tests
 		if (index === 0) {
@@ -199,10 +227,27 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 			testType.centralDocs.issueRequired = false;
 		}
 
-		// If test type has issueRequired set to true, set the certificateNumber/secondaryCertificateNumber to 000000
-		if (testType.centralDocs?.issueRequired) {
+		// If test type has issueRequired set to true, but not HGV/TRL IVA test, set the cert number to 000000
+		if (
+			testType.centralDocs?.issueRequired &&
+			!(TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL.includes(testType.testTypeId) && (isHGV || isTRL))
+		) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
+		}
+
+		// these test types don't require custom defects from the user, but BE need a customDefects property on the test type
+		if (
+			[
+				...TEST_TYPES_GROUP7,
+				...TEST_TYPES_GROUP5_13,
+				...TEST_TYPES_GROUP15_16,
+				...TEST_TYPES_GROUP8_NOTIFABLE,
+				...TEST_TYPES_GROUP3_4_8,
+			].includes(testType.testTypeId) &&
+			!testType.customDefects
+		) {
+			testType.customDefects = [];
 		}
 
 		// When abandoning a first test ensure certificate number is sent up

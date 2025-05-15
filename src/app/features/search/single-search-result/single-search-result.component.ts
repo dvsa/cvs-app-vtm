@@ -1,50 +1,48 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TagType } from '@components/tag/tag.component';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
-import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { NumberPlateComponent } from '../../../components/number-plate/number-plate.component';
+import { TagComponent } from '../../../components/tag/tag.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { FormatVehicleTypePipe } from '../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @Component({
 	selector: 'app-single-search-result[searchResult]',
 	templateUrl: './single-search-result.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrls: ['./single-search-result.component.scss'],
+	imports: [
+		RoleRequiredDirective,
+		RouterLink,
+		TagComponent,
+		NumberPlateComponent,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+		FormatVehicleTypePipe,
+	],
 })
-export class SingleSearchResultComponent implements OnInit {
-	@Input() searchResult!: TechRecordSearchSchema;
-	vehicleDisplayData?: VehicleDisplayData;
-	template?: FormNode;
-
-	ngOnInit(): void {
-		this.vehicleDisplayData = {
-			vin: this.searchResult.vin,
-			vrm: this.searchResult.primaryVrm,
-			trailerId: this.searchResult.trailerId,
-			make:
-				this.searchResult.techRecord_vehicleType === 'psv'
-					? this.searchResult.techRecord_chassisMake
-					: this.searchResult.techRecord_make,
-			model:
-				this.searchResult.techRecord_vehicleType === 'psv'
-					? this.searchResult.techRecord_chassisModel
-					: this.searchResult.techRecord_model,
-			manufactureYear: this.searchResult.techRecord_manufactureYear,
-			vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase(),
-		};
-
-		this.template = createSingleSearchResult(this.searchResult.systemNumber, this.searchResult.createdTimestamp);
-	}
+export class SingleSearchResultComponent {
+	readonly searchResult = input.required<TechRecordSearchSchema>();
 
 	public get roles() {
 		return Roles;
 	}
-}
 
-interface VehicleDisplayData {
-	vin?: string;
-	vrm?: string;
-	trailerId?: string;
-	make?: string | null;
-	model?: string | null;
-	manufactureYear?: number | null;
-	vehicleType?: string;
+	public get tagType() {
+		switch (this.searchResult()?.techRecord_statusCode) {
+			case StatusCodes.CURRENT:
+				return ''; // default is dark blue;
+			case StatusCodes.ARCHIVED:
+				return TagType.GREY;
+			case StatusCodes.PROVISIONAL:
+				return TagType.ORANGE;
+			default:
+				return TagType.BLUE;
+		}
+	}
 }

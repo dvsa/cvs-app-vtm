@@ -1,0 +1,12 @@
+
+@switch (mode()) {
+  @case ('view') {
+    <app-tyres-section-view />
+  }
+  @case ('edit') {
+    <app-tyres-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-tyres-section-summary />
+  }
+}

@@ -1,5 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { PlatesInner } from '@models/vehicle/platesInner';
@@ -21,11 +22,15 @@ import {
 	getCanGeneratePlate,
 } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-generate-plate',
 	templateUrl: './tech-record-generate-plate.component.html',
 	styleUrls: ['./tech-record-generate-plate.component.scss'],
+	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
 export class GeneratePlateComponent implements OnInit {
 	form = new FormGroup({

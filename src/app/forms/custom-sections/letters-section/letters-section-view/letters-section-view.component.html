@@ -1,0 +1,48 @@
+@if (techRecord(); as vm) {
+
+  @if (eligibleForLetter) {
+    <dl class="govuk-summary-list">
+      @if (letter) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Letter issuer</dt>
+          <dd id="letter-issuer" class="govuk-summary-list__value">{{ letter.letterIssuer }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Letter type</dt>
+          <dd id="letter-type" class="govuk-summary-list__value">{{ letter.letterType | defaultNullOrEmpty }}</dd>
+          <dd id="letter-link" class="govuk-summary-list__value">
+            <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View letter</button>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Paragraph ID</dt>
+          <dd id="letter-paragraphid" class="govuk-summary-list__value">{{ letter.paragraphId }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Date requested</dt>
+          <dd id="letter-date" class="govuk-summary-list__value">{{ letter.letterDateRequested | date : 'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+      }
+      @if (!letter) {
+        <div>
+          <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
+        </div>
+      }
+    </dl>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <app-button id="generate-letters-link" (clicked)="generateLetter()" *appRoleRequired="roles.TechRecordAmend"
+                    [routerLink]="">Generate and send letter</app-button
+        >
+      </div>
+    </div>
+  }
+
+  @if (!eligibleForLetter) {
+    <dl class="govuk-summary-list">
+      <div>
+        <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
+      </div>
+    </dl>
+  }
+}

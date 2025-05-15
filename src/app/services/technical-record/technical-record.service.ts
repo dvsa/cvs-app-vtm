@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -9,6 +9,7 @@ import {
 	TechRecordGETHGV,
 	TechRecordGETPSV,
 	TechRecordGETTRL,
+	TechRecordType as TechRecordTypeVehicle,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
@@ -124,12 +125,13 @@ export class TechnicalRecordService {
 			record.techRecord_vehicleType === 'psv' ||
 			record.techRecord_vehicleType === 'hgv' ||
 			(record.techRecord_vehicleType === 'trl' &&
-				record.techRecord_euVehicleCategory !== 'o1' &&
-				record.techRecord_euVehicleCategory !== 'o2')
+				record.techRecord_euVehicleCategory !== EUVehicleCategory.O1 &&
+				record.techRecord_euVehicleCategory !== EUVehicleCategory.O2)
 		) {
 			record.techRecord_noOfAxles =
 				record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
 		}
+
 		this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
 	}
 
@@ -418,5 +420,15 @@ export class TechnicalRecordService {
 
 	searchBy(type: SEARCH_TYPES | undefined, term: string): void {
 		this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
+	}
+
+	getBrakeCode(techRecord: TechRecordTypeVehicle<'psv', 'get' | 'put'>) {
+		const prefix = techRecord.techRecord_grossLadenWeight
+			? `${Math.round(techRecord.techRecord_grossLadenWeight / 100)}`
+			: '';
+
+		return techRecord.techRecord_brakes_brakeCodeOriginal
+			? `${prefix.padStart(3, '0')}${techRecord.techRecord_brakes_brakeCodeOriginal}`
+			: '-';
 	}
 }

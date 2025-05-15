@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
 	selector: 'app-field-error-message',
 	templateUrl: './field-error-message.component.html',
+	imports: [],
 })
 export class FieldErrorMessageComponent {
-	@Input() name = '';
-	@Input() error?: string | null;
+	readonly name = input('');
+	readonly error = input<string | null>();
 }

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, model } from '@angular/core';
 import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '@services/dynamic-forms/dynamic-form.types';
+import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: '[app-view-combination]',
@@ -12,10 +13,11 @@ import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '@servic
 			multi: true,
 		},
 	],
+	imports: [DefaultNullOrEmpty],
 })
 export class ViewCombinationComponent implements OnInit {
-	@Input() formNode: FormNode;
-	@Input() formGroup: FormGroup;
+	formNode = model<FormNode>();
+	formGroup = model<FormGroup>();
 
 	leftComponent?: CustomFormControl;
 	rightComponent?: CustomFormControl;
@@ -23,16 +25,22 @@ export class ViewCombinationComponent implements OnInit {
 	label?: string;
 
 	constructor() {
-		this.formNode = <FormNode>{};
-		this.formGroup = <FormGroup>{};
+		if (!this.formNode()) {
+			this.formNode.set(<FormNode>{});
+		}
+		if (!this.formGroup()) {
+			this.formGroup.set(<FormGroup>{});
+		}
 	}
-
 	ngOnInit(): void {
-		const options = <FormNodeCombinationOptions>this.formNode.options;
-		this.leftComponent = this.findComponentByName(options.leftComponentName, this.formGroup);
-		this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup);
+		const formNode = this.formNode();
+		const formGroup = this.formGroup();
+		if (!formNode || !formGroup) return;
+		const options = <FormNodeCombinationOptions>formNode.options;
+		this.leftComponent = this.findComponentByName(options.leftComponentName, formGroup);
+		this.rightComponent = this.findComponentByName(options.rightComponentName, formGroup);
 		this.separator = options.separator;
-		this.label = this.formNode.label;
+		this.label = formNode.label;
 	}
 
 	private findComponentByName(nodeName: string, formGroup: FormGroup): CustomFormControl {

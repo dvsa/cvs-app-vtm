@@ -1,22 +1,24 @@
-<div class="overlay" *ngIf="loading">
-  <div class="govuk-box spinner-wrapper" aria-busy="true">
-    <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
-      <div class="spinner-container">
-        <div class="spinner">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+@if (loading()) {
+  <div class="overlay">
+    <div class="govuk-box spinner-wrapper" aria-busy="true">
+      <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+        <div class="spinner-container">
+          <div class="spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+}

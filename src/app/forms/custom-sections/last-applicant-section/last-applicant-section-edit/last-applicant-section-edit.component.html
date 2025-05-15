@@ -1,0 +1,65 @@
+<div [formGroup]="form">
+  <!--  Name or Company -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_name')) {
+    <govuk-form-group-input
+      label="Name or company"
+      formControlName="techRecord_applicantDetails_name"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Address line 1 -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address1')) {
+    <govuk-form-group-input
+      label="Address line 1"
+      formControlName="techRecord_applicantDetails_address1"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Address line 2 -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address2')) {
+    <govuk-form-group-input
+      label="Address line 2"
+      formControlName="techRecord_applicantDetails_address2"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Town or City -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_postTown')) {
+    <govuk-form-group-input
+      label="Town or city"
+      formControlName="techRecord_applicantDetails_postTown"
+    ></govuk-form-group-input>
+  }
+
+  <!--  County -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address3')) {
+    <govuk-form-group-input
+      label="County"
+      formControlName="techRecord_applicantDetails_address3"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Postcode -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_postCode')) {
+    <govuk-form-group-input
+      label="Postcode"
+      formControlName="techRecord_applicantDetails_postCode"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Telephone number -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')) {
+    <govuk-form-group-input
+      label="Telephone number"
+      formControlName="techRecord_applicantDetails_telephoneNumber"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Email address -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_emailAddress')) {
+    <govuk-form-group-input
+      label="Email address"
+      formControlName="techRecord_applicantDetails_emailAddress"
+    ></govuk-form-group-input>
+  }
+</div>

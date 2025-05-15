@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -16,10 +16,22 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
+import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
+import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 @Component({
 	selector: 'app-tech-record-unarchive',
 	templateUrl: './tech-record-unarchive.component.html',
+	imports: [
+		TechRecordTitleComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		RadioGroupComponent,
+		TextAreaComponent,
+		ButtonComponent,
+	],
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	techRecord: TechRecordType<'get'> | undefined;
@@ -42,12 +54,24 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 		this.form = new CustomFormGroup(
 			{ name: 'unarchivalForm', type: FormNodeTypes.GROUP },
 			{
-				newRecordStatus: new CustomFormControl({ name: 'newRecordStatus', type: FormNodeTypes.CONTROL }, undefined, [
-					Validators.required,
-				]),
-				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [
-					Validators.required,
-				]),
+				newRecordStatus: new CustomFormControl(
+					{
+						name: 'newRecordStatus',
+						customErrorMessage: 'New Record Status is required',
+						type: FormNodeTypes.CONTROL,
+					},
+					undefined,
+					[Validators.required]
+				),
+				reason: new CustomFormControl(
+					{
+						name: 'reason',
+						type: FormNodeTypes.CONTROL,
+						customErrorMessage: 'Unarchival Reason is required',
+					},
+					undefined,
+					[Validators.required]
+				),
 			}
 		);
 	}
@@ -78,6 +102,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	}
 
 	handleSubmit(form: { reason: string; newRecordStatus: string }): void {
+		this.form.markAllAsTouched();
+
 		if (!this.techRecord) {
 			return;
 		}
@@ -110,11 +136,17 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
 		const errors = [];
 		if (!reasonControl.valid) {
-			errors.push({ error: 'Reason for unarchival is required', anchorLink: 'reason' });
+			errors.push({
+				error: 'Unarchival Reason is required',
+				anchorLink: 'reason',
+			});
 		}
 
 		if (!newRecordStatusControl.valid) {
-			errors.push({ error: 'New Record Status is required', anchorLink: 'newRecordStatus' });
+			errors.push({
+				error: 'New Record Status is required',
+				anchorLink: 'newRecordStatus',
+			});
 		}
 
 		this.errorService.setErrors(errors);

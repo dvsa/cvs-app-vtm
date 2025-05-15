@@ -1,31 +1,33 @@
-<div *ngIf="currentTechRecord">
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <dl class="govuk-summary-list">
-        <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
-        <div class="parent-div">
-          <td class="govuk-heading-s">Date</td>
-          <td class="table-value">{{ examinerNoteObj.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
-          <td class="govuk-heading-s">Created by</td>
-          <td class="table-value">{{ examinerNoteObj.lastUpdatedBy }}</td>
-        </div>
-        <div class="govuk-summary-list__row">
-          <form [formGroup]="form">
-            <app-text-area
-              #examinerNote
-              formControlName="additionalExaminerNote"
-              name="AdditionalExaminerNote"
-              [width]="width.L"
-              (ngModelChange)="ngOnChanges(examinerNote.value)"
-            >
-            </app-text-area>
-          </form>
-        </div>
-      </dl>
+@if (currentTechRecord) {
+  <div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <dl class="govuk-summary-list">
+          <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
+          <div class="parent-div">
+            <td class="govuk-heading-s">Date</td>
+            <td class="table-value">{{ examinerNoteObj.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+            <td class="govuk-heading-s">Created by</td>
+            <td class="table-value">{{ examinerNoteObj.lastUpdatedBy }}</td>
+          </div>
+          <div class="govuk-summary-list__row">
+            <form [formGroup]="form">
+              <app-text-area
+                #examinerNote
+                formControlName="additionalExaminerNote"
+                name="AdditionalExaminerNote"
+                [width]="width.L"
+                (ngModelChange)="ngOnChanges(examinerNote.value)"
+                >
+              </app-text-area>
+            </form>
+          </div>
+        </dl>
+      </div>
     </div>
+    <app-button-group>
+      <app-button id="submit-examiner-note" (clicked)="handleSubmit()">Save</app-button>
+      <app-button id="cancel-amend-examiner-note" design="link" data-module="govuk-button" (clicked)="navigateBack()">Cancel</app-button>
+    </app-button-group>
   </div>
-  <app-button-group>
-    <app-button id="submit-examiner-note" (clicked)="handleSubmit()">Save</app-button>
-    <app-button id="cancel-amend-examiner-note" design="link" data-module="govuk-button" (clicked)="navigateBack()">Cancel</app-button>
-  </app-button-group>
-</div>
+}

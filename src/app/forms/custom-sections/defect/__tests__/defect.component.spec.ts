@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { Defect } from '@models/defects/defect.model';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { Deficiency } from '@models/defects/deficiency.model';
@@ -11,7 +11,7 @@ import { TestResultDefect } from '@models/test-results/test-result-defect.model'
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SharedModule } from '@shared/shared.module';
+
 import { defects, selectByImNumber } from '@store/defects';
 import { State, initialAppState } from '@store/index';
 import { selectRouteParams } from '@store/router/router.selectors';
@@ -62,8 +62,7 @@ describe('DefectComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [],
-			imports: [SharedModule, DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
+			imports: [RouterTestingModule, HttpClientTestingModule],
 			providers: [
 				{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
 				provideMockStore({ initialState: initialAppState }),

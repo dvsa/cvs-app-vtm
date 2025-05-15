@@ -14,6 +14,7 @@ import { DateFocusNextDirective } from '../date-focus-next.directive';
       <input appFocusNext [displayTime]="displayTime" type="number" id="test-minute" />
     </div>
   `,
+	imports: [DateFocusNextDirective],
 })
 class TestComponent {
 	displayTime = false;
@@ -26,7 +27,7 @@ describe('FocusNextDirective', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TestComponent, DateFocusNextDirective],
+			imports: [TestComponent],
 		}).compileComponents();
 	});
 

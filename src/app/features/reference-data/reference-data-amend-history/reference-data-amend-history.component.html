@@ -1,32 +1,35 @@
-<ng-container *ngIf="history$ | async">
+@if (history$ | async) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       {{
-        title
+      title()
       }}
       history
     </caption>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th *ngFor="let column of columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
+        @for (column of columns(); track column) {
+          <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
+        }
         <th scope="col" class="govuk-table__header">Created At</th>
         <th scope="col" class="govuk-table__header">Created By</th>
         <th scope="col" class="govuk-table__header"></th>
       </tr>
     </thead>
-
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
-        <td *ngFor="let column of columns" class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
-        <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
-        <td class="govuk-table__cell">{{ item.createdName }}</td>
-      </tr>
+      @for (item of paginatedItems$ | async; track item) {
+        <tr class="govuk-table__row">
+          @for (column of columns(); track column) {
+            <td class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
+          }
+          <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="govuk-table__cell">{{ item.createdName }}</td>
+        </tr>
+      }
     </tbody>
   </table>
-
-  <app-pagination
-    tableName="audit-history"
+  <app-pagination tableName="audit-history"
     [numberOfItems]="(numberOfRecords$ | async) ?? 0"
-    (paginationOptions)="handlePaginationChange($event)"
-  ></app-pagination>
-</ng-container>
+    (paginationOptionsChange)="handlePaginationChange($event)"
+    />
+}

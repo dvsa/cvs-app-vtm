@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
 import { Defect } from '@models/defects/defect.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -6,17 +6,24 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { Subscription, debounceTime } from 'rxjs';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { TagComponent } from '../../../components/tag/tag.component';
+
 @Component({
 	selector: 'app-defects[defects][template]',
 	templateUrl: './defects.component.html',
+	imports: [FormsModule, ReactiveFormsModule, RouterLink, TagComponent, ButtonComponent, TruncatePipe],
 })
 export class DefectsComponent implements OnInit, OnDestroy {
-	@Input() isEditing = false;
-	@Input() defects!: Defect[] | null;
-	@Input() template!: FormNode;
-	@Input() data: Partial<TestResultModel> = {};
+	readonly isEditing = input(false);
+	readonly defects = input.required<Defect[] | null>();
+	readonly template = input.required<FormNode>();
+	readonly data = input<Partial<TestResultModel>>({});
 
-	@Output() formChange = new EventEmitter();
+	readonly formChange = output<Record<string, any> | [][]>();
 
 	public form!: CustomFormGroup;
 	private formSubscription = new Subscription();
@@ -25,7 +32,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
-		this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
+		this.form = this.dfs.createForm(this.template(), this.data()) as CustomFormGroup;
 		this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
 			this.formChange.emit(event);
 		});

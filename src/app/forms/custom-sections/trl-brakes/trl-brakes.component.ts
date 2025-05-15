@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
@@ -6,16 +7,18 @@ import { MultiOptions } from '@models/options.model';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
 
 @Component({
 	selector: 'app-trl-brakes[vehicleTechRecord]',
 	templateUrl: './trl-brakes.component.html',
 	styleUrls: ['./trl-brakes.component.scss'],
+	imports: [SwitchableInputComponent, NgTemplateOutlet],
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
-	@Input() vehicleTechRecord!: TechRecordType<'trl'>;
-	@Input() isEditing = false;
-	@Output() formChange = new EventEmitter();
+	readonly vehicleTechRecord = input.required<TechRecordType<'trl'>>();
+	readonly isEditing = input(false);
+	readonly formChange = output();
 
 	form!: CustomFormGroup;
 
@@ -29,7 +32,7 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
-		this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
+		this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord()) as CustomFormGroup;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {

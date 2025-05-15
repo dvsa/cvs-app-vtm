@@ -1,8 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -53,13 +53,15 @@ describe('BatchVehicleTemplateComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [
-				RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchVehicleResultsComponent }]),
-				HttpClientTestingModule,
+				BatchVehicleTemplateComponent,
+				TechRecordSummaryStubComponent,
 				FixNavigationTriggeredOutsideAngularZoneNgModule,
 			],
-			declarations: [BatchVehicleTemplateComponent, TechRecordSummaryStubComponent],
 			providers: [
 				GlobalErrorService,
+				provideRouter([{ path: 'batch-results', component: BatchVehicleResultsComponent }]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
 				{ provide: BatchTechnicalRecordService, useValue: mockBatchTechRecordService },
@@ -100,8 +102,11 @@ describe('BatchVehicleTemplateComponent', () => {
 
 	describe('should dispatch the createVehicleTechRecord action for every vin and trailerId given', () => {
 		beforeEach(() => {
-			component.summary = TestBed.createComponent(TechRecordSummaryStubComponent)
-				.componentInstance as TechRecordSummaryComponent;
+			jest
+				.spyOn(component, 'summary')
+				.mockReturnValue(
+					TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent
+				);
 		});
 
 		it('given a batch of 0', () => {

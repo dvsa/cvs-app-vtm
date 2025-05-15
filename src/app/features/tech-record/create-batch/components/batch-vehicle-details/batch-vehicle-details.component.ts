@@ -1,5 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControlStatus, FormGroup, Validators } from '@angular/forms';
+import {
+	AbstractControl,
+	FormArray,
+	FormBuilder,
+	FormControlStatus,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -16,11 +25,34 @@ import {
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
+import { TextInputComponent } from '../../../../../forms/components/text-input/text-input.component';
+
+import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../../components/button/button.component';
+import { InputSpinnerComponent } from '../../../../../components/input-spinner/input-spinner.component';
+import { NoSpaceDirective } from '../../../../../directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '../../../../../directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '../../../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { SuffixDirective } from '../../../../../directives/suffix/suffix.directive';
+import { FormatVehicleTypePipe } from '../../../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @Component({
 	selector: 'app-batch-vehicle-details',
 	templateUrl: './batch-vehicle-details.component.html',
 	styleUrls: ['./batch-vehicle-details.component.scss'],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		TextInputComponent,
+		NoSpaceDirective,
+		TrimWhitespaceDirective,
+		ToUppercaseDirective,
+		SuffixDirective,
+		InputSpinnerComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		FormatVehicleTypePipe,
+	],
 })
 export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 	form: FormGroup;
@@ -86,10 +118,10 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 		return FormNodeWidth;
 	}
 
-	get vehicleForm(): FormGroup {
+	vehicleForm(index: number): FormGroup {
 		return this.fb.group({
 			vin: new CustomFormControl(
-				{ name: 'vin', type: FormNodeTypes.CONTROL },
+				{ name: 'vin', type: FormNodeTypes.CONTROL, label: 'VIN', customId: `input-vin${index}` },
 				null,
 				[CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
 				this.batchTechRecordService.validateForBatch()
@@ -123,7 +155,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 
 	addVehicles(n: number): void {
 		for (let i = 0; i < n; i++) {
-			this.vehicles.push(this.vehicleForm);
+			this.vehicles.push(this.vehicleForm(i));
 		}
 	}
 
@@ -171,16 +203,14 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 		const errors: GlobalError[] = [];
 
 		DynamicFormService.validate(this.form, errors, true);
-		await firstValueFrom(this.formStatus);
-
 		if (errors?.length) {
 			this.globalErrorService.setErrors(errors);
 		}
-
 		if (this.cleanEmptyValues(this.vehicles.value).length === 0) {
 			this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
 			return false;
 		}
+		await firstValueFrom(this.formStatus);
 		const duplicates = this.checkDuplicateVins(this.vehicles.value);
 		if (duplicates.length > 0) {
 			duplicates.forEach((element) => {

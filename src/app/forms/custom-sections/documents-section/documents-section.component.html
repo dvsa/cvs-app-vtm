@@ -1,0 +1,11 @@
+@switch (mode()) {
+  @case ('view') {
+    <app-documents-section-view />
+  }
+  @case ('edit') {
+    <app-documents-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-documents-section-summary />
+  }
+}

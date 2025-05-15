@@ -124,7 +124,7 @@ function filterTestTypes(
 		vehicleSubclass,
 		numberOfWheelsDriven,
 	} = testResult;
-	const adrTestIds = ['50', '59', '60'];
+	const adrTestIds = ['50', '59', '60', '58'];
 	const filterAllFirstTestIds = ['41', '119', '120', '67', '103', '104', '51', '95', '82', '83', '65', '66'];
 	const filterHgvFirstTestIds = ['41', '119', '120', '67', '103', '104'];
 	const { techRecord_statusCode: statusCode } = techRecord;

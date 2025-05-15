@@ -1,151 +1,375 @@
 <section class="govuk-grid-row">
-  <div [id]="'required-fields-hint'" class="govuk-hint">{{ hint }}</div>
+  <div [id]="'required-fields-hint'" class="govuk-hint">Complete all required fields to create a testable record</div>
   <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <div class="govuk-grid-column-one-half">
-      <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
-          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
-        </app-accordion>
-      </ng-container>
+      @for (section of sectionTemplates; track section; let i = $index) {
+        @if (i < middleIndex) {
+          <app-accordion [id]="section.name" [title]="section.label"
+            [isExpanded]="isSectionExpanded$(section.name) | async">
+            <ng-template [ngTemplateOutlet]="accordion"
+            [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+          </app-accordion>
+        }
+      }
     </div>
     <div class="govuk-grid-column-one-half">
-      <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label">
-          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
-        </app-accordion>
-      </ng-container>
+      @for (section of sectionTemplates; track section; let i = $index) {
+        @if (i >= middleIndex) {
+          <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
+            <ng-template [ngTemplateOutlet]="accordion"
+            [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+          </app-accordion>
+        }
+      }
     </div>
   </app-accordion-control>
 </section>
 
 <ng-template #accordion let-sectionName="sectionName" let-section="section">
-  <ng-container *ngIf="techRecordCalculated">
-    <ng-container [ngSwitch]="sectionName">
-      <app-body
-        *ngSwitchCase="'bodySection'"
-        [techRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-body>
-
-      <ng-container *ngSwitchCase="'dimensionsSection'">
-        <app-dimensions
-          *ngIf="
+  <form [formGroup]="form">
+    @if (techRecordCalculated) {
+      @switch (sectionName) {
+        @case ('notesSection') {
+          <!-- New Notes section -->
+          @if (featureToggleService.isFeatureEnabled('FsNotes')) {
+            <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          } @else {
+            <!-- Old Notes section -->
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          }
+        }
+        @case ('audit') {
+          @if (featureToggleService.isFeatureEnabled('FsAudit')) {
+            <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          }
+        }
+        @case ('techRecordSummary') {
+          <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+        }
+        @case ('bodySection') {
+          <!-- New Body section -->
+          @if (featureToggleService.isFeatureEnabled('FsBody')) {
+            <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          } @else {
+            <app-body
+              [techRecord]="techRecordCalculated"
+              [isEditing]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-body>
+          }
+          <!-- Old Body section -->
+        }
+        @case ('purchaserSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+            <!-- New Purchaser section -->
+            @if (featureToggleService.isFeatureEnabled('FsPurchasers')) {
+              <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            } @else {
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+            <!-- Old Purchaser section -->
+          }
+        }
+        @case ('dimensionsSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
-          "
-          [techRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-dimensions>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'approvalSection'">
-        <app-approval-type
-          *ngIf="
+            ) {
+            <!-- New dimensions section-->
+            @if (featureToggleService.isFeatureEnabled('FsDimensions')) {
+              <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
+            } @else {
+              <app-dimensions
+                [techRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dimensions>
+            }
+            <!-- Old dimensions section-->
+          }
+        }
+        @case ('documentsSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
-          "
-          [techRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-approval-type>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'psvBrakesSection'">
-        <app-psv-brakes
-          *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'"
-          [vehicleTechRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-psv-brakes>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'trlBrakesSection'">
-        <app-trl-brakes
-          *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'"
-          [vehicleTechRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-trl-brakes>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'tyreSection'">
-        <app-tyres
-          *ngIf="
+            ) {
+            <!-- New documents section-->
+            @if (featureToggleService.isFeatureEnabled('FsDocuments')) {
+              <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
+            } @else {
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+            <!-- Old documents section-->
+          }
+        }
+        @case ('approvalSection') {
+          <!-- New Type Approval section -->
+          @if (featureToggleService.isFeatureEnabled('FsApprovalType')) {
+            @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||
+              techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+              techRecordCalculated.techRecord_vehicleType === 'psv') {
+              <app-type-approval-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'">
+              </app-type-approval-section>
+            }
+          } @else {
+            @if (
+              techRecordCalculated.techRecord_vehicleType === 'trl' ||
+              techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+              techRecordCalculated.techRecord_vehicleType === 'psv'
+              ) {
+              <app-approval-type
+                [techRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-approval-type>
+            }
+          }
+          <!-- Old Type Approval section -->
+        }
+        @case ('psvBrakesSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
+            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+              <!-- New PSV Brakes section -->
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
+            } @else {
+              <!-- Old PSV Brakes section -->
+              <app-psv-brakes
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-psv-brakes>
+            }
+          }
+        }
+        @case ('trlBrakesSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
+              <!-- New TRL Brakes section -->
+              <app-brakes-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormState($event)"
+              ></app-brakes-section>
+            } @else {
+              <!-- Old TRL Brakes section -->
+              <app-trl-brakes
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-trl-brakes>
+            }
+          }
+        }
+        @case('dda') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
+            <!-- New Tyres section -->
+            @if (featureToggleService.isFeatureEnabled('FsDDA')) {
+              <app-dda-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              ></app-dda-section>
+            } @else {
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+          }
+        }
+        @case ('tyreSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
-          "
-          [vehicleTechRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-tyres>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'weightsSection'">
-        <app-weights
-          *ngIf="
+            ) {
+            <!-- New Tyres section -->
+            @if (featureToggleService.isFeatureEnabled('FsTyres')) {
+              <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            } @else {
+              <app-tyres
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-tyres>
+            }
+            <!-- Old Tyres section -->
+          }
+        }
+        @case ('weightsSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
-          "
-          [vehicleTechRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-weights>
-      </ng-container>
+            ) {
+            <!-- New Weights Section -->
+            @if (featureToggleService.isFeatureEnabled('FsWeights')) {
+              <app-weights-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            } @else {
+              <app-weights
+                [vehicleTechRecord]="techRecordCalculated"
+                [isEditing]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-weights>
+            }
+            <!-- Old Weights Section -->
+          }
+        }
 
-      <ng-container *ngSwitchCase="'lettersSection'">
-        <app-letters
-          *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'"
-          [techRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-letters>
-      </ng-container>
 
-      <ng-container *ngSwitchCase="'platesSection'">
-        <app-plates
-          *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'"
-          [techRecord]="techRecordCalculated"
-          [isEditing]="(isEditing$ | async) ?? false"
-          (formChange)="handleFormState($event)"
-        ></app-plates>
-      </ng-container>
+        @case ('lettersSection') {
+          <!-- New LettersSection -->
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+          @if (featureToggleService.isFeatureEnabled('FsLetters')) {
+            <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          } @else {
+          <app-letters
+            [techRecord]="techRecordCalculated"
+            [isEditing]="(isEditing$ | async) ?? false"
+            (formChange)="handleFormState($event)"
+          ></app-letters>
+          }
+        }
+          <!-- Old Letters section -->
+        }
 
-      <ng-container *ngSwitchCase="'adrSection'">
-        <ng-container
-          *ngIf="
+
+
+        @case ('platesSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
+            <!-- New Plates Section -->
+            @if (featureToggleService.isFeatureEnabled('FsPlates')) {
+              <app-plates-section
+                [techRecord]="techRecordCalculated"
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            } @else {
+              @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
+                <app-plates
+                  [techRecord]="techRecordCalculated"
+                  [isEditing]="(isEditing$ | async) ?? false"
+                  (formChange)="handleFormState($event)"
+                ></app-plates>
+              }
+            }
+            <!-- Old Plates Section -->
+          }
+        }
+
+        @case ('authorizationIntoServiceSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+            <!-- New Authorization into service section -->
+            @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
+              <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            } @else {
+              <!-- Old Authorization into service section -->
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+          }
+        }
+
+        @case('manufacturerSection') {
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
+
+            <!-- New manufacturer section -->
+            @if (featureToggleService.isFeatureEnabled('FsManufacturer')) {
+              <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            } @else {
+              <!-- Old manufacturer section -->
+              <app-dynamic-form-group
+                [data]="techRecordCalculated"
+                [template]="section"
+                [edit]="(isEditing$ | async) ?? false"
+                (formChange)="handleFormState($event)"
+              ></app-dynamic-form-group>
+            }
+          }
+        }
+
+        @case ('adrSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
-          "
-        >
-          <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"></app-adr>
-        </ng-container>
-      </ng-container>
-      <ng-container *ngSwitchCase="'adrCertificateSection'">
-        <ng-container
-          *ngIf="
+            ) {
+              <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          }
+        }
+        @case ('adrCertificateSection') {
+          @if (
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
-          "
-        >
-          <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
-        </ng-container>
-      </ng-container>
+            ) {
+            @if (this.featureToggleService.isFeatureEnabled('FsAdrCerts')) {
+              <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
 
-      <app-dynamic-form-group
-        *ngSwitchDefault
-        [data]="techRecordCalculated"
-        [template]="section"
-        [edit]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-dynamic-form-group>
-    </ng-container>
-  </ng-container>
+            } @else {
+              <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
+            }
+          }
+        }
+        @case ('techRecord') {
+          <!-- New Last Applicant section -->
+          @if (featureToggleService.isFeatureEnabled('FsLastApplicant')) {
+            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          } @else {
+            <app-dynamic-form-group
+              [data]="techRecordCalculated"
+              [template]="section"
+              [edit]="(isEditing$ | async) ?? false"
+              (formChange)="handleFormState($event)"
+            ></app-dynamic-form-group>
+          }
+          <!-- Old Last Applicant section -->
+        }
+
+        @default {
+          <app-dynamic-form-group
+            [data]="techRecordCalculated"
+            [template]="section"
+            [edit]="(isEditing$ | async) ?? false"
+            (formChange)="handleFormState($event)"
+          ></app-dynamic-form-group>
+        }
+      }
+    }
+  </form>
 </ng-template>

@@ -59,6 +59,8 @@ import {
 	promoteTechRecordSuccess,
 	removeAxle,
 	removeSectionState,
+	removeTC3TankInspection,
+	removeUNNumber,
 	unarchiveTechRecord,
 	unarchiveTechRecordFailure,
 	unarchiveTechRecordSuccess,
@@ -169,6 +171,10 @@ export const vehicleTechRecordReducer = createReducer(
 	on(addAxle, (state) => handleAddAxle(state)),
 	on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
 
+	on(removeTC3TankInspection, (state, action) => handleRemoveTC3TankInspection(state, action)),
+
+	on(removeUNNumber, (state, action) => handleRemoveUNNumber(state, action)),
+
 	on(addSectionState, (state, action) => handleAddSection(state, action)),
 	on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
@@ -228,13 +234,12 @@ function handleUpdateBrakeForces(
 	}
 
 	if (data.grossLadenWeight) {
-		const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+		if (newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal) {
+			const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
+			newState.editingTechRecord.techRecord_brakes_brakeCode =
+				(prefix.length <= 2 ? `0${prefix}` : prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal;
+		}
 
-		newState.editingTechRecord.techRecord_brakes_brakeCode =
-			(prefix.length <= 2
-				? `0${prefix}`
-				: // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
 		newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round(
 			(data.grossLadenWeight * 16) / 100
 		);
@@ -315,10 +320,17 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 	) {
 		newAxle.weights_eecWeight = null;
 	}
+
 	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.PSV) {
 		newAxle.weights_kerbWeight = null;
 		newAxle.weights_ladenWeight = null;
 		newAxle.tyres_speedCategorySymbol = null;
+	}
+
+	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+		newAxle.brakes_brakeActuator = null;
+		newAxle.brakes_leverLength = null;
+		newAxle.brakes_springBrakeParking = null;
 	}
 
 	newState.editingTechRecord.techRecord_axles.push(newAxle);
@@ -370,6 +382,41 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
 	return newState;
 }
 
+function handleRemoveTC3TankInspection(state: TechnicalRecordServiceState, action: { index: number }) {
+	const newState = cloneDeep(state);
+	if (!newState.editingTechRecord) return newState;
+
+	if (
+		(newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.LGV) &&
+		Array.isArray(newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tc3Details)
+	) {
+		newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tc3Details.splice(action.index, 1);
+	}
+
+	return newState;
+}
+
+function handleRemoveUNNumber(state: TechnicalRecordServiceState, action: { index: number }) {
+	const newState = cloneDeep(state);
+	if (!newState.editingTechRecord) return newState;
+
+	if (
+		(newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+			newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.LGV) &&
+		Array.isArray(newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo)
+	) {
+		newState.editingTechRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.splice(
+			action.index,
+			1
+		);
+	}
+
+	return newState;
+}
+
 function handleAddSection(state: TechnicalRecordServiceState, action: { section: string | number }) {
 	const newState = cloneDeep(state);
 	if (newState.sectionState?.includes(action.section)) return newState;
@@ -395,201 +442,193 @@ function updateEditingTechRec(
 	return newState;
 }
 
-function handleClearADRDetails(state: TechnicalRecordServiceState) {
-	const { editingTechRecord } = state;
+export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
+	const { techRecord_vehicleType: type } = editingTechRecord;
+	if (type === VehicleTypes.HGV || type === VehicleTypes.TRL || type === VehicleTypes.LGV) {
+		const nulledExplosivesSubfields = {
+			techRecord_adrDetails_compatibilityGroupJ: null,
+			techRecord_adrDetails_bodyDeclaration_type: null,
+		};
 
-	if (editingTechRecord) {
-		const { techRecord_vehicleType: type } = editingTechRecord;
-		if (type === VehicleTypes.HGV || type === VehicleTypes.TRL || type === VehicleTypes.LGV) {
-			const nulledCompatibilityGroupJ = {
-				techRecord_adrDetails_compatibilityGroupJ: null,
-			};
+		const nulledTankDetails = {
+			techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
+			techRecord_adrDetails_tank_tankDetails_yearOfManufacture: null,
+			techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankCode: null,
+			techRecord_adrDetails_tank_tankDetails_specialProvisions: null,
+			techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
+			techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
+			techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
+			techRecord_adrDetails_tank_tankDetails_tc3Details: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
+		};
 
-			const nulledTankDetails = {
-				techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
-				techRecord_adrDetails_tank_tankDetails_yearOfManufacture: null,
-				techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankCode: null,
-				techRecord_adrDetails_tank_tankDetails_specialProvisions: null,
-				techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
-				techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
-				techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
-				techRecord_adrDetails_tank_tankDetails_tc3Details: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
-			};
+		const nulledTankStatementStatement = {
+			techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
+		};
 
-			const nulledTankStatementStatement = {
-				techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
-			};
+		const nulledTankStatementProductList = {
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
+		};
 
-			const nulledTankStatementProductList = {
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
-				techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
-			};
+		const nulledSubstancesPermittedUNNumber = {
+			techRecord_adrDetails_tank_tankDetails_tankStatement_select: null,
+			...nulledTankStatementStatement,
+			...nulledTankStatementProductList,
+		};
 
-			const nulledSubstancesPermittedUNNumber = {
-				techRecord_adrDetails_tank_tankDetails_tankStatement_select: null,
-				...nulledTankStatementStatement,
-				...nulledTankStatementProductList,
-			};
+		const nulledBatteryListNumber = {
+			techRecord_adrDetails_batteryListNumber: null,
+		};
 
-			const nulledBatteryListNumber = {
+		const nulledWeight = {
+			techRecord_adrDetails_weight: null,
+		};
+
+		const nulledBrakeDeclaration = {
+			techRecord_adrDetails_brakeDeclarationIssuer: null,
+			techRecord_adrDetails_brakeEndurance: null,
+			...nulledWeight,
+		};
+
+		if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
+			// vehicle doesn't carry dangerous goods so null this information
+			const record = {
+				...editingTechRecord,
+				techRecord_adrDetails_vehicleDetails_type: null,
+				techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: null,
+				techRecord_adrDetails_vehicleDetails_approvalDate: null,
+				techRecord_adrDetails_permittedDangerousGoods: null,
+				...nulledExplosivesSubfields,
+				techRecord_adrDetails_additionalExaminerNotes: null,
+				techRecord_adrDetails_applicantDetails_name: null,
+				techRecord_adrDetails_applicantDetails_street: null,
+				techRecord_adrDetails_applicantDetails_town: null,
+				techRecord_adrDetails_applicantDetails_city: null,
+				techRecord_adrDetails_applicantDetails_postcode: null,
+				techRecord_adrDetails_memosApply: null,
+				techRecord_adrDetails_m145Statement: null,
+				techRecord_adrDetails_documents: null,
+				techRecord_adrDetails_listStatementApplicable: null,
 				techRecord_adrDetails_batteryListNumber: null,
-			};
-
-			const nulledWeight = {
-				techRecord_adrDetails_weight: null,
-			};
-
-			const nulledBrakeDeclaration = {
+				techRecord_adrDetails_brakeDeclarationsSeen: null,
 				techRecord_adrDetails_brakeDeclarationIssuer: null,
 				techRecord_adrDetails_brakeEndurance: null,
-				...nulledWeight,
+				techRecord_adrDetails_weight: null,
+				techRecord_adrDetails_declarationsSeen: null,
+				techRecord_adrDetails_additionalNotes_guidanceNotes: null,
+				techRecord_adrDetails_additionalNotes_number: null,
+				techRecord_adrDetails_adrTypeApprovalNo: null,
+				techRecord_adrDetails_adrCertificateNotes: null,
+				techRecord_adrDetails_newCertificateRequested: null,
+				...nulledTankDetails,
+				...nulledSubstancesPermittedUNNumber,
 			};
 
-			if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
-				// vehicle doesn't carry dangerous goods so null this information
-				return {
-					...state,
-					editingTechRecord: {
-						...editingTechRecord,
-						techRecord_adrDetails_vehicleDetails_type: null,
-						techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: null,
-						techRecord_adrDetails_vehicleDetails_approvalDate: null,
-						techRecord_adrDetails_permittedDangerousGoods: null,
-						...nulledCompatibilityGroupJ,
-						techRecord_adrDetails_additionalExaminerNotes: null,
-						techRecord_adrDetails_applicantDetails_name: null,
-						techRecord_adrDetails_applicantDetails_street: null,
-						techRecord_adrDetails_applicantDetails_town: null,
-						techRecord_adrDetails_applicantDetails_city: null,
-						techRecord_adrDetails_applicantDetails_postcode: null,
-						techRecord_adrDetails_memosApply: null,
-						techRecord_adrDetails_m145Statement: null,
-						techRecord_adrDetails_documents: null,
-						techRecord_adrDetails_listStatementApplicable: null,
-						techRecord_adrDetails_batteryListNumber: null,
-						techRecord_adrDetails_brakeDeclarationsSeen: null,
-						techRecord_adrDetails_brakeDeclarationIssuer: null,
-						techRecord_adrDetails_brakeEndurance: null,
-						techRecord_adrDetails_weight: null,
-						techRecord_adrDetails_declarationsSeen: null,
-						techRecord_adrDetails_additionalNotes_guidanceNotes: null,
-						techRecord_adrDetails_additionalNotes_number: null,
-						techRecord_adrDetails_adrTypeApprovalNo: null,
-						techRecord_adrDetails_adrCertificateNotes: null,
-						techRecord_adrDetails_newCertificateRequested: null,
-						...nulledTankDetails,
-					},
-				};
-			}
-
-			let sanitisedEditingTechRecord = {
-				...editingTechRecord,
-			};
-
-			// Null compatibility group J when permitted dangerous goods is NOT explosives type 2/3
-			const explosivesGroups: string[] = [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3];
-			if (
-				!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.some((value) =>
-					explosivesGroups.includes(value)
-				)
-			) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledCompatibilityGroupJ };
-			}
-
-			// Null all tank details fields when ADR vehicle type does not include the words 'tank' or 'battery'
-			const adrVehicleTypes: string[] = Object.values(ADRBodyType).filter(
-				(value) => value.includes('battery') || value.includes('tank')
-			);
-			if (!adrVehicleTypes.includes(editingTechRecord.techRecord_adrDetails_vehicleDetails_type as string)) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankDetails };
-			}
-
-			// Strip all unfilled UN numbers
-			const { techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers } =
-				sanitisedEditingTechRecord;
-			if (unNumbers) {
-				sanitisedEditingTechRecord = {
-					...sanitisedEditingTechRecord,
-					techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers.filter(Boolean),
-				};
-			}
-
-			// If tank details 'statement' selected, null UN numbers, product list referene no., product list
-			const { techRecord_adrDetails_tank_tankDetails_tankStatement_select: select } = sanitisedEditingTechRecord;
-			if (select === ADRTankDetailsTankStatementSelect.STATEMENT) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementProductList };
-			}
-
-			// If tank details 'product list' selected, null statement reference no.
-			if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
-			}
-
-			// If tank details 'substances permitted' has 'tank code' option selected, null UN and product list reference no.
-			const { techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: substancesPermitted } =
-				sanitisedEditingTechRecord;
-			if (substancesPermitted === ADRTankStatementSubstancePermitted.UNDER_TANK_CODE) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledSubstancesPermittedUNNumber };
-			}
-
-			// If battery list applicable is no, null the battery list number
-			const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
-			if (!listStatementApplicable) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
-			}
-			// If the ADR body type not includes 'battery', null all fields related battery list applicable
-			const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
-			if (!vehicleDetailsType?.includes('battery')) {
-				sanitisedEditingTechRecord = {
-					...sanitisedEditingTechRecord,
-					...nulledBatteryListNumber,
-					techRecord_adrDetails_listStatementApplicable: null,
-				};
-			}
-			// If manufacturer brake declaration is no, null dependent sections
-			const { techRecord_adrDetails_brakeDeclarationsSeen: brakeDeclarationSeen } = sanitisedEditingTechRecord;
-			if (!brakeDeclarationSeen) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBrakeDeclaration };
-			}
-
-			// If brake endurance is no, null weight field
-			const { techRecord_adrDetails_brakeEndurance: brakeEndurance } = sanitisedEditingTechRecord;
-			if (!brakeEndurance) {
-				sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
-			}
-
-			// If ADR body type does not require a body declaration or explosives type 3 is not selected, null the body declaration field
-			const bodyTypesRequiringDeclaration: string[] = [
-				ADRBodyType.RIGID_BOX_BODY,
-				ADRBodyType.FULL_DRAWBAR_BOX_BODY,
-				ADRBodyType.CENTRE_AXLE_BOX_BODY,
-				ADRBodyType.SEMI_TRAILER_BOX_BODY,
-			];
-
-			const adrBodyType = sanitisedEditingTechRecord.techRecord_adrDetails_vehicleDetails_type;
-			const permittedDangerousGoods = sanitisedEditingTechRecord.techRecord_adrDetails_permittedDangerousGoods;
-
-			if (
-				(adrBodyType && !bodyTypesRequiringDeclaration.includes(adrBodyType)) ||
-				!permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
-			) {
-				// @TO-DO: use null instead of undefined. This is a workaround for the type definitions validation rule
-				sanitisedEditingTechRecord.techRecord_adrDetails_bodyDeclaration_type = undefined;
-			}
-
-			return { ...state, editingTechRecord: sanitisedEditingTechRecord };
+			return record;
 		}
+
+		let sanitisedEditingTechRecord = {
+			...editingTechRecord,
+		};
+
+		// Null compatibility group J when permitted dangerous goods is NOT explosives type 2/3
+		const explosivesGroups: string[] = [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3];
+		if (
+			!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.some((value) =>
+				explosivesGroups.includes(value)
+			)
+		) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledExplosivesSubfields };
+		}
+
+		// Null body declaration type when permitted dangerous goods is NOT explosives type 3
+		if (
+			!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.includes(ADRDangerousGood.EXPLOSIVES_TYPE_3)
+		) {
+			sanitisedEditingTechRecord = {
+				...sanitisedEditingTechRecord,
+				techRecord_adrDetails_bodyDeclaration_type: null,
+			};
+		}
+
+		// Null all tank details fields when ADR vehicle type does not include the words 'tank' or 'battery'
+		const adrVehicleTypes: string[] = Object.values(ADRBodyType).filter(
+			(value) => value.includes('battery') || value.includes('tank')
+		);
+		if (!adrVehicleTypes.includes(editingTechRecord.techRecord_adrDetails_vehicleDetails_type as string)) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankDetails };
+		}
+
+		// Strip all unfilled UN numbers
+		const { techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers } =
+			sanitisedEditingTechRecord;
+		if (unNumbers) {
+			sanitisedEditingTechRecord = {
+				...sanitisedEditingTechRecord,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers.filter(Boolean),
+			};
+		}
+
+		// If tank details 'statement' selected, null UN numbers, product list referene no., product list
+		const { techRecord_adrDetails_tank_tankDetails_tankStatement_select: select } = sanitisedEditingTechRecord;
+		if (select === ADRTankDetailsTankStatementSelect.STATEMENT) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementProductList };
+		}
+
+		// If tank details 'product list' selected, null statement reference no.
+		if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
+		}
+
+		// If tank details 'substances permitted' has 'tank code' option selected, null UN and product list reference no.
+		const { techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: substancesPermitted } =
+			sanitisedEditingTechRecord;
+		if (substancesPermitted === ADRTankStatementSubstancePermitted.UNDER_TANK_CODE) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledSubstancesPermittedUNNumber };
+		}
+
+		// If battery list applicable is no, null the battery list number
+		const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
+		if (!listStatementApplicable) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
+		}
+		// If the ADR body type not includes 'battery', null all fields related battery list applicable
+		const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
+		if (!vehicleDetailsType?.includes('battery')) {
+			sanitisedEditingTechRecord = {
+				...sanitisedEditingTechRecord,
+				...nulledBatteryListNumber,
+				techRecord_adrDetails_listStatementApplicable: null,
+			};
+		}
+		// If manufacturer brake declaration is no, null dependent sections
+		const { techRecord_adrDetails_brakeDeclarationsSeen: brakeDeclarationSeen } = sanitisedEditingTechRecord;
+		if (!brakeDeclarationSeen) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBrakeDeclaration };
+		}
+
+		// If brake endurance is no, null weight field
+		const { techRecord_adrDetails_brakeEndurance: brakeEndurance } = sanitisedEditingTechRecord;
+		if (!brakeEndurance) {
+			sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
+		}
+
+		return sanitisedEditingTechRecord;
 	}
 
-	return { ...state };
+	return editingTechRecord;
+}
+
+function handleClearADRDetails(state: TechnicalRecordServiceState) {
+	return state.editingTechRecord ? { ...state, editingTechRecord: nullADRDetails(state.editingTechRecord) } : state;
 }
 
 function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {

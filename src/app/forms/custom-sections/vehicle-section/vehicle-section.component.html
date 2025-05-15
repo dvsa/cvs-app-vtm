@@ -1,0 +1,11 @@
+@switch (mode()) {
+  @case ('view') {
+    <app-vehicle-section-view />
+  }
+  @case ('edit') {
+    <app-vehicle-section-edit [isCreateMode]="isCreateMode()" [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-vehicle-section-summary />
+  }
+}

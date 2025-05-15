@@ -1,0 +1,55 @@
+<div class="govuk-form-group-input">
+  <h1>
+    <label id="{{ labelId}}" for="{{ id }}" tag>
+      {{ controlLabel() }}
+      @if (tags().length) {
+        <div>
+          @for (tag of tags(); track tag) {
+            <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
+          }
+        </div>
+      }
+    </label>
+  </h1>
+
+  @if (controlHint()) {
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+  }
+
+  @if (hasError) {
+    <p class="govuk-error-message" id="{{ errorId }}">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+    </p>
+  }
+
+  <textarea
+    appNoEmojis
+    class="govuk-textarea"
+    rows="5"
+    id="{{ id }}"
+    name="{{ id }}"
+    [attr.aria-labelledby]="labelId"
+    [attr.data-testid]="id"
+    [(ngModel)]="value"
+    [disabled]="disabled()"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched();"
+    attr.aria-describedby="{{ id }}"
+    [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength() }"
+  ></textarea>
+
+  @if (maxLength(); as maxLength) {
+    @let length = value()?.length ?? 0;
+    @if (maxLength - length >= 0) {
+      <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint">
+        You have {{ maxLength - length }} character{{ maxLength - length !== 1 ? 's' : '' }} remaining
+      </div>
+    } @else {
+        <div id="{{ id }}-max-length" class="govuk-error-message">
+          You have {{ -(maxLength - length) }} character{{ -(maxLength - length) !== 1 ? 's' : '' }} too many
+        </div>
+    }
+  }
+</div>
+

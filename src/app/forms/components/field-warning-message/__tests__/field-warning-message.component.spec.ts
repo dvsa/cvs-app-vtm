@@ -8,7 +8,7 @@ describe('FieldWarningMessageComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [FieldWarningMessageComponent],
+			imports: [FieldWarningMessageComponent],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(FieldWarningMessageComponent);

@@ -1,18 +1,29 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
+import { Data } from '@angular/router';
 import { Condition, operatorEnum } from '@models/condition.model';
+import {
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+} from '@models/options.model';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
+import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { Observable, catchError, map, of, take, tap } from 'rxjs';
+import { Observable, catchError, combineLatestWith, map, of, skipWhile, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -186,6 +197,70 @@ export class CustomAsyncValidators {
 					return null;
 				})
 			);
+	}
+
+	static asyncRequired(): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return control.value === null || control.value === undefined || control.value === ''
+				? of({ required: true })
+				: of(null);
+		};
+	}
+
+	static filterEuCategoryOnVehicleType(
+		technicalRecordService: TechnicalRecordService,
+		routerService: RouterService
+	): AsyncValidatorFn {
+		return (control: AbstractControl): Observable<ValidationErrors | null> => {
+			return technicalRecordService.techRecord$.pipe(
+				skipWhile((techRecord) => !techRecord),
+				take(1),
+				combineLatestWith(routerService.routeData$),
+				skipWhile((routeData) => !routeData),
+				take(1),
+				map(([techRecord, routeData]: [V3TechRecordModel | undefined, Data]) => {
+					if (!techRecord) return null;
+					const vehicleType = technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
+					if (!(control instanceof CustomFormControl)) return null;
+
+					switch (vehicleType) {
+						case VehicleTypes.CAR:
+							control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
+							if (routeData['mode'] === 'create') {
+								control.disable();
+							}
+							break;
+						case VehicleTypes.TRL:
+							control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						case VehicleTypes.LGV:
+							control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+							if (routeData['mode'] === 'create') {
+								control.disable();
+							}
+							break;
+						case VehicleTypes.SMALL_TRL:
+							control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						// TODO uncomment these to enable HGV and PSV filtering
+						// case VehicleTypes.HGV:
+						//   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+						//   break;
+						// case VehicleTypes.PSV:
+						//   control.meta.options = PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+						//   break;
+						default:
+							control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+					}
+
+					control.markAsDirty({ onlySelf: true });
+					control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+
+					return null;
+				})
+			);
+		};
 	}
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {

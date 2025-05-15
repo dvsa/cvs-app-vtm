@@ -15,6 +15,9 @@ import {
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
+	getRecalls,
+	getRecallsFailure,
+	getRecallsSuccess,
 	removeDefect,
 	removeRequiredStandard,
 	updateDefect,
@@ -541,6 +544,39 @@ describe('Test Results Reducer', () => {
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
 
 			expect(newState.editingTestResult?.testTypes[0].requiredStandards).toBeUndefined();
+		});
+	});
+
+	describe('getRecalls actions', () => {
+		it('should set loading to true', () => {
+			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
+			const action = getRecalls();
+			const state = testResultsReducer(initialTestResultsState, action);
+
+			expect(state).toEqual(newState);
+			expect(state).not.toBe(newState);
+		});
+
+		describe('getRequiredStandardsSuccess', () => {
+			it('should set loading to false', () => {
+				const newState: TestResultsState = { ...initialTestResultsState, loading: false };
+				const action = getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } });
+				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+
+				expect(state).toEqual(newState);
+				expect(state).not.toBe(newState);
+			});
+
+			describe('getRequiredStandardsFailure', () => {
+				it('should set loading to false', () => {
+					const newState = { ...initialTestResultsState, loading: false };
+					const action = getRecallsFailure({ error: 'unit testing error message' });
+					const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+
+					expect(state).toEqual(newState);
+					expect(state).not.toBe(newState);
+				});
+			});
 		});
 	});
 });

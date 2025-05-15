@@ -33,6 +33,7 @@ import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/des
 import { OldIVASpecialistTestSectionGroup1 } from './section-templates/test/specialist/old-specialist-test-section-group1.template';
 import { OldIVASpecialistTestSectionGroup5 } from './section-templates/test/specialist/old-specialist-test-section-group5.template';
 import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist/specialist-test-section-group1.template';
+import { SpecialistTestSectionGroup1HgvAndTrl } from './section-templates/test/specialist/specialist-test-section-group1HgvAndTrl';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist/specialist-test-section-group2.template';
 import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist/specialist-test-section-group3And4.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist/specialist-test-section-group5.template';
@@ -107,7 +108,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup3And4And8,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSection,
 		},
@@ -116,7 +116,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup8Notifiable,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSection,
 		},
@@ -126,7 +125,6 @@ export const masterTpl: Record<
 			emissions: EmissionsSection,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSection,
 		},
@@ -255,7 +253,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup3And4And8,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
@@ -264,7 +261,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup8Notifiable,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
@@ -274,7 +270,6 @@ export const masterTpl: Record<
 			visit: VisitSection,
 			notes: NotesSection,
 			reasonForCreation: reasonForCreationSection,
-			customDefects: CustomDefectsSection,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup6And11: {
@@ -293,7 +288,6 @@ export const masterTpl: Record<
 			visit: VisitSection,
 			notes: AdrNotesSection,
 			reasonForCreation: reasonForCreationSection,
-			customDefects: CustomDefectsSection,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup9And10: {
@@ -332,13 +326,12 @@ export const masterTpl: Record<
 			emissions: EmissionsSection,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSection,
 		},
 		testTypesSpecialistGroup1: {
 			vehicle: IvaMsvaVehicleSection,
-			test: SpecialistTestSectionGroup1,
+			test: SpecialistTestSectionGroup1HgvAndTrl,
 			visit: VisitSection,
 			notes: NotesSection,
 			requiredStandards: RequiredStandardsTpl,
@@ -440,7 +433,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup3And4And8,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
@@ -449,7 +441,6 @@ export const masterTpl: Record<
 			test: TestSectionGroup8Notifiable,
 			visit: VisitSection,
 			notes: NotesSection,
-			customDefects: CustomDefectsSection,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
@@ -459,7 +450,6 @@ export const masterTpl: Record<
 			visit: VisitSection,
 			notes: NotesSection,
 			reasonForCreation: reasonForCreationSection,
-			customDefects: CustomDefectsSection,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup6And11: {
@@ -478,7 +468,6 @@ export const masterTpl: Record<
 			visit: VisitSection,
 			notes: AdrNotesSection,
 			reasonForCreation: reasonForCreationSection,
-			customDefects: CustomDefectsSection,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup9And10: {
@@ -513,7 +502,7 @@ export const masterTpl: Record<
 		},
 		testTypesSpecialistGroup1: {
 			vehicle: VehicleSectionDefaultTrl,
-			test: SpecialistTestSectionGroup1,
+			test: SpecialistTestSectionGroup1HgvAndTrl,
 			visit: VisitSection,
 			notes: NotesSection,
 			requiredStandards: RequiredStandardsTpl,

@@ -1,0 +1,13 @@
+:host {
+  .govuk-footer__copyright-logo {
+    display: inline-block;
+    min-width: 125px;
+    padding-top: 112px;
+    background-image: url(/assets/images/govuk-crest.svg);
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    background-size: 125px 102px;
+    text-align: center;
+    white-space: nowrap;
+  }
+}

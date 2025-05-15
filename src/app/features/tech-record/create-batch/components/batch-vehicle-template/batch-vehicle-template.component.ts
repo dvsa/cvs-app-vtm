@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
+import { Component, viewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -17,16 +18,32 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
+import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, map, take, withLatestFrom } from 'rxjs';
+import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../../components/button/button.component';
+import { SelectComponent } from '../../../../../forms/components/select/select.component';
+import { DefaultNullOrEmpty } from '../../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
 	selector: 'app-batch-vehicle-template',
 	templateUrl: './batch-vehicle-template.component.html',
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		SelectComponent,
+		ButtonComponent,
+		RouterLink,
+		ButtonGroupComponent,
+		TechRecordSummaryComponent,
+		AsyncPipe,
+		UpperCasePipe,
+		DefaultNullOrEmpty,
+	],
 })
 export class BatchVehicleTemplateComponent {
-	@ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
+	summary = viewChild(TechRecordSummaryComponent);
 	isInvalid = false;
 	form: CustomFormGroup;
 	public vehicleStatusOptions: MultiOptions = [
@@ -98,13 +115,13 @@ export class BatchVehicleTemplateComponent {
 
 		DynamicFormService.validate(this.form, errors);
 
-		this.globalErrorService.setErrors(errors);
+		this.globalErrorService.patchErrors(errors);
 
 		return this.form.valid;
 	}
 
 	handleSubmit() {
-		this.summary?.checkForms();
+		this.summary()?.checkForms();
 		const check = this.isVehicleStatusValid;
 
 		if (!this.isInvalid && check) {
@@ -130,10 +147,11 @@ export class BatchVehicleTemplateComponent {
 				)
 				.subscribe((vehicleList) => {
 					vehicleList.forEach((vehicle) => {
+						const cleansedVehicle = nullADRDetails(vehicle as unknown as TechRecordType<'put'>);
 						if (!vehicle.systemNumber) {
-							this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as TechRecordType<'put'> }));
+							this.store.dispatch(createVehicleRecord({ vehicle: cleansedVehicle }));
 						} else {
-							this.technicalRecordService.updateEditingTechRecord(vehicle);
+							this.technicalRecordService.updateEditingTechRecord(cleansedVehicle);
 							this.store.dispatch(
 								updateTechRecord({ systemNumber: vehicle.systemNumber, createdTimestamp: vehicle.createdTimestamp })
 							);

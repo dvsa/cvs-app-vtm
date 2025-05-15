@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -14,7 +13,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
-import { SharedModule } from '@shared/shared.module';
+
 import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
@@ -44,9 +43,9 @@ describe('TechRecordGenerateLetterComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [GenerateLetterComponent],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
@@ -59,13 +58,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 					},
 				},
 			],
-			imports: [
-				RouterTestingModule,
-				SharedModule,
-				ReactiveFormsModule,
-				DynamicFormsModule,
-				FixNavigationTriggeredOutsideAngularZoneNgModule,
-			],
+			imports: [GenerateLetterComponent, ReactiveFormsModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
 		}).compileComponents();
 	});
 

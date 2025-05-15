@@ -1,32 +1,37 @@
 <div class="govuk-form-group">
-  <fieldset [disabled]="disabled" class="govuk-fieldset" attr.aria-describedby="{{ name + '-hint' }}">
-    <label *ngIf="label" class="govuk-label govuk-label--m" [for]="name">
-      {{ label }}
-      <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-    </label>
+  <fieldset [disabled]="disabled" class="govuk-fieldset" attr.aria-describedby="{{ name() + '-hint' }}">
+    @if (label()) {
+      <label class="govuk-label govuk-label--m" [for]="name()">
+        {{ label() }}
+        @for (tag of control?.meta?.customTags; track tag) {
+          <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+        }
+      </label>
+    }
 
-    <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-    <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
+    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
+    <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
 
-    <div [id]="name + '-hint'" class="govuk-hint">{{ hint }}</div>
+    <div [id]="name() + '-hint'" class="govuk-hint">{{ hint() }}</div>
 
-    <div [id]="name" class="govuk-checkboxes" data-module="govuk-checkboxes">
-      <div *ngFor="let option of options; trackBy: trackByFn" class="govuk-checkboxes__item">
-        <input
-          type="checkbox"
-          class="govuk-checkboxes__input"
-          id="{{ name + '-' + option.value + '-checkbox' }}"
-          [name]="name"
-          [attr.checked]="isChecked(option.value)"
-          [value]="option.value"
-          [ngModel]="isChecked(option.value)"
-          (ngModelChange)="handleChange($event, option)"
-          (blur)="onTouched(); handleEvent($event)"
-          (focus)="handleEvent($event)"
-        />
-
-        <label class="govuk-label govuk-checkboxes__label" [for]="name + '-' + option.value + '-checkbox'"> {{ option.label }} </label>
-      </div>
+    <div [id]="name()" class="govuk-checkboxes" data-module="govuk-checkboxes">
+      @for (option of options(); track $index) {
+        <div class="govuk-checkboxes__item">
+          <input
+            type="checkbox"
+            class="govuk-checkboxes__input"
+            id="{{ name() + '-' + option.value + '-checkbox' }}"
+            [name]="name()"
+            [attr.checked]="isChecked(option.value)"
+            [value]="option.value"
+            [ngModel]="isChecked(option.value)"
+            (ngModelChange)="handleChange($event, option)"
+            (blur)="onTouched(); handleEvent($event)"
+            (focus)="handleEvent($event)"
+            />
+          <label class="govuk-label govuk-checkboxes__label" [for]="name() + '-' + option.value + '-checkbox'"> {{ option.label }} </label>
+        </div>
+      }
     </div>
   </fieldset>
 </div>

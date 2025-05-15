@@ -6,7 +6,6 @@ import { TestTypeEffects } from './test-types.effects';
 import { STORE_FEATURE_TEST_TYPES_KEY, testTypesReducer } from './test-types.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_TEST_TYPES_KEY, testTypesReducer),

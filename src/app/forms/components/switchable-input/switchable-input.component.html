@@ -1,125 +1,116 @@
-<ng-container *ngIf="isEditing; else view" [ngSwitch]="type" [formGroup]="form">
+<ng-container *ngIf="isEditing(); else view" [ngSwitch]="type()" [formGroup]="form()">
   <app-autocomplete
     *ngSwitchCase="types.AUTOCOMPLETE"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
     [options$]="options$"
     [noBottomMargin]="true"
-    [hint]="hint"
+    [hint]="hint()"
   >
-    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
+    <ng-template *ngIf="prefix()" appPrefix>{{ prefix() }}</ng-template>
   </app-autocomplete>
 
-  <app-checkbox
-    *ngSwitchCase="types.CHECKBOX"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [customId]="customId"
+  <app-checkbox *ngSwitchCase="types.CHECKBOX"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [customId]="customId()"
     [noBottomMargin]="true"
-  ></app-checkbox>
+   />
 
-  <app-checkbox-group
-    *ngSwitchCase="types.CHECKBOXGROUP"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
-    [options]="options!"
+  <app-checkbox-group *ngSwitchCase="types.CHECKBOXGROUP"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
+    [options]="options()!"
     [delimited]="delimiter"
     [noBottomMargin]="true"
-  ></app-checkbox-group>
+   />
 
-  <ng-template *ngSwitchCase="types.DATE" [ngTemplateOutlet]="date"></ng-template>
+  <ng-template *ngSwitchCase="types.DATE" [ngTemplateOutlet]="date" />
 
-  <ng-template *ngSwitchCase="types.DATETIME" [ngTemplateOutlet]="date"></ng-template>
+  <ng-template *ngSwitchCase="types.DATETIME" [ngTemplateOutlet]="date" />
 
   <ng-template #date>
-    <app-date
-      [formControlName]="name"
-      [name]="name"
-      [label]="label"
-      [width]="width"
-      [displayTime]="type === types.DATETIME"
+    <app-date [formControlName]="name()"
+      [name]="name()"
+      [label]="label()"
+      [width]="width()"
+      [displayTime]="type() === types.DATETIME"
       [noBottomMargin]="true"
-    ></app-date>
+     />
   </ng-template>
 
-  <app-approval-type-input
-    *ngSwitchCase="types.APPROVAL_TYPE"
-    [formControlName]="name"
-    [approvalType]="approvalType"
-    [approvalTypeChange]="approvalTypeChange"
-    [label]="label"
-    [width]="width"
-  >
-  </app-approval-type-input>
+  <app-approval-type-input *ngSwitchCase="types.APPROVAL_TYPE"
+    [formControlName]="name()"
+    [approvalType]="approvalType()"
+    [approvalTypeChange]="approvalTypeChange()"
+    [label]="label()"
+    [width]="width()"
+   />
 
   <app-number-input
     *ngSwitchCase="types.NUMBER"
-    [formControlName]="name"
-    [name]="idExtension ? name + '-' + idExtension : name"
-    [label]="label"
-    [width]="width"
+    [formControlName]="name()"
+    [name]="idExtension() ? name() + '-' + idExtension() : name()"
+    [label]="label()"
+    [width]="width()"
     [noBottomMargin]="true"
-    [vehicleType]="vehicleType"
+    [vehicleType]="vehicleType()"
   >
-    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
-    <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
+    <ng-template *ngIf="prefix()" appPrefix>{{ prefix() }}</ng-template>
+    <ng-template *ngIf="suffix()" appSuffix>{{ suffix() }}</ng-template>
   </app-number-input>
 
-  <app-radio-group
-    *ngSwitchCase="types.RADIO"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
-    [options]="options!"
+  <app-radio-group *ngSwitchCase="types.RADIO"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
+    [options]="options()!"
     [noBottomMargin]="true"
-  ></app-radio-group>
+   />
 
-  <app-select
-    *ngSwitchCase="types.DROPDOWN"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
-    [options]="options!"
+  <app-select *ngSwitchCase="types.DROPDOWN"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
+    [options]="options()!"
     [noBottomMargin]="true"
-    [customId]="customId"
-  ></app-select>
+    [customId]="customId()"
+   />
 
-  <app-text-area
-    *ngSwitchCase="types.TEXTAREA"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
+  <app-text-area *ngSwitchCase="types.TEXTAREA"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
     [noBottomMargin]="true"
-  ></app-text-area>
+   />
 
   <app-text-input
     *ngSwitchDefault
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
-    [numeric]="type === types.NUMERICSTRING"
+    [formControlName]="name()"
+    [name]="name()"
+    [label]="label()"
+    [width]="width()"
+    [numeric]="type() === types.NUMERICSTRING"
     [noBottomMargin]="true"
   >
-    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
-    <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
+    <ng-template *ngIf="prefix()" appPrefix>{{ prefix() }}</ng-template>
+    <ng-template *ngIf="suffix()" appSuffix>{{ suffix() }}</ng-template>
   </app-text-input>
 </ng-container>
 
-<ng-template #view [formGroup]="form">
-  <app-read-only
-    [formControlName]="name"
-    [label]="label"
-    [name]="idExtension ? name + '-' + idExtension : name"
-    [readOnlySuffix]="suffix"
-    [date]="readOnlyDate"
-  ></app-read-only>
+<ng-template #view [formGroup]="form()">
+  <app-read-only [formControlName]="name()"
+    [label]="label()"
+    [name]="idExtension() ? name() + '-' + idExtension() : name()"
+    [readOnlySuffix]="suffix()"
+    [date]="readOnlyDate()"
+   />
 </ng-template>

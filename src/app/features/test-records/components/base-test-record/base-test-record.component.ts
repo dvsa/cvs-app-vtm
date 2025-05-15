@@ -1,14 +1,6 @@
-import {
-	AfterViewInit,
-	Component,
-	EventEmitter,
-	Input,
-	Output,
-	QueryList,
-	ViewChild,
-	ViewChildren,
-	inject,
-} from '@angular/core';
+import { AsyncPipe, NgStyle } from '@angular/common';
+import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -29,24 +21,53 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { Observable, map } from 'rxjs';
+import { AccordionControlComponent } from '../../../../components/accordion-control/accordion-control.component';
+import { AccordionComponent } from '../../../../components/accordion/accordion.component';
+import { BannerComponent } from '../../../../components/banner/banner.component';
+import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../../components/button/button.component';
+import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
+import { FeatureToggleDirective } from '../../../../directives/feature-toggle/feature-toggle.directive';
+import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
+import { CustomDefectsComponent as CustomDefectsComponent_1 } from '../../../../forms/custom-sections/custom-defects/custom-defects.component';
+import { DefectsComponent as DefectsComponent_1 } from '../../../../forms/custom-sections/defects/defects.component';
+import { RequiredStandardsComponent as RequiredStandardsComponent_1 } from '../../../../forms/custom-sections/required-standards/required-standards.component';
+import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
 
 @Component({
 	selector: 'app-base-test-record[testResult]',
 	templateUrl: './base-test-record.component.html',
 	styleUrls: ['./base-test-record.component.scss'],
+	imports: [
+		VehicleHeaderComponent,
+		ButtonGroupComponent,
+		RoleRequiredDirective,
+		ButtonComponent,
+		RouterLink,
+		AccordionControlComponent,
+		AccordionComponent,
+		DefectsComponent_1,
+		FeatureToggleDirective,
+		RequiredStandardsComponent_1,
+		CustomDefectsComponent_1,
+		DynamicFormGroupComponent_1,
+		NgStyle,
+		BannerComponent,
+		AsyncPipe,
+	],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
-	@ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
-	@ViewChild(DefectsComponent) defects?: DefectsComponent;
-	@ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
-	@ViewChild(RequiredStandardsComponent) requiredStandards?: RequiredStandardsComponent;
+	readonly sections = viewChildren(DynamicFormGroupComponent);
+	readonly defects = viewChild(DefectsComponent);
+	readonly customDefects = viewChild(CustomDefectsComponent);
+	readonly requiredStandards = viewChild(RequiredStandardsComponent);
 
-	@Input() testResult!: TestResultModel;
-	@Input() isEditing = false;
-	@Input() expandSections = false;
-	@Input() isReview = false;
+	readonly testResult = input.required<TestResultModel>();
+	readonly isEditing = input(false);
+	readonly expandSections = input(false);
+	readonly isReview = input(false);
 
-	@Output() newTestResult = new EventEmitter<TestResultModel>();
+	readonly newTestResult = output<TestResultModel>();
 
 	private defectsStore = inject(Store<DefectsState>);
 	private routerService = inject(RouterService);
@@ -61,13 +82,16 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	handleFormChange(event: any) {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let latestTest: any;
-		this.sections?.forEach((section) => {
+		this.sections()?.forEach((section) => {
 			const { form } = section;
 			latestTest = merge(latestTest, form.getCleanValue(form));
 		});
-		const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-		const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
-		const requiredStandardsValue = this.requiredStandards?.form.getCleanValue(this.requiredStandards?.form);
+		const defects = this.defects();
+		const defectsValue = defects?.form.getCleanValue(defects?.form);
+		const customDefects = this.customDefects();
+		const customDefectsValue = customDefects?.form.getCleanValue(customDefects?.form);
+		const requiredStandards = this.requiredStandards();
+		const requiredStandardsValue = requiredStandards?.form.getCleanValue(requiredStandards?.form);
 
 		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
 
@@ -82,7 +106,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	validateEuVehicleCategory(_event: unknown) {
-		this.sections?.forEach((section) => {
+		this.sections()?.forEach((section) => {
 			const { form } = section;
 			if (form.meta.name === 'vehicleSection') {
 				const errors: GlobalError[] = [];
@@ -113,7 +137,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	}
 
 	get resultOfTest(): resultOfTestEnum {
-		return this.testResult?.testTypes[0].testResult;
+		return this.testResult()?.testTypes[0].testResult;
 	}
 
 	get testNumber$(): Observable<string | undefined> {

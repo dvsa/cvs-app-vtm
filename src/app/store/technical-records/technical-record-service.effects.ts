@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
@@ -211,6 +211,7 @@ export class TechnicalRecordServiceEffects {
 			)
 		)
 	);
+
 	generateTechRecordBasedOnSectionTemplates$ = createEffect(
 		() =>
 			this.actions$.pipe(
@@ -218,24 +219,6 @@ export class TechnicalRecordServiceEffects {
 				withLatestFrom(this.store.pipe(select(editingTechRecord))),
 				concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
 					const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
-
-					if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
-						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
-					}
-					if (
-						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-						techRecord.techRecord_vehicleType === VehicleTypes.PSV
-					) {
-						(techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
-					}
-					if (techRecord_vehicleType === VehicleTypes.HGV) {
-						(techRecord as TechRecordGETHGV).techRecord_vehicleClass_description =
-							VehicleClassDescription.HeavyGoodsVehicle;
-					}
-					if (techRecord_vehicleType === VehicleTypes.TRL) {
-						(techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
-					}
 					const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
 
 					return of(
@@ -258,33 +241,37 @@ export class TechnicalRecordServiceEffects {
 				concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
 					const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
 
-					if (techRecord.techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
-						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-						(techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
+					// TODO: once all DFS templates are removed, remove this
+					const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
+
+					const mergedForms = techRecordTemplate.reduce((mergedNodes, formNode) => {
+						const form = this.dfs.createForm(formNode, techRecord);
+						return merge(mergedNodes, form.getCleanValue(form));
+					}, {}) as TechRecordType<'put'>;
+
+					(mergedForms as any).techRecord_vehicleType = techRecord_vehicleType;
+
+					if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
+						mergedForms.techRecord_vehicleType = VehicleTypes.TRL;
+						mergedForms.techRecord_euVehicleCategory = EUVehicleCategoryTRL.O1;
 					}
 
 					if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
-						(techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_approvalType = null;
-						(techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
+						(mergedForms as TechRecordGETHGV | TechRecordGETPSV).techRecord_approvalType = null;
+						(mergedForms as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
 					}
 
 					if (techRecord_vehicleType === VehicleTypes.HGV) {
-						(techRecord as TechRecordGETHGV).techRecord_vehicleClass_description =
+						(mergedForms as TechRecordGETHGV).techRecord_vehicleClass_description =
 							VehicleClassDescription.HeavyGoodsVehicle;
 					}
 					if (techRecord_vehicleType === VehicleTypes.TRL) {
-						(techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
+						(mergedForms as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						(techRecord as any).euVehicleCategory = null;
+						(mergedForms as any).euVehicleCategory = null;
 					}
 
-					const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
-					return of(
-						techRecordTemplate.reduce((mergedNodes, formNode) => {
-							const form = this.dfs.createForm(formNode, techRecord);
-							return merge(mergedNodes, form.getCleanValue(form));
-						}, {}) as TechRecordType<'put'>
-					);
+					return of(mergedForms);
 				}),
 				tap((mergedForms) => this.technicalRecordService.updateEditingTechRecord(mergedForms))
 			),

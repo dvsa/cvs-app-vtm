@@ -1,4 +1,5 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -22,10 +23,15 @@ import {
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
+import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
+import { ButtonComponent } from '../../../components/button/button.component';
+import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
+import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../forms/components/dynamic-form-group/dynamic-form-group.component';
 
 @Component({
 	selector: 'app-reference-data-delete',
 	templateUrl: './reference-data-delete.component.html',
+	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
 export class ReferenceDataDeleteComponent implements OnInit {
 	type!: ReferenceDataResourceType;
@@ -54,7 +60,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 		],
 	};
 
-	@ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+	readonly sections = viewChildren(DynamicFormGroupComponent);
 
 	constructor(
 		public globalErrorService: GlobalErrorService,
@@ -106,7 +112,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 	}
 
 	checkForms(): void {
-		const forms = this.sections.map((section) => section.form) as Array<CustomFormGroup>;
+		const forms = this.sections().map((section) => section.form) as Array<CustomFormGroup>;
 
 		this.isFormDirty = forms.some((form) => form.dirty);
 

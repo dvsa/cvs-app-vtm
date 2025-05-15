@@ -1,45 +1,50 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <ng-container *ngIf="form && requiredStandardsCount; else noRequiredStandards" [formGroup]="form">
-      <p class="govuk-hint">Any unresolved required standards will result in failed test.</p>
-      <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-table__caption--m">
-          Required Standards
-        </caption>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Reference</th>
-            <th scope="col" class="govuk-table__header">Description</th>
-            <th scope="col" class="govuk-table__header">PRS?</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <tr *ngFor="let requiredStandard of testRequiredStandards; let i = index" class="govuk-table__row">
-            <td class="govuk-table__cell">
-              <a
-                data-action="retain-data"
-                routerLink="requiredStandard/{{ i }}"
-                queryParamsHandling="preserve"
-                class="govuk-link govuk-link--no-visited-state"
-                >{{ requiredStandard.refCalculation }}</a
-              >
-            </td>
-            <td class="govuk-table__cell">
-              {{ requiredStandard.requiredStandard | truncate : 250 }}
-            </td>
-            <td class="govuk-table__cell">
-              <app-tag [type]="requiredStandard.prs ? 'green' : 'red'">{{ requiredStandard.prs ? 'Yes' : 'No' }}</app-tag>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ng-container>
+    @if (form && requiredStandardsCount) {
+      <ng-container [formGroup]="form">
+        <p class="govuk-hint">Any unresolved required standards will result in failed test.</p>
+        <table class="govuk-table">
+          <caption class="govuk-table__caption govuk-table__caption--m">
+            Required Standards
+          </caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Reference</th>
+              <th scope="col" class="govuk-table__header">Description</th>
+              <th scope="col" class="govuk-table__header">PRS?</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            @for (requiredStandard of testRequiredStandards; track requiredStandard; let i = $index) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                  <a
+                    data-action="retain-data"
+                    routerLink="requiredStandard/{{ i }}"
+                    queryParamsHandling="preserve"
+                    class="govuk-link govuk-link--no-visited-state"
+                    >{{ requiredStandard.refCalculation }}</a
+                    >
+                  </td>
+                  <td class="govuk-table__cell">
+                    {{ requiredStandard.requiredStandard | truncate : 250 }}
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-tag [type]="requiredStandard.prs ? 'green' : 'red'">{{ requiredStandard.prs ? 'Yes' : 'No' }}</app-tag>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </ng-container>
+      } @else {
+        <h2 class="govuk-heading-m">Required Standards</h2>
+        <p class="govuk-body">No required standards</p>
+      }
 
-    <ng-template #noRequiredStandards>
-      <h2 class="govuk-heading-m">Required Standards</h2>
-      <p class="govuk-body">No required standards</p>
-    </ng-template>
+    </div>
   </div>
-</div>
 
-<app-button *ngIf="isEditing" type="link" design="secondary" id="add-rs-button" (click)="onAddRequiredStandard()">Add Required Standard</app-button>
+  @if (isEditing()) {
+    <app-button type="link" design="secondary" id="add-rs-button" (click)="onAddRequiredStandard()">Add Required Standard</app-button>
+  }

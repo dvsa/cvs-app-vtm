@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
 import { BaseControlComponent } from '../../base-control/base-control.component';
 import { ReadOnlyComponent } from '../read-only.component';
 
@@ -11,7 +11,7 @@ import { ReadOnlyComponent } from '../read-only.component';
 	template: `<form [formGroup]="form">
     <app-read-only name="foo" label="Foo" formControlName="foo"></app-read-only>
   </form> `,
-	styles: [],
+	imports: [FormsModule, ReactiveFormsModule, BaseControlComponent, ReadOnlyComponent],
 })
 class HostComponent {
 	form = new FormGroup({
@@ -25,8 +25,7 @@ describe('ReadOnlyComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
-			imports: [FormsModule, ReactiveFormsModule, SharedModule],
+			imports: [HostComponent],
 		}).compileComponents();
 	});
 

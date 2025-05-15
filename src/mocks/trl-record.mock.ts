@@ -1,5 +1,5 @@
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FrameDescriptions, StatusCodes } from '@models/vehicle-tech-record.model';
@@ -30,7 +30,7 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> => ({
 	techRecord_couplingType: '1',
 	techRecord_maxLoadOnCoupling: 1234,
 	techRecord_frameDescription: FrameDescriptions.FRAME_SECTION,
-	techRecord_euVehicleCategory: EUVehicleCategory.M1,
+	techRecord_euVehicleCategory: EUVehicleCategory.O3,
 	techRecord_departmentalVehicleMarker: true,
 	techRecord_reasonForCreation: 'Brake Failure',
 	techRecord_approvalType: ApprovalType.ECSSTA,

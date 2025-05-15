@@ -1,13 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { FormatVehicleTypePipe } from '@pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams } from '@store/router/router.selectors';
@@ -23,9 +25,17 @@ describe('MultipleSearchResultsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent, RoleRequiredDirective],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
+			imports: [
+				SingleSearchResultComponent,
+				MultipleSearchResultsComponent,
+				RoleRequiredDirective,
+				DefaultNullOrEmpty,
+				FormatVehicleTypePipe,
+			],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				provideMockActions(() => actions$),
 				{

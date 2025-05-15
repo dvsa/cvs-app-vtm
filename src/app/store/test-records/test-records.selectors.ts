@@ -64,7 +64,9 @@ export const selectDefectData = createSelector(selectedTestResultState, (testRes
 export const isTestTypeOldIvaOrMsva = createSelector(toEditOrNotToEdit, (testResult) => {
 	return (
 		!!testResult?.testTypes[0]?.customDefects?.length &&
-		!!testResult?.testTypes[0]?.customDefects?.every((defect) => !!defect.referenceNumber)
+		!!testResult?.testTypes[0]?.customDefects?.every(
+			(defect) => !!defect.referenceNumber && !!defect.referenceNumber.trim()
+		)
 	);
 });
 

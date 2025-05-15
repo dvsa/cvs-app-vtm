@@ -1,18 +1,16 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { SharedModule } from '@shared/shared.module';
 import { clearError } from '@store/global-error/global-error.actions';
 import { initialAppState } from '@store/index';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
@@ -52,16 +50,18 @@ describe('EditTechRecordButtonComponent', () => {
 		jest.clearAllMocks();
 
 		await TestBed.configureTestingModule({
-			declarations: [EditTechRecordButtonComponent],
+			imports: [EditTechRecordButtonComponent],
 			providers: [
 				{ provide: RouterService, useValue: mockRouterService },
 				GlobalErrorService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: APP_BASE_HREF, useValue: '/' },
 				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
 			],
-			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
 		}).compileComponents();
 	});
 
@@ -165,7 +165,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 	describe('when amending a provisional tech record', () => {
 		beforeEach(() => {
-			component.isEditing = true;
+			component.isEditing.set(true);
 		});
 		describe('and the user submits their changes', () => {
 			it('component should emit event', fakeAsync(() => {
@@ -183,7 +183,7 @@ describe('EditTechRecordButtonComponent', () => {
 	describe('when amending a current tech record', () => {
 		beforeEach(() => {
 			updateMockTechnicalRecord(StatusCodes.CURRENT);
-			component.isEditing = true;
+			component.isEditing.set(true);
 		});
 		describe('and the user submits their changes', () => {
 			it('component should emit event', fakeAsync(() => {
@@ -200,12 +200,12 @@ describe('EditTechRecordButtonComponent', () => {
 		describe('and the user cancels their changes', () => {
 			describe('and the form is dirty', () => {
 				beforeEach(() => {
-					component.isDirty = true;
+					fixture.componentRef.setInput('isDirty', true);
 					jest.resetAllMocks();
 				});
 
 				it('should prompt user if they wish to cancel', () => {
-					component.isEditing = true;
+					fixture.componentRef.setInput('isEditing', true);
 					jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
 					fixture.detectChanges();
@@ -217,7 +217,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 				describe('and the user cancels cancelling an amendment', () => {
 					it('should keep user in edit view', fakeAsync(() => {
-						component.isEditing = true;
+						fixture.componentRef.setInput('isEditing', true);
 						jest.spyOn(window, 'confirm').mockImplementation(() => false);
 						const dispatchSpy = jest.spyOn(store, 'dispatch');
 						const cancelSpy = jest.spyOn(component, 'cancel');
@@ -242,7 +242,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 				describe('and the user confirms cancelling the amendment', () => {
 					it('should return user back to non-edit view', fakeAsync(() => {
-						component.isEditing = true;
+						fixture.componentRef.setInput('isEditing', true);
 						jest.spyOn(window, 'confirm').mockImplementation(() => true);
 						const dispatchSpy = jest.spyOn(store, 'dispatch');
 						const cancelSpy = jest.spyOn(component, 'cancel');
@@ -257,7 +257,7 @@ describe('EditTechRecordButtonComponent', () => {
 						expect(navigateSpy).toHaveBeenCalled();
 						expect(cancelSpy).toHaveBeenCalled();
 						expect(toggleEditModeSpy).toHaveBeenCalled();
-						expect(component.isEditing).toBeFalsy();
+						expect(component.isEditing()).toBeFalsy();
 						expect(window.confirm).toHaveBeenCalledTimes(1);
 						expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
 						expect(dispatchSpy).toHaveBeenNthCalledWith(1, clearError());
@@ -268,11 +268,11 @@ describe('EditTechRecordButtonComponent', () => {
 
 			describe('and the form is not dirty', () => {
 				beforeEach(() => {
-					component.isDirty = false;
+					fixture.componentRef.setInput('isDirty', false);
 				});
 
 				it('should not prompt user if they wish to cancel', fakeAsync(() => {
-					component.isEditing = true;
+					fixture.componentRef.setInput('isEditing', true);
 					jest.spyOn(window, 'confirm');
 					fixture.detectChanges();
 
@@ -282,7 +282,7 @@ describe('EditTechRecordButtonComponent', () => {
 				}));
 
 				it('should return user to non-edit view', fakeAsync(() => {
-					component.isEditing = true;
+					fixture.componentRef.setInput('isEditing', true);
 					jest.spyOn(window, 'confirm');
 					const cancelSpy = jest.spyOn(component, 'cancel');
 					const toggleSpy = jest.spyOn(component, 'toggleEditMode');
@@ -296,7 +296,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 					expect(cancelSpy).toHaveBeenCalled();
 					expect(toggleSpy).toHaveBeenCalled();
-					expect(component.isEditing).toBeFalsy();
+					expect(component.isEditing()).toBeFalsy();
 					expect(dispatchSpy).toHaveBeenNthCalledWith(1, clearError());
 					expect(dispatchSpy).toHaveBeenNthCalledWith(2, updateEditingTechRecordCancel());
 				}));

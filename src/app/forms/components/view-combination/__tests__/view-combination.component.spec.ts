@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CustomFormControl, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { SharedModule } from '@shared/shared.module';
+
 import { ViewCombinationComponent } from '../view-combination.component';
 
 describe('ViewCombinationComponent', () => {
@@ -28,16 +28,15 @@ describe('ViewCombinationComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ViewCombinationComponent],
-			imports: [SharedModule],
+			imports: [ViewCombinationComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(ViewCombinationComponent);
 		component = fixture.componentInstance;
-		component.formNode = formNode;
-		component.formGroup = formGroup;
+		fixture.componentRef.setInput('formNode', formNode);
+		fixture.componentRef.setInput('formGroup', formGroup);
 		fixture.detectChanges();
 	});
 

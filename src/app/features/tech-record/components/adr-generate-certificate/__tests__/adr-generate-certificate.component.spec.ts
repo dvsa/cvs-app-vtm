@@ -1,10 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -12,11 +10,11 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 
+import { provideHttpClient } from '@angular/common/http';
 import { AdrGenerateCertificateComponent } from '../adr-generate-certificate.component';
 
 const mockDynamicFormService = {
@@ -35,9 +33,12 @@ describe('AdrGenerateCertificateComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [AdrGenerateCertificateComponent],
+			imports: [AdrGenerateCertificateComponent, ReactiveFormsModule],
 			providers: [
 				GlobalErrorService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
@@ -50,7 +51,6 @@ describe('AdrGenerateCertificateComponent', () => {
 					},
 				},
 			],
-			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
 	});
 	beforeEach(() => {

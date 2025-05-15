@@ -31,28 +31,36 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr *ngFor="let vehicle of batchVehiclesSuccess$ | async; let i = index" class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
-      <td class="govuk-table__cell">{{ vehicle.trailerIdOrVrm }}</td>
-      <td class="govuk-table__cell">{{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}</td>
-      <td class="govuk-table__cell">
-        <ng-container [ngSwitch]="vehicle.status">
-          <app-tag *ngSwitchCase="'provisional'" type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
-          <app-tag *ngSwitchCase="'archived'" type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
-          <app-tag *ngSwitchCase="'current'" type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
-        </ng-container>
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell">
-        <a
-          id="view-{{ i + 1 }}"
-          [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]"
-          class="govuk-link"
-          rel="noreferrer noopener"
-          target="_blank"
-          >View (opens in a new tab)</a
-        >
-      </td>
-    </tr>
-  </tbody>
-</table>
+    @for (vehicle of batchVehiclesSuccess$ | async; track vehicle; let i = $index) {
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
+        <td class="govuk-table__cell">{{ vehicle.trailerIdOrVrm }}</td>
+        <td class="govuk-table__cell">{{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">
+          @switch (vehicle.status) {
+            @case ('provisional') {
+              <app-tag type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
+            }
+            @case ('archived') {
+              <app-tag type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
+            }
+            @case ('current') {
+              <app-tag type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
+            }
+          }
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell">
+          <a
+            id="view-{{ i + 1 }}"
+            [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]"
+            class="govuk-link"
+            rel="noreferrer noopener"
+            target="_blank"
+            >View (opens in a new tab)</a
+            >
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>

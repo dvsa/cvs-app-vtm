@@ -48,4 +48,5 @@ export enum ValidatorNames {
 	MinArrayLengthIfNotEmpty = 'minArrayLengthIfNotEmpty',
 	IssueRequired = 'issueRequired',
 	SetBodyDeclarationVisibility = 'setBodyDeclarationVisibility',
+	XYearsAfterCurrent = 'xYearsAfterCurrent',
 }

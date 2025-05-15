@@ -1,9 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -21,8 +22,9 @@ describe('DefectsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
-			declarations: [
+			imports: [
+				FormsModule,
+				ReactiveFormsModule,
 				DefectComponent,
 				DefectSelectComponent,
 				DefectsComponent,
@@ -30,12 +32,21 @@ describe('DefectsComponent', () => {
 				TruncatePipe,
 				TagComponent,
 			],
-			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
+			providers: [
+				DynamicFormService,
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(DefectsComponent);
+		fixture.componentRef.setInput('defects', null);
+		fixture.componentRef.setInput('template', {});
+		fixture.detectChanges();
 		component = fixture.componentInstance;
 		el = fixture.debugElement;
 	});

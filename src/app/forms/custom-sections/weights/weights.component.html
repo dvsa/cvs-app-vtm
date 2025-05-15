@@ -1,139 +1,154 @@
 <form [formGroup]="form">
   <table class="govuk-table">
-    <ng-container [ngSwitch]="requiredPlates">
-      <caption *ngSwitchCase="false" class="govuk-table__caption govuk-table__caption--m">
-        Axle weights (kg)
-      </caption>
-      <caption *ngSwitchCase="true" class="govuk-table__caption govuk-table__caption--m">
-        Axle weights (kg)
-        <app-tag type="purple">plates</app-tag>
-      </caption>
-    </ng-container>
+    @switch (requiredPlates) {
+      @case (false) {
+        <caption class="govuk-table__caption govuk-table__caption--m">
+          Axle weights (kg)
+        </caption>
+      }
+      @case (true) {
+        <caption class="govuk-table__caption govuk-table__caption--m">
+          Axle weights (kg)
+          <app-tag type="purple">plates</app-tag>
+        </caption>
+      }
+    }
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header"></th>
 
-        <ng-container *ngIf="isPsv; else hgvAndTrlTh">
+        @if (isPsv) {
           <th scope="col" class="govuk-table__header">Kerb</th>
           <th scope="col" class="govuk-table__header">Laden</th>
           <th scope="col" class="govuk-table__header">GB max</th>
           <th scope="col" class="govuk-table__header">Design</th>
-          <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
-        </ng-container>
-
-        <ng-template #hgvAndTrlTh>
+          @if (isEditing()) {
+            <th scope="col" class="govuk-table__header"></th>
+          }
+        } @else {
           <th scope="col" class="govuk-table__header">GB</th>
           <th scope="col" class="govuk-table__header">EEC</th>
           <th scope="col" class="govuk-table__header">Design</th>
-          <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
-        </ng-template>
+          @if (isEditing()) {
+            <th scope="col" class="govuk-table__header"></th>
+          }
+        }
+
       </tr>
     </thead>
 
     <tbody class="govuk-table__body">
-      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="techRecord_axles">
-        <ng-container [formGroupName]="i">
-          <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
-
-          <ng-container *ngIf="isPsv">
-            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_kerbWeight' }"></ng-template>
-
-            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_ladenWeight' }"></ng-template>
+      @for (axle of axles.controls; track axle; let i = $index) {
+        <tr class="govuk-table__row" formArrayName="techRecord_axles">
+          <ng-container [formGroupName]="i">
+            <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+            @if (isPsv) {
+              <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_kerbWeight' }"></ng-template>
+              <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_ladenWeight' }"></ng-template>
+            }
+            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_gbWeight' }"></ng-template>
+            @if (!isPsv) {
+              <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_eecWeight' }"></ng-template>
+            }
+            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_designWeight' }"></ng-template>
+            @if (isEditing()) {
+              <td class="govuk-table__cell">
+                <a class="axleButton" (click)="removeAxle(i)">Remove</a>
+              </td>
+            }
+            <ng-template #axleTdNumberInput let-name="name">
+              <td class="govuk-table__cell">
+                <app-switchable-input
+                  [form]="getAxleForm(i)"
+                  [type]="types.NUMBER"
+                  [name]="name"
+                  [idExtension]="axle.value.axleNumber"
+                  [isEditing]="isEditing()"
+                ></app-switchable-input>
+              </td>
+            </ng-template>
           </ng-container>
+        </tr>
+      }
 
-          <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_gbWeight' }"></ng-template>
-
-          <ng-template *ngIf="!isPsv" [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_eecWeight' }"></ng-template>
-
-          <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_designWeight' }"></ng-template>
-
-          <td *ngIf="isEditing" class="govuk-table__cell">
-            <a class="axleButton" (click)="removeAxle(i)">Remove</a>
-          </td>
-
-          <ng-template #axleTdNumberInput let-name="name">
-            <td class="govuk-table__cell">
-              <app-switchable-input
-                [form]="getAxleForm(i)"
-                [type]="types.NUMBER"
-                [name]="name"
-                [idExtension]="axle.value.axleNumber"
-                [isEditing]="isEditing"
-              ></app-switchable-input>
-            </td>
-          </ng-template>
-        </ng-container>
-      </tr>
-
-      <ng-container *ngIf="isPsv; else hgvAndTrlWeights">
+      @if (isPsv) {
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Gross</th>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossKerbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossLadenWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossGbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossDesignWeight' }"></ng-template>
-          <td *ngIf="isEditing" class="govuk-table__cell"></td>
+          @if (isEditing()) {
+            <td class="govuk-table__cell"></td>
+          }
         </tr>
-
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Train</th>
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell"></td>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_maxTrainGbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_trainDesignWeight' }"></ng-template>
-          <td *ngIf="isEditing" class="govuk-table__cell"></td>
+          @if (isEditing()) {
+            <td class="govuk-table__cell"></td>
+          }
         </tr>
-      </ng-container>
-
-      <ng-template #hgvAndTrlWeights>
+      } @else {
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Gross</th>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossGbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossEecWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossDesignWeight' }"></ng-template>
-          <td *ngIf="isEditing" class="govuk-table__cell"></td>
+          @if (isEditing()) {
+            <td class="govuk-table__cell"></td>
+          }
         </tr>
-
-        <ng-container *ngIf="isHgv">
+        @if (isHgv) {
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">Train</th>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_trainGbWeight' }"></ng-template>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_trainEecWeight' }"></ng-template>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_trainDesignWeight' }"></ng-template>
-            <td *ngIf="isEditing" class="govuk-table__cell"></td>
+            @if (isEditing()) {
+              <td class="govuk-table__cell"></td>
+            }
           </tr>
-
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">Max Train</th>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_maxTrainGbWeight' }"></ng-template>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_maxTrainEecWeight' }"></ng-template>
             <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_maxTrainDesignWeight' }"></ng-template>
-            <td *ngIf="isEditing" class="govuk-table__cell"></td>
+            @if (isEditing()) {
+              <td class="govuk-table__cell"></td>
+            }
           </tr>
-        </ng-container>
-      </ng-template>
+        }
+      }
 
-      <tr *ngIf="isEditing">
-        <a class="axleButton" role="button" id="weightsAddAxle" (click)="addAxle()">Add Axle</a>
-        <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
-      </tr>
 
-      <ng-container *ngIf="isPsv">
+      @if (isEditing()) {
+        <tr>
+          <a class="axleButton" role="button" id="weightsAddAxle" (click)="addAxle()">Add Axle</a>
+          @if (isError) {
+            <p class="govuk-error-message">{{ errorMessage }}</p>
+          }
+        </tr>
+      }
+
+      @if (isPsv) {
         <br />
-
         <app-switchable-input
           [form]="form"
           [type]="types.NUMBER"
           name="techRecord_unladenWeight"
           label="Unladen Weight"
-          [isEditing]="isEditing"
+          [isEditing]="isEditing()"
           suffix="kg"
         ></app-switchable-input>
-      </ng-container>
+      }
 
       <ng-template #tdNumberInput let-name="name">
         <td class="govuk-table__cell">
-          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
+          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing()"></app-switchable-input>
         </td>
       </ng-template>
     </tbody>

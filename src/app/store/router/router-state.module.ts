@@ -5,7 +5,6 @@ import { StoreModule } from '@ngrx/store';
 import { STORE_FEATURE_ROUTER_STORE_KEY } from './router.selectors';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_ROUTER_STORE_KEY, routerReducer),

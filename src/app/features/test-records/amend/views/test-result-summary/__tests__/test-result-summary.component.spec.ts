@@ -1,6 +1,7 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -17,9 +18,11 @@ describe('TestResultSummaryComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [TestResultSummaryComponent, VehicleHeaderComponent, NumberPlateComponent, TagComponent],
-			imports: [RouterTestingModule, HttpClientTestingModule],
+			imports: [TestResultSummaryComponent, VehicleHeaderComponent, NumberPlateComponent, TagComponent],
 			providers: [
+				provideRouter([]),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				TestRecordsService,
 				TechnicalRecordService,

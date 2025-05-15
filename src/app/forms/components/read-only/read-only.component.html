@@ -1,8 +1,11 @@
 <div>
-    <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
-    <span *ngIf="date; else view" class="govuk-body"
-          id="{{ name }}">{{ value | date : 'dd/MM/yyyy'| defaultNullOrEmpty }}</span>
-    <ng-template #view>
-        <span class="govuk-body" id="{{ name }}">{{ value | defaultNullOrEmpty }}{{ suffix }}</span>
-    </ng-template>
+  @if (label()) {
+    <label class="govuk-label govuk-label--m" for="{{ name() }}">{{ label() }}</label>
+  }
+  @if (date()) {
+    <span class="govuk-body"
+    id="{{ name() }}">{{ value | date : 'dd/MM/yyyy'| defaultNullOrEmpty }}</span>
+  } @else {
+    <span class="govuk-body" id="{{ name() }}">{{ value | defaultNullOrEmpty }}{{ suffix() }}</span>
+  }
 </div>

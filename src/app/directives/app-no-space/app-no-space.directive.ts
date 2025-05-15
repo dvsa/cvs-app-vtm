@@ -1,8 +1,6 @@
 import { Directive, HostListener } from '@angular/core';
 
-@Directive({
-	selector: '[appNoSpace]',
-})
+@Directive({ selector: '[appNoSpace]' })
 export class NoSpaceDirective {
 	@HostListener('keydown', ['$event'])
 	public onKeyDown(e: KeyboardEvent): void {

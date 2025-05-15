@@ -627,6 +627,19 @@ export class CustomValidators {
 			return CustomValidators.requiredIfEquals('testResult', ['pass'])(control);
 		};
 	};
+
+	// Only the inputted year to be x years after the current year
+	static xYearsAfterCurrent = (xYears: number): ValidatorFn => {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const currentYear = new Date().getFullYear();
+			const inputYear = control.value;
+			const maxYear = currentYear + xYears;
+			if (control instanceof CustomFormControl && inputYear && (inputYear > maxYear || inputYear < 0)) {
+				return { xYearsAfterCurrent: { message: `${control.meta.label} must be equal to or before ${maxYear}` } };
+			}
+			return null;
+		};
+	};
 }
 
 export type EnumValidatorOptions = {

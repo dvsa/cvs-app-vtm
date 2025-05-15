@@ -6,7 +6,6 @@ import { TechnicalRecordServiceEffects } from './technical-record-service.effect
 import { STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		CommonModule,
 		StoreModule.forFeature(STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer),

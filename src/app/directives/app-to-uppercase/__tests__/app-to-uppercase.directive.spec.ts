@@ -6,6 +6,7 @@ import { ToUppercaseDirective } from '../app-to-uppercase.directive';
 
 @Component({
 	template: ' <form [formGroup]="form"><input appToUppercase formControlName="foo" /></form>',
+	imports: [FormsModule, ReactiveFormsModule, ToUppercaseDirective],
 })
 class TestComponent {
 	form = new FormGroup({
@@ -20,8 +21,7 @@ describe('ToUppercaseDirective', () => {
 
 	beforeEach(() => {
 		fixture = TestBed.configureTestingModule({
-			imports: [FormsModule, ReactiveFormsModule],
-			declarations: [ToUppercaseDirective, TestComponent],
+			imports: [TestComponent],
 		}).createComponent(TestComponent);
 		fixture.detectChanges();
 

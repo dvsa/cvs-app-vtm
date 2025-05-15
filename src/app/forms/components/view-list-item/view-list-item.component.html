@@ -1,46 +1,42 @@
-<ng-container *ngIf="viewType !== formNodeViewTypes.HIDDEN">
-  <ng-container *ngIf="link; else plainText">
-      <td *ngIf="displayAsRow" class="govuk-table__cell" [style.width.%]="30">
-        <a class="govuk-link--no-visited-state" target="_blank" [href]="link">
-          {{ label }}</a>:
+@if (viewType() !== formNodeViewTypes.HIDDEN) {
+  @if (link()) {
+    @if (displayAsRow) {
+      <td class="govuk-table__cell" [style.width.%]="30">
+        <a class="govuk-link--no-visited-state" target="_blank" [href]="link()">
+        {{ label() }}</a>:
       </td>
-  </ng-container>
-
-  <ng-template #plainText>
-    <td *ngIf="displayAsRow" class="govuk-table__cell" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label }}:</td>
-  </ng-template>
-
-  <ng-container [ngSwitch]="viewType">
-    <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
-      <td id="test-{{ name }}" class="govuk-table__cell">
+    }
+  } @else {
+    @if (displayAsRow) {
+      <td class="govuk-table__cell" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label() }}:</td>
+    }
+  }
+  @switch (viewType()) {
+    @case (formNodeViewTypes.DATE) {
+      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+    }
+    @case (formNodeViewTypes.DATETIME) {
+      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+    }
+    @case (formNodeViewTypes.TIME) {
+      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</td>
+    }
+    @case (formNodeViewTypes.VRM) {
+      <td id="test-{{ name() }}" class="govuk-table__cell">
         <app-number-plate [vrm]="value"></app-number-plate>
       </td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.CUSTOM">
-      <ng-container *ngIf="control && control.meta && control.meta.viewComponent">
-        <td colspan="2" id="test-{{ name }}" class="govuk-table__cell">
+    }
+    @case (formNodeViewTypes.CUSTOM) {
+      @if (control && control.meta && control.meta.viewComponent) {
+        <td colspan="2" id="test-{{ name() }}" class="govuk-table__cell">
           <ng-container [ngComponentOutlet]="control.meta.viewComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
         </td>
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngSwitchDefault>
-      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all">
+      }
+    }
+    @default {
+      <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
         {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
       </td>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

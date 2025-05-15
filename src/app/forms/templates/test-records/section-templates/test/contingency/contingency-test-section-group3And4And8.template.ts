@@ -1,4 +1,3 @@
-import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
@@ -42,6 +41,26 @@ export const ContingencyTestSectionGroup3And4And8: FormNode = {
 			validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }],
 		},
 		{
+			name: 'recalls',
+			type: FormNodeTypes.GROUP,
+			children: [
+				{
+					name: 'hasRecall',
+					value: false,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+				{
+					name: 'manufacturer',
+					value: null,
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
+				},
+			],
+		},
+		{
 			name: 'testTypes',
 			label: 'Test Types',
 			type: FormNodeTypes.ARRAY,
@@ -59,7 +78,6 @@ export const ContingencyTestSectionGroup3And4And8: FormNode = {
 								{ value: 'pass', label: 'Pass' },
 								{ value: 'fail', label: 'Fail' },
 							],
-							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
 						},
 						{
