@@ -222,7 +222,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 			}
 		});
 
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+			const changes = this.form.getRawValue();
+
 			// TODO: remove hacky solution
 			let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
 			if (
