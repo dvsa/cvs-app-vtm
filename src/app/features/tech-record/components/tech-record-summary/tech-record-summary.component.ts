@@ -216,25 +216,29 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 			}
 		});
 
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-			// TODO: remove hacky solution
-			let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
-			if (
-				techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
-				techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
-				techRecord?.techRecord_vehicleType === VehicleTypes.TRL
-			) {
-				const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
-				techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
-				techRecord.techRecord_axles = axles;
-				this.techRecordCalculated = techRecord;
-				this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
-				return;
-			}
-
-			this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
-			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+			this.handleFormChanges(this.form.getRawValue());
 		});
+	}
+
+	// TODO: remove hacky solution
+	handleFormChanges(changes: any) {
+		let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
+		if (
+			techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
+			techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
+			techRecord?.techRecord_vehicleType === VehicleTypes.TRL
+		) {
+			const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
+			techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
+			techRecord.techRecord_axles = axles;
+			this.techRecordCalculated = techRecord;
+			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+			return;
+		}
+
+		this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
+		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 	}
 
 	ngOnDestroy(): void {

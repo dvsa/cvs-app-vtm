@@ -236,7 +236,9 @@
             @if (featureToggleService.isFeatureEnabled('FsWeights')) {
               <app-weights-section
                 [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+                (formChange)="handleFormChanges($event)"
+              ></app-weights-section>
             } @else {
               <app-weights
                 [vehicleTechRecord]="techRecordCalculated"
