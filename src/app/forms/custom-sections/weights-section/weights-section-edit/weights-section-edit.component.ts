@@ -1,6 +1,6 @@
 import { addAxle, removeAxle } from '@/src/app/store/technical-records';
 import { KeyValuePipe } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
@@ -30,6 +30,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
+	formChange = output<Partial<TechRecordType<'hgv' | 'trl' | 'psv'>>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
@@ -40,6 +41,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 		this.prepopulateAxles();
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
+		this.handleFormChange();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -84,6 +86,10 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 			form.patchValue(axle as any, { emitEvent: false });
 			this.techRecordAxles.push(form, { emitEvent: false });
 		});
+	}
+
+	handleFormChange() {
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((axles) => this.formChange.emit(axles));
 	}
 
 	addHgvTrlAxleWeights() {
