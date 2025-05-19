@@ -23,6 +23,9 @@ export class TechnicalRecordChangesService {
 
 		// Do not count the following edge cases as changes
 
+		// null/undefined->'' or '' -> null/undefined
+		if ((a == null && b === '') || (a === '' && b == null)) return false;
+
 		// null/undefined -> undefined/null
 		if (a == null && b == null) return false;
 
@@ -371,6 +374,78 @@ export class TechnicalRecordChangesService {
 			'techRecord_lastUpdatedAt',
 			'techRecord_lastUpdatedByName',
 			'techRecord_lastUpdatedById'
+		);
+	}
+
+	haveAnyApplicantDetailItemsChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_applicantDetails_city',
+			'techRecord_adrDetails_applicantDetails_name',
+			'techRecord_adrDetails_applicantDetails_postcode',
+			'techRecord_adrDetails_applicantDetails_street',
+			'techRecord_adrDetails_applicantDetails_town'
+		);
+	}
+
+	hasInitialInspectionChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate'
+		);
+	}
+
+	haveAnyADRDetailItemsChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_vehicleDetails_type',
+			'techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys',
+			'techRecord_adrDetails_vehicleDetails_approvalDate',
+			'techRecord_adrDetails_permittedDangerousGoods',
+			'techRecord_adrDetails_bodyDeclaration_type',
+			'techRecord_adrDetails_compatibilityGroupJ',
+			'techRecord_adrDetails_additionalNotes_number',
+			'techRecord_adrDetails_adrTypeApprovalNo'
+		);
+	}
+
+	haveAnyTankDetailItemsChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+			'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+			'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+			'techRecord_adrDetails_tank_tankDetails_tankCode',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+			'techRecord_adrDetails_tank_tankDetails_specialProvisions'
+		);
+	}
+
+	haveAnyTankInspectionItemsChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+			'techRecord_adrDetails_tank_tankDetails_tc3Details'
+		);
+	}
+
+	haveAnyMiscellaneousItemsChanged() {
+		return this.hasChanged('techRecord_adrDetails_memosApply', 'techRecord_adrDetails_m145Statement');
+	}
+
+	haveAnyBatteryListItemsChanged() {
+		return this.hasChanged('techRecord_adrDetails_listStatementApplicable', 'techRecord_adrDetails_batteryListNumber');
+	}
+
+	haveAnyDeclarationsSeenItemsChanged() {
+		return this.hasChanged(
+			'techRecord_adrDetails_brakeDeclarationsSeen',
+			'techRecord_adrDetails_brakeDeclarationIssuer',
+			'techRecord_adrDetails_brakeEndurance',
+			'techRecord_adrDetails_weight',
+			'techRecord_adrDetails_declarationsSeen'
 		);
 	}
 }

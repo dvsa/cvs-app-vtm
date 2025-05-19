@@ -3,7 +3,7 @@
     <dl class="govuk-summary-list"
       >
       <!-- Approval type -->
-      @if (hasChanged('techRecord_approvalType')) {
+      @if (tcs.hasChanged('techRecord_approvalType')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Approval type</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_approvalType">
@@ -12,7 +12,7 @@
         </div>
       }
       <!-- Approval type number -->
-      @if (hasChanged('techRecord_approvalTypeNumber')) {
+      @if (tcs.hasChanged('techRecord_approvalTypeNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Approval type number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_approvalTypeNumber">
@@ -21,7 +21,7 @@
         </div>
       }
       <!-- National type number (NTA) -->
-      @if (hasChanged('techRecord_ntaNumber')) {
+      @if (tcs.hasChanged('techRecord_ntaNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">National type number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_ntaNumber">
@@ -32,7 +32,7 @@
       <!-- PSV Only -->
       @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
         <!-- COIF Serial number -->
-        @if (hasChanged('techRecord_coifSerialNumber')) {
+        @if (tcs.hasChanged('techRecord_coifSerialNumber')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">COIF Serial number</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_coifSerialNumber">
@@ -41,7 +41,7 @@
           </div>
         }
         <!-- COIF Certifier name -->
-        @if (hasChanged('techRecord_coifCertifierName')) {
+        @if (tcs.hasChanged('techRecord_coifCertifierName')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">COIF Certifier name</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_coifCertifierName">
@@ -50,7 +50,7 @@
           </div>
         }
         <!-- COIF Certifier date -->
-        @if (hasChanged('techRecord_coifDate')) {
+        @if (tcs.hasChanged('techRecord_coifDate')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">COIF Certifier date</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_coifDate">
@@ -60,7 +60,7 @@
         }
       }
       <!-- Variant number -->
-      @if (hasChanged('techRecord_variantNumber')) {
+      @if (tcs.hasChanged('techRecord_variantNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Variant number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_variantNumber">
@@ -69,7 +69,7 @@
         </div>
       }
       <!-- Variant version number -->
-      @if (hasChanged('techRecord_variantVersionNumber')) {
+      @if (tcs.hasChanged('techRecord_variantVersionNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Variant version number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_variantVersionNumber">

@@ -2,7 +2,7 @@
   @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
     <dl class="govuk-summary-list">
       <!-- Name or company -->
-      @if (hasChanged('techRecord_purchaserDetails_name')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_name')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Name or company</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_name">
@@ -11,7 +11,7 @@
         </div>
       }
       <!-- Address line 1 -->
-      @if (hasChanged('techRecord_purchaserDetails_address1')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_address1')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 1</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address1">
@@ -20,7 +20,7 @@
         </div>
       }
       <!-- Address line 2 -->
-      @if (hasChanged('techRecord_purchaserDetails_address2')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_address2')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 2</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address2">
@@ -29,7 +29,7 @@
         </div>
       }
       <!-- Town or city -->
-      @if (hasChanged('techRecord_purchaserDetails_postTown')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_postTown')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Town or city</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_postTown">
@@ -38,7 +38,7 @@
         </div>
       }
       <!-- County -->
-      @if (hasChanged('techRecord_purchaserDetails_address3')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_address3')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">County</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address3">
@@ -47,7 +47,7 @@
         </div>
       }
       <!-- Postcode -->
-      @if (hasChanged('techRecord_purchaserDetails_postCode')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_postCode')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Postcode</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_postCode">
@@ -56,7 +56,7 @@
         </div>
       }
       <!-- Telephone number -->
-      @if (hasChanged('techRecord_purchaserDetails_telephoneNumber')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_telephoneNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Telephone number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_telephoneNumber">
@@ -65,7 +65,7 @@
         </div>
       }
       <!-- Email address -->
-      @if (hasChanged('techRecord_purchaserDetails_emailAddress')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_emailAddress')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Email address</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_emailAddress">
@@ -74,7 +74,7 @@
         </div>
       }
       <!-- Fax number -->
-      @if (hasChanged('techRecord_purchaserDetails_faxNumber')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_faxNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Fax number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_faxNumber">
@@ -83,7 +83,7 @@
         </div>
       }
       <!-- Purchaser Notes -->
-      @if (hasChanged('techRecord_purchaserDetails_purchaserNotes')) {
+      @if (tcs.hasChanged('techRecord_purchaserDetails_purchaserNotes')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Purchaser notes</dt>
           <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_purchaserDetails_purchaserNotes">

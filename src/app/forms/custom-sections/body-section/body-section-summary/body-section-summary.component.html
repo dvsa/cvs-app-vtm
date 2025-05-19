@@ -2,7 +2,7 @@
   @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV) {
     <dl class="govuk-summary-list">
       <!-- DTp number -->
-      @if (hasChanged('techRecord_brakes_dtpNumber')) {
+      @if (tcs.hasChanged('techRecord_brakes_dtpNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">DTp number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dtpNumber">
@@ -13,7 +13,7 @@
       <!-- HGV/TRL Only Body Fields -->
       @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
         <!-- Body make -->
-        @if (hasChanged('techRecord_make')) {
+        @if (tcs.hasChanged('techRecord_make')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Body make</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_make">
@@ -22,7 +22,7 @@
           </div>
         }
         <!-- Body model -->
-        @if (hasChanged('techRecord_model')) {
+        @if (tcs.hasChanged('techRecord_model')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Body model</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_model">
@@ -36,7 +36,7 @@
       <!--  PSV Only Body Fields -->
       @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
         <!-- Chassis Make -->
-        @if (hasChanged('techRecord_chassisMake')) {
+        @if (tcs.hasChanged('techRecord_chassisMake')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Chassis make</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_chassisMake">
@@ -45,7 +45,7 @@
           </div>
         }
         <!-- Chassis Model -->
-        @if (hasChanged('techRecord_chassisModel')) {
+        @if (tcs.hasChanged('techRecord_chassisModel')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Chassis model</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_chassisModel">
@@ -54,7 +54,7 @@
           </div>
         }
         <!-- Body Make -->
-        @if (hasChanged('techRecord_bodyMake')) {
+        @if (tcs.hasChanged('techRecord_bodyMake')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Body make</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_bodyMake">
@@ -63,7 +63,7 @@
           </div>
         }
         <!-- Body Model -->
-        @if (hasChanged('techRecord_bodyModel')) {
+        @if (tcs.hasChanged('techRecord_bodyModel')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Body model</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_bodyModel">
@@ -74,7 +74,7 @@
         <!-- Body Type PSV -->
         <ng-container [ngTemplateOutlet]="bodyType"></ng-container>
         <!-- Model Literal -->
-        @if (hasChanged('techRecord_modelLiteral')) {
+        @if (tcs.hasChanged('techRecord_modelLiteral')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Model literal</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_modelLiteral">
@@ -84,7 +84,7 @@
         }
       }
       <!-- Function code -->
-      @if (hasChanged('techRecord_functionCode')) {
+      @if (tcs.hasChanged('techRecord_functionCode')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Function code</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_functionCode">
@@ -93,7 +93,7 @@
         </div>
       }
       <!-- Conversion reference number -->
-      @if (hasChanged('techRecord_conversionRefNo')) {
+      @if (tcs.hasChanged('techRecord_conversionRefNo')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Conversion reference number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_conversionRefNo">
@@ -102,7 +102,7 @@
         </div>
       }
       <ng-template #bodyType>
-        @if (hasChanged('techRecord_bodyType_description')) {
+        @if (tcs.hasChanged('techRecord_bodyType_description')) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Body type</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_bodyType_description">
