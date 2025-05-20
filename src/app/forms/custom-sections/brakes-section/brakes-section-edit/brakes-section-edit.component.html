@@ -152,7 +152,7 @@
           <ng-container formGroupName="{{ i }}">
             <govuk-form-group-checkbox
               formControlName="parkingBrakeMrk"
-              id="parkingBrakeMrk-{{ axle.value }}-checkbox"
+              id="parkingBrakeMrk-{{ i + 1 }}-checkbox"
               [value]="true"
               label="Axle {{ i + 1 }}"
             ></govuk-form-group-checkbox>
