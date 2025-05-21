@@ -1,6 +1,6 @@
 @if (amendedTechRecord(); as vm) {
   <dl class="govuk-summary-list">
-    @if (hasChanged('techRecord_vehicleType')) {
+    @if (tcs.hasChanged('techRecord_vehicleType')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle type</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_vehicleType">
@@ -9,7 +9,7 @@
       </div>
     }
     @if (technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) {
-      @if (hasChanged('techRecord_regnDate')) {
+      @if (tcs.hasChanged('techRecord_regnDate')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Date of first registration</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_regnDate">
@@ -19,7 +19,7 @@
       }
     }
     @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
-      @if (hasChanged('techRecord_manufactureMonth')) {
+      @if (tcs.hasChanged('techRecord_manufactureMonth')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Month of manufacture</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_manufactureMonth">
@@ -28,7 +28,7 @@
         </div>
       }
     }
-    @if (hasChanged('techRecord_manufactureYear')) {
+    @if (tcs.hasChanged('techRecord_manufactureYear')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Year of manufacture</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_manufactureYear">
@@ -37,7 +37,7 @@
       </div>
     }
     @if (vm.techRecord_vehicleType === VehicleTypes.TRL) {
-      @if (hasChanged('techRecord_firstUseDate')) {
+      @if (tcs.hasChanged('techRecord_firstUseDate')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Date of first use</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_firstUseDate">
@@ -46,7 +46,7 @@
         </div>
       }
     }
-    @if (hasChanged('techRecord_noOfAxles')) {
+    @if (tcs.hasChanged('techRecord_noOfAxles')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Number of axles</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_noOfAxles">
@@ -59,7 +59,7 @@
       vm.techRecord_vehicleType === VehicleTypes.LGV ||
       technicalRecordService.getVehicleTypeWithSmallTrl(vm) === VehicleTypes.SMALL_TRL)
       ) {
-      @if (hasChanged('techRecord_vehicleSubclass')) {
+      @if (tcs.hasChanged('techRecord_vehicleSubclass')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle subclass</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_vehicleSubclass">
@@ -71,7 +71,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_speedLimiterMrk')) {
+      @if (tcs.hasChanged('techRecord_speedLimiterMrk')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Speed limiter exempt</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_speedLimiterMrk">
@@ -83,7 +83,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_tachoExemptMrk')) {
+      @if (tcs.hasChanged('techRecord_tachoExemptMrk')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Tacho exempt</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_tachoExemptMrk">
@@ -95,7 +95,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_euroStandard')) {
+      @if (tcs.hasChanged('techRecord_euroStandard')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Euro standard</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_euroStandard">
@@ -107,7 +107,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       (vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL)) {
-      @if (hasChanged('techRecord_roadFriendly')) {
+      @if (tcs.hasChanged('techRecord_roadFriendly')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Road friendly suspension</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_roadFriendly">
@@ -119,7 +119,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
       ) {
-      @if (hasChanged('techRecord_suspensionType')) {
+      @if (tcs.hasChanged('techRecord_suspensionType')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Suspension type (optional)</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_suspensionType">
@@ -131,7 +131,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_fuelPropulsionSystem')) {
+      @if (tcs.hasChanged('techRecord_fuelPropulsionSystem')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Fuel / propulsion system</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_fuelPropulsionSystem">
@@ -142,7 +142,7 @@
     }
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV) {
-      @if (hasChanged('techRecord_drawbarCouplingFitted')) {
+      @if (tcs.hasChanged('techRecord_drawbarCouplingFitted')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Drawbar coupling fitted</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_drawbarCouplingFitted">
@@ -152,7 +152,7 @@
       }
     }
     @if ($any(vm).techRecord_vehicleClass_description) {
-      @if (hasChanged('techRecord_vehicleClass_description')) {
+      @if (tcs.hasChanged('techRecord_vehicleClass_description')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle class</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_description">
@@ -164,7 +164,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
       ) {
-      @if (hasChanged('techRecord_couplingType')) {
+      @if (tcs.hasChanged('techRecord_couplingType')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Coupling type (optional)</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_couplingType">
@@ -176,7 +176,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.TRL && technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
       ) {
-      @if (hasChanged('techRecord_maxLoadOnCoupling')) {
+      @if (tcs.hasChanged('techRecord_maxLoadOnCoupling')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Max load on coupling (optional)</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_maxLoadOnCoupling">
@@ -185,7 +185,7 @@
         </div>
       }
     }
-    @if (hasChanged('techRecord_vehicleConfiguration')) {
+    @if (tcs.hasChanged('techRecord_vehicleConfiguration')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle configuration</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_vehicleConfiguration">
@@ -195,7 +195,7 @@
     }
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV) {
-      @if (hasChanged('techRecord_offRoad')) {
+      @if (tcs.hasChanged('techRecord_offRoad')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Off road vehicle</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_offRoad">
@@ -204,7 +204,7 @@
         </div>
       }
     }
-    @if (hasChanged('techRecord_euVehicleCategory')) {
+    @if (tcs.hasChanged('techRecord_euVehicleCategory')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">EU vehicle category</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_euVehicleCategory">
@@ -214,7 +214,7 @@
     }
     @if (
       vm.techRecord_vehicleType === VehicleTypes.MOTORCYCLE) {
-      @if (hasChanged('techRecord_numberOfWheelsDriven')) {
+      @if (tcs.hasChanged('techRecord_numberOfWheelsDriven')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Number of wheels</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_numberOfWheelsDriven">
@@ -226,7 +226,7 @@
     @if (
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_emissionsLimit')) {
+      @if (tcs.hasChanged('techRecord_emissionsLimit')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Emission limit (m-1) (plate value)</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_emissionsLimit">
@@ -239,7 +239,7 @@
       vm.techRecord_vehicleType === VehicleTypes.TRL &&
       technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL
       ) {
-      @if (hasChanged('techRecord_frameDescription')) {
+      @if (tcs.hasChanged('techRecord_frameDescription')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Frame description (optional)</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_frameDescription">
@@ -252,7 +252,7 @@
       vm.techRecord_vehicleType === VehicleTypes.HGV ||
       (vm.techRecord_vehicleType === VehicleTypes.TRL &&
       technicalRecordService.getVehicleTypeWithSmallTrl(vm) !== VehicleTypes.SMALL_TRL) ) {
-      @if (hasChanged('techRecord_departmentalVehicleMarker')) {
+      @if (tcs.hasChanged('techRecord_departmentalVehicleMarker')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_departmentalVehicleMarker">
@@ -260,7 +260,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_alterationMarker')) {
+      @if (tcs.hasChanged('techRecord_alterationMarker')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Alteration marker</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_alterationMarker">
@@ -279,7 +279,7 @@
           </h3>
         </div>
       }
-      @if (hasChanged('techRecord_seatsUpperDeck')) {
+      @if (tcs.hasChanged('techRecord_seatsUpperDeck')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Upper deck</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_seatsUpperDeck">
@@ -287,7 +287,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_seatsLowerDeck')) {
+      @if (tcs.hasChanged('techRecord_seatsLowerDeck')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Lower deck</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_seatsLowerDeck">
@@ -295,7 +295,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_standingCapacity')) {
+      @if (tcs.hasChanged('techRecord_standingCapacity')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Standing capacity</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_standingCapacity">
@@ -303,7 +303,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_vehicleClass_psv')) {
+      @if (tcs.hasChanged('techRecord_vehicleClass_psv')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle class</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_vehicleClass_psv">
@@ -311,7 +311,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_vehicleSize')) {
+      @if (tcs.hasChanged('techRecord_vehicleSize')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle size</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_vehicleSize">
@@ -319,7 +319,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_numberOfSeatbelts')) {
+      @if (tcs.hasChanged('techRecord_numberOfSeatbelts')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Number of seat belts</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_numberOfSeatbelts">
@@ -327,7 +327,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_seatbeltInstallationApprovalDate')) {
+      @if (tcs.hasChanged('techRecord_seatbeltInstallationApprovalDate')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Seatbelt installation approval date / type approved</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_seatbeltInstallationApprovalDate">
@@ -335,7 +335,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_departmentalVehicleMarker')) {
+      @if (tcs.hasChanged('techRecord_departmentalVehicleMarker')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_departmentalVehicleMarker-psv">
@@ -343,7 +343,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_alterationMarker')) {
+      @if (tcs.hasChanged('techRecord_alterationMarker')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Alteration marker</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_alterationMarker-psv">

@@ -133,7 +133,7 @@ export class TestResultsEffects {
 										const field = error.match(/"([^"]+)"/);
 										validationsErrors.push({
 											error,
-											anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '',
+											anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
 										});
 									})
 								: validationsErrors.push({ error: e.error });
@@ -190,7 +190,7 @@ export class TestResultsEffects {
 									const field = error.match(/"([^"]+)"/);
 									validationsErrors.push({
 										error,
-										anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '',
+										anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
 									});
 								});
 							} else if (e.status === 502) {

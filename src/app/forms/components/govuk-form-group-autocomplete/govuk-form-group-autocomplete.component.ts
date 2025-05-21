@@ -62,6 +62,8 @@ export class GovukFormGroupAutocompleteComponent
 
 	readonly allowNull = input(true);
 
+	readonly allowEmpty = input<boolean>(false);
+
 	readonly width = input<FormNodeWidth>();
 
 	readonly noBottomMargin = input(false);
@@ -179,7 +181,14 @@ export class GovukFormGroupAutocompleteComponent
 
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
-		this.onChange(optionValue ?? '[INVALID_OPTION]');
+
+		if (this.allowEmpty() && !optionValue) {
+			// default empty values to null
+			this.onChange(null);
+		} else {
+			this.onChange(optionValue ?? '[INVALID_OPTION]');
+		}
+
 		this.onTouched();
 	}
 

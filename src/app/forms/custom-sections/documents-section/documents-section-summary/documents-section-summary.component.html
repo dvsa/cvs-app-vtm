@@ -1,11 +1,12 @@
 @if (amendedTechRecord(); as tr) {
   <!-- Documents -->
-  @if (tr.techRecord_vehicleType === VehicleTypes.TRL
-    || tr.techRecord_vehicleType === VehicleTypes.PSV
-  || tr.techRecord_vehicleType === VehicleTypes.HGV
-    ) {
+  @if (
+    tr.techRecord_vehicleType === VehicleTypes.TRL || 
+    tr.techRecord_vehicleType === VehicleTypes.PSV || 
+    tr.techRecord_vehicleType === VehicleTypes.HGV
+  ) {
     <dl class="govuk-summary-list">
-      @if (hasChanged('techRecord_microfilm_microfilmDocumentType')) {
+      @if (tcs.hasChanged('techRecord_microfilm_microfilmDocumentType')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Microfilm document type
@@ -15,7 +16,7 @@
           </dd>
         </div>
       }
-      @if (hasChanged('techRecord_microfilm_microfilmRollNumber')) {
+      @if (tcs.hasChanged('techRecord_microfilm_microfilmRollNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Microfilm roll number
@@ -26,7 +27,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_microfilm_microfilmSerialNumber')) {
+      @if (tcs.hasChanged('techRecord_microfilm_microfilmSerialNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Microfilm serial number

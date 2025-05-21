@@ -2,7 +2,7 @@
   @if (vm.techRecord_vehicleType !== VehicleTypes.PSV) {
     <dl class="govuk-summary-list">
       <!-- Name or company -->
-      @if (hasChanged('techRecord_applicantDetails_name')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_name')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Name or company</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_name">
@@ -11,7 +11,7 @@
         </div>
       }
       <!-- Address line 1 -->
-      @if (hasChanged('techRecord_applicantDetails_address1')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_address1')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 1</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address1">
@@ -20,7 +20,7 @@
         </div>
       }
       <!-- Address line 2 -->
-      @if (hasChanged('techRecord_applicantDetails_address2')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_address2')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 2</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address2">
@@ -29,7 +29,7 @@
         </div>
       }
       <!-- Town or city -->
-      @if (hasChanged('techRecord_applicantDetails_postTown')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_postTown')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Town or city</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_postTown">
@@ -38,7 +38,7 @@
         </div>
       }
       <!-- County -->
-      @if (hasChanged('techRecord_applicantDetails_address3')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_address3')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">County</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_address3">
@@ -47,7 +47,7 @@
         </div>
       }
       <!-- Postcode -->
-      @if (hasChanged('techRecord_applicantDetails_postCode')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_postCode')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Postcode</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_postCode">
@@ -56,7 +56,7 @@
         </div>
       }
       <!-- Telephone number -->
-      @if (hasChanged('techRecord_applicantDetails_telephoneNumber')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_telephoneNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Telephone number</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_telephoneNumber">
@@ -65,7 +65,7 @@
         </div>
       }
       <!-- Email address -->
-      @if (hasChanged('techRecord_applicantDetails_emailAddress')) {
+      @if (tcs.hasChanged('techRecord_applicantDetails_emailAddress')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Email address</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_applicantDetails_emailAddress">

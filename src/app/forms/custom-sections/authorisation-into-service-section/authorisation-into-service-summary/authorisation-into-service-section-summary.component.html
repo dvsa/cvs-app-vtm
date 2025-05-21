@@ -1,6 +1,6 @@
 @if (amendedTechRecord(); as tr) {
   <dl class="govuk-summary-list">
-    @if (hasChanged('techRecord_authIntoService_cocIssueDate')) {
+    @if (tcs.hasChanged('techRecord_authIntoService_cocIssueDate')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">COC issue date</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_cocIssueDate">
@@ -9,7 +9,7 @@
       </div>
     }
 
-    @if (hasChanged('techRecord_authIntoService_dateReceived')) {
+    @if (tcs.hasChanged('techRecord_authIntoService_dateReceived')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date received</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateReceived">
@@ -18,7 +18,7 @@
       </div>
     }
 
-    @if (hasChanged('techRecord_authIntoService_datePending')) {
+    @if (tcs.hasChanged('techRecord_authIntoService_datePending')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date pending</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_datePending">
@@ -27,7 +27,7 @@
       </div>
     }
 
-    @if (hasChanged('techRecord_authIntoService_dateAuthorised')) {
+    @if (tcs.hasChanged('techRecord_authIntoService_dateAuthorised')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date authorised</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateAuthorised">
@@ -36,7 +36,7 @@
       </div>
     }
 
-    @if (hasChanged('techRecord_authIntoService_dateRejected')) {
+    @if (tcs.hasChanged('techRecord_authIntoService_dateRejected')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date rejected</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_authIntoService_dateRejected">

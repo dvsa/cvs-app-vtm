@@ -1,7 +1,7 @@
 @if (amendedTechRecord(); as vm) {
   <dl class="govuk-summary-list">
     @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
-      @if (hasChanged('techRecord_dda_certificateIssued')) {
+      @if (tcs.hasChanged('techRecord_dda_certificateIssued')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">DDA certificate issued</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_certificateIssued">
@@ -10,7 +10,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairCapacity')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairCapacity')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair capacity</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairCapacity">
@@ -19,7 +19,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairFittings')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairFittings')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair fittings</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairFittings">
@@ -28,7 +28,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairLiftPresent')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairLiftPresent')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair lift present</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairLiftPresent">
@@ -37,7 +37,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairLiftInformation')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairLiftInformation')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair lift information</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairLiftInformation">
@@ -46,7 +46,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairRampPresent')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairRampPresent')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair ramp present</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairRampPresent">
@@ -55,7 +55,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_wheelchairRampInformation')) {
+      @if (tcs.hasChanged('techRecord_dda_wheelchairRampInformation')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Wheelchair ramp information</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_wheelchairRampInformation">
@@ -64,7 +64,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_minEmergencyExits')) {
+      @if (tcs.hasChanged('techRecord_dda_minEmergencyExits')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Minimum emergency exits needed</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_minEmergencyExits">
@@ -73,7 +73,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_outswing')) {
+      @if (tcs.hasChanged('techRecord_dda_outswing')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Outswing</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_outswing">
@@ -82,7 +82,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_ddaSchedules')) {
+      @if (tcs.hasChanged('techRecord_dda_ddaSchedules')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">DDA schedules</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_ddaSchedules">
@@ -91,7 +91,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_seatbeltsFitted')) {
+      @if (tcs.hasChanged('techRecord_dda_seatbeltsFitted')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Seatbelts fitted</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_seatbeltsFitted">
@@ -100,7 +100,7 @@
         </div>
       }
 
-      @if (hasChanged('techRecord_dda_ddaNotes')) {
+      @if (tcs.hasChanged('techRecord_dda_ddaNotes')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">DDA notes</dt>
           <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_dda_ddaNotes">

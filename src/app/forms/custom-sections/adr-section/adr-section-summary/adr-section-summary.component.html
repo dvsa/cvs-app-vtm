@@ -11,10 +11,10 @@
       </dl>
       @if (adrService.canDisplayDangerousGoodsSection(amended)) {
         <!-- Applicant details section -->
-        @if (haveAnyApplicantDetailItemsChanged()) {
+        @if (tcs.haveAnyApplicantDetailItemsChanged()) {
           <h2 class="govuk-heading-m">Applicant Details</h2>
           <dl class="govuk-summary-list">
-            @if (hasChanged('techRecord_adrDetails_applicantDetails_name')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_name')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Name</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_name">
@@ -22,7 +22,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_applicantDetails_street')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_street')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Street</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_street">
@@ -30,7 +30,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_applicantDetails_town')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_town')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Town</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_town">
@@ -38,7 +38,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_applicantDetails_city')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_city')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">City</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_city">
@@ -46,7 +46,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_applicantDetails_postcode')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_postcode')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Postcode</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_postcode">
@@ -57,10 +57,10 @@
           </dl>
         }
         <!-- ADR details section -->
-        @if (haveAnyADRDetailItemsChanged()) {
+        @if (tcs.haveAnyADRDetailItemsChanged()) {
           <h2 class="govuk-heading-m">ADR Details</h2>
           <dl class="govuk-summary-list">
-            @if (hasChanged('techRecord_adrDetails_vehicleDetails_type')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_type')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">ADR body type</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_type">
@@ -68,7 +68,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
@@ -76,7 +76,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_vehicleDetails_approvalDate')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_approvalDate')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Date processed</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_approvalDate">
@@ -84,7 +84,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_permittedDangerousGoods')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_permittedDangerousGoods')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_permittedDangerousGoods">
@@ -92,7 +92,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_bodyDeclaration_type')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_bodyDeclaration_type')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Body declaration</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
@@ -100,7 +100,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_compatibilityGroupJ')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_compatibilityGroupJ')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Compatibility group J</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
@@ -108,7 +108,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_additionalNotes_number')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_additionalNotes_number')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Guidance notes</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalNotes_number">
@@ -116,7 +116,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_adrTypeApprovalNo')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_adrTypeApprovalNo')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">ADR type approval number</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrTypeApprovalNo">
@@ -129,10 +129,10 @@
         <!-- Tank and Battery Sections -->
         @if (adrService.canDisplayTankOrBatterySection(amended)) {
           <!-- Tank Details -->
-          @if (haveAnyTankDetailItemsChanged()) {
+          @if (tcs.haveAnyTankDetailItemsChanged()) {
             <h2 class="govuk-heading-m">Tank Details</h2>
             <dl class="govuk-summary-list">
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Tank Make</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer">
@@ -140,7 +140,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Tank Year of manufacture</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture">
@@ -148,7 +148,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo">
@@ -156,7 +156,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Tank type approval number</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo">
@@ -164,7 +164,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Code</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankCode">
@@ -172,7 +172,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Substances permitted</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
@@ -180,7 +180,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Select</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select">
@@ -188,7 +188,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Reference number</dt>
                   <dd class="govuk-summary-list__value" id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
@@ -196,7 +196,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Reference number</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
@@ -204,7 +204,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
                 @for (unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; track unNo; let i = $index) {
                   @if (hasUNNumberChanged(i)) {
                     <div class="govuk-summary-list__row">
@@ -216,7 +216,7 @@
                   }
                 }
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Additional Details</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
@@ -224,7 +224,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Special provisions</dt>
                   <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
@@ -235,13 +235,13 @@
             </dl>
           }
           <!-- Tank Inspections -->
-          @if (haveAnyTankInspectionItemsChanged()) {
+          @if (tcs.haveAnyTankInspectionItemsChanged()) {
             <h2 class="govuk-heading-m">Tank Inspections</h2>
             <!-- Initial inspection -->
-            @if (hasInitialInspectionChanged()) {
+            @if (tcs.hasInitialInspectionChanged()) {
               <dl class="govuk-summary-list">
                 <h2 class="govuk-heading-s">Initial</h2>
-                @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
+                @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Certificate number</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
@@ -249,7 +249,7 @@
                     </dd>
                   </div>
                 }
-                @if (hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
+                @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Expiry date</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
@@ -287,9 +287,9 @@
             }
           }
           <!-- Miscellaneous -->
-          @if (haveAnyMiscellaneousItemsChanged()) {
+          @if (tcs.haveAnyMiscellaneousItemsChanged()) {
             <dl class="govuk-summary-list">
-              @if (hasChanged('techRecord_adrDetails_memosApply')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_memosApply')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Memo 07/09 (3 month extension) can be applied</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_memosApply">
@@ -297,7 +297,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_m145Statement')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_m145Statement')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">M145</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_m145Statement">
@@ -309,10 +309,10 @@
           }
         }
         <!-- Battery list applicable -->
-        @if (adrService.canDisplayBatterySection(amended) && haveAnyBatteryListItemsChanged()) {
+        @if (adrService.canDisplayBatterySection(amended) && tcs.haveAnyBatteryListItemsChanged()) {
           <h2 class="govuk-heading-m">Battery List Applicable</h2>
           <dl class="govuk-summary-list">
-            @if (hasChanged('techRecord_adrDetails_listStatementApplicable')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_listStatementApplicable')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Battery List Applicable</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_listStatementApplicable">
@@ -320,7 +320,7 @@
                 </dd>
               </div>
             }
-            @if (hasChanged('techRecord_adrDetails_batteryListNumber')) {
+            @if (tcs.hasChanged('techRecord_adrDetails_batteryListNumber')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Reference number</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
@@ -331,11 +331,11 @@
           </dl>
         }
         <!-- Declarations -->
-        @if (haveAnyDeclarationsSeenItemsChanged()) {
+        @if (tcs.haveAnyDeclarationsSeenItemsChanged()) {
           <dl class="govuk-summary-list">
             <h2 class="govuk-heading-m">Declarations seen</h2>
             <dl class="govuk-summary-list">
-              @if (hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationsSeen">
@@ -343,7 +343,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Issuer</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
@@ -351,7 +351,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_brakeEndurance')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_brakeEndurance')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Brake endurance</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
@@ -359,7 +359,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_weight')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_weight')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Weight</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
@@ -367,7 +367,7 @@
                   </dd>
                 </div>
               }
-              @if (hasChanged('techRecord_adrDetails_declarationsSeen')) {
+              @if (tcs.hasChanged('techRecord_adrDetails_declarationsSeen')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
                   <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
@@ -379,7 +379,7 @@
           </dl>
         }
         <!-- New Certificate required -->
-        @if (hasChanged('techRecord_adrDetails_newCertificateRequested')) {
+        @if (tcs.hasChanged('techRecord_adrDetails_newCertificateRequested')) {
           <h2 class="govuk-heading-m">New Certificate required</h2>
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
@@ -440,7 +440,7 @@
           </dl>
         }
         <!-- ADR Certificate Notes -->
-        @if (hasChanged('techRecord_adrDetails_adrCertificateNotes')) {
+        @if (tcs.hasChanged('techRecord_adrDetails_adrCertificateNotes')) {
           <h2 class="govuk-heading-m">ADR Certificate Notes</h2>
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
