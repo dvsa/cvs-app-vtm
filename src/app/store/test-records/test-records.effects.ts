@@ -374,12 +374,11 @@ export class TestResultsEffects {
 					const testResult = action.value;
 					const testType = testResult.testTypes[0];
 					const reasonsForAbandonment = testType.reasonForAbandoning;
+					this.analyticsService.pushToDataLayer({ abandoned_reason: undefined });
 					if (reasonsForAbandonment && reasonsForAbandonment.length > 0) {
 						const reasons = reasonsForAbandonment.split('. ');
 						if (reasons.length > 0) {
-							reasons.forEach((reason, index) => {
-								this.analyticsService.pushToDataLayer({ [`abandoned_reason_${index + 1}`]: reason });
-							});
+							this.analyticsService.pushToDataLayer({ abandoned_reason: reasons });
 						}
 					}
 				})
