@@ -96,7 +96,7 @@ export class DDASectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(250, 'DDA schedules must be less than or equal to 250 characters'),
 			]),
 			techRecord_dda_seatbeltsFitted: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Seatbelts fitted must be less than or equal to 999'),
+				this.commonValidators.max(999, 'Seatbelts fitted must be less than or equal to 999'),
 			]),
 			techRecord_dda_ddaNotes: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1024, 'DDA notes must be less than or equal to 1024 characters'),
