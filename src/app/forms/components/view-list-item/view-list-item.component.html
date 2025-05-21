@@ -34,9 +34,20 @@
       }
     }
     @default {
-      <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
-        {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
-      </td>
+      @if (name() === 'reasonForAbandoning') {
+        @let reasons = value?.split('.') || [];
+        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
+          @for (reason of reasons; track reason;let index = $index;) {
+            <tr [id]="customId() ? 'test-' + customId() : 'test-' + name() + index" class="break-all whitespace-pre-wrap">
+              {{ reason | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}.
+            </tr>
+          }
+        </td>
+      } @else {
+        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
+          {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
+        </td>
+      }
     }
   }
 }
