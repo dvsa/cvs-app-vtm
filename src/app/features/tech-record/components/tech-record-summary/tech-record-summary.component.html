@@ -214,17 +214,7 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New Tyres section -->
-            @if (featureToggleService.isFeatureEnabled('FsTyres')) {
-              <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-            } @else {
-              <app-tyres
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-tyres>
-            }
-            <!-- Old Tyres section -->
+            <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           }
         }
         @case ('weightsSection') {

@@ -62,7 +62,6 @@ import { TrlBrakesComponent } from '../../../../forms/custom-sections/trl-brakes
 import { TRLPurchasersSectionComponent } from '../../../../forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '../../../../forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '../../../../forms/custom-sections/tyres-section/tyres-section.component';
-import { TyresComponent } from '../../../../forms/custom-sections/tyres/tyres.component';
 import { VehicleSectionComponent } from '../../../../forms/custom-sections/vehicle-section/vehicle-section.component';
 import { WeightsSectionComponent } from '../../../../forms/custom-sections/weights-section/weights-section.component';
 import { WeightsComponent } from '../../../../forms/custom-sections/weights/weights.component';
@@ -93,7 +92,6 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		PsvBrakesComponent,
 		TrlBrakesComponent,
 		TyresSectionComponent,
-		TyresComponent,
 		WeightsSectionComponent,
 		WeightsComponent,
 		ModifiedWeightsComponent,
