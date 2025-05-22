@@ -22,7 +22,7 @@
 }
 
 .whitespace-pre-wrap {
-  white-space: pre-line;
+  white-space: pre;
   text-wrap: wrap;
 }
 
@@ -210,4 +210,9 @@
       @extend .govuk-label--m;
     }
   }
+}
+
+.padding-vertical-half {
+  display: block;
+  padding: .5rem 0 !important;
 }

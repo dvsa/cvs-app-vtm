@@ -36,15 +36,15 @@
     @default {
       @if (name() === 'reasonForAbandoning') {
         @let reasons = value?.split('.') || [];
-        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
+        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-line">
           @for (reason of reasons; track reason;let index = $index;) {
-            <tr [id]="customId() ? 'test-' + customId() : 'test-' + name() + index" class="break-all whitespace-pre-wrap">
+            <tr [id]="customId() ? 'test-' + customId() + index : 'test-' + name() + index" class="break-all whitespace-pre-line padding-vertical-half">
               {{ reason | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}.
             </tr>
           }
         </td>
       } @else {
-        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-wrap">
+        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-line">
           {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
         </td>
       }
