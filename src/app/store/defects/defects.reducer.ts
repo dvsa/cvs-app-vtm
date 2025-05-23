@@ -6,6 +6,7 @@ import {
 	fetchDefectFailed,
 	fetchDefectSuccess,
 	fetchDefects,
+	fetchDefectsComplete,
 	fetchDefectsFailed,
 	fetchDefectsSuccess,
 } from './defects.actions';
@@ -34,5 +35,6 @@ export const defectsReducer = createReducer(
 
 	on(fetchDefect, (state) => ({ ...state, loading: true })),
 	on(fetchDefectSuccess, (state, action) => ({ ...defectsAdapter.upsertOne(action.payload, state), loading: false })),
-	on(fetchDefectFailed, (state) => ({ ...defectsAdapter.setAll([], state), loading: false }))
+	on(fetchDefectFailed, (state) => ({ ...defectsAdapter.setAll([], state), loading: false })),
+	on(fetchDefectsComplete, (state) => ({ ...state, loading: false }))
 );

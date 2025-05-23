@@ -17,6 +17,7 @@ import {
 	fetchReferenceDataByKeySearchFailed,
 	fetchReferenceDataByKeySearchSuccess,
 	fetchReferenceDataByKeySuccess,
+	fetchReferenceDataComplete,
 	fetchReferenceDataFailed,
 	fetchReferenceDataSuccess,
 	fetchTyreReferenceDataByKeySearch,
@@ -117,7 +118,7 @@ export const referenceDataReducer = createReducer(
 			},
 		};
 	}),
-	on(fetchReferenceDataFailed, (state, action) => ({
+	on(fetchReferenceDataFailed, fetchReferenceDataComplete, (state, action) => ({
 		...state,
 		[action.resourceType]: { ...state[action.resourceType], loading: false },
 	})),

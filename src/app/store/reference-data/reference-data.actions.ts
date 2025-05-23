@@ -20,6 +20,10 @@ export const fetchReferenceDataFailed = createAction(
 	'[API/reference-data] Fetch all of ResourceType Failed',
 	props<featureError>()
 );
+export const fetchReferenceDataComplete = createAction(
+	'[API/reference-data] Fetch all of ResourceType Complete',
+	props<{ resourceType: ReferenceDataResourceType }>()
+);
 
 export const fetchReferenceDataAudit = createAction(
 	'[API/reference-data] Fetch all of Audit ResourceType',

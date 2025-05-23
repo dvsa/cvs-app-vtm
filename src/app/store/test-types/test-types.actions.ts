@@ -10,3 +10,4 @@ export const fetchTestTypesSuccess = createAction(
 	props<{ payload: TestTypesTaxonomy }>()
 );
 export const fetchTestTypesFailed = createAction(`${prefix}Fetch All Failed`, props<GlobalError>());
+export const fetchTestTypesComplete = createAction(`${prefix}Fetch All Complete`);
