@@ -1,3 +1,4 @@
+import { loadingResolver } from '@/src/app/resolvers/loading/loading.resolver';
 import { recallsResolver } from '@/src/app/resolvers/recalls/recalls.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -39,6 +40,7 @@ const routes: Routes = [
 					testStations: testStationsResolver,
 					testCode: testCodeResolver,
 					recalls: recallsResolver,
+					loading: loadingResolver,
 				},
 				data: {
 					title: 'Test details',
@@ -102,7 +104,7 @@ const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						resolve: { RequiredStandards: requiredStandardsResolver },
+						resolve: { RequiredStandards: requiredStandardsResolver, loading: loadingResolver },
 						data: { title: 'Select Required Standard', roles: Roles.TestResultCreateContingency },
 						children: [
 							{

@@ -127,3 +127,8 @@ export const getRecallsSuccess = createAction(
 	props<{ recalls: RecallsSchema }>()
 );
 export const getRecallsFailure = createAction('[test-results] get recalls failed', props<GlobalError>());
+
+export const setTestResultLoading = createAction(
+	'[test-results] set test result loading',
+	props<{ loading: boolean }>()
+);
