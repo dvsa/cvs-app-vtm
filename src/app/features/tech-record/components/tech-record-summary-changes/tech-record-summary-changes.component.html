@@ -93,13 +93,7 @@
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
     @switch (sectionName) {
       @case ('notesSection') {
-        <!-- New NOTES Summary section -->
-        @if (featureToggleService.isFeatureEnabled('FsNotes')) {
-          <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-        <!-- OLD NOTES-->
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
+        <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('audit') {
         <!-- New Audit section -->
@@ -113,13 +107,7 @@
         <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
       }
       @case ('bodySection') {
-        <!-- New Body section -->
-        @if (featureToggleService.isFeatureEnabled('FsBody')) {
-          <app-body-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-        <!-- Old Body section -->
-          <app-body [techRecord]="techRecordEdited" [disableLoadOptions]="true" />
-        }
+        <app-body-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('dimensionsSection') {
         @if (
