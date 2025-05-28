@@ -185,7 +185,9 @@ export class HttpService {
 	}
 
 	getRecalls(vin: string) {
-		return this.http.get<RecallsSchema>(`${environment.VTM_API_URI}/v3/technical-records/recalls/${vin}`);
+		return this.http
+			.get<RecallsSchema>(`${environment.VTM_API_URI}/v3/technical-records/recalls/${vin}`)
+			.pipe(timeout(10000));
 	}
 
 	getTechRecords(searchIdentifier: string, metadata?: boolean, status?: string, searchCriteria?: string) {
