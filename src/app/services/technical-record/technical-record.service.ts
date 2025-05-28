@@ -5,12 +5,7 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import {
-	TechRecordGETHGV,
-	TechRecordGETPSV,
-	TechRecordGETTRL,
-	TechRecordType as TechRecordTypeVehicle,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
@@ -321,72 +316,6 @@ export class TechnicalRecordService {
 				return (err.status === 404 && of(null)) || throwError(() => err);
 			})
 		);
-	}
-
-	hasPsvGrossAxleChanged(changes: Partial<TechRecordGETPSV>): boolean {
-		return [
-			changes.techRecord_grossKerbWeight,
-			changes.techRecord_grossDesignWeight,
-			changes.techRecord_grossLadenWeight,
-			changes.techRecord_grossGbWeight,
-		].some(Boolean);
-	}
-
-	hasHgvGrossAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
-		return [
-			changes.techRecord_grossEecWeight,
-			changes.techRecord_grossDesignWeight,
-			changes.techRecord_grossGbWeight,
-		].some(Boolean);
-	}
-
-	hasTrlGrossAxleChanged(changes: Partial<TechRecordGETTRL>): boolean {
-		return [
-			changes.techRecord_grossEecWeight,
-			changes.techRecord_grossDesignWeight,
-			changes.techRecord_grossGbWeight,
-		].some(Boolean);
-	}
-
-	hasHgvTrainAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
-		return [
-			changes.techRecord_trainDesignWeight,
-			changes.techRecord_trainGbWeight,
-			changes.techRecord_trainEecWeight,
-		].some(Boolean);
-	}
-
-	hasPsvTrainAxleChanged(changes: Partial<TechRecordGETPSV>): boolean {
-		return [changes.techRecord_trainDesignWeight, changes.techRecord_maxTrainGbWeight].some(Boolean);
-	}
-
-	hasMaxTrainAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
-		return [
-			changes.techRecord_maxTrainDesignWeight,
-			changes.techRecord_maxTrainEecWeight,
-			changes.techRecord_maxTrainGbWeight,
-		].some(Boolean);
-	}
-
-	haveAxlesChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
-		if (
-			vehicleType === 'psv' &&
-			(this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>) ||
-				this.hasPsvTrainAxleChanged(changes as Partial<TechRecordGETPSV>))
-		)
-			return true;
-
-		if (
-			vehicleType === 'hgv' &&
-			(this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>) ||
-				this.hasMaxTrainAxleChanged(changes as Partial<TechRecordGETHGV>) ||
-				this.hasHgvGrossAxleChanged(changes as Partial<TechRecordGETHGV>))
-		)
-			return true;
-
-		if (vehicleType === 'trl' && this.hasTrlGrossAxleChanged(changes as Partial<TechRecordGETTRL>)) return true;
-
-		return false;
 	}
 
 	getVehicleSize(techRecord: V3TechRecordModel) {
