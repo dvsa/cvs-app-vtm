@@ -2,7 +2,7 @@
   <!--  Name or Company -->
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_name')) {
     <govuk-form-group-input
-      label="Name or company"
+      label="Name"
       formControlName="techRecord_manufacturerDetails_name"
     ></govuk-form-group-input>
   }
@@ -73,9 +73,10 @@
 
   <!--  Manufacturer notes -->
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_manufacturerNotes')) {
-    <govuk-form-group-input
+    <govuk-form-group-textarea
       label="Manufacturer notes"
+      [maxLength]="1024"
       formControlName="techRecord_manufacturerDetails_manufacturerNotes"
-    ></govuk-form-group-input>
+    ></govuk-form-group-textarea>
   }
 </div>
