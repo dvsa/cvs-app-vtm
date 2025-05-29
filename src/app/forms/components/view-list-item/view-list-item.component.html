@@ -35,7 +35,7 @@
     }
     @default {
       @if (name() === 'reasonForAbandoning') {
-        @let reasons = value?.split('.') || [];
+        @let reasons = value?.split(ABANDON_REASONS_REGEX) || [];
         <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-line">
           @for (reason of reasons; track reason;let index = $index;) {
             <tr [id]="customId() ? 'test-' + customId() + index : 'test-' + name() + index" class="break-all whitespace-pre-line padding-vertical-half">

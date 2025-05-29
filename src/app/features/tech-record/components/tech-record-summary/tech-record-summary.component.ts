@@ -34,8 +34,6 @@ import { LettersComponent } from '@forms/custom-sections/letters/letters.compone
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
-import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
-import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -70,11 +68,8 @@ import { TrlBrakesComponent as TrlBrakesComponent_1 } from '../../../../forms/cu
 import { TRLPurchasersSectionComponent } from '../../../../forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '../../../../forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '../../../../forms/custom-sections/tyres-section/tyres-section.component';
-import { TyresComponent as TyresComponent_1 } from '../../../../forms/custom-sections/tyres/tyres.component';
 import { VehicleSectionComponent } from '../../../../forms/custom-sections/vehicle-section/vehicle-section.component';
 import { WeightsSectionComponent } from '../../../../forms/custom-sections/weights-section/weights-section.component';
-import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom-sections/weights/weights.component';
-
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -99,9 +94,7 @@ import { WeightsComponent as WeightsComponent_1 } from '../../../../forms/custom
 		PsvBrakesComponent_1,
 		TrlBrakesComponent_1,
 		TyresSectionComponent,
-		TyresComponent_1,
 		WeightsSectionComponent,
-		WeightsComponent_1,
 		LettersComponent_1,
 		PlatesSectionComponent,
 		PlatesComponent,
@@ -125,8 +118,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	readonly dimensions = viewChild(DimensionsComponent);
 	readonly psvBrakes = viewChild(PsvBrakesComponent);
 	readonly trlBrakes = viewChild(TrlBrakesComponent);
-	readonly tyres = viewChild(TyresComponent);
-	readonly weights = viewChild(WeightsComponent);
 	readonly letters = viewChild(LettersComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
 
@@ -339,14 +330,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		const dimensions = this.dimensions();
 		if (dimensions && !this.featureToggleService.isFeatureEnabled('FsDimensions') && dimensions?.form) {
 			sections.push(dimensions.form);
-		}
-		const tyres = this.tyres();
-		if (tyres && !this.featureToggleService.isFeatureEnabled('FsTyres') && tyres?.form) {
-			sections.push(tyres.form);
-		}
-		const weights = this.weights();
-		if (weights && !this.featureToggleService.isFeatureEnabled('FsWeights') && weights?.form) {
-			sections.push(weights.form);
 		}
 		const approvalType = this.approvalType();
 		if (approvalType && !this.featureToggleService.isFeatureEnabled('FsApprovalType') && approvalType?.form) {

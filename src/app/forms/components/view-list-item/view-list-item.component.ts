@@ -31,6 +31,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 	],
 })
 export class ViewListItemComponent extends BaseControlComponent {
+	readonly ABANDON_REASONS_REGEX = new RegExp('\\. (?<!\\..\\. )');
+
 	customFormControlInjector?: Injector;
 
 	get formNodeViewTypes(): typeof FormNodeViewTypes {

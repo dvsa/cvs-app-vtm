@@ -4,7 +4,9 @@ import { Condition, operatorEnum } from '@models/condition.model';
 import {
 	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
 	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
 	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 } from '@models/options.model';
@@ -242,13 +244,12 @@ export class CustomAsyncValidators {
 						case VehicleTypes.SMALL_TRL:
 							control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
 							break;
-						// TODO uncomment these to enable HGV and PSV filtering
-						// case VehicleTypes.HGV:
-						//   control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
-						//   break;
-						// case VehicleTypes.PSV:
-						//   control.meta.options = PSV_EU_VEHICLE_CATEGORY_OPTIONS;
-						//   break;
+						case VehicleTypes.HGV:
+							control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
+						case VehicleTypes.PSV:
+							control.meta.options = PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+							break;
 						default:
 							control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
 							break;

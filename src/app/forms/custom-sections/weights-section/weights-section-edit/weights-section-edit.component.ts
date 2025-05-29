@@ -1,4 +1,4 @@
-import { addAxle, removeAxle } from '@/src/app/store/technical-records';
+import { addAxle, removeAxle, updateBrakeForces } from '@/src/app/store/technical-records';
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,6 +42,8 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
 		this.handleFormChange();
+		this.handleGrossKerbWeightChange();
+		this.handleGrossLadenWeightChange();
 
 		// Attach all form controls to parent
 		const parent = this.controlContainer.control;
@@ -89,7 +91,37 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	}
 
 	handleFormChange() {
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((axles) => this.formChange.emit(axles));
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+			this.formChange.emit(changes);
+		});
+	}
+
+	handleGrossKerbWeightChange() {
+		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
+		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
+		grossKerbWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			if (value)
+				this.store.dispatch(
+					updateBrakeForces({
+						grossKerbWeight: value,
+						grossLadenWeight: this.form.get('techRecord_grossLadenWeight')?.value,
+					})
+				);
+		});
+	}
+
+	handleGrossLadenWeightChange() {
+		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
+		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
+		grossLadenWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			if (value)
+				this.store.dispatch(
+					updateBrakeForces({
+						grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
+						grossLadenWeight: value,
+					})
+				);
+		});
 	}
 
 	addHgvTrlAxleWeights() {

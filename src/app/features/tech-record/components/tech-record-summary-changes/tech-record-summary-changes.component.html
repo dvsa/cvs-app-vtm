@@ -225,13 +225,7 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          <!-- New Tyres section -->
-          @if (featureToggleService.isFeatureEnabled('FsTyres')) {
-            <app-tyres-section [techRecord]="techRecordEdited" [mode]="'summary'" />
-          } @else {
-          <!-- Old Tyres section -->
-            <app-tyres [vehicleTechRecord]="techRecordEdited" />
-          }
+          <app-tyres-section [techRecord]="techRecordEdited" [mode]="'summary'" />
         }
       }
       @case ('weightsSection') {
@@ -248,24 +242,9 @@
                 You removed an axle.
               </strong>
             </div>
-            <!-- New Weights section -->
-            @if (featureToggleService.isFeatureEnabled('FsWeights')) {
-              <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
-            } @else {
-            <!-- Old Weights section -->
-              <app-weights [vehicleTechRecord]="techRecordEdited" />
-            }
-          } @else {
-            <!-- New Weights section -->
-            @if (featureToggleService.isFeatureEnabled('FsWeights')) {
-              <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
-            } @else {
-              @if (changesForWeights) {
-            <!-- Old Weights section -->
-                <app-modified-weights [vehicleType]="vehicleType" [changes]="changesForWeights" />
-              }
-            }
           }
+          
+          <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
         }
       }
 

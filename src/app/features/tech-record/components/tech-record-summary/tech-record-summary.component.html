@@ -214,17 +214,7 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New Tyres section -->
-            @if (featureToggleService.isFeatureEnabled('FsTyres')) {
-              <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-            } @else {
-              <app-tyres
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-tyres>
-            }
-            <!-- Old Tyres section -->
+            <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           }
         }
         @case ('weightsSection') {
@@ -233,25 +223,13 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New Weights Section -->
-            @if (featureToggleService.isFeatureEnabled('FsWeights')) {
-              <app-weights-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-                (formChange)="handleFormChanges($event)"
-              ></app-weights-section>
-            } @else {
-              <app-weights
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-weights>
-            }
-            <!-- Old Weights Section -->
+            <app-weights-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              (formChange)="handleFormChanges($event)"
+            ></app-weights-section>
           }
         }
-
-
         @case ('lettersSection') {
           <!-- New LettersSection -->
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {

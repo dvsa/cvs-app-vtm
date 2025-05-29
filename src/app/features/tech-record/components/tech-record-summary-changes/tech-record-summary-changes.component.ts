@@ -55,17 +55,14 @@ import { BodyComponent } from '../../../../forms/custom-sections/body/body.compo
 import { DimensionsSectionComponent } from '../../../../forms/custom-sections/dimensions-section/dimensions-section.component';
 import { DimensionsComponent } from '../../../../forms/custom-sections/dimensions/dimensions.component';
 import { LastApplicantSectionComponent } from '../../../../forms/custom-sections/last-applicant-section/last-applicant-section.component';
-import { ModifiedWeightsComponent } from '../../../../forms/custom-sections/modified-weights/modified-weights.component';
 import { NotesSectionComponent } from '../../../../forms/custom-sections/notes-section/notes-section.component';
 import { PsvBrakesComponent } from '../../../../forms/custom-sections/psv-brakes/psv-brakes.component';
 import { TrlBrakesComponent } from '../../../../forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TRLPurchasersSectionComponent } from '../../../../forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '../../../../forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '../../../../forms/custom-sections/tyres-section/tyres-section.component';
-import { TyresComponent } from '../../../../forms/custom-sections/tyres/tyres.component';
 import { VehicleSectionComponent } from '../../../../forms/custom-sections/vehicle-section/vehicle-section.component';
 import { WeightsSectionComponent } from '../../../../forms/custom-sections/weights-section/weights-section.component';
-import { WeightsComponent } from '../../../../forms/custom-sections/weights/weights.component';
 import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
@@ -93,10 +90,7 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		PsvBrakesComponent,
 		TrlBrakesComponent,
 		TyresSectionComponent,
-		TyresComponent,
 		WeightsSectionComponent,
-		WeightsComponent,
-		ModifiedWeightsComponent,
 		AdrSectionComponent,
 		LastApplicantSectionComponent,
 		ButtonGroupComponent,

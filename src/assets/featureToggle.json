@@ -4,8 +4,6 @@
   "requiredStandards": true,
   "FsBody": true,
   "FsNotes": true,
-  "FsTyres": true,
-  "FsWeights": true,
   "FsApprovalType": true,
   "FsLastApplicant": true,
   "FsPlates": true,
