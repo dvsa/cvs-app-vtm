@@ -86,7 +86,7 @@ export class ManufacturerSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(60, 'Address line 2 must be less than or equal to 60 characters'),
 			]),
 			techRecord_manufacturerDetails_postTown: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Town or City must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Town or city must be less than or equal to 60 characters'),
 			]),
 			techRecord_manufacturerDetails_address3: this.fb.control(null, [
 				this.commonValidators.maxLength(60, 'County must be less than or equal to 60 characters'),

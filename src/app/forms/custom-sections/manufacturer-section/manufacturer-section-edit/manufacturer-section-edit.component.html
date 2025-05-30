@@ -23,10 +23,11 @@
     ></govuk-form-group-input>
   }
 
-  <!--  Town or City -->
+  <!--  Town or city -->
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_postTown')) {
     <govuk-form-group-input
       label="Town or city"
+      [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_postTown"
     ></govuk-form-group-input>
   }
@@ -35,6 +36,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_address3')) {
     <govuk-form-group-input
       label="County"
+      [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_address3"
     ></govuk-form-group-input>
   }
@@ -43,6 +45,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_postCode')) {
     <govuk-form-group-input
       label="Postcode"
+      [width]="FormNodeWidth.L"
       formControlName="techRecord_manufacturerDetails_postCode"
     ></govuk-form-group-input>
   }
@@ -51,6 +54,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_telephoneNumber')) {
     <govuk-form-group-input
       label="Telephone number"
+      [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_telephoneNumber"
     ></govuk-form-group-input>
   }
@@ -59,6 +63,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_emailAddress')) {
     <govuk-form-group-input
       label="Email address"
+      [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_emailAddress"
     ></govuk-form-group-input>
   }
@@ -67,6 +72,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_faxNumber')) {
     <govuk-form-group-input
       label="Fax number"
+      [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_faxNumber"
     ></govuk-form-group-input>
   }
