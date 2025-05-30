@@ -24,7 +24,6 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { AdrCertsSectionComponent } from '@forms/custom-sections/adr-certs-section/adr-certs-section.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-section.component';
-import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
@@ -55,7 +54,6 @@ import { AdrCertificateHistoryComponent } from '../../../../forms/custom-section
 import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
 import { ApprovalTypeComponent as ApprovalTypeComponent_1 } from '../../../../forms/custom-sections/approval-type/approval-type.component';
 import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
-import { BodyComponent as BodyComponent_1 } from '../../../../forms/custom-sections/body/body.component';
 import { DimensionsSectionComponent } from '../../../../forms/custom-sections/dimensions-section/dimensions-section.component';
 import { DimensionsComponent as DimensionsComponent_1 } from '../../../../forms/custom-sections/dimensions/dimensions.component';
 import { LastApplicantSectionComponent } from '../../../../forms/custom-sections/last-applicant-section/last-applicant-section.component';
@@ -85,7 +83,6 @@ import { WeightsSectionComponent } from '../../../../forms/custom-sections/weigh
 		DynamicFormGroupComponent_1,
 		VehicleSectionComponent,
 		BodySectionComponent,
-		BodyComponent_1,
 		TRLPurchasersSectionComponent,
 		DimensionsSectionComponent,
 		DimensionsComponent_1,
@@ -114,7 +111,6 @@ import { WeightsSectionComponent } from '../../../../forms/custom-sections/weigh
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 	readonly sections = viewChildren(DynamicFormGroupComponent);
-	readonly body = viewChild(BodyComponent);
 	readonly dimensions = viewChild(DimensionsComponent);
 	readonly psvBrakes = viewChild(PsvBrakesComponent);
 	readonly trlBrakes = viewChild(TrlBrakesComponent);
@@ -323,10 +319,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	addCustomSectionsBasedOffFlag(): CustomFormGroup[] {
 		const sections = [];
-		const body = this.body();
-		if (body && !this.featureToggleService.isFeatureEnabled('FsBody') && body?.form) {
-			sections.push(body.form);
-		}
 		const dimensions = this.dimensions();
 		if (dimensions && !this.featureToggleService.isFeatureEnabled('FsDimensions') && dimensions?.form) {
 			sections.push(dimensions.form);

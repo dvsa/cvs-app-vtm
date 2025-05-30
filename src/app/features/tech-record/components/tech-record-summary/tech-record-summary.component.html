@@ -30,18 +30,7 @@
     @if (techRecordCalculated) {
       @switch (sectionName) {
         @case ('notesSection') {
-          <!-- New Notes section -->
-          @if (featureToggleService.isFeatureEnabled('FsNotes')) {
-            <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-          } @else {
-            <!-- Old Notes section -->
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('audit') {
           @if (featureToggleService.isFeatureEnabled('FsAudit')) {
@@ -59,17 +48,7 @@
           <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('bodySection') {
-          <!-- New Body section -->
-          @if (featureToggleService.isFeatureEnabled('FsBody')) {
-            <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-          } @else {
-            <app-body
-              [techRecord]="techRecordCalculated"
-              [isEditing]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-body>
-          }
-          <!-- Old Body section -->
+          <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('purchaserSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {

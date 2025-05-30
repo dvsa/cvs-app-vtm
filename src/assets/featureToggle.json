@@ -2,8 +2,6 @@
   "testToggle": false,
   "adrCertToggle": true,
   "requiredStandards": true,
-  "FsBody": true,
-  "FsNotes": true,
   "FsApprovalType": true,
   "FsLastApplicant": true,
   "FsPlates": true,

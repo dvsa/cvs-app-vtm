@@ -51,7 +51,6 @@ import { DynamicFormGroupComponent } from '../../../../forms/components/dynamic-
 import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
 import { ApprovalTypeComponent } from '../../../../forms/custom-sections/approval-type/approval-type.component';
 import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
-import { BodyComponent } from '../../../../forms/custom-sections/body/body.component';
 import { DimensionsSectionComponent } from '../../../../forms/custom-sections/dimensions-section/dimensions-section.component';
 import { DimensionsComponent } from '../../../../forms/custom-sections/dimensions/dimensions.component';
 import { LastApplicantSectionComponent } from '../../../../forms/custom-sections/last-applicant-section/last-applicant-section.component';
@@ -81,7 +80,6 @@ import { FormatVehicleTypePipe } from '../../../../pipes/format-vehicle-type/for
 		DynamicFormGroupComponent,
 		VehicleSectionComponent,
 		BodySectionComponent,
-		BodyComponent,
 		DimensionsSectionComponent,
 		DimensionsComponent,
 		TRLPurchasersSectionComponent,
