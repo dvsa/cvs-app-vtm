@@ -392,4 +392,35 @@ describe('HttpService', () => {
 			req.flush([], { status: 200, statusText: 'OK' });
 		});
 	});
+
+	describe('getRecalls', () => {
+		it('should call the correct endpoint with the provided VIN and use 30s timeout in production', () => {
+			(environment as any).production = true;
+			httpService.getRecalls('VIN123').subscribe();
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN123`);
+			expect(req.request.method).toBe('GET');
+			req.flush({});
+		});
+
+		it('should call the correct endpoint with the provided VIN and use 10s timeout in non-production', () => {
+			(environment as any).production = true;
+			httpService.getRecalls('VIN456').subscribe();
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN456`);
+			expect(req.request.method).toBe('GET');
+			req.flush({});
+		});
+
+		it('should emit an error if the request fails', (done) => {
+			httpService.getRecalls('VIN789').subscribe({
+				next: () => {},
+				error: (e) => {
+					expect(e.status).toBe(404);
+					expect(e.statusText).toBe('Not Found');
+					done();
+				},
+			});
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
+			req.flush('Not found', { status: 404, statusText: 'Not Found' });
+		});
+	});
 });
