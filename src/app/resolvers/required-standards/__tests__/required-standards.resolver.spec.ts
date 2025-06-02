@@ -6,7 +6,7 @@ import { State, initialAppState } from '@store/index';
 import { requiredStandardsResolver } from '../required-standards.resolver';
 
 describe('RequiredStandardsResolver', () => {
-	let resolver: ResolveFn<void>;
+	let resolver: ResolveFn<boolean>;
 	let store: MockStore<State>;
 
 	beforeEach(() => {
