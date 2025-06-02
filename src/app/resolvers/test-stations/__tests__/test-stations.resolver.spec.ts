@@ -6,7 +6,7 @@ import { fetchTestStations } from '@store/test-stations';
 import { testStationsResolver } from '../test-stations.resolver';
 
 describe('TestTypeTaxonomyResolver', () => {
-	let resolver: ResolveFn<void>;
+	let resolver: ResolveFn<boolean>;
 	let store: MockStore<State>;
 
 	beforeEach(() => {
