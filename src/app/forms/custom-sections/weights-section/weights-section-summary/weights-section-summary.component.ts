@@ -6,13 +6,14 @@ import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
 
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { AppendSuffixPipe } from '@pipes/append-suffix/append-suffix.pipe';
 import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-weights-section-summary',
 	templateUrl: './weights-section-summary.component.html',
 	styleUrls: ['./weights-section-summary.component.scss'],
-	imports: [DefaultNullOrEmpty],
+	imports: [DefaultNullOrEmpty, AppendSuffixPipe],
 })
 export class WeightsSectionSummaryComponent {
 	protected readonly VehicleTypes = VehicleTypes;
