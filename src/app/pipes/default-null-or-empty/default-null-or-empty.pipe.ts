@@ -6,8 +6,14 @@ export class DefaultNullOrEmpty implements PipeTransform {
 		return value[0].toUpperCase() + value.substring(1);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	transform(value: any) {
+	transform(value: any, suffix?: string) {
+		if (suffix) {
+			if (!value && value !== 0) return '-';
+			const newValue = Number(value);
+			if (Number.isNaN(newValue)) return '-';
+
+			return `${newValue} ${suffix}`;
+		}
 		if (typeof value === 'string') {
 			if (value.toLowerCase() === 'true') {
 				return 'Yes';

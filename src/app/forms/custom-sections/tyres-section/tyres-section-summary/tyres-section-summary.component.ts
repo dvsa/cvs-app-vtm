@@ -1,19 +1,17 @@
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { Component, inject } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
-
-import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { appendSuffixPipe } from '@pipes/append-suffix/append-suffix.pipe';
 import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-tyres-section-summary',
 	templateUrl: './tyres-section-summary.component.html',
 	styleUrls: ['./tyres-section-summary.component.scss'],
-	imports: [DefaultNullOrEmpty, appendSuffixPipe],
+	imports: [DefaultNullOrEmpty],
 })
 export class TyresSectionSummaryComponent {
 	protected readonly VehicleTypes = VehicleTypes;
