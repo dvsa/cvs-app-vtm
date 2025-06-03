@@ -44,22 +44,27 @@
   }
 
   @if (controlType() === 'number') {
-    <input
-      id="{{ id }}"
-      name="{{ id }}"
-      [attr.aria-describedby]="hintId"
-      [attr.aria-labelledby]="labelId"
-      [attr.data-testid]="id"
-      [class.govuk-radios__input--error]="hasError"
-      [(ngModel)]="value"
-      (ngModelChange)="onChange($event)"
-      type="number"
-      appNumberOnly
-      inputmode="numeric"
-      (blur)="onTouched(); onBlur($event)"
-      [class]="style"
-      [disabled]="control?.disabled || false"
-      />
+    <div class="govuk-input__wrapper">
+      <input
+        id="{{ id }}"
+        name="{{ id }}"
+        [attr.aria-describedby]="hintId"
+        [attr.aria-labelledby]="labelId"
+        [attr.data-testid]="id"
+        [class.govuk-radios__input--error]="hasError"
+        [(ngModel)]="value"
+        (ngModelChange)="onChange($event)"
+        type="number"
+        appNumberOnly
+        inputmode="numeric"
+        (blur)="onTouched(); onBlur($event)"
+        [class]="style"
+        [disabled]="control?.disabled || false"
+        />
+      @if (suffix()) {
+        <div class="govuk-input__suffix" aria-hidden="true">{{ suffix() }}</div>
+      }
+    </div>
   }
 
   @if (controlType() === 'numericString') {

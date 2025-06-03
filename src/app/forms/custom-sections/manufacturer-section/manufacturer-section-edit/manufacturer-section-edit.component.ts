@@ -2,9 +2,6 @@ import { TagType } from '@/src/app/components/tag/tag.component';
 import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
-import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
-import { CharacterCountComponent } from '@forms/components/character-count/character-count.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
@@ -17,15 +14,7 @@ import { ReplaySubject } from 'rxjs';
 	selector: 'app-manufacturer-section-edit',
 	templateUrl: './manufacturer-section-edit.component.html',
 	styleUrls: ['./manufacturer-section-edit.component.scss'],
-	imports: [
-		FormsModule,
-		GovukFormGroupInputComponent,
-		ReactiveFormsModule,
-		CharacterCountComponent,
-		GovukTextareaDirective,
-		NoEmojisDirective,
-		GovukFormGroupTextareaComponent,
-	],
+	imports: [FormsModule, GovukFormGroupInputComponent, ReactiveFormsModule, GovukFormGroupTextareaComponent],
 })
 export class ManufacturerSectionEditComponent implements OnInit, OnDestroy {
 	fb = inject(FormBuilder);
