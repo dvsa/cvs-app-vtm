@@ -81,6 +81,10 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 		})[`${category}`];
 	}
 
+	sortDefectItems(items: Item[]) {
+		return items.sort((a, b) => a.itemNumber - b.itemNumber);
+	}
+
 	handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
 		switch (type) {
 			case Types.Defect:

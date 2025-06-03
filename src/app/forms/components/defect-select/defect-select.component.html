@@ -21,7 +21,7 @@
     @if (selectedDefect) {
       <div class="list_container">
         <ol class="list">
-          @for (item of selectedDefect.items; track i; let i = $index) {
+          @for (item of sortDefectItems(selectedDefect.items); track i; let i = $index) {
             <li>
               <a
                 [id]="'defect-sub-list-item-' + i"
