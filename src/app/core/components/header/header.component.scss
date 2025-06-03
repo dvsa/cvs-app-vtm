@@ -1,7 +1,13 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 a {
   cursor: pointer;
 }
 
 #sign-out {
   margin-left: 1rem;
+}
+
+header.govuk-header {
+  background-color: $govuk-brand-colour;
 }
