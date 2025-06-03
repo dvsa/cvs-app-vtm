@@ -12,27 +12,41 @@
         ></govuk-form-group-input>
       }
       <!-- Length-->
-      <govuk-form-group-input
-        formControlName="techRecord_dimensions_length"
-        label="Length"
-        [width]="Widths.XS"
-        suffix="mm"
-        type="number"
-        [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
-          ? []
-          : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
-      ></govuk-form-group-input>
+      <div>
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+          <app-field-warning-message [warningMessage]="lengthWarning"></app-field-warning-message>
+        }
+  
+        <govuk-form-group-input
+          formControlName="techRecord_dimensions_length"
+          label="Length"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+          [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
+            ? []
+            : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+        ></govuk-form-group-input>
+      </div>
+
       <!-- Width-->
-      <govuk-form-group-input
-        formControlName="techRecord_dimensions_width"
-        label="Width"
-        [width]="Widths.XS"
-        suffix="mm"
-        type="number"
-        [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
-          ? []
-          : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
-      ></govuk-form-group-input>
+      <div>
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+          <app-field-warning-message [warningMessage]="widthWarning"></app-field-warning-message>
+        }
+  
+        <govuk-form-group-input
+          formControlName="techRecord_dimensions_width"
+          label="Width"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+          [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
+            ? []
+            : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+        ></govuk-form-group-input>
+      </div>
+
       <!-- Front axle to rear axle-->
       <govuk-form-group-input
         formControlName="techRecord_frontAxleToRearAxle"

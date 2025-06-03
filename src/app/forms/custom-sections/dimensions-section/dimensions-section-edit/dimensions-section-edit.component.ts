@@ -224,4 +224,16 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 			? 'The coupling centre to rear of trailer maximum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
+
+	get lengthWarning() {
+		return Number.parseInt(this.form.get('techRecord_dimensions_length')?.value, 10) > 12000
+			? 'This length dimension field value is greater than 12,000mm. Check your input before proceeding'
+			: '';
+	}
+
+	get widthWarning() {
+		return Number.parseInt(this.form.get('techRecord_dimensions_width')?.value, 10) > 2600
+			? 'This width dimension field value is greater than 2,600mm. Check your input before proceeding'
+			: '';
+	}
 }
