@@ -5,14 +5,12 @@ import {
 	ReferenceDataApiResponseWithPagination,
 } from '@models/reference-data/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { HttpCacheManager } from '@ngneat/cashew';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
 import { testResultInEdit } from '@store/test-records';
-import { catchError, filter, map, mergeMap, of, switchMap, take, tap } from 'rxjs';
-import { CacheKeys } from '../../models/cache-keys.enum';
+import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
 import { handleNotFound, sortReferenceData } from './operators';
 import {
 	amendReferenceDataItem,
@@ -35,7 +33,6 @@ import {
 	fetchReferenceDataByKeySearchFailed,
 	fetchReferenceDataByKeySearchSuccess,
 	fetchReferenceDataByKeySuccess,
-	fetchReferenceDataComplete,
 	fetchReferenceDataFailed,
 	fetchReferenceDataSuccess,
 	fetchTyreReferenceDataByKeySearch,
@@ -48,20 +45,10 @@ export class ReferenceDataEffects {
 	private actions$ = inject(Actions);
 	private referenceDataService = inject(ReferenceDataService);
 	private store = inject<Store<State>>(Store);
-	private cacheManager = inject(HttpCacheManager);
 
 	fetchReferenceDataByType$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(fetchReferenceData),
-			tap(({ resourceType, paginationToken }) => {
-				if (this.cacheManager.has(CacheKeys.REFERENCE_DATA + resourceType + paginationToken)) {
-					this.store.dispatch(fetchReferenceDataComplete({ resourceType }));
-				}
-			}),
-			filter(
-				({ resourceType, paginationToken }) =>
-					!this.cacheManager.has(CacheKeys.REFERENCE_DATA + resourceType + paginationToken)
-			),
 			mergeMap(({ resourceType, paginationToken }) =>
 				this.referenceDataService.fetchReferenceData(resourceType, paginationToken).pipe(
 					handleNotFound(resourceType),

@@ -2,7 +2,6 @@ import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/req
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
 	getRequiredStandards,
-	getRequiredStandardsComplete,
 	getRequiredStandardsFailure,
 	getRequiredStandardsSuccess,
 } from './required-standards.actions';
@@ -38,8 +37,7 @@ export const requiredStandardsReducer = createReducer(
 		requiredStandards: orderRequiredStandards(action.requiredStandards),
 		loading: false,
 	})),
-	on(getRequiredStandardsFailure, (state) => ({ ...state, loading: false })),
-	on(getRequiredStandardsComplete, (state) => ({ ...state, loading: false }))
+	on(getRequiredStandardsFailure, (state) => ({ ...state, loading: false }))
 );
 
 function orderRequiredStandards(requiredStandards: DefectGETRequiredStandards) {
