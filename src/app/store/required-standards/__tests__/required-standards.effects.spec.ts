@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
-import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -42,7 +41,6 @@ describe('RequiredStandardEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
 			],
 		});
 

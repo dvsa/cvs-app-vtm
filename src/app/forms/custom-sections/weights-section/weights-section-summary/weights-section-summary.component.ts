@@ -6,7 +6,7 @@ import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
 
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-weights-section-summary',

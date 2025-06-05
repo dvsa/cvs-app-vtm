@@ -46,7 +46,6 @@ import {
 	removeDefect,
 	removeRequiredStandard,
 	setResultOfTest,
-	setTestResultLoading,
 	templateSectionsChanged,
 	updateDefect,
 	updateEditingTestResult,
@@ -173,8 +172,7 @@ export const testResultsReducer = createReducer(
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 
 	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
-	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
+	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

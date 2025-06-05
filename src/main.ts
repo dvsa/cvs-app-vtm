@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, enableProdMode, importProvidersFrom } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -21,7 +21,6 @@ import {
 	PublicClientApplication,
 } from '@azure/msal-browser';
 import { ResponseLoggerInterceptor } from '@interceptors/response-logger/response-logger.interceptor';
-import { provideHttpCache, withHttpCacheInterceptor } from '@ngneat/cashew';
 import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
@@ -142,9 +141,6 @@ bootstrapApplication(AppComponent, {
 		MsalGuard,
 		MsalBroadcastService,
 		UserService,
-		provideHttpClient(withInterceptors([withHttpCacheInterceptor()]), withInterceptorsFromDi()),
-		provideHttpCache({
-			mode: 'stateManagement',
-		}),
+		provideHttpClient(withInterceptorsFromDi()),
 	],
 }).catch((err) => console.error(err));

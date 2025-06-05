@@ -4,7 +4,6 @@ import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/refer
 import { DeleteItem, ReferenceDataItem } from '@models/reference-data/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -59,7 +58,6 @@ describe('ReferenceDataEffects', () => {
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataEffects,
 				ReferenceDataService,
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
 				{ provide: UserService, useValue: {} },
 			],
 		});

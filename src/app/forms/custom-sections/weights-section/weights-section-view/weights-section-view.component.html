@@ -91,7 +91,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Unladen weight</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_unladenWeight">
-          {{ vm.techRecord_unladenWeight | defaultNullOrEmpty }} kg
+          {{ vm.techRecord_unladenWeight | defaultNullOrEmpty:'kg' }}
         </dd>
       </div>
     </dl>

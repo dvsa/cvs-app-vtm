@@ -5,7 +5,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Speed restriction</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_speedRestriction">
-          {{ vm.techRecord_speedRestriction | defaultNullOrEmpty }}
+          {{ vm.techRecord_speedRestriction | defaultNullOrEmpty:'mph' }}
         </dd>
       </div>
     </dl>

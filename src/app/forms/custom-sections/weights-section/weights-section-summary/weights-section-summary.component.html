@@ -100,7 +100,7 @@
             Unladen weight
           </dt>
           <dd class="govuk-summary-list__value">
-            {{ vm.techRecord_unladenWeight | defaultNullOrEmpty }} kg
+            {{ vm.techRecord_unladenWeight | defaultNullOrEmpty:'kg' }}
           </dd>
         </div>
       </dl>

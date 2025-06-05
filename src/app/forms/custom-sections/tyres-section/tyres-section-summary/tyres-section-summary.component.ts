@@ -1,11 +1,10 @@
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { Component, inject } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
-
-import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({

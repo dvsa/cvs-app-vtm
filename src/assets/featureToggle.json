@@ -7,12 +7,12 @@
   "FsPlates": true,
   "FsDimensions": true,
   "FsPurchasers": true,
-  "FsDDA": false,
+  "FsDDA": true,
   "FsLetters": true,
   "FsDocuments": true,
   "FsBrakes": true,
-  "FsAuthorisationIntoService": false,
-  "FsAudit": false,
-  "FsManufacturer": false,
-  "FsAdrCerts": false
+  "FsAuthorisationIntoService": true,
+  "FsAudit": true,
+  "FsManufacturer": true,
+  "FsAdrCerts": true
 }

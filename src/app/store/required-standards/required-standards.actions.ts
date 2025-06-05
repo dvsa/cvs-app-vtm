@@ -13,4 +13,3 @@ export const getRequiredStandardsSuccess = createAction(
 	props<{ requiredStandards: DefectGETRequiredStandards }>()
 );
 export const getRequiredStandardsFailure = createAction(`${prefix} getRequiredStandards Failure`, props<GlobalError>());
-export const getRequiredStandardsComplete = createAction(`${prefix} getRequiredStandards Complete`);
