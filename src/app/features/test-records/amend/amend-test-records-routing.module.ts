@@ -1,3 +1,4 @@
+import { loadingResolver } from '@/src/app/resolvers/loading/loading.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
@@ -63,6 +64,7 @@ const routes: Routes = [
 							load: testResultResolver,
 							testTypeTaxonomy: testTypeTaxonomyResolver,
 							defectTaxonomy: defectsTaxonomyResolver,
+							loading: loadingResolver,
 						},
 						canActivate: [RoleGuard],
 						canDeactivate: [CancelEditTestGuard],
@@ -120,7 +122,7 @@ const routes: Routes = [
 									import('./views/test-router-outlet/test-router-outlet.component').then(
 										(m) => m.TestRouterOutletComponent
 									),
-								resolve: { RequiredStandards: requiredStandardsResolver },
+								resolve: { RequiredStandards: requiredStandardsResolver, loading: loadingResolver },
 								data: { title: 'Select Required Standard', roles: Roles.TestResultAmend },
 								children: [
 									{

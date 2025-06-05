@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
+import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -35,6 +36,7 @@ describe('TestResultsEffects', () => {
 					provide: UserService,
 					useValue: { roles$: of(['TestResult.CreateDeskBased']) },
 				},
+				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
 			],
 		});
 

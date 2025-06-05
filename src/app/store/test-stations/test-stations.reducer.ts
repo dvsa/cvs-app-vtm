@@ -6,6 +6,7 @@ import {
 	fetchTestStationFailed,
 	fetchTestStationSuccess,
 	fetchTestStations,
+	fetchTestStationsComplete,
 	fetchTestStationsFailed,
 	fetchTestStationsSuccess,
 } from './test-stations.actions';
@@ -40,5 +41,6 @@ export const testStationsReducer = createReducer(
 		...testStationsAdapter.upsertOne(action.payload, state),
 		loading: false,
 	})),
-	on(fetchTestStationFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false }))
+	on(fetchTestStationFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false })),
+	on(fetchTestStationsComplete, (state) => ({ ...state, loading: false }))
 );

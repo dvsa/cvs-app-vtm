@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Defect } from '@models/defects/defect.model';
+import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -42,6 +43,7 @@ describe('DefectsEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
+				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
 			],
 		});
 

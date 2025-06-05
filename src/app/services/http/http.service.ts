@@ -5,6 +5,7 @@ import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
+import { CacheKeys } from '@models/cache-keys.enum';
 import { Defect } from '@models/defects/defect.model';
 import { Log } from '@models/logs/logs.model';
 import {
@@ -26,6 +27,7 @@ import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
 import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
 import { TechRecordPOST } from '@models/vehicle/techRecordPOST';
 import { TechRecordPUT } from '@models/vehicle/techRecordPUT';
+import { withCache } from '@ngneat/cashew';
 import { cloneDeep } from 'lodash';
 import { lastValueFrom, timeout } from 'rxjs';
 
@@ -108,7 +110,10 @@ export class HttpService {
 	}
 
 	fetchDefects() {
-		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, { headers: HttpService.gzippedHeader });
+		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, {
+			headers: HttpService.gzippedHeader,
+			context: withCache({ key: CacheKeys.DEFECTS }),
+		});
 	}
 
 	fetchDefect(id: number) {
@@ -117,12 +122,15 @@ export class HttpService {
 
 	fetchRequiredStandards(euVehicleCategory: string) {
 		return this.http.get<DefectGETRequiredStandards>(
-			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`
+			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`,
+			{ context: withCache({ key: CacheKeys.REQUIRED_STANDARDS + euVehicleCategory }) }
 		);
 	}
 
 	fetchTestStations() {
-		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`);
+		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`, {
+			context: withCache({ key: CacheKeys.TEST_STATIONS }),
+		});
 	}
 
 	fetchTestStation(id: string) {
@@ -232,6 +240,7 @@ export class HttpService {
 
 		return this.http.request<TestTypesTaxonomy>('get', `${environment.VTM_API_URI}/test-types`, {
 			params,
+			context: withCache({ key: CacheKeys.TEST_TYPES }),
 		});
 	}
 
@@ -334,6 +343,7 @@ export class HttpService {
 			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}`,
 			{
 				params,
+				context: withCache({ key: CacheKeys.REFERENCE_DATA + resourceType + paginationToken }),
 			}
 		);
 	}

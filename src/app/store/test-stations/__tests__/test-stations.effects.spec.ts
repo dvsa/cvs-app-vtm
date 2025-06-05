@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -43,6 +44,7 @@ describe('TestStationsEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
+				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
 			],
 		});
 
