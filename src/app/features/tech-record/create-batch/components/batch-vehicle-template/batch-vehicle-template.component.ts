@@ -1,6 +1,6 @@
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
-import { Component, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, viewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -25,7 +25,6 @@ import { ButtonComponent } from '../../../../../components/button/button.compone
 import { SelectComponent } from '../../../../../forms/components/select/select.component';
 import { DefaultNullOrEmpty } from '../../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 
 @Component({
 	selector: 'app-batch-vehicle-template',
@@ -47,8 +46,6 @@ export class BatchVehicleTemplateComponent {
 	summary = viewChild(TechRecordSummaryComponent);
 	isInvalid = false;
 	form: CustomFormGroup;
-  fb = inject(FormBuilder);
-  commonValidators = inject(CommonValidatorsService);
 	public vehicleStatusOptions: MultiOptions = [
 		{ label: 'Provisional', value: StatusCodes.PROVISIONAL },
 		{ label: 'Current', value: StatusCodes.CURRENT },
