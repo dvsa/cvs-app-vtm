@@ -1,4 +1,3 @@
-import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { Component, inject } from '@angular/core';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/skeleton';
@@ -6,6 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { techRecord } from '@store/technical-records';
 

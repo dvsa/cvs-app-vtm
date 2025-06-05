@@ -1,19 +1,19 @@
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store } from '@ngrx/store';
 import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
-import { ButtonComponent } from '../../components/button/button.component';
-import { NoSpaceDirective } from '../../directives/app-no-space/app-no-space.directive';
-import { RoleRequiredDirective } from '../../directives/app-role-required/app-role-required.directive';
-import { ToUppercaseDirective } from '../../directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '../../directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { NoEmojisDirective } from '../../directives/no-emojis/no-emojis.directive';
 
 @Component({
 	selector: 'app-search',
@@ -31,15 +31,13 @@ import { NoEmojisDirective } from '../../directives/no-emojis/no-emojis.directiv
 	],
 })
 export class SearchComponent {
+	globalErrorService = inject(GlobalErrorService);
+	router = inject(Router);
+	store = inject(Store);
+
 	missingTermErrorMessage =
 		'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
 	missingTypeErrorMessage = 'You must select a valid search criteria';
-
-	constructor(
-		public globalErrorService: GlobalErrorService,
-		private router: Router,
-		private store: Store
-	) {}
 
 	navigateSearch(term: string, type: string): void {
 		this.globalErrorService.clearErrors();

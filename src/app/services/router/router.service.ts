@@ -1,8 +1,6 @@
-import { Location } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { State } from '@store/.';
 import {
 	routeEditable,
 	routerState,
@@ -19,12 +17,9 @@ import { Observable, map } from 'rxjs';
 	providedIn: 'root',
 })
 export class RouterService {
-	constructor(
-		private store: Store<State>,
-		private router: Router,
-		private activatedRoute: ActivatedRoute,
-		private location: Location
-	) {}
+	store = inject(Store);
+	router = inject(Router);
+	activatedRoute = inject(ActivatedRoute);
 
 	get router$() {
 		return this.store.pipe(select(routerState));

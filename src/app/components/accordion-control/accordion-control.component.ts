@@ -5,6 +5,7 @@ import {
 	Component,
 	ContentChildren,
 	QueryList,
+	inject,
 	input,
 	model,
 } from '@angular/core';
@@ -18,6 +19,8 @@ import { AccordionComponent } from '../accordion/accordion.component';
 	imports: [NgClass],
 })
 export class AccordionControlComponent {
+	cdr = inject(ChangeDetectorRef);
+
 	private accordionsList?: QueryList<AccordionComponent>;
 	get accordions(): QueryList<AccordionComponent> | undefined {
 		return this.accordionsList;
@@ -43,8 +46,6 @@ export class AccordionControlComponent {
 	readonly layout = input<string>();
 	readonly class = input('');
 	readonly sectionState = input<(string | number)[] | undefined | null>([]);
-
-	constructor(private cdr: ChangeDetectorRef) {}
 
 	get iconStyle(): string {
 		return `govuk-accordion-nav__chevron${this.isExpanded() ? '' : ' govuk-accordion-nav__chevron--down'}`;

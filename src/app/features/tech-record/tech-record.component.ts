@@ -1,12 +1,12 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { Roles } from '@models/roles.enum';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
-import { RoleRequiredDirective } from '../../directives/app-role-required/app-role-required.directive';
 import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
 
 @Component({
@@ -15,15 +15,15 @@ import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-
 	imports: [RoleRequiredDirective, VehicleTechnicalRecordComponent, AsyncPipe],
 })
 export class TechRecordComponent implements OnInit {
+	techRecordService = inject(TechnicalRecordService);
+	router = inject(Router);
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+
 	systemNumber?: string;
 	createdTimestamp?: string;
 
-	constructor(
-		private techRecordService: TechnicalRecordService,
-		private router: Router,
-		public errorService: GlobalErrorService,
-		private route: ActivatedRoute
-	) {
+	constructor() {
 		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 	}
 

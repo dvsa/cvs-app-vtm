@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
@@ -13,7 +13,6 @@ import {
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
 
 @Component({
@@ -23,6 +22,8 @@ import { SwitchableInputComponent } from '../../components/switchable-input/swit
 	imports: [SwitchableInputComponent],
 })
 export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	readonly techRecord = input.required<TechRecordType<'trl'> | TechRecordType<'psv'> | TechRecordType<'hgv'>>();
 	readonly isEditing = input(false);
 	readonly formChange = output<Record<string, any> | [][]>();
@@ -30,8 +31,6 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
 	form!: CustomFormGroup;
 
 	private destroy$ = new Subject<void>();
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

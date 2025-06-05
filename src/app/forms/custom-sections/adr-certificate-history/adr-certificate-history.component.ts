@@ -1,7 +1,10 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
@@ -11,9 +14,6 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { RouterService } from '@services/router/router.service';
 import { cloneDeep } from 'lodash';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
-import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
-import { RetrieveDocumentDirective } from '../../../directives/retrieve-document/retrieve-document.directive';
 
 @Component({
 	selector: 'app-adr-certificate-history',

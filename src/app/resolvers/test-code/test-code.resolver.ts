@@ -4,8 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
+import { setTestResultLoading } from '@store/test-records';
 import { Observable, catchError, finalize, map, of, switchMap, tap } from 'rxjs';
-import { setTestResultLoading } from '../../store/test-records';
 
 export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (route) => {
 	const store = inject(Store);

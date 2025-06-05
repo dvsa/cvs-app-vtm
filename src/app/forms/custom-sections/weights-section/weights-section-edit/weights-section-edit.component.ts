@@ -1,7 +1,7 @@
-import { addAxle, removeAxle, updateBrakeForces } from '@/src/app/store/technical-records';
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -9,9 +9,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
-import { TagComponent } from '../../../../components/tag/tag.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 
 @Component({

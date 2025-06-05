@@ -1,7 +1,7 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { AfterContentInit, ChangeDetectionStrategy, Component, OnInit, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOption } from '@models/options.model';
 import { Observable, firstValueFrom, skipWhile, take } from 'rxjs';

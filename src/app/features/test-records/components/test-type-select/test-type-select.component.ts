@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, OnInit, output } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestType } from '@models/test-types/testType';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
@@ -15,16 +15,15 @@ import { Observable } from 'rxjs';
 	imports: [NgClass, AsyncPipe],
 })
 export class TestTypeSelectComponent implements OnInit {
+	testTypesService = inject(TestTypesService);
+	technicalRecordService = inject(TechnicalRecordService);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
 	readonly testTypeSelected = output<TestType>();
 
 	categories: Array<TestTypeCategory> = [];
 
-	constructor(
-		private testTypesService: TestTypesService,
-		private technicalRecordService: TechnicalRecordService,
-		private router: Router,
-		private route: ActivatedRoute
-	) {}
 	ngOnInit(): void {
 		this.technicalRecordService.techRecordHistory$.subscribe((recordHistory) => {
 			if (!recordHistory) {

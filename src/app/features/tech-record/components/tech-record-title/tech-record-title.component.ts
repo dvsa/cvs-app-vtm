@@ -1,6 +1,11 @@
 import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, UpperCasePipe } from '@angular/common';
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
+import { TagComponent } from '@components/tag/tag.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
 import { VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -8,15 +13,10 @@ import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { IconComponent } from '../../../../components/icon/icon.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { TagComponent } from '../../../../components/tag/tag.component';
-import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-tech-record-title[vehicle]',
@@ -38,6 +38,11 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class TechRecordTitleComponent implements OnInit {
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store);
+	technicalRecordService = inject(TechnicalRecordService);
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly vehicle = input<any>();
 	readonly actions = input<TechRecordActions>(TechRecordActions.NONE);
@@ -47,13 +52,6 @@ export class TechRecordTitleComponent implements OnInit {
 	currentTechRecord$?: Observable<TechRecordType<'get'> | undefined>;
 	queryableActions: string[] = [];
 	vehicleMakeAndModel = '';
-
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store,
-		private technicalRecordService: TechnicalRecordService
-	) {}
 
 	ngOnInit(): void {
 		this.queryableActions = this.actions().split(',');

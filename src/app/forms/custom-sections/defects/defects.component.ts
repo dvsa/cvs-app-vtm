@@ -1,16 +1,15 @@
-import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { Defect } from '@models/defects/defect.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { Subscription, debounceTime } from 'rxjs';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-defects[defects][template]',
@@ -18,6 +17,8 @@ import { TagComponent } from '../../../components/tag/tag.component';
 	imports: [FormsModule, ReactiveFormsModule, RouterLink, TagComponent, ButtonComponent, TruncatePipe],
 })
 export class DefectsComponent implements OnInit, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	readonly isEditing = input(false);
 	readonly defects = input.required<Defect[] | null>();
 	readonly template = input.required<FormNode>();
@@ -28,8 +29,6 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	public form!: CustomFormGroup;
 	private formSubscription = new Subscription();
 	private defectsFormArray?: CustomFormArray;
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(this.template(), this.data()) as CustomFormGroup;

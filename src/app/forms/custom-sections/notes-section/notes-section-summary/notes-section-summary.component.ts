@@ -1,7 +1,7 @@
-import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { Component, inject } from '@angular/core';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordChangesService } from '@services/technical-record/technical-record-change.service';
 import { editingTechRecord } from '@store/technical-records';
 
 @Component({

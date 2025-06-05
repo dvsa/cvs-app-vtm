@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
@@ -17,7 +17,6 @@ import {
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
 
 @Component({
@@ -27,6 +26,8 @@ import { SwitchableInputComponent } from '../../components/switchable-input/swit
 	imports: [SwitchableInputComponent],
 })
 export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	readonly techRecord = input.required<TechRecordType<'hgv' | 'psv' | 'trl'>>();
 	readonly isEditing = input(false);
 	readonly formChange = output<Record<string, any> | [][]>();
@@ -38,8 +39,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
 	protected approvalTypeChange = false;
 	protected approvalType: typeof approvalTypeHgvOrPsv | typeof approvalType = approvalType;
 	formControls: { [key: string]: FormControl } = {};
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit() {
 		const techRecord = this.techRecord();

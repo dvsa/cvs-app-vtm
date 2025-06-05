@@ -2,29 +2,29 @@ import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, output, viewChildren } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
+import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { NoSpaceDirective } from '../../../../directives/app-no-space/app-no-space.directive';
-import { ToUppercaseDirective } from '../../../../directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '../../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { FieldWarningMessageComponent } from '../../../../forms/components/field-warning-message/field-warning-message.component';
-import { TextInputComponent } from '../../../../forms/components/text-input/text-input.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-change-amend-vrm',
@@ -46,6 +46,13 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
+	actions$ = inject(Actions);
+	dfs = inject(DynamicFormService);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject<Store<TechnicalRecordServiceState>>(Store<TechnicalRecordServiceState>);
+
 	techRecord?: VehiclesOtherThan<'trl'>;
 	makeAndModel?: string;
 	isCherishedTransfer = false;
@@ -113,15 +120,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	readonly sections = viewChildren(DynamicFormGroupComponent);
 
 	private destroy$ = new Subject<void>();
-
-	constructor(
-		private actions$: Actions,
-		public dfs: DynamicFormService,
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>
-	) {}
 
 	ngOnInit(): void {
 		this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {

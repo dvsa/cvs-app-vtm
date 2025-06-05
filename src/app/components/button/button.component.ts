@@ -1,7 +1,7 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLinkWithHref } from '@angular/router';
-import { PreventDoubleClickDirective } from '../../directives/prevent-double-click/prevent-double-click.directive';
+import { PreventDoubleClickDirective } from '@directives/prevent-double-click/prevent-double-click.directive';
 
 @Component({
 	selector: 'app-button',

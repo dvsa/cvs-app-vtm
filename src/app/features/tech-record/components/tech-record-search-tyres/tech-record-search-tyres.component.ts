@@ -1,18 +1,23 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeByVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { SelectComponent } from '@forms/components/select/select.component';
 import { MultiOptions } from '@models/options.model';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TyreAxleLoadPipe } from '@pipes/tyre-axle-load/tyre-axle-load.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -21,11 +26,6 @@ import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearch
 import { selectSearchReturn } from '@store/reference-data/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, mergeMap, take } from 'rxjs';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
-import { SelectComponent } from '../../../../forms/components/select/select.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { TyreAxleLoadPipe } from '../../../../pipes/tyre-axle-load/tyre-axle-load.pipe';
 
 @Component({
 	selector: 'app-tyres-search',
@@ -44,24 +44,22 @@ import { TyreAxleLoadPipe } from '../../../../pipes/tyre-axle-load/tyre-axle-loa
 	],
 })
 export class TechRecordSearchTyresComponent implements OnInit {
+	cdr = inject(ChangeDetectorRef);
+	dfs = inject(DynamicFormService);
+	globalErrorService = inject(GlobalErrorService);
+	referenceDataService = inject(ReferenceDataService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	technicalRecordService = inject(TechnicalRecordService);
+	store = inject(Store<TechnicalRecordServiceState>);
+	actions$ = inject(Actions);
+
 	options?: MultiOptions = [
 		{ label: 'Tyre code', value: 'code' },
 		{ label: 'Ply rating', value: 'plyrating' },
 		{ label: 'Single load index', value: 'singleload' },
 		{ label: 'Double load index', value: 'doubleload' },
 	];
-
-	constructor(
-		private cdr: ChangeDetectorRef,
-		public dfs: DynamicFormService,
-		public globalErrorService: GlobalErrorService,
-		private referenceDataService: ReferenceDataService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private technicalRecordService: TechnicalRecordService,
-		private store: Store<TechnicalRecordServiceState>,
-		private actions$: Actions
-	) {}
 
 	public form!: CustomFormGroup;
 	public searchResults: Array<ReferenceDataTyre> | null = null;

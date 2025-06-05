@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TextAreaComponent } from '@forms/components/text-area/text-area.component';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
@@ -15,8 +17,6 @@ import {
 	promoteTechRecordSuccess,
 } from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 @Component({
@@ -25,31 +25,25 @@ import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title
 	imports: [TechRecordTitleComponent, FormsModule, ReactiveFormsModule, TextAreaComponent, ButtonComponent],
 })
 export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
+	actions$ = inject(Actions);
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<State>);
+	technicalRecordService = inject(TechnicalRecordService);
+
 	techRecord: TechRecordType<'get'> | undefined;
 
-	form: CustomFormGroup;
+	form = new CustomFormGroup(
+		{ name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
+		{
+			reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
+		}
+	);
 
 	isPromotion = false;
 
 	destroy$ = new Subject<void>();
-
-	constructor(
-		private actions$: Actions,
-		private errorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<State>,
-		private technicalRecordService: TechnicalRecordService
-	) {
-		this.form = new CustomFormGroup(
-			{ name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
-			{
-				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [
-					Validators.required,
-				]),
-			}
-		);
-	}
 
 	ngOnInit(): void {
 		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {

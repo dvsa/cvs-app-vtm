@@ -1,4 +1,3 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
@@ -10,6 +9,16 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PaginationComponent } from '@components/pagination/pagination.component';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
+import { GovukCheckboxDirective } from '@directives/govuk-checkbox/govuk-checkbox.directive';
+import { GovukDateInputDirective } from '@directives/govuk-date-input/govuk-date-input.directive';
+import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directive';
+import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
+import { GovukSelectDirective } from '@directives/govuk-select/govuk-select.directive';
+import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
@@ -24,20 +33,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
-import { NumberOnlyDirective } from '../../../../directives/app-number-only/app-number-only.directive';
-import { DateFocusNextDirective } from '../../../../directives/date-focus-next/date-focus-next.directive';
-import { GovukCheckboxDirective } from '../../../../directives/govuk-checkbox/govuk-checkbox.directive';
-import { GovukDateInputDirective } from '../../../../directives/govuk-date-input/govuk-date-input.directive';
-import { GovukInputDirective } from '../../../../directives/govuk-input/govuk-input.directive';
-import { GovukRadioDirective } from '../../../../directives/govuk-radio/govuk-radio.directive';
-import { GovukSelectDirective } from '../../../../directives/govuk-select/govuk-select.directive';
-import { GovukTextareaDirective } from '../../../../directives/govuk-textarea/govuk-textarea.directive';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { CharacterCountComponent } from '../../../components/character-count/character-count.component';
 import { ControlErrorsComponent } from '../../../components/control-errors/control-errors.component';
 import { DateControlsComponent } from '../../../components/date-controls/date-controls.component';

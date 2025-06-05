@@ -1,9 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, viewChildren } from '@angular/core';
+import { Component, OnInit, inject, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import {
+	DynamicFormGroupComponent,
+	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
+} from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
@@ -12,10 +18,6 @@ import { CustomFormGroup, FormNodeWidth } from '@services/dynamic-forms/dynamic-
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
-import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
-import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../forms/components/dynamic-form-group/dynamic-form-group.component';
 
 @Component({
 	selector: 'app-reference-data-add',
@@ -23,6 +25,13 @@ import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
 export class ReferenceDataCreateComponent implements OnInit {
+	globalErrorService = inject(GlobalErrorService);
+	dfs = inject(DynamicFormService);
+	referenceDataService = inject(ReferenceDataService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<ReferenceDataState>);
+
 	type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	newRefData: any;
@@ -32,15 +41,6 @@ export class ReferenceDataCreateComponent implements OnInit {
 	isFormInvalid = true;
 
 	readonly sections = viewChildren(DynamicFormGroupComponent);
-
-	constructor(
-		public globalErrorService: GlobalErrorService,
-		public dfs: DynamicFormService,
-		private referenceDataService: ReferenceDataService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<ReferenceDataState>
-	) {}
 
 	ngOnInit(): void {
 		this.route.parent?.params.pipe(take(1)).subscribe((params) => {

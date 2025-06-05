@@ -7,7 +7,6 @@ import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
-
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 
 @Component({

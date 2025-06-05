@@ -1,7 +1,8 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -20,7 +21,6 @@ import {
 import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
-import { ButtonComponent } from '../../../../../components/button/button.component';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { TechRecordTitleComponent } from '../../../components/tech-record-title/tech-record-title.component';
 
@@ -30,23 +30,21 @@ import { TechRecordTitleComponent } from '../../../components/tech-record-title/
 	imports: [TechRecordTitleComponent, ButtonComponent, TechRecordSummaryComponent, AsyncPipe],
 })
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
+	actions$ = inject(Actions);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<TechnicalRecordServiceState>);
+	technicalRecordService = inject(TechnicalRecordService);
+	batchTechRecordService = inject(BatchTechnicalRecordService);
+	userService$ = inject(UserService);
+
 	readonly summary = viewChild(TechRecordSummaryComponent);
 	isInvalid = false;
 	batchForm?: FormGroup;
 	username = '';
 
 	private destroy$ = new Subject<void>();
-
-	constructor(
-		private actions$: Actions,
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService,
-		private batchTechRecordService: BatchTechnicalRecordService,
-		public userService$: UserService
-	) {}
 
 	ngOnInit(): void {
 		this.actions$

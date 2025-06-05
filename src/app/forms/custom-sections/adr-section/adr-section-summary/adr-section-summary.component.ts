@@ -1,13 +1,13 @@
-import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { DatePipe } from '@angular/common';
 import { Component, Signal, inject } from '@angular/core';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
+import { TechnicalRecordChangesService } from '@services/technical-record/technical-record-change.service';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 type ADRTechRecord = TechRecordType<'hgv' | 'trl' | 'lgv'> & {
 	techRecord_adrDetails_additionalExaminerNotes_note: string;

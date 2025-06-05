@@ -1,11 +1,17 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { BannerComponent } from '@components/banner/banner.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
-import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
+import {
+	AbandonDialogComponent,
+	AbandonDialogComponent as AbandonDialogComponent_1,
+} from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -22,10 +28,6 @@ import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, of, take, takeUntil, tap } from 'rxjs';
-import { BannerComponent } from '../../../../../components/banner/banner.component';
-import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../../components/button/button.component';
-import { AbandonDialogComponent as AbandonDialogComponent_1 } from '../../../../../forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -42,6 +44,17 @@ import { BaseTestRecordComponent } from '../../../components/base-test-record/ba
 	],
 })
 export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
+	actions$ = inject(Actions);
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	routerService = inject(RouterService);
+	testRecordsService = inject(TestRecordsService);
+	cdr = inject(ChangeDetectorRef);
+	resultOfTestService = inject(ResultOfTestService);
+	store = inject<Store<State>>(Store<State>);
+	warningService = inject(GlobalWarningService);
+
 	baseTestRecordComponent = viewChild(BaseTestRecordComponent);
 	abandonDialog = viewChild(AbandonDialogComponent);
 
@@ -53,18 +66,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 	testTypeId?: string;
 	techRecord: V3TechRecordModel | undefined = undefined;
 
-	constructor(
-		private actions$: Actions,
-		private errorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private routerService: RouterService,
-		private testRecordsService: TestRecordsService,
-		private cdr: ChangeDetectorRef,
-		private resultOfTestService: ResultOfTestService,
-		private store: Store<State>,
-		private warningService: GlobalWarningService
-	) {
+	constructor() {
 		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 	}
 

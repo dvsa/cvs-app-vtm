@@ -1,14 +1,14 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PaginationComponent } from '@components/pagination/pagination.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { fetchReferenceDataAudit, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
 import { Observable, map, take } from 'rxjs';
-import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
 
 @Component({
 	selector: 'app-reference-data-deleted-list',
@@ -16,17 +16,14 @@ import { RoleRequiredDirective } from '../../../directives/app-role-required/app
 	imports: [RoleRequiredDirective, PaginationComponent, AsyncPipe, DatePipe],
 })
 export class ReferenceDataDeletedListComponent implements OnInit {
+	referenceDataService = inject(ReferenceDataService);
+	route = inject(ActivatedRoute);
+	store = inject(Store);
+	cdr = inject(ChangeDetectorRef);
+
 	type!: ReferenceDataResourceType;
 	pageStart?: number;
 	pageEnd?: number;
-
-	constructor(
-		private referenceDataService: ReferenceDataService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store,
-		private cdr: ChangeDetectorRef
-	) {}
 
 	ngOnInit(): void {
 		this.route.parent?.params.pipe(take(1)).subscribe((params) => {

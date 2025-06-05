@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
 import { techRecord } from '@store/technical-records';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-adr-section-view',

@@ -1,5 +1,14 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, input, model } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	OnDestroy,
+	OnInit,
+	inject,
+	input,
+	model,
+} from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
 
@@ -11,6 +20,9 @@ import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
 	imports: [RouterLink, NgClass, RouterLinkActive],
 })
 export class PaginationComponent implements OnInit, OnDestroy {
+	route = inject(ActivatedRoute);
+	cdr = inject(ChangeDetectorRef);
+
 	readonly tableName = input.required<string>();
 	readonly numberOfItems = input(0);
 	readonly itemsPerPage = input(5);
@@ -28,11 +40,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
 	_pages?: Array<number>;
 
 	private destroy$ = new Subject<void>();
-
-	constructor(
-		private route: ActivatedRoute,
-		private cdr: ChangeDetectorRef
-	) {}
 
 	ngOnInit(): void {
 		this.route.queryParams

@@ -7,8 +7,6 @@ export class FocusOnCharacterLimitDirective {
 	@Input() nextElement: ElementRef | undefined;
 	@Input() characterLimit = 0;
 
-	constructor(private el: ElementRef) {}
-
 	@HostListener('input', ['$event.target.value'])
 	onInput(value: string): void {
 		if (value.length >= this.characterLimit && this.nextElement) {

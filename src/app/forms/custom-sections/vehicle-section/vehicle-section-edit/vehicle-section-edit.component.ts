@@ -1,4 +1,3 @@
-import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
@@ -49,6 +48,7 @@ import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-t
 import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { updateVehicleConfiguration } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { GovukCheckboxGroupComponent } from '../../../components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupDateComponent } from '../../../components/govuk-form-group-date/govuk-form-group-date.component';

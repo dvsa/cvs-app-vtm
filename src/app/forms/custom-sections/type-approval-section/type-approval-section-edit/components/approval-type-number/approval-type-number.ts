@@ -1,13 +1,3 @@
-import { ApprovalTypeFocusNextDirective } from '@/src/app/directives/approval-type-focus-next/approval-type-focus-next.directive';
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
-import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import {
-	APPROVAL_NUMBER_TYPE_REGEX,
-	APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT,
-	APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT_GENERIC,
-	APPROVAL_TYPE_NUMBER_REGEX_GENERIC_PARTIAL_MATCH,
-	APPROVAL_TYPE_NUMBER_REGEX_PARTIAL_MATCH,
-} from '@/src/app/models/approval-type.model';
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, SimpleChanges, forwardRef, inject, input, model } from '@angular/core';
 import {
@@ -19,9 +9,18 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
+import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import {
+	APPROVAL_NUMBER_TYPE_REGEX,
+	APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT,
+	APPROVAL_TYPE_NUMBER_CHARACTER_LIMIT_GENERIC,
+	APPROVAL_TYPE_NUMBER_REGEX_GENERIC_PARTIAL_MATCH,
+	APPROVAL_TYPE_NUMBER_REGEX_PARTIAL_MATCH,
+} from '@models/approval-type.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({

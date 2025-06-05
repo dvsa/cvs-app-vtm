@@ -1,13 +1,13 @@
-import { Directive, ElementRef, HostListener, input } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input } from '@angular/core';
 
 @Directive({
 	selector: '[appFocusNext]',
 	standalone: true,
 })
 export class DateFocusNextDirective {
-	readonly displayTime = input(false);
+	el = inject(ElementRef);
 
-	constructor(private el: ElementRef) {}
+	readonly displayTime = input(false);
 
 	@HostListener('input', ['$event'])
 	onInput() {

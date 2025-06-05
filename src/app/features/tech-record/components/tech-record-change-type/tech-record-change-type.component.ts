@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { SelectComponent } from '@forms/components/select/select.component';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@models/options.model';
-import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-
-import { UpperCasePipe } from '@angular/common';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { SelectComponent } from '../../../../forms/components/select/select.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-change-vehicle-type',
@@ -35,25 +34,23 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<TechnicalRecordServiceState>);
+	technicalRecordService = inject(TechnicalRecordService);
+
 	readonly VehicleTypes = VehicleTypes;
 	techRecord?: V3TechRecordModel;
 	makeAndModel?: string;
 
-	form: FormGroup = new FormGroup({
+	form = new FormGroup({
 		selectVehicleType: new CustomFormControl(
 			{ name: 'change-vehicle-type-select', label: 'Select a new vehicle type', type: FormNodeTypes.CONTROL },
 			'',
 			[Validators.required]
 		),
 	});
-
-	constructor(
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService
-	) {}
 
 	ngOnInit(): void {
 		this.globalErrorService.clearErrors();

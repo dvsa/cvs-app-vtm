@@ -7,11 +7,10 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
+import { TagDirective } from '@directives/tag/tag.directive';
 import { MultiOption } from '@models/options.model';
 import { CustomTag } from '@services/dynamic-forms/dynamic-form.types';
-
-import { TagDirective } from '@directives/tag/tag.directive';
-import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-radio',

@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import {
 	TechRecordPSV,
@@ -22,7 +22,6 @@ import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, Subject, debounceTime, of, switchMap, takeUntil, withLatestFrom } from 'rxjs';
-
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input.component';
 
 @Component({
@@ -32,6 +31,11 @@ import { SwitchableInputComponent } from '../../components/switchable-input/swit
 	imports: [SwitchableInputComponent],
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
+	dfs = inject(DynamicFormService);
+	optionsService = inject(MultiOptionsService);
+	referenceDataStore = inject(Store<ReferenceDataState>);
+	store = inject(Store<TechnicalRecordServiceState>);
+
 	readonly vehicleTechRecord = input<TechRecordType<'psv'>>();
 	readonly isEditing = input(false);
 
@@ -43,13 +47,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	selectedBrake?: Brake;
 
 	private destroy$ = new Subject<void>();
-
-	constructor(
-		private dfs: DynamicFormService,
-		private optionsService: MultiOptionsService,
-		private referenceDataStore: Store<ReferenceDataState>,
-		private store: Store<TechnicalRecordServiceState>
-	) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord()) as CustomFormGroup;

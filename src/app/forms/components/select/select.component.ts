@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
-import { TagComponent } from '../../../components/tag/tag.component';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 

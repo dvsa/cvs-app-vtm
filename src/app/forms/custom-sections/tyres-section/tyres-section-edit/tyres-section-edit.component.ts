@@ -1,32 +1,27 @@
-import { TagType } from '@/src/app/components/tag/tag.component';
+import { KeyValuePipe, ViewportScroller } from '@angular/common';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TagComponent, TagType } from '@components/tag/tag.component';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import {
 	FITMENT_CODE_OPTIONS,
 	HGV_TYRE_USE_CODE_OPTIONS,
 	SPEED_CATEGORY_SYMBOL_OPTIONS,
 	TRL_TYRE_USE_CODE_OPTIONS,
-} from '@/src/app/models/options.model';
-import {
-	ReferenceDataResourceType,
-	ReferenceDataTyre,
-	ReferenceDataTyreLoadIndex,
-} from '@/src/app/models/reference-data.model';
-import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
-import { addAxle, removeAxle, updateScrollPosition } from '@/src/app/store/technical-records';
-import { KeyValuePipe, ViewportScroller } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+} from '@models/options.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { ReplaySubject, combineLatest, filter, takeUntil, withLatestFrom } from 'rxjs';
-import { TagComponent } from '../../../../components/tag/tag.component';
 import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';

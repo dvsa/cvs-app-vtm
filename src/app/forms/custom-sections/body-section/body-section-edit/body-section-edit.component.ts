@@ -1,4 +1,3 @@
-import { updateVehicleConfiguration } from '@/src/app/store/technical-records';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import {
@@ -30,6 +29,7 @@ import { MultiOptionsService } from '@services/multi-options/multi-options.servi
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
+import { updateVehicleConfiguration } from '@store/technical-records';
 import { Observable, ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
 import { GovukFormGroupAutocompleteComponent } from '../../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';

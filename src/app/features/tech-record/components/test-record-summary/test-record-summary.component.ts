@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
 
 interface TestField {
 	testTypeStartTimestamp: string | Date;
@@ -23,13 +23,13 @@ interface TestField {
 	imports: [RouterLink, PaginationComponent, DatePipe],
 })
 export class TestRecordSummaryComponent {
+	cdr = inject(ChangeDetectorRef);
+
 	readonly isEditing = input(false);
 	readonly testResults = input<TestResultModel[]>([]);
 
 	pageStart?: number;
 	pageEnd?: number;
-
-	constructor(private cdr: ChangeDetectorRef) {}
 
 	public get roles(): typeof Roles {
 		return Roles;

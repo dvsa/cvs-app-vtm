@@ -10,10 +10,10 @@ import {
 } from '@models/options.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { MultiOptionPipe } from '@pipes/multi-option/multi-option.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { MultiOptionPipe } from '../../../../pipes/multi-option/multi-option.pipe';
 
 @Component({
 	selector: 'app-vehicle-section-view',

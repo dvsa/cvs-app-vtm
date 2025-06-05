@@ -1,22 +1,22 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { Store, select } from '@ngrx/store';
+import * as UserServiceActions from '@store/user/user-service.actions';
+import * as UserServiceState from '@store/user/user-service.reducer';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import * as UserServiceActions from '../../store/user/user-service.actions';
-import * as UserServiceState from '../../store/user/user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
+	store = inject(Store);
+	msalBroadcastService = inject(MsalBroadcastService);
+	msal = inject(MsalService);
+
 	private readonly destroying$ = new Subject<void>();
 
-	constructor(
-		private store: Store,
-		private msalBroadcastService: MsalBroadcastService,
-		private msal: MsalService
-	) {
+	constructor() {
 		this.msalBroadcastService.msalSubject$
 			.pipe(
 				filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),

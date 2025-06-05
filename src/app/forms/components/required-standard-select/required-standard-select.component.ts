@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	DefectGETRequiredStandards,
@@ -8,10 +8,10 @@ import {
 } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { RequiredStandardState } from '@store/required-standards/required-standards.reducer';
 import { getRequiredStandardsState } from '@store/required-standards/required-standards.selector';
 import { Subject, takeUntil } from 'rxjs';
-import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-required-standard-select',
@@ -20,6 +20,10 @@ import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default
 	imports: [NgClass, DefaultNullOrEmpty],
 })
 export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
+	requiredStandardsStore = inject(Store<RequiredStandardState>);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
 	requiredStandards?: RequiredStandardTaxonomySection[];
 	normalAndBasic?: boolean;
 	isEditing = false;
@@ -29,12 +33,6 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	basicAndNormalRequiredStandards?: DefectGETRequiredStandards;
 
 	onDestroy$ = new Subject();
-
-	constructor(
-		private requiredStandardsStore: Store<RequiredStandardState>,
-		private router: Router,
-		private route: ActivatedRoute
-	) {}
 
 	ngOnInit(): void {
 		this.requiredStandardsStore

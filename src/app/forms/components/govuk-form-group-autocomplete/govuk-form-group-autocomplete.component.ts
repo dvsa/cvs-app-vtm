@@ -18,15 +18,14 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-
+import { TagComponent } from '@components/tag/tag.component';
 import { TagDirective } from '@directives/tag/tag.directive';
+import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
 } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
-import { TagComponent } from '../../../components/tag/tag.component';
 import { CommonValidatorsService } from '../../validators/common-validators.service';
 @Component({
 	selector: 'govuk-form-group-autocomplete',

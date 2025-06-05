@@ -1,10 +1,10 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TagComponent } from '../../../components/tag/tag.component';
-import { NumberOnlyDirective } from '../../../directives/app-number-only/app-number-only.directive';
-import { ToUppercaseDirective } from '../../../directives/app-to-uppercase/app-to-uppercase.directive';
+import { TagComponent } from '@components/tag/tag.component';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 

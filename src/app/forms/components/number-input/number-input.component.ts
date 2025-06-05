@@ -1,9 +1,9 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { AfterContentInit, Component, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TagComponent } from '../../../components/tag/tag.component';
-import { DecimalOnlyDirective } from '../../../directives/app-decimal-only/app-decimal-only.directive';
-import { NumberOnlyDirective } from '../../../directives/app-number-only/app-number-only.directive';
+import { TagComponent } from '@components/tag/tag.component';
+import { DecimalOnlyDirective } from '@directives/app-decimal-only/app-decimal-only.directive';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from '../field-warning-message/field-warning-message.component';

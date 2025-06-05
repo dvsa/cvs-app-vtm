@@ -1,13 +1,19 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RequiredStandardsTpl } from '@forms/templates/general/required-standards.template';
 import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { Store, select } from '@ngrx/store';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import {
+	DefaultNullOrEmpty,
+	DefaultNullOrEmpty as DefaultNullOrEmpty_1,
+} from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
@@ -21,10 +27,6 @@ import {
 	updateRequiredStandard,
 } from '@store/test-records';
 import { Subject, distinctUntilChanged, takeUntil, withLatestFrom } from 'rxjs';
-import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { TagComponent } from '../../../components/tag/tag.component';
-import { DefaultNullOrEmpty as DefaultNullOrEmpty_1 } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
 
 @Component({
@@ -44,25 +46,21 @@ import { TextAreaComponent } from '../../components/text-area/text-area.componen
 	],
 })
 export class RequiredStandardComponent implements OnInit, OnDestroy {
+	store = inject(Store);
+	activatedRoute = inject(ActivatedRoute);
+	resultService = inject(ResultOfTestService);
+	router = inject(Router);
+	dfs = inject(DynamicFormService);
+	errorService = inject(GlobalErrorService);
+
 	form!: CustomFormGroup;
 	index!: number;
 	requiredStandard?: TestResultRequiredStandard;
 	onDestroy$ = new Subject();
-	isEditing: boolean;
+	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	amendingRs?: boolean;
 
 	private requiredStandardForm?: CustomFormArray;
-
-	constructor(
-		private store: Store,
-		private activatedRoute: ActivatedRoute,
-		private resultService: ResultOfTestService,
-		private router: Router,
-		private dfs: DynamicFormService,
-		private errorService: GlobalErrorService
-	) {
-		this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
-	}
 
 	ngOnInit(): void {
 		const inspectionType = this.store.pipe(select(selectRouteParam('inspectionType')));

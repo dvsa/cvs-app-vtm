@@ -6,6 +6,7 @@ import {
 	OnDestroy,
 	OnInit,
 	SimpleChanges,
+	inject,
 	input,
 	output,
 } from '@angular/core';
@@ -45,6 +46,8 @@ import { ViewListItemComponent } from '../view-list-item/view-list-item.componen
 	],
 })
 export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly data = input<any>({});
 	readonly template = input<FormNode>();
@@ -58,8 +61,6 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 	);
 
 	private destroy$ = new Subject<void>();
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		const { template, data } = changes;

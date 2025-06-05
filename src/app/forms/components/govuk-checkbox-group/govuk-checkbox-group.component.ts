@@ -1,10 +1,9 @@
-import { CustomTag } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, inject, input, model, output } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { TagComponent } from '@components/tag/tag.component';
 import { TagDirective } from '@directives/tag/tag.directive';
-import { TagComponent } from '../../../components/tag/tag.component';
+import { CustomTag } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'govuk-checkbox-group',

@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonComponent } from '@components/button/button.component';
 import { CustomDefect } from '@models/test-results/customDefect';
 import { CustomDefects } from '@models/test-results/customDefects';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { Subscription } from 'rxjs';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent } from '../../../components/button/button.component';
 import { CustomDefectComponent } from '../custom-defect/custom-defect.component';
 
 @Component({
@@ -16,6 +15,8 @@ import { CustomDefectComponent } from '../custom-defect/custom-defect.component'
 	imports: [FormsModule, ReactiveFormsModule, CustomDefectComponent, ButtonComponent],
 })
 export class CustomDefectsComponent implements OnInit, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	readonly isEditing = input(false);
 	readonly template = input.required<FormNode>();
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,8 +27,6 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
 
 	private formSubscription = new Subscription();
 	defectNameType?: string;
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(this.template(), this.data()) as CustomFormGroup;

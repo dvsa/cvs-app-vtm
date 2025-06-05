@@ -1,4 +1,3 @@
-import { AuditSectionComponent } from '@/src/app/forms/custom-sections/audit-section/audit-section.component';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -14,25 +13,59 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
+import { AccordionComponent } from '@components/accordion/accordion.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import {
+	DynamicFormGroupComponent,
+	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
+} from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AdrCertsSectionComponent } from '@forms/custom-sections/adr-certs-section/adr-certs-section.component';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { AdrSectionComponent } from '@forms/custom-sections/adr-section/adr-section.component';
+import {
+	ApprovalTypeComponent,
+	ApprovalTypeComponent as ApprovalTypeComponent_1,
+} from '@forms/custom-sections/approval-type/approval-type.component';
+import { AuditSectionComponent } from '@forms/custom-sections/audit-section/audit-section.component';
 import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-section.component';
+import { BodySectionComponent } from '@forms/custom-sections/body-section/body-section.component';
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
-import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
+import { DimensionsSectionComponent } from '@forms/custom-sections/dimensions-section/dimensions-section.component';
+import {
+	DimensionsComponent,
+	DimensionsComponent as DimensionsComponent_1,
+} from '@forms/custom-sections/dimensions/dimensions.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
+import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
 import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
-import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
+import {
+	LettersComponent,
+	LettersComponent as LettersComponent_1,
+} from '@forms/custom-sections/letters/letters.component';
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
-import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
-import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
+import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
+import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
+import { PlatesComponent } from '@forms/custom-sections/plates/plates.component';
+import {
+	PsvBrakesComponent,
+	PsvBrakesComponent as PsvBrakesComponent_1,
+} from '@forms/custom-sections/psv-brakes/psv-brakes.component';
+import {
+	TrlBrakesComponent,
+	TrlBrakesComponent as TrlBrakesComponent_1,
+} from '@forms/custom-sections/trl-brakes/trl-brakes.component';
+import { TRLPurchasersSectionComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
+import { TypeApprovalSectionComponent } from '@forms/custom-sections/type-approval-section/type-approval-section.component';
+import { TyresSectionComponent } from '@forms/custom-sections/tyres-section/tyres-section.component';
+import { VehicleSectionComponent } from '@forms/custom-sections/vehicle-section/vehicle-section.component';
+import { WeightsSectionComponent } from '@forms/custom-sections/weights-section/weights-section.component';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -47,27 +80,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
-import { AccordionControlComponent } from '../../../../components/accordion-control/accordion-control.component';
-import { AccordionComponent } from '../../../../components/accordion/accordion.component';
-import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
-import { AdrCertificateHistoryComponent } from '../../../../forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
-import { AdrSectionComponent } from '../../../../forms/custom-sections/adr-section/adr-section.component';
-import { ApprovalTypeComponent as ApprovalTypeComponent_1 } from '../../../../forms/custom-sections/approval-type/approval-type.component';
-import { BodySectionComponent } from '../../../../forms/custom-sections/body-section/body-section.component';
-import { DimensionsSectionComponent } from '../../../../forms/custom-sections/dimensions-section/dimensions-section.component';
-import { DimensionsComponent as DimensionsComponent_1 } from '../../../../forms/custom-sections/dimensions/dimensions.component';
-import { LastApplicantSectionComponent } from '../../../../forms/custom-sections/last-applicant-section/last-applicant-section.component';
-import { LettersComponent as LettersComponent_1 } from '../../../../forms/custom-sections/letters/letters.component';
-import { NotesSectionComponent } from '../../../../forms/custom-sections/notes-section/notes-section.component';
-import { PlatesSectionComponent } from '../../../../forms/custom-sections/plates-section/plates-section.component';
-import { PlatesComponent } from '../../../../forms/custom-sections/plates/plates.component';
-import { PsvBrakesComponent as PsvBrakesComponent_1 } from '../../../../forms/custom-sections/psv-brakes/psv-brakes.component';
-import { TrlBrakesComponent as TrlBrakesComponent_1 } from '../../../../forms/custom-sections/trl-brakes/trl-brakes.component';
-import { TRLPurchasersSectionComponent } from '../../../../forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
-import { TypeApprovalSectionComponent } from '../../../../forms/custom-sections/type-approval-section/type-approval-section.component';
-import { TyresSectionComponent } from '../../../../forms/custom-sections/tyres-section/tyres-section.component';
-import { VehicleSectionComponent } from '../../../../forms/custom-sections/vehicle-section/vehicle-section.component';
-import { WeightsSectionComponent } from '../../../../forms/custom-sections/weights-section/weights-section.component';
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',

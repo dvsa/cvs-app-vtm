@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -11,15 +14,12 @@ import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, Subscription, debounceTime, takeUntil } from 'rxjs';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
-import { RetrieveDocumentDirective } from '../../../directives/retrieve-document/retrieve-document.directive';
-import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-letters[techRecord]',
@@ -36,6 +36,13 @@ import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default
 	],
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
+	dynamicFormService = inject(DynamicFormService);
+	techRecordService = inject(TechnicalRecordService);
+	viewportScroller = inject(ViewportScroller);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+	store = inject(Store);
+
 	readonly techRecord = input<TechRecordType<'trl'>>();
 	readonly isEditing = input(false);
 
@@ -47,15 +54,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
 	private formSubscription = new Subscription();
 	private destroy$ = new ReplaySubject<boolean>(1);
-
-	constructor(
-		private dynamicFormService: DynamicFormService,
-		private techRecordService: TechnicalRecordService,
-		private viewportScroller: ViewportScroller,
-		private router: Router,
-		private route: ActivatedRoute,
-		private store: Store
-	) {}
 
 	ngOnInit(): void {
 		this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord()) as CustomFormGroup;

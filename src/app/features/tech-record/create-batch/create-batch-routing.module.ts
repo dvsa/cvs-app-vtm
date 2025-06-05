@@ -4,13 +4,13 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TechRecordCreateBatchRoutes } from '@models/routes.enum';
-import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { techRecordDataResolver } from '@resolvers/tech-record-data/tech-record-data.resolver';
 
 const routes: Routes = [
 	{
 		path: '',
 		loadComponent: () =>
-			import('../../../components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
+			import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
 		data: { roles: Roles.TechRecordCreate },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: {
@@ -29,7 +29,7 @@ const routes: Routes = [
 			{
 				path: TechRecordCreateBatchRoutes.RECORD,
 				loadComponent: () =>
-					import('../../../components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
+					import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
 				data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true },
 				children: [
 					{

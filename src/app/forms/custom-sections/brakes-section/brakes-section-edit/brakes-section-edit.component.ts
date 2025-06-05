@@ -1,6 +1,3 @@
-import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { selectBrakeByCode } from '@/src/app/store/reference-data';
-import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
@@ -18,8 +15,11 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Retarders, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectBrakeByCode } from '@store/reference-data';
+import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@store/technical-records';
 import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({

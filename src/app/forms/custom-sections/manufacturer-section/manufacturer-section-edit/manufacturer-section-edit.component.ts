@@ -1,12 +1,12 @@
-import { TagType } from '@/src/app/components/tag/tag.component';
-import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TagType } from '@components/tag/tag.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
 

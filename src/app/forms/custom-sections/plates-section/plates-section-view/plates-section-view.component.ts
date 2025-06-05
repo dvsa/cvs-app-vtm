@@ -1,7 +1,11 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -9,14 +13,10 @@ import { hgvRequiredFields, trlRequiredFields, tyreRequiredFields } from '@model
 import { Roles } from '@models/roles.enum';
 import { Axle, StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
-import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
-import { RetrieveDocumentDirective } from '../../../../directives/retrieve-document/retrieve-document.directive';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-plates-section-view',

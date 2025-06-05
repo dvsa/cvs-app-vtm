@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TextAreaComponent } from '@forms/components/text-area/text-area.component';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -13,7 +14,6 @@ import { State } from '@store/index';
 import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
-import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 @Component({
@@ -32,24 +32,23 @@ export class TechRecordChangeVisibilityComponent implements OnDestroy {
 	private routerService = inject(RouterService);
 
 	techRecord?: V3TechRecordModel = this.store.selectSignal(techRecord)();
-	form: CustomFormGroup;
+	form = new CustomFormGroup(
+		{ name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
+		{
+			reason: new CustomFormControl(
+				{
+					name: 'reason',
+					type: FormNodeTypes.CONTROL,
+					customErrorMessage: 'Why are you making this change?',
+				},
+				undefined,
+				[Validators.required]
+			),
+		}
+	);
 	private destroy$ = new Subject<void>();
 
 	constructor() {
-		this.form = new CustomFormGroup(
-			{ name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
-			{
-				reason: new CustomFormControl(
-					{
-						name: 'reason',
-						type: FormNodeTypes.CONTROL,
-						customErrorMessage: 'Why are you making this change?',
-					},
-					undefined,
-					[Validators.required]
-				),
-			}
-		);
 		this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
 			void this.router.navigate([
 				`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`,

@@ -1,7 +1,9 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -13,8 +15,6 @@ import { ResultOfTestService } from '@services/result-of-test/result-of-test.ser
 import { testResultInEdit } from '@store/test-records';
 import { isEqual } from 'lodash';
 import { Subject, Subscription, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-required-standards[template]',
@@ -22,6 +22,14 @@ import { TagComponent } from '../../../components/tag/tag.component';
 	imports: [FormsModule, ReactiveFormsModule, RouterLink, TagComponent, ButtonComponent, TruncatePipe],
 })
 export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges {
+	dfs = inject(DynamicFormService);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+	viewportScroller = inject(ViewportScroller);
+	globalErrorService = inject(GlobalErrorService);
+	resultService = inject(ResultOfTestService);
+	store = inject(Store);
+
 	readonly isEditing = input(false);
 	readonly template = input.required<FormNode>();
 	readonly testData = input<Partial<TestResultModel>>({});
@@ -34,16 +42,6 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
 	private requiredStandardsFormArray?: CustomFormArray;
 
 	onDestroy$ = new Subject();
-
-	constructor(
-		private dfs: DynamicFormService,
-		private router: Router,
-		private route: ActivatedRoute,
-		private viewportScroller: ViewportScroller,
-		private globalErrorService: GlobalErrorService,
-		private resultService: ResultOfTestService,
-		private store: Store
-	) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(this.template(), this.testData()) as CustomFormGroup;

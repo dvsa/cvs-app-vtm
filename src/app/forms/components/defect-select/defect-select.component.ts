@@ -1,8 +1,9 @@
 import { NgClass } from '@angular/common';
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-case-declarations */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TagComponent } from '@components/tag/tag.component';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
@@ -12,7 +13,6 @@ import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/test-records.reducer';
 import { Subject, filter, takeUntil } from 'rxjs';
-import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-defect-select',
@@ -21,6 +21,11 @@ import { TagComponent } from '../../../components/tag/tag.component';
 	imports: [NgClass, TagComponent],
 })
 export class DefectSelectComponent implements OnInit, OnDestroy {
+	testResultsStore = inject(Store<TestResultsState>);
+	defectsStore = inject(Store<DefectsState>);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
 	defects: Defect[] = [];
 	isEditing = false;
 	selectedDefect?: Defect;
@@ -29,13 +34,6 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	vehicleType!: VehicleTypes;
 
 	onDestroy$ = new Subject();
-
-	constructor(
-		private testResultsStore: Store<TestResultsState>,
-		private defectsStore: Store<DefectsState>,
-		private router: Router,
-		private route: ActivatedRoute
-	) {}
 
 	ngOnInit(): void {
 		this.testResultsStore

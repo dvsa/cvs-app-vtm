@@ -7,12 +7,11 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { TagDirective } from '@directives/tag/tag.directive';
-import { TagComponent } from '../../../components/tag/tag.component';
+import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'govuk-form-group-input',

@@ -1,4 +1,4 @@
-import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
 import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,
@@ -7,7 +7,6 @@ import {
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
-import { State } from '@store/index';
 import {
 	fetchReferenceData,
 	fetchReferenceDataByKeySearch,
@@ -19,7 +18,7 @@ import { Observable, Subject, asapScheduler, combineLatest, map, of, take } from
 
 @Pipe({ name: 'refDataDecode$' })
 export class RefDataDecodePipe implements PipeTransform, OnDestroy {
-	constructor(private store: Store<State>) {}
+	store = inject(Store);
 
 	private destroy$ = new Subject<void>();
 

@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
+import { editingTechRecord, techRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
-import { editingTechRecord, techRecord } from '../../store/technical-records';
 
 @Injectable({
 	providedIn: 'root',
