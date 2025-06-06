@@ -72,7 +72,12 @@ export class BatchVehicleTemplateComponent {
 			{ name: 'form-group', type: FormNodeTypes.GROUP },
 			{
 				vehicleStatus: new CustomFormControl(
-					{ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL, customErrorMessage: 'Vehicle status is required' },
+					{
+						name: 'change-vehicle-status-select',
+						label: 'Vehicle status',
+						type: FormNodeTypes.CONTROL,
+						customErrorMessage: 'Vehicle status is required',
+					},
 					'',
 					[Validators.required]
 				),
