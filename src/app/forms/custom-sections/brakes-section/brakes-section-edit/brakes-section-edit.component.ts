@@ -2,7 +2,7 @@ import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@/src/app/servi
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -11,15 +11,13 @@ import { GovukFormGroupCheckboxComponent } from '@forms/components/govuk-form-gr
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Retarders, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
@@ -35,14 +33,9 @@ import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, take
 		GovukFormGroupAutocompleteComponent,
 	],
 })
-export class BrakesSectionEditComponent implements OnInit, OnDestroy {
-	fb = inject(FormBuilder);
-	store = inject(Store);
+export class BrakesSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	actions = inject(Actions);
-	controlContainer = inject(ControlContainer);
-	technicalRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
-	commonValidators = inject(CommonValidatorsService);
 
 	FormNodeWidth = FormNodeWidth;
 	VehicleTypes = VehicleTypes;
@@ -67,7 +60,7 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
 
-		this.addControlsBasedOffVehicleType();
+		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		this.prepopulateAxles();
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
@@ -75,36 +68,16 @@ export class BrakesSectionEditComponent implements OnInit, OnDestroy {
 		this.handleAxleChanges();
 
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	addControlsBasedOffVehicleType() {
-		const vehicleControls = this.controlsBasedOffVehicleType;
-
-		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
-			this.form?.addControl(key, control, { emitEvent: false });
-		}
 	}
 
 	prepopulateAxles() {
