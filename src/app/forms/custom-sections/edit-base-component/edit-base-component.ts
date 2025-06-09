@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -29,8 +29,7 @@ export class EditBaseComponent {
 		}
 	}
 
-	// @ts-ignore
-	addControls(vehicleControls, form: FormGroup) {
+	addControls(vehicleControls: Record<string, AbstractControl>, form: FormGroup) {
 		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
 			form.addControl(key, control, { emitEvent: false });
 		}
