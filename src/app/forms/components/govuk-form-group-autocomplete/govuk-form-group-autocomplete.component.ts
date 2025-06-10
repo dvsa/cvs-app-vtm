@@ -10,21 +10,16 @@ import {
 	model,
 	output,
 } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { TagDirective } from '@directives/tag/tag.directive';
+import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
 } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
 import { TagComponent } from '../../../components/tag/tag.component';
-import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 @Component({
 	selector: 'govuk-form-group-autocomplete',
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective],
@@ -34,13 +29,13 @@ import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-
 		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => GovukFormGroupAutocompleteComponent), multi: true },
 	],
 })
-export class GovukFormGroupAutocompleteComponent extends GovukFormGroupBaseComponent
+export class GovukFormGroupAutocompleteComponent
+	extends GovukFormGroupBaseComponent
 	implements ControlValueAccessor, AfterViewInit, AfterContentInit, OnDestroy
 {
 	readonly blur = output<FocusEvent>();
 
 	readonly focus = output<FocusEvent>();
-
 
 	value = model<string | number | boolean | null>(null);
 

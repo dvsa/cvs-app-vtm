@@ -3,17 +3,11 @@ import { DateFocusNextDirective } from '@/src/app/directives/date-focus-next/dat
 
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, forwardRef, inject, input, model, output } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormBuilder,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagDirective } from '@directives/tag/tag.directive';
+import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { TagComponent } from '../../../components/tag/tag.component';
-import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 
 @Component({
 	selector: 'govuk-form-group-date',
@@ -36,7 +30,10 @@ import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-
 		},
 	],
 })
-export class GovukFormGroupDateComponent extends GovukFormGroupBaseComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class GovukFormGroupDateComponent
+	extends GovukFormGroupBaseComponent
+	implements ControlValueAccessor, OnInit, OnDestroy
+{
 	readonly blur = output<FocusEvent>();
 
 	readonly focus = output<FocusEvent>();
@@ -57,7 +54,6 @@ export class GovukFormGroupDateComponent extends GovukFormGroupBaseComponent imp
 	});
 
 	destroy = new ReplaySubject<boolean>(1);
-
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
