@@ -1,11 +1,9 @@
 import { NumberOnlyDirective } from '@/src/app/directives/app-number-only/app-number-only.directive';
 import { DateFocusNextDirective } from '@/src/app/directives/date-focus-next/date-focus-next.directive';
-import { CustomTag } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, forwardRef, inject, input, model, output } from '@angular/core';
 import {
-	ControlContainer,
 	ControlValueAccessor,
 	FormBuilder,
 	FormsModule,
@@ -15,6 +13,7 @@ import {
 import { TagDirective } from '@directives/tag/tag.directive';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { TagComponent } from '../../../components/tag/tag.component';
+import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 
 @Component({
 	selector: 'govuk-form-group-date',
@@ -37,29 +36,16 @@ import { TagComponent } from '../../../components/tag/tag.component';
 		},
 	],
 })
-export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class GovukFormGroupDateComponent extends GovukFormGroupBaseComponent implements ControlValueAccessor, OnInit, OnDestroy {
 	readonly blur = output<FocusEvent>();
 
 	readonly focus = output<FocusEvent>();
 
 	value = model<string | null>(null);
 
-	readonly tags = input<CustomTag[]>([]);
-
-	disabled = model(false);
-
 	readonly mode = input<Format>('yyyy-mm-dd');
 
-	readonly controlHint = input('', { alias: 'hint' });
-
-	readonly controlName = input('', { alias: 'formControlName' });
-
-	readonly controlLabel = input('', { alias: 'label' });
-
-	readonly controlId = input('', { alias: 'id' });
-
 	fb = inject(FormBuilder);
-	controlContainer = inject(ControlContainer);
 
 	form = this.fb.group({
 		year: this.fb.nonNullable.control<null | number>(null),
@@ -72,8 +58,6 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 
 	destroy = new ReplaySubject<boolean>(1);
 
-	onChange = (_: any) => {};
-	onTouched = () => {};
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
@@ -92,37 +76,9 @@ export class GovukFormGroupDateComponent implements ControlValueAccessor, OnInit
 		this.onChange(obj);
 	}
 
-	registerOnChange(fn: any): void {
-		this.onChange = fn;
-	}
-
-	registerOnTouched(fn: any): void {
-		this.onTouched = fn;
-	}
-
 	setDisabledState?(isDisabled: boolean): void {
 		this.disabled.set(isDisabled);
 		isDisabled ? this.form.disable() : this.form.enable();
-	}
-
-	get id() {
-		return this.controlId() || this.controlName();
-	}
-
-	get hintId() {
-		return `${this.id}-hint`;
-	}
-
-	get errorId() {
-		return `${this.id}-error`;
-	}
-
-	get control() {
-		return this.controlContainer.control?.get(this.controlName());
-	}
-
-	get hasError() {
-		return this.control?.invalid && this.control?.touched && this.control?.errors;
 	}
 
 	ngOnInit(): void {
