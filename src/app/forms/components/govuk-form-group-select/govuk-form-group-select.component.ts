@@ -1,16 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 
 import { TagDirective } from '@directives/tag/tag.directive';
-import { TagComponent } from '../../../components/tag/tag.component';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
+import { TagComponent } from '../../../components/tag/tag.component';
 
 @Component({
 	selector: 'govuk-form-group-select',
@@ -34,6 +29,11 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 	readonly options = input.required<MultiOptions>();
 
 	readonly allowNull = input(true);
+
+	get style(): string {
+		const width = this.width();
+		return `govuk-select ${width ? `govuk-input--width-${width}` : ''}`;
+	}
 
 	onBlur(event: FocusEvent) {
 		this.onTouched();

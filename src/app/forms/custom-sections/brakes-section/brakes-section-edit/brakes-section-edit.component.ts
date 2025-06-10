@@ -216,7 +216,7 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 		if (this.vehicleType === VehicleTypes.PSV) {
 			return this.psvOnlyFields;
 		}
-		return null;
+		return {};
 	}
 
 	public get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl | FormArray>> {
