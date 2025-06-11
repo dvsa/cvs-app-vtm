@@ -79,7 +79,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
+import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -159,8 +159,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	form: FormGroup = this.fb.group({});
 
+	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
+
 	ngOnInit(): void {
 		this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
+
+		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
+			this.isEditing = editing;
+		});
 
 		this.technicalRecordService.techRecord$
 			.pipe(
@@ -277,12 +283,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	}
 
 	get vehicleTemplates(): Array<FormNode> {
-		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
-			this.isEditing = editing;
-		});
-		if (!this.vehicleType) {
-			return [];
-		}
+		if (!this.vehicleType) return [];
+
 		return (
 			vehicleTemplateMap
 				.get(this.vehicleType)
@@ -297,10 +299,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	isSectionExpanded$(sectionName: string | number) {
 		return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
-	}
-
-	get isEditing$(): Observable<boolean> {
-		return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 	}
 
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {

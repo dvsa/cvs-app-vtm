@@ -56,6 +56,8 @@ export class VehicleHeaderComponent {
 	activatedRoute = inject(ActivatedRoute);
 	testRecordsService = inject(TestRecordsService);
 
+	techRecord$ = this.store.select(techRecord);
+
 	get test(): TestType | undefined {
 		return this.testResult()?.testTypes?.find((t) => this.testNumber() === t.testNumber);
 	}
@@ -66,10 +68,6 @@ export class VehicleHeaderComponent {
 
 	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
 		return `${reading ?? ''} ${(unit && (unit === 'kilometres' ? 'km' : 'mi')) ?? ''}`;
-	}
-
-	get techRecord$(): Observable<V3TechRecordModel | undefined> {
-		return this.store.select(techRecord);
 	}
 
 	get vehicleTypes() {

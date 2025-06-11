@@ -21,13 +21,11 @@ export class RouterService {
 	router = inject(Router);
 	activatedRoute = inject(ActivatedRoute);
 
-	get router$() {
-		return this.store.pipe(select(routerState));
-	}
-
-	get queryParams$(): Observable<Params> {
-		return this.store.pipe(select(selectQueryParams));
-	}
+	router$ = this.store.pipe(select(routerState));
+	queryParams$ = this.store.pipe(select(selectQueryParams));
+	routeNestedParams$ = this.store.pipe(select(selectRouteNestedParams));
+	routeEditable$ = this.store.pipe(select(routeEditable));
+	routeData$ = this.store.pipe(select(selectRouteData));
 
 	getQueryParam$(param: string) {
 		return this.store.pipe(select(selectQueryParam(param)));
@@ -37,20 +35,8 @@ export class RouterService {
 		return this.store.pipe(select(selectRouteParam(param)));
 	}
 
-	get routeNestedParams$() {
-		return this.store.pipe(select(selectRouteNestedParams));
-	}
-
 	getRouteNestedParam$(param: string): Observable<string | undefined> {
 		return this.routeNestedParams$.pipe(map((route) => route[`${param}`]));
-	}
-
-	get routeEditable$() {
-		return this.store.pipe(select(routeEditable));
-	}
-
-	get routeData$() {
-		return this.store.pipe(select(selectRouteData));
 	}
 
 	getRouteDataProperty$(property: string) {

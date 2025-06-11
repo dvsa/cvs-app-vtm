@@ -26,6 +26,8 @@ export class TechRecordHistoryComponent implements OnInit {
 	pageStart?: number;
 	pageEnd?: number;
 
+	techRecordHistory$ = this.store.select(selectTechRecordHistory);
+
 	ngOnInit(): void {
 		const currentTechRecord = this.currentTechRecord();
 		if (currentTechRecord) {
@@ -33,10 +35,6 @@ export class TechRecordHistoryComponent implements OnInit {
 				getBySystemNumber({ systemNumber: (currentTechRecord as TechRecordType<'get'>)?.systemNumber })
 			);
 		}
-	}
-
-	get techRecordHistory$() {
-		return this.store.select(selectTechRecordHistory);
 	}
 
 	get techRecordHistoryPage$(): Observable<TechRecordSearchSchema[]> {

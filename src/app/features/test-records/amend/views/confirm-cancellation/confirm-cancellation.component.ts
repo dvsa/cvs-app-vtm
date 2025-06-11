@@ -5,14 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TextAreaComponent } from '@forms/components/text-area/text-area.component';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 
 @Component({
@@ -41,6 +40,12 @@ export class ConfirmCancellationComponent implements OnDestroy {
 		}
 	);
 
+	testResult$ = this.store.pipe(select(selectedTestResultState));
+	testNumber$ = this.store.pipe(
+		select(selectRouteNestedParams),
+		map((params) => params['testNumber'])
+	);
+
 	private destroy$ = new Subject<void>();
 
 	constructor() {
@@ -58,17 +63,6 @@ export class ConfirmCancellationComponent implements OnDestroy {
 	navigateBack() {
 		this.globalErrorService.clearErrors();
 		this.location.back();
-	}
-
-	get testResult$(): Observable<TestResultModel | undefined> {
-		return this.store.pipe(select(selectedTestResultState));
-	}
-
-	get testNumber$(): Observable<string | undefined> {
-		return this.store.pipe(
-			select(selectRouteNestedParams),
-			map((params) => params['testNumber'])
-		);
 	}
 
 	handleSubmit() {

@@ -48,6 +48,8 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
 	private destroy$ = new Subject<void>();
 
+	brakeCodeOptions$ = this.optionsService.getOptions(ReferenceDataResourceType.Brakes) as Observable<MultiOptions>;
+
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord()) as CustomFormGroup;
 
@@ -121,10 +123,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
 	get retarderOptions(): MultiOptions {
 		return getOptionsFromEnum(Retarders);
-	}
-
-	get brakeCodeOptions$(): Observable<MultiOptions> {
-		return this.optionsService.getOptions(ReferenceDataResourceType.Brakes) as Observable<MultiOptions>;
 	}
 
 	get editTypes(): typeof FormNodeEditTypes {

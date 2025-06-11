@@ -30,7 +30,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateVehicleConfiguration } from '@store/technical-records';
-import { Observable, ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
+import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
 import { GovukFormGroupAutocompleteComponent } from '../../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
@@ -65,6 +65,15 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	form: FormGroup = this.fb.group({});
 
 	bodyMakes$ = of<MultiOptions | undefined>([]);
+
+	dtpNumbers$ = combineLatest([
+		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
+		this.referenceDataService.getReferencePsvMakeDataLoading$(),
+	]).pipe(
+		skipWhile(([, loading]) => loading),
+		take(1),
+		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
+	);
 
 	ngOnInit(): void {
 		this.addControlsBasedOffVehicleType();
@@ -193,17 +202,6 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	get dtpNumbers$(): Observable<(string | number)[]> {
-		return combineLatest([
-			this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
-			this.referenceDataService.getReferencePsvMakeDataLoading$(),
-		]).pipe(
-			skipWhile(([, loading]) => loading),
-			take(1),
-			map(([data]) => data?.map((option) => option.resourceKey) ?? [])
-		);
 	}
 
 	addControlsBasedOffVehicleType() {

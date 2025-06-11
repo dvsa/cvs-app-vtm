@@ -1,18 +1,21 @@
 <app-header [username]="userService.name$ | async" (logOutEvent)="userService.logOut()" />
 <app-phase-banner />
 
+@let loading = loadingService.showSpinner$ | async;
+@let isStandardLayout = isStandardLayout$ | async;
+
 <div
   [ngClass]="{
-    'no-scroll': (loading | async),
-    gutters: (isStandardLayout | async) === false,
-    'govuk-width-container': (isStandardLayout | async)
+    'no-scroll': loading,
+    gutters: isStandardLayout === false,
+    'govuk-width-container': isStandardLayout
   }"
 >
-  <main class="govuk-main-wrapper {{ (isStandardLayout | async) ? '' : 'full-width' }}">
+  <main class="govuk-main-wrapper {{ isStandardLayout ? '' : 'full-width' }}">
     <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
     <app-global-warning></app-global-warning>
-    <app-spinner [loading]="loading | async"></app-spinner>
+    <app-spinner [loading]="loading"></app-spinner>
     <router-outlet></router-outlet>
   </main>
 </div>

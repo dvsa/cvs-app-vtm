@@ -55,6 +55,12 @@ export class AppComponent implements OnInit, OnDestroy {
 	private sentryInitialized: boolean | undefined;
 	private interval?: ReturnType<typeof setInterval>;
 
+	isStandardLayout$ = this.store.pipe(
+		take(1),
+		select(selectRouteData),
+		map((routeData) => routeData && !routeData['isCustomLayout'])
+	);
+
 	async ngOnInit() {
 		if (!this.sentryInitialized) {
 			this.startSentry();
@@ -82,18 +88,6 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.destroy$.next();
 		this.destroy$.complete();
 		clearInterval(this.interval);
-	}
-
-	get isStandardLayout() {
-		return this.store.pipe(
-			take(1),
-			select(selectRouteData),
-			map((routeData) => routeData && !routeData['isCustomLayout'])
-		);
-	}
-
-	get loading() {
-		return this.loadingService.showSpinner$;
 	}
 
 	startSentry() {

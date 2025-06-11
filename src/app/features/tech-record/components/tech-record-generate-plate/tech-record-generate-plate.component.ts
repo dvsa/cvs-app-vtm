@@ -51,6 +51,15 @@ export class GeneratePlateComponent implements OnInit {
 
 	emailAddress$?: Observable<string | undefined | null>;
 
+	reasons: Array<FormNodeOption<string>> = [
+		{ label: 'Free replacement', value: PlatesInner.PlateReasonForIssueEnum.FreeReplacement },
+		{ label: 'Replacement', value: PlatesInner.PlateReasonForIssueEnum.Replacement },
+		{ label: 'Destroyed', value: PlatesInner.PlateReasonForIssueEnum.Destroyed },
+		{ label: 'Provisional', value: PlatesInner.PlateReasonForIssueEnum.Provisional },
+		{ label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
+		{ label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual },
+	];
+
 	ngOnInit(): void {
 		this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
 			this.navigateBack();
@@ -75,17 +84,6 @@ export class GeneratePlateComponent implements OnInit {
 
 	get width(): FormNodeWidth {
 		return FormNodeWidth.L;
-	}
-
-	get reasons(): Array<FormNodeOption<string>> {
-		return [
-			{ label: 'Free replacement', value: PlatesInner.PlateReasonForIssueEnum.FreeReplacement },
-			{ label: 'Replacement', value: PlatesInner.PlateReasonForIssueEnum.Replacement },
-			{ label: 'Destroyed', value: PlatesInner.PlateReasonForIssueEnum.Destroyed },
-			{ label: 'Provisional', value: PlatesInner.PlateReasonForIssueEnum.Provisional },
-			{ label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
-			{ label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual },
-		];
 	}
 
 	navigateBack() {

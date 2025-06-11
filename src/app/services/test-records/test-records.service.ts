@@ -41,6 +41,17 @@ export class TestRecordsService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 
+	testResult$ = this.store.pipe(select(selectedTestResultState));
+	editingTestResult$ = this.store.pipe(select(testResultInEdit));
+	testRecords$ = this.store.pipe(select(selectAllTestResults));
+	defectData$ = this.store.pipe(select(selectDefectData));
+	amendedTestResult$ = this.store.pipe(select(selectedAmendedTestResultState));
+	amendedDefectData$ = this.store.pipe(select(selectAmendedDefectData));
+	sectionTemplates$ = this.store.pipe(select(sectionTemplates));
+	isSameTestTypeId$ = this.store.pipe(select(isTestTypeKeySame('testTypeId')));
+	isTestTypeGroupEditable$ = this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(masterTpl));
+	canCreate$ = this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(contingencyTestTemplates));
+
 	fetchTestResultbySystemNumber(
 		systemNumber: string,
 		queryparams: {
@@ -72,34 +83,6 @@ export class TestRecordsService {
 
 	loadTestResultBySystemNumber(systemNumber: string): void {
 		this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
-	}
-
-	get testResult$() {
-		return this.store.pipe(select(selectedTestResultState));
-	}
-
-	get editingTestResult$() {
-		return this.store.pipe(select(testResultInEdit));
-	}
-
-	get testRecords$() {
-		return this.store.pipe(select(selectAllTestResults));
-	}
-
-	get defectData$() {
-		return this.store.pipe(select(selectDefectData));
-	}
-
-	get amendedTestResult$() {
-		return this.store.pipe(select(selectedAmendedTestResultState));
-	}
-
-	get amendedDefectData$() {
-		return this.store.pipe(select(selectAmendedDefectData));
-	}
-
-	get sectionTemplates$() {
-		return this.store.pipe(select(sectionTemplates));
 	}
 
 	saveTestResult(
@@ -174,20 +157,8 @@ export class TestRecordsService {
 		this.store.dispatch(updateEditingTestResult({ testResult }));
 	}
 
-	get isSameTestTypeId$(): Observable<boolean> {
-		return this.store.pipe(select(isTestTypeKeySame('testTypeId')));
-	}
-
 	testTypeChange(testTypeId: string) {
 		this.store.dispatch(testTypeIdChanged({ testTypeId }));
-	}
-
-	get isTestTypeGroupEditable$() {
-		return this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(masterTpl));
-	}
-
-	get canCreate$() {
-		return this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(contingencyTestTemplates));
 	}
 
 	private canHandleTestType(templateMap: Record<VehicleTypes, Record<string, Record<string, FormNode>>>) {

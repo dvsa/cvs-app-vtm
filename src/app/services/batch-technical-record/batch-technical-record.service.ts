@@ -15,7 +15,6 @@ import {
 	setVehicleType,
 	upsertVehicleBatch,
 } from '@store/technical-records/batch-create.actions';
-import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import {
 	selectAllBatch,
 	selectApplicationId,
@@ -38,6 +37,20 @@ export class BatchTechnicalRecordService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 	private technicalRecordService = inject(TechnicalRecordService);
+
+	batchVehicles$ = this.store.pipe(select(selectAllBatch));
+	batchVehiclesSuccess$ = this.store.pipe(select(selectBatchSuccess));
+	isBatchCreate$ = this.store.pipe(select(selectIsBatch));
+	batchCount$ = this.store.pipe(select(selectBatchCount));
+	batchSuccessCount$ = this.store.pipe(select(selectBatchSuccessCount));
+	batchCreatedCount$ = this.store.pipe(select(selectBatchCreatedSuccessCount));
+	batchTotalCreatedCount$ = this.store.pipe(select(selectBatchCreatedCount));
+	batchUpdatedCount$ = this.store.pipe(select(selectBatchUpdatedSuccessCount));
+	batchTotalUpdatedCount$ = this.store.pipe(select(selectBatchUpdatedCount));
+	applicationId$ = this.store.pipe(select(selectApplicationId));
+	vehicleStatus$ = this.store.pipe(select(selectVehicleStatus));
+	vehicleType$ = this.store.pipe(select(selectVehicleType));
+	generateNumber$ = this.store.pipe(select(selectGenerateNumber));
 
 	validateForBatch(): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -138,57 +151,5 @@ export class BatchTechnicalRecordService {
 
 	clearBatch() {
 		this.store.dispatch(clearBatch());
-	}
-
-	get batchVehicles$(): Observable<BatchRecord[]> {
-		return this.store.pipe(select(selectAllBatch));
-	}
-
-	get batchVehiclesSuccess$(): Observable<BatchRecord[]> {
-		return this.store.pipe(select(selectBatchSuccess));
-	}
-
-	get isBatchCreate$(): Observable<boolean> {
-		return this.store.pipe(select(selectIsBatch));
-	}
-
-	get batchCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchCount));
-	}
-
-	get batchSuccessCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchSuccessCount));
-	}
-
-	get batchCreatedCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchCreatedSuccessCount));
-	}
-
-	get batchTotalCreatedCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchCreatedCount));
-	}
-
-	get batchUpdatedCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchUpdatedSuccessCount));
-	}
-
-	get batchTotalUpdatedCount$(): Observable<number> {
-		return this.store.pipe(select(selectBatchUpdatedCount));
-	}
-
-	get applicationId$(): Observable<string | undefined> {
-		return this.store.pipe(select(selectApplicationId));
-	}
-
-	get vehicleStatus$(): Observable<string | undefined> {
-		return this.store.pipe(select(selectVehicleStatus));
-	}
-
-	get vehicleType$(): Observable<VehicleTypes | undefined> {
-		return this.store.pipe(select(selectVehicleType));
-	}
-
-	get generateNumber$(): Observable<boolean> {
-		return this.store.pipe(select(selectGenerateNumber));
 	}
 }

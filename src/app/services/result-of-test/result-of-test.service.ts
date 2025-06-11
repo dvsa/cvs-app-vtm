@@ -7,7 +7,6 @@ import {
 	updateResultOfTest,
 	updateResultOfTestRequiredStandards,
 } from '@store/test-records';
-import { Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,9 +14,7 @@ import { Observable } from 'rxjs';
 export class ResultOfTestService {
 	store = inject(Store);
 
-	get resultOfTest(): Observable<resultOfTestEnum | undefined> {
-		return this.store.pipe(select(resultOfTestSelector));
-	}
+	resultOfTest = this.store.pipe(select(resultOfTestSelector));
 
 	updateResultOfTest() {
 		this.store.dispatch(updateResultOfTest());

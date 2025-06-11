@@ -88,6 +88,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
 		],
 	};
 
+	loadIndex$ = this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<
+		ReferenceDataTyreLoadIndex[]
+	>;
+
 	ngOnInit() {
 		this.form = this.dfs.createForm(this.template) as CustomFormGroup;
 		this.globalErrorService.clearErrors();
@@ -132,12 +136,6 @@ export class TechRecordSearchTyresComponent implements OnInit {
 	}
 	get numberOfResults(): number {
 		return this.searchResults?.length ?? 0;
-	}
-
-	get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
-		return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<
-			ReferenceDataTyreLoadIndex[]
-		>;
 	}
 
 	handleSearch(filter: string, term: string): void {

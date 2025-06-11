@@ -3,7 +3,6 @@ import {
 	AbstractControl,
 	FormArray,
 	FormBuilder,
-	FormControlStatus,
 	FormGroup,
 	FormsModule,
 	ReactiveFormsModule,
@@ -74,6 +73,8 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 	readonly maxNumberOfVehicles = 40;
 
 	private destroy$ = new Subject<void>();
+
+	formStatus = this.form.statusChanges.pipe(filter((status) => status !== 'PENDING'));
 
 	constructor() {
 		this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((vehicle) => {
@@ -221,9 +222,5 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 			return false;
 		}
 		return this.form.valid;
-	}
-
-	get formStatus(): Observable<FormControlStatus> {
-		return this.form.statusChanges.pipe(filter((status) => status !== 'PENDING'));
 	}
 }

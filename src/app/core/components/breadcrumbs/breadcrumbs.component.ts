@@ -13,28 +13,26 @@ import { distinctUntilChanged, map } from 'rxjs';
 export class BreadcrumbsComponent {
 	routerService = inject(RouterService);
 
-	get breadcrumbs$() {
-		return this.routerService.router$.pipe(
-			distinctUntilChanged(),
-			map((router) => {
-				let currentRoute = router?.state?.root;
-				const breadcrumbs: Array<{ label: string; path: string; preserveQueryParams: boolean }> = [];
+	breadcrumbs$ = this.routerService.router$.pipe(
+		distinctUntilChanged(),
+		map((router) => {
+			let currentRoute = router?.state?.root;
+			const breadcrumbs: Array<{ label: string; path: string; preserveQueryParams: boolean }> = [];
 
-				while (currentRoute?.firstChild) {
-					const { routeConfig, data, url } = currentRoute.firstChild;
+			while (currentRoute?.firstChild) {
+				const { routeConfig, data, url } = currentRoute.firstChild;
 
-					if (data['title'] && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
-						breadcrumbs.push({
-							label: data['title'],
-							path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),
-							preserveQueryParams: !!data['breadcrumbPreserveQueryParams'],
-						});
-					}
-
-					currentRoute = currentRoute.firstChild;
+				if (data['title'] && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
+					breadcrumbs.push({
+						label: data['title'],
+						path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),
+						preserveQueryParams: !!data['breadcrumbPreserveQueryParams'],
+					});
 				}
-				return breadcrumbs;
-			})
-		);
-	}
+
+				currentRoute = currentRoute.firstChild;
+			}
+			return breadcrumbs;
+		})
+	);
 }

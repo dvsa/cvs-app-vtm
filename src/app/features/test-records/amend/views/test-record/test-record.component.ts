@@ -50,6 +50,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 	testResult$: Observable<TestResultModel | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 	testMode = TestModeEnum.Edit;
+	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 
 	constructor() {
 		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -198,9 +199,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
 	isAnyFormInvalid(forms: Array<FormGroup>) {
 		return forms.some((form) => form.invalid);
-	}
-	get testNumber$(): Observable<string | undefined> {
-		return this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 	}
 
 	public get TestModeEnum(): typeof TestModeEnum {
