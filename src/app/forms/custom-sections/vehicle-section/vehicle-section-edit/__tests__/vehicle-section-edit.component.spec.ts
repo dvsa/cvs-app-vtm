@@ -71,11 +71,9 @@ describe('VehicleSectionEditComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const vehicleTypeControlsSpy = jest.spyOn(component, 'addControlsBasedOffVehicleType');
 			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
 			const handleUpdateVehicleConfiguration = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
 			component.ngOnInit();
-			expect(vehicleTypeControlsSpy).toHaveBeenCalled();
 			expect(parentFormSpy).toHaveBeenCalled();
 			expect(handleUpdateVehicleConfiguration).toHaveBeenCalled();
 		});
@@ -159,18 +157,6 @@ describe('VehicleSectionEditComponent', () => {
 		it('should return false if vehicle is not either small trl/hgv/trl/motorcycle', () => {
 			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.LGV);
 			expect(component.shouldShowClass).toBe(false);
-		});
-	});
-
-	describe('addControlsBasedOffVehicleType', () => {
-		it('should add vehicle specific controls to the form', () => {
-			const addControlSpy = jest.spyOn(component.form, 'addControl');
-			const vehicleControlsSpy = jest
-				.spyOn(component, 'controlsBasedOffVehicleType', 'get')
-				.mockReturnValue(component.motorcycleFields);
-			component.addControlsBasedOffVehicleType();
-			expect(vehicleControlsSpy).toHaveBeenCalled();
-			expect(addControlSpy).toHaveBeenCalled();
 		});
 	});
 

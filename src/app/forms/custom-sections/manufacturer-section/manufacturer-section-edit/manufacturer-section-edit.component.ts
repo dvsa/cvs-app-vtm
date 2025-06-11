@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';

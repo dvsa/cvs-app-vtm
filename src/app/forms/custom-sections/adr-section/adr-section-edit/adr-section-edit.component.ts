@@ -2,7 +2,6 @@ import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { GovukCheckboxDirective } from '@directives/govuk-checkbox/govuk-checkbox.directive';
@@ -11,6 +10,7 @@ import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directi
 import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
 import { GovukSelectDirective } from '@directives/govuk-select/govuk-select.directive';
 import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';

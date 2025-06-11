@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TagComponent, TagType } from '@components/tag/tag.component';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import {
 	FITMENT_CODE_OPTIONS,
 	HGV_TYRE_USE_CODE_OPTIONS,
@@ -12,7 +13,6 @@ import {
 	TRL_TYRE_USE_CODE_OPTIONS,
 } from '@models/options.model';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
-import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
