@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -14,10 +14,10 @@ import { TestAmendmentHistoryComponent } from '../../components/test-amendment-h
 	imports: [BaseTestRecordComponent, TestAmendmentHistoryComponent, AsyncPipe],
 })
 export class TestResultSummaryComponent implements OnInit {
+	testRecordsService = inject(TestRecordsService);
+
 	testResult$: Observable<TestResultModel | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
-
-	constructor(private testRecordsService: TestRecordsService) {}
 
 	ngOnInit(): void {
 		this.testResult$ = this.testRecordsService.editingTestResult$.pipe(

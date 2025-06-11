@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
@@ -42,20 +42,18 @@ import { State } from './store';
 	],
 })
 export class AppComponent implements OnInit, OnDestroy {
+	userService = inject(UserService);
+	loadingService = inject(LoadingService);
+	router = inject(Router);
+	gtmService = inject(GoogleTagManagerService);
+	store = inject(Store<State>);
+	analyticsService = inject(AnalyticsService);
+
 	currentDate = new Date();
 	private destroy$ = new Subject<void>();
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
 	private interval?: ReturnType<typeof setInterval>;
-
-	constructor(
-		public userService: UserService,
-		private loadingService: LoadingService,
-		private router: Router,
-		private gtmService: GoogleTagManagerService,
-		private store: Store<State>,
-		private analyticsService: AnalyticsService
-	) {}
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {

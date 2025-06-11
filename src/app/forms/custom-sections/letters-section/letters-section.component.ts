@@ -1,7 +1,7 @@
-import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, input } from '@angular/core';
 import { LettersSectionEditComponent } from '@forms/custom-sections/letters-section/letters-section-edit/letters-section-edit.component';
 import { LettersSectionViewComponent } from '@forms/custom-sections/letters-section/letters-section-view/letters-section-view.component';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
 	selector: 'app-letters-section',

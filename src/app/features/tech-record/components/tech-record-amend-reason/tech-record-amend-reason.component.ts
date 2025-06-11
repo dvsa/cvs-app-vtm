@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import {
 	CustomFormControl,
@@ -10,7 +11,6 @@ import {
 	FormNodeOption,
 	FormNodeTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-tech-amend-reason',
@@ -19,6 +19,10 @@ import { RadioGroupComponent } from '../../../../forms/components/radio-group/ra
 	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent],
 })
 export class TechRecordAmendReasonComponent {
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+
 	reasons: Array<FormNodeOption<string>> = [
 		{
 			label: 'Correcting an error',
@@ -32,23 +36,15 @@ export class TechRecordAmendReasonComponent {
 		},
 	];
 
-	form: CustomFormGroup;
+	form = new CustomFormGroup(
+		{ name: 'reasonForAmend', type: FormNodeTypes.GROUP },
+		{
+			reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
+		}
+	);
 
-	constructor(
-		private errorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router
-	) {
+	constructor() {
 		this.errorService.clearErrors();
-
-		this.form = new CustomFormGroup(
-			{ name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-			{
-				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [
-					Validators.required,
-				]),
-			}
-		);
 	}
 
 	handleSubmit(): void {

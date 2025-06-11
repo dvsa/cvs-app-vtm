@@ -1,5 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import {
 	ReferenceDataAdminColumn,
 	ReferenceDataModelBase,
@@ -8,7 +9,6 @@ import {
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataState, fetchReferenceDataByKeySearch, selectSearchReturn } from '@store/reference-data';
 import { Observable, map } from 'rxjs';
-import { PaginationComponent } from '../../../components/pagination/pagination.component';
 
 @Component({
 	selector: 'app-reference-data-amend-history',
@@ -17,6 +17,9 @@ import { PaginationComponent } from '../../../components/pagination/pagination.c
 	imports: [PaginationComponent, AsyncPipe, DatePipe],
 })
 export class ReferenceDataAmendHistoryComponent implements OnInit {
+	cdr = inject(ChangeDetectorRef);
+	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+
 	readonly type = input('');
 	readonly key = input('');
 	readonly title = input('');
@@ -24,11 +27,6 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
 
 	pageStart?: number;
 	pageEnd?: number;
-
-	constructor(
-		private cdr: ChangeDetectorRef,
-		private store: Store<ReferenceDataState>
-	) {}
 
 	ngOnInit(): void {
 		// load the audit history

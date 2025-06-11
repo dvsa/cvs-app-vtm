@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+	ControlValueAccessor,
+	FormsModule,
+	NG_VALUE_ACCESSOR,
+	ReactiveFormsModule,
+} from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
-import { TagComponent } from '@components/tag/tag.component';
 import { TagDirective } from '@directives/tag/tag.directive';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 

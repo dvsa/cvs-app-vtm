@@ -1,3 +1,5 @@
+import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
 	ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	COUPLING_TYPE_OPTIONS,
@@ -5,16 +7,14 @@ import {
 	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	SUSPENSION_TYRE_OPTIONS,
 	TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
-} from '@/src/app/models/options.model';
-import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
-import { DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+} from '@models/options.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { MultiOptionPipe } from '@pipes/multi-option/multi-option.pipe';
+import { TechnicalRecordChangesService } from '@services/technical-record/technical-record-change.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editingTechRecord, techRecord } from '@store/technical-records';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { MultiOptionPipe } from '../../../../pipes/multi-option/multi-option.pipe';
 
 @Component({
 	selector: 'app-vehicle-section-summary',

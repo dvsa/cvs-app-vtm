@@ -1,3 +1,4 @@
+import { TagType } from '@components/tag/tag.component';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ValidatorNames } from '@models/validators.enum';
@@ -8,7 +9,6 @@ import {
 	FormNodeWidth,
 	TagTypeLabels,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { TagType } from '../../../components/tag/tag.component';
 
 export const HgvAndTrlTypeApprovalTemplate: FormNode = {
 	name: 'approvalSection',

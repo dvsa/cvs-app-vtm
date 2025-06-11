@@ -1,25 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { State } from '@store/.';
 import { globalErrorState } from '@store/global-error/global-error-service.reducer';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/global-error.actions';
-import { Observable } from 'rxjs';
 import { GlobalError } from './global-error.interface';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class GlobalErrorService {
-	private errors: Observable<GlobalError[]>;
+	store = inject(Store);
 
-	constructor(private store: Store<State>) {
-		this.errors = this.store.pipe(select(globalErrorState));
-	}
-
-	get errors$() {
-		return this.errors;
-	}
+	errors$ = this.store.pipe(select(globalErrorState));
 
 	addError(error: GlobalError) {
 		this.store.dispatch(addError(error));

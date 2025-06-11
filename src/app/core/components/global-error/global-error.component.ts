@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
@@ -9,7 +9,7 @@ import { GlobalErrorService } from './global-error.service';
 	imports: [AsyncPipe],
 })
 export class GlobalErrorComponent {
-	constructor(public globalErrorService: GlobalErrorService) {}
+	globalErrorService = inject(GlobalErrorService);
 
 	goto(error: GlobalError) {
 		if (error.anchorLink) {

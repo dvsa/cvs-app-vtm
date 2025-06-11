@@ -1,6 +1,7 @@
 import { AsyncPipe, KeyValue, NgComponentOutlet } from '@angular/common';
-import { AfterContentInit, Component, InjectionToken, Injector, OnInit, input } from '@angular/core';
+import { AfterContentInit, Component, InjectionToken, Injector, OnInit, inject, input } from '@angular/core';
 import { FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
 // eslint-disable-next-line import/no-cycle
 import {
 	CustomFormControl,
@@ -10,7 +11,6 @@ import {
 } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { Observable, map, of } from 'rxjs';
-import { SuffixDirective } from '../../../directives/suffix/suffix.directive';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { CheckboxGroupComponent } from '../checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -43,6 +43,9 @@ import { TextInputComponent } from '../text-input/text-input.component';
 	],
 })
 export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
+	private optionsService = inject(MultiOptionsService);
+	private injector = inject(Injector);
+
 	readonly control = input<KeyValue<string, CustomFormControl>>();
 	readonly form = input<FormGroup>();
 	readonly parentForm = input<CustomFormGroup>();
@@ -50,11 +53,6 @@ export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
 
 	customFormControlInjector?: Injector;
 	customFormControlInputs?: Record<string, unknown>;
-
-	constructor(
-		private optionsService: MultiOptionsService,
-		private injector: Injector
-	) {}
 
 	get formNodeEditTypes(): typeof FormNodeEditTypes {
 		return FormNodeEditTypes;

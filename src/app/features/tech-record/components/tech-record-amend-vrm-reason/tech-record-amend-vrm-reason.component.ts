@@ -1,10 +1,15 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
 import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormControl,
@@ -14,11 +19,6 @@ import {
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, take, takeUntil } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-amend-vrm-reason',
@@ -36,6 +36,12 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class AmendVrmReasonComponent implements OnDestroy, OnInit {
+	dfs = inject(DynamicFormService);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	technicalRecordService = inject(TechnicalRecordService);
+
 	techRecord?: VehiclesOtherThan<'trl'>;
 	makeAndModel?: string;
 
@@ -48,14 +54,6 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 	});
 
 	private destroy$ = new Subject<void>();
-
-	constructor(
-		public dfs: DynamicFormService,
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private technicalRecordService: TechnicalRecordService
-	) {}
 
 	ngOnInit(): void {
 		this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {

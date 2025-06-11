@@ -1,11 +1,11 @@
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrefixDirective } from '@directives/prefix/prefix.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { MultiOptions } from '@models/options.model';
 import { FormNodeEditTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { Observable, of } from 'rxjs';
-import { PrefixDirective } from '../../../directives/prefix/prefix.directive';
-import { SuffixDirective } from '../../../directives/suffix/suffix.directive';
 import { ApprovalTypeInputComponent } from '../approval-type/approval-type.component';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { CheckboxGroupComponent } from '../checkbox-group/checkbox-group.component';

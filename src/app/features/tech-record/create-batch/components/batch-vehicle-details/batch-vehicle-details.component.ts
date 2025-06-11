@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
 	AbstractControl,
 	FormArray,
@@ -10,10 +10,19 @@ import {
 	Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { InputSpinnerComponent } from '@components/input-spinner/input-spinner.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
+import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FormatVehicleTypePipe } from '@pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
@@ -25,16 +34,6 @@ import {
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
-import { TextInputComponent } from '../../../../../forms/components/text-input/text-input.component';
-
-import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../../components/button/button.component';
-import { InputSpinnerComponent } from '../../../../../components/input-spinner/input-spinner.component';
-import { NoSpaceDirective } from '../../../../../directives/app-no-space/app-no-space.directive';
-import { ToUppercaseDirective } from '../../../../../directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '../../../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { SuffixDirective } from '../../../../../directives/suffix/suffix.directive';
-import { FormatVehicleTypePipe } from '../../../../../pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @Component({
 	selector: 'app-batch-vehicle-details',
@@ -55,29 +54,28 @@ import { FormatVehicleTypePipe } from '../../../../../pipes/format-vehicle-type/
 	],
 })
 export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
-	form: FormGroup;
+	fb = inject(FormBuilder);
+	globalErrorService = inject(GlobalErrorService);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+	technicalRecordService = inject(TechnicalRecordService);
+	batchTechRecordService = inject(BatchTechnicalRecordService);
+
+	form = this.fb.group({
+		vehicles: this.fb.array([]),
+		applicationId: new CustomFormControl(
+			{ name: 'applicationId', label: 'Application ID', type: FormNodeTypes.CONTROL },
+			null,
+			[Validators.required]
+		),
+	});
+
 	vehicleType?: VehicleTypes;
 	readonly maxNumberOfVehicles = 40;
 
 	private destroy$ = new Subject<void>();
 
-	constructor(
-		private fb: FormBuilder,
-		private globalErrorService: GlobalErrorService,
-		private router: Router,
-		private route: ActivatedRoute,
-		private technicalRecordService: TechnicalRecordService,
-		private batchTechRecordService: BatchTechnicalRecordService
-	) {
-		this.form = this.fb.group({
-			vehicles: this.fb.array([]),
-			applicationId: new CustomFormControl(
-				{ name: 'applicationId', label: 'Application ID', type: FormNodeTypes.CONTROL },
-				null,
-				[Validators.required]
-			),
-		});
-
+	constructor() {
 		this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((vehicle) => {
 			if (!vehicle) return this.back();
 		});
@@ -86,6 +84,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 			this.vehicleType = vehicleType;
 		});
 	}
+
 	ngOnInit(): void {
 		this.addVehicles(this.maxNumberOfVehicles);
 		combineLatest([this.batchTechRecordService.batchVehicles$, this.batchTechRecordService.applicationId$])

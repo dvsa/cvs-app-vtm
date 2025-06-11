@@ -1,10 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -21,9 +24,6 @@ import { UserService } from '@services/user-service/user-service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { RadioGroupComponent } from '../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-generate-letter',
@@ -32,6 +32,15 @@ import { RadioGroupComponent } from '../../../../forms/components/radio-group/ra
 	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
 export class GenerateLetterComponent implements OnInit {
+	actions$ = inject(Actions);
+	dfs = inject(DynamicFormService);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<TechnicalRecordServiceState>);
+	technicalRecordService = inject(TechnicalRecordService);
+	userService = inject(UserService);
+
 	techRecord?: V3TechRecordModel;
 	form = new FormGroup({
 		letterType: new CustomFormControl(
@@ -54,17 +63,6 @@ export class GenerateLetterComponent implements OnInit {
 		[ApprovalType.IVA_VCA, 3],
 		[ApprovalType.IVA_DVSA_NI, 3],
 	]);
-
-	constructor(
-		private actions$: Actions,
-		public dfs: DynamicFormService,
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService,
-		public userService: UserService
-	) {}
 
 	ngOnInit(): void {
 		this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {

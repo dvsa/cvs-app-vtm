@@ -1,11 +1,10 @@
-import { loadingResolver } from '@/src/app/resolvers/loading/loading.resolver';
-import { recallsResolver } from '@/src/app/resolvers/recalls/recalls.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestRecordCreateRoutes } from '@models/routes.enum';
+import { loadingResolver } from '@resolvers/loading/loading.resolver';
+import { recallsResolver } from '@resolvers/recalls/recalls.resolver';
 import { contingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';

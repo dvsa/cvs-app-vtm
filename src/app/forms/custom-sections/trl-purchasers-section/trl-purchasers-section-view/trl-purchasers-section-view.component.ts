@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { techRecord } from '@store/technical-records';
 
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-trl-purchasers-section-view',

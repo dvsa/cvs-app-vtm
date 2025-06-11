@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 
@@ -6,7 +6,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 	providedIn: 'root',
 })
 export class FeatureToggleGuard implements CanActivate {
-	constructor(private featureToggleService: FeatureToggleService) {}
+	featureToggleService = inject(FeatureToggleService);
 
 	canActivate(next: ActivatedRouteSnapshot): boolean {
 		const feature = next.data['featureToggleName'];

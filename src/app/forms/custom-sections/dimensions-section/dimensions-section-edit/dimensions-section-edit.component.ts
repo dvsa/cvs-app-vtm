@@ -1,11 +1,14 @@
-import { TagType } from '@/src/app/components/tag/tag.component';
-import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { addAxle, removeAxle } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { TagType } from '@components/tag/tag.component';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { addAxle, removeAxle } from '@store/technical-records';
 import { ReplaySubject, takeUntil, withLatestFrom } from 'rxjs';
 
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';

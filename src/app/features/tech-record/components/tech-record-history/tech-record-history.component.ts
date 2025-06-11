@@ -1,14 +1,14 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { PaginationComponent } from '../../../../components/pagination/pagination.component';
 
 @Component({
 	selector: 'app-tech-record-history',
@@ -18,15 +18,13 @@ import { PaginationComponent } from '../../../../components/pagination/paginatio
 	imports: [ButtonComponent, RouterLink, PaginationComponent, AsyncPipe, DatePipe],
 })
 export class TechRecordHistoryComponent implements OnInit {
+	cdr = inject(ChangeDetectorRef);
+	store = inject(Store);
+
 	readonly currentTechRecord = input<V3TechRecordModel>();
 
 	pageStart?: number;
 	pageEnd?: number;
-
-	constructor(
-		private cdr: ChangeDetectorRef,
-		private store: Store
-	) {}
 
 	ngOnInit(): void {
 		const currentTechRecord = this.currentTechRecord();

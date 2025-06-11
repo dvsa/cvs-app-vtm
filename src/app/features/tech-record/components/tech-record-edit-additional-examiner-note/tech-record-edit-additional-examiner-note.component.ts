@@ -1,11 +1,15 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TextAreaComponent } from '@forms/components/text-area/text-area.component';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import {
 	CustomFormControl,
 	FormNodeEditTypes,
@@ -16,10 +20,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';
 import { ReplaySubject, take, takeUntil } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { TextAreaComponent } from '../../../../forms/components/text-area/text-area.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'tech-record-edit-additional-examiner-note',
@@ -36,6 +36,12 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+	technicalRecordService = inject(TechnicalRecordService);
+	globalErrorService = inject(GlobalErrorService);
+	store = inject(Store<State>);
+
 	currentTechRecord!: TechRecordType<'hgv' | 'trl' | 'lgv'>;
 	examinerNoteIndex!: number;
 	editedExaminerNote = '';
@@ -44,14 +50,6 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
 	destroy$ = new ReplaySubject<boolean>(1);
 	form!: FormGroup;
 	formControl!: CustomFormControl;
-
-	constructor(
-		private router: Router,
-		private route: ActivatedRoute,
-		private technicalRecordService: TechnicalRecordService,
-		private globalErrorService: GlobalErrorService,
-		private store: Store<State>
-	) {}
 
 	ngOnInit() {
 		this.getTechRecord();

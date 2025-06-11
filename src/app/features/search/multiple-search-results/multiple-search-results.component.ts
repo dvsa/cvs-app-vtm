@@ -2,6 +2,7 @@ import { AsyncPipe, Location } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
@@ -9,7 +10,6 @@ import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 
 @Component({
@@ -19,13 +19,13 @@ import { SingleSearchResultComponent } from '../single-search-result/single-sear
 	imports: [RoleRequiredDirective, SingleSearchResultComponent, RouterLink, AsyncPipe],
 })
 export class MultipleSearchResultsComponent implements OnDestroy {
+	globalErrorService = inject(GlobalErrorService);
+	technicalRecordService = inject(TechnicalRecordService);
+	store = inject(Store);
+	location = inject(Location);
+
 	searchResults$: Observable<TechRecordSearchSchema[] | undefined>;
 	ngDestroy$ = new Subject();
-
-	public globalErrorService = inject(GlobalErrorService);
-	private technicalRecordService = inject(TechnicalRecordService);
-	private store = inject(Store);
-	private location = inject(Location);
 
 	constructor() {
 		this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {

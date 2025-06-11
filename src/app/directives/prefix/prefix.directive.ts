@@ -1,6 +1,6 @@
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, TemplateRef, inject } from '@angular/core';
 
 @Directive({ selector: '[appPrefix]' })
 export class PrefixDirective {
-	constructor(public templateRef: TemplateRef<unknown>) {}
+	templateRef = inject(TemplateRef);
 }

@@ -1,11 +1,11 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { BannerComponent } from '@components/banner/banner.component';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, firstValueFrom, of } from 'rxjs';
-import { BannerComponent } from '../../../../../components/banner/banner.component';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -14,11 +14,11 @@ import { BaseTestRecordComponent } from '../../../components/base-test-record/ba
 	imports: [BannerComponent, BaseTestRecordComponent, AsyncPipe, DatePipe],
 })
 export class AmendedTestRecordComponent implements OnInit {
+	testRecordsService = inject(TestRecordsService);
+
 	testResult$: Observable<TestResultModel | undefined> = of(undefined);
 	defects$: Observable<TestResultDefects | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
-
-	constructor(private testRecordsService: TestRecordsService) {}
 
 	async ngOnInit() {
 		this.testResult$ = this.testRecordsService.amendedTestResult$;

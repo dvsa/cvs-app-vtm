@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MultiOptions } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store, select } from '@ngrx/store';
@@ -12,11 +12,9 @@ import { Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MultiOptionsService {
-	constructor(
-		private referenceDataService: ReferenceDataService,
-		private store: Store<TestStationsState>,
-		private testStationsService: TestStationsService
-	) {}
+	referenceDataService = inject(ReferenceDataService);
+	store = inject(Store<TestStationsState>);
+	testStationsService = inject(TestStationsService);
 
 	getOptions(referenceData: ReferenceDataResourceType | SpecialRefData): Observable<MultiOptions | undefined> {
 		switch (referenceData) {

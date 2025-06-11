@@ -1,7 +1,7 @@
 import { Component, OnInit, model } from '@angular/core';
 import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '@services/dynamic-forms/dynamic-form.types';
-import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: '[app-view-combination]',

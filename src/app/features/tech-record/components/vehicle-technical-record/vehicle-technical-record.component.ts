@@ -1,12 +1,12 @@
 import { AsyncPipe, ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, input, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import {
 	ReasonForEditing,
 	StatusCodes,
@@ -17,13 +17,11 @@ import {
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
-import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
+import { Subject, take, takeUntil } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -45,39 +43,33 @@ import { TestRecordSummaryComponent } from '../test-record-summary/test-record-s
 	],
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
+	globalErrorService = inject(GlobalErrorService);
+	userService = inject(UserService);
+	testRecordService = inject(TestRecordsService);
+	activatedRoute = inject(ActivatedRoute);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store<TechnicalRecordServiceState>);
+	actions$ = inject(Actions);
+	viewportScroller = inject(ViewportScroller);
+	adrService = inject(AdrService);
+
 	readonly summary = viewChild.required(TechRecordSummaryComponent);
 	readonly techRecord = input<V3TechRecordModel>();
 
-	testResults$: Observable<TestResultModel[]>;
-	editingReason?: ReasonForEditing;
+	testResults$ = this.testRecordService.testRecords$;
+	editingReason?: ReasonForEditing = this.activatedRoute.snapshot.data['reason'];
 	recordHistory?: TechRecordSearchSchema[];
 
 	isCurrent = false;
 	isArchived = false;
-	isEditing = false;
+	isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	isDirty = false;
 	isInvalid = false;
 
 	private destroy$ = new Subject<void>();
 	hasTestResultAmend: boolean | undefined = false;
 
-	constructor(
-		public globalErrorService: GlobalErrorService,
-		public userService: UserService,
-		testRecordService: TestRecordsService,
-		private activatedRoute: ActivatedRoute,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private actions$: Actions,
-		private viewportScroller: ViewportScroller,
-		private featureToggleService: FeatureToggleService,
-		public adrService: AdrService
-	) {
-		this.testResults$ = testRecordService.testRecords$;
-		this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
-		this.editingReason = this.activatedRoute.snapshot.data['reason'];
-	}
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();

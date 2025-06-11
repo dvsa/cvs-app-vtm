@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { environment } from '@environments/environment';
 import { get, has } from 'lodash';
 import { lastValueFrom, take } from 'rxjs';
-import { environment } from '../../../environments/environment';
 
 export interface FeatureConfig {
 	[key: string]: boolean;
@@ -12,10 +12,10 @@ export interface FeatureConfig {
 	providedIn: 'root',
 })
 export class FeatureToggleService {
+	http = inject(HttpClient);
+
 	config: FeatureConfig | null = null;
 	configPath = this.getConfig();
-
-	constructor(private http: HttpClient) {}
 
 	async loadConfig() {
 		// eslint-disable-next-line no-return-assign

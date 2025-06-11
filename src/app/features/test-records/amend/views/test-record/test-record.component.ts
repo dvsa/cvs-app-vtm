@@ -1,9 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BannerComponent } from '@components/banner/banner.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -15,10 +19,6 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
-import { BannerComponent } from '../../../../../components/banner/banner.component';
-import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../../components/button/button.component';
-import { RoleRequiredDirective } from '../../../../../directives/app-role-required/app-role-required.directive';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 
@@ -36,6 +36,13 @@ import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehic
 	],
 })
 export class TestRecordComponent implements OnInit, OnDestroy {
+	actions$ = inject(Actions);
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	routerService = inject(RouterService);
+	testRecordsService = inject(TestRecordsService);
+
 	readonly baseTestRecordComponent = viewChild(BaseTestRecordComponent);
 
 	private destroy$ = new Subject<void>();
@@ -44,14 +51,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 	testMode = TestModeEnum.Edit;
 
-	constructor(
-		private actions$: Actions,
-		private errorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private routerService: RouterService,
-		private testRecordsService: TestRecordsService
-	) {
+	constructor() {
 		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 	}
 

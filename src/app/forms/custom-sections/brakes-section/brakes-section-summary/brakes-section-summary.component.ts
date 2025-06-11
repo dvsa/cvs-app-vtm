@@ -1,8 +1,8 @@
-import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { Component, inject } from '@angular/core';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 
 @Component({

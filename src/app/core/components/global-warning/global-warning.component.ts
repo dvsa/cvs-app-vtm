@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GlobalWarning } from './global-warning.interface';
 import { GlobalWarningService } from './global-warning.service';
@@ -10,7 +10,7 @@ import { GlobalWarningService } from './global-warning.service';
 	imports: [RouterLink, AsyncPipe],
 })
 export class GlobalWarningComponent {
-	constructor(public globalWarningService: GlobalWarningService) {}
+	globalWarningService = inject(GlobalWarningService);
 
 	goto(warning: GlobalWarning) {
 		if (warning.anchorLink) {

@@ -1,6 +1,6 @@
+import { environment } from '@environments/environment';
 import { Roles } from '@models/roles.enum';
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
-import { environment } from '../../../environments/environment';
 import * as UserServiceActions from './user-service.actions';
 
 export const STORE_FEATURE_USER_KEY = 'user';

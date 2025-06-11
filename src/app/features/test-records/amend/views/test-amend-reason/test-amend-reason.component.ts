@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RadioGroupComponent } from '@forms/components/radio-group/radio-group.component';
 import {
 	CustomFormControl,
 	CustomFormGroup,
 	FormNodeOption,
 	FormNodeTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { RadioGroupComponent } from '../../../../../forms/components/radio-group/radio-group.component';
 
 @Component({
 	selector: 'app-test-amend-reason',
@@ -16,6 +16,9 @@ import { RadioGroupComponent } from '../../../../../forms/components/radio-group
 	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent],
 })
 export class TestAmendReasonComponent {
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
 	private routes: Record<number, string> = { 1: 'incorrect-test-type', 2: 'amend-test-details' };
 
 	reasons: Array<FormNodeOption<number>> = [
@@ -27,19 +30,12 @@ export class TestAmendReasonComponent {
 		},
 	];
 
-	form: CustomFormGroup;
-
-	constructor(
-		private router: Router,
-		private route: ActivatedRoute
-	) {
-		this.form = new CustomFormGroup(
-			{ name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-			{
-				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]),
-			}
-		);
-	}
+	form = new CustomFormGroup(
+		{ name: 'reasonForAmend', type: FormNodeTypes.GROUP },
+		{
+			reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]),
+		}
+	);
 
 	handleSubmit() {
 		const reason: number = this.form.get('reason')?.value;

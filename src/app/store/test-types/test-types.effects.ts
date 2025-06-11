@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { CacheKeys } from '@models/cache-keys.enum';
 import { Roles } from '@models/roles.enum';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { HttpCacheManager } from '@ngneat/cashew';
@@ -7,7 +8,6 @@ import { Store } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { UserService } from '@services/user-service/user-service';
 import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
-import { CacheKeys } from '../../models/cache-keys.enum';
 import {
 	fetchTestTypes,
 	fetchTestTypesComplete,

@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+	ControlValueAccessor,
+	FormsModule,
+	NG_VALUE_ACCESSOR,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 
 import { TagDirective } from '@directives/tag/tag.directive';

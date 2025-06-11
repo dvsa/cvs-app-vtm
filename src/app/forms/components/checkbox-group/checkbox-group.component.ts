@@ -1,9 +1,8 @@
 import { Component, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
-
-import { TagComponent } from '../../../components/tag/tag.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 type OptionsType = string | number | boolean;

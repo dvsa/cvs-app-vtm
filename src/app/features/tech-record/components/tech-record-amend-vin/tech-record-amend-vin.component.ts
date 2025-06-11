@@ -1,14 +1,24 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { InputSpinnerComponent } from '@components/input-spinner/input-spinner.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
@@ -16,16 +26,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { amendVin, amendVinSuccess } from '@store/technical-records';
 import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { InputSpinnerComponent } from '../../../../components/input-spinner/input-spinner.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { NoSpaceDirective } from '../../../../directives/app-no-space/app-no-space.directive';
-import { ToUppercaseDirective } from '../../../../directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '../../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { SuffixDirective } from '../../../../directives/suffix/suffix.directive';
-import { TextInputComponent } from '../../../../forms/components/text-input/text-input.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-change-amend-vin',
@@ -47,19 +47,19 @@ import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/defa
 	],
 })
 export class AmendVinComponent implements OnDestroy, OnInit {
+	actions$ = inject(Actions);
+	globalErrorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	technicalRecordService = inject(TechnicalRecordService);
+	routerService = inject(RouterService);
+	store = inject<Store<State>>(Store<State>);
+
 	techRecord?: V3TechRecordModel;
 	form!: FormGroup;
 	private destroy$ = new Subject<void>();
 
-	constructor(
-		private actions$: Actions,
-		private globalErrorService: GlobalErrorService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private technicalRecordService: TechnicalRecordService,
-		private routerService: RouterService,
-		private store: Store<State>
-	) {
+	constructor() {
 		this.initForm();
 		this.handleAmendVinSuccess();
 	}

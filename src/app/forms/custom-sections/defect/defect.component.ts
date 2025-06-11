@@ -1,7 +1,10 @@
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { TagComponent } from '@components/tag/tag.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
@@ -13,7 +16,10 @@ import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/t
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import {
+	DefaultNullOrEmpty,
+	DefaultNullOrEmpty as DefaultNullOrEmpty_1,
+} from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
@@ -22,10 +28,6 @@ import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { Subject, filter, take, takeUntil, withLatestFrom } from 'rxjs';
-import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { TagComponent } from '../../../components/tag/tag.component';
-import { DefaultNullOrEmpty as DefaultNullOrEmpty_1 } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
@@ -51,9 +53,16 @@ import { TextAreaComponent } from '../../components/text-area/text-area.componen
 	],
 })
 export class DefectComponent implements OnInit, OnDestroy {
+	activatedRoute = inject(ActivatedRoute);
+	dfs = inject(DynamicFormService);
+	router = inject(Router);
+	store = inject(Store<State>);
+	resultService = inject(ResultOfTestService);
+	errorService = inject(GlobalErrorService);
+
 	form!: CustomFormGroup;
 	index!: number;
-	isEditing: boolean;
+	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	includeNotes = false;
 	private vehicleType?: VehicleTypes;
 
@@ -69,17 +78,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 		{ value: true, label: 'Yes' },
 		{ value: false, label: 'No' },
 	];
-
-	constructor(
-		private activatedRoute: ActivatedRoute,
-		private dfs: DynamicFormService,
-		private router: Router,
-		private store: Store<State>,
-		private resultService: ResultOfTestService,
-		private errorService: GlobalErrorService
-	) {
-		this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
-	}
 
 	ngOnInit(): void {
 		const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));

@@ -1,12 +1,31 @@
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
+import { AccordionComponent } from '@components/accordion/accordion.component';
+import { BannerComponent } from '@components/banner/banner.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
-import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
-import { RequiredStandardsComponent } from '@forms/custom-sections/required-standards/required-standards.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
+import {
+	DynamicFormGroupComponent,
+	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
+} from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import {
+	CustomDefectsComponent,
+	CustomDefectsComponent as CustomDefectsComponent_1,
+} from '@forms/custom-sections/custom-defects/custom-defects.component';
+import {
+	DefectsComponent,
+	DefectsComponent as DefectsComponent_1,
+} from '@forms/custom-sections/defects/defects.component';
+import {
+	RequiredStandardsComponent,
+	RequiredStandardsComponent as RequiredStandardsComponent_1,
+} from '@forms/custom-sections/required-standards/required-standards.component';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -21,17 +40,6 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { Observable, map } from 'rxjs';
-import { AccordionControlComponent } from '../../../../components/accordion-control/accordion-control.component';
-import { AccordionComponent } from '../../../../components/accordion/accordion.component';
-import { BannerComponent } from '../../../../components/banner/banner.component';
-import { ButtonGroupComponent } from '../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../components/button/button.component';
-import { RoleRequiredDirective } from '../../../../directives/app-role-required/app-role-required.directive';
-import { FeatureToggleDirective } from '../../../../directives/feature-toggle/feature-toggle.directive';
-import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../../forms/components/dynamic-form-group/dynamic-form-group.component';
-import { CustomDefectsComponent as CustomDefectsComponent_1 } from '../../../../forms/custom-sections/custom-defects/custom-defects.component';
-import { DefectsComponent as DefectsComponent_1 } from '../../../../forms/custom-sections/defects/defects.component';
-import { RequiredStandardsComponent as RequiredStandardsComponent_1 } from '../../../../forms/custom-sections/required-standards/required-standards.component';
 import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
 
 @Component({

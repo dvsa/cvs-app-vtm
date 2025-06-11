@@ -1,11 +1,11 @@
 import { AsyncPipe, DatePipe, NgClass, NgComponentOutlet } from '@angular/common';
 import { Component, Injector } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { GetControlLabelPipe } from '@pipes/get-control-label/get-control-label.pipe';
+import { RefDataDecodePipe } from '@pipes/ref-data-decode/ref-data-decode.pipe';
 import { FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { NumberPlateComponent } from '../../../components/number-plate/number-plate.component';
-import { DefaultNullOrEmpty } from '../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { GetControlLabelPipe } from '../../../pipes/get-control-label/get-control-label.pipe';
-import { RefDataDecodePipe } from '../../../pipes/ref-data-decode/ref-data-decode.pipe';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({

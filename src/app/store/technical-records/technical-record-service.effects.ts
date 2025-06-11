@@ -267,8 +267,7 @@ export class TechnicalRecordServiceEffects {
 					}
 					if (techRecord_vehicleType === VehicleTypes.TRL) {
 						(mergedForms as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						(mergedForms as any).euVehicleCategory = null;
+						(mergedForms as TechRecordGETTRL).techRecord_euVehicleCategory = null;
 					}
 
 					return of(mergedForms);

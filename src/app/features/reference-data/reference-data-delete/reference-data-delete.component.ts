@@ -1,9 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, viewChildren } from '@angular/core';
+import { Component, OnInit, inject, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import {
+	DynamicFormGroupComponent,
+	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
+} from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ValidatorNames } from '@models/validators.enum';
@@ -23,10 +29,6 @@ import {
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
-import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
-import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../../forms/components/dynamic-form-group/dynamic-form-group.component';
 
 @Component({
 	selector: 'app-reference-data-delete',
@@ -34,6 +36,12 @@ import { DynamicFormGroupComponent as DynamicFormGroupComponent_1 } from '../../
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
 export class ReferenceDataDeleteComponent implements OnInit {
+	globalErrorService = inject(GlobalErrorService);
+	referenceDataService = inject(ReferenceDataService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+
 	type!: ReferenceDataResourceType;
 	key!: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,14 +69,6 @@ export class ReferenceDataDeleteComponent implements OnInit {
 	};
 
 	readonly sections = viewChildren(DynamicFormGroupComponent);
-
-	constructor(
-		public globalErrorService: GlobalErrorService,
-		private referenceDataService: ReferenceDataService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<ReferenceDataState>
-	) {}
 
 	ngOnInit(): void {
 		this.route.parent?.params.pipe(take(1)).subscribe((params) => {

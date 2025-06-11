@@ -1,6 +1,5 @@
-import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, input } from '@angular/core';
-
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { VehicleSectionEditComponent } from './vehicle-section-edit/vehicle-section-edit.component';
 import { VehicleSectionSummaryComponent } from './vehicle-section-summary/vehicle-section-summary.component';
 import { VehicleSectionViewComponent } from './vehicle-section-view/vehicle-section-view.component';

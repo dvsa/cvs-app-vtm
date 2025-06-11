@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, model } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addSectionState, removeSectionState } from '@store/technical-records';
 
@@ -11,15 +11,13 @@ import { addSectionState, removeSectionState } from '@store/technical-records';
 	imports: [NgClass],
 })
 export class AccordionComponent {
+	cdr = inject(ChangeDetectorRef);
+	store = inject(Store);
+
 	readonly title = input<string | undefined>('');
 	readonly id = input<string | number>('');
 
 	isExpanded = model<boolean | null | undefined>(false);
-
-	constructor(
-		private cdr: ChangeDetectorRef,
-		private store: Store
-	) {}
 
 	get iconStyle(): string {
 		return `govuk-accordion-nav__chevron${this.isExpanded() ? '' : ' govuk-accordion-nav__chevron--down'}`;

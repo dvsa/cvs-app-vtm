@@ -120,16 +120,12 @@ describe('SearchComponent', () => {
 
 		describe('helper methods', () => {
 			it('should get inline error message', (done) => {
-				const addErrorSpy = jest
-					.spyOn(globalErrorService, 'errors$', 'get')
-					.mockImplementation(() => of(expectedErrors));
+				globalErrorService.errors$ = of(expectedErrors);
 
 				component.getInlineErrorMessage(expectedError.anchorLink ?? '').subscribe((response) => {
 					expect(response).toBeTruthy();
 					done();
 				}); // subscribe to activate the map inside 'getInlineErrorMessage()'
-
-				expect(addErrorSpy).toHaveBeenCalled();
 			});
 
 			it('should get error by name', () => {

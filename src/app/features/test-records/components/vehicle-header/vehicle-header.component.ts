@@ -1,10 +1,14 @@
-import { TestRecordsService } from '@/src/app/services/test-records/test-records.service';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TagType, TagTypes } from '@components/tag/tag.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
+import { TagComponent, TagType, TagTypes } from '@components/tag/tag.component';
+import { TestCertificateComponent } from '@components/test-certificate/test-certificate.component';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -12,19 +16,14 @@ import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DigitGroupSeparatorPipe } from '@pipes/digit-group-separator/digit-group-separator.pipe';
+import { RefDataDecodePipe } from '@pipes/ref-data-decode/ref-data-decode.pipe';
+import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { techRecord } from '@store/technical-records';
 import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
 import { Observable, map } from 'rxjs';
-import { IconComponent } from '../../../../components/icon/icon.component';
-import { NumberPlateComponent } from '../../../../components/number-plate/number-plate.component';
-import { TagComponent } from '../../../../components/tag/tag.component';
-import { TestCertificateComponent } from '../../../../components/test-certificate/test-certificate.component';
-import { RetrieveDocumentDirective } from '../../../../directives/retrieve-document/retrieve-document.directive';
-import { FieldWarningMessageComponent } from '../../../../forms/components/field-warning-message/field-warning-message.component';
-import { DefaultNullOrEmpty } from '../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { DigitGroupSeparatorPipe } from '../../../../pipes/digit-group-separator/digit-group-separator.pipe';
-import { RefDataDecodePipe } from '../../../../pipes/ref-data-decode/ref-data-decode.pipe';
-import { TestTypeNamePipe } from '../../../../pipes/test-type-name/test-type-name.pipe';
 
 @Component({
 	selector: 'app-vehicle-header',

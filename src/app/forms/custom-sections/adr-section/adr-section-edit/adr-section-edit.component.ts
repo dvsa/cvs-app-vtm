@@ -1,8 +1,8 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { GovukCheckboxDirective } from '@directives/govuk-checkbox/govuk-checkbox.directive';

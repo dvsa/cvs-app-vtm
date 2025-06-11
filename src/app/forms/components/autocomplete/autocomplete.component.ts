@@ -1,10 +1,10 @@
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, Inject, Injector, input } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { Observable, lastValueFrom, takeWhile } from 'rxjs';
-import { TagComponent } from '../../../components/tag/tag.component';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
@@ -22,6 +22,8 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 	imports: [TagComponent, FieldErrorMessageComponent, NgTemplateOutlet, FormsModule],
 })
 export class AutocompleteComponent extends BaseControlComponent implements AfterViewInit, AfterContentInit {
+	document = inject(DOCUMENT);
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly options$ = input.required<Observable<any[]>>();
 	readonly defaultValue = input('');
@@ -31,14 +33,6 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 		'<svg class="autocomplete__dropdown-arrow-down" style="height: 17px;" viewBox="0 0 512 512"  ><path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/></svg>';
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	options: any[] = [];
-
-	constructor(
-		injector: Injector,
-		@Inject(DOCUMENT) private document: Document,
-		changeDetectorRef: ChangeDetectorRef
-	) {
-		super(injector, changeDetectorRef);
-	}
 
 	ngAfterViewInit(): void {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias

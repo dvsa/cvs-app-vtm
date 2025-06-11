@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { InteractionStatus } from '@azure/msal-browser';
 import { UserService } from '@services/user-service/user-service';
@@ -8,7 +8,7 @@ import { Observable, filter, map, switchMap } from 'rxjs';
 	providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
-	constructor(private userService: UserService) {}
+	userService = inject(UserService);
 
 	canActivate(next: ActivatedRouteSnapshot): Observable<boolean> {
 		return this.userService.inProgress$.pipe(

@@ -1,10 +1,13 @@
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
-import { Component, viewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { SelectComponent } from '@forms/components/select/select.component';
 import { MultiOptions } from '@models/options.model';
 import {
 	BatchUpdateVehicleModel,
@@ -13,6 +16,7 @@ import {
 	VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
@@ -20,10 +24,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
 import { Observable, map, take, withLatestFrom } from 'rxjs';
-import { ButtonGroupComponent } from '../../../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../../../components/button/button.component';
-import { SelectComponent } from '../../../../../forms/components/select/select.component';
-import { DefaultNullOrEmpty } from '../../../../../pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -43,22 +43,38 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 	],
 })
 export class BatchVehicleTemplateComponent {
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject<Store<TechnicalRecordServiceState>>(Store<TechnicalRecordServiceState>);
+	technicalRecordService = inject(TechnicalRecordService);
+	batchTechRecordService = inject(BatchTechnicalRecordService);
+	globalErrorService = inject(GlobalErrorService);
+
 	summary = viewChild(TechRecordSummaryComponent);
 	isInvalid = false;
-	form: CustomFormGroup;
+
+	form = new CustomFormGroup(
+		{ name: 'form-group', type: FormNodeTypes.GROUP },
+		{
+			vehicleStatus: new CustomFormControl(
+				{
+					name: 'change-vehicle-status-select',
+					label: 'Vehicle status',
+					type: FormNodeTypes.CONTROL,
+					customErrorMessage: 'Vehicle status is required',
+				},
+				'',
+				[Validators.required]
+			),
+		}
+	);
+
 	public vehicleStatusOptions: MultiOptions = [
 		{ label: 'Provisional', value: StatusCodes.PROVISIONAL },
 		{ label: 'Current', value: StatusCodes.CURRENT },
 	];
 
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService,
-		private batchTechRecordService: BatchTechnicalRecordService,
-		private globalErrorService: GlobalErrorService
-	) {
+	constructor() {
 		this.store
 			.select(selectTechRecord)
 			.pipe(take(1))
@@ -67,22 +83,6 @@ export class BatchVehicleTemplateComponent {
 					void this.router.navigate(['..'], { relativeTo: this.route });
 				}
 			});
-
-		this.form = new CustomFormGroup(
-			{ name: 'form-group', type: FormNodeTypes.GROUP },
-			{
-				vehicleStatus: new CustomFormControl(
-					{
-						name: 'change-vehicle-status-select',
-						label: 'Vehicle status',
-						type: FormNodeTypes.CONTROL,
-						customErrorMessage: 'Vehicle status is required',
-					},
-					'',
-					[Validators.required]
-				),
-			}
-		);
 
 		this.batchTechRecordService.vehicleStatus$.pipe(take(1)).subscribe((vehicleStatus) => {
 			if (this.form) {

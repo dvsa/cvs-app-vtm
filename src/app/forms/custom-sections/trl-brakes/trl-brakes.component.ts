@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
@@ -16,6 +16,8 @@ import { SwitchableInputComponent } from '../../components/switchable-input/swit
 	imports: [SwitchableInputComponent, NgTemplateOutlet],
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
+	dfs = inject(DynamicFormService);
+
 	readonly vehicleTechRecord = input.required<TechRecordType<'trl'>>();
 	readonly isEditing = input(false);
 	readonly formChange = output();
@@ -28,8 +30,6 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
 	];
 
 	private destroy$ = new Subject<void>();
-
-	constructor(private dfs: DynamicFormService) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord()) as CustomFormGroup;

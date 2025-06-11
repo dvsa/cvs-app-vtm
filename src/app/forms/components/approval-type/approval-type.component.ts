@@ -1,21 +1,12 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
-import {
-	AfterContentInit,
-	ChangeDetectorRef,
-	Component,
-	Injector,
-	OnChanges,
-	OnDestroy,
-	OnInit,
-	input,
-} from '@angular/core';
+import { AfterContentInit, Component, OnChanges, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-import { TagComponent } from '../../../components/tag/tag.component';
-import { ApprovalTypeFocusNextDirective } from '../../../directives/approval-type-focus-next/approval-type-focus-next.directive';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
@@ -125,6 +116,8 @@ export class ApprovalTypeInputComponent
 	extends BaseControlComponent
 	implements OnChanges, OnInit, OnDestroy, AfterContentInit
 {
+	globalErrorService = inject(GlobalErrorService);
+
 	isEditing = input(false);
 	approvalType = input<string>();
 	approvalTypeChange = input<boolean>();
@@ -162,12 +155,8 @@ export class ApprovalTypeInputComponent
 	public approvalTypeNumber3?: string;
 	public approvalTypeNumber4?: string;
 
-	constructor(
-		injector: Injector,
-		changeDetectorRef: ChangeDetectorRef,
-		public globalErrorService: GlobalErrorService
-	) {
-		super(injector, changeDetectorRef);
+	constructor() {
+		super();
 		this.approvalTypeNumber1$ = this.approvalTypeNumber_1.asObservable();
 		this.approvalTypeNumber2$ = this.approvalTypeNumber_2.asObservable();
 		this.approvalTypeNumber3$ = this.approvalTypeNumber_3.asObservable();

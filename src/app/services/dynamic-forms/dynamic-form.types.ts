@@ -11,6 +11,7 @@ import {
 	ValidatorFn,
 } from '@angular/forms';
 import { Params } from '@angular/router';
+import { TagTypes } from '@components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
@@ -22,7 +23,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
-import { TagTypes } from '../../components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
 

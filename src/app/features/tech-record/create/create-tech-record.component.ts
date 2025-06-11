@@ -1,10 +1,19 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { CheckboxGroupComponent } from '@forms/components/checkbox-group/checkbox-group.component';
+import {
+	CheckboxGroupComponent,
+	CheckboxGroupComponent as CheckboxGroupComponent_1,
+} from '@forms/components/checkbox-group/checkbox-group.component';
+import { SelectComponent } from '@forms/components/select/select.component';
+import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOptions } from '@models/options.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
@@ -16,14 +25,6 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dyn
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { firstValueFrom } from 'rxjs';
-import { NoSpaceDirective } from '../../../directives/app-no-space/app-no-space.directive';
-import { ToUppercaseDirective } from '../../../directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '../../../directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { TextInputComponent } from '../../../forms/components/text-input/text-input.component';
-
-import { ButtonComponent } from '../../../components/button/button.component';
-import { CheckboxGroupComponent as CheckboxGroupComponent_1 } from '../../../forms/components/checkbox-group/checkbox-group.component';
-import { SelectComponent } from '../../../forms/components/select/select.component';
 
 @Component({
 	selector: 'app-create',
@@ -41,6 +42,13 @@ import { SelectComponent } from '../../../forms/components/select/select.compone
 	],
 })
 export class CreateTechRecordComponent implements OnChanges {
+	globalErrorService = inject(GlobalErrorService);
+	technicalRecordService = inject(TechnicalRecordService);
+	batchTechRecordService = inject(BatchTechnicalRecordService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store);
+
 	techRecord: Partial<V3TechRecordModel> = {};
 
 	isDuplicateVinAllowed = false;
@@ -94,14 +102,7 @@ export class CreateTechRecordComponent implements OnChanges {
 		{ label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE },
 	];
 
-	constructor(
-		private globalErrorService: GlobalErrorService,
-		private technicalRecordService: TechnicalRecordService,
-		private batchTechRecordService: BatchTechnicalRecordService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store
-	) {
+	constructor() {
 		this.batchTechRecordService.clearBatch();
 		this.technicalRecordService.clearSectionTemplateStates();
 	}

@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { State } from '@store/.';
 import { selectQueryParams } from '@store/router/router.selectors';
 import { Observable, map } from 'rxjs';
 
@@ -9,10 +8,9 @@ import { Observable, map } from 'rxjs';
 	providedIn: 'root',
 })
 export class NoQueryParamsGuard implements CanActivate {
-	constructor(
-		private store: Store<State>,
-		private router: Router
-	) {}
+	store = inject(Store);
+	router = inject(Router);
+
 	canActivate(): Observable<boolean | UrlTree> {
 		return this.store.pipe(
 			select(selectQueryParams),

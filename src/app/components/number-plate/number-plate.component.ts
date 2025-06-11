@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
-import { DefaultNullOrEmpty } from '../../pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
 	selector: 'app-number-plate',

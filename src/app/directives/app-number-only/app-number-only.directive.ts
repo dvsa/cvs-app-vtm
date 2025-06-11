@@ -1,11 +1,13 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
 @Directive({
 	selector: '[appNumberOnly]',
 	standalone: true,
 })
 export class NumberOnlyDirective {
-	inputElement: HTMLInputElement;
+	el = inject<ElementRef<HTMLInputElement>>(ElementRef);
+
+	inputElement = this.el.nativeElement;
 
 	private navigationKeys = [
 		'Backspace',
@@ -21,10 +23,6 @@ export class NumberOnlyDirective {
 		'Copy',
 		'Paste',
 	];
-
-	constructor(private el: ElementRef) {
-		this.inputElement = el.nativeElement;
-	}
 
 	@HostListener('keydown', ['$event'])
 	onKeyDown(e: KeyboardEvent) {

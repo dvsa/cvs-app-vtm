@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
-import { State } from '@store/.';
 import {
 	resultOfTestSelector,
 	setResultOfTest,
@@ -14,7 +13,7 @@ import { Observable } from 'rxjs';
 	providedIn: 'root',
 })
 export class ResultOfTestService {
-	constructor(private store: Store<State>) {}
+	store = inject(Store);
 
 	get resultOfTest(): Observable<resultOfTestEnum | undefined> {
 		return this.store.pipe(select(resultOfTestSelector));

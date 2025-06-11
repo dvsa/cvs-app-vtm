@@ -5,6 +5,7 @@ import {
 	Component,
 	Injector,
 	contentChild,
+	inject,
 	input,
 	model,
 } from '@angular/core';
@@ -22,6 +23,9 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
+	protected injector = inject(Injector);
+	protected cdr = inject(ChangeDetectorRef);
+
 	readonly prefix = contentChild(PrefixDirective);
 	readonly suffix = contentChild(SuffixDirective);
 
@@ -44,10 +48,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private control_value: any;
 
-	constructor(
-		protected injector: Injector,
-		protected cdr: ChangeDetectorRef
-	) {
+	constructor() {
 		this.name.set('');
 	}
 

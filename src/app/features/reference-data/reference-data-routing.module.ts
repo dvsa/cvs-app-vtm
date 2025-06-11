@@ -9,7 +9,7 @@ const routes: Routes = [
 	{
 		path: '',
 		loadComponent: () =>
-			import('../../components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
+			import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
 		data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
 		canActivate: [MsalGuard, RoleGuard],
 		children: [
@@ -25,7 +25,7 @@ const routes: Routes = [
 			{
 				path: ReferenceDataRoutes.TYPE,
 				loadComponent: () =>
-					import('../../components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
+					import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
 				data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
 				canActivate: [MsalGuard, RoleGuard],
 				children: [

@@ -8,14 +8,16 @@ import { RefDataDecodePipe } from '../ref-data-decode.pipe';
 
 describe('RefDataDecodePipe', () => {
 	let store: MockStore<State>;
+	let pipe: RefDataDecodePipe;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [BrowserModule],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			providers: [provideMockStore({ initialState: initialAppState }), RefDataDecodePipe],
 		});
 
 		store = TestBed.inject(MockStore);
+		pipe = TestBed.inject(RefDataDecodePipe);
 
 		store.setState({
 			...initialAppState,
@@ -63,8 +65,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return description', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
 			expect(val).toBe('Great Britain');
 			done();
@@ -72,8 +72,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return description of deleted item', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
 			expect(val).toBe('Austria');
 			done();
@@ -81,8 +79,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return tyreSize', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('235/75-17.5');
 			done();
@@ -90,8 +86,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return untransformed value when description is undefined', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe((val) => {
 			expect(val).toBe('101');
 			done();
@@ -99,8 +93,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return untransformed value when value is not a known resourceKey', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('foo');
 			done();
@@ -108,8 +100,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return untransformed value when value is falsy', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('');
 			done();
@@ -117,8 +107,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return untransformed value when resourceType is falsy', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('101', '', 'tyreSize').subscribe((val) => {
 			expect(val).toBe('101');
 			done();
@@ -126,8 +114,6 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	it('should return untransformed value when data not in state', (done) => {
-		const pipe = new RefDataDecodePipe(store);
-
 		pipe.transform('bar', 'baz').subscribe((val) => {
 			expect(val).toBe('bar');
 			done();

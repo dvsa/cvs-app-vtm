@@ -1,9 +1,14 @@
-import { NoEmojisDirective } from '@/src/app/directives/no-emojis/no-emojis.directive';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
+import { SelectComponent } from '@forms/components/select/select.component';
 import {
 	ReferenceDataAdminType,
 	ReferenceDataModelBase,
@@ -20,11 +25,6 @@ import {
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
 import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
-import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { RoleRequiredDirective } from '../../../directives/app-role-required/app-role-required.directive';
-import { SelectComponent } from '../../../forms/components/select/select.component';
 
 @Component({
 	selector: 'app-reference-data-list',
@@ -43,6 +43,14 @@ import { SelectComponent } from '../../../forms/components/select/select.compone
 	],
 })
 export class ReferenceDataListComponent implements OnInit, OnDestroy {
+	referenceDataService = inject(ReferenceDataService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	store = inject(Store);
+	cdr = inject(ChangeDetectorRef);
+	globalErrorService = inject(GlobalErrorService);
+	dfs = inject(DynamicFormService);
+
 	type!: ReferenceDataResourceType;
 	disabled = true;
 	pageStart?: number;
@@ -72,16 +80,6 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 			},
 		],
 	};
-
-	constructor(
-		private referenceDataService: ReferenceDataService,
-		private route: ActivatedRoute,
-		private router: Router,
-		private store: Store,
-		private cdr: ChangeDetectorRef,
-		private globalErrorService: GlobalErrorService,
-		public dfs: DynamicFormService
-	) {}
 
 	ngOnInit(): void {
 		this.form = this.dfs.createForm(this.searchTemplate) as CustomFormGroup;
