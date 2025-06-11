@@ -72,12 +72,6 @@ describe('TyresSectionEditComponent', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should call addControlsBasedOffVehicleType', () => {
-			const addControlsBasedOffVehicleTypeSpy = jest.spyOn(component, 'addControlsBasedOffVehicleType');
-			component.ngOnInit();
-			expect(addControlsBasedOffVehicleTypeSpy).toHaveBeenCalled();
-		});
-
 		it('should attach all form controls to parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnInit();
@@ -103,16 +97,6 @@ describe('TyresSectionEditComponent', () => {
 			component.destroy$.subscribe((value) => (emittedValue = value));
 			component.ngOnDestroy();
 			expect(emittedValue).toBe(true);
-		});
-	});
-
-	describe('addControlsBasedOffVehicleType', () => {
-		it('should add vehicle specific controls to the form', () => {
-			const addControlSpy = jest.spyOn(component.form, 'addControl');
-			const vehicleControlsSpy = jest.spyOn(component, 'controlsBasedOffVehicleType', 'get');
-			component.addControlsBasedOffVehicleType();
-			expect(vehicleControlsSpy).toHaveBeenCalled();
-			expect(addControlSpy).toHaveBeenCalled();
 		});
 	});
 });
