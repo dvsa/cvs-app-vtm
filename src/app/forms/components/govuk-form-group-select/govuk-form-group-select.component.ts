@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 
 import { TagDirective } from '@directives/tag/tag.directive';
@@ -37,7 +32,8 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 
 	get style(): string {
 		const width = this.width();
-		return `govuk-select ${width ? `govuk-input--width-${width}` : ''}`;
+		const errorClass = this.hasError ? 'govuk-select--error' : '';
+		return `govuk-select ${width ? `govuk-input--width-${width}` : ''} ${errorClass}`.trim();
 	}
 
 	onBlur(event: FocusEvent) {

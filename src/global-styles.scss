@@ -187,20 +187,6 @@
   }
  }
 
-.govuk-form-group-select {
-  @extend .govuk-form-group;
-  > label {
-    @extend .govuk-label;
-    @extend .govuk-label--m;
-  }
-  > div {
-    @extend .govuk-hint;
-  }
-  > select {
-    @extend .govuk-select;
-  }
-}
-
 .govuk-form-group-split-controls {
   @extend .govuk-form-group;
   > h1 {

@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -36,7 +31,8 @@ export class GovukFormGroupTextareaComponent extends GovukFormGroupBaseComponent
 
 	get style(): string {
 		const width = this.width();
-		return `govuk-input ${width ? `govuk-input--width-${width}` : ''}`;
+		const errorClass = this.hasError ? 'govuk-textarea--error' : '';
+		return `govuk-textarea ${width ? `govuk-textarea--width-${width}` : ''} ${errorClass}`.trim();
 	}
 
 	writeValue(obj: any): void {

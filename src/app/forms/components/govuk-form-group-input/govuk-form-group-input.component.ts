@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormsModule,
-	NG_VALUE_ACCESSOR,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
@@ -47,7 +42,8 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 
 	get style(): string {
 		const width = this.width();
-		return `govuk-input ${width ? `govuk-input--width-${width}` : ''}`;
+		const errorClass = this.hasError ? 'govuk-input--error' : '';
+		return `govuk-input ${width ? `govuk-input--width-${width}` : ''} ${errorClass}`.trim();
 	}
 
 	onBlur(event: FocusEvent) {
