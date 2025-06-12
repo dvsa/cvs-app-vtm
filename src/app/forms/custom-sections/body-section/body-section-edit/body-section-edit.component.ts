@@ -1,18 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import {
-	ControlContainer,
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-	ValidatorFn,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import {
 	BodyTypeCode,
 	BodyTypeDescription,
@@ -23,11 +15,9 @@ import { FUNCTION_CODE_OPTIONS, MultiOptions } from '@models/options.model';
 import { PsvMake, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateVehicleConfiguration } from '@store/technical-records';
 import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
@@ -48,13 +38,8 @@ import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-gr
 		AsyncPipe,
 	],
 })
-export class BodySectionEditComponent implements OnInit, OnDestroy {
-	fb = inject(FormBuilder);
-	store = inject(Store);
+export class BodySectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	actions = inject(Actions);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
 	referenceDataService = inject(ReferenceDataService);
 	optionsService = inject(MultiOptionsService);
 	cdr = inject(ChangeDetectorRef);
@@ -76,14 +61,9 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 	);
 
 	ngOnInit(): void {
-		this.addControlsBasedOffVehicleType();
+		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 
 		this.loadOptions();
 		this.loadBodyMakes();
@@ -192,12 +172,7 @@ export class BodySectionEditComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);

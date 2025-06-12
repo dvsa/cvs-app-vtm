@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TagType } from '@components/tag/tag.component';
+import { TagType } from '@/src/app/components/tag/tag.component';
+import { FormNodeWidth, TagTypeLabels } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
-import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
 
 @Component({
@@ -16,12 +14,7 @@ import { ReplaySubject } from 'rxjs';
 	styleUrls: ['./manufacturer-section-edit.component.scss'],
 	imports: [FormsModule, GovukFormGroupInputComponent, ReactiveFormsModule, GovukFormGroupTextareaComponent],
 })
-export class ManufacturerSectionEditComponent implements OnInit, OnDestroy {
-	fb = inject(FormBuilder);
-	store = inject(Store);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
+export class ManufacturerSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	techRecord = input.required<V3TechRecordModel>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -29,36 +22,19 @@ export class ManufacturerSectionEditComponent implements OnInit, OnDestroy {
 	form = this.fb.group({});
 
 	ngOnInit(): void {
-		this.addControls();
+		this.addControls(this.defaultFields, this.form);
 
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	addControls() {
-		const vehicleControls = this.defaultFields;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
-		}
 	}
 
 	//TODO replace the email validator with the common microservice

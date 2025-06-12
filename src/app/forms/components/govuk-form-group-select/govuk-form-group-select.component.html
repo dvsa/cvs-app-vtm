@@ -1,6 +1,6 @@
-<div class="govuk-form-group-select">
+<div class="govuk-form-group">
   @if (controlLabel()) {
-    <label tag for="{{ id }}" [id]="labelId">
+    <label class="govuk-label govuk-label--m" tag for="{{ id }}" [id]="labelId">
       {{ controlLabel() }}
       @if (tags().length) {
         <div class="flex gap-2">
@@ -13,7 +13,7 @@
   }
 
   @if (controlHint()) {
-    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }}</div>
   }
 
   @if (hasError) {
@@ -35,7 +35,7 @@
     (blur)="onBlur($event)"
     [class]="style"
     [disabled]="disabled()"
-    >
+  >
     @if (allowNull()) {
       <option [ngValue]="null"></option>
     }

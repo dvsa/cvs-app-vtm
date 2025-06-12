@@ -1,14 +1,12 @@
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
@@ -20,15 +18,10 @@ import { GovukFormGroupInputComponent } from '../../../components/govuk-form-gro
 	styleUrls: ['./weights-section-edit.component.scss'],
 	imports: [FormsModule, ReactiveFormsModule, TagComponent, GovukFormGroupInputComponent, KeyValuePipe],
 })
-export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges {
+export class WeightsSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
-	fb = inject(FormBuilder);
-	store = inject(Store);
 	actions = inject(Actions);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 	formChange = output<Partial<TechRecordType<'hgv' | 'trl' | 'psv'>>>();
 
@@ -37,7 +30,7 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 	form: FormGroup = this.fb.group({});
 
 	ngOnInit(): void {
-		this.addControlsBasedOffVehicleType();
+		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		this.prepopulateAxles();
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
@@ -46,22 +39,12 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 		this.handleGrossLadenWeightChange();
 
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
@@ -155,13 +138,6 @@ export class WeightsSectionEditComponent implements OnInit, OnDestroy, OnChanges
 				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
 			]),
 		});
-	}
-
-	addControlsBasedOffVehicleType() {
-		const vehicleControls = this.controlsBasedOffVehicleType;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
-		}
 	}
 
 	get controlsBasedOffVehicleType() {

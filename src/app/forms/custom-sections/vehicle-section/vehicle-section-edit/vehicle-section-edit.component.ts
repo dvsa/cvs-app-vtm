@@ -1,11 +1,8 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import {
 	AbstractControl,
-	ControlContainer,
-	FormBuilder,
 	FormControl,
-	FormGroup,
 	FormsModule,
 	ReactiveFormsModule,
 	ValidationErrors,
@@ -16,7 +13,7 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import {
 	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
@@ -45,9 +42,7 @@ import {
 } from '@models/options.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVehicleConfiguration } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { GovukCheckboxGroupComponent } from '../../../components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -73,7 +68,7 @@ type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'p
 		GovukCheckboxGroupComponent,
 	],
 })
-export class VehicleSectionEditComponent implements OnInit, OnDestroy {
+export class VehicleSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly CouplingTypeOptions = CouplingTypeOptions;
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly TagType = TagType;
@@ -89,11 +84,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	readonly VEHICLE_SIZE_OPTIONS = VEHICLE_SIZE_OPTIONS;
 	readonly FRAME_DESCRIPTION_OPTIONS = FRAME_DESCRIPTION_OPTIONS;
 
-	fb = inject(FormBuilder);
-	store = inject(Store);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
 	techRecord = input.required<V3TechRecordModel>();
 	isCreateMode = input.required<boolean>();
 
@@ -113,27 +103,17 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 	});
 
 	ngOnInit(): void {
-		this.addControlsBasedOffVehicleType();
+		this.addControls(this.controlsBasedOffVehicleType, this.form);
 
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 
 		this.handleUpdateVehicleConfiguration();
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
@@ -436,13 +416,6 @@ export class VehicleSectionEditComponent implements OnInit, OnDestroy {
 				return this.motorcycleFields;
 			default:
 				return {};
-		}
-	}
-
-	addControlsBasedOffVehicleType() {
-		const vehicleControls = this.controlsBasedOffVehicleType;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
 		}
 	}
 

@@ -1,17 +1,9 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import {
-	ControlContainer,
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { GovukCheckboxDirective } from '@directives/govuk-checkbox/govuk-checkbox.directive';
 import { GovukDateInputDirective } from '@directives/govuk-date-input/govuk-date-input.directive';
 import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directive';
@@ -29,18 +21,16 @@ import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/t
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CharacterCountComponent } from '@forms/components/character-count/character-count.component';
+import { ControlErrorsComponent } from '@forms/components/control-errors/control-errors.component';
+import { DateControlsComponent } from '@forms/components/date-controls/date-controls.component';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { CharacterCountComponent } from '../../../components/character-count/character-count.component';
-import { ControlErrorsComponent } from '../../../components/control-errors/control-errors.component';
-import { DateControlsComponent } from '../../../components/date-controls/date-controls.component';
 
 @Component({
 	selector: 'app-adr-section-edit',
@@ -54,7 +44,6 @@ import { DateControlsComponent } from '../../../components/date-controls/date-co
 		GovukInputDirective,
 		GovukSelectDirective,
 		DateControlsComponent,
-		DateFocusNextDirective,
 		NumberOnlyDirective,
 		GovukDateInputDirective,
 		GovukCheckboxDirective,
@@ -66,17 +55,12 @@ import { DateControlsComponent } from '../../../components/date-controls/date-co
 		NoEmojisDirective,
 	],
 })
-export class AdrSectionEditComponent implements OnInit, OnDestroy {
-	fb = inject(FormBuilder);
-	store = inject(Store);
+export class AdrSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 	adrService = inject(AdrService);
 	adrValidators = inject(AdrValidatorsService);
-	commonValidators = inject(CommonValidatorsService);
-	controlContainer = inject(ControlContainer);
 	viewportScroller = inject(ViewportScroller);
-	technicalRecordService = inject(TechnicalRecordService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
 
@@ -298,23 +282,14 @@ export class AdrSectionEditComponent implements OnInit, OnDestroy {
 		// Attatch all form controls to parent
 		this.handleInitialiseUNNumbers();
 		this.handleInitialiseSubsequentTankInspections();
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			Object.entries(this.form.controls).forEach(([key, control]) =>
-				parent.addControl(key, control, { emitEvent: false })
-			);
-		}
+		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
 	}
 
 	ngOnDestroy(): void {
 		// Detatch all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			Object.keys(this.form.controls).forEach((key) => parent.removeControl(key, { emitEvent: false }));
-		}
-
+		this.destroy(this.form);
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
