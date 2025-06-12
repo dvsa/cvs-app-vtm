@@ -343,7 +343,7 @@ export class HttpService {
 			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}`,
 			{
 				params,
-				context: withCache({ key: CacheKeys.REFERENCE_DATA + resourceType + paginationToken }),
+				context: withCache({ key: CacheKeys.REFERENCE_DATA + resourceType + (paginationToken ?? '') }),
 			}
 		);
 	}
