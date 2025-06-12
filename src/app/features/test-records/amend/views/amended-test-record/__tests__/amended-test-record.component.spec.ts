@@ -57,13 +57,10 @@ describe('AmendedTestRecordComponent', () => {
 	it('sets class properties on component init', inject(
 		[TestRecordsService],
 		(testRecordsService: TestRecordsService) => {
-			const amendedTestResultSpy = jest.spyOn(testRecordsService, 'amendedTestResult$', 'get');
-			const amendedDefectDataSpy = jest.spyOn(testRecordsService, 'amendedDefectData$', 'get');
-
 			fixture.detectChanges();
 
-			expect(amendedTestResultSpy).toHaveBeenCalled();
-			expect(amendedDefectDataSpy).toHaveBeenCalled();
+			expect(component.testResult$).toEqual(testRecordsService.amendedTestResult$);
+			expect(component.defects$).toEqual(testRecordsService.amendedDefectData$);
 		}
 	));
 });

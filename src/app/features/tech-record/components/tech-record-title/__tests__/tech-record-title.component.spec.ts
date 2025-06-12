@@ -97,7 +97,7 @@ describe('TechRecordTitleComponent', () => {
 	describe('trailer ID', () => {
 		it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
 			const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
-			jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
+			technicalRecordService.techRecord$ = of(mockRecordTrailer);
 
 			fixture.componentRef.setInput('vehicle', mockRecordTrailer);
 
@@ -112,7 +112,7 @@ describe('TechRecordTitleComponent', () => {
 
 		it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', (euVehicleCategory) => {
 			const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
-			jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
+			technicalRecordService.techRecord$ = of(mockRecordTrailer);
 			mockRecordTrailer.techRecord_euVehicleCategory = euVehicleCategory;
 			fixture.componentRef.setInput('vehicle', mockRecordTrailer);
 			store.overrideSelector(selectTechRecord, mockRecordTrailer);

@@ -81,12 +81,12 @@ describe('AdrGenerateCertTestComponent', () => {
 
 	describe('lastCertificateDate', () => {
 		it('should return the most recent certificate date generation date', () => {
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
+			techRecordService.techRecord$ = of(mockRecord);
 			expect(component.lastCertificateDate).toBe('An ADR certificate was last generated on 14/01/2025');
 		});
 		it('should return a default string if there are no ADR certificates on a record', () => {
 			const newMock = { ...mockRecord, techRecord_adrPassCertificateDetails: [] };
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(newMock));
+			techRecordService.techRecord$ = of(newMock);
 			expect(component.lastCertificateDate).toBe('There are no previous ADR certificates for this vehicle');
 		});
 	});
@@ -99,7 +99,7 @@ describe('AdrGenerateCertTestComponent', () => {
 
 	describe('handleSubmit', () => {
 		beforeEach(() => {
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
+			techRecordService.techRecord$ = of(mockRecord);
 		});
 		it('should dispatch the correct action with correct params', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');

@@ -47,6 +47,7 @@ describe('TechRecordSummaryChangesComponent', () => {
 				{
 					provide: RouterService,
 					useValue: {
+						getRouteDataProperty$: jest.fn(),
 						getRouteNestedParam$(param: string) {
 							if (param === 'systemNumber') return of('123456');
 							if (param === 'createdTimestamp') return of('123123123');

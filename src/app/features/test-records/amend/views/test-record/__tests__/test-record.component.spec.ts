@@ -82,9 +82,7 @@ describe('TestRecordComponent', () => {
 
 	describe('button actions', () => {
 		beforeEach(() => {
-			jest
-				.spyOn(testRecordsService, 'testResult$', 'get')
-				.mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
+			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
 		});
 
 		it('should display review button when edit query param is true', waitForAsync(() => {
@@ -172,9 +170,7 @@ describe('TestRecordComponent', () => {
 
 	describe('Render banner', () => {
 		beforeEach(() => {
-			jest
-				.spyOn(testRecordsService, 'testResult$', 'get')
-				.mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
+			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
 		});
 
 		it('should render the banner if the test type id is not supported', waitForAsync(() => {

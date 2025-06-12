@@ -62,7 +62,7 @@ describe('RouterService', () => {
 
 	describe('getRouteNestedParam', () => {
 		it('should return the correct value', (done) => {
-			jest.spyOn(service, 'routeNestedParams$', 'get').mockReturnValue(of({ foo: 'bar' }));
+			service.routeNestedParams$ = of({ foo: 'bar' });
 			service.getRouteNestedParam$('foo').subscribe((value) => {
 				expect(value).toBe('bar');
 				done();

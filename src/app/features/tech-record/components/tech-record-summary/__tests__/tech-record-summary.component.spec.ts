@@ -78,14 +78,12 @@ describe('TechRecordSummaryComponent', () => {
 	describe('TechRecordSummaryComponent View', () => {
 		it('should show PSV record found', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.PSV,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.PSV,
+			} as V3TechRecordModel);
 			fixture.detectChanges();
 			component.ngOnInit();
 			checkHeading();
@@ -94,14 +92,12 @@ describe('TechRecordSummaryComponent', () => {
 
 		it('should show PSV record found without dimensions', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.PSV,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.PSV,
+			} as V3TechRecordModel);
 			component.ngOnInit();
 			fixture.detectChanges();
 
@@ -113,14 +109,12 @@ describe('TechRecordSummaryComponent', () => {
 
 		it('should show HGV record found', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.HGV,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.HGV,
+			} as V3TechRecordModel);
 			component.ngOnInit();
 			fixture.detectChanges();
 
@@ -130,14 +124,12 @@ describe('TechRecordSummaryComponent', () => {
 
 		it('should show HGV record found without dimensions', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.HGV,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.HGV,
+			} as V3TechRecordModel);
 			component.ngOnInit();
 			fixture.detectChanges();
 
@@ -147,15 +139,13 @@ describe('TechRecordSummaryComponent', () => {
 
 		it('should show TRL record found', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.TRL,
-					techRecord_euVehicleCategory: EUVehicleCategory.O2,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.TRL,
+				techRecord_euVehicleCategory: EUVehicleCategory.O2,
+			} as V3TechRecordModel);
 			component.ngOnInit();
 			fixture.detectChanges();
 
@@ -165,14 +155,13 @@ describe('TechRecordSummaryComponent', () => {
 
 		it('should show TRL record found without dimensions', () => {
 			component.isEditing = false;
-			jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
-				of({
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_vehicleType: VehicleTypes.TRL,
-				} as V3TechRecordModel)
-			);
+			techRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+				techRecord_vehicleType: VehicleTypes.TRL,
+			} as V3TechRecordModel);
+
 			component.ngOnInit();
 			fixture.detectChanges();
 

@@ -36,6 +36,8 @@ const mockReferenceDataService = {
 	loadTyreReferenceDataByKeySearch: jest.fn(),
 	loadReferenceData: jest.fn(),
 	getReferenceDataOptions: jest.fn(),
+	getAll$: jest.fn(),
+	getReferencePsvMakeDataLoading$: jest.fn(),
 };
 
 describe('BodySectionEditComponent', () => {

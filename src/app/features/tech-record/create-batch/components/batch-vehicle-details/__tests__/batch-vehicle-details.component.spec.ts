@@ -46,7 +46,7 @@ describe('BatchVehicleDetailsComponent', () => {
 
 	describe('isFormValid', () => {
 		it('should throw an error if there are no vehicles', async () => {
-			jest.spyOn(component, 'formStatus', 'get').mockImplementationOnce(() => of('VALID'));
+			component.formStatus = of('VALID');
 			component.vehicles.push(component.vehicleForm(0));
 			component.vehicleForm(0).get('vin')?.clearAsyncValidators();
 

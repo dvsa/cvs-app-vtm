@@ -105,6 +105,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
 			it('should have the second row be the first entry from amendement version history', fakeAsync(() => {
 				store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord()?.testHistory ?? []);
+				store.refreshState();
 				tick();
 				fixture.detectChanges();
 				const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
@@ -124,6 +125,7 @@ describe('TestAmendmentHistoryComponent', () => {
 		it('should have links to view amended records', fakeAsync(() => {
 			fixture.componentRef.setInput('testRecord', mockTestResult());
 			store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord()?.testHistory ?? []);
+			store.refreshState();
 			tick();
 			fixture.detectChanges();
 
