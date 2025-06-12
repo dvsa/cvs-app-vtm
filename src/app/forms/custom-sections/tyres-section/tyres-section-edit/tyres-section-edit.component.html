@@ -94,7 +94,7 @@
         </td>
         <!-- Speed Category Symbol (PSV Only)-->
         @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell tyres-boarder-top">
             <govuk-form-group-select
               id="tyres_speedCategorySymbol-{{ i + 1 }}"
               formControlName="tyres_speedCategorySymbol"
@@ -105,7 +105,7 @@
           </td>
         }
         <!-- Fitment Code -->
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell tyres-boarder-top">
           <govuk-form-group-select
             id="tyres_fitmentCode-{{ i + 1 }}"
             formControlName="tyres_fitmentCode"
