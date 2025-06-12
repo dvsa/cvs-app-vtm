@@ -99,7 +99,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	correctingAnErrorForm = new FormGroup({
 		newVrm: new CustomFormControl(
 			{
-				name: 'new-Vrm',
+				name: 'new-vrm',
 				label: 'New VRM',
 				type: FormNodeTypes.CONTROL,
 			},
