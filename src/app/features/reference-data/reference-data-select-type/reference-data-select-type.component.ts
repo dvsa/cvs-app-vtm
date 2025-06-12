@@ -15,7 +15,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, selectAllReferenceDataByResourceType } from '@store/reference-data';
-import { map, take } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-select-type',
@@ -49,7 +49,6 @@ export class ReferenceDataSelectTypeComponent {
 
 	options$ = this.store.pipe(
 		select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
-		take(1),
 		map(
 			(types) =>
 				types
