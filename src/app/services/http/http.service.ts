@@ -389,7 +389,7 @@ export class HttpService {
 			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
 				String(resourceType)
 			)}/${encodeURIComponent(String(resourceKey))}`,
-			body
+			{ body }
 		);
 	}
 
