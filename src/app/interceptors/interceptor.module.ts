@@ -17,7 +17,7 @@ import { ErrorInterceptorModule } from './error-handling/error-handling.module';
 		ErrorInterceptorModule.forRoot({
 			httpStatusRedirect: [500],
 			redirectTo: 'error',
-			blacklist: ['/test-types/', '/v3/technical-records/recalls/'],
+			blacklist: ['/log', '/test-types/', '/v3/technical-records/recalls/'],
 		}),
 	],
 })
