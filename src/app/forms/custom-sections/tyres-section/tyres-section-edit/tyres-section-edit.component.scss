@@ -11,6 +11,8 @@
   th.govuk-table__header,
   td.govuk-table__cell {
     padding: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     vertical-align: middle;
   }
 
@@ -29,7 +31,7 @@
     margin-bottom: 0 !important;
   }
 
-  govuk-form-group-select ::ng-deep .govuk-form-group-select {
+  govuk-form-group-select ::ng-deep .govuk-form-group {
     margin-bottom: 0 !important;
   }
 
