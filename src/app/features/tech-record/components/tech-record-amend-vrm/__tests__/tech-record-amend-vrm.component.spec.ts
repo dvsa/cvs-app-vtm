@@ -131,7 +131,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
 			component.handleSubmit();
 
-			expect(addErrorSpy).toHaveBeenCalledWith([{ anchorLink: 'new-Vrm', error: 'New VRM is required' }]);
+			expect(addErrorSpy).toHaveBeenCalledWith([{ anchorLink: 'new-vrm', error: 'New VRM is required' }]);
 		});
 
 		it('should not dispatch an action if isFormValid returns false', () => {
