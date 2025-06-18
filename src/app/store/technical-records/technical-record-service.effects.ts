@@ -1,9 +1,13 @@
 import { Injectable, inject } from '@angular/core';
+import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
+	TechRecordGETCar,
 	TechRecordGETHGV,
+	TechRecordGETLGV,
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -265,9 +269,24 @@ export class TechnicalRecordServiceEffects {
 						(mergedForms as TechRecordGETHGV).techRecord_vehicleClass_description =
 							VehicleClassDescription.HeavyGoodsVehicle;
 					}
+
 					if (techRecord_vehicleType === VehicleTypes.TRL) {
 						(mergedForms as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
 						(mergedForms as TechRecordGETTRL).techRecord_euVehicleCategory = null;
+					}
+
+					if (
+						techRecord_vehicleType === VehicleTypes.CAR &&
+						(mergedForms as TechRecordGETCar).techRecord_euVehicleCategory !== EUVehicleCategoryCAR.M1
+					) {
+						(mergedForms as TechRecordGETCar).techRecord_euVehicleCategory = EUVehicleCategoryCAR.M1;
+					}
+
+					if (
+						techRecord_vehicleType === VehicleTypes.LGV &&
+						(mergedForms as TechRecordGETLGV).techRecord_euVehicleCategory !== EUVehicleCategoryLGV.N1
+					) {
+						(mergedForms as TechRecordGETLGV).techRecord_euVehicleCategory = EUVehicleCategoryLGV.N1;
 					}
 
 					return of(mergedForms);
