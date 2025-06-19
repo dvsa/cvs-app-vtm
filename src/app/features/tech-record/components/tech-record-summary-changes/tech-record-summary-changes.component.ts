@@ -1,3 +1,4 @@
+import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -103,6 +104,7 @@ import { Subject, combineLatest, map, take, takeUntil } from 'rxjs';
 		AuthorisationIntoServiceSectionComponent,
 		ManufacturerSectionComponent,
 		AuditSectionComponent,
+		ReasonForCreationSectionComponent,
 	],
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {

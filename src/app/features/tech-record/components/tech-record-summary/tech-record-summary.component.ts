@@ -1,3 +1,4 @@
+import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -119,6 +120,7 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		ManufacturerSectionComponent,
 		AuditSectionComponent,
 		AdrCertsSectionComponent,
+		ReasonForCreationSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {

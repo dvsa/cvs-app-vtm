@@ -27,6 +27,7 @@ import { TechRecordTitleComponent } from '../../../components/tech-record-title/
 @Component({
 	selector: 'app-hydrate-new-vehicle-record',
 	templateUrl: './hydrate-new-vehicle-record.component.html',
+	styleUrls: ['./hydrate-new-vehicle-record.component.scss'],
 	imports: [TechRecordTitleComponent, ButtonComponent, TechRecordSummaryComponent, AsyncPipe],
 })
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {

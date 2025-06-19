@@ -1,0 +1,12 @@
+
+@switch (mode()) {
+  @case ('view') {
+    <app-reason-for-creation-section-view />
+  }
+  @case ('edit') {
+    <app-reason-for-creation-section-edit [techRecord]="techRecord()" />
+  }
+  @case ('summary') {
+    <app-reason-for-creation-section-summary />
+  }
+}
