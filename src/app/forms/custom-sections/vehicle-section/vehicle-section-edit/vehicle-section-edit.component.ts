@@ -184,7 +184,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			]),
 			techRecord_vehicleSize: this.fb.control<string | null>(null),
 			techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99, 'Number of seat belts must be less than or equal to 99'),
+				this.commonValidators.max(150, 'Number of seat belts must be less than or equal to 150'),
 			]),
 			techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Seatbelt installation approval date / type approved'),
