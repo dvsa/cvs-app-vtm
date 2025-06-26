@@ -24,11 +24,13 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { CharacterCountComponent } from '@forms/components/character-count/character-count.component';
 import { ControlErrorsComponent } from '@forms/components/control-errors/control-errors.component';
 import { DateControlsComponent } from '@forms/components/date-controls/date-controls.component';
+import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
@@ -53,6 +55,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		DatePipe,
 		DefaultNullOrEmpty,
 		NoEmojisDirective,
+		GovukFormGroupInputComponent,
 	],
 })
 export class AdrSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -205,7 +208,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
 			this.commonValidators.max(99999999, 'Weight (tonnes) must be less than or equal to 99999999'),
 			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes) is required'),
-			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) must be a number'),
+			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) Max 2 decimal places'),
 		]),
 
 		// Other declarations
@@ -420,4 +423,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 		return value.techRecord_adrDetails_dangerousGoods === false && touched;
 	}
+
+	protected readonly FormNodeWidth = FormNodeWidth;
 }

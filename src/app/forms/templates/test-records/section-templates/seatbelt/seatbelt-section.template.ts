@@ -45,7 +45,7 @@ export const SeatbeltSection: FormNode = {
 									name: ValidatorNames.RequiredIfEquals,
 									args: { sibling: 'seatbeltInstallationCheckDate', value: [true] },
 								},
-								{ name: ValidatorNames.Max, args: 99 },
+								{ name: ValidatorNames.Max, args: 150 },
 							],
 							width: FormNodeWidth.M,
 						},

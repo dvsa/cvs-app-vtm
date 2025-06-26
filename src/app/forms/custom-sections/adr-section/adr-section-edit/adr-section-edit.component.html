@@ -763,17 +763,13 @@
     </div>
     <!-- Weight (tonnes) -->
     @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
-      <div class="govuk-form-group-input">
-        <h1>
-          <label id="techRecord_adrDetails_weight-label"> Weight </label>
-        </h1>
-        <app-control-errors elementId="techRecord_adrDetails_weight-error" [control]="form.controls.techRecord_adrDetails_weight" />
-        <div class="govuk-input__wrapper">
-          <input
-            appNoEmojis type="number" govukInput appNumberOnly class="govuk-input--width-5" spellcheck="false" formControlName="techRecord_adrDetails_weight" />
-          <div class="govuk-input__suffix" aria-hidden="true">Tonnes</div>
-        </div>
-      </div>
+      <govuk-form-group-input
+        label="Weight"
+        formControlName="techRecord_adrDetails_weight"
+        type="decimal"
+        suffix="Tonnes"
+        [width]="FormNodeWidth.M"
+      ></govuk-form-group-input>
     }
   }
   <!-- Delcarations seen (Owner/operator declaration )-->
