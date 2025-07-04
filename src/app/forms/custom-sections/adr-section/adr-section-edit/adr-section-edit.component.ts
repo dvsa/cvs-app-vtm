@@ -3,14 +3,6 @@ import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
-import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { GovukCheckboxDirective } from '@directives/govuk-checkbox/govuk-checkbox.directive';
-import { GovukDateInputDirective } from '@directives/govuk-date-input/govuk-date-input.directive';
-import { GovukInputDirective } from '@directives/govuk-input/govuk-input.directive';
-import { GovukRadioDirective } from '@directives/govuk-radio/govuk-radio.directive';
-import { GovukSelectDirective } from '@directives/govuk-select/govuk-select.directive';
-import { GovukTextareaDirective } from '@directives/govuk-textarea/govuk-textarea.directive';
-import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
@@ -21,13 +13,16 @@ import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/t
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CharacterCountComponent } from '@forms/components/character-count/character-count.component';
-import { ControlErrorsComponent } from '@forms/components/control-errors/control-errors.component';
-import { DateControlsComponent } from '@forms/components/date-controls/date-controls.component';
+import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
+import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
+import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
+import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
+import { YES_NO_OPTIONS } from '@models/options.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -41,21 +36,15 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
-		GovukRadioDirective,
-		ControlErrorsComponent,
-		GovukInputDirective,
-		GovukSelectDirective,
-		DateControlsComponent,
-		NumberOnlyDirective,
-		GovukDateInputDirective,
-		GovukCheckboxDirective,
-		GovukTextareaDirective,
-		CharacterCountComponent,
 		PaginationComponent,
 		DatePipe,
 		DefaultNullOrEmpty,
-		NoEmojisDirective,
 		GovukFormGroupInputComponent,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupDateComponent,
+		GovukCheckboxGroupComponent,
+		GovukFormGroupTextareaComponent,
 	],
 })
 export class AdrSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -226,11 +215,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 	});
 
 	// Option lists
-	dangerousGoodsOptions = [
-		{ label: 'Yes', value: true },
-		{ label: 'No', value: false },
-	];
-
 	adrBodyTypesOptions = getOptionsFromEnum(ADRBodyType);
 
 	usedOnInternationJourneysOptions = [
@@ -252,16 +236,17 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 	tankStatementSelectOptions = getOptionsFromEnum(ADRTankDetailsTankStatementSelect);
 
-	batteryListApplicableOptions = [
-		{ value: true, label: 'Yes' },
-		{ value: false, label: 'No' },
-	];
+	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
 	tc3InspectionOptions = getOptionsFromEnum(TC3Types);
 
 	memosApplyOptions = [{ value: '07/09 3mth leak ext ', label: 'Yes' }];
 
 	bodyDeclarationOptions = getOptionsFromEnum(ADRBodyDeclarationTypes);
+
+	customTrueOption(labelName: string) {
+		return [{ value: true, label: labelName }];
+	}
 
 	isInvalid(formControlName: string) {
 		const control = this.form.get(formControlName);
@@ -416,12 +401,14 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		this.router.navigate([route], { relativeTo: this.route, state: this.techRecord });
 	}
 
-	canDisplayDangerousGoodsWarning(value: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
+	get canDisplayDangerousGoodsWarning() {
 		const touched = Object.entries(this.form.controls).some(([key, control]) => {
 			return key !== 'techRecord_adrDetails_dangerousGoods' && control.touched;
 		});
 
-		return value.techRecord_adrDetails_dangerousGoods === false && touched;
+		return this.form.get('techRecord_adrDetails_dangerousGoods')?.value === false && touched
+			? 'By selecting this field it will delete all previous ADR field inputs'
+			: null;
 	}
 
 	protected readonly FormNodeWidth = FormNodeWidth;
