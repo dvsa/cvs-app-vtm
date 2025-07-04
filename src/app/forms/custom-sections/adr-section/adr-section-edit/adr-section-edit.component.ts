@@ -14,10 +14,7 @@ import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
-import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
-import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
-import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -39,10 +36,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		PaginationComponent,
 		DatePipe,
 		DefaultNullOrEmpty,
-		GovukFormGroupInputComponent,
 		GovukFormGroupRadioComponent,
-		GovukFormGroupSelectComponent,
-		GovukFormGroupDateComponent,
 		GovukCheckboxGroupComponent,
 		GovukFormGroupTextareaComponent,
 	],
