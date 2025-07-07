@@ -93,15 +93,19 @@ export class SelectVehicleTypeComponent {
 
 		this.batchTechRecordService.setVehicleType(type);
 
+		console.log('running this');
+
 		this.store
 			.select(editingTechRecord)
 			.pipe(take(1))
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			.subscribe(
-				(vehicle) =>
-					!vehicle &&
-					this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>)
-			);
+			.subscribe((vehicle) => {
+				if (!vehicle) {
+					this.trs.updateEditingTechRecord({
+						techRecord_reasonForCreation: '',
+						techRecord_vehicleType: type,
+					} as TechRecordType<'put'>);
+				}
+			});
 
 		this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
 

@@ -195,7 +195,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		const editingReason = this.activatedRoute.snapshot.data['reason'];
 		if (this.isEditing) {
-			this.technicalRecordService.clearReasonForCreation();
 			this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
 				if (techRecord) {
 					if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
