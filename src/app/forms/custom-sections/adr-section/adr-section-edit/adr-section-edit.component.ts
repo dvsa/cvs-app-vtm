@@ -246,28 +246,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 	bodyDeclarationOptions = getOptionsFromEnum(ADRBodyDeclarationTypes);
 
-	customTrueOption(labelName: string) {
-		return [{ value: true, label: labelName }];
-	}
-
-	isInvalid(formControlName: string) {
-		const control = this.form.get(formControlName);
-		return control?.invalid && control?.touched;
-	}
-
-	toggle(formControlName: string, value: string) {
-		const control = this.form.get(formControlName);
-		if (!control) return;
-
-		if (!control.value) {
-			return control.setValue([value]);
-		}
-
-		const arr = [...control.value];
-		arr.includes(value) ? arr.splice(arr.indexOf(value), 1) : arr.push(value);
-		control.setValue(arr);
-	}
-
 	ngOnInit(): void {
 		// Attatch all form controls to parent
 		this.handleInitialiseUNNumbers();
@@ -405,10 +383,13 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 	get canDisplayDangerousGoodsWarning() {
 		const touched = Object.entries(this.form.controls).some(([key, control]) => {
+			console.log('control', control);
 			return key !== 'techRecord_adrDetails_dangerousGoods' && control.touched;
 		});
 
-		return this.form.get('techRecord_adrDetails_dangerousGoods')?.value === false && touched
+		const dangerousGoods = this.form.get('techRecord_adrDetails_dangerousGoods');
+
+		return dangerousGoods?.value === false && dangerousGoods.dirty && touched
 			? 'By selecting this field it will delete all previous ADR field inputs'
 			: null;
 	}

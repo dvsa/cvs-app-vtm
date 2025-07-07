@@ -14,31 +14,28 @@
       <!-- Applicant Details Name -->
       <govuk-form-group-input
         label="Name"
-        [width]="FormNodeWidth.XXS"
         formControlName="techRecord_adrDetails_applicantDetails_name"
       />
       <!-- Applicant Details Street -->
       <govuk-form-group-input
         label="Street"
-        [width]="FormNodeWidth.XXS"
         formControlName="techRecord_adrDetails_applicantDetails_street"
       />
       <!-- Applicant Details Town -->
       <govuk-form-group-input
         label="Town"
-        [width]="FormNodeWidth.XXS"
         formControlName="techRecord_adrDetails_applicantDetails_town"
       />
       <!-- Applicant Details City -->
       <govuk-form-group-input
         label="City"
-        [width]="FormNodeWidth.XXS"
+        [width]="FormNodeWidth.XL"
         formControlName="techRecord_adrDetails_applicantDetails_city"
       />
       <!-- Applicant Details Postcode -->
       <govuk-form-group-input
         label="Postcode"
-        [width]="FormNodeWidth.XXS"
+        [width]="FormNodeWidth.L"
         formControlName="techRecord_adrDetails_applicantDetails_postcode"
       />
     </ng-container>
@@ -93,7 +90,7 @@
       <!-- ADR type approval number -->
       <govuk-form-group-input
         label="ADR type approval number"
-        [width]="FormNodeWidth.XXS"
+        [width]="FormNodeWidth.L"
         formControlName="techRecord_adrDetails_adrTypeApprovalNo"
       />
     </ng-container>
@@ -105,32 +102,31 @@
         <!-- Tank Make -->
         <govuk-form-group-input
           label="Tank Make"
-          [width]="FormNodeWidth.XXS"
           formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
         />
         <!-- Tank Year of manufacture -->
         <govuk-form-group-input
           label="Tank year of manufacture"
-          [width]="FormNodeWidth.XXS"
+          [width]="FormNodeWidth.S"
           type="number"
           formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
         />
         <!-- Tank manufacturer serial number -->
         <govuk-form-group-input
           label="Manufacturer serial number"
-          [width]="FormNodeWidth.XXS"
+          [width]="FormNodeWidth.L"
           formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
         />
         <!-- Tank type approval number -->
         <govuk-form-group-input
           label="Tank type approval number"
-          [width]="FormNodeWidth.XXS"
+          [width]="FormNodeWidth.L"
           formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
         />
         <!-- Tank code -->
         <govuk-form-group-input
           label="Code"
-          [width]="FormNodeWidth.XXS"
+          [width]="FormNodeWidth.L"
           formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
         />
         <!-- Substances permitted -->
@@ -152,7 +148,6 @@
           <!-- Reference number -->
           <govuk-form-group-input
             label="Reference number"
-            [width]="FormNodeWidth.XXS"
             formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
           />
         }
@@ -161,7 +156,6 @@
           <!-- Reference number -->
           <govuk-form-group-input
             label="Reference number"
-            [width]="FormNodeWidth.XXS"
             formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
           />
           <!-- UN numbers -->
@@ -182,7 +176,7 @@
                         <tr class="govuk-table__row">
                           <td class="govuk-table__cell">
                             <govuk-form-group-input
-                              [width]="FormNodeWidth.XXS"
+                              [width]="FormNodeWidth.XL"
                               formControlName="{{ i }}"
                             />
                           </td>
@@ -229,7 +223,6 @@
       <!-- TC2: Certificate Number -->
       <govuk-form-group-input
         label="TC2: Certificate Number"
-        [width]="FormNodeWidth.XXS"
         formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
       />
       <!-- TC2: Expiry Date -->
@@ -239,7 +232,7 @@
       />
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
       <!-- TC3: Inspections -->
-      <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+      <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
         @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
           <fieldset
             class="govuk-fieldset"
@@ -249,19 +242,18 @@
             <!-- TC3 Inspection Type -->
             <govuk-form-group-select
               label="TC3: Inspection Type"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type"
+              formControlName="tc3Type"
               [options]="tc3InspectionOptions"
             />
             <!-- TC3 Certificate Number -->
             <govuk-form-group-input
               label="TC3: Certificate Number"
-              [width]="FormNodeWidth.XXS"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3PeriodicNumber"
+              formControlName="tc3PeriodicNumber"
             />
             <!-- TC3 Expiry Date -->
             <govuk-form-group-date
               label="TC3: Expiry Date"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tc3Details_tc3PeriodicExpiryDate"
+              formControlName="tc3PeriodicExpiryDate"
             />
             <!-- TC3 Footer -->
             <p class="govuk-body govuk-!-text-align-right">
