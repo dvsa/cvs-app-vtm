@@ -40,6 +40,8 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 
 	readonly suffix = input<string>();
 
+	readonly nullIfEmpty = input<boolean>(false);
+
 	get style(): string {
 		const width = this.width();
 		const errorClass = this.hasError ? 'govuk-input--error' : '';
@@ -52,6 +54,9 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 	}
 
 	writeValue(obj: any): void {
+		if (!obj && this.nullIfEmpty()) {
+			obj = null;
+		}
 		this.value.set(obj);
 		this.onChange(obj);
 	}
