@@ -295,12 +295,12 @@
       <!-- Battery list reference number -->
     <govuk-form-group-input
       label="Reference number"
+      [width]="FormNodeWidth.L"
       formControlName="techRecord_adrDetails_batteryListNumber"
     />
     }
   }
 <!--   Declarations seen section -->
-<!--  BROKEN? -->
   <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
     <govuk-form-group-checkbox
       label="Manufacturer brake declaration"
@@ -315,7 +315,6 @@
       [maxLength]="500"
     />
     <!-- Brake endurance -->
-<!--  BROKEN? -->
     <govuk-form-group-checkbox
       label="Brake endurance"
       formControlName="techRecord_adrDetails_brakeEndurance"
