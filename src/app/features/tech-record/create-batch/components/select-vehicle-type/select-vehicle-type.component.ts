@@ -93,8 +93,6 @@ export class SelectVehicleTypeComponent {
 
 		this.batchTechRecordService.setVehicleType(type);
 
-		console.log('running this');
-
 		this.store
 			.select(editingTechRecord)
 			.pipe(take(1))
