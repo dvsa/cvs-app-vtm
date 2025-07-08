@@ -372,6 +372,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		this.form.markAllAsTouched();
 		this.form.updateValueAndValidity();
+		errors.push(...this.getAxleErrors());
 		errors.push(...this.globalErrorService.extractGlobalErrors(this.form));
 
 		if (errors.length) {
@@ -379,6 +380,28 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		} else {
 			this.errorService.clearErrors();
 		}
+	}
+
+	getAxleErrors(): GlobalError[] {
+		const value = this.form.getRawValue() as V3TechRecordModel;
+
+		if (
+			value.techRecord_vehicleType === VehicleTypes.PSV &&
+			Array.isArray(value.techRecord_axles) &&
+			value.techRecord_axles.length === 1
+		) {
+			return [{ error: 'You cannot submit a PSV with less than 2 axles', anchorLink: 'weightsAddAxle' }];
+		}
+
+		if (
+			value.techRecord_vehicleType === VehicleTypes.HGV &&
+			Array.isArray(value.techRecord_axles) &&
+			value.techRecord_axles.length === 1
+		) {
+			return [{ error: 'You cannot submit a HGV with less than 2 axles', anchorLink: 'weightsAddAxle' }];
+		}
+
+		return [];
 	}
 
 	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
