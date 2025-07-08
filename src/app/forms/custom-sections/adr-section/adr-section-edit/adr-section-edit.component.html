@@ -176,6 +176,7 @@
                         <tr class="govuk-table__row">
                           <td class="govuk-table__cell">
                             <govuk-form-group-input
+                              id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                               [width]="FormNodeWidth.XL"
                               formControlName="{{ i }}"
                             />
@@ -190,6 +191,7 @@
                     </table>
                   } @else {
                     <govuk-form-group-input
+                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                       [width]="FormNodeWidth.XXS"
                       formControlName="{{ i }}"
                     />
@@ -274,7 +276,7 @@
       [options]="memosApplyOptions"
       [hint]="'Only applicable for vehicles used on national journeys'"
     />
-<!--    &lt;!&ndash; M145 &ndash;&gt;-->
+<!-- M145 -->
   <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_m145Statement">M145</label>
     <govuk-form-group-checkbox
       label="Yes"

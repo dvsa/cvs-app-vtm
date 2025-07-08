@@ -179,7 +179,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 		// Miscellaneous
 		techRecord_adrDetails_memosApply: this.fb.control<string | null>(null),
-		techRecord_adrDetails_m145Statement: this.fb.control<string | null>(null),
+		techRecord_adrDetails_m145Statement: this.fb.control<boolean>(false),
 
 		// Battery List
 		techRecord_adrDetails_listStatementApplicable: this.fb.control<string | null>(null, [
