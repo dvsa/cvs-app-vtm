@@ -376,6 +376,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		errors.push(...this.globalErrorService.extractGlobalErrors(this.form));
 
 		if (errors.length) {
+			this.form.setErrors(errors);
 			this.errorService.setErrors(errors);
 		} else {
 			this.errorService.clearErrors();
