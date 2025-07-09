@@ -43,16 +43,13 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 
 	toggle(option: any) {
 		const value = this.value();
-		console.log('toggle1', option, value);
 
 		if (!value) {
-			console.log('toggle2', option, value);
 			this.value.set([option]);
 			this.onChange(this.value());
 			return;
 		}
 
-		console.log('toggle3', option, value);
 		const arr = [...value];
 		arr.includes(option) ? arr.splice(arr.indexOf(option), 1) : arr.push(option);
 		this.value.set(arr);

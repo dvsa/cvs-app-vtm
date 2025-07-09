@@ -141,7 +141,6 @@ export class AdrValidatorsService {
 				const unNumbers = control.parent.get(
 					'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'
 				) as FormArray;
-				console.log('first unNumber Val', unNumbers?.value[0]);
 				if (!refNo?.value && Array.isArray(unNumbers?.value) && !unNumbers?.value[0]) {
 					// Set errors on both simulatenously
 					refNo?.setErrors({ required: message });
