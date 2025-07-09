@@ -65,12 +65,6 @@ describe('weightsSectionEditComponent', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should call addControlsBasedOffVehicleType', () => {
-			const addControlsBasedOffVehicleTypeSpy = jest.spyOn(component, 'addControlsBasedOffVehicleType');
-			component.ngOnInit();
-			expect(addControlsBasedOffVehicleTypeSpy).toHaveBeenCalled();
-		});
-
 		it('should call prepopulateAxles', () => {
 			const prepopulateAxlesSpy = jest.spyOn(component, 'prepopulateAxles');
 			component.ngOnInit();

@@ -5,7 +5,6 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { Store, select } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records/test-records.selectors';
-import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
 	selector: 'app-test-amendment-history',
@@ -17,11 +16,9 @@ export class TestAmendmentHistoryComponent {
 
 	readonly testRecord = input<TestResultModel>();
 
+	sortedTestHistory$ = this.store.pipe(select(selectedTestSortedAmendmentHistory));
+
 	getCreatedByName(testResult: TestResultModel | undefined) {
 		return testResult?.createdByName || testResult?.testerName;
-	}
-
-	get sortedTestHistory$(): Observable<TestResultModel[] | undefined> {
-		return this.store.pipe(select(selectedTestSortedAmendmentHistory));
 	}
 }

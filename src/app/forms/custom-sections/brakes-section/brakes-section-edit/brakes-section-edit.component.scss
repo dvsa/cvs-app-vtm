@@ -25,15 +25,15 @@
     govuk-form-group-input ::ng-deep .govuk-form-group-input {
       margin-bottom: 0 !important;
     }
-  
-    govuk-form-group-select ::ng-deep .govuk-form-group-select {
+
+    govuk-form-group-select ::ng-deep .govuk-form-group {
       margin-bottom: 0 !important;
     }
   }
 
   govuk-form-group-checkbox ::ng-deep .govuk-form-group {
     margin-bottom: 0.75rem;
-  }  
+  }
 
   .radio-buttons {
     display: flex;

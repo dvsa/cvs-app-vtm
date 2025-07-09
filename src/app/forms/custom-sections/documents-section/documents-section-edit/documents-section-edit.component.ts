@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { DOCUMENT_TYPES } from '@forms/templates/general/document-types';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject, of } from 'rxjs';
@@ -16,10 +16,7 @@ import { ReplaySubject, of } from 'rxjs';
 	styleUrls: ['./documents-section-edit.component.scss'],
 	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupAutocompleteComponent, GovukFormGroupInputComponent],
 })
-export class DocumentsSectionEditComponent implements OnInit, OnDestroy {
-	commonValidators = inject(CommonValidatorsService);
-	controlContainer = inject(ControlContainer);
-	fb = inject(FormBuilder);
+export class DocumentsSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -27,35 +24,18 @@ export class DocumentsSectionEditComponent implements OnInit, OnDestroy {
 	form: FormGroup = this.fb.group({});
 
 	ngOnInit(): void {
-		this.addControls();
+		this.addControls(this.controls, this.form);
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	addControls() {
-		const vehicleControls = this.controls;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
-		}
 	}
 
 	documentTypes$() {

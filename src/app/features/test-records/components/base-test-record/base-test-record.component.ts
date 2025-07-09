@@ -82,6 +82,8 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	private testRecordsService = inject(TestRecordsService);
 	private globalErrorService = inject(GlobalErrorService);
 
+	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
+
 	ngAfterViewInit(): void {
 		this.handleFormChange({});
 	}
@@ -146,9 +148,5 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	get resultOfTest(): resultOfTestEnum {
 		return this.testResult()?.testTypes[0].testResult;
-	}
-
-	get testNumber$(): Observable<string | undefined> {
-		return this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 	}
 }

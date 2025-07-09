@@ -8,11 +8,11 @@
   "FsDimensions": true,
   "FsPurchasers": true,
   "FsBrakes": true,
-  "FsDDA": false,
+  "FsDDA": true,
   "FsLetters": true,
   "FsDocuments": true,
-  "FsAuthorisationIntoService": false,
-  "FsAudit": false,
-  "FsManufacturer": false,
-  "FsAdrCerts": false
+  "FsAuthorisationIntoService": true,
+  "FsAudit": true,
+  "FsManufacturer": true,
+  "FsAdrCerts": true
 }

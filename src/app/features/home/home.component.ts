@@ -10,7 +10,5 @@ import { HomeButtonComponent } from './components/home-button/home-button.compon
 	imports: [RoleRequiredDirective, HomeButtonComponent, FeatureToggleDirective],
 })
 export class HomeComponent {
-	public get Roles() {
-		return Roles;
-	}
+	Roles = Roles;
 }

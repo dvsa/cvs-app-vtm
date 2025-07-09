@@ -3,7 +3,6 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordGETMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
@@ -55,6 +54,28 @@ export class TechnicalRecordService {
 	private httpService = inject(HttpService);
 	private routerService = inject(RouterService);
 
+	techRecord$ = combineLatest([
+		this.store.pipe(select(selectTechRecord)),
+		this.store.pipe(select(techRecord)),
+		this.routerService.getRouteDataProperty$('isEditing'),
+	]).pipe(
+		tap(([technicalRecord, nonEditingTechRecord, isEditing]) => {
+			if (isEditing && !technicalRecord && nonEditingTechRecord) {
+				this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
+			}
+		}),
+		map(([technicalRecord, nonEditingTechRecord, isEditing]) =>
+			isEditing && !technicalRecord ? nonEditingTechRecord : technicalRecord
+		)
+	);
+	searchResults$ = this.store.pipe(select(selectTechRecordSearchResults));
+	searchResultsWithUniqueSystemNumbers$ = this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
+	techRecordStatus$ = this.techRecord$.pipe(
+		map((technicalRecord) => technicalRecord?.techRecord_statusCode as StatusCodes | undefined)
+	);
+	sectionStates$ = this.store.pipe(select(selectSectionState));
+	techRecordHistory$ = this.store.pipe(select(selectTechRecordHistory));
+
 	getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
 		return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL &&
 			(technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O1 ||
@@ -92,26 +113,6 @@ export class TechnicalRecordService {
 			catchError((error: HttpErrorResponse) => {
 				return (error.status === 404 && of(true)) || throwError(() => error);
 			})
-		);
-	}
-	get techRecordHistory$(): Observable<TechRecordSearchSchema[] | undefined> {
-		return this.store.pipe(select(selectTechRecordHistory));
-	}
-
-	get techRecord$(): Observable<V3TechRecordModel | undefined> {
-		return combineLatest([
-			this.store.pipe(select(selectTechRecord)),
-			this.store.pipe(select(techRecord)),
-			this.routerService.getRouteDataProperty$('isEditing'),
-		]).pipe(
-			tap(([technicalRecord, nonEditingTechRecord, isEditing]) => {
-				if (isEditing && !technicalRecord && nonEditingTechRecord) {
-					this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
-				}
-			}),
-			map(([technicalRecord, nonEditingTechRecord, isEditing]) =>
-				isEditing && !technicalRecord ? nonEditingTechRecord : technicalRecord
-			)
 		);
 	}
 
@@ -235,23 +236,6 @@ export class TechnicalRecordService {
 
 	clearEditingTechRecord() {
 		this.store.dispatch(updateEditingTechRecordCancel());
-	}
-
-	get searchResults$(): Observable<TechRecordSearchSchema[] | undefined> {
-		return this.store.pipe(select(selectTechRecordSearchResults));
-	}
-
-	get searchResultsWithUniqueSystemNumbers$(): Observable<TechRecordSearchSchema[] | undefined> {
-		return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
-	}
-	get techRecordStatus$(): Observable<StatusCodes | undefined> {
-		return this.techRecord$.pipe(
-			map((technicalRecord) => technicalRecord?.techRecord_statusCode as StatusCodes | undefined)
-		);
-	}
-
-	get sectionStates$(): Observable<(string | number)[] | undefined> {
-		return this.store.pipe(select(selectSectionState));
 	}
 
 	getMakeAndModel(technicalRecord: V3TechRecordModel): string {

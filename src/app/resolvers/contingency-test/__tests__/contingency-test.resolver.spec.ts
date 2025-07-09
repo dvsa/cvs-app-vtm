@@ -50,9 +50,7 @@ describe('ContingencyTestResolver', () => {
 
 	it('should return true and dispatch the initial contingency test action', async () => {
 		const dispatchSpy = jest.spyOn(store, 'dispatch');
-		jest
-			.spyOn(techRecordService, 'techRecord$', 'get')
-			.mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
+		techRecordService.techRecord$ = of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 		) as Observable<boolean>;
@@ -66,9 +64,7 @@ describe('ContingencyTestResolver', () => {
 	});
 
 	it('should return false if there is an error', async () => {
-		jest
-			.spyOn(techRecordService, 'techRecord$', 'get')
-			.mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
+		techRecordService.techRecord$ = of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>);
 		jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)

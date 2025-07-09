@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { YES_NO_NULL_OPTIONS } from '@models/options.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReplaySubject } from 'rxjs';
@@ -20,25 +20,17 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupTextareaComponent,
 	],
 })
-export class DDASectionEditComponent implements OnInit, OnDestroy {
+export class DDASectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly YES_NO_NULL_OPTIONS = YES_NO_NULL_OPTIONS;
 
-	fb = inject(FormBuilder);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 	destroy$ = new ReplaySubject<boolean>(1);
 	form: FormGroup = this.fb.group({});
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
@@ -46,21 +38,9 @@ export class DDASectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.addControls();
+		this.addControls(this.psvControls, this.form);
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
-	}
-
-	addControls() {
-		const vehicleControls = this.psvControls;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
-		}
+		this.init(this.form);
 	}
 
 	get psvControls() {

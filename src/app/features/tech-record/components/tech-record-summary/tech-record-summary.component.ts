@@ -1,3 +1,4 @@
+import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -79,7 +80,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
+import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -119,6 +120,7 @@ import { Observable, Subject, debounceTime, map, skipWhile, take, takeUntil } fr
 		ManufacturerSectionComponent,
 		AuditSectionComponent,
 		AdrCertsSectionComponent,
+		ReasonForCreationSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -159,8 +161,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	form: FormGroup = this.fb.group({});
 
+	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
+
 	ngOnInit(): void {
 		this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
+
+		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
+			this.isEditing = editing;
+		});
 
 		this.technicalRecordService.techRecord$
 			.pipe(
@@ -187,7 +195,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		const editingReason = this.activatedRoute.snapshot.data['reason'];
 		if (this.isEditing) {
-			this.technicalRecordService.clearReasonForCreation();
 			this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
 				if (techRecord) {
 					if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
@@ -277,12 +284,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	}
 
 	get vehicleTemplates(): Array<FormNode> {
-		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
-			this.isEditing = editing;
-		});
-		if (!this.vehicleType) {
-			return [];
-		}
+		if (!this.vehicleType) return [];
+
 		return (
 			vehicleTemplateMap
 				.get(this.vehicleType)
@@ -297,10 +300,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	isSectionExpanded$(sectionName: string | number) {
 		return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
-	}
-
-	get isEditing$(): Observable<boolean> {
-		return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 	}
 
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
@@ -351,7 +350,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 	}
 
-	checkForms(): void {
+	checkForms(): boolean {
 		const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections()
 			?.map((section) => section.form)
 			.concat(this.customSectionForms);
@@ -360,7 +359,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		this.setErrors(forms);
 
-		this.isFormInvalid.emit(forms.some((form) => form.invalid || this.form.invalid));
+		const isInvalid = forms.some((form) => form.invalid) || this.form.invalid;
+		this.isFormInvalid.emit(isInvalid);
+
+		return isInvalid;
 	}
 
 	setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {

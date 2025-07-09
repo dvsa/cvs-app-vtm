@@ -12,7 +12,7 @@ import { startSendingLogs } from '@store/logs/logs.actions';
 import { selectRouteData } from '@store/router/router.selectors';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';
-import { Subject, map, take, takeUntil } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { BreadcrumbsComponent } from './core/components/breadcrumbs/breadcrumbs.component';
@@ -55,6 +55,11 @@ export class AppComponent implements OnInit, OnDestroy {
 	private sentryInitialized: boolean | undefined;
 	private interval?: ReturnType<typeof setInterval>;
 
+	isStandardLayout$ = this.store.pipe(
+		select(selectRouteData),
+		map((routeData) => routeData && !routeData['isCustomLayout'])
+	);
+
 	async ngOnInit() {
 		if (!this.sentryInitialized) {
 			this.startSentry();
@@ -82,18 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.destroy$.next();
 		this.destroy$.complete();
 		clearInterval(this.interval);
-	}
-
-	get isStandardLayout() {
-		return this.store.pipe(
-			take(1),
-			select(selectRouteData),
-			map((routeData) => routeData && !routeData['isCustomLayout'])
-		);
-	}
-
-	get loading() {
-		return this.loadingService.showSpinner$;
 	}
 
 	startSentry() {

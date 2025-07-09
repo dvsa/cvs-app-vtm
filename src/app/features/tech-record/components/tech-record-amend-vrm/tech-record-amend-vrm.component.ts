@@ -66,7 +66,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	cherishedTransferForm = new FormGroup({
 		currentVrm: new CustomFormControl(
 			{
-				name: 'current-Vrm',
+				name: 'current-vrm',
 				label: 'Current VRM',
 				type: FormNodeTypes.CONTROL,
 			},
@@ -81,14 +81,14 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 			this.technicalRecordService.validateVrmForCherishedTransfer()
 		),
 		previousVrm: new CustomFormControl({
-			name: 'previous-Vrm',
+			name: 'previous-vrm',
 			label: 'Previous VRM',
 			type: FormNodeTypes.CONTROL,
 			disabled: true,
 		}),
 		thirdMark: new CustomFormControl(
 			{
-				name: 'third-Mark',
+				name: 'third-mark',
 				label: 'Third Mark',
 				type: FormNodeTypes.CONTROL,
 			},
@@ -99,7 +99,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	correctingAnErrorForm = new FormGroup({
 		newVrm: new CustomFormControl(
 			{
-				name: 'new-Vrm',
+				name: 'new-vrm',
 				label: 'New VRM',
 				type: FormNodeTypes.CONTROL,
 			},

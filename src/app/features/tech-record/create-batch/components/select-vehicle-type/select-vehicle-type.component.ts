@@ -18,7 +18,7 @@ import {
 	FormNodeTypes,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord } from '@store/technical-records';
+import { editingTechRecord } from '@store/technical-records';
 import { take } from 'rxjs';
 
 @Component({
@@ -94,14 +94,16 @@ export class SelectVehicleTypeComponent {
 		this.batchTechRecordService.setVehicleType(type);
 
 		this.store
-			.select(selectTechRecord)
+			.select(editingTechRecord)
 			.pipe(take(1))
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			.subscribe(
-				(vehicle) =>
-					!vehicle &&
-					this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>)
-			);
+			.subscribe((vehicle) => {
+				if (!vehicle) {
+					this.trs.updateEditingTechRecord({
+						techRecord_reasonForCreation: '',
+						techRecord_vehicleType: type,
+					} as TechRecordType<'put'>);
+				}
+			});
 
 		this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
 

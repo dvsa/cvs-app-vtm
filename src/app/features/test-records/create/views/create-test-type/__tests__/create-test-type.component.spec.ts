@@ -90,11 +90,10 @@ describe('CreateTestTypeComponent', () => {
 			'should get the vehicle record and alert with the appropriate message',
 			({ record, message }) => {
 				jest.resetAllMocks();
-				const mockTechRecordSpy = jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(record));
+				techRecordService.techRecord$ = of(record);
 				const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
 				const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 				component.ngAfterContentInit();
-				expect(mockTechRecordSpy).toHaveBeenCalledTimes(1);
 				expect(alertSpy).toHaveBeenCalledTimes(1);
 				expect(alertSpy).toHaveBeenCalledWith(message);
 				expect(navigateSpy).toHaveBeenCalledWith(['../../..'], { relativeTo: route });

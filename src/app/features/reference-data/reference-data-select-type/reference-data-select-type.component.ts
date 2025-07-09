@@ -12,15 +12,10 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import {
-	CustomFormControl,
-	CustomFormGroup,
-	FormNodeOption,
-	FormNodeTypes,
-} from '@services/dynamic-forms/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, selectAllReferenceDataByResourceType } from '@store/reference-data';
-import { Observable, map, take } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-select-type',
@@ -52,24 +47,21 @@ export class ReferenceDataSelectTypeComponent {
 		}
 	);
 
+	options$ = this.store.pipe(
+		select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
+		map(
+			(types) =>
+				types
+					?.sort((a, b) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
+					.map((type) => ({
+						label: type.label ?? type.resourceKey.toString(),
+						value: type.resourceKey.toString(),
+					})) ?? []
+		)
+	);
+
 	constructor() {
 		this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
-	}
-
-	get options$(): Observable<Array<FormNodeOption<string>>> {
-		return this.store.pipe(
-			select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
-			take(1),
-			map(
-				(types) =>
-					types
-						?.sort((a, b) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-						.map((type) => ({
-							label: type.label ?? type.resourceKey.toString(),
-							value: type.resourceKey.toString(),
-						})) ?? []
-			)
-		);
 	}
 
 	get roles(): typeof Roles {
@@ -82,7 +74,6 @@ export class ReferenceDataSelectTypeComponent {
 		this.globalErrorService.setErrors(errors);
 		return this.form.valid;
 	}
-
 	cancel(): void {
 		void this.router.navigate(['..'], { relativeTo: this.route });
 	}

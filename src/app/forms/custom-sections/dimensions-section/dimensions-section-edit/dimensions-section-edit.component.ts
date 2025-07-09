@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { addAxle, removeAxle } from '@store/technical-records';
 import { ReplaySubject, takeUntil, withLatestFrom } from 'rxjs';
+
+import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 
@@ -19,18 +18,13 @@ import { GovukFormGroupInputComponent } from '../../../components/govuk-form-gro
 	styleUrls: ['./dimensions-section-edit.component.scss'],
 	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupInputComponent, FieldWarningMessageComponent],
 })
-export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
+export class DimensionsSectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;
 	readonly Widths = FormNodeWidth;
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
 
-	fb = inject(FormBuilder);
-	store = inject(Store);
 	actions = inject(Actions);
-	controlContainer = inject(ControlContainer);
-	commonValidators = inject(CommonValidatorsService);
-	technicalRecordService = inject(TechnicalRecordService);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -42,28 +36,18 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.addControlsBasedOffVehicleType();
+		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		this.prepopulateAxleSpacings();
 		this.checkAxleAdded();
 		this.checkAxleRemoved();
 
 		// Attach all form controls to parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const [key, control] of Object.entries(this.form.controls)) {
-				parent.addControl(key, control, { emitEvent: false });
-			}
-		}
+		this.init(this.form);
 	}
 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
-		const parent = this.controlContainer.control;
-		if (parent instanceof FormGroup) {
-			for (const key of Object.keys(this.form.controls)) {
-				parent.removeControl(key, { emitEvent: false });
-			}
-		}
+		this.destroy(this.form);
 
 		// Clear subscriptions
 		this.destroy$.next(true);
@@ -105,13 +89,6 @@ export class DimensionsSectionEditComponent implements OnInit, OnDestroy {
 					this.axleSpacings?.patchValue(axleSpacings, { emitEvent: false });
 				}
 			});
-	}
-
-	addControlsBasedOffVehicleType() {
-		const vehicleControls = this.controlsBasedOffVehicleType;
-		for (const [key, control] of Object.entries(vehicleControls)) {
-			this.form.addControl(key, control, { emitEvent: false });
-		}
 	}
 
 	getAxleSpacingForm() {

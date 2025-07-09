@@ -151,6 +151,5 @@ export class ReferenceDataDeleteComponent implements OnInit {
 				reason: this.reasonForDeletion.reason,
 			})
 		);
-		this.navigateBack();
 	}
 }

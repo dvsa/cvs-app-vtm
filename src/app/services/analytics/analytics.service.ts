@@ -1,7 +1,7 @@
 // @ts-ignore
-import { createHash } from 'node:crypto';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
+import { CryptoService } from '@services/crypto/crypto.service';
 import { UserService } from '@services/user-service/user-service';
 import { firstValueFrom } from 'rxjs';
 
@@ -10,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class AnalyticsService {
 	private userService = inject(UserService);
+	private cryptoService = inject(CryptoService);
 
 	pushToDataLayer(data: any): void {
 		// @ts-ignore
@@ -24,11 +25,11 @@ export class AnalyticsService {
 	async createUniqueId(): Promise<string> {
 		if (!environment.production) {
 			const userEmail = await firstValueFrom(this.userService.userEmail$);
-			return createHash('sha256').update(userEmail).digest('hex');
+			return await this.cryptoService.sha256Hash(userEmail);
 		}
 		const userId = await firstValueFrom(this.userService.id$);
 		if (environment.production && userId) {
-			return createHash('sha256').update(userId).digest('hex');
+			return await this.cryptoService.sha256Hash(userId);
 		}
 
 		return 'N/A';

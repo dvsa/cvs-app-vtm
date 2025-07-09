@@ -8,7 +8,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { clearAllSectionStates, clearScrollPosition, updateEditingTechRecordCancel } from '@store/technical-records';
-import { Observable, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-edit-tech-record-button',
@@ -31,21 +31,19 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 	readonly submitChange = output();
 	destroy$ = new Subject();
 
+	isArchived$ = this.technicalRecordService.techRecord$.pipe(
+		map(
+			(techRecord) =>
+				!(
+					techRecord?.techRecord_statusCode === StatusCodes.CURRENT ||
+					techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
+				)
+		)
+	);
+
 	ngOnDestroy(): void {
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	get isArchived$(): Observable<boolean> {
-		return this.technicalRecordService.techRecord$.pipe(
-			map(
-				(techRecord) =>
-					!(
-						techRecord?.techRecord_statusCode === StatusCodes.CURRENT ||
-						techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
-					)
-			)
-		);
 	}
 
 	checkIfEditableReasonRequired() {

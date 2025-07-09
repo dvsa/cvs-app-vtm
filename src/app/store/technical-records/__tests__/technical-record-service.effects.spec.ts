@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -274,6 +275,7 @@ describe('TechnicalRecordServiceEffects', () => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
 			const expectedTechRecord = getEmptyTechRecord();
 			expectedTechRecord.techRecord_vehicleType = VehicleTypes.CAR;
+			expectedTechRecord.techRecord_euVehicleCategory = EUVehicleCategory.M1;
 
 			store.overrideSelector(editingTechRecord, {
 				vin: 'foo',

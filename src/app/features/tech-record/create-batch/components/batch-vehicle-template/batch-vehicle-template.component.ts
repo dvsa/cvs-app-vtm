@@ -9,12 +9,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { SelectComponent } from '@forms/components/select/select.component';
 import { MultiOptions } from '@models/options.model';
-import {
-	BatchUpdateVehicleModel,
-	StatusCodes,
-	V3TechRecordModel,
-	VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { BatchUpdateVehicleModel, StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -23,7 +18,7 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dyn
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
-import { Observable, map, take, withLatestFrom } from 'rxjs';
+import { map, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -74,6 +69,8 @@ export class BatchVehicleTemplateComponent {
 		{ label: 'Current', value: StatusCodes.CURRENT },
 	];
 
+	vehicle$ = this.store.select(selectTechRecord);
+
 	constructor() {
 		this.store
 			.select(selectTechRecord)
@@ -89,10 +86,6 @@ export class BatchVehicleTemplateComponent {
 				this.form.patchValue({ vehicleStatus });
 			}
 		});
-	}
-
-	get vehicle$(): Observable<V3TechRecordModel | undefined> {
-		return this.store.select(selectTechRecord);
 	}
 
 	get applicationId$() {

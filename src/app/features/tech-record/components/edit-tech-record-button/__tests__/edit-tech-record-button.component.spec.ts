@@ -14,7 +14,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { clearError } from '@store/global-error/global-error.actions';
 import { initialAppState } from '@store/index';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
-import { BehaviorSubject, ReplaySubject, of } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, map, of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button.component';
 
 const mockTechRecordService = {
@@ -123,7 +123,16 @@ describe('EditTechRecordButtonComponent', () => {
 				} as V3TechRecordModel,
 			],
 		])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
-			mockTechRecordService.techRecord$ = of(record);
+			component.isArchived$ = of(record).pipe(
+				map(
+					(techRecord) =>
+						!(
+							techRecord?.techRecord_statusCode === StatusCodes.CURRENT ||
+							techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
+						)
+				)
+			);
+
 			fixture.detectChanges();
 
 			const button = fixture.debugElement.query(By.css('#edit'));

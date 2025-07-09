@@ -8,7 +8,5 @@ import { environment } from '@environments/environment';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhaseBannerComponent {
-	get feedbackUri(): string {
-		return environment.FEEDBACK_URI;
-	}
+	feedbackUri = environment.FEEDBACK_URI;
 }

@@ -71,9 +71,11 @@ describe('TechRecordGeneratePlateComponent', () => {
 
 	describe('navigateBack', () => {
 		beforeEach(() => {
-			jest
-				.spyOn(technicalRecordService, 'techRecord$', 'get')
-				.mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+			technicalRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+			} as V3TechRecordModel);
 		});
 		it('should clear all errors', () => {
 			jest.spyOn(router, 'navigate').mockImplementation();
@@ -112,9 +114,11 @@ describe('TechRecordGeneratePlateComponent', () => {
 
 	describe('handleSubmit', () => {
 		beforeEach(() => {
-			jest
-				.spyOn(technicalRecordService, 'techRecord$', 'get')
-				.mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+			technicalRecordService.techRecord$ = of({
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+			} as V3TechRecordModel);
 		});
 		it('should add an error when the field is not filled out', () => {
 			const addErrorSpy = jest.spyOn(errorService, 'addError');

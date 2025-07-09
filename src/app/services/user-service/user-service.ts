@@ -1,11 +1,11 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
+import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store, select } from '@ngrx/store';
 import * as UserServiceActions from '@store/user/user-service.actions';
 import * as UserServiceState from '@store/user/user-service.reducer';
 import { jwtDecode } from 'jwt-decode';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,13 @@ export class UserService implements OnDestroy {
 	msal = inject(MsalService);
 
 	private readonly destroying$ = new Subject<void>();
+
+	id$ = this.store.pipe(select(UserServiceState.id));
+	user$ = this.store.pipe(select(UserServiceState.user));
+	name$ = this.store.pipe(select(UserServiceState.name));
+	roles$ = this.store.pipe(select(UserServiceState.roles));
+	userEmail$ = this.store.pipe(select(UserServiceState.userEmail));
+	inProgress$ = this.msalBroadcastService.inProgress$;
 
 	constructor() {
 		this.msalBroadcastService.msalSubject$
@@ -67,32 +74,8 @@ export class UserService implements OnDestroy {
 		);
 	}
 
-	get name$(): Observable<string> {
-		return this.store.pipe(select(UserServiceState.name));
-	}
-
-	get userEmail$(): Observable<string> {
-		return this.store.pipe(select(UserServiceState.userEmail));
-	}
-
-	get id$(): Observable<string | undefined> {
-		return this.store.pipe(select(UserServiceState.id));
-	}
-
-	get roles$(): Observable<string[] | null> {
-		return this.store.pipe(select(UserServiceState.roles));
-	}
-
 	logOut(): void {
 		this.store.dispatch(UserServiceActions.Logout());
 		this.msal.logout();
-	}
-
-	get inProgress$(): Observable<InteractionStatus> {
-		return this.msalBroadcastService.inProgress$;
-	}
-
-	get user$(): Observable<UserServiceState.UserServiceState> {
-		return this.store.pipe(select(UserServiceState.user));
 	}
 }

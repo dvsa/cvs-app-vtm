@@ -37,6 +37,7 @@ const mockReferenceDataService = {
 	loadReferenceDataByKeySearch: jest.fn(),
 	loadTyreReferenceDataByKeySearch: jest.fn(),
 	loadReferenceData: jest.fn(),
+	getAll$: jest.fn(),
 };
 const mockDynamicFormService = {
 	createForm: jest.fn(),

@@ -1,5 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,7 +12,7 @@ import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { selectRouteData } from '@store/router/router.selectors';
 import { createVehicleRecordSuccess } from '@store/technical-records';
-import { ReplaySubject, firstValueFrom, of } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from '../hydrate-new-vehicle-record.component';
 
 describe('HydrateNewVehicleRecordComponent', () => {
@@ -56,17 +57,6 @@ describe('HydrateNewVehicleRecordComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	describe('get vehicle$', () => {
-		it('should return the editable vehicle', async () => {
-			const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-
-			jest.spyOn(store, 'select').mockReturnValue(of(expectedVehicle));
-
-			const vehicle = await firstValueFrom(component.vehicle$);
-			expect(vehicle).toEqual(expectedVehicle);
-		});
-	});
-
 	describe('navigate', () => {
 		it('should clear all errors', () => {
 			jest.spyOn(router, 'navigate').mockImplementation();
@@ -90,9 +80,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 	describe('handleSubmit', () => {
 		it('should not dispatch createVehicleRecord', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
-
-			component.isInvalid = true;
-
+			Object.defineProperty(component, 'summary', { value: signal({ checkForms: () => true }) as any });
 			component.handleSubmit();
 
 			expect(dispatchSpy).not.toHaveBeenCalled();
