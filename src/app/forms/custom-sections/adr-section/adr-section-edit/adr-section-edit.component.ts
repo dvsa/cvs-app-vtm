@@ -258,7 +258,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		this.form.get('techRecord_adrDetails_dangerousGoods')?.valueChanges.subscribe((change) => {
 			this.dangerousGoodsInitialValue = this.dangerousGoodsInitialValue ?? change;
 		});
-		// this.form.markAsPristine();
 	}
 
 	ngOnDestroy(): void {
