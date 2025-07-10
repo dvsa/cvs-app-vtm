@@ -54,7 +54,9 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 	}
 
 	writeValue(obj: any): void {
+		console.log(obj);
 		if (!obj && this.nullIfEmpty()) {
+			console.log('Setting value to null due to nullIfEmpty condition');
 			obj = null;
 		}
 		this.value.set(obj);
