@@ -4,8 +4,10 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i < middleIndex) {
-          <app-accordion [id]="section.name" [title]="section.label"
-            [isExpanded]="isSectionExpanded$(section.name) | async">
+          <app-accordion 
+            [id]="section.name" 
+            [title]="section.label"
+            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>
@@ -15,7 +17,10 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i >= middleIndex) {
-          <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
+          <app-accordion 
+            [id]="section.name" 
+            [title]="section.label" 
+            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>
