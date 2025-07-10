@@ -27,7 +27,7 @@ import { YES_NO_OPTIONS } from '@models/options.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
+import { removeTC3TankInspection, removeUNNumber, techRecord, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -246,8 +246,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 	bodyDeclarationOptions = getOptionsFromEnum(ADRBodyDeclarationTypes);
 
-	dangerousGoodsInitialValue: boolean | null = null;
-
 	ngOnInit(): void {
 		// Attatch all form controls to parent
 		this.handleInitialiseUNNumbers();
@@ -255,9 +253,6 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
-		this.form.get('techRecord_adrDetails_dangerousGoods')?.valueChanges.subscribe((change) => {
-			this.dangerousGoodsInitialValue = this.dangerousGoodsInitialValue ?? change;
-		});
 	}
 
 	ngOnDestroy(): void {
@@ -387,11 +382,13 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 	}
 
 	get canDisplayDangerousGoodsWarning() {
+		const originalDangerousGoodsValue = (this.store.selectSignal(techRecord)() as TechRecordType<'hgv' | 'lgv' | 'trl'>)
+			?.techRecord_adrDetails_dangerousGoods;
 		const dangerousGoods = this.form.get('techRecord_adrDetails_dangerousGoods');
 
-		const valuehasChanged = this.dangerousGoodsInitialValue !== dangerousGoods?.value;
+		const valueHasChanged = originalDangerousGoodsValue !== dangerousGoods?.value;
 
-		return dangerousGoods?.value === false && dangerousGoods.dirty && valuehasChanged
+		return dangerousGoods?.value === false && dangerousGoods.dirty && valueHasChanged
 			? 'By selecting this field it will delete all previous ADR field inputs'
 			: null;
 	}

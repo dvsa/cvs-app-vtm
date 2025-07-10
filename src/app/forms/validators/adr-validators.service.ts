@@ -121,7 +121,7 @@ export class AdrValidatorsService {
 				if (Array.isArray(unNumbers)) {
 					const index = unNumbers.findIndex((unNumber) => !unNumber);
 					if (index > -1) {
-						unNumbersArray?.controls[0].setErrors({
+						unNumbersArray?.controls[index].setErrors({
 							required: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
 						});
 						return { required: `UN number ${index + 1} is required or remove UN number ${index + 1}` };
@@ -151,7 +151,7 @@ export class AdrValidatorsService {
 
 				// Clear errors from both fields if either is populated
 				refNo?.setErrors(null);
-				unNumbers?.setErrors(null);
+				unNumbers?.controls[0].setErrors(null);
 			}
 
 			return null;
