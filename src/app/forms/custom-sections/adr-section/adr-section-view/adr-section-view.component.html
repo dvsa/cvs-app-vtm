@@ -208,8 +208,8 @@
         </dl>
         <!-- Subsequent inspections -->
         @if (vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length) {
-          <dl class="govuk-summary-list">
-            @for (inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+          @for (inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+            <dl class="govuk-summary-list">
               <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Inspection type</dt>
@@ -229,8 +229,8 @@
                   {{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
                 </dd>
               </div>
-            }
-          </dl>
+            </dl>
+          }
         }
         <!-- Miscellaneous -->
         <dl class="govuk-summary-list">
