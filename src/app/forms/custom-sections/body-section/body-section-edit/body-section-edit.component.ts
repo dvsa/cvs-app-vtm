@@ -266,7 +266,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Model Literal must be less than or equal to 30 characters'),
+				this.commonValidators.maxLength(30, 'Model literal must be less than or equal to 30 characters'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
 				this.commonValidators.required('DTp number is required'),
