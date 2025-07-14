@@ -141,20 +141,20 @@
     </tr>
   </tfoot>
 </table>
-<!-- Tyre Use Code (HGV) -->
+<!-- Tyre use code (HGV) -->
 @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
   <govuk-form-group-select
-    label="Tyre Use Code"
+    label="Tyre use code"
     formControlName="techRecord_tyreUseCode"
     [width]="FormNodeWidth.UNSET"
     [options]="HGV_TYRE_USE_CODE_OPTIONS"
     [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
   ></govuk-form-group-select>
 }
-<!-- Tyre Use Code (TRL) -->
+<!-- Tyre use code (TRL) -->
 @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
   <govuk-form-group-select
-    label="Tyre Use Code"
+    label="Tyre use code"
     formControlName="techRecord_tyreUseCode"
     [width]="FormNodeWidth.UNSET"
     [options]="TRL_TYRE_USE_CODE_OPTIONS"
