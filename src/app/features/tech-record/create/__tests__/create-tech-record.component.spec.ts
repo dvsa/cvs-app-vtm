@@ -198,7 +198,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 			const result = await component.isTrailerIdUnique();
 
 			expect(addErrorSpy).toHaveBeenCalledWith({
-				error: 'TrailerId not unique',
+				error: 'Trailer ID must be unique',
 				anchorLink: 'input-vrm-or-trailer-id',
 			});
 			expect(result).toBeFalsy();
