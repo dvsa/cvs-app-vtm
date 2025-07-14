@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ValidatorFn } from '@angular/forms';
+import { FormArray, ValidatorFn } from '@angular/forms';
 import { AdrService } from '@services/adr/adr.service';
 
 @Injectable({ providedIn: 'root' })
@@ -116,12 +116,17 @@ export class AdrValidatorsService {
 	requiresAllUnNumbersToBePopulated(): ValidatorFn {
 		return (control) => {
 			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
-				const unNumbers = control.value;
+				const unNumbersArray = control as FormArray;
+				const unNumbers = unNumbersArray?.value;
 				if (Array.isArray(unNumbers)) {
 					const index = unNumbers.findIndex((unNumber) => !unNumber);
 					if (index > -1) {
+						unNumbersArray?.controls[index].setErrors({
+							required: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+						});
 						return { required: `UN number ${index + 1} is required or remove UN number ${index + 1}` };
 					}
+					unNumbersArray?.controls[0].setErrors(null);
 				}
 			}
 
@@ -133,18 +138,20 @@ export class AdrValidatorsService {
 		return (control) => {
 			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
 				const refNo = control.parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo');
-				const unNumbers = control.parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo');
+				const unNumbers = control.parent.get(
+					'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'
+				) as FormArray;
 				if (!refNo?.value && Array.isArray(unNumbers?.value) && !unNumbers?.value[0]) {
 					// Set errors on both simulatenously
 					refNo?.setErrors({ required: message });
-					unNumbers?.setErrors({ required: message });
+					unNumbers?.controls[0].setErrors({ required: message });
 
 					return { required: message };
 				}
 
 				// Clear errors from both fields if either is populated
 				refNo?.setErrors(null);
-				unNumbers?.setErrors(null);
+				unNumbers?.controls[0].setErrors(null);
 			}
 
 			return null;
