@@ -175,13 +175,13 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.max(99999, 'Train Design Weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max Train GB Weight must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max train GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max Train EEC weight must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max train EEC weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max Train Design Weight must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max train Design Weight must be less than or equal to 99999'),
 			]),
 		};
 	}
