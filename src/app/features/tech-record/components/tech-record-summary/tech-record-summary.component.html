@@ -7,7 +7,7 @@
           <app-accordion 
             [id]="section.name" 
             [title]="section.label"
-            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
+            [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>
@@ -20,7 +20,7 @@
           <app-accordion 
             [id]="section.name" 
             [title]="section.label" 
-            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
+            [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>

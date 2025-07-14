@@ -78,7 +78,7 @@ import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectScrollPosition } from '@store/technical-records';
+import { addSectionState, selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 @Component({
@@ -231,6 +231,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
 			this.handleFormChanges(this.form.getRawValue());
 		});
+
+		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
 	}
 
 	// TODO: remove hacky solution
