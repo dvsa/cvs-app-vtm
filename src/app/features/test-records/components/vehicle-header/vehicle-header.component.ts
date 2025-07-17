@@ -66,6 +66,17 @@ export class VehicleHeaderComponent {
 		return this.store.select(selectAllTestTypes);
 	}
 
+	get shouldShowHyperlink(): boolean {
+		if (
+			this.testResult()?.testTypes[0]?.testTypeId === '50' ||
+			this.testResult()?.testTypes[0]?.testTypeId === '59' ||
+			this.testResult()?.testTypes[0]?.testTypeId === '60'
+		) {
+			return false;
+		}
+		return true;
+	}
+
 	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
 		return `${reading ?? ''} ${(unit && (unit === 'kilometres' ? 'km' : 'mi')) ?? ''}`;
 	}
