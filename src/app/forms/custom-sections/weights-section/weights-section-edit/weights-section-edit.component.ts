@@ -111,13 +111,13 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(null),
 			weights_gbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle GB Weight must be less than or equal to 99999'),
 			]),
 			weights_eecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle EEC Weight must be less than or equal to 99999'),
 			]),
 			weights_designWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle Design Weight must be less than or equal to 99999'),
 			]),
 		});
 	}
@@ -126,16 +126,16 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(null),
 			weights_kerbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle Kerb Weight must be less than or equal to 99999'),
 			]),
 			weights_ladenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle Laden Weight must be less than or equal to 99999'),
 			]),
 			weights_gbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle GB Weight must be less than or equal to 99999'),
 			]),
 			weights_designWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Axle Design Weight must be less than or equal to 99999'),
 			]),
 		});
 	}
@@ -157,31 +157,31 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 		return {
 			techRecord_axles: this.fb.array([]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999'),
 			]),
 			techRecord_trainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Train GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_trainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Train EEC Weight must be less than or equal to 99999'),
 			]),
 			techRecord_trainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Train Design Weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max Train GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max Train EEC weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max Train Design Weight must be less than or equal to 99999'),
 			]),
 		};
 	}
@@ -190,13 +190,13 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 		return {
 			techRecord_axles: this.fb.array([]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross GB Weight be less than or equal to 99999'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999'),
 			]),
 		};
 	}
@@ -204,26 +204,26 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 	get psvControls() {
 		return {
 			techRecord_unladenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Unladen Weight must be less than or equal to 99999'),
 			]),
 			techRecord_axles: this.fb.array([]),
 			techRecord_grossKerbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Kerb Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossLadenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Laden Weight  be less than or equal to 99999'),
 			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999'),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Max Train GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_trainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'This field must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Train Design Weight must be less than or equal to 99999'),
 			]),
 		};
 	}

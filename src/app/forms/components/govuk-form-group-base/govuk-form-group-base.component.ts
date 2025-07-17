@@ -34,6 +34,8 @@ export class GovukFormGroupBaseComponent {
 
 	readonly prefix = input<string>();
 
+	readonly warning = input<string | null>(null);
+
 	onChange = (_: any) => {};
 	onTouched = () => {};
 
@@ -66,6 +68,10 @@ export class GovukFormGroupBaseComponent {
 	}
 
 	get hasError() {
+		return this.control?.invalid && this.control?.touched && this.control?.errors;
+	}
+
+	get hasWarning() {
 		return this.control?.invalid && this.control?.touched && this.control?.errors;
 	}
 }

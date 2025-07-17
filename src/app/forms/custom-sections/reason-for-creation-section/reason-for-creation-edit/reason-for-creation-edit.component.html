@@ -1,0 +1,8 @@
+<div [formGroup]="form">
+  <govuk-form-group-textarea
+    label="Reason for creation"
+    [maxLength]="500"
+    [tags]="[{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]"
+    formControlName="techRecord_reasonForCreation"
+  ></govuk-form-group-textarea>
+</div>

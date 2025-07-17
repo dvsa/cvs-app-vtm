@@ -50,7 +50,6 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "node:crypto",
               "govuk-frontend",
               "validate-govuk-date",
               "lodash",

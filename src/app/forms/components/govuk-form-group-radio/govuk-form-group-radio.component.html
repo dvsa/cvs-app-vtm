@@ -24,6 +24,13 @@
       </p>
     }
 
+    @if (warning()) {
+      <p class="govuk-error-message" id="{{ id }}-error">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ warning() }}</span>
+      </p>
+    }
+
     <div data-module="govuk-radios">
       @for (option of options(); track option) {
         <div>

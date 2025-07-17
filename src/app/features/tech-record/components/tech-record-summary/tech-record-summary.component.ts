@@ -1,3 +1,4 @@
+import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -77,7 +78,7 @@ import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectScrollPosition } from '@store/technical-records';
+import { addSectionState, selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 @Component({
@@ -119,6 +120,7 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		ManufacturerSectionComponent,
 		AuditSectionComponent,
 		AdrCertsSectionComponent,
+		ReasonForCreationSectionComponent,
 	],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -193,7 +195,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		const editingReason = this.activatedRoute.snapshot.data['reason'];
 		if (this.isEditing) {
-			this.technicalRecordService.clearReasonForCreation();
 			this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
 				if (techRecord) {
 					if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
@@ -230,6 +231,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
 			this.handleFormChanges(this.form.getRawValue());
 		});
+
+		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
 	}
 
 	// TODO: remove hacky solution
@@ -349,7 +352,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 	}
 
-	checkForms(): void {
+	checkForms(): boolean {
 		const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections()
 			?.map((section) => section.form)
 			.concat(this.customSectionForms);
@@ -358,7 +361,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		this.setErrors(forms);
 
-		this.isFormInvalid.emit(forms.some((form) => form.invalid || this.form.invalid));
+		const isInvalid = forms.some((form) => form.invalid) || this.form.invalid;
+		this.isFormInvalid.emit(isInvalid);
+
+		return isInvalid;
 	}
 
 	setErrors(forms: Array<CustomFormGroup | CustomFormArray | FormGroup>): void {
@@ -368,13 +374,37 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		this.form.markAllAsTouched();
 		this.form.updateValueAndValidity();
+		errors.push(...this.getAxleErrors());
 		errors.push(...this.globalErrorService.extractGlobalErrors(this.form));
 
 		if (errors.length) {
+			this.form.setErrors(errors);
 			this.errorService.setErrors(errors);
 		} else {
 			this.errorService.clearErrors();
 		}
+	}
+
+	getAxleErrors(): GlobalError[] {
+		const value = this.form.getRawValue() as V3TechRecordModel;
+
+		if (
+			value.techRecord_vehicleType === VehicleTypes.PSV &&
+			Array.isArray(value.techRecord_axles) &&
+			value.techRecord_axles.length === 1
+		) {
+			return [{ error: 'You cannot submit a PSV with less than 2 axles', anchorLink: 'weightsAddAxle' }];
+		}
+
+		if (
+			value.techRecord_vehicleType === VehicleTypes.HGV &&
+			Array.isArray(value.techRecord_axles) &&
+			value.techRecord_axles.length === 1
+		) {
+			return [{ error: 'You cannot submit a HGV with less than 2 axles', anchorLink: 'weightsAddAxle' }];
+		}
+
+		return [];
 	}
 
 	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {

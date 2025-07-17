@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -20,13 +20,14 @@ import {
 } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
-import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
+import { Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { TechRecordTitleComponent } from '../../../components/tech-record-title/tech-record-title.component';
 
 @Component({
 	selector: 'app-hydrate-new-vehicle-record',
 	templateUrl: './hydrate-new-vehicle-record.component.html',
+	styleUrls: ['./hydrate-new-vehicle-record.component.scss'],
 	imports: [TechRecordTitleComponent, ButtonComponent, TechRecordSummaryComponent, AsyncPipe],
 })
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
@@ -43,6 +44,10 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 	isInvalid = false;
 	batchForm?: FormGroup;
 	username = '';
+
+	vehicle$ = this.store.select(selectTechRecord);
+	isBatch$ = this.batchTechRecordService.isBatchCreate$;
+	batchCount$ = this.batchTechRecordService.batchCount$;
 
 	private destroy$ = new Subject<void>();
 
@@ -74,18 +79,6 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 		this.destroy$.complete();
 	}
 
-	get vehicle$(): Observable<V3TechRecordModel | undefined> {
-		return this.store.select(selectTechRecord);
-	}
-
-	get isBatch$(): Observable<boolean> {
-		return this.batchTechRecordService.isBatchCreate$;
-	}
-
-	get batchCount$(): Observable<number> {
-		return this.batchTechRecordService.batchCount$;
-	}
-
 	get vehicleTypes(): typeof VehicleTypes {
 		return VehicleTypes;
 	}
@@ -101,9 +94,8 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 	}
 
 	handleSubmit(): void {
-		this.summary()?.checkForms();
-
-		if (this.isInvalid) return;
+		const isInvalid = this.summary()?.checkForms();
+		if (isInvalid) return;
 
 		this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
 		this.store.dispatch(clearADRDetailsBeforeUpdate());

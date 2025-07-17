@@ -58,7 +58,6 @@
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.1",
     "deep-object-diff": "^1.1.9",
     "emoji-regex": "^10.4.0",
     "govuk-frontend": "^4.8.0",

@@ -1,0 +1,16 @@
+@media screen and (max-width: 1440px) {
+  .govuk-grid-column-one-third,
+  .govuk-grid-column-two-thirds {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.govuk-grid-column-two-thirds {
+  margin-bottom: 20px;
+}
+
+.right {
+  position: absolute;
+  right: 100px;
+}
