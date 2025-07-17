@@ -7,6 +7,7 @@ export enum RootRoutes {
 	CURRENT_TECH_RECORD = 'tech-records/:systemNumber/:createdTimestamp',
 	REFERENCE_DATA = 'reference-data',
 	FEATURE_TOGGLE = 'feature-toggle',
+	BETAS = 'betas',
 	ERROR = 'error',
 	WILDCARD = '**',
 }

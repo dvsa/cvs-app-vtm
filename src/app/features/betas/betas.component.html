@@ -1,0 +1,23 @@
+<div class="govuk-grid-row home-page">
+  <div class="govuk-grid-column-full">
+    <h2 class="govuk-heading-xl govuk-!-font-weight-bold">Betas</h2>
+
+    <form [formGroup]="form">
+      <div class="govuk-inset-text">
+        Check the following boxes to enable the given beta feature, then click 'save preferences'.
+      </div>
+
+      <govuk-form-group-checkbox
+        label="Technical record redesign"
+        formControlName="TechRecordRedesign"
+      ></govuk-form-group-checkbox>
+
+      <hr class="govuk-section-break govuk-section-break--xl">
+
+      <app-button-group>
+        <app-button id="save" (clicked)="save()">Save preferences</app-button>
+        <app-button id="cancel" design="link" (clicked)="cancel()">Cancel</app-button>
+      </app-button-group>
+    </form>
+  </div>
+</div>

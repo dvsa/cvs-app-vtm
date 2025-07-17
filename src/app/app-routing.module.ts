@@ -71,6 +71,12 @@ const routes: Routes = [
 					import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),
 			},
 			{
+				path: RootRoutes.BETAS,
+				data: { title: 'Betas' },
+				canActivate: [MsalGuard],
+				loadComponent: () => import('./features/betas/betas.component').then((m) => m.BetasComponent),
+			},
+			{
 				path: RootRoutes.ERROR,
 				pathMatch: 'full',
 				loadComponent: () =>

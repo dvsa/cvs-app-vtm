@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
-import { get, has, set } from 'lodash';
+import { get, has } from 'lodash';
 import { lastValueFrom, take } from 'rxjs';
 
 export interface FeatureConfig {
@@ -35,10 +35,8 @@ export class FeatureToggleService {
 		}
 	}
 
-	enableFeature(key: string): void {
-		if (this.config && has(this.config, key)) {
-			set(this.config, key, true);
-		}
+	setConfig(config: FeatureConfig): void {
+		this.config = config;
 	}
 
 	isFeatureEnabled(key: string) {
