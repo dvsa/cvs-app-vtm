@@ -203,13 +203,17 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Certificate:</dt>
           <dd id="test-certificate" class="govuk-summary-list__value">
-            <app-test-certificate
-              [testNumber]="testNumber() || ''"
-              [vin]="testResult()?.vin || ''"
-              [isClickable]="!isReview()"
+            @if (shouldShowHyperlink) {
+              <app-test-certificate
+                [testNumber]="testNumber() || ''"
+                [vin]="testResult()?.vin || ''"
+                [isClickable]="!isReview()"
               >
+                {{ test?.certificateNumber | defaultNullOrEmpty }}
+              </app-test-certificate>
+            } @else {
               {{ test?.certificateNumber | defaultNullOrEmpty }}
-            </app-test-certificate>
+            }
           </dd>
         </div>
       }

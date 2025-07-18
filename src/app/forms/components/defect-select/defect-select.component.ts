@@ -79,8 +79,16 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 		})[`${category}`];
 	}
 
+	getDeficiencyId(deficiency: Deficiency) {
+		return `${deficiency.deficiencyId}(${deficiency.deficiencySubId ? deficiency.deficiencySubId : ''})`;
+	}
+
 	sortDefectItems(items: Item[]) {
 		return items.sort((a, b) => a.itemNumber - b.itemNumber);
+	}
+
+	sortDeficiencyItems(items: Deficiency[]) {
+		return items.sort((a, b) => this.getDeficiencyId(a).localeCompare(this.getDeficiencyId(b)));
 	}
 
 	handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
