@@ -67,14 +67,7 @@ export class VehicleHeaderComponent {
 	}
 
 	get shouldShowHyperlink(): boolean {
-		if (
-			this.testResult()?.testTypes[0]?.testTypeId === '50' ||
-			this.testResult()?.testTypes[0]?.testTypeId === '59' ||
-			this.testResult()?.testTypes[0]?.testTypeId === '60'
-		) {
-			return false;
-		}
-		return true;
+		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0]?.testTypeId ?? '');
 	}
 
 	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
