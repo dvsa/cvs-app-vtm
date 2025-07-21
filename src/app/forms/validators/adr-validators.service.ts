@@ -126,10 +126,18 @@ export class AdrValidatorsService {
 						const errors = control.errors || {};
 						control.setErrors({
 							...errors,
-							required: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+							required: {
+								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							},
 						});
 
-						return { required: `UN number ${index + 1} is required or remove UN number ${index + 1}` };
+						return {
+							required: {
+								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							},
+						};
 					}
 				}
 			}
@@ -156,7 +164,14 @@ export class AdrValidatorsService {
 
 					// Set errors on both simulatenously
 					refNo.setErrors({ ...refNoErrors, required: message });
-					unNumbers.controls[0].setErrors({ ...unNumbersErrors, required: message });
+
+					unNumbers.controls[0].setErrors({
+						...unNumbersErrors,
+						required: {
+							error: message,
+							anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+						},
+					});
 
 					return { required: message };
 				}
