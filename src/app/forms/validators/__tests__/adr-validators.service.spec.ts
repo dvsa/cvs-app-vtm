@@ -378,7 +378,12 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
 				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: ['123', null, '789'],
 			});
-			expect(validator(control)).toEqual({ required: 'UN number 2 is required or remove UN number 2' });
+			expect(validator(control)).toEqual({
+				required: {
+					error: 'UN number 2 is required or remove UN number 2',
+					anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-2',
+				},
+			});
 		});
 	});
 
