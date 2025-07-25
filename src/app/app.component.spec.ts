@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,7 +12,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { Observable, of } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +36,8 @@ describe('AppComponent', () => {
 			],
 			providers: [
 				provideMockStore<State>({ initialState: initialAppState }),
+				provideHttpClient(),
+				provideHttpClientTesting(),
 				{ provide: LoadingService, useValue: { showSpinner$: of(false) } },
 				{ provide: UserService, useValue: MockUserService },
 				PageNotFoundComponent,
