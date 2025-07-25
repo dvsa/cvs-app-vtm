@@ -28,6 +28,7 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { AdrService } from '@services/adr/adr.service';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, techRecord, updateScrollPosition } from '@store/technical-records';
+import _ from 'lodash';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -297,10 +298,10 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 			unNumbers?.forEach((number, index) => {
 				this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
 					this.fb.control<string | null>(number, [
-						this.commonValidators.maxLength(
-							1500,
-							`UN number ${index + 1} must be less than or equal to 1500 characters`
-						),
+						this.commonValidators.maxLength(1500, () => ({
+							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
+							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+						})),
 					])
 				);
 			});
@@ -310,7 +311,10 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		else {
 			this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
 				this.fb.control<string | null>(null, [
-					this.commonValidators.maxLength(1500, 'UN number 1 must be less than or equal to 1500 characters'),
+					this.commonValidators.maxLength(1500, () => ({
+						error: 'UN number 1 must be less than or equal to 1500 characters',
+						anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+					})),
 				])
 			);
 		}
@@ -356,10 +360,13 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		if (allNumbersPopulated) {
 			arr.push(
 				this.fb.control<string | null>(null, [
-					this.commonValidators.maxLength(
-						1500,
-						`UN number ${arr.length + 1} must be less than or equal to 1500 characters`
-					),
+					this.commonValidators.maxLength(1500, (control) => {
+						const index = _.indexOf(arr.controls, control);
+						return {
+							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
+							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+						};
+					}),
 				])
 			);
 		}

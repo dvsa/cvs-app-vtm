@@ -87,14 +87,20 @@ export class GlobalErrorService {
 			if (control instanceof FormGroup || control instanceof FormArray) {
 				if (control.invalid && control.errors) {
 					Object.values(control.errors).forEach((error) => {
-						errors.push({ error, anchorLink: key });
+						errors.push({
+							error: typeof error === 'string' ? error : error.error,
+							anchorLink: typeof error === 'string' ? key : error.anchorLink,
+						});
 					});
 				}
 
 				errors.push(...this.extractGlobalErrors(control));
 			} else if (control.invalid && control.errors) {
 				Object.values(control.errors).forEach((error) => {
-					errors.push({ error, anchorLink: key });
+					errors.push({
+						error: typeof error === 'string' ? error : error.error,
+						anchorLink: typeof error === 'string' ? key : error.anchorLink,
+					});
 				});
 			}
 		});

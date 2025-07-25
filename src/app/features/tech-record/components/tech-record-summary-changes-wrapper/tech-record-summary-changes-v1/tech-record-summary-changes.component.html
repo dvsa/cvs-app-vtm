@@ -14,7 +14,7 @@
     </div>
     @if (techRecordEdited.techRecord_vehicleType === 'trl') {
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">TrailerID</dt>
+        <dt class="govuk-summary-list__key">Trailer ID</dt>
         <dd class="govuk-summary-list__value" id="test-trailerId">
           <app-number-plate [vrm]="techRecordEdited.trailerId | defaultNullOrEmpty" />
         </dd>

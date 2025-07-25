@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import validateDate from 'validate-govuk-date';
+import { GlobalError } from '../../core/components/global-error/global-error.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CommonValidatorsService {
@@ -14,10 +15,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	max(size: number, message: string): ValidatorFn {
+	max(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	max(size: number, message: string): ValidatorFn;
+	max(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
-				return { max: message };
+				return { max: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
@@ -44,10 +47,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	maxLength(length: number, message: string): ValidatorFn {
+	maxLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	maxLength(length: number, message: string): ValidatorFn;
+	maxLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
-				return { maxLength: message };
+				return { maxLength: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;

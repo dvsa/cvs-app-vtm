@@ -227,7 +227,7 @@ export class CreateTechRecordComponent implements OnChanges {
 				this.technicalRecordService.isUnique(this.techRecord.trailerId as string, SEARCH_TYPES.TRAILER_ID)
 			);
 			if (!isTrailerIdUnique) {
-				this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
+				this.globalErrorService.addError({ error: 'Trailer ID must be unique', anchorLink: 'input-vrm-or-trailer-id' });
 			}
 			return isTrailerIdUnique;
 		}
