@@ -29,7 +29,7 @@ export class BetasComponent {
 	}
 
 	save(): void {
-		this.featureToggleService.setConfig(this.form.value);
+		this.featureToggleService.setConfig({ ...this.featureToggleService.config, ...this.form.value });
 		this.router.navigate([RootRoutes.ROOT]);
 	}
 

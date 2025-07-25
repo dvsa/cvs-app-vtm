@@ -11,3 +11,55 @@ a {
 header.govuk-header {
   background-color: $govuk-brand-colour;
 }
+
+header.header {
+  background-color: #c8112e;
+}
+
+header.header .header-container {
+  border-bottom: 10px solid #c8112e;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0 0.5rem;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  background-color: #c8112e;
+}
+
+a.lights {
+  padding-left: 65px;
+}
+
+a.lights span {
+  font-size: 1.25rem;
+}
+a.lights span:first-child {
+  animation: green 0.25s linear infinite;
+  animation-delay: 0.5s;
+}
+a.lights span:last-child {
+  animation: blue 0.25s linear infinite;
+  animation-delay: 0.25s;
+}
+@keyframes green {
+  from {
+    text-shadow: 0 0 5px #90ee90,
+           0 0 15px #90ee90,
+           0 0 30px #90ee90,
+           0 0 60px #90ee90;
+  }
+}
+@keyframes blue {
+  from {
+    text-shadow: 0 0 5px blue,
+           0 0 15px blue,
+           0 0 30px blue,
+           0 0 60px blue;
+  }
+}
