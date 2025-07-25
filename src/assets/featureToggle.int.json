@@ -15,5 +15,6 @@
   "FsAudit": true,
   "FsManufacturer": true,
   "FsAdrCerts": true,
-  "FsReasonForCreation": true
+  "FsReasonForCreation": true,
+  "Betas": false
 }

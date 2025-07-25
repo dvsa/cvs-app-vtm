@@ -14,5 +14,6 @@
   "FsAuthorisationIntoService": true,
   "FsAudit": true,
   "FsManufacturer": true,
-  "FsAdrCerts": true
+  "FsAdrCerts": true,
+  "Betas": false
 }

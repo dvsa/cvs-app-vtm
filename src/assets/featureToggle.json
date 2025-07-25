@@ -16,5 +16,6 @@
   "FsManufacturer": true,
   "FsAdrCerts": true,
   "FsReasonForCreation": true,
-  "TechRecordRedesign": true
+  "TechRecordRedesign": true,
+  "Betas": true
 }

@@ -31,7 +31,10 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.CREATE_TECHNICAL_RECORD,
-				data: { title: 'Create new technical record', roles: Roles.TechRecordCreate },
+				data: {
+					title: 'Create new technical record',
+					roles: Roles.TechRecordCreate,
+				},
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () => import('./features/tech-record/create/create-tech-records.routes').then((m) => m.routes),
 			},
@@ -58,7 +61,10 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.REFERENCE_DATA,
-				data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
+				data: {
+					title: 'Select Reference Data Type',
+					roles: Roles.ReferenceDataView,
+				},
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () =>
 					import('./features/reference-data/reference-data.module').then((m) => m.ReferenceDataModule),
@@ -72,8 +78,8 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.BETAS,
-				data: { title: 'Betas' },
-				canActivate: [MsalGuard],
+				data: { title: 'Betas', featureToggleName: 'Betas' },
+				canActivate: [MsalGuard, FeatureToggleGuard],
 				loadComponent: () => import('./features/betas/betas.component').then((m) => m.BetasComponent),
 			},
 			{
