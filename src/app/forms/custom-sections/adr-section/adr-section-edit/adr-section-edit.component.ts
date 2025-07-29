@@ -223,7 +223,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 	usedOnInternationJourneysOptions = [
 		{ value: 'yes', label: 'Yes' },
 		{ value: 'no', label: 'No' },
-		{ value: 'n/a', label: 'Not applicable' },
+		{ value: 'N/A', label: 'Not applicable' },
 	];
 
 	permittedDangerousGoodsOptions = getOptionsFromEnum(ADRDangerousGood);
