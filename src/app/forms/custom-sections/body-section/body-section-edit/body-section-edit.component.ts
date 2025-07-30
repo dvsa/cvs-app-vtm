@@ -1,3 +1,4 @@
+import { VehicleConfiguration } from '@/src/app/models/vehicle-configuration.enum';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -117,11 +118,27 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 			.pipe(ofType(updateVehicleConfiguration))
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(({ vehicleConfiguration }) => {
-				if (this.techRecord()?.techRecord_vehicleType === VehicleTypes.HGV && vehicleConfiguration === 'articulated') {
-					this.form.patchValue({
-						techRecord_bodyType_description: 'articulated',
-						techRecord_bodyType_code: 'a',
-					});
+				if (this.techRecord()?.techRecord_vehicleType === VehicleTypes.HGV) {
+					// When vehicle configuration is set to articulated, update the body type description and code
+					if (vehicleConfiguration === VehicleConfiguration.ARTICULATED) {
+						this.form.patchValue({
+							techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
+							techRecord_bodyType_code: BodyTypeCode.A,
+						});
+					}
+
+					// When vehicle configuration is rigid, clear artic body description and code
+					const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
+					const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
+					if (
+						vehicleConfiguration === VehicleConfiguration.RIGID &&
+						(bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED)
+					) {
+						this.form.patchValue({
+							techRecord_bodyType_description: null,
+							techRecord_bodyType_code: null,
+						});
+					}
 				}
 
 				const functionCodes: Record<string, string> = {
@@ -150,7 +167,10 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 		this.form.patchValue({
 			techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
 		});
-		this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord(), ...this.form.getRawValue() });
+		this.technicalRecordService.updateEditingTechRecord({
+			...this.techRecord(),
+			...this.form.getRawValue(),
+		});
 		this.cdr.detectChanges();
 	}
 
@@ -165,7 +185,9 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 				techRecord_chassisMake: modelBase.psvChassisMake,
 				techRecord_chassisModel: modelBase.psvChassisModel,
 			});
-			this.technicalRecordService.updateEditingTechRecord({ ...this.form.getRawValue() });
+			this.technicalRecordService.updateEditingTechRecord({
+				...this.form.getRawValue(),
+			});
 			this.cdr.detectChanges();
 		}
 	}
