@@ -1,27 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { Breadcrumbs2Component } from '@core/components/breadcrumbs-2/breadcrumbs-2.component';
 import { RouterReducerState } from '@ngrx/router-store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { State, initialAppState } from '@store/index';
 import { routerState } from '@store/router/router.selectors';
 import { firstValueFrom } from 'rxjs';
-import { BreadcrumbsComponent } from '../breadcrumbs.component';
 
-describe('BreadcrumbsComponent', () => {
-	let component: BreadcrumbsComponent;
-	let fixture: ComponentFixture<BreadcrumbsComponent>;
+describe('Breadcrumbs2Component', () => {
+	let component: Breadcrumbs2Component;
+	let fixture: ComponentFixture<Breadcrumbs2Component>;
 	let store: MockStore<State>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [BreadcrumbsComponent],
+			imports: [Breadcrumbs2Component],
 			providers: [RouterService, provideRouter([]), provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(BreadcrumbsComponent);
+		fixture = TestBed.createComponent(Breadcrumbs2Component);
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);
 		fixture.detectChanges();
