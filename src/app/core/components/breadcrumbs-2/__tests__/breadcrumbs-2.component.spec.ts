@@ -106,4 +106,13 @@ describe('Breadcrumbs2Component', () => {
 			expect(await firstValueFrom(component.breadcrumbs$)).toEqual(expected);
 		}
 	);
+
+	it('should set showBackButton to true if the title is Create new technical record', async () => {
+		const routeState: RouterReducerState = {
+			state: { root: { firstChild: { data: { title: 'Create new technical record' }, url: [{ path: 'path1' }] } } },
+		} as unknown as RouterReducerState;
+		store.overrideSelector(routerState, routeState);
+		await firstValueFrom(component.breadcrumbs$);
+		expect(component.showBackButton).toEqual(true);
+	});
 });
