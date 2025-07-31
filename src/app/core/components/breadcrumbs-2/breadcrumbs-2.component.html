@@ -10,7 +10,7 @@
         @for (breadcrumb of breadcrumbs; track indexOfLink; let last = $last; let indexOfLink = $index) {
           <li class="govuk-breadcrumbs__list-item">
             @if (showBackButton) {
-              <a href="#" class="govuk-back-link">Back</a>
+              <a routerLink=".." class="govuk-back-link">Back</a>
             }
             @else {
               @if (!last) {
