@@ -11,6 +11,20 @@
     (ngModelChange)="toggleVrmInput(generateID)"
   ></app-checkbox-group>
 
+
+  @if (!generateID.value) {
+    <app-text-input
+      formControlName="vrmTrm"
+      name="input-vrm-or-trailer-id"
+      label="VRM / Trailer ID"
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      [width]="30"
+      (ngModelChange)="ngOnChanges()"
+    ></app-text-input>
+  }
+
   <app-button-group>
     <app-button id="submit">Continue</app-button>
     <app-button design="link" id="cancel">Cancel</app-button>
