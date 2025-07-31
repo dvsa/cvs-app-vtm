@@ -215,23 +215,10 @@
           }
         }
         @case ('lettersSection') {
-          <!-- New LettersSection -->
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-          @if (featureToggleService.isFeatureEnabled('FsLetters')) {
             <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-          } @else {
-          <app-letters
-            [techRecord]="techRecordCalculated"
-            [isEditing]="(isEditing$ | async) ?? false"
-            (formChange)="handleFormState($event)"
-          ></app-letters>
           }
         }
-          <!-- Old Letters section -->
-        }
-
-
-
         @case ('platesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Plates Section -->

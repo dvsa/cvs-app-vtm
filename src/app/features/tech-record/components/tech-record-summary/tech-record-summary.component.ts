@@ -46,10 +46,6 @@ import {
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
 import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
 import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
-import {
-	LettersComponent,
-	LettersComponent as LettersComponent_1,
-} from '@forms/custom-sections/letters/letters.component';
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
 import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
@@ -105,7 +101,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		TrlBrakesComponent_1,
 		TyresSectionComponent,
 		WeightsSectionComponent,
-		LettersComponent_1,
 		PlatesSectionComponent,
 		PlatesComponent,
 		AdrSectionComponent,
@@ -128,7 +123,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	readonly dimensions = viewChild(DimensionsComponent);
 	readonly psvBrakes = viewChild(PsvBrakesComponent);
 	readonly trlBrakes = viewChild(TrlBrakesComponent);
-	readonly letters = viewChild(LettersComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
 
 	readonly isFormDirty = output<boolean>();
@@ -307,7 +301,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
 		const commonCustomSections = this.addCustomSectionsBasedOffFlag();
 		const trlBrakes = this.trlBrakes();
-		const letters = this.letters();
 		const psvBrakes = this.psvBrakes();
 
 		switch (this.vehicleType) {
@@ -322,7 +315,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 			case VehicleTypes.TRL: {
 				const arr = [...commonCustomSections];
 				if (trlBrakes?.form) arr.push(trlBrakes.form);
-				if (letters?.form) arr.push(letters.form);
 				return arr;
 			}
 			default:
