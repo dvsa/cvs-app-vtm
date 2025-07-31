@@ -1,28 +1,25 @@
-<form>
+<form [formGroup]="form">
   <h1 class="govuk-heading-l title">New vehicle information (v2)</h1>
 
 
-  <app-checkbox-group
-    label="Generate C, T or Z number"
+  <govuk-form-group-checkbox
+    label="Generate a C/T/Z number on submission of the new record"
     #generateID
     formControlName="generateID"
-    name="generate-c-t-z-num"
-    [options]="checkboxOptions"
-    (ngModelChange)="toggleVrmInput(generateID)"
-  ></app-checkbox-group>
+    (ngModelChange)="toggleVrmInput($event.value)"
+  ></govuk-form-group-checkbox>
 
 
-  @if (!generateID.value) {
-    <app-text-input
+  @if (!generateID.value()) {
+    <govuk-form-group-input
       formControlName="vrmTrm"
-      name="input-vrm-or-trailer-id"
       label="VRM / Trailer ID"
       appToUppercase
       appNoSpace
       appTrimWhitespace
       [width]="30"
       (ngModelChange)="ngOnChanges()"
-    ></app-text-input>
+    ></govuk-form-group-input>
   }
 
   <app-button-group>

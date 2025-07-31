@@ -69,6 +69,10 @@ export class CommonValidatorsService {
 		};
 	}
 
+  alphanumeric(message: string): ValidatorFn {
+    return this.pattern('^[a-zA-Z0-9]*$', message)
+  }
+
 	pastDate(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && new Date(control.value) > new Date()) {

@@ -1,7 +1,7 @@
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { Component, OnChanges, inject } from '@angular/core';
-import { ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -9,7 +9,10 @@ import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directiv
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { CheckboxGroupComponent } from '@forms/components/checkbox-group/checkbox-group.component';
+import {
+  CheckboxGroupComponent,
+  CheckboxGroupComponent as CheckboxGroupComponent_1,
+} from '@forms/components/checkbox-group/checkbox-group.component';
 import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { MultiOptions } from '@models/options.model';
@@ -22,21 +25,30 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dyn
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { firstValueFrom } from 'rxjs';
+import {
+  GovukFormGroupCheckboxComponent
+} from '@forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
+import {
+  GovukFormGroupInputComponent
+} from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 
 @Component({
 	selector: 'app-create-tech-record-v2',
 	templateUrl: './create-tech-record-v2.component.html',
 	styleUrls: ['./create-tech-record-v2.component.scss'],
-	imports: [
-		ButtonGroupComponent,
-		ButtonComponent,
-		CheckboxGroupComponent,
-		ReactiveFormsModule,
-		NoSpaceDirective,
-		TextInputComponent,
-		ToUppercaseDirective,
-		TrimWhitespaceDirective,
-	],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    ButtonGroupComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+    NoSpaceDirective,
+    ToUppercaseDirective,
+    TrimWhitespaceDirective,
+    GovukFormGroupCheckboxComponent,
+    GovukFormGroupInputComponent,
+  ],
 })
 export class CreateTechRecordV2Component implements OnChanges {
 	globalErrorService = inject(GlobalErrorService);
@@ -45,6 +57,8 @@ export class CreateTechRecordV2Component implements OnChanges {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store);
+  fb = inject(FormBuilder);
+  commonValidatorService = inject(CommonValidatorsService);
 
 	techRecord: Partial<V3TechRecordModel> = {};
 	vinUnique = false;
@@ -53,16 +67,18 @@ export class CreateTechRecordV2Component implements OnChanges {
 	isVinUniqueCheckComplete = false;
 	isDuplicateVinAllowed = false;
 
+  form2 = this.fb.group({
+    vrmTrm: this.fb.control<string>('', [
+      this.commonValidatorService.pattern('^[0-9]{7}[zZ]$', 'The VRM/Trailer ID cannot be in a format that is 7 digits followed by the character \'Z\''),
+      this.commonValidatorService.alphanumeric('VRM/Trailer ID must be alphanumeric'),
+      this.commonValidatorService.required('VRM/Trailer ID is required'),
+      // TODO add vrm/trm length validators when the vehicle type field component is implemented
+    ])
+
+  })
 	form = new CustomFormGroup(
 		{ name: 'main-form', type: FormNodeTypes.GROUP },
 		{
-			vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
-				CustomValidators.alphanumeric(),
-				CustomValidators.validateVinCharacters(),
-				Validators.minLength(3),
-				Validators.maxLength(21),
-				Validators.required,
-			]),
 			vrmTrm: new CustomFormControl(
 				{ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL },
 				'',
@@ -73,27 +89,23 @@ export class CreateTechRecordV2Component implements OnChanges {
 					Validators.required,
 				]
 			),
-			vehicleStatus: new CustomFormControl(
-				{ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
-				StatusCodes.PROVISIONAL,
-				[Validators.required]
-			),
-			vehicleType: new CustomFormControl(
-				{ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL },
-				'',
-				[Validators.required]
-			),
-			generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null),
+			// vehicleStatus: new CustomFormControl(
+			// 	{ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
+			// 	StatusCodes.PROVISIONAL,
+			// 	[Validators.required]
+			// ),
+			// vehicleType: new CustomFormControl(
+			// 	{ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL },
+			// 	'',
+			// 	[Validators.required]
+			// ),
+			generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, false),
 		}
 	);
 
 	constructor() {
 		this.batchTechRecordService.clearBatch();
 		this.technicalRecordService.clearSectionTemplateStates();
-	}
-
-	get checkboxOptions(): MultiOptions {
-		return [{ value: true, label: 'Generate a C/T/Z number on submission of the new record' }];
 	}
 
 	toggleVrmInput(checked: CheckboxGroupComponent) {
@@ -159,30 +171,35 @@ export class CreateTechRecordV2Component implements OnChanges {
 		this.techRecord.techRecord_vehicleType = this.form.value.vehicleType;
 		this.techRecord.techRecord_statusCode = this.form.value.vehicleStatus;
 
-		if (!this.isVinUniqueCheckComplete) {
-			this.vinUnique = await this.isVinUnique();
-		}
-
-		if (this.form.controls['generateID'].value) {
-			return this.vinUnique || this.isDuplicateVinAllowed;
-		}
+		// if (!this.isVinUniqueCheckComplete) {
+		// 	this.vinUnique = await this.isVinUnique();
+		// }
+    //
+		// if (this.form.controls['generateID'].value) {
+		// 	return this.vinUnique || this.isDuplicateVinAllowed;
+		// }
 
 		if (isTrailer) {
 			this.trlUnique = await this.isTrailerIdUnique();
-			return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
+
+      // TODO remove below line and uncomment line beneath when required
+      return this.trlUnique;
+			// return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
 		}
 		this.vrmUnique = await this.isVrmUnique();
-		return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
+    // TODO remove below line and uncomment line beneath when required
+    return this.vrmUnique;
+		// return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
 	}
 
-	async isVinUnique(): Promise<boolean> {
-		this.techRecord.vin = this.form.value.vin;
-		const isVinUnique = await firstValueFrom(
-			this.technicalRecordService.isUnique(this.techRecord.vin as string, SEARCH_TYPES.VIN)
-		);
-		this.isVinUniqueCheckComplete = true;
-		return isVinUnique;
-	}
+	// async isVinUnique(): Promise<boolean> {
+	// 	this.techRecord.vin = this.form.value.vin;
+	// 	const isVinUnique = await firstValueFrom(
+	// 		this.technicalRecordService.isUnique(this.techRecord.vin as string, SEARCH_TYPES.VIN)
+	// 	);
+	// 	this.isVinUniqueCheckComplete = true;
+	// 	return isVinUnique;
+	// }
 
 	async isVrmUnique() {
 		(this.techRecord as VehiclesOtherThan<'trl'>).primaryVrm = this.form.value.vrmTrm;
