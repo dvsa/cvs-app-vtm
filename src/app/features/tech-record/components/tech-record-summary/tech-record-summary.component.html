@@ -96,18 +96,7 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New documents section-->
-            @if (featureToggleService.isFeatureEnabled('FsDocuments')) {
-              <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
-            <!-- Old documents section-->
+            <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
           }
         }
         @case ('approvalSection') {

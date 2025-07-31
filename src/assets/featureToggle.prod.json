@@ -10,7 +10,6 @@
   "FsBrakes": true,
   "FsDDA": true,
   "FsLetters": true,
-  "FsDocuments": true,
   "FsAuthorisationIntoService": true,
   "FsAudit": true,
   "FsManufacturer": true,
