@@ -12,7 +12,7 @@ import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-tri
 import { GovukFormGroupCheckboxComponent } from '@forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -47,6 +47,7 @@ export class CreateTechRecordV2Component {
 	techRecordValidatorService = inject(TechRecordValidatorsService);
 
 	readonly VehicleTypes = VehicleTypes;
+	readonly StatusCodes = StatusCodes;
 
 	form = this.fb.group({
 		vin: this.fb.nonNullable.control<string>('', []),

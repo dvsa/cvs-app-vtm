@@ -21,6 +21,17 @@
     ></govuk-form-group-input>
   }
 
+  <!-- Vehicle status -->
+  <govuk-form-group-radio
+    label="Vehicle status"
+    formControlName="vehicleStatus"
+    orientation="horizontal"
+    [options]="[
+      { value: StatusCodes.CURRENT, label: 'Current' },
+      { value: StatusCodes.PROVISIONAL, label: 'Provisional' }
+    ]"
+  ></govuk-form-group-radio>
+
   <!-- Vehicle type -->
   <govuk-form-group-radio
     label="Vehicle type"
