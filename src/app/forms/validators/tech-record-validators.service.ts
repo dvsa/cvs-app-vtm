@@ -21,18 +21,36 @@ export class TechRecordValidatorsService {
 				if (isTrailerValueSelected) {
 					if (control.value.length < 7) {
 						return {
-							validateVRMTrailerIdLength: 'Trailer ID must be greater than or equal to 7 characters',
+							validateVRMTrailerIdLength: {
+								error: 'Trailer ID must be greater than or equal to 7 characters',
+								anchorLink: 'input-vrm-or-trailer-id',
+							},
 						};
 					}
 					if (control.value.length > 8) {
-						return { validateVRMTrailerIdLength: 'Trailer ID must be less than or equal to 8 characters' };
+						return {
+							validateVRMTrailerIdLength: {
+								error: 'Trailer ID must be less than or equal to 8 characters',
+								anchorLink: 'input-vrm-or-trailer-id',
+							},
+						};
 					}
 				} else {
 					if (control.value.length < 1) {
-						return { validateVRMTrailerIdLength: 'VRM must be greater than or equal to 1 character' };
+						return {
+							validateVRMTrailerIdLength: {
+								error: 'VRM must be greater than or equal to 1 character',
+								anchorLink: 'input-vrm-or-trailer-id',
+							},
+						};
 					}
 					if (control.value.length > 9) {
-						return { validateVRMTrailerIdLength: 'VRM must be less than or equal to 9 characters' };
+						return {
+							validateVRMTrailerIdLength: {
+								error: 'VRM must be less than or equal to 9 characters',
+								anchorLink: 'input-vrm-or-trailer-id',
+							},
+						};
 					}
 				}
 			}
