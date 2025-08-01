@@ -21,7 +21,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -233,24 +232,38 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
+
+		this.technicalRecordService.techRecord$
+			.pipe(
+				takeUntil(this.destroy$),
+				skipWhile((techRecord) => !techRecord),
+				take(1)
+			)
+			.subscribe((techRecord) => {
+				if (this.isEditing && techRecord) {
+					if (
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL
+					) {
+						this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
+
+						if (
+							techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+							techRecord.techRecord_vehicleType === VehicleTypes.HGV
+						) {
+							this.form.addControl(
+								'techRecord_dimensions_axleSpacing',
+								this.axlesService.generateAxleSpacingsForm(techRecord)
+							);
+						}
+					}
+				}
+			});
 	}
 
 	// TODO: remove hacky solution
 	handleFormChanges(changes: any) {
-		let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
-		if (
-			techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.TRL
-		) {
-			const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
-			techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
-			techRecord.techRecord_axles = axles;
-			this.techRecordCalculated = techRecord;
-			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
-			return;
-		}
-
 		this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
 		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 	}

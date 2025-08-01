@@ -10,7 +10,7 @@
             <th scope="col" class="govuk-table__header">Spring brake parking</th>
           </tr>
         </thead>
-        <tbody class="govuk-table__body">
+        <tbody class="govuk-table__body" [formGroup]="parent">
           <ng-container formArrayName="techRecord_axles">
             @for(axle of axles.controls; track axle; let i = $index) {
               <tr class="govuk-table__row" formGroupName="{{ i }}">
