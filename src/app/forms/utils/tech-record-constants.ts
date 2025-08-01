@@ -17,7 +17,6 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import { LettersTemplate } from '../templates/general/letters.template';
 import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
 import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
 import { TrlBrakesTemplate } from '../templates/trl/trl-brakes.template';
@@ -33,6 +32,7 @@ const adrSection = { name: 'adrSection', label: 'ADR' } as FormNode;
 const techRecordSection = { name: 'techRecordSummary', label: 'Vehicle summary' } as FormNode;
 const notesSection = { name: 'notesSection', label: 'Notes' } as FormNode;
 const bodySection = { name: 'bodySection', label: 'Body' } as FormNode;
+const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -78,7 +78,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  4 */ HgvAndTrlTypeApprovalTemplate,
 			/*  5 */ ApplicantDetails,
 			/*  6 */ DocumentsTemplate,
-			/*  7 */ LettersTemplate,
+			/*  7 */ lettersSection,
 			/*  8 */ bodySection,
 			/*  9 */ TrlWeight,
 			/* 10 */ tyresTemplateTrl,
