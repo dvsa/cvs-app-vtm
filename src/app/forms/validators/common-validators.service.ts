@@ -69,9 +69,19 @@ export class CommonValidatorsService {
 		};
 	}
 
-  alphanumeric(message: string): ValidatorFn {
-    return this.pattern('^[a-zA-Z0-9]*$', message)
-  }
+	antipattern(pattern: string | RegExp, message: string): ValidatorFn {
+		return (control) => {
+			if (control.value && new RegExp(pattern).test(control.value)) {
+				return { pattern: message };
+			}
+
+			return null;
+		};
+	}
+
+	alphanumeric(message: string): ValidatorFn {
+		return this.pattern('^[a-zA-Z0-9]*$', message);
+	}
 
 	pastDate(message: string): ValidatorFn {
 		return (control) => {
