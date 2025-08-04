@@ -62,7 +62,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		this.handleBrakeCodeChange();
-		this.handleAxleChanges();
 
 		// Attach all form controls to parent
 		this.init(this.form);
@@ -129,16 +128,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 					this.store.dispatch(updateBrakeForces({}));
 				}
 			});
-	}
-
-	handleAxleChanges() {
-		const techRecord = this.techRecord();
-
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-			this.axles.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((axles) => {
-				this.formChange.emit({ techRecord_axles: axles });
-			});
-		}
 	}
 
 	get vehicleType(): VehicleTypes {
