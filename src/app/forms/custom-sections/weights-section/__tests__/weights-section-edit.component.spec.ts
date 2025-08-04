@@ -62,15 +62,11 @@ describe('weightsSectionEditComponent', () => {
 		componentRef.setInput('techRecord', mockTechRecord);
 		component.form.reset();
 		fixture.detectChanges();
+
+		jest.spyOn(component.techRecordAxles, 'get').mockReturnValue(new FormArray([]));
 	});
 
 	describe('ngOnInit', () => {
-		it('should call prepopulateAxles', () => {
-			const prepopulateAxlesSpy = jest.spyOn(component, 'prepopulateAxles');
-			component.ngOnInit();
-			expect(prepopulateAxlesSpy).toHaveBeenCalled();
-		});
-
 		it('should attach all form controls to parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnInit();
@@ -91,18 +87,6 @@ describe('weightsSectionEditComponent', () => {
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalledWith(true);
 			expect(completeSpy).toHaveBeenCalled();
-		});
-	});
-
-	describe('techRecordAxles', () => {
-		it('should return FormArray when techRecord_axles control exists', () => {
-			component.form.addControl('techRecord_axles', new FormArray([]));
-			expect(component.techRecordAxles).toBeInstanceOf(FormArray);
-		});
-
-		it('should return null when techRecord_axles control does not exist', () => {
-			component.form.removeControl('techRecord_axles');
-			expect(component.techRecordAxles).toBeNull();
 		});
 	});
 });

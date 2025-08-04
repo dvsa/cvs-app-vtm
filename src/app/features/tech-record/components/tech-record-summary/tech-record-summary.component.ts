@@ -176,10 +176,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 						return;
 					}
 
-					let techRecord = cloneDeep(record);
-					techRecord = this.normaliseAxles(record);
-
-					return techRecord;
+					return cloneDeep(record);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -228,7 +225,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			this.handleFormChanges(this.form.getRawValue());
+			this.handleFormState(this.form.getRawValue());
 		});
 
 		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
@@ -260,12 +257,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 					}
 				}
 			});
-	}
-
-	// TODO: remove hacky solution
-	handleFormChanges(changes: any) {
-		this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
-		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 	}
 
 	ngOnDestroy(): void {
@@ -418,22 +409,5 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		}
 
 		return [];
-	}
-
-	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
-		const type = record.techRecord_vehicleType;
-		const category = record.techRecord_euVehicleCategory;
-
-		if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
-			const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-				record.techRecord_axles ?? [],
-				record.techRecord_dimensions_axleSpacing
-			);
-
-			record.techRecord_dimensions_axleSpacing = axleSpacing;
-			record.techRecord_axles = axles;
-		}
-
-		return record;
 	}
 }

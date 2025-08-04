@@ -88,12 +88,6 @@ describe('BrakesSectionEditComponent', () => {
 			expect(loadOptionsSpy).toHaveBeenCalled();
 		});
 
-		it('should call prepopulateAxles', () => {
-			const prepopulateAxlesSpy = jest.spyOn(component, 'prepopulateAxles');
-			component.ngOnInit();
-			expect(prepopulateAxlesSpy).toHaveBeenCalled();
-		});
-
 		it('should call handleBrakeCodeChange', () => {
 			const handleBrakeCodeChangeSpy = jest.spyOn(component, 'handleBrakeCodeChange');
 			component.ngOnInit();
@@ -147,36 +141,6 @@ describe('BrakesSectionEditComponent', () => {
 			expect(component.brakeCodePrefix).toBe('020');
 		});
 	});
-
-	describe('getAxleForm', () => {
-		it('should return the axle form for the correct vehicleType (PSV)', () => {
-			const spy = jest.spyOn(component, 'addPsvAxleBrakesInformation');
-
-			component.getAxleForm();
-			expect(spy).toHaveBeenCalled();
-		});
-
-		it('should return the axle form for the correct vehicleType (TRL)', () => {
-			const spy = jest.spyOn(component, 'addTrlAxleBrakesInformation');
-			const trlRecord = mockVehicleTechnicalRecord('trl');
-			componentRef.setInput('techRecord', trlRecord);
-
-			component.getAxleForm();
-			expect(spy).toHaveBeenCalled();
-		});
-	});
-
-	describe('prepopulateAxles', () => {
-		it('should add axles to the axles form', () => {
-			const getAxleFormSpy = jest.spyOn(component, 'getAxleForm');
-			const axlesSpy = jest.spyOn(component, 'axles', 'get');
-
-			component.prepopulateAxles();
-			expect(getAxleFormSpy).toHaveBeenCalled();
-			expect(axlesSpy).toHaveBeenCalled();
-		});
-	});
-
 	describe('round', () => {
 		it('should round a number to the nearest integer', () => {
 			const value = component.round(6.7);

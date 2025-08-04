@@ -1,5 +1,6 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { KeyValuePipe } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -10,7 +11,6 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { updateBrakeForces } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
-import { AxlesService } from '@/src/app/services/axles/axles.service';
 
 @Component({
 	selector: 'app-weights-section-edit',
@@ -24,7 +24,6 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 	actions = inject(Actions);
 	axlesService = inject(AxlesService);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
-	formChange = output<Partial<TechRecordType<'hgv' | 'trl' | 'psv'>>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
@@ -32,7 +31,6 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.handleFormChange();
 		this.handleGrossKerbWeightChange();
 		this.handleGrossLadenWeightChange();
 
@@ -55,12 +53,6 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.handleVehicleTechRecordChange(changes);
-	}
-
-	handleFormChange() {
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-			this.formChange.emit(changes);
-		});
 	}
 
 	handleGrossKerbWeightChange() {
@@ -106,7 +98,6 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 
 	get hgvControls() {
 		return {
-			techRecord_axles: this.fb.array([]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999'),
 			]),
@@ -139,7 +130,6 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 
 	get trlControls() {
 		return {
-			techRecord_axles: this.fb.array([]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB Weight be less than or equal to 99999'),
 			]),

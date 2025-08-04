@@ -210,7 +210,6 @@
             <app-weights-section
               [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-              (formChange)="handleFormChanges($event)"
             ></app-weights-section>
           }
         }
