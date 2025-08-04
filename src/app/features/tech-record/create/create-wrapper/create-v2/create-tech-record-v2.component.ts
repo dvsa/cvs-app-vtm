@@ -63,23 +63,23 @@ export class CreateTechRecordV2Component implements OnChanges {
 	form = this.fb.group({
 		vin: this.fb.nonNullable.control<string>('', [
 			this.commonValidatorService.alphanumeric(() => ({
-				error: 'VIN must be alphanumeric',
+				error: 'Vehicle Identification number (VIN) must be alphanumeric',
 				anchorLink: 'input-vin',
 			})),
 			this.commonValidatorService.pattern('^(?!.*[OIQ]).*$', () => ({
-				error: 'VIN should not contain O, I or Q',
+				error: 'Vehicle Identification number (VIN) should not contain O, I or Q',
 				anchorLink: 'input-vin',
 			})),
 			this.commonValidatorService.minLength(3, () => ({
-				error: 'VIN must be 3 characters',
+				error: 'Vehicle Identification number (VIN) must be greater or equal to 3 characters',
 				anchorLink: 'input-vin',
 			})),
 			this.commonValidatorService.maxLength(21, () => ({
-				error: 'VIN must be 21 characters',
+				error: 'Vehicle Identification number (VIN) must be less than or equal to 21 characters',
 				anchorLink: 'input-vin',
 			})),
 			this.commonValidatorService.required(() => ({
-				error: 'VIN is required',
+				error: 'Vehicle Identification number (VIN) is required',
 				anchorLink: 'input-vin',
 			})),
 		]),
