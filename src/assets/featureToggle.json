@@ -8,7 +8,6 @@
   "FsDimensions": true,
   "FsPurchasers": true,
   "FsDDA": true,
-  "FsLetters": true,
   "FsDocuments": true,
   "FsBrakes": true,
   "FsAuthorisationIntoService": true,
