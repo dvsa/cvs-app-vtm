@@ -131,7 +131,7 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 	get trlControls() {
 		return {
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB Weight be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999'),
@@ -151,7 +151,7 @@ export class WeightsSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.max(99999, 'Gross Kerb Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossLadenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Laden Weight  be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Laden Weight must be less than or equal to 99999'),
 			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999'),
