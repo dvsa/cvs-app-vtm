@@ -35,9 +35,9 @@ describe('weightsSectionEditComponent', () => {
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
-		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>(
-			{}
-		);
+		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>({
+			techRecord_axles: new FormControl(),
+		});
 		const mockTechRecord = mockVehicleTechnicalRecord('psv');
 
 		await TestBed.configureTestingModule({
@@ -70,7 +70,16 @@ describe('weightsSectionEditComponent', () => {
 		it('should attach all form controls to parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnInit();
-			expect(parent.controls).toEqual(component.form.controls);
+			expect(Object.keys(parent.controls)).toEqual([
+				'techRecord_axles',
+				'techRecord_unladenWeight',
+				'techRecord_grossKerbWeight',
+				'techRecord_grossLadenWeight',
+				'techRecord_grossGbWeight',
+				'techRecord_grossDesignWeight',
+				'techRecord_maxTrainGbWeight',
+				'techRecord_trainDesignWeight',
+			]);
 		});
 	});
 
@@ -78,7 +87,8 @@ describe('weightsSectionEditComponent', () => {
 		it('should detach all form controls from parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnDestroy();
-			expect(Object.keys(parent.controls)).toHaveLength(0);
+			// should only have techRecord axles in parent form when this component is destroyed (as this is shared)
+			expect(Object.keys(parent.controls)).toEqual(['techRecord_axles']);
 		});
 
 		it('should clear all subscriptions', () => {
