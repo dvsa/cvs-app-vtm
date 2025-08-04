@@ -80,6 +80,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { addSectionState, selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
+
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -225,7 +226,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			this.handleFormState(this.form.getRawValue());
+			this.techRecordCalculated = { ...this.techRecordCalculated, ...this.form.getRawValue() };
+			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});
 
 		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
