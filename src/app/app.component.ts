@@ -3,9 +3,11 @@ import { AsyncPipe, NgClass } from '@angular/common';
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Breadcrumbs2Component } from '@core/components/breadcrumbs-2/breadcrumbs-2.component';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { startSendingLogs } from '@store/logs/logs.actions';
@@ -39,6 +41,8 @@ import { State } from './store';
 		RouterOutlet,
 		FooterComponent,
 		AsyncPipe,
+		BreadcrumbsComponent,
+		Breadcrumbs2Component,
 	],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -48,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	gtmService = inject(GoogleTagManagerService);
 	store = inject(Store<State>);
 	analyticsService = inject(AnalyticsService);
+	featureToggleService = inject(FeatureToggleService);
 
 	currentDate = new Date();
 	private destroy$ = new Subject<void>();

@@ -37,10 +37,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	minLength(length: number, message: string): ValidatorFn {
+	minLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	minLength(length: number, message: string): ValidatorFn;
+	minLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length < length) {
-				return { minLength: message };
+				return { minLength: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
@@ -59,14 +61,32 @@ export class CommonValidatorsService {
 		};
 	}
 
-	pattern(pattern: string | RegExp, message: string): ValidatorFn {
+	pattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	pattern(pattern: string | RegExp, message: string): ValidatorFn;
+	pattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && !new RegExp(pattern).test(control.value)) {
+				return { pattern: typeof message === 'string' ? message : message(control) };
+			}
+
+			return null;
+		};
+	}
+
+	antipattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	antipattern(pattern: string | RegExp, message: string): ValidatorFn;
+	antipattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return (control) => {
+			if (control.value && new RegExp(pattern).test(control.value)) {
 				return { pattern: message };
 			}
 
 			return null;
 		};
+	}
+
+	alphanumeric(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return this.pattern('^[a-zA-Z0-9]*$', message as any);
 	}
 
 	pastDate(message: string): ValidatorFn {
@@ -163,10 +183,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	required(message: string): ValidatorFn {
+	required(func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	required(message: string): ValidatorFn;
+	required(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				return { required: message };
+				return { required: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;

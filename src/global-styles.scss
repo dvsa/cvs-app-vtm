@@ -159,34 +159,6 @@
   }
 }
 
-.govuk-form-group-radio {
-  @extend .govuk-form-group;
-  > fieldset {
-    @extend .govuk-fieldset;
-    > legend {
-      @extend .govuk-fieldset__legend;
-      @extend .govuk-fieldset__legend--m;
-      > h1 {
-        @extend .govuk-fieldset__heading;
-      }
-    }
-    > div {
-      > div {
-        @extend .govuk-radios__item;
-
-        > input {
-          @extend .govuk-radios__input;
-        }
-
-        > label {
-          @extend .govuk-label;
-          @extend .govuk-radios__label;
-        }
-      }
-    }
-  }
- }
-
 .govuk-form-group-split-controls {
   @extend .govuk-form-group;
   > h1 {
