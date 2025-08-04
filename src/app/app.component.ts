@@ -85,13 +85,11 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.analyticsService.pushToDataLayer({ AppVersionDataLayer: packageInfo.version });
 		await this.analyticsService.setUserId();
 		initAll();
-		this.checkDateChange();
 	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
-		clearInterval(this.interval);
 	}
 
 	startSentry() {
@@ -106,19 +104,5 @@ export class AppComponent implements OnInit, OnDestroy {
 			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
 		});
 		this.sentryInitialized = true;
-	}
-
-	checkDateChange() {
-		this.interval = setInterval(() => {
-			const newDate = new Date();
-			if (newDate.getDate() !== this.currentDate.getDate()) {
-				this.currentDate = newDate;
-				this.reinitializeApp();
-			}
-		}, 21600000); // Check every six hours
-	}
-
-	reinitializeApp() {
-		this.ngOnInit().then((r) => r);
 	}
 }
