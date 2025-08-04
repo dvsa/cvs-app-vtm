@@ -85,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
-  }
+	}
 
 	startSentry() {
 		Sentry.init({
