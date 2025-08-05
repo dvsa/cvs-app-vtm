@@ -38,10 +38,6 @@ import { BodySectionComponent } from '@forms/custom-sections/body-section/body-s
 import { BrakesSectionComponent } from '@forms/custom-sections/brakes-section/brakes-section.component';
 import { DDASectionComponent } from '@forms/custom-sections/dda-section/dda-section.component';
 import { DimensionsSectionComponent } from '@forms/custom-sections/dimensions-section/dimensions-section.component';
-import {
-	DimensionsComponent,
-	DimensionsComponent as DimensionsComponent_1,
-} from '@forms/custom-sections/dimensions/dimensions.component';
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
 import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
 import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
@@ -94,7 +90,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		BodySectionComponent,
 		TRLPurchasersSectionComponent,
 		DimensionsSectionComponent,
-		DimensionsComponent_1,
 		TypeApprovalSectionComponent,
 		ApprovalTypeComponent_1,
 		PsvBrakesComponent_1,
@@ -120,7 +115,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 	readonly sections = viewChildren(DynamicFormGroupComponent);
-	readonly dimensions = viewChild(DimensionsComponent);
 	readonly psvBrakes = viewChild(PsvBrakesComponent);
 	readonly trlBrakes = viewChild(TrlBrakesComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
@@ -330,10 +324,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	addCustomSectionsBasedOffFlag(): CustomFormGroup[] {
 		const sections = [];
-		const dimensions = this.dimensions();
-		if (dimensions && !this.featureToggleService.isFeatureEnabled('FsDimensions') && dimensions?.form) {
-			sections.push(dimensions.form);
-		}
 		const approvalType = this.approvalType();
 		if (approvalType && !this.featureToggleService.isFeatureEnabled('FsApprovalType') && approvalType?.form) {
 			sections.push(approvalType.form);

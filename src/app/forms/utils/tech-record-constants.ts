@@ -4,13 +4,11 @@ import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval
 import { Audit } from '@forms/templates/general/audit.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
-import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
-import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
@@ -19,7 +17,6 @@ import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
 import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
 import { TrlBrakesTemplate } from '../templates/trl/trl-brakes.template';
-import { TrlDimensionsTemplate } from '../templates/trl/trl-dimensions.template';
 import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
 import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
 import { TrlWeight } from '../templates/trl/trl-weight.template';
@@ -33,6 +30,7 @@ const notesSection = { name: 'notesSection', label: 'Notes' } as FormNode;
 const bodySection = { name: 'bodySection', label: 'Body' } as FormNode;
 const documentsSection = { name: 'documentsSection', label: 'Documents' } as FormNode;
 const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
+const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -48,7 +46,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  8 */ bodySection,
 			/*  9 */ PsvWeightsTemplate,
 			/* 10 */ PsvTyresTemplate,
-			/* 11 */ PsvDimensionsTemplate,
+			/* 11 */ dimensionsSection,
 		],
 	],
 	[
@@ -63,7 +61,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  7 */ bodySection,
 			/*  8 */ HgvWeight,
 			/*  9 */ tyresTemplateHgv,
-			/* 10 */ HgvDimensionsTemplate,
+			/* 10 */ dimensionsSection,
 			/* 11 */ PlatesTemplate,
 			/* 12 */ adrSection,
 			/* 13 */ AdrCertificateTemplate,
@@ -84,7 +82,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 10 */ tyresTemplateTrl,
 			/* 11 */ TrlBrakesTemplate,
 			/* 12 */ TrlPurchasers,
-			/* 13 */ TrlDimensionsTemplate,
+			/* 13 */ dimensionsSection,
 			/* 14 */ PlatesTemplate,
 			/* 15 */ TrlAuthIntoServiceTemplate,
 			/* 16 */ ManufacturerTemplate,

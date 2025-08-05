@@ -5,7 +5,6 @@
   "FsApprovalType": true,
   "FsLastApplicant": true,
   "FsPlates": true,
-  "FsDimensions": true,
   "FsPurchasers": true,
   "FsDDA": true,
   "FsBrakes": true,

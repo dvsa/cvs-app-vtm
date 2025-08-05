@@ -4,8 +4,8 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i < middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
+          <app-accordion
+            [id]="section.name"
             [title]="section.label"
             [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
@@ -17,9 +17,9 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i >= middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
-            [title]="section.label" 
+          <app-accordion
+            [id]="section.name"
+            [title]="section.label"
             [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
@@ -77,17 +77,8 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New dimensions section-->
-            @if (featureToggleService.isFeatureEnabled('FsDimensions')) {
-              <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
-            } @else {
-              <app-dimensions
-                [techRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dimensions>
-            }
-            <!-- Old dimensions section-->
+            <!-- Dimensions section-->
+            <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
           }
         }
         @case ('documentsSection') {
@@ -301,8 +292,8 @@
         }
         @case ('reasonForCreationSection') {
           @if (featureToggleService.isFeatureEnabled('FsReasonForCreation')) {
-            <app-reason-for-creation-section 
-              [techRecord]="techRecordCalculated" 
+            <app-reason-for-creation-section
+              [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
             ></app-reason-for-creation-section>
           } @else {
