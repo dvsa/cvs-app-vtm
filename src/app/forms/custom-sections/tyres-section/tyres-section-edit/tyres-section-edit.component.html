@@ -11,155 +11,169 @@
       ></govuk-form-group-input>
     }
     <table class="govuk-table">
-      <!-- Title -->
       <caption class="govuk-table__caption govuk-table__caption--m">
         Tyre details @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-        <app-tag type="purple">plates</app-tag>
-      }
-    </caption>
-    <div class="govuk-table__caption govuk-table__caption--m">
-      @if (invalidAxles.length > 0) {
-        <app-field-warning-message [warningMessage]="' '">
-          <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
-          <p class="m-0">
-            GB Axles: Axle
-            @for (axle of invalidAxles; track axle; let i = $index; let isLast = $last) {
-              @if (invalidAxles.length > 1 && isLast) {
-                and
+          <app-tag type="purple">plates</app-tag>
+        }
+      </caption>
+      <div class="govuk-table__caption govuk-table__caption--m">
+        @if (invalidAxles.length > 0) {
+          <app-field-warning-message [warningMessage]="' '">
+            <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
+            <p class="m-0">
+              GB Axles: Axle
+              @for (axle of invalidAxles; track axle; let i = $index; let isLast = $last) {
+                @if (invalidAxles.length > 1 && isLast) {
+                  and
+                }
+                {{ axle }}@if (invalidAxles.length > 2 && i < (invalidAxles.length - 2)) {
+                  ,
+                }
               }
-              {{ axle }}@if (invalidAxles.length > 2 && i < (invalidAxles.length - 2)) {
-              ,
-            }
+            </p>
+          </app-field-warning-message>
+        }
+      </div>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-code-header">Code</th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-size-header">Size</th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-ply-header">Ply</th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-load-index-header">Load Index</th>
+          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+            <th scope="col" class="govuk-table__header" id="tyre-table-sr-header">SR</th>
           }
-        </p>
-      </app-field-warning-message>
+          <th scope="col" class="govuk-table__header" id="tyre-table-sd-header">S/D</th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-search-header"></th>
+          <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
+        </tr>
+      </thead>
+      
+      @if (parent.get('techRecord_axles')) {
+        <ng-container [formGroup]="parent">
+          <tbody class="govuk-table__body" formArrayName="techRecord_axles">
+            @for (axle of techRecordAxles.controls; track axle; let i = $index) {
+              <tr class="govuk-table__row" formGroupName="{{ i }}">
+                <th class="govuk-table__header" scope="row">T{{ axle.value.axleNumber }}</th>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="tyres_tyreCode-{{ i + 1 }}"
+                    type="number"
+                    formControlName="tyres_tyreCode"
+                    [width]="FormNodeWidth.XS"
+                    (blur)="getTyresRefData(i + 1)"
+                  ></govuk-form-group-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="tyres_tyreSize-{{ i + 1 }}"
+                    formControlName="tyres_tyreSize"
+                    [width]="FormNodeWidth.XXXL"
+                    (blur)="getTyresRefData(i + 1)"
+                  ></govuk-form-group-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="tyres_plyRating-{{ i + 1 }}"
+                    formControlName="tyres_plyRating"
+                    [width]="FormNodeWidth.XXS"
+                    (blur)="getTyresRefData(i + 1)"
+                  ></govuk-form-group-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="tyres_dataTrAxles-{{ i + 1 }}"
+                    type="number"
+                    formControlName="tyres_dataTrAxles"
+                    [width]="FormNodeWidth.XXS"
+                    (blur)="getTyresRefData(i + 1)"
+                  ></govuk-form-group-input>
+                </td>
+                @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+                  <td class="govuk-table__cell">
+                    <govuk-form-group-select
+                      id="tyres_speedCategorySymbol-{{ i + 1 }}"
+                      formControlName="tyres_speedCategorySymbol"
+                      [width]="FormNodeWidth.UNSET"
+                      [options]="SPEED_CATEGORY_SYMBOL_OPTIONS"
+                      (blur)="getTyresRefData(i + 1)"
+                    ></govuk-form-group-select>
+                  </td>
+                }
+                <td class="govuk-table__cell">
+                  <govuk-form-group-select
+                    id="tyres_fitmentCode-{{ i + 1 }}"
+                    formControlName="tyres_fitmentCode"
+                    [width]="FormNodeWidth.XS"
+                    [options]="FITMENT_CODE_OPTIONS"
+                    (blur)="getTyresRefData(i + 1)"
+                  ></govuk-form-group-select>
+                </td>
+                <td class="govuk-table__cell">
+                  <a class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
+                    Search
+                  </a>
+                </td>
+                <td class="govuk-table__cell">
+                  <a 
+                    class="axleButton" 
+                    id="tyres_remove-{{ i + 1 }}" 
+                    href="javascript:void(0)" 
+                    (click)="axlesService.removeAxle(parent, techRecord().techRecord_vehicleType, i)">
+                    Remove
+                  </a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </ng-container>
+      }
+
+      <tfoot>
+        <tr>
+          <td colspan="100%">
+            <a 
+              class="axleButton" 
+              href="javascript:void(0)" 
+              role="button" 
+              id="tyresAddAxle" 
+              (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)">
+              Add axle
+            </a>
+          </td>
+        </tr>
+        @if(parent.get('techRecord_axles')) {
+          <tr>
+            <td colspan="100%">
+              <p class="govuk-error-message" id="tyres-techRecord_axles-error">
+                <span class="govuk-visually-hidden">Error: </span>
+                <span>{{ (techRecordAxles.errors | keyvalue)?.[0]?.value }}</span>
+              </p>
+            </td>
+          </tr>
+        }
+      </tfoot>
+    </table>
+
+    @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
+      <govuk-form-group-select
+        label="Tyre use code"
+        formControlName="techRecord_tyreUseCode"
+        [width]="FormNodeWidth.UNSET"
+        [options]="HGV_TYRE_USE_CODE_OPTIONS"
+        [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+      ></govuk-form-group-select>
+    }
+
+    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      <govuk-form-group-select
+        label="Tyre use code"
+        formControlName="techRecord_tyreUseCode"
+        [width]="FormNodeWidth.UNSET"
+        [options]="TRL_TYRE_USE_CODE_OPTIONS"
+        [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+      ></govuk-form-group-select>
     }
   </div>
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header"></th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-code-header">Code</th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-size-header">Size</th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-ply-header">Ply</th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-load-index-header">Load Index</th>
-      @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-        <th scope="col" class="govuk-table__header" id="tyre-table-sr-header">SR</th>
-      }
-      <th scope="col" class="govuk-table__header" id="tyre-table-sd-header">S/D</th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-search-header"></th>
-      <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body" formArrayName="techRecord_axles">
-    @for (axle of techRecordAxles.controls; track axle; let i = $index) {
-      <tr class="govuk-table__row" formGroupName="{{ i }}">
-        <th class="govuk-table__header" scope="row">T{{ axle.value.axleNumber }}</th>
-        <!-- Tyre Code -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-input
-            id="tyres_tyreCode-{{ i + 1 }}"
-            type="number"
-            formControlName="tyres_tyreCode"
-            [width]="FormNodeWidth.XS"
-            (blur)="getTyresRefData(i + 1)"
-          ></govuk-form-group-input>
-        </td>
-        <!-- Tyre Size -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-input
-            id="tyres_tyreSize-{{ i + 1 }}"
-            formControlName="tyres_tyreSize"
-            [width]="FormNodeWidth.XXXL"
-            (blur)="getTyresRefData(i + 1)"
-          ></govuk-form-group-input>
-        </td>
-        <!-- Ply Rating -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-input
-            id="tyres_plyRating-{{ i + 1 }}"
-            formControlName="tyres_plyRating"
-            [width]="FormNodeWidth.XXS"
-            (blur)="getTyresRefData(i + 1)"
-          ></govuk-form-group-input>
-        </td>
-        <!-- Data Tr Axles -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-input
-            id="tyres_dataTrAxles-{{ i + 1 }}"
-            type="number"
-            formControlName="tyres_dataTrAxles"
-            [width]="FormNodeWidth.XXS"
-            (blur)="getTyresRefData(i + 1)"
-          ></govuk-form-group-input>
-        </td>
-        <!-- Speed Category Symbol (PSV Only)-->
-        @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-select
-              id="tyres_speedCategorySymbol-{{ i + 1 }}"
-              formControlName="tyres_speedCategorySymbol"
-              [width]="FormNodeWidth.UNSET"
-              [options]="SPEED_CATEGORY_SYMBOL_OPTIONS"
-              (blur)="getTyresRefData(i + 1)"
-            ></govuk-form-group-select>
-          </td>
-        }
-        <!-- Fitment Code -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-select
-            id="tyres_fitmentCode-{{ i + 1 }}"
-            formControlName="tyres_fitmentCode"
-            [width]="FormNodeWidth.XS"
-            [options]="FITMENT_CODE_OPTIONS"
-            (blur)="getTyresRefData(i + 1)"
-          ></govuk-form-group-select>
-        </td>
-        <td class="govuk-table__cell">
-          <a class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
-            Search
-          </a>
-        </td>
-        <td class="govuk-table__cell">
-          <a class="axleButton" id="tyres_remove-{{ i + 1 }}" href="javascript:void(0)" (click)="removeAxle(i)">Remove</a>
-        </td>
-      </tr>
-    }
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="100%">
-        <a class="axleButton" href="javascript:void(0)" role="button" id="tyresAddAxle" (click)="addAxle()">Add axle</a>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="100%">
-        <p class="govuk-error-message" id="techRecord_axles-error">
-          <span class="govuk-visually-hidden">Error: </span>
-          <span>{{ (techRecordAxles.errors | keyvalue)?.[0]?.value }}</span>
-        </p>
-      </td>
-    </tr>
-  </tfoot>
-</table>
-<!-- Tyre use code (HGV) -->
-@if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
-  <govuk-form-group-select
-    label="Tyre use code"
-    formControlName="techRecord_tyreUseCode"
-    [width]="FormNodeWidth.UNSET"
-    [options]="HGV_TYRE_USE_CODE_OPTIONS"
-    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
-  ></govuk-form-group-select>
-}
-<!-- Tyre use code (TRL) -->
-@if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
-  <govuk-form-group-select
-    label="Tyre use code"
-    formControlName="techRecord_tyreUseCode"
-    [width]="FormNodeWidth.UNSET"
-    [options]="TRL_TYRE_USE_CODE_OPTIONS"
-    [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
-  ></govuk-form-group-select>
-}
-</div>
 }

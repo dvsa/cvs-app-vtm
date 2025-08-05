@@ -21,7 +21,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -77,6 +76,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { addSectionState, selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
+
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -171,10 +171,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 						return;
 					}
 
-					let techRecord = cloneDeep(record);
-					techRecord = this.normaliseAxles(record);
-
-					return techRecord;
+					return cloneDeep(record);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -223,30 +220,39 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			this.handleFormChanges(this.form.getRawValue());
+			this.techRecordCalculated = { ...this.techRecordCalculated, ...this.form.getRawValue() };
+			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});
 
 		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
-	}
 
-	// TODO: remove hacky solution
-	handleFormChanges(changes: any) {
-		let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
-		if (
-			techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.TRL
-		) {
-			const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
-			techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
-			techRecord.techRecord_axles = axles;
-			this.techRecordCalculated = techRecord;
-			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
-			return;
-		}
+		this.technicalRecordService.techRecord$
+			.pipe(
+				takeUntil(this.destroy$),
+				skipWhile((techRecord) => !techRecord),
+				take(1)
+			)
+			.subscribe((techRecord) => {
+				if (this.isEditing && techRecord) {
+					if (
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL
+					) {
+						this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
 
-		this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
-		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+						if (
+							techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+							techRecord.techRecord_vehicleType === VehicleTypes.HGV
+						) {
+							this.form.addControl(
+								'techRecord_dimensions_axleSpacing',
+								this.axlesService.generateAxleSpacingsForm(techRecord)
+							);
+						}
+					}
+				}
+			});
 	}
 
 	ngOnDestroy(): void {
@@ -397,22 +403,5 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		}
 
 		return [];
-	}
-
-	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
-		const type = record.techRecord_vehicleType;
-		const category = record.techRecord_euVehicleCategory;
-
-		if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
-			const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-				record.techRecord_axles ?? [],
-				record.techRecord_dimensions_axleSpacing
-			);
-
-			record.techRecord_dimensions_axleSpacing = axleSpacing;
-			record.techRecord_axles = axles;
-		}
-
-		return record;
 	}
 }

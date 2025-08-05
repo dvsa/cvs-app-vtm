@@ -1,8 +1,74 @@
-<form>
-  <h1 class="govuk-heading-l title">New vehicle information (v2)</h1>
+<form [formGroup]="form">
+  <h1 class="govuk-heading-l title">Create a new technical record</h1>
+
+  <!-- VIN -->
+  <govuk-form-group-input
+    [id]="'input-vin'"
+    formControlName="vin"
+    label="Vehicle Identification number (VIN)"
+    hint="VIN should usually be 17 characters long."
+    appToUppercase
+    appNoSpace
+    appTrimWhitespace
+    [width]="30" 
+    (ngModelChange)="ngOnChanges()"
+  ></govuk-form-group-input>
+
+  <!-- Generate a C/T/Z number on submission of the new record -->
+  <h2 class="govuk-heading-m">Generate C, T or Z number</h2>
+
+  <govuk-form-group-checkbox
+    [id]="'generate-c-or-z-num'"
+    [value]="true"
+    label="Generate a C/T/Z number on submission of the new record"
+    formControlName="generateID"
+    (valueChange)="toggleVrmInput($any($event))"
+  ></govuk-form-group-checkbox>
+
+  <!-- VRM / Trailer ID -->
+  @if (!form.controls.generateID.value) {
+    <govuk-form-group-input
+      [id]="'input-vrm-or-trailer-id'"
+      formControlName="vrmTrm"
+      label="VRM / Trailer ID"
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      [width]="30"
+      (ngModelChange)="ngOnChanges()"
+    ></govuk-form-group-input>
+  }
+
+  <!-- Vehicle status -->
+  <govuk-form-group-radio
+    [id]="'change-vehicle-status-select'"
+    label="Vehicle status"
+    formControlName="vehicleStatus"
+    orientation="horizontal"
+    [options]="[
+      { value: StatusCodes.CURRENT, label: 'Current' },
+      { value: StatusCodes.PROVISIONAL, label: 'Provisional' }
+    ]"
+  ></govuk-form-group-radio>
+
+  <!-- Vehicle type -->
+  <govuk-form-group-radio
+    [id]="'change-vehicle-type-select'"
+    label="Vehicle type"
+    formControlName="vehicleType"
+    [options]="[
+      { value: VehicleTypes.HGV, label: 'Heavy Goods Vehicle (HGV)' },
+      { value: VehicleTypes.TRL, label: 'Trailer (TRL)' },
+      { value: VehicleTypes.PSV, label: 'Public Service Vehicle (PSV)' },
+      { value: VehicleTypes.LGV, label: 'Light Goods Vehicle (LGV)' },
+      { value: VehicleTypes.CAR, label: 'Car' },
+      { value: VehicleTypes.MOTORCYCLE, label: 'Motorcycle' },
+      { value: VehicleTypes.SMALL_TRL, label: 'Small Trailer (Small TRL)' }
+    ]"
+  ></govuk-form-group-radio>
 
   <app-button-group>
-    <app-button id="submit">Continue</app-button>
-    <app-button design="link" id="cancel">Cancel</app-button>
+    <app-button id="submit" (clicked)="handleSubmit()">Continue</app-button>
+    <app-button design="link" id="cancel" (clicked)="navigateBack()">Cancel</app-button>
   </app-button-group>
 </form>

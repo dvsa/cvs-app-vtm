@@ -15,6 +15,10 @@ export class EditBaseComponent {
 	technicalRecordService = inject(TechnicalRecordService);
 	commonValidators = inject(CommonValidatorsService);
 
+	get parent() {
+		return this.controlContainer.control as FormGroup;
+	}
+
 	init(form: FormGroup) {
 		const parent = this.controlContainer.control;
 		if (parent instanceof FormGroup) {

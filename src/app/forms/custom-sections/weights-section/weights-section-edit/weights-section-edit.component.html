@@ -1,7 +1,6 @@
 @if (techRecord(); as tr) {
   <div [formGroup]="form">
     <table class="govuk-table">
-      <!-- Title -->
       <caption class="govuk-table__caption govuk-table__caption--m">
         Axle weights (kg) @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
         <app-tag type="purple">plates</app-tag>
@@ -29,226 +28,244 @@
         <th scope="col" class="govuk-table__header" id="weights-table-remove-header"></th>
       </tr>
     </thead>
-    <tbody class="govuk-table__body">
-      <ng-container formArrayName="techRecord_axles">
-        @for (axle of techRecordAxles.controls; track axle; let i = $index) {
-          <tr class="govuk-table__row" formGroupName="{{ i }}">
-            <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
-            <!-- GB (HGV/TRL only) -->
-            @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+    @if (parent.get('techRecord_axles')) {
+      <tbody class="govuk-table__body" [formGroup]="parent">
+        <ng-container formArrayName="techRecord_axles">
+          @for (axle of techRecordAxles.controls; track axle; let i = $index) {
+            <tr class="govuk-table__row" formGroupName="{{ i }}">
+              <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
+        
+              @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="weights_gbWeight-{{ i + 1 }}"
+                    type="number"
+                    formControlName="weights_gbWeight"
+                  ></govuk-form-group-input>
+                </td>
+              }
+
+              @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="weights_eecWeight-{{ i + 1 }}"
+                    type="number"
+                    formControlName="weights_eecWeight"
+                  ></govuk-form-group-input>
+                </td>
+              }
+      
+              @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="weights_kerbWeight-{{ i + 1 }}"
+                    type="number"
+                    formControlName="weights_kerbWeight"
+                  ></govuk-form-group-input>
+                </td>
+              }
+          
+              @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="weights_ladenWeight-{{ i + 1 }}"
+                    type="number"
+                    formControlName="weights_ladenWeight"
+                  ></govuk-form-group-input>
+                </td>
+              }
+    
+              @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+                <td class="govuk-table__cell">
+                  <govuk-form-group-input
+                    id="weights_gbWeight-{{ i + 1 }}"
+                    type="number"
+                    formControlName="weights_gbWeight"
+                  ></govuk-form-group-input>
+                </td>
+              }
+          
               <td class="govuk-table__cell">
                 <govuk-form-group-input
-                  id="weights_gbWeight-{{ i + 1 }}"
+                  id="weights_designWeight-{{ i + 1 }}"
                   type="number"
-                  formControlName="weights_gbWeight"
+                  formControlName="weights_designWeight"
                 ></govuk-form-group-input>
               </td>
-            }
-            <!-- EEC (HGV/TRL only) -->
-            @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
               <td class="govuk-table__cell">
-                <govuk-form-group-input
-                  id="weights_eecWeight-{{ i + 1 }}"
-                  type="number"
-                  formControlName="weights_eecWeight"
-                ></govuk-form-group-input>
+                <a 
+                  class="axleButton" 
+                  id="weights_remove-{{ i + 1 }}" 
+                  href="javascript:void(0)" 
+                  (click)="axlesService.removeAxle(parent, techRecord().techRecord_vehicleType, i)">
+                  Remove
+                </a>
               </td>
-            }
-            <!-- Kerb (PSV only) -->
-            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-              <td class="govuk-table__cell">
-                <govuk-form-group-input
-                  id="weights_kerbWeight-{{ i + 1 }}"
-                  type="number"
-                  formControlName="weights_kerbWeight"
-                ></govuk-form-group-input>
-              </td>
-            }
-            <!-- Laden (PSV only) -->
-            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-              <td class="govuk-table__cell">
-                <govuk-form-group-input
-                  id="weights_ladenWeight-{{ i + 1 }}"
-                  type="number"
-                  formControlName="weights_ladenWeight"
-                ></govuk-form-group-input>
-              </td>
-            }
-            <!-- GB max (PSV only) -->
-            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-              <td class="govuk-table__cell">
-                <govuk-form-group-input
-                  id="weights_gbWeight-{{ i + 1 }}"
-                  type="number"
-                  formControlName="weights_gbWeight"
-                ></govuk-form-group-input>
-              </td>
-            }
-            <!-- Design -->
+            </tr>
+          }
+        </ng-container>
+
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="row">Gross</th>
+        
+          @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
             <td class="govuk-table__cell">
               <govuk-form-group-input
-                id="weights_designWeight-{{ i + 1 }}"
                 type="number"
-                formControlName="weights_designWeight"
+                formControlName="techRecord_grossGbWeight"
               ></govuk-form-group-input>
             </td>
+          }
+  
+          @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
             <td class="govuk-table__cell">
-              <a class="axleButton" id="weights_remove-{{ i + 1 }}" href="javascript:void(0)" (click)="removeAxle(i)">Remove</a>
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_grossEecWeight"
+              ></govuk-form-group-input>
             </td>
+          }
+
+          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_grossKerbWeight"
+              ></govuk-form-group-input>
+            </td>
+          }
+
+          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_grossLadenWeight"
+              ></govuk-form-group-input>
+            </td>
+          }
+      
+          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_grossGbWeight"
+              ></govuk-form-group-input>
+            </td>
+          }
+        
+          <td class="govuk-table__cell">
+            <govuk-form-group-input
+              type="number"
+              formControlName="techRecord_grossDesignWeight"
+            ></govuk-form-group-input>
+          </td>
+          <td class="govuk-table__cell"></td>
+        </tr>
+
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV) {
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="row">Train</th>
+
+            @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+              <td class="govuk-table__cell">
+                <govuk-form-group-input
+                  type="number"
+                  formControlName="techRecord_trainGbWeight"
+                ></govuk-form-group-input>
+              </td>
+            }
+          
+            @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+              <td class="govuk-table__cell">
+                <govuk-form-group-input
+                  type="number"
+                  formControlName="techRecord_trainEecWeight"
+                ></govuk-form-group-input>
+              </td>
+            }
+
+            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+              <td class="govuk-table__cell"></td>
+            }
+          
+            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+              <td class="govuk-table__cell"></td>
+            }
+
+            @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+              <td class="govuk-table__cell">
+                <govuk-form-group-input
+                  type="number"
+                  formControlName="techRecord_maxTrainGbWeight"
+                ></govuk-form-group-input>
+              </td>
+            }
+      
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_trainDesignWeight"
+              ></govuk-form-group-input>
+            </td>
+            <td class="govuk-table__cell"></td>
           </tr>
         }
-      </ng-container>
-      <!-- Gross -->
-      <tr class="govuk-table__row">
-        <th class="govuk-table__header" scope="row">Gross</th>
-        <!-- Gross GB (HGV/TRL only) -->
-        @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_grossGbWeight"
-            ></govuk-form-group-input>
-          </td>
-        }
-        <!-- Gross EEC (HGV/TRL only) -->
-        @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_grossEecWeight"
-            ></govuk-form-group-input>
-          </td>
-        }
-        <!-- Gross Kerb (PSV only) -->
-        @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_grossKerbWeight"
-            ></govuk-form-group-input>
-          </td>
-        }
-        <!-- Gross Laden (PSV only) -->
-        @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_grossLadenWeight"
-            ></govuk-form-group-input>
-          </td>
-        }
-        <!-- Gross GB max (PSV only) -->
-        @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_grossGbWeight"
-            ></govuk-form-group-input>
-          </td>
-        }
-        <!-- Gross Design -->
-        <td class="govuk-table__cell">
-          <govuk-form-group-input
-            type="number"
-            formControlName="techRecord_grossDesignWeight"
-          ></govuk-form-group-input>
-        </td>
-        <td class="govuk-table__cell"></td>
-      </tr>
-      <!-- Train (HGV/PSV only) -->
-      @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV) {
-        <tr class="govuk-table__row">
-          <th class="govuk-table__header" scope="row">Train</th>
-          <!-- Train GB (HGV/TRL only) -->
-          @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-            <td class="govuk-table__cell">
-              <govuk-form-group-input
-                type="number"
-                formControlName="techRecord_trainGbWeight"
-              ></govuk-form-group-input>
-            </td>
-          }
-          <!-- Train EEC (HGV/TRL only) -->
-          @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-            <td class="govuk-table__cell">
-              <govuk-form-group-input
-                type="number"
-                formControlName="techRecord_trainEecWeight"
-              ></govuk-form-group-input>
-            </td>
-          }
-          <!-- Train Kerb (PSV only, empty cell) -->
-          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-            <td class="govuk-table__cell"></td>
-          }
-          <!-- Train Laden (PSV only, empty cell) -->
-          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-            <td class="govuk-table__cell"></td>
-          }
-          <!-- Train GB max (PSV only) -->
-          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+    
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="row">Max train</th>
+    
             <td class="govuk-table__cell">
               <govuk-form-group-input
                 type="number"
                 formControlName="techRecord_maxTrainGbWeight"
               ></govuk-form-group-input>
             </td>
-          }
-          <!-- Train Design -->
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_trainDesignWeight"
-            ></govuk-form-group-input>
-          </td>
-          <td class="govuk-table__cell"></td>
-        </tr>
-      }
-      <!-- Max train (HGV only) -->
-      @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
-        <tr class="govuk-table__row">
-          <th class="govuk-table__header" scope="row">Max train</th>
-          <!-- Train GB -->
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_maxTrainGbWeight"
-            ></govuk-form-group-input>
-          </td>
-          <!-- Train EEC -->
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_maxTrainEecWeight"
-            ></govuk-form-group-input>
-          </td>
-          <!-- Train Design -->
-          <td class="govuk-table__cell">
-            <govuk-form-group-input
-              type="number"
-              formControlName="techRecord_maxTrainDesignWeight"
-            ></govuk-form-group-input>
-          </td>
-          <td class="govuk-table__cell"></td>
-        </tr>
-      }
-    </tbody>
+      
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_maxTrainEecWeight"
+              ></govuk-form-group-input>
+            </td>
+
+            <td class="govuk-table__cell">
+              <govuk-form-group-input
+                type="number"
+                formControlName="techRecord_maxTrainDesignWeight"
+              ></govuk-form-group-input>
+            </td>
+            <td class="govuk-table__cell"></td>
+          </tr>
+        }
+      </tbody>
+    }
     <tfoot>
       <tr>
         <td colspan="100%">
-          <a class="axleButton" href="javascript:void(0)" role="button" id="weightsAddAxle" (click)="addAxle()">Add axle</a>
+          <a 
+            class="axleButton" 
+            href="javascript:void(0)" 
+            role="button" 
+            id="weightsAddAxle" 
+            (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)">
+            Add axle
+          </a>
         </td>
       </tr>
-      <tr>
-        <td colspan="100%">
-          <p class="govuk-error-message" id="techRecord_axles-error">
-            <span class="govuk-visually-hidden">Error: </span>
-            <span>{{ (techRecordAxles.errors | keyvalue)?.[0]?.value }}</span>
-          </p>
-        </td>
-      </tr>
+      @if (parent.get('techRecord_axles')) {
+        <tr>
+          <td colspan="100%">
+            <p class="govuk-error-message" id="weights-techRecord_axles-error">
+              <span class="govuk-visually-hidden">Error: </span>
+              <span>{{ (techRecordAxles.errors | keyvalue)?.[0]?.value }}</span>
+            </p>
+          </td>
+        </tr>
+      }
     </tfoot>
   </table>
+
   @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
     <govuk-form-group-input
       class="govuk-!-margin-bottom-7"
@@ -259,5 +276,5 @@
       suffix="kg"
     ></govuk-form-group-input>
   }
-</div>
+  </div>
 }

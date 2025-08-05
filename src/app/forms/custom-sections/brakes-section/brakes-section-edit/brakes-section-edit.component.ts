@@ -13,11 +13,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Retarders, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { FormNodeEditTypes, FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { selectBrakeByCode } from '@store/reference-data';
-import { addAxle, removeAxle, updateBrakeForces, updateEditingTechRecord } from '@store/technical-records';
+import { updateBrakeForces, updateEditingTechRecord } from '@store/technical-records';
 import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
@@ -61,11 +61,7 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 		this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
 
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.prepopulateAxles();
-		this.checkAxleAdded();
-		this.checkAxleRemoved();
 		this.handleBrakeCodeChange();
-		this.handleAxleChanges();
 
 		// Attach all form controls to parent
 		this.init(this.form);
@@ -78,67 +74,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	prepopulateAxles() {
-		this.techRecord().techRecord_axles?.forEach((axle) => {
-			const form = this.getAxleForm();
-			form.patchValue(axle as any, { emitEvent: false });
-			this.axles.push(form, { emitEvent: false });
-		});
-	}
-
-	checkAxleAdded() {
-		this.actions
-			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord) {
-					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
-					const form = this.getAxleForm();
-					form.patchValue(axles[axles.length - 1], { emitEvent: false });
-					this.axles.push(form, { emitEvent: false });
-					this.axles.patchValue(axles, { emitEvent: false });
-				}
-			});
-	}
-
-	checkAxleRemoved() {
-		this.actions
-			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord) {
-					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
-					this.axles.removeAt(0, { emitEvent: false });
-					this.axles.patchValue(axles, { emitEvent: false });
-				}
-			});
-	}
-
-	getAxleForm() {
-		const techRecord = this.techRecord();
-		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) return this.addPsvAxleBrakesInformation();
-		return this.addTrlAxleBrakesInformation();
-	}
-
-	addTrlAxleBrakesInformation() {
-		return this.fb.group({
-			brakes_brakeActuator: this.fb.control<number | null>(null, [
-				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
-			]),
-			brakes_leverLength: this.fb.control<number | null>(null, [
-				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
-			]),
-			brakes_springBrakeParking: this.fb.control<boolean | null>(null, []),
-			parkingBrakeMrk: this.fb.control<boolean | null>(false, []),
-			axleNumber: this.fb.control<number | null>(null, []),
-		});
-	}
-
-	addPsvAxleBrakesInformation() {
-		return this.fb.group({
-			parkingBrakeMrk: this.fb.control<boolean | null>(false, []),
-			axleNumber: this.fb.control<number | null>(null, []),
-		});
 	}
 
 	getPSV(techRecord: TechRecordType<'trl' | 'psv'>) {
@@ -195,16 +130,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 			});
 	}
 
-	handleAxleChanges() {
-		const techRecord = this.techRecord();
-
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-			this.axles.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((axles) => {
-				this.formChange.emit({ techRecord_axles: axles });
-			});
-		}
-	}
-
 	get vehicleType(): VehicleTypes {
 		return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord());
 	}
@@ -259,7 +184,7 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 	}
 
 	get axles() {
-		return this.form.get('techRecord_axles') as FormArray;
+		return this.parent.get('techRecord_axles') as FormArray;
 	}
 
 	round(n: number): number {
