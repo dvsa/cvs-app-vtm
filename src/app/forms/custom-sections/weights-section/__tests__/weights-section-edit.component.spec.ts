@@ -35,9 +35,9 @@ describe('weightsSectionEditComponent', () => {
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
-		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>(
-			{}
-		);
+		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>({
+			techRecord_axles: new FormControl(),
+		});
 		const mockTechRecord = mockVehicleTechnicalRecord('psv');
 
 		await TestBed.configureTestingModule({
@@ -62,19 +62,24 @@ describe('weightsSectionEditComponent', () => {
 		componentRef.setInput('techRecord', mockTechRecord);
 		component.form.reset();
 		fixture.detectChanges();
+
+		jest.spyOn(component.techRecordAxles, 'get').mockReturnValue(new FormArray([]));
 	});
 
 	describe('ngOnInit', () => {
-		it('should call prepopulateAxles', () => {
-			const prepopulateAxlesSpy = jest.spyOn(component, 'prepopulateAxles');
-			component.ngOnInit();
-			expect(prepopulateAxlesSpy).toHaveBeenCalled();
-		});
-
 		it('should attach all form controls to parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnInit();
-			expect(parent.controls).toEqual(component.form.controls);
+			expect(Object.keys(parent.controls)).toEqual([
+				'techRecord_axles',
+				'techRecord_unladenWeight',
+				'techRecord_grossKerbWeight',
+				'techRecord_grossLadenWeight',
+				'techRecord_grossGbWeight',
+				'techRecord_grossDesignWeight',
+				'techRecord_maxTrainGbWeight',
+				'techRecord_trainDesignWeight',
+			]);
 		});
 	});
 
@@ -82,7 +87,8 @@ describe('weightsSectionEditComponent', () => {
 		it('should detach all form controls from parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnDestroy();
-			expect(Object.keys(parent.controls)).toHaveLength(0);
+			// should only have techRecord axles in parent form when this component is destroyed (as this is shared)
+			expect(Object.keys(parent.controls)).toEqual(['techRecord_axles']);
 		});
 
 		it('should clear all subscriptions', () => {
@@ -91,18 +97,6 @@ describe('weightsSectionEditComponent', () => {
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalledWith(true);
 			expect(completeSpy).toHaveBeenCalled();
-		});
-	});
-
-	describe('techRecordAxles', () => {
-		it('should return FormArray when techRecord_axles control exists', () => {
-			component.form.addControl('techRecord_axles', new FormArray([]));
-			expect(component.techRecordAxles).toBeInstanceOf(FormArray);
-		});
-
-		it('should return null when techRecord_axles control does not exist', () => {
-			component.form.removeControl('techRecord_axles');
-			expect(component.techRecordAxles).toBeNull();
 		});
 	});
 });

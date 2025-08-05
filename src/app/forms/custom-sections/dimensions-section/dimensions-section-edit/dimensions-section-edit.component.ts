@@ -3,10 +3,9 @@ import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { addAxle, removeAxle } from '@store/technical-records';
-import { ReplaySubject, takeUntil, withLatestFrom } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
@@ -32,14 +31,11 @@ export class DimensionsSectionEditComponent extends EditBaseComponent implements
 	form: FormGroup = this.fb.group({});
 
 	get axleSpacings(): FormArray<FormGroup> | undefined {
-		return this.form.get('techRecord_dimensions_axleSpacing') as FormArray;
+		return this.parent.get('techRecord_dimensions_axleSpacing') as FormArray;
 	}
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.prepopulateAxleSpacings();
-		this.checkAxleAdded();
-		this.checkAxleRemoved();
 
 		// Attach all form controls to parent
 		this.init(this.form);
@@ -52,51 +48,6 @@ export class DimensionsSectionEditComponent extends EditBaseComponent implements
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	prepopulateAxleSpacings() {
-		const techRecord = this.techRecord();
-		if (
-			techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-			techRecord.techRecord_vehicleType === VehicleTypes.TRL
-		) {
-			techRecord.techRecord_dimensions_axleSpacing?.forEach(() => {
-				const form = this.getAxleSpacingForm();
-				this.axleSpacings?.push(form, { emitEvent: false });
-			});
-		}
-	}
-
-	checkAxleAdded() {
-		this.actions
-			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord && (techRecord.techRecord_noOfAxles || 0) >= 2) {
-					const axleSpacings = (techRecord as TechRecordType<'hgv' | 'trl'>).techRecord_dimensions_axleSpacing || [];
-					this.axleSpacings?.push(this.getAxleSpacingForm(), { emitEvent: false });
-					this.axleSpacings?.patchValue(axleSpacings, { emitEvent: false });
-				}
-			});
-	}
-
-	checkAxleRemoved() {
-		this.actions
-			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord) {
-					const axleSpacings = (techRecord as TechRecordType<'hgv' | 'trl'>).techRecord_dimensions_axleSpacing || [];
-					this.axleSpacings?.removeAt(0, { emitEvent: false });
-					this.axleSpacings?.patchValue(axleSpacings, { emitEvent: false });
-				}
-			});
-	}
-
-	getAxleSpacingForm() {
-		return this.fb.group({
-			value: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Axle spacing must be less than 99999 mm'),
-			]),
-		});
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -120,7 +71,6 @@ export class DimensionsSectionEditComponent extends EditBaseComponent implements
 			techRecord_dimensions_width: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Width must be less than or equal to 99999'),
 			]),
-			techRecord_dimensions_axleSpacing: this.fb.array([]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
 			]),
@@ -164,7 +114,6 @@ export class DimensionsSectionEditComponent extends EditBaseComponent implements
 			techRecord_dimensions_width: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Width must be less than or equal to 99999'),
 			]),
-			techRecord_dimensions_axleSpacing: this.fb.array([]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
 			]),

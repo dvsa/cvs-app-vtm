@@ -118,7 +118,7 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(255, 'Email address must be less than or equal to 255 characters'),
 				this.commonValidators.pattern(
 					"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
-					'Email address Enter an email address in the correct format, like name@example.com'
+					'Enter an email address in the correct format, like name@example.com'
 				),
 			]),
 			techRecord_purchaserDetails_faxNumber: this.fb.control(null, [

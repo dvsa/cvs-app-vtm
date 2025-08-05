@@ -10,36 +10,38 @@
             <th scope="col" class="govuk-table__header">Spring brake parking</th>
           </tr>
         </thead>
-        <tbody class="govuk-table__body">
-          <ng-container formArrayName="techRecord_axles">
-            @for(axle of axles.controls; track axle; let i = $index) {
-              <tr class="govuk-table__row" formGroupName="{{ i }}">
-                <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
-                <td class="govuk-table__cell">
-                  <govuk-form-group-input
-                  id="brakes_brakeActuator-{{ i + 1 }}"
-                  type="number"
-                  formControlName="brakes_brakeActuator"
-                  ></govuk-form-group-input>
-                </td>
-                <td class="govuk-table__cell">
-                  <govuk-form-group-input
-                  id="brakes_leverLength-{{ i + 1 }}"
-                  type="number"
-                  formControlName="brakes_leverLength"
-                  ></govuk-form-group-input>
-                </td>
-                <td class="govuk-table__cell">
-                  <govuk-form-group-select
-                  id="brakes_springBrakeParking-{{ i + 1 }}"
-                  formControlName="brakes_springBrakeParking"
-                  [options]="booleanOptions"
-                  ></govuk-form-group-select>
-                </td>
-              </tr>
-            }
-          </ng-container>
-        </tbody>
+        @if(parent.get('techRecord_axles')) {
+          <tbody class="govuk-table__body" [formGroup]="parent">
+            <ng-container formArrayName="techRecord_axles">
+              @for(axle of axles.controls; track axle; let i = $index) {
+                <tr class="govuk-table__row" formGroupName="{{ i }}">
+                  <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
+                  <td class="govuk-table__cell">
+                    <govuk-form-group-input
+                    id="brakes_brakeActuator-{{ i + 1 }}"
+                    type="number"
+                    formControlName="brakes_brakeActuator"
+                    ></govuk-form-group-input>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <govuk-form-group-input
+                    id="brakes_leverLength-{{ i + 1 }}"
+                    type="number"
+                    formControlName="brakes_leverLength"
+                    ></govuk-form-group-input>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <govuk-form-group-select
+                    id="brakes_springBrakeParking-{{ i + 1 }}"
+                    formControlName="brakes_springBrakeParking"
+                    [options]="booleanOptions"
+                    ></govuk-form-group-select>
+                  </td>
+                </tr>
+              }
+            </ng-container>
+          </tbody>
+        }
       </table>
 
       <div class="radio-buttons">
@@ -143,22 +145,23 @@
       </table>
     }
 
-    <div class="checkboxes">
-      <label class="govuk-label govuk-label--m" for="parking-brake">Parking brake</label>
-
-      <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
-
-        @for (axle of axles.controls; track axle; let i = $index) {
-          <ng-container formGroupName="{{ i }}">
-            <govuk-form-group-checkbox
-              formControlName="parkingBrakeMrk"
-              id="parkingBrakeMrk-{{ i + 1 }}-checkbox"
-              [value]="true"
-              label="Axle {{ i + 1 }}"
-            ></govuk-form-group-checkbox>
-          </ng-container>
-        }
+    @if (parent.get('techRecord_axles')) {
+      <div class="checkboxes" [formGroup]="parent">
+        <label class="govuk-label govuk-label--m" for="parking-brake">Parking brake</label>
+  
+        <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
+          @for (axle of axles.controls; track axle; let i = $index) {
+            <ng-container formGroupName="{{ i }}">
+              <govuk-form-group-checkbox
+                formControlName="parkingBrakeMrk"
+                id="parkingBrakeMrk-{{ i + 1 }}-checkbox"
+                [value]="true"
+                label="Axle {{ i + 1 }}"
+              ></govuk-form-group-checkbox>
+            </ng-container>
+          }
+        </div>
       </div>
-    </div>
+    }
   </div>
 }

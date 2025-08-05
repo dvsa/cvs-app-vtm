@@ -15,7 +15,6 @@ import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
-	addAxle,
 	addSectionState,
 	archiveTechRecord,
 	archiveTechRecordFailure,
@@ -29,7 +28,6 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
-	removeAxle,
 	removeSectionState,
 	updateADRAdditionalExaminerNotes,
 	updateBody,
@@ -457,89 +455,6 @@ describe('Vehicle Technical Record Reducer', () => {
 				expect(updatedTechRecord?.techRecord_bodyMake).toBe(expectedData.psvBodyMake);
 				expect(updatedTechRecord?.techRecord_chassisMake).toBe(expectedData.psvChassisMake);
 				expect(updatedTechRecord?.techRecord_chassisModel).toBe(expectedData.psvChassisModel);
-			});
-		});
-
-		describe('addAxle', () => {
-			describe('it should add an axle', () => {
-				it('with the axles property defined', () => {
-					const techRecord = initialState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-					expect(techRecord?.techRecord_noOfAxles).toBe(2);
-					expect(techRecord?.techRecord_axles?.length).toBe(3);
-
-					const newState = vehicleTechRecordReducer(initialState, addAxle());
-
-					expect(newState).not.toBe(initialState);
-					expect(newState).not.toEqual(initialState);
-
-					const updatedTechRecord = newState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-					expect(updatedTechRecord?.techRecord_noOfAxles).toBe(4);
-					expect(updatedTechRecord?.techRecord_axles?.length).toBe(4);
-
-					const newAxleField = updatedTechRecord?.techRecord_axles ?? [];
-
-					expect(newAxleField[3].tyres_dataTrAxles).toBeNull();
-					expect(newAxleField[3].tyres_fitmentCode).toBeNull();
-					expect(newAxleField[3].tyres_plyRating).toBeNull();
-					expect(newAxleField[3].tyres_speedCategorySymbol).toBeNull();
-					expect(newAxleField[3].tyres_tyreCode).toBeNull();
-					expect(newAxleField[3].tyres_tyreSize).toBeNull();
-
-					expect(newAxleField[3].weights_designWeight).toBeDefined();
-					expect(newAxleField[3].weights_gbWeight).toBeDefined();
-					expect(newAxleField[3].weights_kerbWeight).toBeDefined();
-					expect(newAxleField[3].weights_ladenWeight).toBeDefined();
-					expect(updatedTechRecord?.techRecord_axles?.pop()?.axleNumber).toBe(4);
-				});
-
-				it('without the axles property defined', () => {
-					const techRecord = initialState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-					delete techRecord?.techRecord_axles;
-					techRecord.techRecord_noOfAxles = 0;
-					expect(techRecord?.techRecord_noOfAxles).toBe(0);
-
-					const newState = vehicleTechRecordReducer(initialState, addAxle());
-
-					expect(newState).not.toBe(initialState);
-					expect(newState).not.toEqual(initialState);
-
-					const updatedTechRecord = newState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-					expect(updatedTechRecord?.techRecord_noOfAxles).toBe(1);
-					expect(updatedTechRecord?.techRecord_axles?.length).toBe(1);
-
-					const newAxleField = updatedTechRecord?.techRecord_axles || [];
-
-					expect(newAxleField[0].tyres_dataTrAxles).toBeNull();
-					expect(newAxleField[0].tyres_fitmentCode).toBeNull();
-					expect(newAxleField[0].tyres_plyRating).toBeNull();
-					expect(newAxleField[0].tyres_speedCategorySymbol).toBeNull();
-					expect(newAxleField[0].tyres_tyreCode).toBeNull();
-					expect(newAxleField[0].tyres_tyreSize).toBeNull();
-
-					expect(newAxleField[0].weights_designWeight).toBeDefined();
-					expect(newAxleField[0].weights_gbWeight).toBeDefined();
-					expect(newAxleField[0].weights_kerbWeight).toBeDefined();
-					expect(newAxleField[0].weights_ladenWeight).toBeDefined();
-					expect(updatedTechRecord?.techRecord_axles?.pop()?.axleNumber).toBe(1);
-				});
-			});
-		});
-
-		describe('removeAxle', () => {
-			it('should remove specified axle', () => {
-				const techRecord = initialState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-				expect(techRecord?.techRecord_noOfAxles).toBe(2);
-				expect(techRecord?.techRecord_axles?.length).toBe(3);
-
-				const newState = vehicleTechRecordReducer(initialState, removeAxle({ index: 0 }));
-
-				expect(newState).not.toBe(initialState);
-				expect(newState).not.toEqual(initialState);
-
-				const updatedTechRecord = newState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>;
-				expect(updatedTechRecord?.techRecord_noOfAxles).toBe(2);
-				expect(updatedTechRecord?.techRecord_axles?.length).toBe(2);
-				expect(updatedTechRecord?.techRecord_axles?.pop()?.axleNumber).toBe(2);
 			});
 		});
 		describe('updateScrollPosition', () => {

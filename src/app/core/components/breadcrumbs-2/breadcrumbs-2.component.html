@@ -1,0 +1,35 @@
+@if (breadcrumbs$ | async; as breadcrumbs) {
+  @if (breadcrumbs.length) {
+    <div class="govuk-breadcrumbs">
+      <ol class="govuk-breadcrumbs__list">
+        @if (!showBackButton) {
+          <li class="govuk-breadcrumbs__list-item">
+            <a class="govuk-breadcrumbs__link" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
+          </li>
+        }
+        @for (breadcrumb of breadcrumbs; track indexOfLink; let last = $last; let indexOfLink = $index) {
+          <li class="govuk-breadcrumbs__list-item">
+            @if (showBackButton) {
+              <a routerLink=".." class="govuk-back-link">Back</a>
+            }
+            @else {
+              @if (!last) {
+                <a
+                  [id]="'breadcrumb-link-' + indexOfLink"
+                  class="govuk-breadcrumbs__link"
+                  [routerLink]="breadcrumb.path"
+                  [queryParamsHandling]="breadcrumb.preserveQueryParams ? 'preserve' : ''"
+                >{{ breadcrumb.label }}</a
+                >
+              } @else {
+                <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current"
+                   id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
+              }
+            }
+          </li>
+        }
+      </ol>
+    </div>
+  }
+}
+

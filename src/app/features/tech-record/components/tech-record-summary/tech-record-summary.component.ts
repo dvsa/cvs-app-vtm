@@ -21,7 +21,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordType as TechRecordVerbVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -46,10 +45,6 @@ import {
 import { DocumentsSectionComponent } from '@forms/custom-sections/documents-section/documents-section.component';
 import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
 import { LettersSectionComponent } from '@forms/custom-sections/letters-section/letters-section.component';
-import {
-	LettersComponent,
-	LettersComponent as LettersComponent_1,
-} from '@forms/custom-sections/letters/letters.component';
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
 import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
@@ -81,6 +76,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { addSectionState, selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
+
 @Component({
 	selector: 'app-tech-record-summary',
 	templateUrl: './tech-record-summary.component.html',
@@ -105,7 +101,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		TrlBrakesComponent_1,
 		TyresSectionComponent,
 		WeightsSectionComponent,
-		LettersComponent_1,
 		PlatesSectionComponent,
 		PlatesComponent,
 		AdrSectionComponent,
@@ -128,7 +123,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	readonly dimensions = viewChild(DimensionsComponent);
 	readonly psvBrakes = viewChild(PsvBrakesComponent);
 	readonly trlBrakes = viewChild(TrlBrakesComponent);
-	readonly letters = viewChild(LettersComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
 
 	readonly isFormDirty = output<boolean>();
@@ -177,10 +171,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 						return;
 					}
 
-					let techRecord = cloneDeep(record);
-					techRecord = this.normaliseAxles(record);
-
-					return techRecord;
+					return cloneDeep(record);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -229,30 +220,39 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			this.handleFormChanges(this.form.getRawValue());
+			this.techRecordCalculated = { ...this.techRecordCalculated, ...this.form.getRawValue() };
+			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
 		});
 
 		this.store.dispatch(addSectionState({ section: 'reasonForCreationSection' }));
-	}
 
-	// TODO: remove hacky solution
-	handleFormChanges(changes: any) {
-		let techRecord = this.techRecordCalculated as TechRecordType<'put'>;
-		if (
-			techRecord?.techRecord_vehicleType === VehicleTypes.PSV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
-			techRecord?.techRecord_vehicleType === VehicleTypes.TRL
-		) {
-			const axles = mergeWith(cloneDeep(techRecord.techRecord_axles || []), changes.techRecord_axles || []);
-			techRecord = { ...techRecord, ...changes } as TechRecordVerbVehicleType<'psv' | 'hgv' | 'trl', 'put'>;
-			techRecord.techRecord_axles = axles;
-			this.techRecordCalculated = techRecord;
-			this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
-			return;
-		}
+		this.technicalRecordService.techRecord$
+			.pipe(
+				takeUntil(this.destroy$),
+				skipWhile((techRecord) => !techRecord),
+				take(1)
+			)
+			.subscribe((techRecord) => {
+				if (this.isEditing && techRecord) {
+					if (
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL
+					) {
+						this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
 
-		this.techRecordCalculated = { ...this.techRecordCalculated, ...changes };
-		this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
+						if (
+							techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+							techRecord.techRecord_vehicleType === VehicleTypes.HGV
+						) {
+							this.form.addControl(
+								'techRecord_dimensions_axleSpacing',
+								this.axlesService.generateAxleSpacingsForm(techRecord)
+							);
+						}
+					}
+				}
+			});
 	}
 
 	ngOnDestroy(): void {
@@ -307,7 +307,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
 		const commonCustomSections = this.addCustomSectionsBasedOffFlag();
 		const trlBrakes = this.trlBrakes();
-		const letters = this.letters();
 		const psvBrakes = this.psvBrakes();
 
 		switch (this.vehicleType) {
@@ -322,7 +321,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 			case VehicleTypes.TRL: {
 				const arr = [...commonCustomSections];
 				if (trlBrakes?.form) arr.push(trlBrakes.form);
-				if (letters?.form) arr.push(letters.form);
 				return arr;
 			}
 			default:
@@ -405,22 +403,5 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		}
 
 		return [];
-	}
-
-	private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
-		const type = record.techRecord_vehicleType;
-		const category = record.techRecord_euVehicleCategory;
-
-		if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
-			const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-				record.techRecord_axles ?? [],
-				record.techRecord_dimensions_axleSpacing
-			);
-
-			record.techRecord_dimensions_axleSpacing = axleSpacing;
-			record.techRecord_axles = axles;
-		}
-
-		return record;
 	}
 }
