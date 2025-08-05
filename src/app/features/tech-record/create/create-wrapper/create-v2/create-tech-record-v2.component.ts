@@ -206,7 +206,9 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 
 		if (!formValueUnique) {
 			this.isDuplicateVinAllowed = true;
-			await this.router.navigate(['../create/duplicate-vin'], { relativeTo: this.route });
+			if (!this.vinUnique) {
+				await this.router.navigate(['../create/duplicate-vin'], { relativeTo: this.route });
+			}
 			return;
 		}
 
