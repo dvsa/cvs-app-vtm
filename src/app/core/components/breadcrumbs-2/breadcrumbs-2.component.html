@@ -7,10 +7,10 @@
             <a class="govuk-breadcrumbs__link" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
           </li>
         }
-        @for (breadcrumb of breadcrumbs; track indexOfLink; let last = $last; let indexOfLink = $index) {
+        @for (breadcrumb of breadcrumbs; track indexOfLink; let first = $first; let last = $last; let indexOfLink = $index) {
           <li class="govuk-breadcrumbs__list-item">
-            @if (showBackButton) {
-              <a routerLink=".." class="govuk-back-link">Back</a>
+            @if (showBackButton && first) {
+              <a (click)="location.back()" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
             }
             @else {
               @if (!last) {

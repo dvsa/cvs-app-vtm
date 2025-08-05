@@ -18,6 +18,7 @@ export const routes: Routes = [
 						(m) => m.CreateTechRecordWrapperComponent
 					),
 				data: { roles: Roles.TechRecordCreate },
+				children: [],
 			},
 			{
 				path: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
@@ -44,6 +45,12 @@ export const routes: Routes = [
 						data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
 					},
 				],
+			},
+			{
+				path: TechRecordCreateRoutes.DUPLICATE_VIN,
+				loadComponent: () =>
+					import('../components/duplicate-vin/duplicate-vin.component').then((m) => m.DuplicateVinComponent),
+				data: { roles: Roles.TechRecordCreate },
 			},
 		],
 	},
