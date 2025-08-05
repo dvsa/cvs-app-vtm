@@ -55,7 +55,9 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
-            {{ vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+            {{ vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys === 'n/a'?
+            vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys.toUpperCase() :
+            vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
           </dd>
         </div>
         <div class="govuk-summary-list__row">
@@ -191,42 +193,42 @@
         <!-- Tank Inspections -->
         <h2 class="govuk-heading-m">Tank Inspections</h2>
         <!-- Initial inspection -->
+        <h2 class="govuk-heading-s">Initial</h2>
         <dl class="govuk-summary-list">
-          <h2 class="govuk-heading-s">Initial</h2>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Certificate number</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
-              {{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
+              <span>{{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}</span>
             </dd>
           </div>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Expiry date</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
-              {{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+              <span>{{ vm.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</span>
             </dd>
           </div>
         </dl>
         <!-- Subsequent inspections -->
         @if (vm.techRecord_adrDetails_tank_tankDetails_tc3Details?.length) {
           @for (inspection of vm.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+            <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
             <dl class="govuk-summary-list">
-              <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Inspection type</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
-                  {{ inspection.tc3Type | defaultNullOrEmpty }}
+                  <span>{{ inspection.tc3Type | defaultNullOrEmpty }}</span>
                 </dd>
               </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Certificate number</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
-                  {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
+                  <span>{{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}</span>
                 </dd>
               </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Expiry date</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
-                  {{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                  <span>{{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</span>
                 </dd>
               </div>
             </dl>
