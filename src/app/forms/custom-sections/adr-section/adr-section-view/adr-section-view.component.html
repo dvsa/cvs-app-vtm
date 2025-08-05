@@ -55,7 +55,9 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
           <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
-            {{ vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+            {{ vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys === 'n/a'?
+            vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys.toUpperCase() :
+            vm.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
           </dd>
         </div>
         <div class="govuk-summary-list__row">
