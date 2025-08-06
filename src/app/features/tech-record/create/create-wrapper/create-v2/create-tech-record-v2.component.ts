@@ -52,9 +52,7 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 	commonValidatorService = inject(CommonValidatorsService);
 	techRecordValidatorService = inject(TechRecordValidatorsService);
 
-	isDuplicateVinAllowed = false;
 	isVinUniqueCheckComplete = false;
-
 	vinUnique = false;
 	vrmUnique = false;
 	trlUnique = false;
@@ -205,8 +203,6 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 		this.technicalRecordService.clearSectionTemplateStates();
 
 		if (!formValueUnique) {
-			this.isDuplicateVinAllowed = true;
-
 			// only navigate if the trailer id or vrm is unique, or if the generateID checkbox is checked
 			// this means the vin is not unique and the user will be redirected to the duplicate vin page
 			if (this.trlUnique || this.vrmUnique || this.form.controls['generateID'].value) {
@@ -226,15 +222,15 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 		}
 
 		if (this.form.controls['generateID'].value) {
-			return this.vinUnique || this.isDuplicateVinAllowed;
+			return this.vinUnique;
 		}
 
 		if (isTrailer) {
 			this.trlUnique = await this.isTrailerIdUnique();
-			return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
+			return this.vinUnique && this.trlUnique;
 		}
 		this.vrmUnique = await this.isVrmUnique();
-		return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
+		return this.vinUnique && this.vrmUnique;
 	}
 
 	async isVinUnique(): Promise<boolean> {
