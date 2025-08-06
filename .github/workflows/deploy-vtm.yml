@@ -11,8 +11,8 @@ on:
           - integration
           - preprod
           - prod
-          - VTMDev1
-          - VTMDev2
+          - vtmdev-1
+          - vtmdev-2
         default: nonprod
       deploy-environment:
         description: (Re)Deploy Environment
