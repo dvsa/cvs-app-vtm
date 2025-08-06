@@ -5,12 +5,12 @@
   <govuk-form-group-input
     [id]="'input-vin'"
     formControlName="vin"
-    label="Vehicle Identification number (VIN)"
-    hint="VIN should usually be 17 characters long."
+    label="Vehicle Identification Number (VIN)"
+    hint="Must be between 3 and 21 characters"
     appToUppercase
     appNoSpace
     appTrimWhitespace
-    [width]="30" 
+    [width]="30"
     (ngModelChange)="ngOnChanges()"
   ></govuk-form-group-input>
 
