@@ -118,7 +118,7 @@ jobs:
       - name: Upload App to S3
         working-directory: dist/
         run: |
-          env_type="${{ needs.environment.outputs.environment-type }}"
+          env_type="${{ needs.environment.outputs.environment-name }}"
     
           if [[ "$env_type" == "vtmdev-1" ]]; then
             bucket_name="s3://vtm-vtmdev-1.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
