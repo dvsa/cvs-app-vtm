@@ -6,7 +6,7 @@ import { CreateTechRecordV2Component } from './create-v2/create-tech-record-v2.c
 @Component({
 	selector: 'app-create-tech-record-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('TechRecordRedesign')) {
+    @if (featureToggleService.isFeatureEnabled('TechRecordRedesignCreate')) {
       <app-create-tech-record-v2 />
     } @else {
       <app-create />
