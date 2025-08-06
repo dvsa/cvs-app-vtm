@@ -4,8 +4,8 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i < middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
+          <app-accordion
+            [id]="section.name"
             [title]="section.label"
             [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
@@ -17,9 +17,9 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i >= middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
-            [title]="section.label" 
+          <app-accordion
+            [id]="section.name"
+            [title]="section.label"
             [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
@@ -125,44 +125,16 @@
           }
           <!-- Old Type Approval section -->
         }
-        @case ('psvBrakesSection') {
-          @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
-            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-              <!-- New PSV Brakes section -->
-              <app-brakes-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-                (formChange)="handleFormState($event)"
-              ></app-brakes-section>
-            } @else {
-              <!-- Old PSV Brakes section -->
-              <app-psv-brakes
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-psv-brakes>
-            }
+        @case ('brakesSection'){
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||techRecordCalculated.techRecord_vehicleType === 'psv') {
+            <app-brakes-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              (formChange)="handleFormState($event)"
+            ></app-brakes-section>
           }
         }
-        @case ('trlBrakesSection') {
-          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-              <!-- New TRL Brakes section -->
-              <app-brakes-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-                (formChange)="handleFormState($event)"
-              ></app-brakes-section>
-            } @else {
-              <!-- Old TRL Brakes section -->
-              <app-trl-brakes
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-trl-brakes>
-            }
-          }
-        }
+
         @case('dda') {
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             <!-- New Tyres section -->
@@ -301,8 +273,8 @@
         }
         @case ('reasonForCreationSection') {
           @if (featureToggleService.isFeatureEnabled('FsReasonForCreation')) {
-            <app-reason-for-creation-section 
-              [techRecord]="techRecordCalculated" 
+            <app-reason-for-creation-section
+              [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
             ></app-reason-for-creation-section>
           } @else {

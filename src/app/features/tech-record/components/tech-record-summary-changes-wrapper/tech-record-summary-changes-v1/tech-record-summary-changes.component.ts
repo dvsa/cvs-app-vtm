@@ -32,8 +32,6 @@ import { DocumentsSectionComponent } from '@forms/custom-sections/documents-sect
 import { LastApplicantSectionComponent } from '@forms/custom-sections/last-applicant-section/last-applicant-section.component';
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
-import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
-import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TRLPurchasersSectionComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '@forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '@forms/custom-sections/tyres-section/tyres-section.component';
@@ -86,8 +84,6 @@ import { Subject, combineLatest, map, take, takeUntil } from 'rxjs';
 		TRLPurchasersSectionComponent,
 		TypeApprovalSectionComponent,
 		ApprovalTypeComponent,
-		PsvBrakesComponent,
-		TrlBrakesComponent,
 		TyresSectionComponent,
 		WeightsSectionComponent,
 		AdrSectionComponent,

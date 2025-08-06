@@ -49,14 +49,6 @@ import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacture
 import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
 import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
 import { PlatesComponent } from '@forms/custom-sections/plates/plates.component';
-import {
-	PsvBrakesComponent,
-	PsvBrakesComponent as PsvBrakesComponent_1,
-} from '@forms/custom-sections/psv-brakes/psv-brakes.component';
-import {
-	TrlBrakesComponent,
-	TrlBrakesComponent as TrlBrakesComponent_1,
-} from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TRLPurchasersSectionComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '@forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '@forms/custom-sections/tyres-section/tyres-section.component';
@@ -97,8 +89,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		DimensionsComponent_1,
 		TypeApprovalSectionComponent,
 		ApprovalTypeComponent_1,
-		PsvBrakesComponent_1,
-		TrlBrakesComponent_1,
 		TyresSectionComponent,
 		WeightsSectionComponent,
 		PlatesSectionComponent,
@@ -121,10 +111,7 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 	readonly sections = viewChildren(DynamicFormGroupComponent);
 	readonly dimensions = viewChild(DimensionsComponent);
-	readonly psvBrakes = viewChild(PsvBrakesComponent);
-	readonly trlBrakes = viewChild(TrlBrakesComponent);
 	readonly approvalType = viewChild(ApprovalTypeComponent);
-
 	readonly isFormDirty = output<boolean>();
 	readonly isFormInvalid = output<boolean>();
 	readonly isCreateMode = input.required<boolean>();
@@ -306,22 +293,13 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
 		const commonCustomSections = this.addCustomSectionsBasedOffFlag();
-		const trlBrakes = this.trlBrakes();
-		const psvBrakes = this.psvBrakes();
 
 		switch (this.vehicleType) {
-			case VehicleTypes.PSV: {
-				if (!psvBrakes?.form) return [];
-				return [...commonCustomSections, psvBrakes.form];
-			}
 			case VehicleTypes.LGV:
+			case VehicleTypes.PSV:
+			case VehicleTypes.TRL:
 			case VehicleTypes.HGV: {
 				return commonCustomSections;
-			}
-			case VehicleTypes.TRL: {
-				const arr = [...commonCustomSections];
-				if (trlBrakes?.form) arr.push(trlBrakes.form);
-				return arr;
 			}
 			default:
 				return [];
