@@ -67,7 +67,7 @@ jobs:
           role-session-name: GHA-VTM-Config
 
       - name: Get app config from AWS Secrets Manager
-        run: aws secretsmanager get-secret-value --secret-id ${{ needs.environment.outputs.environment-type }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
+        run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
 
       - name: Build App
         env:
