@@ -118,8 +118,17 @@ jobs:
       - name: Upload App to S3
         working-directory: dist/
         run: |
-          if [[ "${{ needs.environment.outputs.environment-type }}" =~ ^(develop|integration|preprod|prod)$ ]]; then
-            bucket_name="s3://vtm.${{ needs.environment.outputs.environment-type }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          env_type="${{ needs.environment.outputs.environment-type }}"
+    
+          if [[ "$env_type" == "vtmdev-1" ]]; then
+            bucket_name="s3://vtm-vtmdev-1.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          elif [[ "$env_type" == "vtmdev-2" ]]; then
+            bucket_name="s3://vtm-vtmdev-2.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          elif [[ "$env_type" =~ ^(develop|integration|preprod|prod)$ ]]; then
+            bucket_name="s3://vtm.${env_type}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
           else
-            bucket_name="s3://vtm-${{ needs.environment.outputs.environment-type }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+            bucket_name="s3://vtm-${env_type}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
           fi
+
+          echo "Uploading to $bucket_name"
+          aws s3 sync ./browser "$bucket_name" --delete
