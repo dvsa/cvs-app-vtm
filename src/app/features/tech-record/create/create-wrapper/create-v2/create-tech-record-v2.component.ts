@@ -206,7 +206,10 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 
 		if (!formValueUnique) {
 			this.isDuplicateVinAllowed = true;
-			if (!this.vinUnique) {
+
+			// only navigate if the trailer id or vrm is unique, or if the generateID checkbox is checked
+			// this means the vin is not unique and the user will be redirected to the duplicate vin page
+			if (this.trlUnique || this.vrmUnique || this.form.controls['generateID'].value) {
 				await this.router.navigate(['../create/duplicate-vin'], { relativeTo: this.route });
 			}
 			return;

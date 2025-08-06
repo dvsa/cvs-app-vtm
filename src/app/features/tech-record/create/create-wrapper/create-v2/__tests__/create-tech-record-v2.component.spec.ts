@@ -132,6 +132,7 @@ describe('CreateTechRecordV2Component', () => {
 			jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(false));
 			jest.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
 			const routerSpy = jest.spyOn(router, 'navigate');
+			component.vrmUnique = true;
 			component.vinUnique = false;
 
 			await component.handleSubmit();
