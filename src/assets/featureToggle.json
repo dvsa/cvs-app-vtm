@@ -7,7 +7,6 @@
   "FsPlates": true,
   "FsPurchasers": true,
   "FsDDA": true,
-  "FsBrakes": true,
   "FsAuthorisationIntoService": true,
   "FsAudit": true,
   "FsManufacturer": true,

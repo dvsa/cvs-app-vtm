@@ -4,21 +4,23 @@ import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-f
 import { TechRecordValidatorsService } from '@/src/app/forms/validators/tech-record-validators.service';
 import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { setSpinnerState } from '@/src/app/store/spinner/spinner.actions';
-import { Component, OnChanges, inject } from '@angular/core';
+import { Component, OnChanges, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { GovukFormGroupCheckboxComponent } from '@forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { editingTechRecord } from '@store/technical-records';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -39,7 +41,7 @@ import { firstValueFrom } from 'rxjs';
 		GovukFormGroupRadioComponent,
 	],
 })
-export class CreateTechRecordV2Component implements OnChanges {
+export class CreateTechRecordV2Component implements OnInit, OnChanges {
 	globalErrorService = inject(GlobalErrorService);
 	technicalRecordService = inject(TechnicalRecordService);
 	batchTechRecordService = inject(BatchTechnicalRecordService);
@@ -50,9 +52,7 @@ export class CreateTechRecordV2Component implements OnChanges {
 	commonValidatorService = inject(CommonValidatorsService);
 	techRecordValidatorService = inject(TechRecordValidatorsService);
 
-	isDuplicateVinAllowed = false;
 	isVinUniqueCheckComplete = false;
-
 	vinUnique = false;
 	vrmUnique = false;
 	trlUnique = false;
@@ -118,6 +118,26 @@ export class CreateTechRecordV2Component implements OnChanges {
 		this.technicalRecordService.clearSectionTemplateStates();
 	}
 
+	ngOnInit() {
+		const techRecord = this.store.selectSignal(editingTechRecord);
+		if (techRecord()) {
+			const vrmOrTrailerIdValue =
+				(techRecord()?.techRecord_vehicleType === 'trl'
+					? (techRecord() as TechRecordTypeVerb<'trl'>)?.trailerId
+					: (techRecord() as VehiclesOtherThan<'trl'>)?.primaryVrm) || '';
+
+			this.toggleVrmInput(!vrmOrTrailerIdValue);
+
+			this.form.setValue({
+				vin: techRecord()?.vin || '',
+				vrmTrm: vrmOrTrailerIdValue,
+				vehicleStatus: techRecord()?.techRecord_statusCode || '',
+				vehicleType: techRecord()?.techRecord_vehicleType || '',
+				generateID: !vrmOrTrailerIdValue,
+			});
+		}
+	}
+
 	ngOnChanges(): void {
 		this.isVinUniqueCheckComplete = false;
 	}
@@ -141,13 +161,14 @@ export class CreateTechRecordV2Component implements OnChanges {
 					anchorLink: 'input-vrm-or-trailer-id',
 				}))
 			);
-			vrmTrm.setValue('');
 			vrmTrm.enable();
 		}
+		vrmTrm.updateValueAndValidity();
 	}
 
 	navigateBack() {
 		this.globalErrorService.clearErrors();
+		this.technicalRecordService.clearEditingTechRecord();
 		void this.router.navigate(['..'], { relativeTo: this.route });
 	}
 
@@ -167,11 +188,6 @@ export class CreateTechRecordV2Component implements OnChanges {
 		const formValueUnique = await this.isFormValueUnique();
 		this.store.dispatch(setSpinnerState({ showSpinner: false }));
 
-		if (!formValueUnique) {
-			this.isDuplicateVinAllowed = true;
-			return;
-		}
-
 		const techRecord = {
 			vin: this.form.controls.vin.value,
 			techRecord_statusCode: this.form.controls.vehicleStatus.value,
@@ -186,6 +202,15 @@ export class CreateTechRecordV2Component implements OnChanges {
 		);
 		this.technicalRecordService.clearSectionTemplateStates();
 
+		if (!formValueUnique) {
+			// only navigate if the trailer id or vrm is unique, or if the generateID checkbox is checked
+			// this means the vin is not unique and the user will be redirected to the duplicate vin page
+			if (this.trlUnique || this.vrmUnique || this.form.controls['generateID'].value) {
+				await this.router.navigate(['../create/duplicate-vin'], { relativeTo: this.route });
+			}
+			return;
+		}
+
 		await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
 	}
 
@@ -197,15 +222,15 @@ export class CreateTechRecordV2Component implements OnChanges {
 		}
 
 		if (this.form.controls['generateID'].value) {
-			return this.vinUnique || this.isDuplicateVinAllowed;
+			return this.vinUnique;
 		}
 
 		if (isTrailer) {
 			this.trlUnique = await this.isTrailerIdUnique();
-			return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
+			return this.vinUnique && this.trlUnique;
 		}
 		this.vrmUnique = await this.isVrmUnique();
-		return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
+		return this.vinUnique && this.vrmUnique;
 	}
 
 	async isVinUnique(): Promise<boolean> {

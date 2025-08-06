@@ -1,0 +1,20 @@
+<div class="govuk-grid-row home-page">
+  <div class="govuk-grid-column-full">
+    <h2 class="govuk-heading-xl govuk-!-font-weight-bold">Duplicate VIN found</h2>
+
+    <p class="govuk-body">A technical record already exists with this VIN:</p>
+
+    <div class="govuk-inset-text govuk-!-font-weight-bold">
+      {{ techRecord().vin | uppercase }}
+    </div>
+
+    <p class="govuk-body">Confirm if you want to create another record with this VIN.</p>
+
+    <hr class="govuk-section-break govuk-section-break--m">
+
+    <app-button-group>
+      <app-button id="submit" (clicked)="onSubmit()">Continue</app-button>
+      <app-button design="link" id="cancel" (clicked)="onNavigateBack()">Back</app-button>
+    </app-button-group>
+  </div>
+</div>

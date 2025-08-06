@@ -7,7 +7,6 @@ import { TechRecordReasonForCreationSection } from '@forms/templates/general/rea
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
@@ -16,7 +15,6 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
 import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
-import { TrlBrakesTemplate } from '../templates/trl/trl-brakes.template';
 import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
 import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
 import { TrlWeight } from '../templates/trl/trl-weight.template';
@@ -31,6 +29,7 @@ const bodySection = { name: 'bodySection', label: 'Body' } as FormNode;
 const documentsSection = { name: 'documentsSection', label: 'Documents' } as FormNode;
 const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
+const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -40,7 +39,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  2 */ PsvNotes,
 			/*  3 */ techRecordSection,
 			/*  4 */ PsvTypeApprovalTemplate,
-			/*  5 */ PsvBrakesTemplate,
+			/*  5 */ brakesSection,
 			/*  6 */ PsvDdaTemplate,
 			/*  7 */ documentsSection,
 			/*  8 */ bodySection,
@@ -80,7 +79,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  8 */ bodySection,
 			/*  9 */ TrlWeight,
 			/* 10 */ tyresTemplateTrl,
-			/* 11 */ TrlBrakesTemplate,
+			/* 11 */ brakesSection,
 			/* 12 */ TrlPurchasers,
 			/* 13 */ dimensionsSection,
 			/* 14 */ PlatesTemplate,
