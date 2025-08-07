@@ -115,13 +115,8 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          <!-- New Dimensions section -->
-          @if (featureToggleService.isFeatureEnabled('FsDimensions')) {
-            <app-dimensions-section [techRecord]="techRecordEdited" mode="summary" />
-          } @else {
-          <!-- Old Dimensions section -->
-            <app-dimensions [techRecord]="techRecordEdited" mode="summary" />
-          }
+          <!-- Dimensions section -->
+          <app-dimensions-section [techRecord]="techRecordEdited" mode="summary" />
         }
       }
 
@@ -158,26 +153,9 @@
           }
         }
       }
-      @case ('psvBrakesSection') {
-        @if (techRecordEdited.techRecord_vehicleType === 'psv') {
-          @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-            <!-- New PSV Brakes section -->
-            <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
-          } @else {
-            <!-- Old PSV Brakes section -->
-            <app-psv-brakes [vehicleTechRecord]="techRecordEdited" />
-          }
-        }
-      }
-      @case ('trlBrakesSection') {
-        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
-          @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-            <!-- New TRL Brakes section -->
-            <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
-          } @else {
-            <!-- Old TRL Brakes section -->
-            <app-trl-brakes [vehicleTechRecord]="techRecordEdited" />
-          }
+      @case ('brakesSection'){
+        @if (techRecordEdited.techRecord_vehicleType === 'psv' || techRecordEdited.techRecord_vehicleType === 'trl') {
+          <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
         }
       }
       @case('dda') {
@@ -221,7 +199,7 @@
               </strong>
             </div>
           }
-          
+
           <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
         }
       }
