@@ -1,5 +1,5 @@
 name: 📱 VTM Build and Deploy
-run-name: 📱 VTM Build and Deploy ${{ inputs.environment }}
+run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 on:
   workflow_dispatch:
     inputs:
@@ -14,10 +14,6 @@ on:
           - vtmdev-1
           - vtmdev-2
         default: nonprod
-      deploy-environment:
-        description: (Re)Deploy Environment
-        type: boolean
-        default: true
 
 permissions:
   id-token: write
