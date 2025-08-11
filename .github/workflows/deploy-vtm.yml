@@ -107,7 +107,7 @@ jobs:
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          role-to-assume: ${{ secrets.AWS_NONPROD_ROLE }}
           aws-region: eu-west-1
           role-session-name: GHA-VTM-Upload
 
