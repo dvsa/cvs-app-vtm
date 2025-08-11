@@ -168,13 +168,13 @@ describe('CreateTechRecordV2Component', () => {
 			expect(result).toBeTruthy();
 		});
 
-		it('should call addError when the VRM is not unique', async () => {
+		it('should call addError when the VRM must be unique', async () => {
 			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
 			const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
 
 			const result = await component.isVrmUnique();
 
-			expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM is not unique', anchorLink: 'input-vrm-or-trailer-id' });
+			expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM must be unique', anchorLink: 'input-vrm-or-trailer-id' });
 			expect(result).toBeFalsy();
 		});
 	});

@@ -12,7 +12,10 @@
   }"
 >
   <main class="govuk-main-wrapper {{ isStandardLayout ? '' : 'full-width' }}">
-    @if (featureToggleService.isFeatureEnabled('TechRecordRedesign')) {
+    @if (
+      featureToggleService.isFeatureEnabled('TechRecordRedesign') || 
+      featureToggleService.isFeatureEnabled('TechRecordRedesignCreate')
+    ) {
       <app-breadcrumbs-2></app-breadcrumbs-2>
     } @else {
       <app-breadcrumbs></app-breadcrumbs>

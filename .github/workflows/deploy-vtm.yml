@@ -1,0 +1,134 @@
+name: 📱 VTM Build and Deploy
+run-name: 📱 VTM Build and Deploy ${{ inputs.environment }}
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment
+        type: choice
+        options:
+          - develop
+          - integration
+          - preprod
+          - prod
+          - vtmdev-1
+          - vtmdev-2
+        default: nonprod
+      deploy-environment:
+        description: (Re)Deploy Environment
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write
+
+jobs:
+  environment:
+    name: 🧹 Prepare Environment
+    runs-on: 
+      - ubuntu-latest
+    outputs:
+      environment-type: ${{ steps.environment.outputs.environment-type }}
+      environment-name: ${{ steps.environment.outputs.environment-name }}
+      github-branch: ${{ steps.environment.outputs.github-branch }}
+    steps:
+      - name: ↕️ Get Environment Details
+        id: environment
+        uses: dvsa/cvs-github-actions/environment@develop
+        with:
+          environment: ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment }}
+          output-summary: false
+
+  build-application:
+    name: Build Application
+    runs-on: 
+      - ubuntu-latest
+    needs: environment
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Get AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTM-Config
+
+      - name: Get app config from AWS Secrets Manager
+        run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
+
+      - name: Build App
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: npm run build -- --configuration='deploy' --output-path='dist/'
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: VTM-App-build-output
+          path: dist/browser
+
+  upload-application:
+    name: Upload Application
+    runs-on: 
+      - ubuntu-latest
+    environment: ${{ needs.environment.outputs.environment-type }}
+    needs: 
+      - environment
+      - build-application
+    steps:
+      - name: Get AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTM-Secrets
+
+      - name: Get secrets from AWS
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: cvs-app-vtm/gha
+          parse-json-secrets: true
+  
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: VTM-App-build-output
+          path: dist/browser
+
+      - name: Get AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ADMIN_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTM-Upload
+
+      - name: Upload App to S3
+        working-directory: dist/
+        run: |
+          env_type="${{ needs.environment.outputs.environment-name }}"
+    
+          if [[ "$env_type" == "vtmdev-1" ]]; then
+            bucket_name="s3://vtm-vtmdev-1.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          elif [[ "$env_type" == "vtmdev-2" ]]; then
+            bucket_name="s3://vtm-vtmdev-2.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          elif [[ "$env_type" =~ ^(develop|integration|preprod|prod)$ ]]; then
+            bucket_name="s3://vtm.${env_type}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          else
+            bucket_name="s3://vtm-${env_type}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}"
+          fi
+
+          echo "Uploading to $bucket_name"
+          aws s3 sync ./browser "$bucket_name" --delete

@@ -5,12 +5,12 @@
   <govuk-form-group-input
     [id]="'input-vin'"
     formControlName="vin"
-    label="Vehicle Identification number (VIN)"
-    hint="VIN should usually be 17 characters long."
+    label="Vehicle Identification Number (VIN)"
+    hint="Must be between 3 and 21 characters"
     appToUppercase
     appNoSpace
     appTrimWhitespace
-    [width]="30" 
+    [width]="30"
     (ngModelChange)="ngOnChanges()"
   ></govuk-form-group-input>
 
@@ -20,7 +20,7 @@
   <govuk-form-group-checkbox
     [id]="'generate-c-or-z-num'"
     [value]="true"
-    label="Generate a C/T/Z number on submission of the new record"
+    label="Generate C, T or Z number on submission of the new record"
     formControlName="generateID"
     (valueChange)="toggleVrmInput($any($event))"
   ></govuk-form-group-checkbox>
@@ -30,7 +30,7 @@
     <govuk-form-group-input
       [id]="'input-vrm-or-trailer-id'"
       formControlName="vrmTrm"
-      label="VRM / Trailer ID"
+      label="Vehicle Registration Mark (VRM) or Trailer ID "
       appToUppercase
       appNoSpace
       appTrimWhitespace
