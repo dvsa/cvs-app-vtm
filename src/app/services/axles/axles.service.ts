@@ -165,13 +165,13 @@ export class AxlesService {
 			axleNumber: this.fb.control<number | null>(axle?.axleNumber || null),
 
 			// Brakes fields
-			brakes_brakeActuator: this.fb.control<number | null>(null, [
+			brakes_brakeActuator: this.fb.control<number | null>(axle?.brakes_brakeActuator || null, [
 				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
 			]),
-			brakes_leverLength: this.fb.control<number | null>(null, [
+			brakes_leverLength: this.fb.control<number | null>(axle?.brakes_leverLength || null, [
 				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
 			]),
-			brakes_springBrakeParking: this.fb.control<boolean | null>(null, []),
+			brakes_springBrakeParking: this.fb.control<boolean | null>(axle?.brakes_springBrakeParking || null, []),
 			parkingBrakeMrk: this.fb.control<boolean | null>(axle?.parkingBrakeMrk || false, []),
 
 			// Tyres fields
