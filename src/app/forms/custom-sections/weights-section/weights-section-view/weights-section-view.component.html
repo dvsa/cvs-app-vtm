@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        @for (axle of vm.techRecord_axles; track axle) {
+        @for (axle of axlesService.sortAxles(vm.techRecord_axles || []); track axle) {
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">Axle {{axle.axleNumber}}</th>
             @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {

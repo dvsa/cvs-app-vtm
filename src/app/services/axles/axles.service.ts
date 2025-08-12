@@ -4,7 +4,7 @@ import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hg
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { AxleSpacing, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
 
 @Injectable({
@@ -13,6 +13,10 @@ import { CommonValidatorsService } from '../../forms/validators/common-validator
 export class AxlesService {
 	fb = inject(FormBuilder);
 	commonValidators = inject(CommonValidatorsService);
+
+	sortAxles(axles: Axles) {
+		return axles.toSorted((a, b) => (a.axleNumber || 0) - (b.axleNumber || 0));
+	}
 
 	generateAxlesForm(techRecord: TechRecordType<'hgv' | 'trl' | 'psv'>) {
 		const axles = techRecord.techRecord_axles ?? [];

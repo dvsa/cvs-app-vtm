@@ -27,7 +27,7 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        @for (axle of vm.techRecord_axles; track axle; let i = $index) {
+        @for (axle of axlesService.sortAxles(vm.techRecord_axles || []); track axle; let i = $index) {
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">T{{axle.axleNumber | defaultNullOrEmpty }}</th>
             <td class="govuk-table__cell" id="tyres_tyreCode-{{ i + 1 }}">{{ axle.tyres_tyreCode | defaultNullOrEmpty  }}</td>

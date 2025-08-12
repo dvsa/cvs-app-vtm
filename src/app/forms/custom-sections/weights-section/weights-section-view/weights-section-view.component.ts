@@ -1,3 +1,4 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { Component, inject } from '@angular/core';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -16,5 +17,6 @@ export class WeightsSectionViewComponent {
 
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);
+	axlesService = inject(AxlesService);
 	techRecord = this.store.selectSignal(techRecord);
 }
