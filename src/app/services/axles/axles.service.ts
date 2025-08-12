@@ -171,7 +171,10 @@ export class AxlesService {
 			brakes_leverLength: this.fb.control<number | null>(axle?.brakes_leverLength || null, [
 				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
 			]),
-			brakes_springBrakeParking: this.fb.control<boolean | null>(axle?.brakes_springBrakeParking || null, []),
+			brakes_springBrakeParking: this.fb.control<boolean | null>(
+				typeof axle?.brakes_springBrakeParking === 'boolean' ? axle?.brakes_springBrakeParking : null,
+				[]
+			),
 			parkingBrakeMrk: this.fb.control<boolean | null>(axle?.parkingBrakeMrk || false, []),
 
 			// Tyres fields
