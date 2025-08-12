@@ -19,11 +19,23 @@ export class AxlesService {
 
 		switch (techRecord.techRecord_vehicleType) {
 			case 'hgv':
-				return this.fb.nonNullable.array(axles.map((axle) => this.generateHGVAxleForm(axle as HGVAxles)));
+				return this.fb.nonNullable.array(
+					axles
+						.map((axle) => this.generateHGVAxleForm(axle as HGVAxles))
+						.sort((a, b) => (a.value.axleNumber || 0) - (b.value.axleNumber || 0))
+				);
 			case 'psv':
-				return this.fb.nonNullable.array(axles.map((axle) => this.generatePSVAxleForm(axle as TRLAxles)));
+				return this.fb.nonNullable.array(
+					axles
+						.map((axle) => this.generatePSVAxleForm(axle as TRLAxles))
+						.sort((a, b) => (a.value.axleNumber || 0) - (b.value.axleNumber || 0))
+				);
 			case 'trl':
-				return this.fb.nonNullable.array(axles.map((axle) => this.generateTRLAxleForm(axle as TRLAxles)));
+				return this.fb.nonNullable.array(
+					axles
+						.map((axle) => this.generateTRLAxleForm(axle as TRLAxles))
+						.sort((a, b) => (a.value.axleNumber || 0) - (b.value.axleNumber || 0))
+				);
 		}
 	}
 
