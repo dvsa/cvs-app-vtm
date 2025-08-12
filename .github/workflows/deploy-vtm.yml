@@ -1,5 +1,5 @@
 name: 📱 VTM Build and Deploy
-run-name: 📱 VTM Build and Deploy ${{ inputs.environment }}
+run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 on:
   workflow_dispatch:
     inputs:
@@ -14,10 +14,6 @@ on:
           - vtmdev-1
           - vtmdev-2
         default: nonprod
-      deploy-environment:
-        description: (Re)Deploy Environment
-        type: boolean
-        default: true
 
 permissions:
   id-token: write
@@ -51,7 +47,7 @@ jobs:
           ref: ${{ github.ref_name }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -111,7 +107,7 @@ jobs:
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ADMIN_ROLE }}
+          role-to-assume: ${{ (inputs.environment == 'preprod' || inputs.environment == 'prod') && secrets.AWS_PROD_ROLE || secrets.AWS_NONPROD_ROLE }}
           aws-region: eu-west-1
           role-session-name: GHA-VTM-Upload
 
