@@ -37,17 +37,8 @@
         @case ('notesSection') {
           <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
-        @case ('audit') {
-          @if (featureToggleService.isFeatureEnabled('FsAudit')) {
-            <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+        @case ('auditSection') {
+          <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
         }
         @case ('techRecordSummary') {
           <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>

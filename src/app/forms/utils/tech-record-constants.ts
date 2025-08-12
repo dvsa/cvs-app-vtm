@@ -1,7 +1,6 @@
 import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
-import { Audit } from '@forms/templates/general/audit.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
@@ -30,6 +29,7 @@ const documentsSection = { name: 'documentsSection', label: 'Documents' } as For
 const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
+const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -96,7 +96,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
@@ -106,7 +106,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 			/* 6 */ adrSection,
 			/* 7 */ AdrCertificateTemplate,
 		],
@@ -118,7 +118,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
@@ -128,7 +128,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 ]);

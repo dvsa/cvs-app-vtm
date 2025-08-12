@@ -95,13 +95,8 @@
       @case ('notesSection') {
         <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
       }
-      @case ('audit') {
-        <!-- New Audit section -->
-        @if (featureToggleService.isFeatureEnabled('FsAudit')) {
-          <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
+      @case ('auditSection') {
+        <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('techRecordSummary') {
         <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />

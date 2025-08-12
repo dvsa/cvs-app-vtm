@@ -360,13 +360,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				techRecord_applicantDetails_postTown: null,
 				techRecord_applicantDetails_telephoneNumber: null,
 				// techRecord_manufactureYear: null,
-				techRecord_createdAt: '',
-				techRecord_createdById: null,
-				techRecord_createdByName: null,
 				// techRecord_euVehicleCategory: EUVehicleCategory.M1,
-				techRecord_lastUpdatedAt: null,
-				techRecord_lastUpdatedById: null,
-				techRecord_lastUpdatedByName: null,
 			};
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(editingTechRecord, carTechRecord);
@@ -396,7 +390,6 @@ describe('TechnicalRecordServiceEffects', () => {
 				primaryVrm: 'bar',
 				techRecord_vehicleSubclass: undefined,
 				techRecord_euVehicleCategory: undefined,
-				techRecord_notes: '',
 				techRecord_vehicleConfiguration: undefined,
 				techRecord_vehicleType: 'lgv',
 				techRecord_noOfAxles: 2,
@@ -431,13 +424,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				techRecord_applicantDetails_postTown: null,
 				techRecord_applicantDetails_telephoneNumber: null,
 				// techRecord_manufactureYear: null,
-				techRecord_createdAt: '',
-				techRecord_createdById: null,
-				techRecord_createdByName: null,
 				// techRecord_euVehicleCategory: EUVehicleCategoryLGV.N1,
-				techRecord_lastUpdatedAt: null,
-				techRecord_lastUpdatedById: null,
-				techRecord_lastUpdatedByName: null,
 				techRecord_adrDetails_certificates: undefined,
 			};
 			testScheduler.run(({ hot, expectObservable }) => {
@@ -491,16 +478,9 @@ describe('TechnicalRecordServiceEffects', () => {
 
 function getEmptyTechRecord(): V3TechRecordModel {
 	return {
-		techRecord_createdAt: '',
-		techRecord_createdById: null,
-		techRecord_createdByName: null,
 		// techRecord_euVehicleCategory: null,
-		techRecord_lastUpdatedAt: null,
-		techRecord_lastUpdatedById: null,
-		techRecord_lastUpdatedByName: null,
 		// techRecord_manufactureYear: null,
 		// techRecord_noOfAxles: 2,
-		techRecord_notes: undefined,
 		techRecord_applicantDetails_address1: null,
 		techRecord_applicantDetails_address2: null,
 		techRecord_applicantDetails_address3: null,
@@ -509,7 +489,7 @@ function getEmptyTechRecord(): V3TechRecordModel {
 		techRecord_applicantDetails_postCode: null,
 		techRecord_applicantDetails_postTown: null,
 		techRecord_applicantDetails_telephoneNumber: null,
-		techRecord_reasonForCreation: '',
+		techRecord_reasonForCreation: undefined,
 		// techRecord_regnDate: null,
 		// techRecord_statusCode: '',
 		// techRecord_vehicleConfiguration: 'other',
