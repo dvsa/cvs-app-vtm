@@ -50,7 +50,6 @@ export class Breadcrumbs2Component {
 				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreate');
 			case 'New record details':
 			case 'Are you sure you want to cancel creating this record?':
-				console.log(title);
 				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails');
 			default:
 				return false;

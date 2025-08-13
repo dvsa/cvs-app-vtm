@@ -1,3 +1,6 @@
+import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Breadcrumbs2Component } from '@core/components/breadcrumbs-2/breadcrumbs-2.component';
@@ -12,11 +15,18 @@ describe('Breadcrumbs2Component', () => {
 	let component: Breadcrumbs2Component;
 	let fixture: ComponentFixture<Breadcrumbs2Component>;
 	let store: MockStore<State>;
+	let featureToggleService: FeatureToggleService;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [Breadcrumbs2Component],
-			providers: [RouterService, provideRouter([]), provideMockStore({ initialState: initialAppState })],
+			providers: [
+				RouterService,
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideRouter([]),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		}).compileComponents();
 	});
 
@@ -24,6 +34,7 @@ describe('Breadcrumbs2Component', () => {
 		fixture = TestBed.createComponent(Breadcrumbs2Component);
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);
+		featureToggleService = TestBed.inject(FeatureToggleService);
 		fixture.detectChanges();
 	});
 
@@ -107,12 +118,23 @@ describe('Breadcrumbs2Component', () => {
 		}
 	);
 
-	it('should set showBackButton to true if the title is Create new technical record', async () => {
+	it('should set showBackButton to true if the title is Create new technical record and feature flag is enabled', async () => {
+		jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
 		const routeState: RouterReducerState = {
 			state: { root: { firstChild: { data: { title: 'Create new technical record' }, url: [{ path: 'path1' }] } } },
 		} as unknown as RouterReducerState;
 		store.overrideSelector(routerState, routeState);
 		await firstValueFrom(component.breadcrumbs$);
 		expect(component.showBackButton).toEqual(true);
+	});
+
+	it('should set showBackButton to false if the title is Create new technical record and feature flag is disabled', async () => {
+		jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
+		const routeState: RouterReducerState = {
+			state: { root: { firstChild: { data: { title: 'Create new technical record' }, url: [{ path: 'path1' }] } } },
+		} as unknown as RouterReducerState;
+		store.overrideSelector(routerState, routeState);
+		await firstValueFrom(component.breadcrumbs$);
+		expect(component.showBackButton).toEqual(false);
 	});
 });
