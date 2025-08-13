@@ -15,7 +15,7 @@ export class AxlesService {
 	commonValidators = inject(CommonValidatorsService);
 
 	sortAxles(axles: Axles) {
-		return axles.toSorted((a, b) => (a.axleNumber || 0) - (b.axleNumber || 0));
+		return axles.sort((a, b) => (a.axleNumber || 0) - (b.axleNumber || 0));
 	}
 
 	generateAxlesForm(techRecord: TechRecordType<'hgv' | 'trl' | 'psv'>) {
