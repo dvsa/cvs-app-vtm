@@ -21,6 +21,7 @@ export class BetasComponent {
 	form = this.fb.group({
 		TechRecordRedesign: this.fb.nonNullable.control<boolean>(false),
 		TechRecordRedesignCreate: this.fb.nonNullable.control<boolean>(false),
+		TechRecordRedesignCreateDetails: this.fb.nonNullable.control<boolean>(false),
 	});
 
 	ngOnInit(): void {

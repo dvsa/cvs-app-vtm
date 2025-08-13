@@ -14,5 +14,6 @@
   "FsReasonForCreation": true,
   "Betas": true,
   "TechRecordRedesign": false,
-  "TechRecordRedesignCreate": true
+  "TechRecordRedesignCreate": true,
+  "TechRecordRedesignCreateDetails": true
 }

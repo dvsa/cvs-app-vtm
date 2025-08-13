@@ -26,9 +26,9 @@ export const routes: Routes = [
 					{
 						path: '',
 						loadComponent: () =>
-							import('./components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component').then(
-								(m) => m.HydrateNewVehicleRecordComponent
-							),
+							import(
+								'./components/hydrate-new-vehicle-record-wrapper/hydrate-new-vehicle-record-wrapper.component'
+							).then((m) => m.HydrateNewVehicleRecordWrapperComponent),
 						data: {
 							title: 'New record details',
 							roles: Roles.TechRecordCreate,

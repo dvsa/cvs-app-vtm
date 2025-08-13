@@ -13,5 +13,6 @@
   "FsAdrCerts": true,
   "Betas": false,
   "TechRecordRedesign": false,
-  "TechRecordRedesignCreate": false
+  "TechRecordRedesignCreate": false,
+  "TechRecordRedesignCreateDetails": false
 }

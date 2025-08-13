@@ -21,8 +21,8 @@ import {
 import { BatchRecord } from '@store/technical-records/batch-create.reducer';
 import { TechnicalRecordServiceState, nullADRDetails } from '@store/technical-records/technical-record-service.reducer';
 import { Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
-import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
-import { TechRecordTitleComponent } from '../../../components/tech-record-title/tech-record-title.component';
+import { TechRecordSummaryComponent } from '../../../../components/tech-record-summary/tech-record-summary.component';
+import { TechRecordTitleComponent } from '../../../../components/tech-record-title/tech-record-title.component';
 
 @Component({
 	selector: 'app-hydrate-new-vehicle-record',
