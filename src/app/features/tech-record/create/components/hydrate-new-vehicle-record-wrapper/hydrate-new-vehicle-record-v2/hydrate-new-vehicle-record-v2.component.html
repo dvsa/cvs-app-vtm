@@ -1,0 +1,129 @@
+<div class="govuk-width-container">
+
+  <h1 class="govuk-heading-l">
+    Create a new technical record
+  </h1>
+
+  <div class="govuk-grid-row">
+    <!-- Summary card -->
+    <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
+      <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+          <h2 class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l">
+            Summary
+          </h2>
+          <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+              <a id="change-link" class="govuk-link" href="javascript:void(0)" (click)="onChange()">
+                Change<span class="govuk-visually-hidden"></span>
+              </a>
+            </li>
+            <li class="govuk-summary-card__action">
+              <a id="cancel-link" class="govuk-link" href="javascript:void(0)" (click)="onCancel()">
+                Cancel<span class="govuk-visually-hidden"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="govuk-summary-card__content">
+          <dl class="govuk-summary-list govuk-summary-list--no-border">
+            <!-- TODO: add rows here
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+                Vehicle type
+              </dt>
+            </div>
+            <div class="govuk-summary-list__row--value">
+              <dd class="govuk-summary-list__value govuk-summary-list__value--overflow">
+                HGV
+              </dd>
+            </div>
+            -->
+          </dl>
+        </div>
+      </div>
+
+      <div class="govuk-button-group govuk-button-group-record">
+        <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>
+      </div>
+    </div>
+
+    <!-- Accordion -->
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form>
+          <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+            <div class="govuk-accordion__section-heading-top-container">
+              <h2 class="govuk-accordion__section-heading-top">
+                <span class="govuk-accordion-heading-vtm">
+                  Technical record
+                </span>
+              </h2>
+  
+              <app-accordion-control [sectionState]="sectionStates$()">
+                <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
+                <ng-template #template>
+                  <!-- TODO: Replace accordions here -->
+                  <app-accordion [id]="'remove-me-1'" [title]="'Remove me 1'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+
+                  <app-accordion [id]="'remove-me-2'" [title]="'Remove me 2'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+
+                  <app-accordion [id]="'remove-me-3'" [title]="'Remove me 3'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+
+                  <app-accordion [id]="'remove-me-4'" [title]="'Remove me 4'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+
+                  <app-accordion [id]="'remove-me-5'" [title]="'Remove me 5'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+
+                  <app-accordion [id]="'remove-me-6'" [title]="'Remove me 6'" [isExpanded]="false">
+                    <p>TODO: Add content here</p>
+                  </app-accordion>
+                </ng-template>
+              </app-accordion-control>
+            </div>
+
+            <div class="filter-box">
+              <dt class="govuk-summary-list__key-filter">
+                Filter by
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
+                <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="plates">
+                  <span class="app-c-filter-summary__remove-filter-text">
+                    <span class="govuk-visually-hidden">Remove filter</span>
+                    Plates
+                  </span>
+                </a>
+              </dd>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
+                <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="required">
+                  <span class="app-c-filter-summary__remove-filter-text">
+                    <span class="govuk-visually-hidden">Remove filter</span>
+                    Required
+                  </span>
+                </a>
+              </dd>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
+                <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="adr">
+                  <span class="app-c-filter-summary__remove-filter-text">
+                    <span class="govuk-visually-hidden">Remove filter</span>
+                    ADR
+                  </span>
+                </a>
+              </dd>
+            </div>
+
+            <!-- Accordions appear here -->
+            <ng-container [ngTemplateOutlet]="template"></ng-container>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

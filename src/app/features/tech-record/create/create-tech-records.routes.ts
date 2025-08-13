@@ -37,6 +37,14 @@ export const routes: Routes = [
 						},
 					},
 					{
+						path: TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL,
+						loadComponent: () =>
+							import('./components/new-record-details-cancel/new-record-details-cancel.component').then(
+								(m) => m.NewRecordDetailsCancel
+							),
+						data: { roles: Roles.TechRecordCreate, isEditing: true },
+					},
+					{
 						path: TechRecordCreateRoutes.TYRE_SEARCH,
 						loadComponent: () =>
 							import('../components/tech-record-search-tyres/tech-record-search-tyres.component').then(

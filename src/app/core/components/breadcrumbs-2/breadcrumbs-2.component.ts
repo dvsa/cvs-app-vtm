@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RouterService } from '@services/router/router.service';
@@ -25,7 +24,7 @@ export class Breadcrumbs2Component {
 			while (currentRoute?.firstChild) {
 				const { routeConfig, data, url } = currentRoute.firstChild;
 				const title = data['title'];
-				const hardCodedBackButtonRoutes = ['Create new technical record', 'Duplicate VIN found'];
+				const hardCodedBackButtonRoutes = ['Create new technical record', 'Duplicate VIN found', 'New record details'];
 				this.showBackButton = hardCodedBackButtonRoutes.includes(title);
 
 				if (data['title'] && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {

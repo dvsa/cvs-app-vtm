@@ -42,6 +42,7 @@ export enum TechRecordRoutes {
 
 export enum TechRecordCreateRoutes {
 	NEW_RECORD_DETAILS = 'new-record-details',
+	NEW_RECORD_DETAILS_CANCEL = 'cancel',
 	TYRE_SEARCH = 'tyre-search/:axleNumber',
 	DUPLICATE_VIN = 'duplicate-vin',
 }
