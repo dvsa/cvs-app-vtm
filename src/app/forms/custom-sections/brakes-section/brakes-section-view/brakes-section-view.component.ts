@@ -1,8 +1,9 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { Component, inject } from '@angular/core';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -20,6 +21,7 @@ export class BrakesSectionViewComponent {
 	protected readonly store = inject<Store<State>>(Store);
 
 	trs = inject(TechnicalRecordService);
+	axlesService = inject(AxlesService);
 	techRecord = this.store.selectSignal(techRecord);
 
 	// TODO: potentially improve this
@@ -28,8 +30,8 @@ export class BrakesSectionViewComponent {
 		return (tr?.techRecord_axles ?? []) as PSVAxles[] | TRLAxles[];
 	}
 
-	getTRLAxles(axles: unknown): TRLAxles[] {
-		return axles as TRLAxles[];
+	getTRLAxles(axles: Axles | null | undefined): TRLAxles[] {
+		return this.axlesService.sortAxles(axles || []) as TRLAxles[];
 	}
 
 	round(n: number): number {
