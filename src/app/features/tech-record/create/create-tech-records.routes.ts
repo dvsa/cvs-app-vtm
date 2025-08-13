@@ -42,7 +42,11 @@ export const routes: Routes = [
 							import('./components/new-record-details-cancel/new-record-details-cancel.component').then(
 								(m) => m.NewRecordDetailsCancel
 							),
-						data: { roles: Roles.TechRecordCreate, isEditing: true },
+						data: {
+							roles: Roles.TechRecordCreate,
+							isEditing: true,
+							title: 'Are you sure you want to cancel creating this record?',
+						},
 					},
 					{
 						path: TechRecordCreateRoutes.TYRE_SEARCH,

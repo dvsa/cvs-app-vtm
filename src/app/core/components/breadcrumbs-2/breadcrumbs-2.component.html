@@ -7,26 +7,28 @@
             <a class="govuk-breadcrumbs__link" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
           </li>
         }
-        @for (breadcrumb of breadcrumbs; track indexOfLink; let first = $first; let last = $last; let indexOfLink = $index) {
+        @if (showBackButton) {
           <li class="govuk-breadcrumbs__list-item">
-            @if (showBackButton && first) {
               <a (click)="location.back()" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
+            </li>
+        }
+        @else {
+          @for (breadcrumb of breadcrumbs; track indexOfLink; let first = $first; let last = $last; let indexOfLink = $index) {
+            <li class="govuk-breadcrumbs__list-item">
+                @if (!last) {
+                  <a
+                    [id]="'breadcrumb-link-' + indexOfLink"
+                    class="govuk-breadcrumbs__link"
+                    [routerLink]="breadcrumb.path"
+                    [queryParamsHandling]="breadcrumb.preserveQueryParams ? 'preserve' : ''"
+                  >{{ breadcrumb.label }}</a
+                  >
+                } @else {
+                  <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current"
+                      id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
+                }
+            </li>
             }
-            @else {
-              @if (!last) {
-                <a
-                  [id]="'breadcrumb-link-' + indexOfLink"
-                  class="govuk-breadcrumbs__link"
-                  [routerLink]="breadcrumb.path"
-                  [queryParamsHandling]="breadcrumb.preserveQueryParams ? 'preserve' : ''"
-                >{{ breadcrumb.label }}</a
-                >
-              } @else {
-                <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current"
-                   id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
-              }
-            }
-          </li>
         }
       </ol>
     </div>

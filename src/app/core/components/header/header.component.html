@@ -2,8 +2,10 @@
 
 @if (
   featureToggleService.isFeatureEnabled('Betas') && (
-  featureToggleService.isFeatureEnabled('TechRecordRedesign') ||
-  featureToggleService.isFeatureEnabled('TechRecordRedesignCreate'))
+    featureToggleService.isFeatureEnabled('TechRecordRedesign') ||
+    featureToggleService.isFeatureEnabled('TechRecordRedesignCreate') ||
+    featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')
+  )
 ) {
   <header class="govuk-header header" role="banner" data-module="govuk-header">
     <div class="govuk-header__container header-container govuk-!-padding-top-4 govuk-!-padding-bottom-2">

@@ -1,3 +1,4 @@
+import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { AsyncPipe, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -13,6 +14,7 @@ import { distinctUntilChanged, map } from 'rxjs';
 export class Breadcrumbs2Component {
 	routerService = inject(RouterService);
 	location = inject(Location);
+	featureToggleService = inject(FeatureToggleService);
 	showBackButton = false;
 
 	breadcrumbs$ = this.routerService.router$.pipe(
@@ -24,8 +26,7 @@ export class Breadcrumbs2Component {
 			while (currentRoute?.firstChild) {
 				const { routeConfig, data, url } = currentRoute.firstChild;
 				const title = data['title'];
-				const hardCodedBackButtonRoutes = ['Create new technical record', 'Duplicate VIN found', 'New record details'];
-				this.showBackButton = hardCodedBackButtonRoutes.includes(title);
+				this.showBackButton = this.shouldShowBackButton(title);
 
 				if (data['title'] && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
 					// standard breadcrumb logic
@@ -41,4 +42,18 @@ export class Breadcrumbs2Component {
 			return breadcrumbs;
 		})
 	);
+
+	private shouldShowBackButton(title: string) {
+		switch (title) {
+			case 'Duplicate VIN found':
+			case 'Create new technical record':
+				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreate');
+			case 'New record details':
+			case 'Are you sure you want to cancel creating this record?':
+				console.log(title);
+				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails');
+			default:
+				return false;
+		}
+	}
 }
