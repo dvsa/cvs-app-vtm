@@ -7,7 +7,6 @@ import { TechRecordReasonForCreationSection } from '@forms/templates/general/rea
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
@@ -30,6 +29,7 @@ const documentsSection = { name: 'documentsSection', label: 'Documents' } as For
 const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
+const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -40,7 +40,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  3 */ techRecordSection,
 			/*  4 */ PsvTypeApprovalTemplate,
 			/*  5 */ brakesSection,
-			/*  6 */ PsvDdaTemplate,
+			/*  6 */ ddaSection,
 			/*  7 */ documentsSection,
 			/*  8 */ bodySection,
 			/*  9 */ PsvWeightsTemplate,

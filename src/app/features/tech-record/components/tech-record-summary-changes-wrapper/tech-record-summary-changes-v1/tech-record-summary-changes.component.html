@@ -161,18 +161,10 @@
       @case('dda') {
         @if (techRecordEdited.techRecord_vehicleType === 'psv') {
           <!-- New Tyres section -->
-          @if (featureToggleService.isFeatureEnabled('FsDDA')) {
-            <app-dda-section
-              [techRecord]="techRecordEdited"
-              [mode]="'summary'"
-            ></app-dda-section>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordEdited"
-              [template]="section"
-              [edit]="false"
-            ></app-dynamic-form-group>
-          }
+          <app-dda-section
+            [techRecord]="techRecordEdited"
+            [mode]="'summary'"
+          ></app-dda-section>
         }
       }
       @case ('tyreSection') {

@@ -6,7 +6,6 @@
   "FsLastApplicant": true,
   "FsPlates": true,
   "FsPurchasers": true,
-  "FsDDA": true,
   "FsAuthorisationIntoService": true,
   "FsAudit": true,
   "FsManufacturer": true,
