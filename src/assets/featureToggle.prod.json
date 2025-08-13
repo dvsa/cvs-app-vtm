@@ -10,7 +10,6 @@
   "FsAuthorisationIntoService": true,
   "FsAudit": true,
   "FsManufacturer": true,
-  "FsAdrCerts": true,
   "Betas": false,
   "TechRecordRedesign": false,
   "TechRecordRedesignCreate": false

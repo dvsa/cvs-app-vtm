@@ -1,4 +1,3 @@
-import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { Audit } from '@forms/templates/general/audit.template';
@@ -30,6 +29,7 @@ const documentsSection = { name: 'documentsSection', label: 'Documents' } as For
 const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
+const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -63,7 +63,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 10 */ dimensionsSection,
 			/* 11 */ PlatesTemplate,
 			/* 12 */ adrSection,
-			/* 13 */ AdrCertificateTemplate,
+			/* 13 */ adrCertificateSection,
 		],
 	],
 	[
@@ -86,7 +86,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 15 */ TrlAuthIntoServiceTemplate,
 			/* 16 */ ManufacturerTemplate,
 			/* 17 */ adrSection,
-			/* 18 */ AdrCertificateTemplate,
+			/* 18 */ adrCertificateSection,
 		],
 	],
 	[
@@ -108,7 +108,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 4 */ notesSection,
 			/* 5 */ Audit,
 			/* 6 */ adrSection,
-			/* 7 */ AdrCertificateTemplate,
+			/* 7 */ adrCertificateSection,
 		],
 	],
 	[
