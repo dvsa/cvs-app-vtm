@@ -39,7 +39,7 @@ export class TechRecordValidatorsService {
 					if (control.value.length < 1) {
 						return {
 							validateVRMTrailerIdLength: {
-								error: 'VRM must be greater than or equal to 1 character',
+								error: 'Vehicle Registration Mark (VRM) or Trailer ID must be greater than or equal to 1 character',
 								anchorLink: 'input-vrm-or-trailer-id',
 							},
 						};
@@ -47,7 +47,7 @@ export class TechRecordValidatorsService {
 					if (control.value.length > 9) {
 						return {
 							validateVRMTrailerIdLength: {
-								error: 'VRM must be less than or equal to 9 characters',
+								error: 'Vehicle Registration Mark (VRM) or Trailer ID must be less than or equal to 9 characters',
 								anchorLink: 'input-vrm-or-trailer-id',
 							},
 						};
