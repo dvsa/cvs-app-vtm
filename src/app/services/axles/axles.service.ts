@@ -60,8 +60,20 @@ export class AxlesService {
 
 			// Tyres fields
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
+				this.commonValidators.max(99999, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
+				this.commonValidators.min(0, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
@@ -117,8 +129,20 @@ export class AxlesService {
 
 			// Tyres fields
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
+				this.commonValidators.max(99999, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
+				this.commonValidators.min(0, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
@@ -195,8 +219,20 @@ export class AxlesService {
 
 			// Tyres fields
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
+				this.commonValidators.max(99999, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
+				this.commonValidators.min(0, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				}),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.max(12, 'Tyre Size must be less than or equal to 12'),

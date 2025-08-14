@@ -27,10 +27,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	min(size: number, message: string): ValidatorFn {
+	min(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	min(size: number, message: string): ValidatorFn;
+	min(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value < size) {
-				return { min: message };
+				return { min: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
