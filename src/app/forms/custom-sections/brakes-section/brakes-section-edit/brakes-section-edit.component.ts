@@ -146,7 +146,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 
 	public get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl | FormArray>> {
 		return {
-			techRecord_axles: this.fb.array([]),
 			techRecord_brakes_brakeCode: this.fb.control<string | null>(null, []),
 			techRecord_brakes_brakeCodeOriginal: this.fb.control<string | null>(null),
 			techRecord_brakes_dataTrBrakeOne: this.fb.control<string | null>({ value: null, disabled: true }, []),
@@ -161,7 +160,6 @@ export class BrakesSectionEditComponent extends EditBaseComponent implements OnI
 		return {
 			techRecord_brakes_loadSensingValve: this.fb.control<boolean | null>(null, []),
 			techRecord_brakes_antilockBrakingSystem: this.fb.control<boolean | null>(null, []),
-			techRecord_axles: this.fb.array([]),
 		};
 	}
 
