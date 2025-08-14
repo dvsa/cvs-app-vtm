@@ -109,7 +109,7 @@
   @if (axles.length > 0) {
     <dl class="govuk-summary-list">
       <caption class="govuk-table__caption govuk-table__caption--m">Parking brake</caption>
-      @for (axle of axles; track $index) {
+      @for (axle of axlesService.sortAxles(axles); track $index) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Axle {{ axle.axleNumber }}</dt>
           <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk_{{ axle.axleNumber }}"> {{ axle.parkingBrakeMrk | defaultNullOrEmpty }}</dd>

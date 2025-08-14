@@ -1,12 +1,10 @@
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
-import { Audit } from '@forms/templates/general/audit.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
@@ -30,6 +28,8 @@ const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
 const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
+const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
+const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -40,7 +40,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  3 */ techRecordSection,
 			/*  4 */ PsvTypeApprovalTemplate,
 			/*  5 */ brakesSection,
-			/*  6 */ PsvDdaTemplate,
+			/*  6 */ ddaSection,
 			/*  7 */ documentsSection,
 			/*  8 */ bodySection,
 			/*  9 */ PsvWeightsTemplate,
@@ -96,7 +96,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
@@ -106,7 +106,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 			/* 6 */ adrSection,
 			/* 7 */ adrCertificateSection,
 		],
@@ -118,7 +118,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
@@ -128,7 +128,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 2 */ techRecordSection,
 			/* 3 */ ApplicantDetails,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 ]);

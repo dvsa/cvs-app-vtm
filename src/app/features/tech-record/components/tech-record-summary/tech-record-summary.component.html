@@ -37,17 +37,8 @@
         @case ('notesSection') {
           <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
-        @case ('audit') {
-          @if (featureToggleService.isFeatureEnabled('FsAudit')) {
-            <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+        @case ('auditSection') {
+          <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
         }
         @case ('techRecordSummary') {
           <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
@@ -129,19 +120,10 @@
         @case('dda') {
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             <!-- New Tyres section -->
-            @if (featureToggleService.isFeatureEnabled('FsDDA')) {
-              <app-dda-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-              ></app-dda-section>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-dda-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+            ></app-dda-section>
           }
         }
         @case ('tyreSection') {

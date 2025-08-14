@@ -95,13 +95,8 @@
       @case ('notesSection') {
         <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
       }
-      @case ('audit') {
-        <!-- New Audit section -->
-        @if (featureToggleService.isFeatureEnabled('FsAudit')) {
-          <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
+      @case ('auditSection') {
+        <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('techRecordSummary') {
         <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
@@ -161,18 +156,10 @@
       @case('dda') {
         @if (techRecordEdited.techRecord_vehicleType === 'psv') {
           <!-- New Tyres section -->
-          @if (featureToggleService.isFeatureEnabled('FsDDA')) {
-            <app-dda-section
-              [techRecord]="techRecordEdited"
-              [mode]="'summary'"
-            ></app-dda-section>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordEdited"
-              [template]="section"
-              [edit]="false"
-            ></app-dynamic-form-group>
-          }
+          <app-dda-section
+            [techRecord]="techRecordEdited"
+            [mode]="'summary'"
+          ></app-dda-section>
         }
       }
       @case ('tyreSection') {
