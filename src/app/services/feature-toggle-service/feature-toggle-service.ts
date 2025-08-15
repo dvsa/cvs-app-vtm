@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { get } from 'lodash';
 import { take } from 'rxjs';
 import { HttpService } from '../http/http.service';
@@ -13,24 +13,24 @@ export interface FeatureConfig {
 export class FeatureToggleService {
 	httpService = inject(HttpService);
 
-	config: FeatureConfig | null = null;
+	config = signal<FeatureConfig | null>(null);
 
 	async loadConfig() {
 		this.httpService
 			.getFeatureFlags()
 			.pipe(take(1))
 			.subscribe((config) => {
-				this.config = config;
+				this.config.set({ ...config, Betas: { enabled: true }, testToggle: { enabled: true } });
 			});
 	}
 
 	setConfig(config: FeatureConfig): void {
-		this.config = config;
+		this.config.set(config);
 	}
 
 	isFeatureEnabled(key: string) {
-		if (!this.config) return false;
-		const feature = get(this.config, key);
+		if (!this.config()) return false;
+		const feature = get(this.config(), key);
 		if (!feature) return false;
 
 		return feature.enabled;
