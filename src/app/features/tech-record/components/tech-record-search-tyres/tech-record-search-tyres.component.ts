@@ -186,6 +186,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 						? Number.parseInt(tyre.loadIndexSingleLoad ?? '0', 10)
 						: Number.parseInt(tyre.loadIndexTwinLoad ?? '0', 10);
 			}
+
 			this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord as TechRecordTypeByVerb<'put'>);
 			void this.router.navigate(['../..'], { relativeTo: this.route });
 		}

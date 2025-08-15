@@ -27,14 +27,16 @@ const routes: Routes = [
 				data: { title: 'Technical record search', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				canDeactivate: [CancelEditTechGuard],
-				loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
+				loadChildren: () => import('./features/search/search.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.CREATE_TECHNICAL_RECORD,
-				data: { title: 'Create new technical record', roles: Roles.TechRecordCreate },
+				data: {
+					title: 'Create new technical record',
+					roles: Roles.TechRecordCreate,
+				},
 				canActivate: [MsalGuard, RoleGuard],
-				loadChildren: () =>
-					import('./features/tech-record/create/create-tech-records.module').then((m) => m.CreateTechRecordsModule),
+				loadChildren: () => import('./features/tech-record/create/create-tech-records.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
@@ -59,7 +61,10 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.REFERENCE_DATA,
-				data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
+				data: {
+					title: 'Select Reference Data Type',
+					roles: Roles.ReferenceDataView,
+				},
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () =>
 					import('./features/reference-data/reference-data.module').then((m) => m.ReferenceDataModule),
@@ -70,6 +75,12 @@ const routes: Routes = [
 				canActivate: [MsalGuard, FeatureToggleGuard],
 				loadChildren: () =>
 					import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),
+			},
+			{
+				path: RootRoutes.BETAS,
+				data: { title: 'Betas', featureToggleName: 'Betas' },
+				canActivate: [MsalGuard, FeatureToggleGuard],
+				loadComponent: () => import('./features/betas/betas.component').then((m) => m.BetasComponent),
 			},
 			{
 				path: RootRoutes.ERROR,

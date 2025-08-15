@@ -1,3 +1,5 @@
+import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
+import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +18,7 @@ import {
 	selector: 'app-tech-amend-reason',
 	templateUrl: './tech-record-amend-reason.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent],
+	imports: [FormsModule, ReactiveFormsModule, RadioGroupComponent, ButtonGroupComponent, ButtonComponent],
 })
 export class TechRecordAmendReasonComponent {
 	errorService = inject(GlobalErrorService);
@@ -66,5 +68,10 @@ export class TechRecordAmendReasonComponent {
 		}
 
 		this.errorService.setErrors(errors);
+	}
+
+	navigateBack(): void {
+		this.errorService.clearErrors();
+		void this.router.navigate(['..'], { relativeTo: this.route });
 	}
 }

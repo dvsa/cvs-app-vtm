@@ -5,15 +5,12 @@
   "FsApprovalType": true,
   "FsLastApplicant": true,
   "FsPlates": true,
-  "FsDimensions": true,
   "FsPurchasers": true,
-  "FsDDA": true,
-  "FsLetters": true,
-  "FsDocuments": true,
-  "FsBrakes": true,
   "FsAuthorisationIntoService": true,
-  "FsAudit": true,
   "FsManufacturer": true,
-  "FsAdrCerts": true,
-  "FsReasonForCreation": true
+  "FsReasonForCreation": true,
+  "Betas": true,
+  "TechRecordRedesign": false,
+  "TechRecordRedesignCreate": true,
+  "TechRecordRedesignCreateDetails": false
 }

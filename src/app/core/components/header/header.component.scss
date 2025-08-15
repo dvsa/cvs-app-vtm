@@ -11,3 +11,19 @@ a {
 header.govuk-header {
   background-color: $govuk-brand-colour;
 }
+
+header.header {
+  background-color: #e31b23;
+}
+
+header.header .header-container {
+  border-bottom: 10px solid #e31b23;
+}
+
+a.lights {
+  padding-left: 45px;
+}
+
+a.lights span {
+  font-size: 1.55rem;
+}

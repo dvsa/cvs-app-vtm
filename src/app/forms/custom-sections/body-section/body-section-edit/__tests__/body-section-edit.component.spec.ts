@@ -162,6 +162,19 @@ describe('BodySectionEditComponent', () => {
 			});
 		});
 
+		it('should, for HGVs, set the body type description to null and code to null if rigid is selected, and articulated was previously selected', () => {
+			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
+			componentRef.setInput('techRecord', mockTechRecord);
+			component.handleUpdateVehicleConfiguration();
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'articulated' }));
+			actions$.next(updateVehicleConfiguration({ vehicleConfiguration: 'rigid' }));
+			expect(formSpy).toHaveBeenCalledWith({
+				techRecord_bodyType_description: null,
+				techRecord_bodyType_code: null,
+			});
+		});
+
 		it('should, for HGVs set the function code to R if rigid is selected', () => {
 			const formSpy = jest.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');

@@ -3,9 +3,11 @@ import { AsyncPipe, NgClass } from '@angular/common';
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Breadcrumbs2Component } from '@core/components/breadcrumbs-2/breadcrumbs-2.component';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { startSendingLogs } from '@store/logs/logs.actions';
@@ -39,6 +41,8 @@ import { State } from './store';
 		RouterOutlet,
 		FooterComponent,
 		AsyncPipe,
+		BreadcrumbsComponent,
+		Breadcrumbs2Component,
 	],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -48,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	gtmService = inject(GoogleTagManagerService);
 	store = inject(Store<State>);
 	analyticsService = inject(AnalyticsService);
+	featureToggleService = inject(FeatureToggleService);
 
 	currentDate = new Date();
 	private destroy$ = new Subject<void>();
@@ -57,8 +62,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	isStandardLayout$ = this.store.pipe(
 		select(selectRouteData),
-		map((routeData) => routeData && !routeData['isCustomLayout'])
+		map(
+			(routeData) =>
+				(routeData && !routeData['isCustomLayout']) ||
+				this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')
+		)
 	);
+
+	get isTechRecordRedesignFlagEnabled(): boolean {
+		return (
+			this.featureToggleService.isFeatureEnabled('TechRecordRedesign') ||
+			this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreate') ||
+			this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')
+		);
+	}
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {
@@ -80,13 +97,11 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.analyticsService.pushToDataLayer({ AppVersionDataLayer: packageInfo.version });
 		await this.analyticsService.setUserId();
 		initAll();
-		this.checkDateChange();
 	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
-		clearInterval(this.interval);
 	}
 
 	startSentry() {
@@ -101,19 +116,5 @@ export class AppComponent implements OnInit, OnDestroy {
 			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
 		});
 		this.sentryInitialized = true;
-	}
-
-	checkDateChange() {
-		this.interval = setInterval(() => {
-			const newDate = new Date();
-			if (newDate.getDate() !== this.currentDate.getDate()) {
-				this.currentDate = newDate;
-				this.reinitializeApp();
-			}
-		}, 21600000); // Check every six hours
-	}
-
-	reinitializeApp() {
-		this.ngOnInit().then((r) => r);
 	}
 }

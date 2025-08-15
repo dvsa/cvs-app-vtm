@@ -1,7 +1,7 @@
-<div class="govuk-form-group-radio" [id]="id">
-  <fieldset role="group">
-    <legend>
-      <h1 tag>
+<div class="govuk-form-group" [id]="id">
+  <fieldset class="govuk-fieldset" role="group">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h1 class="govuk-fieldset__heading" tag>
         {{ controlLabel() }}
         @if (tags().length) {
           <div>
@@ -18,9 +18,10 @@
     }
 
     @if (hasError) {
+      @let firstError = (control?.errors | keyvalue)?.[0]?.value;
       <p class="govuk-error-message" id="{{ errorId }}">
         <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
+        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
       </p>
     }
 
@@ -31,9 +32,9 @@
       </p>
     }
 
-    <div data-module="govuk-radios">
+    <div class="govuk-radios" [class.govuk-radios--inline]="orientation() === 'horizontal'" data-module="govuk-radios">
       @for (option of options(); track option) {
-        <div>
+        <div class="govuk-radios__item">
           <input
             id="{{ id }}-{{ option.value }}-radio"
             class="govuk-radios__input"
@@ -50,6 +51,7 @@
             (blur)="onTouched()"
             />
           <label
+          class="govuk-radios__label govuk-label"
             id="{{ id }}-{{ option.value }}-label"
             for="{{ id }}-{{ option.value }}-radio"
             >
