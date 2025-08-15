@@ -50,6 +50,8 @@ export const TEST_TYPES_GROUP6_11: string[] = ['62', '63', '122', '101', '91'];
 // ADR tests for HGV and TRL
 export const TEST_TYPES_GROUP7: string[] = ['59', '60', '50'];
 
+export const ADR_DESK_BASED_TEST_TYPE_IDS: string[] = ['441', '442'];
+
 // tests for HGV and TRL - Annual tests, Annual retests, Paid/Part paid prohibition clearance on annual test
 export const TEST_TYPES_GROUP9_10: string[] = [
 	'76',
