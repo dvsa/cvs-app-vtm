@@ -13,7 +13,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
-import { TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
+import { ADR_DESK_BASED_TEST_TYPE_IDS, TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -67,7 +67,8 @@ export class VehicleHeaderComponent {
 	}
 
 	get shouldShowHyperlink(): boolean {
-		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0]?.testTypeId ?? '');
+		const testTypes = [...TEST_TYPES_GROUP7, ...ADR_DESK_BASED_TEST_TYPE_IDS];
+		return !testTypes.includes(this.testResult()?.testTypes[0]?.testTypeId ?? '');
 	}
 
 	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
