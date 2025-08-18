@@ -26,16 +26,14 @@ export class BetasComponent implements OnInit {
 	router = inject(Router);
 	featureToggleService = inject(FeatureToggleService);
 
-	form = this.fb.group<any>({
-		// Move these into AWS instead of hardcoding??
-		TechRecordRedesign: this.fb.group({ enabled: this.fb.nonNullable.control(false) }),
-		TechRecordRedesignCreate: this.fb.group({ enabled: this.fb.nonNullable.control(false) }),
-		TechRecordRedesignCreateDetails: this.fb.group({ enabled: this.fb.nonNullable.control(false) }),
-	});
+	blocklist = ['test-facility', 'test-facility-as-object']; // List of feature toggles to exclude from the UI
+
+	form = this.fb.group<any>({});
 
 	ngOnInit(): void {
 		if (this.featureToggleService.config()) {
 			for (const [key, { enabled }] of Object.entries(this.featureToggleService.config() ?? {})) {
+				if (this.blocklist.includes(key)) continue;
 				this.form.addControl(
 					key,
 					this.fb.group({ enabled: this.fb.nonNullable.control(enabled) }) as unknown as FormControl,

@@ -6,7 +6,7 @@ import { SearchResultsV2Component } from './search-results-v2/search-results-v2.
 @Component({
 	selector: 'app-search-results-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('TechRecordRedesign')) {
+    @if (featureToggleService.isFeatureEnabled('techrecordredesign')) {
       <app-search-results-v2 />
     } @else {
       <app-multiple-search-results />

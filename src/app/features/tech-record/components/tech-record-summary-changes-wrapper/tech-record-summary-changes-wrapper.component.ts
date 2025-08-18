@@ -6,7 +6,7 @@ import { TechRecordSummaryChangesV2Component } from './tech-record-summary-chang
 @Component({
 	selector: 'app-search-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('TechRecordRedesign')) {
+    @if (featureToggleService.isFeatureEnabled('techrecordredesign')) {
       <app-tech-record-summary-changes-v2 />
     } @else {
       <app-tech-record-summary-changes />

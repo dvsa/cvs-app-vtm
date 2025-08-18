@@ -7,7 +7,7 @@
         Check the following boxes to enable the given beta feature, then click 'save preferences'.
       </div>
 
-      @for (flag of form.controls | keyvalue; track flag) {
+      @for (flag of form.controls | keyvalue; track flag.key) {
         <ng-container formGroupName="{{ flag.key }}">
           <govuk-form-group-checkbox
             label="{{ flag.key }}"

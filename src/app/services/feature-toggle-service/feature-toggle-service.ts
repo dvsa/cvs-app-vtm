@@ -20,7 +20,7 @@ export class FeatureToggleService {
 			.getFeatureFlags()
 			.pipe(take(1))
 			.subscribe((config) => {
-				this.config.set({ ...config, Betas: { enabled: true }, testToggle: { enabled: true } });
+				this.config.set({ ...config });
 			});
 	}
 

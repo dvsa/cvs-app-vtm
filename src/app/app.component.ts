@@ -65,15 +65,15 @@ export class AppComponent implements OnInit, OnDestroy {
 		map(
 			(routeData) =>
 				(routeData && !routeData['isCustomLayout']) ||
-				this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 		)
 	);
 
 	get isTechRecordRedesignFlagEnabled(): boolean {
 		return (
-			this.featureToggleService.isFeatureEnabled('TechRecordRedesign') ||
-			this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreate') ||
-			this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')
+			this.featureToggleService.isFeatureEnabled('techrecordredesign') ||
+			this.featureToggleService.isFeatureEnabled('techrecordredesigncreate') ||
+			this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 		);
 	}
 

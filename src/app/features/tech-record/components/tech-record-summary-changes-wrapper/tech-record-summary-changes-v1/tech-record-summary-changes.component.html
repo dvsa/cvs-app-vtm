@@ -127,7 +127,7 @@
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
-          @if (featureToggleService.isFeatureEnabled('FsPurchasers')) {
+          @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
             <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
           } @else {
           <!-- Old Purchaser section -->
@@ -141,7 +141,7 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          @if (featureToggleService.isFeatureEnabled('FsApprovalType')) {
+          @if (featureToggleService.isFeatureEnabled('fsapprovaltype')) {
             <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
           } @else {
             <app-approval-type [techRecord]="techRecordEdited" />
@@ -194,7 +194,7 @@
       @case ('authorizationIntoServiceSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Authorization into service section -->
-          @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
+          @if (featureToggleService.isFeatureEnabled('fsauthorisationintoservice')) {
             <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
           } @else {
           <!-- Old Authorization into service section -->
@@ -211,7 +211,7 @@
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
 
           <!-- New manufacturer section -->
-          @if (featureToggleService.isFeatureEnabled('FsManufacturer')) {
+          @if (featureToggleService.isFeatureEnabled('fsmanufacturer')) {
             <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
           } @else {
             <!-- Old manufacturer section -->
@@ -235,7 +235,7 @@
       }
       @case ('techRecord') {
         <!-- New last applicant section -->
-        @if (featureToggleService.isFeatureEnabled('FsLastApplicant')) {
+        @if (featureToggleService.isFeatureEnabled('fslastapplicant')) {
           <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
         } @else {
         <!-- Old last applicant section -->
@@ -243,7 +243,7 @@
         }
       }
       @case ('reasonForCreationSection') {
-        @if (featureToggleService.isFeatureEnabled('FsReasonForCreation')) {
+        @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
           <!-- New reason for creation section -->
           <app-reason-for-creation-section [techRecord]="techRecordEdited" mode="summary" />
         } @else {

@@ -6,7 +6,7 @@ import { HydrateNewVehicleRecordV2Component } from './hydrate-new-vehicle-record
 @Component({
 	selector: 'app-hydrate-new-vehicle-record-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails')) {
+    @if (featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
       <app-hydrate-new-vehicle-record-v2 />
     } @else {
       <app-hydrate-new-vehicle-record />

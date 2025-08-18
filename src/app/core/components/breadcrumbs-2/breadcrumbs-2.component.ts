@@ -47,10 +47,10 @@ export class Breadcrumbs2Component {
 		switch (title) {
 			case 'Duplicate VIN found':
 			case 'Create new technical record':
-				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreate');
+				return this.featureToggleService.isFeatureEnabled('techrecordredesigncreate');
 			case 'New record details':
 			case 'Are you sure you want to cancel creating this record?':
-				return this.featureToggleService.isFeatureEnabled('TechRecordRedesignCreateDetails');
+				return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails');
 			default:
 				return false;
 		}

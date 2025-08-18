@@ -33,37 +33,37 @@ describe('feature toggle service', () => {
 
 			await service.loadConfig();
 
-			expect(service.config).toBeTruthy();
-			expect(service.config).toEqual(expectedConfig);
+			expect(service.config()).toBeTruthy();
+			expect(service.config()).toEqual(expectedConfig);
 		});
 	});
 
 	describe('isFeatureEnabled', () => {
 		it('should return false if there is no config', () => {
-			service.config = null;
+			service.config.set(null);
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeFalsy();
 		});
 		it('should return false if the key is not in the config', () => {
-			service.config = {
+			service.config.set({
 				randomKey: { enabled: false },
-			};
+			});
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeFalsy();
 		});
 		it('should return false if the key is in the config but is set to false', () => {
-			service.config = {
+			service.config.set({
 				randomKey: { enabled: false },
 				testToggle: { enabled: false },
-			};
+			});
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeFalsy();
 		});
 		it('should return true if the key is in the config but is set to false so should be hidden', () => {
-			service.config = {
+			service.config.set({
 				randomKey: { enabled: false },
 				testToggle: { enabled: true },
-			};
+			});
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeTruthy();
 		});
