@@ -113,7 +113,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	middleIndex = 0;
 	isEditing = false;
 	scrollPosition: [number, number] = [0, 0];
-	isADRCertGenEnabled = false;
 
 	private axlesService = inject(AxlesService);
 	private errorService = inject(GlobalErrorService);
@@ -137,8 +136,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 
 	ngOnInit(): void {
-		this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
-
 		this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
 			this.isEditing = editing;
 		});
@@ -270,12 +267,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		return (
 			vehicleTemplateMap
 				.get(this.vehicleType)
-				?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
-				.filter((template) => template.name !== (this.isADRCertGenEnabled ? '' : 'adrCertificateSection')) ?? []
+				?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
 		);
 	}
 
 	get sectionTemplatesState$() {
+		console.log(this.technicalRecordService.sectionStates$);
 		return this.technicalRecordService.sectionStates$;
 	}
 
