@@ -11,7 +11,6 @@ import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
-import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
 import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
 import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
 import { TrlWeight } from '../templates/trl/trl-weight.template';
@@ -30,6 +29,10 @@ const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
 const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
 const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
 const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
+const authorisationIntoServiceSection = {
+	name: 'authorizationIntoServiceSection',
+	label: 'Authorisation into service',
+} as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -83,7 +86,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/* 12 */ TrlPurchasers,
 			/* 13 */ dimensionsSection,
 			/* 14 */ PlatesTemplate,
-			/* 15 */ TrlAuthIntoServiceTemplate,
+			/* 15 */ authorisationIntoServiceSection,
 			/* 16 */ ManufacturerTemplate,
 			/* 17 */ adrSection,
 			/* 18 */ adrCertificateSection,
