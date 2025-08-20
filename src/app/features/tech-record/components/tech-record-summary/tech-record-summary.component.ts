@@ -272,7 +272,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	}
 
 	get sectionTemplatesState$() {
-		console.log(this.technicalRecordService.sectionStates$);
 		return this.technicalRecordService.sectionStates$;
 	}
 
