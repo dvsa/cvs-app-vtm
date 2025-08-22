@@ -183,16 +183,23 @@ export class TestResultsEffects {
 						catchError((e) => {
 							const validationsErrors: GlobalError[] = [];
 							if (e.status === 400) {
-								const {
-									error: { errors },
-								} = e;
-								errors.forEach((error: string) => {
-									const field = error.match(/"([^"]+)"/);
+								if ('error' in e.error) {
+									const field = e.error.error.match(/"([^"]+)"/);
 									validationsErrors.push({
-										error,
+										error: e.error.error,
 										anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
 									});
-								});
+								}
+
+								if ('errors' in e.error && Array.isArray(e.error.errors)) {
+									e.error.errors.forEach((error: string) => {
+										const field = error.match(/"([^"]+)"/);
+										validationsErrors.push({
+											error,
+											anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
+										});
+									});
+								}
 							} else if (e.status === 502) {
 								validationsErrors.push({
 									error: 'Internal Server Error, please contact technical support',

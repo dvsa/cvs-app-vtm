@@ -320,7 +320,7 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('updateTestResult$', () => {
-		const newTestResult = { testResultId: '1' } as TestResultModel;
+		const newTestResult = { testResultId: '1', testTypes: [{ testTypeId: '1' }] } as TestResultModel;
 
 		it('should dispatch updateTestResultSuccess with return payload', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
