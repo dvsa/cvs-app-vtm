@@ -226,12 +226,7 @@
       }
       @case ('techRecord') {
         <!-- New last applicant section -->
-        @if (featureToggleService.isFeatureEnabled('fslastapplicant')) {
-          <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-        <!-- Old last applicant section -->
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
+        <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('reasonForCreationSection') {
         @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {

@@ -1,4 +1,3 @@
-import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
@@ -29,6 +28,7 @@ const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
 const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
 const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
 const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
+const lastApplicantSection = { name: 'techRecord', label: 'Last applicant' } as FormNode;
 const authorisationIntoServiceSection = {
 	name: 'authorizationIntoServiceSection',
 	label: 'Authorisation into service',
@@ -58,7 +58,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
 			/*  4 */ HgvAndTrlTypeApprovalTemplate,
-			/*  5 */ ApplicantDetails,
+			/*  5 */ lastApplicantSection,
 			/*  6 */ documentsSection,
 			/*  7 */ bodySection,
 			/*  8 */ HgvWeight,
@@ -76,7 +76,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
 			/*  4 */ HgvAndTrlTypeApprovalTemplate,
-			/*  5 */ ApplicantDetails,
+			/*  5 */ lastApplicantSection,
 			/*  6 */ documentsSection,
 			/*  7 */ lettersSection,
 			/*  8 */ bodySection,
@@ -97,7 +97,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 		[
 			TechRecordReasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
 			/* 5 */ auditSection,
 		],
@@ -107,7 +107,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 		[
 			/* 1 */ TechRecordReasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
 			/* 5 */ auditSection,
 			/* 6 */ adrSection,
@@ -119,7 +119,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 		[
 			TechRecordReasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
 			/* 5 */ auditSection,
 		],
@@ -129,7 +129,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 		[
 			TechRecordReasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
 			/* 5 */ auditSection,
 		],

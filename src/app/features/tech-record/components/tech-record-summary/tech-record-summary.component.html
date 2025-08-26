@@ -217,17 +217,7 @@
         }
         @case ('techRecord') {
           <!-- New Last Applicant section -->
-          @if (featureToggleService.isFeatureEnabled('fslastapplicant')) {
-            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-          } @else {
-            <!-- Old Last Applicant section -->
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
         }
         @case ('reasonForCreationSection') {
           @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
