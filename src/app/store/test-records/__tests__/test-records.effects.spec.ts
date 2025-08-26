@@ -547,35 +547,6 @@ describe('TestResultsEffects', () => {
 				});
 			});
 		});
-
-		it('should dispatch templateSectionsChanged with old sections when feature flag is off', () => {
-			const testResult = createMockTestResult({
-				vehicleType: VehicleTypes.PSV,
-				testTypes: [createMockTestType({ testTypeId: '126' })],
-			});
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
-			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'true' });
-				store.overrideSelector(selectedTestResultState, testResult);
-				store.overrideSelector(isTestTypeOldIvaOrMsva, false);
-
-				actions$ = hot('-a', {
-					a: editingTestResult({
-						testTypeId: '126',
-					}),
-				});
-
-				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(
-							masterTpl.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
-						),
-						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
-					}),
-					c: updateResultOfTest(),
-				});
-			});
-		});
 		it('should return empty section templates if action testResult.vehicleType === undefined', () => {
 			const testResult = createMockTestResult({
 				vehicleType: undefined,
