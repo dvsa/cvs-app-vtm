@@ -254,6 +254,7 @@
             />
             <!-- TC3 Expiry Date -->
             <govuk-form-group-date
+              [id]="'tc3PeriodicExpiryDate_' + i"
               label="TC3: Expiry Date"
               formControlName="tc3PeriodicExpiryDate"
             />
@@ -366,7 +367,7 @@
             <th scope="col" class="govuk-table__header"></th>
           </tr>
           @if (pagination.paginationOptions(); as page) {
-            @for (note of notes.slice(page.start, page.end); track note) {
+            @for (note of notes.slice(page.start, page.end); track note;  let index = $index) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell whitespace-pre-wrap">
                   <span>{{ note.note | defaultNullOrEmpty }}</span>
@@ -374,7 +375,7 @@
                 <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                 <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
                 <td class="govuk-table__cell">
-                  <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + page.start)">
+                  <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
                     Edit
                   </a>
                 </td>

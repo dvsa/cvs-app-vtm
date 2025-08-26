@@ -230,7 +230,7 @@ export class TestResultsEffects {
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
 
 				// tech-debt: feature flag check to be removed when required standard is enabled
-				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredstandards');
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
@@ -298,7 +298,7 @@ export class TestResultsEffects {
 
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
 				// tech-debt: feature flag check to be removed when required standard is enabled
-				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredstandards');
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 

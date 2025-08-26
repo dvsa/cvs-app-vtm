@@ -40,12 +40,12 @@
     @if (selectedItem) {
       <div class="list_container">
         <ol class="list">
-          @for (deficiency of selectedItem.deficiencies; track $index) {
+          @for (deficiency of sortDeficiencyItems(selectedItem.deficiencies); track $index) {
             <li>
               <a
                 class="browse__normal-link govuk-link--no-visited-state"
-                [id]="'selectedDefect-' + deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
-                [attr.data-testid]=" deficiency.deficiencyId + (deficiency.deficiencySubId ? deficiency.deficiencySubId : '')"
+                [id]="'selectedDefect-' + getDeficiencyId(deficiency)"
+                [attr.data-testid]=" getDeficiencyId(deficiency)"
                 (click)="handleSelect(deficiency, types.Deficiency)"
                 >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
                 }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a

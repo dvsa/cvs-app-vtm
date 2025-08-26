@@ -127,7 +127,6 @@ export class TechnicalRecordService {
 			record.techRecord_noOfAxles =
 				record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
 		}
-
 		this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
 	}
 

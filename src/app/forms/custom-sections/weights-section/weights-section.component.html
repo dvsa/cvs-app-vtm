@@ -4,7 +4,7 @@
     <app-weights-section-view />
   }
   @case ('edit') {
-    <app-weights-section-edit [techRecord]="techRecord()" (formChange)="formChange.emit($event)" />
+    <app-weights-section-edit [techRecord]="techRecord()" />
   }
   @case ('summary') {
     <app-weights-section-summary />

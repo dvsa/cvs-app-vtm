@@ -1,3 +1,4 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { KeyValuePipe, ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,12 +15,12 @@ import {
 } from '@models/options.model';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Axle, FitmentCode, ReasonForEditing, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
+import { updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { ReplaySubject, combineLatest, filter, takeUntil, withLatestFrom } from 'rxjs';
+import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
@@ -51,6 +52,7 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 	actions = inject(Actions);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
+	axlesService = inject(AxlesService);
 	referenceDataService = inject(ReferenceDataService);
 	viewportScroller = inject(ViewportScroller);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
@@ -65,10 +67,7 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.prepopulateAxles();
 		this.loadReferenceData();
-		this.checkAxleAdded();
-		this.checkAxleRemoved();
 
 		this.editingReason = this.route.snapshot.data['reason'];
 
@@ -106,7 +105,6 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 	get hgvControls() {
 		return {
 			techRecord_tyreUseCode: this.fb.control(null),
-			techRecord_axles: this.fb.array([]),
 		};
 	}
 
@@ -116,97 +114,17 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
 				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99'),
 			]),
-			techRecord_axles: this.fb.array([]),
 		};
 	}
 
 	get trlControls() {
 		return {
 			techRecord_tyreUseCode: this.fb.control<string | null>(null),
-			techRecord_axles: this.fb.array([]),
 		};
 	}
 
 	get techRecordAxles() {
-		return this.form.get('techRecord_axles') as FormArray;
-	}
-
-	getHGVAxle() {
-		return this.fb.group({
-			axleNumber: this.fb.control<number | null>(null),
-			tyres_tyreCode: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
-			]),
-			tyres_tyreSize: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
-				this.commonValidators.minLength(0, 'Tyre Size must be greater than or equal to 0'),
-			]),
-			tyres_plyRating: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
-				this.commonValidators.minLength(0, 'Ply Rating must be greater than or equal to 0'),
-			]),
-			tyres_fitmentCode: this.fb.control<number | null>(null),
-			tyres_dataTrAxles: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.max(999, 'Data TR Axles must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Data TR Axles must be greater than or equal to 0'),
-			]),
-		});
-	}
-
-	getPSVAxle() {
-		return this.fb.group({
-			axleNumber: this.fb.control<number | null>(null),
-			tyres_tyreCode: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
-			]),
-			tyres_tyreSize: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
-				this.commonValidators.min(0, 'Tyre Size must be greater than or equal to 0'),
-			]),
-			tyres_plyRating: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
-				this.commonValidators.min(0, 'Ply Rating must be greater than or equal to 0'),
-			]),
-			tyres_speedCategorySymbol: this.fb.control<string | null>(null),
-			tyres_fitmentCode: this.fb.control<string | null>(null),
-			tyres_dataTrAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
-			]),
-		});
-	}
-
-	getTRLAxle() {
-		return this.fb.group({
-			axleNumber: this.fb.control<number | null>(null),
-			tyres_tyreCode: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Tyre Code must be less than or equal to 99999'),
-				this.commonValidators.min(0, 'Tyre Code must be greater than or equal to 0'),
-			]),
-			tyres_tyreSize: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.max(12, 'Tyre Size must be less than or equal to 12'),
-				this.commonValidators.min(0, 'Tyre Size must be greater than or equal to 0'),
-			]),
-			tyres_plyRating: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.max(2, 'Ply rating must be less than or equal to 2'),
-				this.commonValidators.min(0, 'Ply rating must be greater than or equal to 0'),
-			]),
-			tyres_fitmentCode: this.fb.control<string | null>(null),
-			tyres_dataTrAxles: this.fb.control<number | null>({ value: null, disabled: true }, [
-				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
-			]),
-		});
-	}
-
-	prepopulateAxles() {
-		this.techRecord().techRecord_axles?.forEach((axle) => {
-			const form = this.getAxleForm();
-			form.patchValue(axle as any, { emitEvent: false });
-			this.techRecordAxles.push(form, { emitEvent: false });
-		});
+		return this.parent.get('techRecord_axles') as FormArray;
 	}
 
 	loadReferenceData() {
@@ -268,38 +186,6 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 		}
 	}
 
-	getAxleForm() {
-		const techRecord = this.techRecord();
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) return this.getTRLAxle();
-		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) return this.getPSVAxle();
-		return this.getHGVAxle();
-	}
-
-	addAxle() {
-		const techRecord = this.techRecord();
-		if (!techRecord.techRecord_axles || techRecord.techRecord_axles.length < 10) {
-			this.techRecordAxles.setErrors(null);
-			this.store.dispatch(addAxle());
-			return;
-		}
-
-		this.techRecordAxles.setErrors({ length: 'Cannot have more than 10 axles' });
-	}
-
-	removeAxle(index: number) {
-		const techRecord = this.techRecord();
-		const minLength = techRecord.techRecord_vehicleType === VehicleTypes.TRL ? 1 : 2;
-		const axles = this.techRecordAxles.value;
-
-		if (Array.isArray(axles) && axles.length > minLength) {
-			this.techRecordAxles.setErrors(null);
-			this.store.dispatch(removeAxle({ index }));
-			return;
-		}
-
-		this.techRecordAxles.setErrors({ length: `Cannot have less than ${minLength} axles` });
-	}
-
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
 
@@ -325,30 +211,6 @@ export class TyresSectionEditComponent extends EditBaseComponent implements OnIn
 
 		this.techRecordAxles.patchValue(axlesClone);
 		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);
-	}
-
-	checkAxleAdded() {
-		this.actions
-			.pipe(ofType(addAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord) {
-					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
-					this.techRecordAxles.push(this.getAxleForm(), { emitEvent: false });
-					this.techRecordAxles.patchValue(axles, { emitEvent: false });
-				}
-			});
-	}
-
-	checkAxleRemoved() {
-		this.actions
-			.pipe(ofType(removeAxle), takeUntil(this.destroy$), withLatestFrom(this.technicalRecordService.techRecord$))
-			.subscribe(([_, techRecord]) => {
-				if (techRecord) {
-					const axles = (techRecord as TechRecordType<'hgv' | 'trl' | 'psv'>).techRecord_axles || [];
-					this.techRecordAxles.removeAt(0, { emitEvent: false });
-					this.techRecordAxles.patchValue(axles, { emitEvent: false });
-				}
-			});
 	}
 
 	checkFitmentCodeHasChanged(changes: SimpleChanges) {

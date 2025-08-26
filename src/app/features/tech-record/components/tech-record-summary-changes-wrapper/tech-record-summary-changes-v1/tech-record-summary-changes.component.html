@@ -1,0 +1,255 @@
+@if (techRecordEdited && techRecordChanges && vehicleType) {
+  <app-banner>
+    <ng-container title>Important</ng-container>
+    <ng-container content>Check your changes before submitting the technical record</ng-container>
+  </app-banner>
+  <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''" />
+  <!-- Vehicle summary -->
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+      <dd class="govuk-summary-list__value" id="test-vin">
+        {{ techRecordEdited.vin | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Trailer ID</dt>
+        <dd class="govuk-summary-list__value" id="test-trailerId">
+          <app-number-plate [vrm]="techRecordEdited.trailerId | defaultNullOrEmpty" />
+        </dd>
+      </div>
+    }
+    @if (techRecordEdited.techRecord_vehicleType !== 'trl') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+        <dd class="govuk-summary-list__value" id="test-primaryVrm">
+          <app-number-plate [vrm]="techRecordEdited.primaryVrm | defaultNullOrEmpty" />
+        </dd>
+      </div>
+    }
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_vehicleType">
+        {{ $any(techRecordEdited.techRecord_vehicleType) | formatVehicleType | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Year of manufacture</dt>
+      <dd class="govuk-summary-list__value" id="test-techRecord_manufactureYear">
+        {{ techRecordEdited.techRecord_manufactureYear | defaultNullOrEmpty }}
+      </dd>
+    </div>
+    @if (techRecordEdited.techRecord_vehicleType === 'psv') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Make</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_chassisMake">
+          {{ techRecordEdited.techRecord_chassisMake | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (techRecordEdited.techRecord_vehicleType === 'psv') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Model</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_chassisModel">
+          {{ techRecordEdited.techRecord_chassisModel | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    }
+    @if (techRecordEdited.techRecord_vehicleType !== 'psv') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Make</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_make">
+          {{
+          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv'
+          ? (techRecordEdited.techRecord_make | defaultNullOrEmpty)
+          : '-'
+          }}
+        </dd>
+      </div>
+    }
+    @if (techRecordEdited.techRecord_vehicleType !== 'psv') {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Model</dt>
+        <dd class="govuk-summary-list__value" id="test-techRecord_model">
+          {{
+          techRecordEdited.techRecord_vehicleType === 'trl' || techRecordEdited.techRecord_vehicleType === 'hgv'
+          ? (techRecordEdited.techRecord_model | defaultNullOrEmpty)
+          : '-'
+          }}
+        </dd>
+      </div>
+    }
+  </dl>
+  <app-accordion-control [sectionState]="sectionTemplatesState$ | async">
+    @for (section of vehicleTemplates; track section; let i = $index) {
+      @if (techRecordChangesService.hasSectionChanged(section.name)) {
+        <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }" />
+        </app-accordion>
+      }
+    }
+  </app-accordion-control>
+  <ng-template #accordion let-sectionName="sectionName" let-section="section">
+    @switch (sectionName) {
+      @case ('notesSection') {
+        <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
+      }
+      @case ('auditSection') {
+        <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
+      }
+      @case ('techRecordSummary') {
+        <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
+      }
+      @case ('bodySection') {
+        <app-body-section [techRecord]="techRecordEdited" mode="summary" />
+      }
+      @case ('dimensionsSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl'
+          ) {
+          <!-- Dimensions section -->
+          <app-dimensions-section [techRecord]="techRecordEdited" mode="summary" />
+        }
+      }
+
+      @case ('documentsSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'trl' ||
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv'
+          ) {
+          <app-documents-section [techRecord]="techRecordEdited" mode="summary"></app-documents-section>
+        }
+      }
+      @case ('purchaserSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+          <!-- New Purchaser section -->
+          @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
+            <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+          } @else {
+          <!-- Old Purchaser section -->
+            <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
+          }
+        }
+      }
+      @case ('approvalSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl'
+          ) {
+          @if (featureToggleService.isFeatureEnabled('fsapprovaltype')) {
+            <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
+          } @else {
+            <app-approval-type [techRecord]="techRecordEdited" />
+          }
+        }
+      }
+      @case ('brakesSection'){
+        @if (techRecordEdited.techRecord_vehicleType === 'psv' || techRecordEdited.techRecord_vehicleType === 'trl') {
+          <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+        }
+      }
+      @case('dda') {
+        @if (techRecordEdited.techRecord_vehicleType === 'psv') {
+          <!-- New Tyres section -->
+          <app-dda-section
+            [techRecord]="techRecordEdited"
+            [mode]="'summary'"
+          ></app-dda-section>
+        }
+      }
+      @case ('tyreSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl'
+          ) {
+          <app-tyres-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+        }
+      }
+      @case ('weightsSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'psv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl'
+          ) {
+          @if (deletedAxles.length > 0) {
+            <div class="govuk-warning-text">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+              <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                You removed an axle.
+              </strong>
+            </div>
+          }
+
+          <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+        }
+      }
+
+      @case ('authorizationIntoServiceSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+          <!-- New Authorization into service section -->
+          <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
+        }
+      }
+
+      @case('manufacturerSection') {
+        @if (techRecordEdited.techRecord_vehicleType === 'trl') {
+
+          <!-- New manufacturer section -->
+          @if (featureToggleService.isFeatureEnabled('fsmanufacturer')) {
+            <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
+          } @else {
+            <!-- Old manufacturer section -->
+            <app-dynamic-form-group
+              [data]="techRecordEdited"
+              [template]="section"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          }
+        }
+      }
+
+      @case ('adrSection') {
+        @if (
+          techRecordEdited.techRecord_vehicleType === 'hgv' ||
+          techRecordEdited.techRecord_vehicleType === 'trl' ||
+          techRecordEdited.techRecord_vehicleType === 'lgv'
+          ) {
+          <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
+        }
+      }
+      @case ('techRecord') {
+        <!-- New last applicant section -->
+        @if (featureToggleService.isFeatureEnabled('fslastapplicant')) {
+          <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
+        } @else {
+        <!-- Old last applicant section -->
+          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
+        }
+      }
+      @case ('reasonForCreationSection') {
+        @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
+          <!-- New reason for creation section -->
+          <app-reason-for-creation-section [techRecord]="techRecordEdited" mode="summary" />
+        } @else {
+          <!-- Old reason for creation section -->
+          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
+        }
+      }
+      @default {
+        <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
+      }
+    }
+  </ng-template>
+}
+
+<app-button-group>
+  <app-button [id]="'submit'" (clicked)="submit()">Submit</app-button>
+  <app-button [id]="'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
+</app-button-group>

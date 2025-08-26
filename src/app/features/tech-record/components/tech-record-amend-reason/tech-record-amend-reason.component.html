@@ -6,7 +6,8 @@
     [options]="reasons"
   ></app-radio-group>
 
-  <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
-    Continue
-  </button>
+<app-button-group>
+  <app-button [id]="'submit'" type="submit" (clicked)="handleSubmit()">Continue</app-button>
+  <app-button [id]="'back-button'" design="link" (clicked)="navigateBack()">Back</app-button>
+</app-button-group>
 </form>

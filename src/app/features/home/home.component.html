@@ -40,7 +40,15 @@
         linkText="Cannot see me in any environment but develop"
         description="I exist to check the feature toggle is working. If you can see me in INT, pre prod or prod, there is an issue"
         linkId="hidden-prod-button"
-        *featureToggleName="'testToggle'"
+        *featureToggleName="'testtoggle'"
+      ></app-home-button>
+
+      <app-home-button
+        url="betas"
+        linkText="Opt-in to betas"
+        description="Manage which experimental features are enabled for this service. These will be changed based on your feedback."
+        linkId="betas-opt-in-button"
+        *featureToggleName="'betas'"
       ></app-home-button>
     </div>
   </div>

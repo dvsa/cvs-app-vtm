@@ -7,6 +7,7 @@ export enum RootRoutes {
 	CURRENT_TECH_RECORD = 'tech-records/:systemNumber/:createdTimestamp',
 	REFERENCE_DATA = 'reference-data',
 	FEATURE_TOGGLE = 'feature-toggle',
+	BETAS = 'betas',
 	ERROR = 'error',
 	WILDCARD = '**',
 }
@@ -41,7 +42,9 @@ export enum TechRecordRoutes {
 
 export enum TechRecordCreateRoutes {
 	NEW_RECORD_DETAILS = 'new-record-details',
+	NEW_RECORD_DETAILS_CANCEL = 'cancel',
 	TYRE_SEARCH = 'tyre-search/:axleNumber',
+	DUPLICATE_VIN = 'duplicate-vin',
 }
 
 export enum TechRecordCreateBatchRoutes {

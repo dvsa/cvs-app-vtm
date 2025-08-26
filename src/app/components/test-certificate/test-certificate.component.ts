@@ -26,7 +26,7 @@ export class TestCertificateComponent implements OnInit, OnDestroy {
 	private destroyed$ = new Subject<void>();
 
 	ngOnInit(): void {
-		const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+		const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredstandards');
 		combineLatest([this.store.pipe(select(toEditOrNotToEdit)), this.store.pipe(select(isTestTypeOldIvaOrMsva))])
 			.pipe(takeUntil(this.destroyed$))
 			.subscribe(([testResult, isOldIvaOrMsva]) => {

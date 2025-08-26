@@ -49,12 +49,12 @@
         </tbody>
       </table>
     }
-    <!-- Tyre Use Code (HGV/TRL Only) -->
+    <!-- Tyre use code (HGV/TRL Only) -->
     @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
       <dl class="govuk-summary-list" >
         @if (tcs.hasChanged('techRecord_tyreUseCode')) {
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Tyre Use Code</dt>
+            <dt class="govuk-summary-list__key">Tyre use code</dt>
             <dd class="govuk-summary-list__value" id="test-techRecord_tyreUseCode">
               {{ vm.techRecord_tyreUseCode | defaultNullOrEmpty }}
             </dd>

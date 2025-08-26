@@ -1,4 +1,9 @@
 :host {
+  footer {
+    border-top: 10px #1d70b8 solid;
+    padding-top: 30px;
+  }
+
   .govuk-footer__copyright-logo {
     display: inline-block;
     min-width: 125px;

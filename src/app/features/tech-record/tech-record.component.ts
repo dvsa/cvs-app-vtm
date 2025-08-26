@@ -7,12 +7,12 @@ import { RoleRequiredDirective } from '@directives/app-role-required/app-role-re
 import { Roles } from '@models/roles.enum';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
-import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
+import { VehicleTechnicalRecordWrapperComponent } from './components/vehicle-technical-record-wrapper/vehicle-technical-record-wrapper.component';
 
 @Component({
 	selector: 'app-tech-record',
 	templateUrl: './tech-record.component.html',
-	imports: [RoleRequiredDirective, VehicleTechnicalRecordComponent, AsyncPipe],
+	imports: [RoleRequiredDirective, VehicleTechnicalRecordWrapperComponent, AsyncPipe],
 })
 export class TechRecordComponent implements OnInit {
 	techRecordService = inject(TechnicalRecordService);

@@ -1,5 +1,5 @@
 @if (techRecord$ | async; as techRecord) {
-  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [techRecord]="techRecord" />
+  <app-vehicle-technical-record-wrapper *appRoleRequired="roles.TechRecordView" [techRecord]="techRecord" />
 } @else {
   <h1 class="govuk-heading-l">Vehicle not found</h1>
   <p class="govuk-body">Check the vehicle registration mark, trailer ID or vehicle identification number</p>

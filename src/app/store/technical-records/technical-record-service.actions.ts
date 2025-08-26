@@ -110,9 +110,6 @@ export const unarchiveTechRecord = createAction(
 export const unarchiveTechRecordSuccess = createOutcomeAction('unarchiveTechRecord', true);
 export const unarchiveTechRecordFailure = createOutcomeAction('unarchiveTechRecord', false);
 
-export const addAxle = createAction(`${prefix} addAxle`);
-export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
-
 export const removeTC3TankInspection = createAction(`${prefix} removeTC3TankInspection`, props<{ index: number }>());
 export const removeUNNumber = createAction(`${prefix} removeUNNumber`, props<{ index: number }>());
 
