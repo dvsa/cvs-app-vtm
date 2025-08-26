@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -107,4 +108,47 @@ export class GlobalErrorService {
 
 		return errors;
 	};
+
+	extractGlobalErrorsFromErrorResponse(e: HttpErrorResponse) {
+		const errors: GlobalError[] = [];
+
+		if (e.status === 400) {
+			if (typeof e.error === 'string') {
+				errors.push({
+					error: e.error,
+				});
+
+				return errors;
+			}
+
+			if ('error' in e.error) {
+				const field = e.error.error.match(/"([^"]+)"/);
+				errors.push({
+					error: e.error.error,
+					anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
+				});
+
+				return errors;
+			}
+
+			if ('errors' in e.error && Array.isArray(e.error.errors)) {
+				e.error.errors.forEach((error: string) => {
+					const field = error.match(/"([^"]+)"/);
+					errors.push({
+						error,
+						anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
+					});
+				});
+
+				return errors;
+			}
+		} else if (e.status === 502) {
+			errors.push({
+				error: 'Internal Server Error, please contact technical support',
+				anchorLink: '',
+			});
+		}
+
+		return errors;
+	}
 }
