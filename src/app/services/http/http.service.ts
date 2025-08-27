@@ -22,11 +22,6 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { CompleteTechRecordPUT } from '@models/vehicle/completeTechRecordPUT';
-import { CompleteTechRecords } from '@models/vehicle/completeTechRecords';
-import { TechRecordArchiveAndProvisionalPayload } from '@models/vehicle/techRecordArchiveAndProvisionalPayload';
-import { TechRecordPOST } from '@models/vehicle/techRecordPOST';
-import { TechRecordPUT } from '@models/vehicle/techRecordPUT';
 import { withCache } from '@ngneat/cashew';
 import { cloneDeep } from 'lodash';
 import { lastValueFrom, timeout } from 'rxjs';
@@ -39,21 +34,6 @@ export class HttpService {
 	private static readonly GetGzippedPayloadHeaders = new HttpHeaders({
 		'x-accept-encoding': 'base64+gzip',
 	});
-
-	addProvisionalTechRecord(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
-		if (body === null || body === undefined) {
-			throw new Error('Required parameter body was null or undefined when calling addProvisionalTechRecord.');
-		}
-
-		if (systemNumber === null || systemNumber === undefined) {
-			throw new Error('Required parameter systemNumber was null or undefined when calling addProvisionalTechRecord.');
-		}
-
-		return this.http.post<CompleteTechRecordPUT>(
-			`${environment.VTM_API_URI}/vehicles/add-provisional/${encodeURIComponent(String(systemNumber))}`,
-			body
-		);
-	}
 
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
 		return this.http.patch<TechRecordType<'get'>>(
@@ -90,21 +70,6 @@ export class HttpService {
 		);
 	}
 
-	archiveTechRecordStatus(body: TechRecordArchiveAndProvisionalPayload, systemNumber: string) {
-		if (body === null || body === undefined) {
-			throw new Error('Required parameter body was null or undefined when calling archiveTechRecordStatus.');
-		}
-
-		if (systemNumber === null || systemNumber === undefined) {
-			throw new Error('Required parameter systemNumber was null or undefined when calling archiveTechRecordStatus.');
-		}
-
-		return this.http.post<CompleteTechRecordPUT>(
-			`${environment.VTM_API_URI}/vehicles/archive/${encodeURIComponent(String(systemNumber))}`,
-			body
-		);
-	}
-
 	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
 		return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
@@ -134,6 +99,7 @@ export class HttpService {
 	fetchTestStations() {
 		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`, {
 			context: withCache({ key: CacheKeys.TEST_STATIONS }),
+			headers: HttpService.GetGzippedPayloadHeaders,
 		});
 	}
 
@@ -203,33 +169,6 @@ export class HttpService {
 			.pipe(timeout(timeoutMs));
 	}
 
-	getTechRecords(searchIdentifier: string, metadata?: boolean, status?: string, searchCriteria?: string) {
-		if (searchIdentifier === null || searchIdentifier === undefined) {
-			throw new Error('Required parameter searchIdentifier was null or undefined when calling getTechRecords.');
-		}
-
-		let params = new HttpParams();
-
-		if (metadata !== undefined && metadata !== null) {
-			params = params.set('metadata', metadata);
-		}
-
-		if (status !== undefined && status !== null) {
-			params = params.set('status', status);
-		}
-
-		if (searchCriteria !== undefined && searchCriteria !== null) {
-			params = params.set('searchCriteria', searchCriteria);
-		}
-
-		return this.http.get<CompleteTechRecords>(
-			`${environment.VTM_API_URI}/vehicles/${encodeURIComponent(String(searchIdentifier))}/tech-records`,
-			{
-				params,
-			}
-		);
-	}
-
 	getTechRecordV3(systemNumber: string, createdTimestamp: string) {
 		return this.http.get<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
@@ -276,13 +215,9 @@ export class HttpService {
 
 		let params = new HttpParams();
 
-		if (fields) {
-			params = params.set('fields', fields.join(','));
-		}
-
-		if (vehicleType !== undefined && vehicleType !== null) {
-			params = params.set('vehicleType', vehicleType);
-		}
+		// these are checked above so safe to set without check
+		params = params.set('fields', fields.join(','));
+		params = params.set('vehicleType', vehicleType);
 
 		if (vehicleSize !== undefined && vehicleSize !== null) {
 			params = params.set('vehicleSize', vehicleSize);
@@ -315,14 +250,6 @@ export class HttpService {
 		return this.http.get<TestTypeInfo>(`${environment.VTM_API_URI}/test-types/${encodeURIComponent(String(id))}`, {
 			params,
 		});
-	}
-
-	postTechRecords(body: TechRecordPOST) {
-		if (body === null || body === undefined) {
-			throw new Error('Required parameter body was null or undefined when calling postTechRecords.');
-		}
-
-		return this.http.post<any>(`${environment.VTM_API_URI}/vehicles`, body);
 	}
 
 	promoteTechRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string) {
@@ -547,23 +474,6 @@ export class HttpService {
 		});
 	}
 
-	testResultsArchiveTestResultIdPut(body: CompleteTestResults, testResultId: string) {
-		if (body === null || body === undefined) {
-			throw new Error('Required parameter body was null or undefined when calling testResultsArchiveTestResultIdPut.');
-		}
-
-		if (testResultId === null || testResultId === undefined) {
-			throw new Error(
-				'Required parameter testResultId was null or undefined when calling testResultsArchiveTestResultIdPut.'
-			);
-		}
-
-		return this.http.put<TestResults>(
-			`${environment.VTM_API_URI}/test-results/archive/${encodeURIComponent(String(testResultId))}`,
-			body
-		);
-	}
-
 	testResultsSystemNumberGet(
 		systemNumber: string,
 		status?: string,
@@ -643,29 +553,6 @@ export class HttpService {
 		return this.http.patch<TechRecordType<'get'>>(
 			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
 			techRecord
-		);
-	}
-
-	updateTechRecords(body: TechRecordPUT, systemNumber: string, oldStatusCode?: string) {
-		if (body === null || body === undefined) {
-			throw new Error('Required parameter body was null or undefined when calling updateTechRecords.');
-		}
-
-		if (systemNumber === null || systemNumber === undefined) {
-			throw new Error('Required parameter systemNumber was null or undefined when calling updateTechRecords.');
-		}
-
-		let params = new HttpParams();
-		if (oldStatusCode !== undefined && oldStatusCode !== null) {
-			params = params.set('oldStatusCode', oldStatusCode);
-		}
-
-		return this.http.put<CompleteTechRecordPUT>(
-			`${environment.VTM_API_URI}/vehicles/${encodeURIComponent(String(systemNumber))}`,
-			body,
-			{
-				params,
-			}
 		);
 	}
 
