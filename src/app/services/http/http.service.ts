@@ -36,7 +36,7 @@ import { FeatureConfig } from '../feature-toggle-service/feature-toggle-service'
 export class HttpService {
 	private readonly http = inject(HttpClient);
 	private static readonly TIMEOUT = 30000;
-	private static readonly gzippedHeader = new HttpHeaders({
+	private static readonly GetGzippedPayloadHeaders = new HttpHeaders({
 		'x-accept-encoding': 'base64+gzip',
 	});
 
@@ -112,7 +112,7 @@ export class HttpService {
 
 	fetchDefects() {
 		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, {
-			headers: HttpService.gzippedHeader,
+			headers: HttpService.GetGzippedPayloadHeaders,
 			context: withCache({ key: CacheKeys.DEFECTS }),
 		});
 	}
@@ -124,7 +124,10 @@ export class HttpService {
 	fetchRequiredStandards(euVehicleCategory: string) {
 		return this.http.get<DefectGETRequiredStandards>(
 			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`,
-			{ context: withCache({ key: CacheKeys.REQUIRED_STANDARDS + euVehicleCategory }) }
+			{
+				headers: HttpService.GetGzippedPayloadHeaders,
+				context: withCache({ key: CacheKeys.REQUIRED_STANDARDS + euVehicleCategory }),
+			}
 		);
 	}
 
@@ -235,6 +238,7 @@ export class HttpService {
 
 	getTestTypes(typeOfTest?: string) {
 		let params = new HttpParams();
+
 		if (typeOfTest !== undefined && typeOfTest !== null) {
 			params = params.set('typeOfTest', typeOfTest);
 		}
@@ -242,6 +246,7 @@ export class HttpService {
 		return this.http.request<TestTypesTaxonomy>('get', `${environment.VTM_API_URI}/test-types`, {
 			params,
 			context: withCache({ key: CacheKeys.TEST_TYPES }),
+			headers: HttpService.GetGzippedPayloadHeaders,
 		});
 	}
 
