@@ -257,15 +257,11 @@ export class TestResultsEffects {
 				}
 
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-				const isIVAorMSVATest =
-					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
-
 				const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
-				const testTypeGroupString = isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
 				const tpl =
-					testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)
-						? vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES]
+					testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
+						? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
 						: vehicleTpl['default'];
 
 				const mergedForms = {} as TestResultModel;
