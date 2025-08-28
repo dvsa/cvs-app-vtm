@@ -141,11 +141,7 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          @if (featureToggleService.isFeatureEnabled('fsapprovaltype')) {
-            <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
-          } @else {
-            <app-approval-type [techRecord]="techRecordEdited" />
-          }
+          <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
         }
       }
       @case ('brakesSection'){

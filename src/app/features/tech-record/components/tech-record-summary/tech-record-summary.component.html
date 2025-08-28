@@ -82,30 +82,14 @@
           }
         }
         @case ('approvalSection') {
-          <!-- New Type Approval section -->
-          @if (featureToggleService.isFeatureEnabled('fsapprovaltype')) {
-            @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||
               techRecordCalculated.techRecord_vehicleType === 'hgv' ||
               techRecordCalculated.techRecord_vehicleType === 'psv') {
-              <app-type-approval-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'">
-              </app-type-approval-section>
-            }
-          } @else {
-            @if (
-              techRecordCalculated.techRecord_vehicleType === 'trl' ||
-              techRecordCalculated.techRecord_vehicleType === 'hgv' ||
-              techRecordCalculated.techRecord_vehicleType === 'psv'
-              ) {
-              <app-approval-type
-                [techRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-approval-type>
-            }
+            <app-type-approval-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'">
+            </app-type-approval-section>
           }
-          <!-- Old Type Approval section -->
         }
         @case ('brakesSection'){
           @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||techRecordCalculated.techRecord_vehicleType === 'psv') {

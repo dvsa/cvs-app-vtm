@@ -9,7 +9,6 @@ import {
 	inject,
 	input,
 	output,
-	viewChild,
 	viewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,10 +26,6 @@ import {
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { AdrCertsSectionComponent } from '@forms/custom-sections/adr-certs-section/adr-certs-section.component';
 import { AdrSectionComponent } from '@forms/custom-sections/adr-section/adr-section.component';
-import {
-	ApprovalTypeComponent,
-	ApprovalTypeComponent as ApprovalTypeComponent_1,
-} from '@forms/custom-sections/approval-type/approval-type.component';
 import { AuditSectionComponent } from '@forms/custom-sections/audit-section/audit-section.component';
 import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-section.component';
 import { BodySectionComponent } from '@forms/custom-sections/body-section/body-section.component';
@@ -82,7 +77,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		TRLPurchasersSectionComponent,
 		DimensionsSectionComponent,
 		TypeApprovalSectionComponent,
-		ApprovalTypeComponent_1,
 		TyresSectionComponent,
 		WeightsSectionComponent,
 		PlatesSectionComponent,
@@ -103,7 +97,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
 	readonly sections = viewChildren(DynamicFormGroupComponent);
-	readonly approvalType = viewChild(ApprovalTypeComponent);
 	readonly isFormDirty = output<boolean>();
 	readonly isFormInvalid = output<boolean>();
 	readonly isCreateMode = input.required<boolean>();
@@ -279,30 +272,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 		return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
 	}
 
-	get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-		const commonCustomSections = this.addCustomSectionsBasedOffFlag();
-
-		switch (this.vehicleType) {
-			case VehicleTypes.LGV:
-			case VehicleTypes.PSV:
-			case VehicleTypes.TRL:
-			case VehicleTypes.HGV: {
-				return commonCustomSections;
-			}
-			default:
-				return [];
-		}
-	}
-
-	addCustomSectionsBasedOffFlag(): CustomFormGroup[] {
-		const sections = [];
-		const approvalType = this.approvalType();
-		if (approvalType && !this.featureToggleService.isFeatureEnabled('fsapprovaltype') && approvalType?.form) {
-			sections.push(approvalType.form);
-		}
-		return sections;
-	}
-
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	handleFormState(event: any): void {
 		const isPrimitiveArray = (a: unknown, b: unknown) =>
@@ -313,9 +282,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	}
 
 	checkForms(): boolean {
-		const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections()
-			?.map((section) => section.form)
-			.concat(this.customSectionForms);
+		const forms: Array<CustomFormGroup | CustomFormArray | FormGroup> = this.sections()?.map((section) => section.form);
 
 		this.isFormDirty.emit(forms.some((form) => form.dirty));
 

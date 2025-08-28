@@ -20,7 +20,6 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { AdrSectionComponent } from '@forms/custom-sections/adr-section/adr-section.component';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { AuditSectionComponent } from '@forms/custom-sections/audit-section/audit-section.component';
 import { AuthorisationIntoServiceSectionComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-section.component';
 import { BodySectionComponent } from '@forms/custom-sections/body-section/body-section.component';
@@ -81,7 +80,6 @@ import { Subject, combineLatest, map, take, takeUntil } from 'rxjs';
 		DimensionsSectionComponent,
 		TRLPurchasersSectionComponent,
 		TypeApprovalSectionComponent,
-		ApprovalTypeComponent,
 		TyresSectionComponent,
 		WeightsSectionComponent,
 		AdrSectionComponent,
