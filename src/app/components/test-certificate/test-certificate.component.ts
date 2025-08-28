@@ -31,8 +31,10 @@ export class TestCertificateComponent implements OnInit, OnDestroy {
 			.subscribe(([testResult, isOldIvaOrMsva]) => {
 				if (testResult) {
 					const { testResult: result, testTypeId: id } = testResult.testTypes[0];
+					const isLECWithoutLinkedTest = id === '201';
 					const isIvaOrMsvaTest = TEST_TYPES_GROUP1_SPEC_TEST.includes(id) || TEST_TYPES_GROUP5_SPEC_TEST.includes(id);
-					this.certNotNeeded = isOldIvaOrMsva || (isIvaOrMsvaTest && result !== resultOfTestEnum.fail);
+					this.certNotNeeded =
+						isOldIvaOrMsva || isLECWithoutLinkedTest || (isIvaOrMsvaTest && result !== resultOfTestEnum.fail);
 				}
 			});
 	}
