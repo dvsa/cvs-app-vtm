@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -26,6 +25,7 @@ import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
@@ -67,6 +67,7 @@ export class TestResultsEffects {
 	private dfs = inject(DynamicFormService);
 	private featureToggleService = inject(FeatureToggleService);
 	private analyticsService = inject(AnalyticsService);
+	private globalErrorService = inject(GlobalErrorService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -122,28 +123,8 @@ export class TestResultsEffects {
 					take(1),
 					map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
 					catchError((e) => {
-						const validationsErrors: GlobalError[] = [];
-						if (e.status === 400) {
-							const {
-								error: { errors },
-							} = e;
-							// eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-unused-expressions
-							Array.isArray(errors)
-								? errors.forEach((error: string) => {
-										const field = error.match(/"([^"]+)"/);
-										validationsErrors.push({
-											error,
-											anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
-										});
-									})
-								: validationsErrors.push({ error: e.error });
-						} else if (e.status === 502) {
-							validationsErrors.push({
-								error: 'Internal Server Error, please contact technical support',
-								anchorLink: '',
-							});
-						}
-						return of(createTestResultFailed({ errors: validationsErrors }));
+						const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
+						return of(createTestResultFailed({ errors }));
 					})
 				);
 			})
@@ -181,25 +162,8 @@ export class TestResultsEffects {
 							updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })
 						),
 						catchError((e) => {
-							const validationsErrors: GlobalError[] = [];
-							if (e.status === 400) {
-								const {
-									error: { errors },
-								} = e;
-								errors.forEach((error: string) => {
-									const field = error.match(/"([^"]+)"/);
-									validationsErrors.push({
-										error,
-										anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
-									});
-								});
-							} else if (e.status === 502) {
-								validationsErrors.push({
-									error: 'Internal Server Error, please contact technical support',
-									anchorLink: '',
-								});
-							}
-							return of(updateTestResultFailed({ errors: validationsErrors }));
+							const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
+							return of(updateTestResultFailed({ errors }));
 						})
 					);
 			})
@@ -229,16 +193,12 @@ export class TestResultsEffects {
 				}
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
 
-				// tech-debt: feature flag check to be removed when required standard is enabled
-				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredstandards');
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
 				const vehicleTpl = masterTpl[`${vehicleType}`];
 				const testTypeGroupString =
-					(!isRequiredStandardsEnabled || isOldIVAorMSVAtest) && isIVAorMSVATest
-						? `${testTypeGroup}OldIVAorMSVA`
-						: testTypeGroup;
+					isOldIVAorMSVAtest && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
 				let tpl;
 				if (testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)) {
@@ -297,18 +257,11 @@ export class TestResultsEffects {
 				}
 
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-				// tech-debt: feature flag check to be removed when required standard is enabled
-				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredstandards');
-				const isIVAorMSVATest =
-					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
-
 				const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
-				const testTypeGroupString =
-					!isRequiredStandardsEnabled && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
 				const tpl =
-					testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)
-						? vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES]
+					testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
+						? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
 						: vehicleTpl['default'];
 
 				const mergedForms = {} as TestResultModel;
