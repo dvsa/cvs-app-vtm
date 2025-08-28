@@ -12,6 +12,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { Store } from '@ngrx/store';
 
@@ -37,6 +38,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	fb = inject(FormBuilder);
+	globalErrorService = inject(GlobalErrorService);
 
 	techRecord$ = this.store.selectSignal(selectTechRecord);
 	sectionStates$ = this.store.selectSignal(selectSectionState);
@@ -58,7 +60,11 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 		this.router.navigate([TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL], { relativeTo: this.route });
 	}
 
-	onCreateNewRecord(): void {}
+	onCreateNewRecord(): void {
+		if (this.form.invalid) {
+			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
+		}
+	}
 
 	private handleEmptyEditingTechRecord(): void {
 		if (!this.techRecord$()) {
