@@ -15,7 +15,7 @@ export class AccordionComponent {
 	store = inject(Store);
 
 	readonly title = input<string | undefined>('');
-  readonly description = input<string | undefined>('');
+	readonly description = input<string | undefined>('');
 	readonly id = input<string | number>('');
 
 	isExpanded = model<boolean | null | undefined>(false);

@@ -10,6 +10,7 @@ import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/forma
 import { selectSectionState, selectTechRecord } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { Store } from '@ngrx/store';
@@ -28,12 +29,14 @@ import { Store } from '@ngrx/store';
 		TagComponent,
 		FormatVehicleTypePipe,
 		GeneralVehicleDetailsComponent,
+		ReactiveFormsModule,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit {
 	store = inject(Store);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
+	fb = inject(FormBuilder);
 
 	techRecord$ = this.store.selectSignal(selectTechRecord);
 	sectionStates$ = this.store.selectSignal(selectSectionState);
@@ -41,6 +44,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 	readonly TagType = TagType;
 	readonly VehicleTypes = VehicleTypes;
 	readonly StatusCodes = StatusCodes;
+	form = this.fb.group({});
 
 	ngOnInit(): void {
 		this.handleEmptyEditingTechRecord();
