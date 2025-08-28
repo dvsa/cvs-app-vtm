@@ -11,6 +11,7 @@ import { selectSectionState, selectTechRecord } from '@/src/app/store/technical-
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -26,6 +27,7 @@ import { Store } from '@ngrx/store';
 		DefaultNullOrEmpty,
 		TagComponent,
 		FormatVehicleTypePipe,
+		GeneralVehicleDetailsComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit {
