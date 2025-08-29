@@ -61,6 +61,8 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 	}
 
 	onCreateNewRecord(): void {
+		this.form.markAllAsTouched();
+
 		if (this.form.invalid) {
 			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
 		}

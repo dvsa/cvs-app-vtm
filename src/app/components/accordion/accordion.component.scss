@@ -8,9 +8,22 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 0 0.5rem;
+  padding: 0 20px;
 }
 
 .dotted-bottom-border {
   border-bottom: 1px dotted #b1b4b6 !important; /* Use GOV.UK grey or your preferred color */
+}
+
+:host {
+  .govuk-accordion__section-toggle,
+  .govuk-accordion__section-heading-text,
+  .govuk-accordion__section-summary {
+    margin-bottom: 0;
+  }
+
+  .govuk-accordion__section .govuk-accordion__section-button {
+    padding: 15px 0!important;
+    border-bottom: 0;
+  }
 }
