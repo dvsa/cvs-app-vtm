@@ -62,7 +62,7 @@
       label="Body type"
       [defaultOption]="'Select body type'"
       [width]="FormNodeWidth.L"
-      [options]="getBodyTypes(form.get('techRecord_vehicleConfiguration')?.getRawValue() ?? '', form.get('techRecord_vehicleType')?.getRawValue() ?? '')"
+      [options]="bodyTypes"
     >
     </govuk-form-group-select>
   }

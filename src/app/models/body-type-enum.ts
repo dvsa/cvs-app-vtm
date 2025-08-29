@@ -69,7 +69,7 @@ const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	[BodyTypeCode.O, BodyTypeDescription.OTHER],
 ]);
 
-const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
+export const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	[BodyTypeCode.B, BodyTypeDescription.BOX],
 	[BodyTypeCode.C, BodyTypeDescription.REFRIGERATED],
 	[BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
@@ -93,7 +93,7 @@ const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	[BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
 ]);
 
-const articulatedHgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
+export const articulatedHgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	[BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
 ]);
 

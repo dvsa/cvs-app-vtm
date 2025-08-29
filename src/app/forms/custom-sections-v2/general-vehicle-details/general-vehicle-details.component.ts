@@ -10,23 +10,25 @@ import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-grou
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import {
-  BodyTypeCode,
-  BodyTypeDescription,
-  vehicleBodyTypeCodeMap,
-  vehicleBodyTypeDescriptionMap,
+	BodyTypeCode,
+	BodyTypeDescription,
+	articulatedHgvBodyTypeCodeMap,
+	hgvBodyTypeCodeMap,
+	vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
 import {
-  ALL_EU_VEHICLE_CATEGORY_OPTIONS,
-  ALL_VEHICLE_CONFIGURATION_OPTIONS,
-  CAR_EU_VEHICLE_CATEGORY_OPTIONS, FUNCTION_CODE_OPTIONS,
-  HGV_EU_VEHICLE_CATEGORY_OPTIONS,
-  HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
-  LGV_EU_VEHICLE_CATEGORY_OPTIONS,
-  MultiOptions,
-  PSV_EU_VEHICLE_CATEGORY_OPTIONS,
-  SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-  TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-  TRL_VEHICLE_CONFIGURATION_OPTIONS,
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	ALL_VEHICLE_CONFIGURATION_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	FUNCTION_CODE_OPTIONS,
+	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	MultiOptions,
+	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_VEHICLE_CONFIGURATION_OPTIONS,
 } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -55,6 +57,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly TagType = TagType;
 	protected readonly VehicleTypes = VehicleTypes;
+
+	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 
 	optionsService = inject(MultiOptionsService);
@@ -62,7 +66,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
-  // TODO properly type this at some point
+	// TODO properly type this at some point
 	form = this.fb.group<any>({
 		// base properties that belong to all vehicle types
 		// techRecord_manufactureYear: this.fb.control<number | null>(null, [
@@ -82,11 +86,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		// Attach all form controls to parent
 		this.init(this.form);
 
-    this.loadOptions();
+		this.loadOptions();
 		this.loadBodyMakes();
 
-    const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
-    vehicleConfigurationControl?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.handleVehicleConfigurationChange())
+		const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
+		vehicleConfigurationControl?.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(() => this.handleVehicleConfigurationChange());
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -174,15 +180,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return !!this.form.get(formControlName);
 	}
 
-	getBodyTypes(vehicleConfiguration: string, vehicleType: string): MultiOptions {
-		if (vehicleType === 'hgv') {
-			vehicleType = `${vehicleConfiguration}Hgv`;
-		}
-		const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
-		const values = [...optionsMap.values()];
-		return getOptionsFromEnum(values.sort());
-	}
-
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
@@ -211,7 +208,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		}
 	}
 
-  // Returns a local copy of the bodyMake options
+	// Returns a local copy of the bodyMake options
 	loadBodyMakes() {
 		switch (this.techRecord().techRecord_vehicleType) {
 			case VehicleTypes.HGV:
@@ -226,72 +223,86 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		}
 	}
 
-  handleVehicleConfigurationChange() {
-    const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
-    const vehicleConfigurationValue = vehicleConfigurationControl?.getRawValue() as VehicleConfiguration;
-    if (!vehicleConfigurationValue) {
-      return;
-    }
-    if (this.techRecord()?.techRecord_vehicleType === VehicleTypes.HGV) {
-    // When vehicle configuration is set to articulated, update the body type description and code
-    if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
-      this.form.patchValue({
-        techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
-        techRecord_bodyType_code: BodyTypeCode.A,
-      });
-    }
+	handleVehicleConfigurationChange() {
+		const vehicleType = this.techRecord()?.techRecord_vehicleType;
+		const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
+		const vehicleConfigurationValue = vehicleConfigurationControl?.getRawValue() as VehicleConfiguration;
 
-    // When vehicle configuration is rigid, clear artic body description and code
-    const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
-    const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
-    if (
-      vehicleConfigurationValue === VehicleConfiguration.RIGID &&
-      (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED)
-    ) {
-      this.form.patchValue({
-        techRecord_bodyType_description: null,
-        techRecord_bodyType_code: null,
-      });
-    }
-  }
+		if (!vehicleConfigurationValue) {
+			return;
+		}
 
-  const functionCodes: Record<string, string> = {
-    rigid: 'R',
-    articulated: 'A',
-    'semi-trailer': 'A',
-  };
+		if (vehicleType === VehicleTypes.HGV) {
+			if (vehicleConfigurationValue === null) {
+				this.bodyTypes = [];
+			}
 
-  const functionCode = functionCodes[vehicleConfigurationValue];
+			// When vehicle configuration is set to articulated, update the body type description and code
+			if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
+				this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat());
 
-  if (functionCode) {
-    this.form.patchValue({
-      techRecord_functionCode: functionCode,
-    });
-  }
-  }
+				this.form.patchValue({
+					techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
+					techRecord_bodyType_code: BodyTypeCode.A,
+				});
+			}
 
-  // Makes network requests to grab the body make options
-  loadOptions(): void {
-    if (this.techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
-      this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
-    } else if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-      this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
-    } else {
-      this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
-    }
-  }
+			// When vehicle configuration is rigid, clear artic body description and code
+			if (vehicleConfigurationValue === VehicleConfiguration.RIGID) {
+				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat());
 
-  handleBodyTypeDescriptionChange(value: string) {
-    const vehicleType = this.techRecord().techRecord_vehicleType;
-    const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
-    const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
-      BodyTypeDescription,
-      BodyTypeCode
-    >;
-    this.form.patchValue({
-      techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
-    });
-  }
+				const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
+				const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
 
-  protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;
+				if (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
+					this.form.patchValue({
+						techRecord_bodyType_description: null,
+						techRecord_bodyType_code: null,
+					});
+				}
+			}
+		} else {
+			const options = vehicleBodyTypeDescriptionMap.get(vehicleType)?.values() || [];
+			this.bodyTypes = getOptionsFromEnum(Array.from(options).flat());
+		}
+
+		const functionCodes: Record<string, string> = {
+			rigid: 'R',
+			articulated: 'A',
+			'semi-trailer': 'A',
+		};
+
+		const functionCode = functionCodes[vehicleConfigurationValue];
+
+		if (functionCode) {
+			this.form.patchValue({
+				techRecord_functionCode: functionCode,
+			});
+		}
+	}
+
+	// Makes network requests to grab the body make options
+	loadOptions(): void {
+		if (this.techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+			this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
+		} else if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+			this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+		} else {
+			this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+		}
+	}
+
+	handleBodyTypeDescriptionChange(value: string) {
+		const vehicleType = this.techRecord().techRecord_vehicleType;
+		const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
+		const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
+			BodyTypeDescription,
+			BodyTypeCode
+		>;
+		this.form.patchValue({
+			techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
+		});
+	}
+
+	protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;
 }
