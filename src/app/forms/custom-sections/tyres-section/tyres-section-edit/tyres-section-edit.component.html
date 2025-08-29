@@ -49,7 +49,7 @@
           <th scope="col" class="govuk-table__header" id="tyre-table-remove-header"></th>
         </tr>
       </thead>
-      
+
       @if (parent.get('techRecord_axles')) {
         <ng-container [formGroup]="parent">
           <tbody class="govuk-table__body" formArrayName="techRecord_axles">
@@ -98,6 +98,7 @@
                       [width]="FormNodeWidth.UNSET"
                       [options]="SPEED_CATEGORY_SYMBOL_OPTIONS"
                       (blur)="getTyresRefData(i + 1)"
+                      [allowNull]="true"
                     ></govuk-form-group-select>
                   </td>
                 }
@@ -108,6 +109,7 @@
                     [width]="FormNodeWidth.XS"
                     [options]="FITMENT_CODE_OPTIONS"
                     (blur)="getTyresRefData(i + 1)"
+                    [allowNull]="true"
                   ></govuk-form-group-select>
                 </td>
                 <td class="govuk-table__cell">
@@ -116,10 +118,10 @@
                   </a>
                 </td>
                 <td class="govuk-table__cell">
-                  <a 
-                    class="axleButton" 
-                    id="tyres_remove-{{ i + 1 }}" 
-                    href="javascript:void(0)" 
+                  <a
+                    class="axleButton"
+                    id="tyres_remove-{{ i + 1 }}"
+                    href="javascript:void(0)"
                     (click)="axlesService.removeAxle(parent, techRecord().techRecord_vehicleType, i)">
                     Remove
                   </a>
@@ -133,11 +135,11 @@
       <tfoot>
         <tr>
           <td colspan="100%">
-            <a 
-              class="axleButton" 
-              href="javascript:void(0)" 
-              role="button" 
-              id="tyresAddAxle" 
+            <a
+              class="axleButton"
+              href="javascript:void(0)"
+              role="button"
+              id="tyresAddAxle"
               (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)">
               Add axle
             </a>
@@ -163,6 +165,7 @@
         [width]="FormNodeWidth.UNSET"
         [options]="HGV_TYRE_USE_CODE_OPTIONS"
         [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+        [allowNull]="true"
       ></govuk-form-group-select>
     }
 
@@ -173,6 +176,7 @@
         [width]="FormNodeWidth.UNSET"
         [options]="TRL_TYRE_USE_CODE_OPTIONS"
         [tags]="[{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+        [allowNull]="true"
       ></govuk-form-group-select>
     }
   </div>

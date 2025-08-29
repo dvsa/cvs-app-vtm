@@ -28,7 +28,9 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 
 	readonly options = input.required<MultiOptions>();
 
-	readonly allowNull = input(true);
+	readonly allowNull = input(false);
+
+	readonly defaultOption = input('');
 
 	get style(): string {
 		const width = this.width();

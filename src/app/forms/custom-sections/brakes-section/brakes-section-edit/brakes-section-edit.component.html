@@ -35,6 +35,7 @@
                     id="brakes_springBrakeParking-{{ i + 1 }}"
                     formControlName="brakes_springBrakeParking"
                     [options]="booleanOptions"
+                    [allowNull]="true"
                     ></govuk-form-group-select>
                   </td>
                 </tr>
@@ -148,7 +149,7 @@
     @if (parent.get('techRecord_axles')) {
       <div class="checkboxes" [formGroup]="parent">
         <label class="govuk-label govuk-label--m" for="parking-brake">Parking brake</label>
-  
+
         <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
           @for (axle of axles.controls; track axle; let i = $index) {
             <ng-container formGroupName="{{ i }}">

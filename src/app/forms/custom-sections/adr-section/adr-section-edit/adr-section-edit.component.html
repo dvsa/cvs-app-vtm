@@ -47,6 +47,7 @@
         label="ADR body type"
         formControlName="techRecord_adrDetails_vehicleDetails_type"
         [options]="adrBodyTypesOptions"
+        [allowNull]="true"
       />
       <!-- Used on international journeys -->
       <govuk-form-group-radio
@@ -246,6 +247,7 @@
               label="TC3: Inspection Type"
               formControlName="tc3Type"
               [options]="tc3InspectionOptions"
+              [allowNull]="true"
             />
             <!-- TC3 Certificate Number -->
             <govuk-form-group-input
