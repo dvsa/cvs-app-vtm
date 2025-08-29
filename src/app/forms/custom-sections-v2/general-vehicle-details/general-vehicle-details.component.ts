@@ -16,17 +16,17 @@ import {
   vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
 import {
-	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
-	ALL_VEHICLE_CONFIGURATION_OPTIONS,
-	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
-	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
-	HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
-	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
-	MultiOptions,
-	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
-	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-	TRL_VEHICLE_CONFIGURATION_OPTIONS,
+  ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+  ALL_VEHICLE_CONFIGURATION_OPTIONS,
+  CAR_EU_VEHICLE_CATEGORY_OPTIONS, FUNCTION_CODE_OPTIONS,
+  HGV_EU_VEHICLE_CATEGORY_OPTIONS,
+  HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
+  LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+  MultiOptions,
+  PSV_EU_VEHICLE_CATEGORY_OPTIONS,
+  SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+  TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+  TRL_VEHICLE_CONFIGURATION_OPTIONS,
 } from '@models/options.model';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -292,4 +292,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
       techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
     });
   }
+
+  protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;
 }
