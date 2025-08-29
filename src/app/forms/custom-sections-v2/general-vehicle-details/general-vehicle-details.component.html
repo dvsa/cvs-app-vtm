@@ -1,1 +1,65 @@
-GENERAL VEHICLE DETAILS
+<div [formGroup]="form">
+  <!--  Date of First Registration -->
+  @if (shouldDisplayFormControl('techRecord_regnDate')) {
+    <govuk-form-group-date
+      label="Date of first registration"
+      formControlName="techRecord_regnDate"
+    ></govuk-form-group-date>
+  }
+  @if (shouldDisplayFormControl('techRecord_manufactureYear')) {
+    <govuk-form-group-input
+      label="Year of manufacture"
+      formControlName="techRecord_manufactureYear"
+      [width]="FormNodeWidth.XS"
+      type="number"
+    ></govuk-form-group-input>
+  }
+  @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+  techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
+    <govuk-form-group-input
+      type="text"
+      formControlName="techRecord_brakes_dtpNumber"
+      label="DTp number"
+      [width]="FormNodeWidth.L"
+    ></govuk-form-group-input>
+  }
+
+  @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
+
+    <govuk-form-group-select
+      label="Vehicle configuration"
+      [options]="vehicleConfigurationOptions"
+      formControlName="techRecord_vehicleConfiguration"
+    ></govuk-form-group-select>
+  }
+
+
+  @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+  techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
+    <govuk-form-group-select
+      type="text"
+      formControlName="techRecord_make"
+      label="Body make"
+      [options]="$any(bodyMakes$ | async) ?? []"
+
+      [width]="FormNodeWidth.L"
+    >
+    </govuk-form-group-select>
+    <govuk-form-group-input
+      type="text"
+      formControlName="techRecord_model"
+      label="Body model"
+      [width]="FormNodeWidth.L"
+    >
+    </govuk-form-group-input>
+
+    <govuk-form-group-select
+      type="text"
+      formControlName="techRecord_bodyType_description"
+      label="Body type"
+      [width]="FormNodeWidth.L"
+      [options]="bodyTypes"
+    >
+    </govuk-form-group-select>
+  }
+</div>
