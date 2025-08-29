@@ -9,7 +9,12 @@ import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import {
+  BodyTypeCode,
+  BodyTypeDescription,
+  vehicleBodyTypeCodeMap,
+  vehicleBodyTypeDescriptionMap,
+} from '@models/body-type-enum';
 import {
 	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
 	ALL_VEHICLE_CONFIGURATION_OPTIONS,
@@ -28,9 +33,9 @@ import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
-import { ReplaySubject, of } from 'rxjs';
+import { ReplaySubject, of, takeUntil } from 'rxjs';
 
-type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
+// type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
 @Component({
 	selector: 'app-general-vehicle-details',
@@ -57,7 +62,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
-	form = this.fb.group<VehicleSectionForm>({
+  // TODO properly type this at some point
+	form = this.fb.group<any>({
 		// base properties that belong to all vehicle types
 		// techRecord_manufactureYear: this.fb.control<number | null>(null, [
 		//   this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
@@ -76,7 +82,11 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		// Attach all form controls to parent
 		this.init(this.form);
 
+    this.loadOptions();
 		this.loadBodyMakes();
+
+    const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
+    vehicleConfigurationControl?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.handleVehicleConfigurationChange())
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -164,11 +174,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return !!this.form.get(formControlName);
 	}
 
-	get bodyTypes(): MultiOptions {
-		let vehicleType: string = this.techRecord().techRecord_vehicleType;
-
-		if (this.techRecord().techRecord_vehicleType === 'hgv') {
-			vehicleType = `${this.techRecord().techRecord_vehicleConfiguration}Hgv`;
+	getBodyTypes(vehicleConfiguration: string, vehicleType: string): MultiOptions {
+		if (vehicleType === 'hgv') {
+			vehicleType = `${vehicleConfiguration}Hgv`;
 		}
 		const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
 		const values = [...optionsMap.values()];
@@ -203,6 +211,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		}
 	}
 
+  // Returns a local copy of the bodyMake options
 	loadBodyMakes() {
 		switch (this.techRecord().techRecord_vehicleType) {
 			case VehicleTypes.HGV:
@@ -216,4 +225,71 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				break;
 		}
 	}
+
+  handleVehicleConfigurationChange() {
+    const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
+    const vehicleConfigurationValue = vehicleConfigurationControl?.getRawValue() as VehicleConfiguration;
+    if (!vehicleConfigurationValue) {
+      return;
+    }
+    if (this.techRecord()?.techRecord_vehicleType === VehicleTypes.HGV) {
+    // When vehicle configuration is set to articulated, update the body type description and code
+    if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
+      this.form.patchValue({
+        techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
+        techRecord_bodyType_code: BodyTypeCode.A,
+      });
+    }
+
+    // When vehicle configuration is rigid, clear artic body description and code
+    const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
+    const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
+    if (
+      vehicleConfigurationValue === VehicleConfiguration.RIGID &&
+      (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED)
+    ) {
+      this.form.patchValue({
+        techRecord_bodyType_description: null,
+        techRecord_bodyType_code: null,
+      });
+    }
+  }
+
+  const functionCodes: Record<string, string> = {
+    rigid: 'R',
+    articulated: 'A',
+    'semi-trailer': 'A',
+  };
+
+  const functionCode = functionCodes[vehicleConfigurationValue];
+
+  if (functionCode) {
+    this.form.patchValue({
+      techRecord_functionCode: functionCode,
+    });
+  }
+  }
+
+  // Makes network requests to grab the body make options
+  loadOptions(): void {
+    if (this.techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
+    } else if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    } else {
+      this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+    }
+  }
+
+  handleBodyTypeDescriptionChange(value: string) {
+    const vehicleType = this.techRecord().techRecord_vehicleType;
+    const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
+    const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
+      BodyTypeDescription,
+      BodyTypeCode
+    >;
+    this.form.patchValue({
+      techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
+    });
+  }
 }

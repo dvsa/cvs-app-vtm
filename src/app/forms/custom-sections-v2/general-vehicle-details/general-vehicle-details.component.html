@@ -62,22 +62,22 @@
       label="Body type"
       [defaultOption]="'Select body type'"
       [width]="FormNodeWidth.L"
-      [options]="bodyTypes"
+      [options]="getBodyTypes(form.get('techRecord_vehicleConfiguration')?.getRawValue() ?? '', form.get('techRecord_vehicleType')?.getRawValue() ?? '')"
     >
     </govuk-form-group-select>
   }
 
-  @if (shouldDisplayFormControl('techRecord_functionCode')) {
-    <govuk-form-group-select
-      type="text"
-      formControlName="techRecord_functionCode"
-      label="Function code"
-      [defaultOption]="'Select function code'"
-      [width]="FormNodeWidth.L"
-      [options]="bodyTypes"
-    >
-    </govuk-form-group-select>
-  }
+<!--  @if (shouldDisplayFormControl('techRecord_functionCode')) {-->
+<!--    <govuk-form-group-select-->
+<!--      type="text"-->
+<!--      formControlName="techRecord_functionCode"-->
+<!--      label="Function code"-->
+<!--      [defaultOption]="'Select function code'"-->
+<!--      [width]="FormNodeWidth.L"-->
+<!--      [options]="bodyTypes"-->
+<!--    >-->
+<!--    </govuk-form-group-select>-->
+<!--  }-->
 
   @if (shouldDisplayFormControl('techRecord_conversionRefNo')) {
     <govuk-form-group-input
