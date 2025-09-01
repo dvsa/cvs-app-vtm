@@ -155,20 +155,9 @@
         @case ('platesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Plates Section -->
-            @if (featureToggleService.isFeatureEnabled('fsplates')) {
-              <app-plates-section
+            <app-plates-section
                 [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
-                <app-plates
-                  [techRecord]="techRecordCalculated"
-                  [isEditing]="(isEditing$ | async) ?? false"
-                  (formChange)="handleFormState($event)"
-                ></app-plates>
-              }
-            }
-            <!-- Old Plates Section -->
           }
         }
 

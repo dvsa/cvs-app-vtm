@@ -192,7 +192,7 @@ export class CreateTechRecordV2Component implements OnInit, OnChanges {
 			vin: this.form.controls.vin.value,
 			techRecord_statusCode: this.form.controls.vehicleStatus.value,
 			techRecord_vehicleType: this.form.controls.vehicleType.value,
-			trailerId: this.form.controls.vehicleType.value === 'trl' ? this.form.controls.vrmTrm.value : undefined,
+			trailerId: this.form.controls.vehicleType.value === 'trl' ? this.form.controls.vrmTrm.value || '' : undefined,
 			primaryVrm: this.form.controls.vehicleType.value === 'trl' ? undefined : this.form.controls.vrmTrm.value || '',
 		} as unknown as TechRecordType<'put'>;
 

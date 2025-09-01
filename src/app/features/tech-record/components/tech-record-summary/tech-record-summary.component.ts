@@ -43,7 +43,6 @@ import { LettersSectionComponent } from '@forms/custom-sections/letters-section/
 import { ManufacturerSectionComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section.component';
 import { NotesSectionComponent } from '@forms/custom-sections/notes-section/notes-section.component';
 import { PlatesSectionComponent } from '@forms/custom-sections/plates-section/plates-section.component';
-import { PlatesComponent } from '@forms/custom-sections/plates/plates.component';
 import { TRLPurchasersSectionComponent } from '@forms/custom-sections/trl-purchasers-section/trl-purchasers-section.component';
 import { TypeApprovalSectionComponent } from '@forms/custom-sections/type-approval-section/type-approval-section.component';
 import { TyresSectionComponent } from '@forms/custom-sections/tyres-section/tyres-section.component';
@@ -86,7 +85,6 @@ import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 		TyresSectionComponent,
 		WeightsSectionComponent,
 		PlatesSectionComponent,
-		PlatesComponent,
 		AdrSectionComponent,
 		LastApplicantSectionComponent,
 		AsyncPipe,
