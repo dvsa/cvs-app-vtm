@@ -347,8 +347,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				}
 			}
 		} else {
-			const options = vehicleBodyTypeDescriptionMap.get(vehicleType)?.values() || [];
-			this.bodyTypes = getOptionsFromEnum(Array.from(options).flat());
+			if (vehicleType === VehicleTypes.TRL) {
+				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat());
+			} else {
+				const options = vehicleBodyTypeDescriptionMap.get(vehicleType)?.values() || [];
+				this.bodyTypes = getOptionsFromEnum(Array.from(options).flat());
+			}
 		}
 
 		const functionCodes: Record<string, string> = {
