@@ -19,8 +19,8 @@ export class FeatureToggleService {
 	config = signal<FeatureConfig | null>(null);
 
 	async loadConfig() {
-		//this.loadRemoteConfig();
-		await this.loadLocalConfig();
+		await this.loadRemoteConfig();
+		// await this.loadLocalConfig();
 	}
 
 	async loadLocalConfig() {
