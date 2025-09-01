@@ -7,14 +7,16 @@ import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectSectionState, selectTechRecord } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { Store } from '@ngrx/store';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-hydrate-new-vehicle-record-v2',
@@ -33,11 +35,12 @@ import { Store } from '@ngrx/store';
 		ReactiveFormsModule,
 	],
 })
-export class HydrateNewVehicleRecordV2Component implements OnInit {
+export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	fb = inject(FormBuilder);
+	techRecordService = inject(TechnicalRecordService);
 	globalErrorService = inject(GlobalErrorService);
 
 	techRecord$ = this.store.selectSignal(selectTechRecord);
@@ -46,10 +49,18 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 	readonly TagType = TagType;
 	readonly VehicleTypes = VehicleTypes;
 	readonly StatusCodes = StatusCodes;
+
 	form = this.fb.group({});
+	destroy = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
+		this.handleFormChanges();
 		this.handleEmptyEditingTechRecord();
+	}
+
+	ngOnDestroy(): void {
+		this.destroy.next(true);
+		this.destroy.complete();
 	}
 
 	onChange(): void {
@@ -66,6 +77,13 @@ export class HydrateNewVehicleRecordV2Component implements OnInit {
 		if (this.form.invalid) {
 			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
 		}
+	}
+
+	private handleFormChanges(): void {
+		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
+			// TODO: remove any type
+			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as any);
+		});
 	}
 
 	private handleEmptyEditingTechRecord(): void {

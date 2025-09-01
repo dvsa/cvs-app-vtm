@@ -39,6 +39,7 @@
       type="text"
       formControlName="techRecord_make"
       label="Body make"
+      [defaultOption]="'Select body make'"
       [options]="$any(bodyMakes$ | async) ?? []"
       [width]="FormNodeWidth.L"
     >
@@ -84,6 +85,7 @@
       formControlName="techRecord_conversionRefNo"
       label="Conversion reference number"
       type="text"
+      appToUppercase
       [width]="FormNodeWidth.L"
     ></govuk-form-group-input>
   }

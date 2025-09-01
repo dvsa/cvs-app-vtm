@@ -42,7 +42,7 @@
     }
 
     @if (defaultOption()) {
-      <option [selected]="true" [value]="null">{{ defaultOption() }}</option>
+      <option [selected]="true" [ngValue]="null">{{ defaultOption() }}</option>
     }
     @for (option of options(); track option) {
       <option [ngValue]="option.value">{{ option.label }}</option>

@@ -1,3 +1,4 @@
+import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -50,6 +51,7 @@ import { ReplaySubject, of, takeUntil } from 'rxjs';
 		AsyncPipe,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupRadioComponent,
+		ToUppercaseDirective,
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -67,18 +69,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	techRecord = input.required<V3TechRecordModel>();
 
 	// TODO properly type this at some point
-	form = this.fb.group<any>({
-		// base properties that belong to all vehicle types
-		// techRecord_manufactureYear: this.fb.control<number | null>(null, [
-		//   this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
-		//   this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-		//   this.commonValidators.xYearsAfterCurrent(
-		//     1,
-		//     `Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-		//   ),
-		// ]),
-		// techRecord_statusCode: this.fb.control<string | null>(null),
-	});
+	form = this.fb.group<any>({});
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
@@ -93,6 +84,11 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		vehicleConfigurationControl?.valueChanges
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.handleVehicleConfigurationChange());
+
+		const bodyTypeControl = this.form.get('techRecord_bodyType_description');
+		bodyTypeControl?.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(() => this.handleBodyTypeDescriptionChange());
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -142,6 +138,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
+			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
@@ -149,13 +146,16 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
-					'Conversion reference number max length 10 uppercase letters or numbers'
+					'Conversion reference number must only include numbers and letters A to Z'
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null),
+			techRecord_noOfAxles: this.fb.control<number | null>(null, [
+				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+			]),
 		};
 	}
 
@@ -292,7 +292,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		}
 	}
 
-	handleBodyTypeDescriptionChange(value: string) {
+	handleBodyTypeDescriptionChange() {
+		const bodyType = this.form.get('techRecord_bodyType_description')?.getRawValue();
 		const vehicleType = this.techRecord().techRecord_vehicleType;
 		const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
 		const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
@@ -300,7 +301,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			BodyTypeCode
 		>;
 		this.form.patchValue({
-			techRecord_bodyType_code: bodyTypes?.get(value as BodyTypeDescription),
+			techRecord_bodyType_code: bodyTypes?.get(bodyType as BodyTypeDescription),
 		});
 	}
 
