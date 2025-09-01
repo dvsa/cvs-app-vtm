@@ -211,7 +211,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+				this.commonValidators.range(2, 10, 'Number of axles must be between 1 and 10'),
 			]),
 		};
 	}
