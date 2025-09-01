@@ -122,6 +122,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.HGV, disabled: true }),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
@@ -169,6 +170,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.TRL, disabled: true }),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
@@ -211,7 +213,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 1 and 10'),
+				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
 			]),
 		};
 	}
