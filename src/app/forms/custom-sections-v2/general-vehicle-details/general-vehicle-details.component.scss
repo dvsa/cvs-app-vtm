@@ -6,6 +6,7 @@
   govuk-form-group-radio::ng-deep .govuk-form-group .govuk-fieldset__heading,
   govuk-form-group-select::ng-deep .govuk-form-group label,
   govuk-form-group-checkbox::ng-deep .govuk-form-group label,
+  govuk-checkbox-group::ng-deep .govuk-form-group .govuk-fieldset__heading,
   govuk-form-group-textarea::ng-deep .govuk-form-group label
   {
     @extend .govuk-label--s;

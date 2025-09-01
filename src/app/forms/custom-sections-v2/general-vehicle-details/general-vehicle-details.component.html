@@ -33,6 +33,13 @@
     ></govuk-form-group-select>
   }
 
+  @if (shouldDisplayFormControl('techRecord_vehicleSubclass')) {
+    <govuk-checkbox-group
+      label="Vehicle subclass"
+      formControlName="techRecord_vehicleSubclass"
+      [options]="VEHICLE_SUBCLASS_OPTIONS"
+    ></govuk-checkbox-group>
+  }
 
   @if (shouldDisplayFormControl('techRecord_make')) {
     <govuk-form-group-select

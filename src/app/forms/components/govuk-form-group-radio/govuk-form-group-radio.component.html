@@ -48,6 +48,7 @@
             [class.govuk-radios__input--error]="hasError"
             [(ngModel)]="value"
             (ngModelChange)="onChange($event)"
+            [disabled]="disabled()"
             (blur)="onTouched()"
             />
           <label

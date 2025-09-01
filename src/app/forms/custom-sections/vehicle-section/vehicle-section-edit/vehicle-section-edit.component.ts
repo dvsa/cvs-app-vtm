@@ -280,7 +280,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.max(99, 'Number of axles must be less than or equal to 99'),
+				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
 			]),
 		};
 	}
