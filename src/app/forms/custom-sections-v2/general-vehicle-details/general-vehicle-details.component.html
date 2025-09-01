@@ -7,6 +7,16 @@
       formControlName="techRecord_regnDate"
     ></govuk-form-group-date>
   }
+
+  @if (shouldDisplayFormControl('techRecord_manufactureMonth')) {
+    <govuk-form-group-select
+      label="Month of manufacture"
+      formControlName="techRecord_manufactureMonth"
+      [options]="MONTHS"
+      [defaultOption]="'Select month'"
+    ></govuk-form-group-select>
+  }
+
   @if (shouldDisplayFormControl('techRecord_manufactureYear')) {
     <govuk-form-group-input
       label="Year of manufacture"
@@ -15,6 +25,15 @@
       type="number"
     ></govuk-form-group-input>
   }
+
+  @if (shouldDisplayFormControl('techRecord_firstUseDate')) {
+    <govuk-form-group-date
+      label="Date of first use"
+      [hint]="'For example, 27 3 2024'"
+      formControlName="techRecord_firstUseDate"
+    ></govuk-form-group-date>
+  }
+
   @if (shouldDisplayFormControl('techRecord_brakes_dtpNumber')) {
     <govuk-form-group-input
       type="text"
@@ -30,6 +49,15 @@
       [defaultOption]="'Select configuration'"
       [options]="vehicleConfigurationOptions"
       formControlName="techRecord_vehicleConfiguration"
+    ></govuk-form-group-select>
+  }
+
+  @if (shouldDisplayFormControl('techRecord_frameDescription')) {
+    <govuk-form-group-select
+      label="Frame description (optional)"
+      formControlName="techRecord_frameDescription"
+      [options]="FRAME_DESCRIPTION_OPTIONS"
+      [defaultOption]="'Select frame description'"
     ></govuk-form-group-select>
   }
 
