@@ -167,6 +167,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	get lgvFields(): Partial<Record<keyof TechRecordType<'lgv'>, FormControl>> {
 		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.LGV, disabled: true }),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
