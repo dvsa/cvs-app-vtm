@@ -107,8 +107,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			//   return this.trlFields;
 			// case VehicleTypes.SMALL_TRL:
 			//   return this.smallTrlFields;
-			// case VehicleTypes.LGV:
-			//   return this.lgvFields;
+			case VehicleTypes.LGV:
+				return this.lgvFields;
 			case VehicleTypes.CAR:
 				return this.carFields;
 			// case VehicleTypes.MOTORCYCLE:
@@ -161,6 +161,30 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
 				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+			]),
+		};
+	}
+
+	get lgvFields(): Partial<Record<keyof TechRecordType<'lgv'>, FormControl>> {
+		return {
+			techRecord_regnDate: this.fb.control<string | null>(null, [
+				this.commonValidators.date('Date of first registration'),
+			]),
+			techRecord_manufactureYear: this.fb.control<number | null>(null, [
+				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
+				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.xYearsAfterCurrent(
+					1,
+					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
+				),
+			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+				this.commonValidators.required('Vehicle configuration is required'),
+			]),
+			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
+			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.N1, disabled: true }),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [
+				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
 			]),
 		};
 	}
