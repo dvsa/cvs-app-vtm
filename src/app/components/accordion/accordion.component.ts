@@ -17,6 +17,7 @@ export class AccordionComponent {
 	readonly title = input<string | undefined>('');
 	readonly description = input<string | undefined>('');
 	readonly id = input<string | number>('');
+	readonly type = input<AccordionType>('default');
 
 	isExpanded = model<boolean | null | undefined>(false);
 
@@ -36,3 +37,5 @@ export class AccordionComponent {
 		if (sectionName) this.store.dispatch(removeSectionState({ section: sectionName }));
 	}
 }
+
+export type AccordionType = 'default' | 'condensed';

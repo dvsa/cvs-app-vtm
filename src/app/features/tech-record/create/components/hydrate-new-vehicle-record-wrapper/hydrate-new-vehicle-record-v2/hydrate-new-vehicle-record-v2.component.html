@@ -145,7 +145,13 @@
                   <ng-template #template>
                     <!-- TODO: Replace accordions here -->
                     <ng-container [formGroup]="form">
-                      <app-accordion [id]="'general-vehicle-details'" [title]="'General vehicle details'" [description]="'Date of registration, body details, EU category'" [isExpanded]="false">
+                      <app-accordion 
+                        [id]="'general-vehicle-details'" 
+                        [title]="'General vehicle details'" 
+                        [description]="'Date of registration, body details, EU category'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
                     </ng-container>
