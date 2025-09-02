@@ -341,7 +341,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				break;
 
 			case VehicleTypes.TRL:
-				this.bodyTypes = getOptionsFromEnum([...hgvBodyTypeCodeMap.values()].flat());
+				this.bodyTypes = getOptionsFromEnum([...trlBodyTypeCodeMap.values()].flat());
 				break;
 
 			default:
