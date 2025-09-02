@@ -236,7 +236,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
