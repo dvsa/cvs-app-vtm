@@ -53,3 +53,12 @@
   display: block;
   padding: .5rem 0 !important;
 }
+
+.autocomplete__input::placeholder {
+  color: black;
+  font-family: 'GDS Transport', Arial, sans-serif;
+}
+
+#techRecord_brakes_dtpNumber.autocomplete__input {
+  @extend .govuk-input--width-10;
+}

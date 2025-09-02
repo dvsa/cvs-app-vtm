@@ -17,13 +17,20 @@ import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/genera
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { BodyTypeCode, BodyTypeDescription, trlBodyTypeCodeMap } from '@models/body-type-enum';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
+import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { of } from 'rxjs';
+
+const mockRefDataService = {
+	getAll$: jest.fn(),
+	getReferencePsvMakeDataLoading$: jest.fn(),
+};
 
 describe('GeneralVehicleDetailsComponent', () => {
 	let technicalRecordService: TechnicalRecordService;
@@ -52,6 +59,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
 				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: ReferenceDataService, useValue: mockRefDataService },
 			],
 		}).compileComponents();
 
@@ -280,6 +288,22 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(formSpy).toHaveBeenCalledWith({
 				techRecord_bodyType_code: 'a',
 			});
+		});
+	});
+
+	describe('handleDTpNumberChange', () => {
+		it('should patch the form and call cdr.detectChanges', () => {
+			let psvMake: ReferenceDataModelBase;
+			store
+				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, '1234'))
+				.subscribe((value: ReferenceDataModelBase) => {
+					const cdrSpy = jest.spyOn(component.cdr, 'detectChanges');
+					const formSpy = jest.spyOn(component.form, 'patchValue');
+					psvMake = value;
+					component.handleDTpNumberChange(psvMake);
+					expect(cdrSpy).toHaveBeenCalled();
+					expect(formSpy).toHaveBeenCalled();
+				});
 		});
 	});
 });
