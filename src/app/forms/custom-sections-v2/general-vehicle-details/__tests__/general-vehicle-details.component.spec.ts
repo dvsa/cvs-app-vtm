@@ -14,8 +14,9 @@ import { ActivatedRoute } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
+import { BodyTypeCode, BodyTypeDescription, trlBodyTypeCodeMap } from '@models/body-type-enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -76,6 +77,24 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(parentFormSpy).toHaveBeenCalled();
 			expect(loadOptions).toHaveBeenCalled();
 			expect(loadBodyMakes).toHaveBeenCalled();
+		});
+
+		it('should set bodyTypes to trailer options when vehicle type is TRL', () => {
+			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.TRL);
+			const trailerBodyTypes = [BodyTypeDescription.FLAT, BodyTypeDescription.ARTICULATED];
+			jest.spyOn(trlBodyTypeCodeMap, 'values').mockReturnValue(trailerBodyTypes.values());
+			const trailerOptions = [
+				{ label: 'Flat', value: 'flat' },
+				{ label: 'Articulated', value: 'articulated' },
+			];
+			jest.spyOn<any, any>(getOptionsFromEnum, 'apply').mockReturnValue(trailerOptions);
+
+			const vehicleType = component.getVehicleType();
+			if (vehicleType === VehicleTypes.TRL) {
+				component.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()));
+			}
+
+			expect(component.bodyTypes).toEqual(trailerOptions);
 		});
 	});
 
