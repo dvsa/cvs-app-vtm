@@ -9,8 +9,13 @@
   .condensed {
     .govuk-accordion__section-toggle,
     .govuk-accordion__section-heading-text,
-    .govuk-accordion__section-summary {
+    .govuk-accordion__section-summary,
+    .govuk-accordion__section-summary-focus {
       margin-bottom: 0;
+    }
+
+    .govuk-accordion__section-summary-focus {
+      display: block;
     }
   
     .govuk-accordion__section .govuk-accordion__section-button {
