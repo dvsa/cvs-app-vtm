@@ -88,7 +88,7 @@ export const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	[BodyTypeCode.R, BodyTypeDescription.REFUSE],
 ]);
 
-const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
+export const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 	...commonBodyTypeCodeMap.entries(),
 	[BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
 ]);
