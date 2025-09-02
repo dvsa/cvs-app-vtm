@@ -148,8 +148,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				return this.psvFields;
 			case VehicleTypes.TRL:
 				return this.trlFields;
-			// case VehicleTypes.SMALL_TRL:
-			//   return this.smallTrlFields;
+			case VehicleTypes.SMALL_TRL:
+				return this.smallTrlFields;
 			// case VehicleTypes.LGV:
 			//   return this.lgvFields;
 			case VehicleTypes.CAR:
@@ -333,6 +333,30 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.M1, disabled: true }),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
 				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
+			]),
+		};
+	}
+
+	get smallTrlFields(): Partial<Record<any, FormControl>> {
+		return {
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.SMALL_TRL, disabled: true }),
+			techRecord_regnDate: this.fb.control<string | null>(null, [
+				this.commonValidators.date('Date of first registration'),
+			]),
+			techRecord_manufactureMonth: this.fb.control<string | null>(null),
+			techRecord_manufactureYear: this.fb.control<number | null>(null, [
+				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
+				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.xYearsAfterCurrent(
+					1,
+					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
+				),
+			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
+			techRecord_vehicleClass_description: this.fb.control<string | null>({ value: 'trailer', disabled: true }),
+			techRecord_euVehicleCategory: this.fb.control<string | null>(EUVehicleCategory.O1),
+			techRecord_noOfAxles: this.fb.control<number | null>(null, [
+				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
 			]),
 		};
 	}
