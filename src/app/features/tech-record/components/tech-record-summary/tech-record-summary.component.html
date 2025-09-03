@@ -188,19 +188,11 @@
           <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
         }
         @case ('reasonForCreationSection') {
-          @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
-            <app-reason-for-creation-section
+          <app-reason-for-creation-section
               [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-            ></app-reason-for-creation-section>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          ></app-reason-for-creation-section>
+
         }
         @default {
           <app-dynamic-form-group
