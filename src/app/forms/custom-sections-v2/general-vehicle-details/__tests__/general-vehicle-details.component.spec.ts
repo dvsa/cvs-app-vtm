@@ -14,15 +14,23 @@ import { ActivatedRoute } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { BodyTypeCode, BodyTypeDescription, trlBodyTypeCodeMap } from '@models/body-type-enum';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
+import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { of } from 'rxjs';
+
+const mockRefDataService = {
+	getAll$: jest.fn(),
+	getReferencePsvMakeDataLoading$: jest.fn(),
+};
 
 describe('GeneralVehicleDetailsComponent', () => {
 	let technicalRecordService: TechnicalRecordService;
@@ -51,6 +59,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
 				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: ReferenceDataService, useValue: mockRefDataService },
 			],
 		}).compileComponents();
 
@@ -76,6 +85,24 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(parentFormSpy).toHaveBeenCalled();
 			expect(loadOptions).toHaveBeenCalled();
 			expect(loadBodyMakes).toHaveBeenCalled();
+		});
+
+		it('should set bodyTypes to trailer options when vehicle type is TRL', () => {
+			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.TRL);
+			const trailerBodyTypes = [BodyTypeDescription.FLAT, BodyTypeDescription.ARTICULATED];
+			jest.spyOn(trlBodyTypeCodeMap, 'values').mockReturnValue(trailerBodyTypes.values());
+			const trailerOptions = [
+				{ label: 'Flat', value: 'flat' },
+				{ label: 'Articulated', value: 'articulated' },
+			];
+			jest.spyOn<any, any>(getOptionsFromEnum, 'apply').mockReturnValue(trailerOptions);
+
+			const vehicleType = component.getVehicleType();
+			if (vehicleType === VehicleTypes.TRL) {
+				component.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()));
+			}
+
+			expect(component.bodyTypes).toEqual(trailerOptions);
 		});
 	});
 
@@ -261,6 +288,22 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(formSpy).toHaveBeenCalledWith({
 				techRecord_bodyType_code: 'a',
 			});
+		});
+	});
+
+	describe('handleDTpNumberChange', () => {
+		it('should patch the form and call cdr.detectChanges', () => {
+			let psvMake: ReferenceDataModelBase;
+			store
+				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, '1234'))
+				.subscribe((value: ReferenceDataModelBase) => {
+					const cdrSpy = jest.spyOn(component.cdr, 'detectChanges');
+					const formSpy = jest.spyOn(component.form, 'patchValue');
+					psvMake = value;
+					component.handleDTpNumberChange(psvMake);
+					expect(cdrSpy).toHaveBeenCalled();
+					expect(formSpy).toHaveBeenCalled();
+				});
 		});
 	});
 });

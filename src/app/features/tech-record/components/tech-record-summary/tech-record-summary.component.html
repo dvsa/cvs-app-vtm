@@ -170,19 +170,8 @@
 
         @case('manufacturerSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-
             <!-- New manufacturer section -->
-            @if (featureToggleService.isFeatureEnabled('fsmanufacturer')) {
-              <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <!-- Old manufacturer section -->
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
 
