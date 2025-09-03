@@ -127,12 +127,7 @@
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
-          @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
-            <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
-          } @else {
-          <!-- Old Purchaser section -->
-            <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
-          }
+          <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
         }
       }
       @case ('approvalSection') {

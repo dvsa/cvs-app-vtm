@@ -9,7 +9,6 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
-import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -55,7 +54,6 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 		AccordionControlComponent,
 		AccordionComponent,
 		DefectsComponent_1,
-		FeatureToggleDirective,
 		RequiredStandardsComponent_1,
 		CustomDefectsComponent_1,
 		DynamicFormGroupComponent_1,

@@ -49,17 +49,7 @@
         @case ('purchaserSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Purchaser section -->
-            @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
-              <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
-            <!-- Old Purchaser section -->
+            <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
         @case ('dimensionsSection') {
