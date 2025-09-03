@@ -54,7 +54,8 @@
   }
 
 
-  @if (shouldDisplayFormControl('techRecord_vehicleClass_description')) {
+  @if (shouldDisplayFormControl('techRecord_vehicleClass_description')
+    && techRecord().techRecord_vehicleType === VehicleTypes.MOTORCYCLE) {
     <govuk-form-group-select
       label="Vehicle class"
       [defaultOption]="'Select vehicle class'"
@@ -110,7 +111,8 @@
   }
 <!--  End of PSV only fields -->
 
-  @if (shouldDisplayFormControl('techRecord_vehicleClass_description')) {
+  @if (shouldDisplayFormControl('techRecord_vehicleClass_description')
+      && techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
     <govuk-form-group-input
       type="text"
       formControlName="techRecord_vehicleClass_description"
