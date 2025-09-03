@@ -4,6 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
@@ -164,6 +165,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.HGV, disabled: true }),
+			techRecord_vehicleClass_description: this.fb.control<string | null>({
+				value: VehicleClassDescription.HeavyGoodsVehicle,
+				disabled: true,
+			}),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
@@ -262,6 +267,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.TRL, disabled: true }),
+			techRecord_vehicleClass_description: this.fb.control<string | null>({
+				value: VehicleClassDescription.Trailer,
+				disabled: true,
+			}),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),

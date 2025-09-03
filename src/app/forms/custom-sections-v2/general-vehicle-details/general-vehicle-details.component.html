@@ -35,13 +35,22 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_brakes_dtpNumber')) {
-    <govuk-form-group-autocomplete
-      type="text"
-      formControlName="techRecord_brakes_dtpNumber"
-      label="DTp number"
-      [width]="FormNodeWidth.XL"
-      [placeholder]="'Select DTp number'"
-      [options$]="dtpNumbers$"/>
+    @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+      <govuk-form-group-autocomplete
+        type="text"
+        formControlName="techRecord_brakes_dtpNumber"
+        label="DTp number"
+        [width]="FormNodeWidth.XL"
+        [placeholder]="'Select DTp number'"
+        [options$]="dtpNumbers$"/>
+    } @else {
+      <govuk-form-group-input
+        type="text"
+        formControlName="techRecord_brakes_dtpNumber"
+        label="DTp number"
+        [width]="FormNodeWidth.L"
+      />
+    }
   }
 
   @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
@@ -55,7 +64,7 @@
 
   @if (shouldDisplayFormControl('techRecord_frameDescription')) {
     <govuk-form-group-select
-      label="Frame description (optional)"
+      label="Frame description"
       formControlName="techRecord_frameDescription"
       [options]="FRAME_DESCRIPTION_OPTIONS"
       [defaultOption]="'Select frame description'"
