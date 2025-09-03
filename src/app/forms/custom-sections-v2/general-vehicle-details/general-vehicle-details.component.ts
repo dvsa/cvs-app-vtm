@@ -231,9 +231,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, []),
-			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
-			]),
+			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }),
 			techRecord_bodyModel: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 20 characters'),
 			]),
@@ -441,7 +439,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 			// When vehicle configuration is set to articulated, update the body type description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat());
+				this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort());
 
 				this.form.patchValue({
 					techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
@@ -451,7 +449,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 			// When vehicle configuration is rigid, clear artic body description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.RIGID) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat());
+				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort());
 
 				const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
 				const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
