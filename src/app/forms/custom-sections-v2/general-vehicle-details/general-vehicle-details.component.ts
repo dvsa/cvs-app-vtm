@@ -367,7 +367,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	// get motorcycleFields(): Partial<Record<keyof TechRecordType<'motorcycle'>, FormControl>> {
 	get motorcycleFields(): Partial<Record<string, FormControl>> {
 		return {
-			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
+			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
 				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
