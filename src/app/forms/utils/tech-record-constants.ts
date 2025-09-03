@@ -9,8 +9,6 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
-import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
 import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
 import { TrlWeight } from '../templates/trl/trl-weight.template';
 
@@ -29,10 +27,12 @@ const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certi
 const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
 const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
 const lastApplicantSection = { name: 'techRecord', label: 'Last applicant' } as FormNode;
+const manufacturerSection = { name: 'manufacturerSection', label: 'Manufacturer' } as FormNode;
 const authorisationIntoServiceSection = {
 	name: 'authorizationIntoServiceSection',
 	label: 'Authorisation into service',
 } as FormNode;
+const purchaserSection = { name: 'purchaserSection', label: 'Purchasers' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
@@ -83,11 +83,11 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  9 */ TrlWeight,
 			/* 10 */ tyresTemplateTrl,
 			/* 11 */ brakesSection,
-			/* 12 */ TrlPurchasers,
+			/* 12 */ purchaserSection,
 			/* 13 */ dimensionsSection,
 			/* 14 */ PlatesTemplate,
 			/* 15 */ authorisationIntoServiceSection,
-			/* 16 */ ManufacturerTemplate,
+			/* 16 */ manufacturerSection,
 			/* 17 */ adrSection,
 			/* 18 */ adrCertificateSection,
 		],

@@ -127,12 +127,7 @@
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
-          @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
-            <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
-          } @else {
-          <!-- Old Purchaser section -->
-            <app-dynamic-form-group [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
-          }
+          <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
         }
       }
       @case ('approvalSection') {
@@ -200,18 +195,8 @@
 
       @case('manufacturerSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
-
           <!-- New manufacturer section -->
-          @if (featureToggleService.isFeatureEnabled('fsmanufacturer')) {
-            <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
-          } @else {
-            <!-- Old manufacturer section -->
-            <app-dynamic-form-group
-              [data]="techRecordEdited"
-              [template]="section"
-              [edit]="false"
-            ></app-dynamic-form-group>
-          }
+          <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
         }
       }
 
