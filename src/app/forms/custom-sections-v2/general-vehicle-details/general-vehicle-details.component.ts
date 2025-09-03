@@ -334,7 +334,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
 				),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
