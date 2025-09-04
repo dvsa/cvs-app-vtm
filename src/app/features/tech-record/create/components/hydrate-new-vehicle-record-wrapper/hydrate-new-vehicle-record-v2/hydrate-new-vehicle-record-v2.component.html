@@ -154,6 +154,15 @@
                       >
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
+                      <app-accordion
+                        [id]="'notes'"
+                        [title]="'Notes'"
+                        [description]="'Notes attached to this record.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-notes [techRecord]="techRecord"></app-notes>
+                      </app-accordion>
                     </ng-container>
                   </ng-template>
                 </app-accordion-control>
