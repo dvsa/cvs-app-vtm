@@ -139,12 +139,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleType = this.getVehicleType();
 		if (vehicleType === VehicleTypes.TRL) {
-			this.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
-			this.bodyTypes = this.bodyTypes.sort((a, b) => {
-				const labelA = typeof a === 'string' ? a : a.label;
-				const labelB = typeof b === 'string' ? b : b.label;
-				return labelA.localeCompare(labelB);
-			});
+			this.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat().sort());
 		}
 	}
 
