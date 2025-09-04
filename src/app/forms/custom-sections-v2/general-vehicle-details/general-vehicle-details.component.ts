@@ -240,7 +240,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }),
 			techRecord_bodyModel: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 20 characters'),
+				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20 characters'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
