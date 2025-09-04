@@ -1,6 +1,5 @@
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
-import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
@@ -33,12 +32,13 @@ const authorisationIntoServiceSection = {
 	label: 'Authorisation into service',
 } as FormNode;
 const purchaserSection = { name: 'purchaserSection', label: 'Purchasers' } as FormNode;
+const reasonForCreationSection = { name: 'reasonForCreationSection', label: 'Reason for creation' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.PSV,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
+			/*  1 */ reasonForCreationSection,
 			/*  2 */ PsvNotes,
 			/*  3 */ techRecordSection,
 			/*  4 */ PsvTypeApprovalTemplate,
@@ -54,7 +54,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.HGV,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
+			/*  1 */ reasonForCreationSection,
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
 			/*  4 */ HgvAndTrlTypeApprovalTemplate,
@@ -72,7 +72,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.TRL,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
+			/*  1 */ reasonForCreationSection,
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
 			/*  4 */ HgvAndTrlTypeApprovalTemplate,
@@ -95,7 +95,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.SMALL_TRL,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
 			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
@@ -105,7 +105,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.LGV,
 		[
-			/* 1 */ TechRecordReasonForCreationSection,
+			/* 1 */ reasonForCreationSection,
 			/* 2 */ techRecordSection,
 			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
@@ -117,7 +117,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.CAR,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
 			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
@@ -127,7 +127,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.MOTORCYCLE,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
 			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,

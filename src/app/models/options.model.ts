@@ -67,6 +67,7 @@ export const CAR_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(
 // TODO This should be replaced with an import from cvs-type-definitions when available
 export enum MotorcycleCategories {
 	L1E_A = 'l1e-a',
+	L1E = 'l1e',
 	L2E = 'l2e',
 	L3E = 'l3e',
 	L4E = 'l4e',

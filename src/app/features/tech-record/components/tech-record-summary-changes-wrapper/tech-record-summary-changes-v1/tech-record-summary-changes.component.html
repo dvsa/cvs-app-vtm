@@ -214,13 +214,9 @@
         <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
       }
       @case ('reasonForCreationSection') {
-        @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
-          <!-- New reason for creation section -->
+        <!-- New reason for creation section -->
           <app-reason-for-creation-section [techRecord]="techRecordEdited" mode="summary" />
-        } @else {
-          <!-- Old reason for creation section -->
-          <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
-        }
+
       }
       @default {
         <app-dynamic-form-group [data]="techRecordChanges" [template]="section" />
