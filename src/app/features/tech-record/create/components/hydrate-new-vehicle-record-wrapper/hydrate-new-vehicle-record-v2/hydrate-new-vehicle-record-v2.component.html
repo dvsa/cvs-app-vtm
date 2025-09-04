@@ -34,7 +34,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--overflow">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicleType">
                   {{ techRecord.techRecord_vehicleType | defaultNullOrEmpty | formatVehicleType }}
                 </dd>
               </div>
@@ -45,7 +45,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--vin">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--vin" id="vin">
                   {{ techRecord.vin | defaultNullOrEmpty }}
                 </dd>
               </div>
@@ -60,7 +60,7 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="trailer-id">
                     <app-number-plate [vrm]="$any(techRecord).trailerId | defaultNullOrEmpty" />
                   </dd>
                 </div>
@@ -72,7 +72,7 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="current-vrm">
                     <app-number-plate [vrm]="techRecord.primaryVrm | defaultNullOrEmpty" />
                   </dd>
                 </div>
@@ -88,7 +88,7 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="previous-vrm">
 
                   </dd>
                 </div>
@@ -100,7 +100,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
                   <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
                     {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
                   </app-tag>
@@ -113,7 +113,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--last">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
                   <!-- In create mode this is always Incomplete -->
                   <app-tag [type]="TagType.RED">
                     Incomplete
