@@ -105,8 +105,8 @@ export const PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 export const TRL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [{ label: 'trailer', value: 'trailer' }];
 
 export const MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
-	{ label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
-	{ label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
+	{ label: 'Motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
+	{ label: 'Motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
 	{ label: '3 wheelers', value: '3 wheelers' },
 ];
 

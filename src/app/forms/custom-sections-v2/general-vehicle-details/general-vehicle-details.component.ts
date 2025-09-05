@@ -419,7 +419,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.max(10, 'Number of wheels driven must be less than or equal to 10'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
+				this.commonValidators.max(10, 'Number of axles must be less than or equal to 10'),
 			]),
 		};
 	}
