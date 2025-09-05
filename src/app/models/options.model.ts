@@ -13,7 +13,7 @@ import {
 	TrlVehicleConfiguration,
 	VehicleConfiguration,
 } from '@models/vehicle-configuration.enum';
-import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '../forms/utils/enum-map';
+import { getOptionsFromEnum, getOptionsFromEnumOneChar, getSortedOptionsFromEnum } from '../forms/utils/enum-map';
 import { VehicleSize } from './vehicle-size.enum';
 import {
 	FitmentCode,
@@ -67,6 +67,7 @@ export const CAR_EU_VEHICLE_CATEGORY_OPTIONS: MultiOptions = getOptionsFromEnum(
 // TODO This should be replaced with an import from cvs-type-definitions when available
 export enum MotorcycleCategories {
 	L1E_A = 'l1e-a',
+	L1E = 'l1e',
 	L2E = 'l2e',
 	L3E = 'l3e',
 	L4E = 'l4e',
@@ -131,7 +132,7 @@ export const ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 
 export const MONTHS: MultiOptions = [
 	{ value: 'January', label: 'January' },
-	{ value: 'February', label: 'Febraury' },
+	{ value: 'February', label: 'February' },
 	{ value: 'March', label: 'March' },
 	{ value: 'April', label: 'April' },
 	{ value: 'May', label: 'May' },
@@ -168,7 +169,7 @@ export const COUPLING_TYPE_OPTIONS: MultiOptions = [
 
 export const HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(HgvPsvVehicleConfiguration);
 
-export const TRL_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(TrlVehicleConfiguration);
+export const TRL_VEHICLE_CONFIGURATION_OPTIONS = getSortedOptionsFromEnum(TrlVehicleConfiguration);
 
 export const ALL_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(VehicleConfiguration);
 
@@ -176,7 +177,7 @@ export const VEHICLE_SUBCLASS_OPTIONS = getOptionsFromEnum(VehicleSubclass);
 
 export const VEHICLE_SIZE_OPTIONS = getOptionsFromEnum(VehicleSize);
 
-export const FRAME_DESCRIPTION_OPTIONS = getOptionsFromEnum(FrameDescriptions);
+export const FRAME_DESCRIPTION_OPTIONS = getSortedOptionsFromEnum(FrameDescriptions);
 
 export const HGV_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(HGVTyreUseCode);
 

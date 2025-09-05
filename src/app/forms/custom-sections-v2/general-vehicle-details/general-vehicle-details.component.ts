@@ -12,7 +12,7 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { getOptionsFromEnum, getSortedOptionsFromEnum } from '@forms/utils/enum-map';
 import {
 	BodyTypeCode,
 	BodyTypeDescription,
@@ -139,7 +139,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleType = this.getVehicleType();
 		if (vehicleType === VehicleTypes.TRL) {
-			this.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
+			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
 		}
 	}
 
@@ -199,9 +199,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
-			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
-			]),
+			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
 				this.commonValidators.pattern(
@@ -300,12 +298,11 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
 			]),
+			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
-			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
-			]),
+			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
 				this.commonValidators.pattern(
@@ -419,7 +416,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: false }),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Number of wheels driven must be less than or equal to 9999'),
+				this.commonValidators.max(10, 'Number of wheels driven must be less than or equal to 10'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
 				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
