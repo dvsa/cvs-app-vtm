@@ -17,7 +17,7 @@ export const reasonForCreationSection: FormNode = {
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
 			editType: FormNodeEditTypes.TEXTAREA,
-			validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }],
+			validators: [{ name: ValidatorNames.MaxLength, args: 100 }, { name: ValidatorNames.Required }],
 		},
 	],
 };
