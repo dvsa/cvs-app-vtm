@@ -154,6 +154,15 @@
                       >
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
+                      <app-accordion
+                        [id]="'reason-for-creation'"
+                        [title]="'Reason for creation'"
+                        [description]="generateRFCDescription()"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                      </app-accordion>
                     </ng-container>
                   </ng-template>
                 </app-accordion-control>
