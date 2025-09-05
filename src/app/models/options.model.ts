@@ -132,7 +132,7 @@ export const ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 
 export const MONTHS: MultiOptions = [
 	{ value: 'January', label: 'January' },
-	{ value: 'February', label: 'Febraury' },
+	{ value: 'February', label: 'February' },
 	{ value: 'March', label: 'March' },
 	{ value: 'April', label: 'April' },
 	{ value: 'May', label: 'May' },
