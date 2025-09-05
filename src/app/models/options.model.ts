@@ -13,7 +13,7 @@ import {
 	TrlVehicleConfiguration,
 	VehicleConfiguration,
 } from '@models/vehicle-configuration.enum';
-import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '../forms/utils/enum-map';
+import { getOptionsFromEnum, getOptionsFromEnumOneChar, getSortedOptionsFromEnum } from '../forms/utils/enum-map';
 import { VehicleSize } from './vehicle-size.enum';
 import {
 	FitmentCode,
@@ -169,7 +169,7 @@ export const COUPLING_TYPE_OPTIONS: MultiOptions = [
 
 export const HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(HgvPsvVehicleConfiguration);
 
-export const TRL_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(TrlVehicleConfiguration);
+export const TRL_VEHICLE_CONFIGURATION_OPTIONS = getSortedOptionsFromEnum(TrlVehicleConfiguration);
 
 export const ALL_VEHICLE_CONFIGURATION_OPTIONS = getOptionsFromEnum(VehicleConfiguration);
 
@@ -177,7 +177,7 @@ export const VEHICLE_SUBCLASS_OPTIONS = getOptionsFromEnum(VehicleSubclass);
 
 export const VEHICLE_SIZE_OPTIONS = getOptionsFromEnum(VehicleSize);
 
-export const FRAME_DESCRIPTION_OPTIONS = getOptionsFromEnum(FrameDescriptions);
+export const FRAME_DESCRIPTION_OPTIONS = getSortedOptionsFromEnum(FrameDescriptions);
 
 export const HGV_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(HGVTyreUseCode);
 

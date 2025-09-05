@@ -12,7 +12,7 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { getOptionsFromEnum, getSortedOptionsFromEnum } from '@forms/utils/enum-map';
 import {
 	BodyTypeCode,
 	BodyTypeDescription,
@@ -139,7 +139,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleType = this.getVehicleType();
 		if (vehicleType === VehicleTypes.TRL) {
-			this.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat().sort());
+			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
 		}
 	}
 
