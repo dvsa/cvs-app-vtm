@@ -175,7 +175,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -221,7 +220,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -276,7 +274,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -324,7 +321,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -346,7 +342,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -376,7 +371,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
@@ -398,7 +392,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.max(9999, 'Year of manufacture must be less than or equal to 9999'),
 				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
