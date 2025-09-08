@@ -81,6 +81,11 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		if (this.form.invalid) {
 			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
 		}
+
+		if (this.form.valid) {
+			this.globalErrorService.clearErrors();
+			// TODO: submit record
+		}
 	}
 
 	private handleFormChanges(): void {
