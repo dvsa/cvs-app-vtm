@@ -1,15 +1,7 @@
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
-import { PlatesTemplate } from '@forms/templates/general/plates.template';
-import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
-import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
-import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
-import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
-import { TrlWeight } from '../templates/trl/trl-weight.template';
 
 // The map below initializes the array of sections that the *ngFor in tech summary component's template will iterate over.
 // The order in which each section is introduced in the array will determine its order on the page when rendered.
@@ -23,7 +15,7 @@ const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
 const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
 const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
 const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
-const auditSection = { name: 'auditSection', label: 'Audit' } as FormNode;
+const auditSection = { name: 'audit', label: 'Audit' } as FormNode;
 const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
 const lastApplicantSection = { name: 'techRecord', label: 'Last applicant' } as FormNode;
 const manufacturerSection = { name: 'manufacturerSection', label: 'Manufacturer' } as FormNode;
@@ -33,21 +25,24 @@ const authorisationIntoServiceSection = {
 } as FormNode;
 const purchaserSection = { name: 'purchaserSection', label: 'Purchasers' } as FormNode;
 const reasonForCreationSection = { name: 'reasonForCreationSection', label: 'Reason for creation' } as FormNode;
+const tyresSection = { name: 'tyreSection', label: 'Tyres' } as FormNode;
+const weightsSection = { name: 'weightsSection', label: 'Weights' } as FormNode;
+const platesSection = { name: 'platesSection', label: 'Plates' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.PSV,
 		[
 			/*  1 */ reasonForCreationSection,
-			/*  2 */ PsvNotes,
+			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
 			/*  4 */ PsvTypeApprovalTemplate,
 			/*  5 */ brakesSection,
 			/*  6 */ ddaSection,
 			/*  7 */ documentsSection,
 			/*  8 */ bodySection,
-			/*  9 */ PsvWeightsTemplate,
-			/* 10 */ PsvTyresTemplate,
+			/*  9 */ weightsSection,
+			/* 10 */ tyresSection,
 			/* 11 */ dimensionsSection,
 		],
 	],
@@ -61,10 +56,10 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  5 */ lastApplicantSection,
 			/*  6 */ documentsSection,
 			/*  7 */ bodySection,
-			/*  8 */ HgvWeight,
-			/*  9 */ tyresTemplateHgv,
+			/*  8 */ weightsSection,
+			/*  9 */ tyresSection,
 			/* 10 */ dimensionsSection,
-			/* 11 */ PlatesTemplate,
+			/* 11 */ platesSection,
 			/* 12 */ adrSection,
 			/* 13 */ adrCertificateSection,
 		],
@@ -80,12 +75,12 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 			/*  6 */ documentsSection,
 			/*  7 */ lettersSection,
 			/*  8 */ bodySection,
-			/*  9 */ TrlWeight,
-			/* 10 */ tyresTemplateTrl,
+			/*  9 */ weightsSection,
+			/* 10 */ tyresSection,
 			/* 11 */ brakesSection,
 			/* 12 */ purchaserSection,
 			/* 13 */ dimensionsSection,
-			/* 14 */ PlatesTemplate,
+			/* 14 */ platesSection,
 			/* 15 */ authorisationIntoServiceSection,
 			/* 16 */ manufacturerSection,
 			/* 17 */ adrSection,

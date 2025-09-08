@@ -37,7 +37,7 @@
         @case ('notesSection') {
           <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
-        @case ('auditSection') {
+        @case ('audit') {
           <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
         }
         @case ('techRecordSummary') {
