@@ -32,7 +32,8 @@ export class GlobalErrorService {
 
 	focusAllControls() {
 		document
-			.querySelectorAll(`
+			.querySelectorAll(
+				`
       a[href]:not([tabindex='-1']),
       area[href]:not([tabindex='-1']),
       input:not([disabled]):not([tabindex='-1']),
@@ -42,7 +43,8 @@ export class GlobalErrorService {
       iframe:not([tabindex='-1']),
       [tabindex]:not([tabindex='-1']),
       [contentEditable=true]:not([tabindex='-1'])
-    `)
+    `
+			)
 			.forEach((element) => {
 				if (element instanceof HTMLElement) {
 					element.focus();
@@ -97,12 +99,16 @@ export class GlobalErrorService {
 
 				errors.push(...this.extractGlobalErrors(control));
 			} else if (control.invalid && control.errors) {
-				Object.values(control.errors).forEach((error) => {
+				// Only add the first error to prevent duplication
+				const controlErrors = Object.values(control.errors);
+
+				if (controlErrors.length > 0) {
+					const error = controlErrors[0];
 					errors.push({
 						error: typeof error === 'string' ? error : error.error,
 						anchorLink: typeof error === 'string' ? key : error.anchorLink,
 					});
-				});
+				}
 			}
 		});
 
