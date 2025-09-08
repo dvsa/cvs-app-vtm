@@ -273,7 +273,7 @@ describe('TechnicalRecordServiceEffects', () => {
 		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should generate new techRecord based on vehicle type', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			const expectedTechRecord = getEmptyTechRecord();
+			const expectedTechRecord = {} as V3TechRecordModel;
 			expectedTechRecord.techRecord_vehicleType = VehicleTypes.CAR;
 			expectedTechRecord.techRecord_euVehicleCategory = EUVehicleCategory.M1;
 
@@ -342,26 +342,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				techRecord_applicantDetails_telephoneNumber: null,
 				techRecord_manufactureYear: null,
 			};
-			const prepopulatedTechRecord = {
-				// techRecord_vehicleSubclass: undefined,
-				// techRecord_notes: '',
-				// techRecord_vehicleConfiguration: undefined,
-				// techRecord_vehicleType: 'car',
-				// techRecord_noOfAxles: 2,
-				// techRecord_reasonForCreation: 'test',
-				// techRecord_regnDate: null,
-				// techRecord_statusCode: 'provisional',
-				// techRecord_applicantDetails_address1: null,
-				// techRecord_applicantDetails_address2: null,
-				// techRecord_applicantDetails_address3: null,
-				// techRecord_applicantDetails_emailAddress: null,
-				// techRecord_applicantDetails_name: null,
-				// techRecord_applicantDetails_postCode: null,
-				// techRecord_applicantDetails_postTown: null,
-				// techRecord_applicantDetails_telephoneNumber: null,
-				// techRecord_manufactureYear: null,
-				// techRecord_euVehicleCategory: EUVehicleCategory.M1,
-			};
+			const prepopulatedTechRecord = {};
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(editingTechRecord, carTechRecord);
 				// mock action to trigger effect
@@ -372,7 +353,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				});
 
 				expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-					b: prepopulatedTechRecord,
+					b: {},
 				});
 			});
 
@@ -407,24 +388,6 @@ describe('TechnicalRecordServiceEffects', () => {
 				techRecord_manufactureYear: null,
 			};
 			const prepopulatedTechRecord = {
-				// techRecord_vehicleSubclass: undefined,
-				// techRecord_notes: '',
-				// techRecord_vehicleConfiguration: undefined,
-				// techRecord_vehicleType: 'lgv',
-				// techRecord_noOfAxles: 2,
-				// techRecord_reasonForCreation: 'test',
-				// techRecord_regnDate: null,
-				// techRecord_statusCode: 'provisional',
-				// techRecord_applicantDetails_address1: null,
-				// techRecord_applicantDetails_address2: null,
-				// techRecord_applicantDetails_address3: null,
-				// techRecord_applicantDetails_emailAddress: null,
-				// techRecord_applicantDetails_name: null,
-				// techRecord_applicantDetails_postCode: null,
-				// techRecord_applicantDetails_postTown: null,
-				// techRecord_applicantDetails_telephoneNumber: null,
-				// techRecord_manufactureYear: null,
-				// techRecord_euVehicleCategory: EUVehicleCategoryLGV.N1,
 				techRecord_adrDetails_certificates: undefined,
 			};
 			testScheduler.run(({ hot, expectObservable }) => {
@@ -476,89 +439,11 @@ describe('TechnicalRecordServiceEffects', () => {
 	});
 });
 
-function getEmptyTechRecord(): V3TechRecordModel {
-	return {
-		// techRecord_euVehicleCategory: null,
-		// techRecord_manufactureYear: null,
-		// techRecord_noOfAxles: 2,
-		// techRecord_applicantDetails_address1: null,
-		// techRecord_applicantDetails_address2: null,
-		// techRecord_applicantDetails_address3: null,
-		// techRecord_applicantDetails_emailAddress: null,
-		// techRecord_applicantDetails_name: null,
-		// techRecord_applicantDetails_postCode: null,
-		// techRecord_applicantDetails_postTown: null,
-		// techRecord_applicantDetails_telephoneNumber: null,
-		// techRecord_reasonForCreation: undefined,
-		// techRecord_regnDate: null,
-		// techRecord_statusCode: '',
-		// techRecord_vehicleConfiguration: 'other',
-		// techRecord_vehicleSubclass: undefined,
-		// techRecord_vehicleType: 'car',
-	} as unknown as V3TechRecordModel;
-}
 function getEmptyHGVRecord(): V3TechRecordModel {
 	return {
-		techRecord_adrDetails_certificates: undefined,
-		// techRecord_alterationMarker: null,
-		// techRecord_applicantDetails_address1: null,
-		// techRecord_applicantDetails_address2: null,
-		// techRecord_applicantDetails_address3: null,
-		// techRecord_applicantDetails_emailAddress: null,
-		// techRecord_applicantDetails_name: null,
-		// techRecord_applicantDetails_postCode: null,
-		// techRecord_applicantDetails_postTown: null,
-		// techRecord_applicantDetails_telephoneNumber: null,
 		techRecord_approvalType: null,
-		techRecord_axles: [],
 		techRecord_approvalTypeNumber: undefined,
-		// techRecord_bodyType_code: null,
-		// techRecord_bodyType_description: null,
-		// techRecord_brakes_dtpNumber: null,
-		// techRecord_conversionRefNo: null,
-		// techRecord_departmentalVehicleMarker: null,
-		// techRecord_dimensions_axleSpacing: [],
-		// techRecord_dimensions_length: null,
-		// techRecord_dimensions_width: null,
-		// techRecord_drawbarCouplingFitted: null,
-		// techRecord_emissionsLimit: null,
-		// techRecord_euVehicleCategory: null,
-		// techRecord_euroStandard: undefined,
-		// techRecord_frontAxleTo5thWheelMax: null,
-		// techRecord_frontAxleTo5thWheelMin: null,
-		// techRecord_frontAxleToRearAxle: null,
-		// techRecord_frontVehicleTo5thWheelCouplingMax: null,
-		// techRecord_frontVehicleTo5thWheelCouplingMin: null,
-		// techRecord_fuelPropulsionSystem: null,
-		// techRecord_functionCode: null,
-		techRecord_grossDesignWeight: null,
-		techRecord_grossEecWeight: null,
-		techRecord_grossGbWeight: null,
-		// techRecord_make: null,
-		// techRecord_manufactureYear: null,
-		techRecord_maxTrainDesignWeight: null,
-		techRecord_maxTrainEecWeight: null,
-		techRecord_maxTrainGbWeight: null,
-		// techRecord_microfilm_microfilmDocumentType: undefined,
-		// techRecord_microfilm_microfilmRollNumber: undefined,
-		// techRecord_microfilm_microfilmSerialNumber: undefined,
-		// techRecord_model: null,
-		// techRecord_noOfAxles: null,
-		// techRecord_notes: undefined,
 		techRecord_ntaNumber: undefined,
-		// techRecord_numberOfWheelsDriven: null,
-		// techRecord_offRoad: null,
-		techRecord_plates: [],
-		// techRecord_reasonForCreation: undefined,
-		// techRecord_regnDate: null,
-		// techRecord_roadFriendly: null,
-		// techRecord_speedLimiterMrk: null,
-		// techRecord_statusCode: '',
-		// techRecord_tachoExemptMrk: null,
-		techRecord_trainDesignWeight: null,
-		techRecord_trainEecWeight: null,
-		techRecord_trainGbWeight: null,
-		techRecord_tyreUseCode: null,
 		techRecord_variantNumber: undefined,
 		techRecord_variantVersionNumber: undefined,
 		techRecord_vehicleClass_description: 'heavy goods vehicle',
