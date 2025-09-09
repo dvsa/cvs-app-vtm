@@ -34,7 +34,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--overflow">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicleType">
                   {{ techRecord.techRecord_vehicleType | defaultNullOrEmpty | formatVehicleType }}
                 </dd>
               </div>
@@ -45,7 +45,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--vin">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--vin" id="vin">
                   {{ techRecord.vin | defaultNullOrEmpty }}
                 </dd>
               </div>
@@ -60,7 +60,7 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="trailer-id">
                     <app-number-plate [vrm]="$any(techRecord).trailerId | defaultNullOrEmpty" />
                   </dd>
                 </div>
@@ -72,7 +72,7 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="current-vrm">
                     <app-number-plate [vrm]="techRecord.primaryVrm | defaultNullOrEmpty" />
                   </dd>
                 </div>
@@ -88,8 +88,8 @@
                   </dt>
                 </div>
                 <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm">
-                   
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="previous-vrm">
+
                   </dd>
                 </div>
               }
@@ -100,7 +100,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
                   <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
                     {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
                   </app-tag>
@@ -113,7 +113,7 @@
                 </dt>
               </div>
               <div class="govuk-summary-list__row--last">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag">
+                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
                   <!-- In create mode this is always Incomplete -->
                   <app-tag [type]="TagType.RED">
                     Incomplete
@@ -139,34 +139,40 @@
                     Technical record
                   </span>
                 </h2>
-    
+
                 <app-accordion-control [sectionState]="sectionStates$()">
                   <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
                   <ng-template #template>
                     <!-- TODO: Replace accordions here -->
-                    <app-accordion [id]="'remove-me-1'" [title]="'Remove me 1'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
-
-                    <app-accordion [id]="'remove-me-2'" [title]="'Remove me 2'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
-
-                    <app-accordion [id]="'remove-me-3'" [title]="'Remove me 3'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
-
-                    <app-accordion [id]="'remove-me-4'" [title]="'Remove me 4'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
-
-                    <app-accordion [id]="'remove-me-5'" [title]="'Remove me 5'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
-
-                    <app-accordion [id]="'remove-me-6'" [title]="'Remove me 6'" [isExpanded]="false">
-                      <p>TODO: Add content here</p>
-                    </app-accordion>
+                    <ng-container [formGroup]="form">
+                      <app-accordion
+                        [id]="'general-vehicle-details'"
+                        [title]="'General vehicle details'"
+                        [description]="'Date of registration, body details, EU category.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
+                      </app-accordion>
+                      <app-accordion
+                        [id]="'notes'"
+                        [title]="'Notes'"
+                        [description]="'Notes attached to this record.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-notes [techRecord]="techRecord"></app-notes>
+                      </app-accordion>
+                      <app-accordion
+                        [id]="'reason-for-creation'"
+                        [title]="'Reason for creation'"
+                        [description]="generateRFCDescription()"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                      </app-accordion>
+                    </ng-container>
                   </ng-template>
                 </app-accordion-control>
               </div>

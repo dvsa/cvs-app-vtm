@@ -1,0 +1,15 @@
+{
+  "testtoggle": { "enabled": false },
+  "requiredstandards": { "enabled": true },
+  "fsapprovaltype": { "enabled": true },
+  "fslastapplicant": { "enabled": true },
+  "fsplates": { "enabled": true },
+  "fspurchasers": { "enabled": true },
+  "fsauthorisationintoservice": { "enabled": true },
+  "fsmanufacturer": { "enabled": true },
+  "fsreasonforcreation": { "enabled": true },
+  "betas": { "enabled": false },
+  "techrecordredesign": { "enabled": false },
+  "techrecordredesigncreate": { "enabled": true },
+  "techrecordredesigncreatedetails": { "enabled": false }
+}

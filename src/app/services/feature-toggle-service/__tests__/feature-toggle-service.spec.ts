@@ -1,5 +1,5 @@
 import { HttpService } from '@/src/app/services/http/http.service';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
@@ -8,6 +8,7 @@ import { FeatureToggleService } from '../feature-toggle-service';
 describe('feature toggle service', () => {
 	let service: FeatureToggleService;
 	let httpService: HttpService;
+	let httpClient: HttpClient;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -15,6 +16,7 @@ describe('feature toggle service', () => {
 		});
 
 		httpService = TestBed.inject(HttpService);
+		httpClient = TestBed.inject(HttpClient);
 		TestBed.inject(HttpTestingController);
 		service = TestBed.inject(FeatureToggleService);
 	});
@@ -29,6 +31,8 @@ describe('feature toggle service', () => {
 				testToggle: { enabled: true },
 			};
 
+			// TODO: remove when we move away from local config
+			jest.spyOn(httpClient, 'get').mockReturnValueOnce(of(expectedConfig));
 			jest.spyOn(httpService, 'getFeatureFlags').mockReturnValueOnce(of(expectedConfig));
 
 			await service.loadConfig();

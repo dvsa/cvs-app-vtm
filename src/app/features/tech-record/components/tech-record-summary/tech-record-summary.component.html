@@ -37,7 +37,7 @@
         @case ('notesSection') {
           <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
-        @case ('auditSection') {
+        @case ('audit') {
           <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
         }
         @case ('techRecordSummary') {
@@ -49,17 +49,7 @@
         @case ('purchaserSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Purchaser section -->
-            @if (featureToggleService.isFeatureEnabled('fspurchasers')) {
-              <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
-            <!-- Old Purchaser section -->
+            <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
         @case ('dimensionsSection') {
@@ -139,55 +129,23 @@
         @case ('platesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Plates Section -->
-            @if (featureToggleService.isFeatureEnabled('fsplates')) {
-              <app-plates-section
+            <app-plates-section
                 [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
-                <app-plates
-                  [techRecord]="techRecordCalculated"
-                  [isEditing]="(isEditing$ | async) ?? false"
-                  (formChange)="handleFormState($event)"
-                ></app-plates>
-              }
-            }
-            <!-- Old Plates Section -->
           }
         }
 
         @case ('authorizationIntoServiceSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Authorization into service section -->
-            @if (featureToggleService.isFeatureEnabled('fsauthorisationintoservice')) {
-              <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-            } @else {
-              <!-- Old Authorization into service section -->
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           }
         }
 
         @case('manufacturerSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-
             <!-- New manufacturer section -->
-            @if (featureToggleService.isFeatureEnabled('fsmanufacturer')) {
-              <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <!-- Old manufacturer section -->
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
 
@@ -211,32 +169,14 @@
         }
         @case ('techRecord') {
           <!-- New Last Applicant section -->
-          @if (featureToggleService.isFeatureEnabled('fslastapplicant')) {
-            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-          } @else {
-            <!-- Old Last Applicant section -->
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
         }
         @case ('reasonForCreationSection') {
-          @if (featureToggleService.isFeatureEnabled('fsreasonforcreation')) {
-            <app-reason-for-creation-section
+          <app-reason-for-creation-section
               [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-            ></app-reason-for-creation-section>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          ></app-reason-for-creation-section>
+
         }
         @default {
           <app-dynamic-form-group

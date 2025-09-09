@@ -71,7 +71,7 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.FEATURE_TOGGLE,
-				data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
+				data: { title: 'Feature Toggle', featureToggleName: 'testtoggle' },
 				canActivate: [MsalGuard, FeatureToggleGuard],
 				loadChildren: () =>
 					import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),

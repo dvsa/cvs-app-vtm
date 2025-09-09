@@ -24,6 +24,7 @@
       label="Month of manufacture"
       formControlName="techRecord_manufactureMonth"
       [options]="MONTHS"
+      [allowNull]="true"
     ></govuk-form-group-select>
   }
 
@@ -111,6 +112,7 @@
       label="Suspension type (optional)"
       formControlName="techRecord_suspensionType"
       [options]="SUSPENSION_TYRE_OPTIONS"
+      [allowNull]="true"
     ></govuk-form-group-select>
   }
 
@@ -120,6 +122,7 @@
       label="Fuel / propulsion system"
       formControlName="techRecord_fuelPropulsionSystem"
       [options]="FUEL_PROPULSION_SYSTEM_OPTIONS"
+      [allowNull]="true"
     ></govuk-form-group-select>
   }
 
@@ -159,6 +162,7 @@
       label="Coupling type (optional)"
       [options]="CouplingTypeOptions"
       formControlName="techRecord_couplingType"
+      [allowNull]="true"
     ></govuk-form-group-select>
   }
 
@@ -181,6 +185,7 @@
         [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }, { label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [options]="vehicleConfigurationOptions"
         formControlName="techRecord_vehicleConfiguration"
+        [allowNull]="true"
       ></govuk-form-group-select>
     } @else {
       <govuk-form-group-select
@@ -188,6 +193,7 @@
         [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
         [options]="vehicleConfigurationOptions"
         formControlName="techRecord_vehicleConfiguration"
+        [allowNull]="true"
       ></govuk-form-group-select>
     }
   }
@@ -207,6 +213,7 @@
       label="Frame description (optional)"
       formControlName="techRecord_frameDescription"
       [options]="FRAME_DESCRIPTION_OPTIONS"
+      [allowNull]="true"
     ></govuk-form-group-select>
   }
 
@@ -323,6 +330,7 @@
         [width]="FormNodeWidth.S"
         [options]="EUCategoryOptions"
         [tags]="getVehicleType() === VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
+        [allowNull]="true"
       ></govuk-form-group-select>
     }
   </ng-template>
@@ -334,6 +342,7 @@
       [hint]="vehicleClassHint"
       formControlName="techRecord_vehicleClass_description"
       [options]="vehicleClassDescriptionOptions ?? []"
+      [allowNull]="true"
     ></govuk-form-group-select>
   </ng-template>
 </div>

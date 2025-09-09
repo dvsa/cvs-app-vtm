@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -31,7 +32,8 @@ export class GlobalErrorService {
 
 	focusAllControls() {
 		document
-			.querySelectorAll(`
+			.querySelectorAll(
+				`
       a[href]:not([tabindex='-1']),
       area[href]:not([tabindex='-1']),
       input:not([disabled]):not([tabindex='-1']),
@@ -41,7 +43,8 @@ export class GlobalErrorService {
       iframe:not([tabindex='-1']),
       [tabindex]:not([tabindex='-1']),
       [contentEditable=true]:not([tabindex='-1'])
-    `)
+    `
+			)
 			.forEach((element) => {
 				if (element instanceof HTMLElement) {
 					element.focus();
@@ -96,15 +99,62 @@ export class GlobalErrorService {
 
 				errors.push(...this.extractGlobalErrors(control));
 			} else if (control.invalid && control.errors) {
-				Object.values(control.errors).forEach((error) => {
+				// Only add the first error to prevent duplication
+				const controlErrors = Object.values(control.errors);
+
+				if (controlErrors.length > 0) {
+					const error = controlErrors[0];
 					errors.push({
 						error: typeof error === 'string' ? error : error.error,
 						anchorLink: typeof error === 'string' ? key : error.anchorLink,
 					});
-				});
+				}
 			}
 		});
 
 		return errors;
 	};
+
+	extractGlobalErrorsFromErrorResponse(e: HttpErrorResponse) {
+		const errors: GlobalError[] = [];
+
+		if (e.status === 400) {
+			if (typeof e.error === 'string') {
+				errors.push({
+					error: e.error,
+				});
+
+				return errors;
+			}
+
+			if ('error' in e.error) {
+				const field = e.error.error.match(/"([^"]+)"/);
+				errors.push({
+					error: e.error.error,
+					anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
+				});
+
+				return errors;
+			}
+
+			if ('errors' in e.error && Array.isArray(e.error.errors)) {
+				e.error.errors.forEach((error: string) => {
+					const field = error.match(/"([^"]+)"/);
+					errors.push({
+						error,
+						anchorLink: field && field.length > 1 ? field[1].replace(/"/g, '') : '',
+					});
+				});
+
+				return errors;
+			}
+		} else if (e.status === 502) {
+			errors.push({
+				error: 'Internal Server Error, please contact technical support',
+				anchorLink: '',
+			});
+		}
+
+		return errors;
+	}
 }

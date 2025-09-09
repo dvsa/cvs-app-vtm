@@ -21,7 +21,7 @@ export class ReasonForCreationSectionEditComponent extends EditBaseComponent imp
 	form = this.fb.group({
 		techRecord_reasonForCreation: this.fb.control('', [
 			this.commonValidators.required('Reason for creation is required'),
-			this.commonValidators.maxLength(500, 'Reason for creation must be less than or equal to 500 characters'),
+			this.commonValidators.maxLength(100, 'Reason for creation must be less than or equal to 100 characters'),
 		]),
 	});
 

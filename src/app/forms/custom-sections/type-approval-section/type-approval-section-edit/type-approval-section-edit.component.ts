@@ -64,7 +64,7 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 			this.commonValidators.maxLength(40, 'National type number must be less than or equal to 40 characters'),
 		]),
 		techRecord_variantNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(25, 'Variant number must be less than or equal to 25 characters'),
+			this.commonValidators.maxLength(35, 'Variant number must be less than or equal to 35 characters'),
 		]),
 		techRecord_variantVersionNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
 			this.commonValidators.maxLength(35, 'Variant version number must be less than or equal to 35 characters'),

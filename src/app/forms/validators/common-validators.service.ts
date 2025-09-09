@@ -63,6 +63,21 @@ export class CommonValidatorsService {
 		};
 	}
 
+	range(min: number, max: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	range(min: number, max: number, message: string): ValidatorFn;
+	range(min: number, max: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return (control) => {
+			if (!control.value) return null;
+			if (typeof control.value !== 'number') return null;
+
+			if (control.value < min || control.value > max) {
+				return { range: typeof message === 'string' ? message : message(control) };
+			}
+
+			return null;
+		};
+	}
+
 	pattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
 	pattern(pattern: string | RegExp, message: string): ValidatorFn;
 	pattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {

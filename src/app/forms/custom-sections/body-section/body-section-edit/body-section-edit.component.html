@@ -15,6 +15,7 @@
         formControlName="techRecord_make"
         label="Body make"
         [options]="$any(bodyMakes$ | async) ?? []"
+        [allowNull]="true"
         [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [width]="FormNodeWidth.L"
         >
@@ -35,6 +36,7 @@
       [width]="FormNodeWidth.L"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       [options]="bodyTypes"
+      [allowNull]="true"
       >
     </govuk-form-group-select>
   }
@@ -104,6 +106,7 @@
     techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
     techRecord().techRecord_vehicleType === VehicleTypes.TRL ?
     [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+    [allowNull]="true"
   ></govuk-form-group-select>
   <govuk-form-group-input
     formControlName="techRecord_conversionRefNo"

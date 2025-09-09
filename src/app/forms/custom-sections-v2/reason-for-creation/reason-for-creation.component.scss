@@ -1,0 +1,8 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+:host {
+  govuk-form-group-textarea::ng-deep .govuk-form-group label
+  {
+    @extend .govuk-label--s;
+  }
+}

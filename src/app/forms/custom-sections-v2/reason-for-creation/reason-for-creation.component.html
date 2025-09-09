@@ -1,0 +1,11 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!--  Reason for creation -->
+  @if (shouldDisplayFormControl('techRecord_reasonForCreation')) {
+    <govuk-form-group-textarea
+      label="Reason for creation"
+      [hint]="generateHintMessage()"
+      [maxLength]="100"
+      formControlName="techRecord_reasonForCreation"
+    />
+  }
+</div>

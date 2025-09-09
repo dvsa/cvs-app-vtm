@@ -1,0 +1,15 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+:host {
+  govuk-form-group-date::ng-deep .govuk-form-group .govuk-fieldset__heading,
+  govuk-form-group-input::ng-deep .govuk-form-group label,
+  govuk-form-group-radio::ng-deep .govuk-form-group .govuk-fieldset__heading,
+  govuk-form-group-select::ng-deep .govuk-form-group label,
+  govuk-form-group-checkbox::ng-deep .govuk-form-group label,
+  govuk-checkbox-group::ng-deep .govuk-form-group .govuk-fieldset__heading,
+  govuk-form-group-textarea::ng-deep .govuk-form-group label,
+  govuk-form-group-autocomplete::ng-deep label
+  {
+    @extend .govuk-label--s;
+  }
+}
