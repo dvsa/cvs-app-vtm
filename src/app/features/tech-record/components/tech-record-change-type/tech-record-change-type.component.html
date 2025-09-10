@@ -10,7 +10,7 @@
 
   @if (techRecord?.techRecord_vehicleType === VehicleTypes.TRL) {
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">TrailerID</dt>
+      <dt class="govuk-summary-list__key">Trailer ID</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
         <app-number-plate [vrm]="$any(techRecord)?.trailerId | defaultNullOrEmpty" />
       </dd>

@@ -1,0 +1,20 @@
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">
+        Are you sure you want to cancel creating this record?
+      </h1>
+
+      <p class="govuk-body">
+        This will delete any data in the record and return you to the homepage.
+      </p>
+
+      <hr class="govuk-section-break govuk-section-break--m">
+
+      <app-button-group>
+        <app-button id="cancel-record" design="warning" (clicked)="cancelRecord()">Cancel record</app-button>
+        <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
+      </app-button-group>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import validateDate from 'validate-govuk-date';
+import { GlobalError } from '../../core/components/global-error/global-error.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CommonValidatorsService {
@@ -14,54 +15,95 @@ export class CommonValidatorsService {
 		};
 	}
 
-	max(size: number, message: string): ValidatorFn {
+	max(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	max(size: number, message: string): ValidatorFn;
+	max(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
-				return { max: message };
+				return { max: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
 		};
 	}
 
-	min(size: number, message: string): ValidatorFn {
+	min(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	min(size: number, message: string): ValidatorFn;
+	min(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value < size) {
-				return { min: message };
+				return { min: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
 		};
 	}
 
-	minLength(length: number, message: string): ValidatorFn {
+	minLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	minLength(length: number, message: string): ValidatorFn;
+	minLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length < length) {
-				return { minLength: message };
+				return { minLength: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
 		};
 	}
 
-	maxLength(length: number, message: string): ValidatorFn {
+	maxLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	maxLength(length: number, message: string): ValidatorFn;
+	maxLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
-				return { maxLength: message };
+				return { maxLength: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;
 		};
 	}
 
-	pattern(pattern: string | RegExp, message: string): ValidatorFn {
+	range(min: number, max: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	range(min: number, max: number, message: string): ValidatorFn;
+	range(min: number, max: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return (control) => {
+			if (!control.value) return null;
+			if (typeof control.value !== 'number') return null;
+
+			if (control.value < min || control.value > max) {
+				return { range: typeof message === 'string' ? message : message(control) };
+			}
+
+			return null;
+		};
+	}
+
+	pattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	pattern(pattern: string | RegExp, message: string): ValidatorFn;
+	pattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && !new RegExp(pattern).test(control.value)) {
+				return { pattern: typeof message === 'string' ? message : message(control) };
+			}
+
+			return null;
+		};
+	}
+
+	antipattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	antipattern(pattern: string | RegExp, message: string): ValidatorFn;
+	antipattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return (control) => {
+			if (control.value && new RegExp(pattern).test(control.value)) {
 				return { pattern: message };
 			}
 
 			return null;
 		};
+	}
+
+	alphanumeric(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+		return this.pattern('^[a-zA-Z0-9]*$', message as any);
 	}
 
 	pastDate(message: string): ValidatorFn {
@@ -158,10 +200,12 @@ export class CommonValidatorsService {
 		};
 	}
 
-	required(message: string): ValidatorFn {
+	required(func: (control: AbstractControl) => GlobalError): ValidatorFn;
+	required(message: string): ValidatorFn;
+	required(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				return { required: message };
+				return { required: typeof message === 'string' ? message : message(control) };
 			}
 
 			return null;

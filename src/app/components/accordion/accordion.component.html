@@ -1,4 +1,4 @@
-<div class="govuk-accordion__section" [ngClass]="{ 'govuk-accordion__section--expanded': isExpanded() }">
+<div class="govuk-accordion__section" [class.condensed]="type() === 'condensed'" [ngClass]="{ 'govuk-accordion__section--expanded': isExpanded() }">
   <div class="govuk-accordion__section-header">
     <h2 class="govuk-accordion__section-heading">
       <button
@@ -7,20 +7,24 @@
         attr.aria-controls="accordion-details-{{ id() }}"
         class="govuk-accordion__section-button"
         [attr.aria-expanded]="isExpanded()"
+        [class.dashed-bottom-border]="isExpanded()"
         (click)="isExpanded() ? close(id()) : open(id())"
       >
-        <span class="govuk-accordion__section-heading-text" id="accordion-title-{{ id() }}">
-          <span class="govuk-accordion__section-heading-text-focus">{{ title() }}</span>
-        </span>
-        <span class="govuk-visually-hidden govuk-accordion__section-heading-divider">, </span>
-        <span class="govuk-accordion__section-toggle" data-nosnippet="">
-          <span class="govuk-accordion__section-toggle-focus">
-            <span [class]="iconStyle"></span>
-            <span class="govuk-accordion__section-toggle-text">
-              {{ isExpanded() ? 'Hide' : 'Show' }}<span class="govuk-visually-hidden"> this section</span>
+        <div class="accordion-heading-flex">
+          <span class="govuk-accordion__section-heading-text" id="accordion-title-{{ id() }}">
+            <span class="govuk-accordion__section-heading-text-focus">{{ title() }}</span>
+            <span class="govuk-accordion__section-summary govuk-accordion__section-summary-focus govuk-body">{{ description() }}</span>
+          </span>
+          <span class="govuk-visually-hidden govuk-accordion__section-heading-divider">, </span>
+          <span class="govuk-accordion__section-toggle" data-nosnippet="">
+            <span class="govuk-accordion__section-toggle-focus">
+              <span [class]="iconStyle"></span>
+              <span class="govuk-accordion__section-toggle-text">
+                {{ isExpanded() ? 'Hide' : 'Show' }}<span class="govuk-visually-hidden"> this section</span>
+              </span>
             </span>
           </span>
-        </span>
+        </div>
       </button>
     </h2>
   </div>

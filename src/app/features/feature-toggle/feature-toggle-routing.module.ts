@@ -7,7 +7,7 @@ const routes = [
 	{
 		path: '',
 		loadComponent: () => import('./feature-toggle/feature-toggle.component').then((m) => m.FeatureToggleComponent),
-		data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
+		data: { title: 'Feature Toggle', featureToggleName: 'testtoggle' },
 		canActivate: [MsalGuard, FeatureToggleGuard],
 	},
 ];

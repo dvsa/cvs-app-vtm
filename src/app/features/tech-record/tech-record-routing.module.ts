@@ -166,8 +166,8 @@ const routes: Routes = [
 	{
 		path: TechRecordRoutes.CORRECT_ERROR_CHANGE_SUMMARY,
 		loadComponent: () =>
-			import('./components/tech-record-summary-changes/tech-record-summary-changes.component').then(
-				(m) => m.TechRecordSummaryChangesComponent
+			import('./components/tech-record-summary-changes-wrapper/tech-record-summary-changes-wrapper.component').then(
+				(m) => m.TechRecordSummaryChangesWrapperComponent
 			),
 		data: {
 			roles: Roles.TechRecordAmend,
@@ -193,8 +193,8 @@ const routes: Routes = [
 	{
 		path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY,
 		loadComponent: () =>
-			import('./components/tech-record-summary-changes/tech-record-summary-changes.component').then(
-				(m) => m.TechRecordSummaryChangesComponent
+			import('./components/tech-record-summary-changes-wrapper/tech-record-summary-changes-wrapper.component').then(
+				(m) => m.TechRecordSummaryChangesWrapperComponent
 			),
 		data: {
 			roles: Roles.TechRecordAmend,

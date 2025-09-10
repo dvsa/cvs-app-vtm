@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormArray, ValidatorFn } from '@angular/forms';
 import { AdrService } from '@services/adr/adr.service';
+import _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class AdrValidatorsService {
@@ -120,13 +121,24 @@ export class AdrValidatorsService {
 				const unNumbers = unNumbersArray?.value;
 				if (Array.isArray(unNumbers)) {
 					const index = unNumbers.findIndex((unNumber) => !unNumber);
-					if (index > -1) {
-						unNumbersArray?.controls[index].setErrors({
-							required: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+					const control = unNumbersArray?.controls[index];
+					if (control) {
+						const errors = control.errors || {};
+						control.setErrors({
+							...errors,
+							required: {
+								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							},
 						});
-						return { required: `UN number ${index + 1} is required or remove UN number ${index + 1}` };
+
+						return {
+							required: {
+								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							},
+						};
 					}
-					unNumbersArray?.controls[0].setErrors(null);
 				}
 			}
 
@@ -141,17 +153,35 @@ export class AdrValidatorsService {
 				const unNumbers = control.parent.get(
 					'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'
 				) as FormArray;
-				if (!refNo?.value && Array.isArray(unNumbers?.value) && !unNumbers?.value[0]) {
+
+				if (!refNo) return null;
+				if (!unNumbers) return null;
+
+				// If reference number and the first UN number are both empty, then show the error
+				if (!refNo.value && Array.isArray(unNumbers.value) && !unNumbers.value[0]) {
+					const refNoErrors = refNo.errors || {};
+					const unNumbersErrors = unNumbers.controls[0].errors || {};
+
 					// Set errors on both simulatenously
-					refNo?.setErrors({ required: message });
-					unNumbers?.controls[0].setErrors({ required: message });
+					refNo.setErrors({ ...refNoErrors, required: message });
+
+					unNumbers.controls[0].setErrors({
+						...unNumbersErrors,
+						required: {
+							error: message,
+							anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+						},
+					});
 
 					return { required: message };
 				}
 
-				// Clear errors from both fields if either is populated
-				refNo?.setErrors(null);
-				unNumbers?.controls[0].setErrors(null);
+				// If reference number or the first UN number are populated, and the control is valid, then clear required error
+				const { required: refNoRequired, ...otherRefNoErrors } = refNo.errors || {};
+				refNo.setErrors(_.isEmpty(otherRefNoErrors) ? null : otherRefNoErrors);
+
+				const { required: unNumberRequired, ...otherUNNumberErrors } = unNumbers.controls[0].errors || {};
+				unNumbers.controls[0].setErrors(_.isEmpty(otherUNNumberErrors) ? null : otherUNNumberErrors);
 			}
 
 			return null;

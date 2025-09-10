@@ -72,7 +72,9 @@
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
                 <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
-                  {{ amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+                  {{ amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys === 'n/a'?
+                  amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys.toUpperCase() :
+                  amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
                 </dd>
               </div>
             }
@@ -239,13 +241,13 @@
             <h2 class="govuk-heading-m">Tank Inspections</h2>
             <!-- Initial inspection -->
             @if (tcs.hasInitialInspectionChanged()) {
+              <h2 class="govuk-heading-s">Initial</h2>
               <dl class="govuk-summary-list">
-                <h2 class="govuk-heading-s">Initial</h2>
                 @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Certificate number</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
-                      {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
+                      <span>{{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}</span>
                     </dd>
                   </div>
                 }
@@ -253,7 +255,7 @@
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Expiry date</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
-                      {{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
+                      <span>{{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}</span>
                     </dd>
                   </div>
                 }
@@ -261,25 +263,25 @@
             }
             <!-- Subsequent inspections -->
             @for (inspection of amended.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
+              <h2 class="govuk-heading-s ">Subsequent {{ i + 1 }}</h2>
               <dl class="govuk-summary-list">
                 <ng-container>
-                  <h2 class="govuk-heading-s ">Subsequent {{ i + 1 }}</h2>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Inspection type</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
-                      {{ inspection.tc3Type | defaultNullOrEmpty }}
+                      <span>{{ inspection.tc3Type | defaultNullOrEmpty }}</span>
                     </dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Certificate number</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
-                      {{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}
+                      <span>{{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}</span>
                     </dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Expiry date</dt>
                     <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
-                      {{ inspection.tc3PeriodicExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}
+                      <span>{{ inspection.tc3PeriodicExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}</span>
                     </dd>
                   </div>
                 </ng-container>

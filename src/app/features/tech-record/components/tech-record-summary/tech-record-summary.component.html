@@ -4,10 +4,10 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i < middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
+          <app-accordion
+            [id]="section.name"
             [title]="section.label"
-            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
+            [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>
@@ -17,10 +17,10 @@
     <div class="govuk-grid-column-one-half">
       @for (section of sectionTemplates; track section; let i = $index) {
         @if (i >= middleIndex) {
-          <app-accordion 
-            [id]="section.name" 
-            [title]="section.label" 
-            [isExpanded]="section.name === 'reasonForCreationSection' || (isSectionExpanded$(section.name) | async)">
+          <app-accordion
+            [id]="section.name"
+            [title]="section.label"
+            [isExpanded]="isSectionExpanded$(section.name) | async">
             <ng-template [ngTemplateOutlet]="accordion"
             [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
           </app-accordion>
@@ -38,16 +38,7 @@
           <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
         }
         @case ('audit') {
-          @if (featureToggleService.isFeatureEnabled('FsAudit')) {
-            <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
         }
         @case ('techRecordSummary') {
           <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
@@ -58,17 +49,7 @@
         @case ('purchaserSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Purchaser section -->
-            @if (featureToggleService.isFeatureEnabled('FsPurchasers')) {
-              <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
-            <!-- Old Purchaser section -->
+            <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
         @case ('dimensionsSection') {
@@ -77,17 +58,8 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New dimensions section-->
-            @if (featureToggleService.isFeatureEnabled('FsDimensions')) {
-              <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
-            } @else {
-              <app-dimensions
-                [techRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dimensions>
-            }
-            <!-- Old dimensions section-->
+            <!-- Dimensions section-->
+            <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
           }
         }
         @case ('documentsSection') {
@@ -96,100 +68,36 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <!-- New documents section-->
-            @if (featureToggleService.isFeatureEnabled('FsDocuments')) {
-              <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
-            <!-- Old documents section-->
+            <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
           }
         }
         @case ('approvalSection') {
-          <!-- New Type Approval section -->
-          @if (featureToggleService.isFeatureEnabled('FsApprovalType')) {
-            @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||
               techRecordCalculated.techRecord_vehicleType === 'hgv' ||
               techRecordCalculated.techRecord_vehicleType === 'psv') {
-              <app-type-approval-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'">
-              </app-type-approval-section>
-            }
-          } @else {
-            @if (
-              techRecordCalculated.techRecord_vehicleType === 'trl' ||
-              techRecordCalculated.techRecord_vehicleType === 'hgv' ||
-              techRecordCalculated.techRecord_vehicleType === 'psv'
-              ) {
-              <app-approval-type
-                [techRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-approval-type>
-            }
-          }
-          <!-- Old Type Approval section -->
-        }
-        @case ('psvBrakesSection') {
-          @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
-            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-              <!-- New PSV Brakes section -->
-              <app-brakes-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-                (formChange)="handleFormState($event)"
-              ></app-brakes-section>
-            } @else {
-              <!-- Old PSV Brakes section -->
-              <app-psv-brakes
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-psv-brakes>
-            }
+            <app-type-approval-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'">
+            </app-type-approval-section>
           }
         }
-        @case ('trlBrakesSection') {
-          @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-            @if (featureToggleService.isFeatureEnabled('FsBrakes')) {
-              <!-- New TRL Brakes section -->
-              <app-brakes-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-                (formChange)="handleFormState($event)"
-              ></app-brakes-section>
-            } @else {
-              <!-- Old TRL Brakes section -->
-              <app-trl-brakes
-                [vehicleTechRecord]="techRecordCalculated"
-                [isEditing]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-trl-brakes>
-            }
+        @case ('brakesSection'){
+          @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||techRecordCalculated.techRecord_vehicleType === 'psv') {
+            <app-brakes-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              (formChange)="handleFormState($event)"
+            ></app-brakes-section>
           }
         }
+
         @case('dda') {
           @if (techRecordCalculated.techRecord_vehicleType === 'psv') {
             <!-- New Tyres section -->
-            @if (featureToggleService.isFeatureEnabled('FsDDA')) {
-              <app-dda-section
-                [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-              ></app-dda-section>
-            } @else {
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-dda-section
+              [techRecord]="techRecordCalculated"
+              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+            ></app-dda-section>
           }
         }
         @case ('tyreSection') {
@@ -210,80 +118,34 @@
             <app-weights-section
               [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-              (formChange)="handleFormChanges($event)"
             ></app-weights-section>
           }
         }
         @case ('lettersSection') {
-          <!-- New LettersSection -->
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-          @if (featureToggleService.isFeatureEnabled('FsLetters')) {
             <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-          } @else {
-          <app-letters
-            [techRecord]="techRecordCalculated"
-            [isEditing]="(isEditing$ | async) ?? false"
-            (formChange)="handleFormState($event)"
-          ></app-letters>
           }
         }
-          <!-- Old Letters section -->
-        }
-
-
-
         @case ('platesSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Plates Section -->
-            @if (featureToggleService.isFeatureEnabled('FsPlates')) {
-              <app-plates-section
+            <app-plates-section
                 [techRecord]="techRecordCalculated"
                 [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              @if (techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl') {
-                <app-plates
-                  [techRecord]="techRecordCalculated"
-                  [isEditing]="(isEditing$ | async) ?? false"
-                  (formChange)="handleFormState($event)"
-                ></app-plates>
-              }
-            }
-            <!-- Old Plates Section -->
           }
         }
 
         @case ('authorizationIntoServiceSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Authorization into service section -->
-            @if (featureToggleService.isFeatureEnabled('FsAuthorisationIntoService')) {
-              <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-            } @else {
-              <!-- Old Authorization into service section -->
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           }
         }
 
         @case('manufacturerSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-
             <!-- New manufacturer section -->
-            @if (featureToggleService.isFeatureEnabled('FsManufacturer')) {
-              <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
-            } @else {
-              <!-- Old manufacturer section -->
-              <app-dynamic-form-group
-                [data]="techRecordCalculated"
-                [template]="section"
-                [edit]="(isEditing$ | async) ?? false"
-                (formChange)="handleFormState($event)"
-              ></app-dynamic-form-group>
-            }
+            <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
           }
         }
 
@@ -302,42 +164,19 @@
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
             ) {
-            @if (this.featureToggleService.isFeatureEnabled('FsAdrCerts')) {
-              <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-
-            } @else {
-              <app-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-adr-certificate-history>
-            }
+            <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
           }
         }
         @case ('techRecord') {
           <!-- New Last Applicant section -->
-          @if (featureToggleService.isFeatureEnabled('FsLastApplicant')) {
-            <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
-          } @else {
-            <!-- Old Last Applicant section -->
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
         }
         @case ('reasonForCreationSection') {
-          @if (featureToggleService.isFeatureEnabled('FsReasonForCreation')) {
-            <app-reason-for-creation-section 
-              [techRecord]="techRecordCalculated" 
+          <app-reason-for-creation-section
+              [techRecord]="techRecordCalculated"
               [mode]="(isEditing$ | async) ? 'edit' : 'view'"
-            ></app-reason-for-creation-section>
-          } @else {
-            <app-dynamic-form-group
-              [data]="techRecordCalculated"
-              [template]="section"
-              [edit]="(isEditing$ | async) ?? false"
-              (formChange)="handleFormState($event)"
-            ></app-dynamic-form-group>
-          }
+          ></app-reason-for-creation-section>
+
         }
         @default {
           <app-dynamic-form-group

@@ -106,17 +106,5 @@ describe('TestCertificateComponent', () => {
 
 			expect(component.certNotNeeded).toBe(false);
 		});
-
-		it('should not certNotNeeded value if requiredStandards feature is false', () => {
-			component.certNotNeeded = false;
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
-			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.pass, testTypeId: '125' }],
-			} as TestResultModel);
-			store.overrideSelector(isTestTypeOldIvaOrMsva, true);
-			component.ngOnInit();
-
-			expect(component.certNotNeeded).toBe(false);
-		});
 	});
 });

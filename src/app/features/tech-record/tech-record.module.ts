@@ -16,12 +16,12 @@ import { GenerateLetterComponent } from './components/tech-record-generate-lette
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 import { TechRecordHistoryComponent } from './components/tech-record-history/tech-record-history.component';
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
-import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
+import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes-wrapper/tech-record-summary-changes-v1/tech-record-summary-changes.component';
 import { TechRecordTitleComponent } from './components/tech-record-title/tech-record-title.component';
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TestRecordSummaryComponent } from './components/test-record-summary/test-record-summary.component';
-import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
+import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record-wrapper/vehicle-technical-record-v1/vehicle-technical-record.component';
 
 import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';

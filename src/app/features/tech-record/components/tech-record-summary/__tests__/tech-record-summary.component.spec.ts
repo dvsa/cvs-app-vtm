@@ -6,7 +6,6 @@ import { provideRouter } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { Roles } from '@models/roles.enum';
 import { FitmentCode, SpeedCategorySymbol, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -46,14 +45,7 @@ describe('TechRecordSummaryComponent', () => {
 				TechnicalRecordService,
 				FeatureToggleService,
 			],
-		})
-			.overrideComponent(LettersComponent, {
-				set: {
-					selector: 'app-letters',
-					template: '<p>Mock Letters Component</p>',
-				},
-			})
-			.compileComponents();
+		}).compileComponents();
 	});
 
 	beforeEach(() => {

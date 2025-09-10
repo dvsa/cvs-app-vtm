@@ -24,6 +24,7 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	readonly blur = output<FocusEvent>();
 	readonly focus = output<FocusEvent>();
 
+	orientation = input<RadioGroupOrientation>('vertical');
 	value = model<string | number | boolean | null>(null);
 
 	readonly options = input.required<MultiOption<unknown>[]>();
@@ -37,3 +38,5 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 		this.disabled.set(isDisabled);
 	}
 }
+
+export type RadioGroupOrientation = 'horizontal' | 'vertical';

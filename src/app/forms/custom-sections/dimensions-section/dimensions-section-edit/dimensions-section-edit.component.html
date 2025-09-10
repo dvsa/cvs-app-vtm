@@ -66,20 +66,22 @@
         ></govuk-form-group-input>
       }
       <!-- Axles spacings (HGV and TRL) -->
-      @if (tr.techRecord_vehicleType !== VehicleTypes.PSV) {
-        <ng-container formArrayName="techRecord_dimensions_axleSpacing">
-          @for (axle of axleSpacings?.controls; track axle; let i = $index) {
-            <ng-container [formGroup]="axle">
-              <govuk-form-group-input
-                [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
-                formControlName="value"
-                label="Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)"
-                [width]="Widths.XS"
-                suffix="mm"
-                type="number"
-              ></govuk-form-group-input>
-            </ng-container>
-          }
+      @if (tr.techRecord_vehicleType !== VehicleTypes.PSV && parent.get('techRecord_dimensions_axleSpacing')) {
+        <ng-container [formGroup]="parent">
+          <ng-container formArrayName="techRecord_dimensions_axleSpacing">
+            @for (axle of axleSpacings?.controls; track axle; let i = $index) {
+              <ng-container [formGroup]="axle">
+                <govuk-form-group-input
+                  [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
+                  formControlName="value"
+                  label="Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)"
+                  [width]="Widths.XS"
+                  suffix="mm"
+                  type="number"
+                ></govuk-form-group-input>
+              </ng-container>
+            }
+          </ng-container>
         </ng-container>
       }
       <!-- TRL only fields -->

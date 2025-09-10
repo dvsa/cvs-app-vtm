@@ -1,0 +1,14 @@
+<div class="govuk-grid-row search-page">
+  <div class="govuk-grid-column-full">
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">{{ isEditing ? 'Amend' : 'View' }} technical record</p>
+
+    <app-edit-tech-record-button
+      class="right"
+      *appRoleRequired="roles.TechRecordAmend"
+      [(isEditing)]="isEditing"
+      [isDirty]="isDirty"
+      customId="bottom"
+      (submitChange)="handleSubmit()"
+    ></app-edit-tech-record-button>
+  </div>
+</div>

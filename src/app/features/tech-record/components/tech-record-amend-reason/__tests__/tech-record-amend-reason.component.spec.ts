@@ -12,6 +12,7 @@ describe('TechRecordAmendReasonComponent', () => {
 	let fixture: ComponentFixture<TechRecordAmendReasonComponent>;
 	let route: ActivatedRoute;
 	let router: Router;
+	let errorsService: GlobalErrorService;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -25,6 +26,7 @@ describe('TechRecordAmendReasonComponent', () => {
 
 		route = TestBed.inject(ActivatedRoute);
 		router = TestBed.inject(Router);
+		errorsService = TestBed.inject(GlobalErrorService);
 	});
 
 	beforeEach(() => {
@@ -38,12 +40,6 @@ describe('TechRecordAmendReasonComponent', () => {
 	});
 
 	describe('handleSubmit', () => {
-		let errorsService: GlobalErrorService;
-
-		beforeEach(() => {
-			errorsService = TestBed.inject(GlobalErrorService);
-		});
-
 		it('should call handleSubmit', () => {
 			const handleSubmitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation();
 
@@ -100,6 +96,18 @@ describe('TechRecordAmendReasonComponent', () => {
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
 			expect(navigateSpy).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('navigateBack', () => {
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
+
+			const clearErrorsSpy = jest.spyOn(errorsService, 'clearErrors');
+
+			component.navigateBack();
+
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
 		});
 	});
 });

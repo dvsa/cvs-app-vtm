@@ -13,7 +13,7 @@ import { PreventDoubleClickDirective } from '@directives/prevent-double-click/pr
 export class ButtonComponent extends RouterLinkWithHref {
 	readonly id = input<string>();
 	readonly disabled = input(false);
-	readonly type = input<'link' | 'button'>('button');
+	readonly type = input<'link' | 'button' | 'submit'>('button');
 	readonly design = input<'' | 'secondary' | 'warning' | 'link'>('');
 
 	readonly clicked = output();

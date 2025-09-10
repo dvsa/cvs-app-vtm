@@ -9,7 +9,6 @@ import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
 import {
 	clearBatch,
@@ -21,7 +20,6 @@ import {
 } from './batch-create.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 import {
-	addAxle,
 	addSectionState,
 	amendVin,
 	amendVinFailure,
@@ -57,7 +55,6 @@ import {
 	promoteTechRecord,
 	promoteTechRecordFailure,
 	promoteTechRecordSuccess,
-	removeAxle,
 	removeSectionState,
 	removeTC3TankInspection,
 	removeUNNumber,
@@ -167,9 +164,6 @@ export const vehicleTechRecordReducer = createReducer(
 	on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
 
 	on(updateExistingADRAdditionalExaminerNote, (state, action) => handleUpdateExistingADRExaminerNote(state, action)),
-
-	on(addAxle, (state) => handleAddAxle(state)),
-	on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
 
 	on(removeTC3TankInspection, (state, action) => handleRemoveTC3TankInspection(state, action)),
 
@@ -284,100 +278,6 @@ function handleUpdateBody(
 	newState.editingTechRecord.techRecord_bodyMake = action.psvMake.psvBodyMake;
 	newState.editingTechRecord.techRecord_chassisMake = action.psvMake.psvChassisMake;
 	newState.editingTechRecord.techRecord_chassisModel = action.psvMake.psvChassisModel;
-
-	return newState;
-}
-
-function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServiceState {
-	const newState = cloneDeep(state);
-
-	if (!newState.editingTechRecord) return newState;
-	if (
-		newState.editingTechRecord.techRecord_vehicleType === 'car' ||
-		newState.editingTechRecord.techRecord_vehicleType === 'lgv' ||
-		newState.editingTechRecord.techRecord_vehicleType === 'motorcycle'
-	) {
-		return newState;
-	}
-	if (!newState.editingTechRecord.techRecord_axles) newState.editingTechRecord.techRecord_axles = [];
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const newAxle: any = {
-		axleNumber: newState.editingTechRecord.techRecord_axles.length + 1,
-		tyres_tyreSize: null,
-		tyres_fitmentCode: null,
-		tyres_dataTrAxles: null,
-		tyres_plyRating: null,
-		tyres_tyreCode: null,
-		weights_gbWeight: null,
-		weights_designWeight: null,
-		parkingBrakeMrk: false,
-	};
-
-	if (
-		newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-		newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
-	) {
-		newAxle.weights_eecWeight = null;
-	}
-
-	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-		newAxle.weights_kerbWeight = null;
-		newAxle.weights_ladenWeight = null;
-		newAxle.tyres_speedCategorySymbol = null;
-	}
-
-	if (newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-		newAxle.brakes_brakeActuator = null;
-		newAxle.brakes_leverLength = null;
-		newAxle.brakes_springBrakeParking = null;
-	}
-
-	newState.editingTechRecord.techRecord_axles.push(newAxle);
-
-	newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
-
-	if (
-		newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-		newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
-	) {
-		newState.editingTechRecord.techRecord_dimensions_axleSpacing = new AxlesService().generateAxleSpacing(
-			newState.editingTechRecord.techRecord_axles.length,
-			newState.editingTechRecord.techRecord_dimensions_axleSpacing
-		);
-	}
-
-	return newState;
-}
-
-function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: number }): TechnicalRecordServiceState {
-	const newState = cloneDeep(state);
-	if (
-		!newState.editingTechRecord ||
-		newState.editingTechRecord.techRecord_vehicleType === 'car' ||
-		newState.editingTechRecord.techRecord_vehicleType === 'lgv' ||
-		newState.editingTechRecord.techRecord_vehicleType === 'motorcycle' ||
-		!newState.editingTechRecord.techRecord_axles ||
-		!newState.editingTechRecord.techRecord_axles.length
-	) {
-		return newState;
-	}
-
-	newState.editingTechRecord.techRecord_axles.splice(action.index, 1);
-
-	// eslint-disable-next-line no-return-assign
-	newState.editingTechRecord.techRecord_axles.forEach((axle, i) => (axle.axleNumber = i + 1));
-
-	newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
-
-	if (
-		newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
-		newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.TRL
-	) {
-		newState.editingTechRecord.techRecord_dimensions_axleSpacing = new AxlesService().generateAxleSpacing(
-			newState.editingTechRecord.techRecord_axles.length
-		);
-	}
 
 	return newState;
 }

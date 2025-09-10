@@ -1,0 +1,11 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!-- Other Notes -->
+  @if (getVehicleType() !== VehicleTypes.PSV) {
+    <govuk-form-group-textarea
+      label="Notes"
+      hint="Enter any notes for this technical record"
+      [maxLength]="1024"
+      formControlName="techRecord_notes"
+    ></govuk-form-group-textarea>
+  }
+</div>

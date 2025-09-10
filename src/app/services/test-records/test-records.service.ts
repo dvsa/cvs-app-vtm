@@ -4,7 +4,12 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { CompleteTestResults } from '@models/test-results/completeTestResults';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
+import {
+	TEST_TYPES,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_13,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+} from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -124,6 +129,15 @@ export class TestRecordsService {
 
 			return isIVAorMSVATest;
 		});
+
+		// For failed TIR tests, set the certifcate number to null to pass BE validation
+		if (
+			TEST_TYPES_GROUP5_13.includes(testResult.testTypes[0].testTypeId) &&
+			testResult.testTypes[0].testResult === 'fail' &&
+			!testResult.testTypes[0].certificateNumber
+		) {
+			testResult.testTypes[0].certificateNumber = null as unknown as string;
+		}
 
 		if (!lastIvaOrMsvaTest) {
 			return testResult;

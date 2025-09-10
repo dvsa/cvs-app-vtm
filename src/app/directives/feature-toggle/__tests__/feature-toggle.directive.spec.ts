@@ -35,7 +35,7 @@ describe('FeatureToggleDirective', () => {
 		}).createComponent(TestComponent);
 
 		service = TestBed.inject(FeatureToggleService);
-		service.config = { testToggleEnabled: true, testToggleDisabled: false };
+		service.config.set({ testToggleEnabled: { enabled: true }, testToggleDisabled: { enabled: false } });
 
 		fixture.detectChanges(); // initial binding
 	});

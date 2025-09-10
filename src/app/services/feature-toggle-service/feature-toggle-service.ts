@@ -1,11 +1,12 @@
+import { environment } from '@/src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { environment } from '@environments/environment';
-import { get, has } from 'lodash';
-import { lastValueFrom, take } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { get } from 'lodash';
+import { take } from 'rxjs';
+import { HttpService } from '../http/http.service';
 
 export interface FeatureConfig {
-	[key: string]: boolean;
+	[key: string]: { enabled: boolean };
 }
 
 @Injectable({
@@ -13,13 +14,31 @@ export interface FeatureConfig {
 })
 export class FeatureToggleService {
 	http = inject(HttpClient);
+	httpService = inject(HttpService);
 
-	config: FeatureConfig | null = null;
-	configPath = this.getConfig();
+	config = signal<FeatureConfig | null>(null);
 
 	async loadConfig() {
-		// eslint-disable-next-line no-return-assign
-		return (this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1))));
+		await this.loadRemoteConfig();
+		// await this.loadLocalConfig();
+	}
+
+	async loadLocalConfig() {
+		this.http
+			.get<FeatureConfig>(this.getConfig())
+			.pipe(take(1))
+			.subscribe((config) => {
+				this.config.set({ ...config });
+			});
+	}
+
+	async loadRemoteConfig() {
+		this.httpService
+			.getFeatureFlags()
+			.pipe(take(1))
+			.subscribe((config) => {
+				this.config.set({ ...config });
+			});
 	}
 
 	getConfig() {
@@ -35,10 +54,15 @@ export class FeatureToggleService {
 		}
 	}
 
+	setConfig(config: FeatureConfig): void {
+		this.config.set(config);
+	}
+
 	isFeatureEnabled(key: string) {
-		if (this.config && has(this.config, key)) {
-			return get(this.config, key, false);
-		}
-		return false;
+		if (!this.config()) return false;
+		const feature = get(this.config(), key);
+		if (!feature) return false;
+
+		return feature.enabled;
 	}
 }

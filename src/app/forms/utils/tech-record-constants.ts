@@ -1,30 +1,5 @@
-import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
-import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
-import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
-import { Audit } from '@forms/templates/general/audit.template';
-import { DocumentsTemplate } from '@forms/templates/general/documents.template';
-import { PlatesTemplate } from '@forms/templates/general/plates.template';
-import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
-import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
-import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
-import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
-import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
-import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
-import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
-import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
-import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import { LettersTemplate } from '../templates/general/letters.template';
-import { ManufacturerTemplate } from '../templates/general/manufacturer.template';
-import { TrlAuthIntoServiceTemplate } from '../templates/trl/trl-auth-into-service.template';
-import { TrlBrakesTemplate } from '../templates/trl/trl-brakes.template';
-import { TrlDimensionsTemplate } from '../templates/trl/trl-dimensions.template';
-import { TrlPurchasers } from '../templates/trl/trl-purchaser.template';
-import { tyresTemplateTrl } from '../templates/trl/trl-tyres.template';
-import { TrlWeight } from '../templates/trl/trl-weight.template';
 
 // The map below initializes the array of sections that the *ngFor in tech summary component's template will iterate over.
 // The order in which each section is introduced in the array will determine its order on the page when rendered.
@@ -33,105 +8,124 @@ const adrSection = { name: 'adrSection', label: 'ADR' } as FormNode;
 const techRecordSection = { name: 'techRecordSummary', label: 'Vehicle summary' } as FormNode;
 const notesSection = { name: 'notesSection', label: 'Notes' } as FormNode;
 const bodySection = { name: 'bodySection', label: 'Body' } as FormNode;
+const documentsSection = { name: 'documentsSection', label: 'Documents' } as FormNode;
+const lettersSection = { name: 'lettersSection', label: 'Letters' } as FormNode;
+const dimensionsSection = { name: 'dimensionsSection', label: 'Dimensions' } as FormNode;
+const brakesSection = { name: 'brakesSection', label: 'Brakes' } as FormNode;
+const adrCertificateSection = { name: 'adrCertificateSection', label: 'ADR certificates' } as FormNode;
+const auditSection = { name: 'audit', label: 'Audit' } as FormNode;
+const ddaSection = { name: 'dda', label: 'Disability Discrimination Act' } as FormNode;
+const lastApplicantSection = { name: 'techRecord', label: 'Last applicant' } as FormNode;
+const manufacturerSection = { name: 'manufacturerSection', label: 'Manufacturer' } as FormNode;
+const authorisationIntoServiceSection = {
+	name: 'authorizationIntoServiceSection',
+	label: 'Authorisation into service',
+} as FormNode;
+const purchaserSection = { name: 'purchaserSection', label: 'Purchasers' } as FormNode;
+const reasonForCreationSection = { name: 'reasonForCreationSection', label: 'Reason for creation' } as FormNode;
+const tyresSection = { name: 'tyreSection', label: 'Tyres' } as FormNode;
+const weightsSection = { name: 'weightsSection', label: 'Weights' } as FormNode;
+const platesSection = { name: 'platesSection', label: 'Plates' } as FormNode;
+const approvalSection = { name: 'approvalSection', label: 'Approval type' } as FormNode;
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
 	[
 		VehicleTypes.PSV,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
-			/*  2 */ PsvNotes,
+			/*  1 */ reasonForCreationSection,
+			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
-			/*  4 */ PsvTypeApprovalTemplate,
-			/*  5 */ PsvBrakesTemplate,
-			/*  6 */ PsvDdaTemplate,
-			/*  7 */ DocumentsTemplate,
+			/*  4 */ approvalSection,
+			/*  5 */ brakesSection,
+			/*  6 */ ddaSection,
+			/*  7 */ documentsSection,
 			/*  8 */ bodySection,
-			/*  9 */ PsvWeightsTemplate,
-			/* 10 */ PsvTyresTemplate,
-			/* 11 */ PsvDimensionsTemplate,
+			/*  9 */ weightsSection,
+			/* 10 */ tyresSection,
+			/* 11 */ dimensionsSection,
 		],
 	],
 	[
 		VehicleTypes.HGV,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
+			/*  1 */ reasonForCreationSection,
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
-			/*  4 */ HgvAndTrlTypeApprovalTemplate,
-			/*  5 */ ApplicantDetails,
-			/*  6 */ DocumentsTemplate,
+			/*  4 */ approvalSection,
+			/*  5 */ lastApplicantSection,
+			/*  6 */ documentsSection,
 			/*  7 */ bodySection,
-			/*  8 */ HgvWeight,
-			/*  9 */ tyresTemplateHgv,
-			/* 10 */ HgvDimensionsTemplate,
-			/* 11 */ PlatesTemplate,
+			/*  8 */ weightsSection,
+			/*  9 */ tyresSection,
+			/* 10 */ dimensionsSection,
+			/* 11 */ platesSection,
 			/* 12 */ adrSection,
-			/* 13 */ AdrCertificateTemplate,
+			/* 13 */ adrCertificateSection,
 		],
 	],
 	[
 		VehicleTypes.TRL,
 		[
-			/*  1 */ TechRecordReasonForCreationSection,
+			/*  1 */ reasonForCreationSection,
 			/*  2 */ notesSection,
 			/*  3 */ techRecordSection,
-			/*  4 */ HgvAndTrlTypeApprovalTemplate,
-			/*  5 */ ApplicantDetails,
-			/*  6 */ DocumentsTemplate,
-			/*  7 */ LettersTemplate,
+			/*  4 */ approvalSection,
+			/*  5 */ lastApplicantSection,
+			/*  6 */ documentsSection,
+			/*  7 */ lettersSection,
 			/*  8 */ bodySection,
-			/*  9 */ TrlWeight,
-			/* 10 */ tyresTemplateTrl,
-			/* 11 */ TrlBrakesTemplate,
-			/* 12 */ TrlPurchasers,
-			/* 13 */ TrlDimensionsTemplate,
-			/* 14 */ PlatesTemplate,
-			/* 15 */ TrlAuthIntoServiceTemplate,
-			/* 16 */ ManufacturerTemplate,
+			/*  9 */ weightsSection,
+			/* 10 */ tyresSection,
+			/* 11 */ brakesSection,
+			/* 12 */ purchaserSection,
+			/* 13 */ dimensionsSection,
+			/* 14 */ platesSection,
+			/* 15 */ authorisationIntoServiceSection,
+			/* 16 */ manufacturerSection,
 			/* 17 */ adrSection,
-			/* 18 */ AdrCertificateTemplate,
+			/* 18 */ adrCertificateSection,
 		],
 	],
 	[
 		VehicleTypes.SMALL_TRL,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
 		VehicleTypes.LGV,
 		[
-			/* 1 */ TechRecordReasonForCreationSection,
+			/* 1 */ reasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 			/* 6 */ adrSection,
-			/* 7 */ AdrCertificateTemplate,
+			/* 7 */ adrCertificateSection,
 		],
 	],
 	[
 		VehicleTypes.CAR,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 	[
 		VehicleTypes.MOTORCYCLE,
 		[
-			TechRecordReasonForCreationSection,
+			reasonForCreationSection,
 			/* 2 */ techRecordSection,
-			/* 3 */ ApplicantDetails,
+			/* 3 */ lastApplicantSection,
 			/* 4 */ notesSection,
-			/* 5 */ Audit,
+			/* 5 */ auditSection,
 		],
 	],
 ]);

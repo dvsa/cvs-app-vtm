@@ -6,9 +6,9 @@ export enum VehicleConfiguration {
 	SEMI_TRAILER = 'semi-trailer',
 	LOW_LOADER = 'low loader',
 	OTHER = 'other',
+	DOLLY = 'dolly',
 	DRAWBAR = 'drawbar',
 	FOUR_IN_LINE = 'four-in-line',
-	DOLLY = 'dolly',
 	FULL_DRAWBAR = 'full drawbar',
 	LONG_SEMI_TRAILER = 'long semi-trailer',
 }

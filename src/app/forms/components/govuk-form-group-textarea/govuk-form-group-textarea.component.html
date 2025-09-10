@@ -1,9 +1,9 @@
-<div class="govuk-form-group-input">
-  <h1>
-    <label id="{{ labelId}}" for="{{ id }}" tag>
+<div class="govuk-form-group">
+  <h1 class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--m tags" id="{{ labelId}}" for="{{ id }}" tag>
       {{ controlLabel() }}
       @if (tags().length) {
-        <div>
+        <div class="tags">
           @for (tag of tags(); track tag) {
             <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
           }

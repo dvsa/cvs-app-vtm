@@ -45,6 +45,8 @@ export class GovukFormGroupAutocompleteComponent
 
 	readonly noBottomMargin = input(false);
 
+	readonly placeholder = input<string>('');
+
 	readonly options$ = input.required<Observable<any[]>>();
 
 	document = inject(DOCUMENT);
@@ -83,8 +85,9 @@ export class GovukFormGroupAutocompleteComponent
 				}
 
 				enhanceSelectElement(enhanceParams);
-
-				this.document.querySelector(`#${this.id}`)?.addEventListener('change', (event) => this.handleChange(event));
+				const control = this.document.querySelector(`#${this.id}`);
+				control?.setAttribute('placeholder', this.placeholder());
+				control?.addEventListener('change', (event) => this.handleChange(event));
 			});
 	}
 
