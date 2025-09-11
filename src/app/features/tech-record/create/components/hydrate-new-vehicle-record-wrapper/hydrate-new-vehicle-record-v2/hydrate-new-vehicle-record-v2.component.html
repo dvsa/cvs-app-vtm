@@ -155,6 +155,15 @@
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
                       <app-accordion
+                        [id]="'adr'"
+                        [title]="'ADR'"
+                        [description]="'Approval for carrying dangerous goods.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-adr [techRecord]="techRecord"></app-adr>
+                      </app-accordion>
+                      <app-accordion
                         [id]="'notes'"
                         [title]="'Notes'"
                         [description]="'Notes attached to this record.'"
