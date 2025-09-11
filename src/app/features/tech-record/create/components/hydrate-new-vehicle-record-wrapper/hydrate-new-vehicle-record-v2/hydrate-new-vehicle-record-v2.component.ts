@@ -41,6 +41,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		ReasonForCreationComponent,
 		AdrComponent,
 		LastApplicantComponent,
+		AdrComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
