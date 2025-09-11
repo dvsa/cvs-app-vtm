@@ -1,3 +1,4 @@
+import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
+import { YES_NO_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReplaySubject } from 'rxjs';
 
@@ -48,12 +50,12 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 				return this.hgvFields;
 			// case VehicleTypes.PSV:
 			//   return this.psvFields;
-			// case VehicleTypes.TRL:
-			//   return this.trlFields;
+			case VehicleTypes.TRL:
+				return this.trlFields;
 			// case VehicleTypes.SMALL_TRL:
 			//   return this.smallTrlFields;
-			// case VehicleTypes.LGV:
-			//   return this.lgvFields;
+			case VehicleTypes.LGV:
+				return this.lgvFields;
 			// case VehicleTypes.CAR:
 			//   return this.carFields;
 			// case VehicleTypes.MOTORCYCLE:
@@ -63,8 +65,22 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		}
 	}
 
+	get lgvFields(): Partial<Record<keyof TechRecordType<'lgv'>, FormControl>> {
+		return {
+			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+		};
+	}
+
+	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
+		return {
+			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+		};
+	}
+
 	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
-		return {};
+		return {
+			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+		};
 	}
 
 	getVehicleType(): VehicleTypes {
@@ -83,4 +99,18 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.destroy$.next(true);
 		this.destroy$.complete();
 	}
+
+	get canDisplayDangerousGoodsWarning() {
+		const originalDangerousGoodsValue = (this.store.selectSignal(techRecord)() as TechRecordType<'hgv' | 'lgv' | 'trl'>)
+			?.techRecord_adrDetails_dangerousGoods;
+		const dangerousGoods = this.form.get('techRecord_adrDetails_dangerousGoods');
+
+		const valueHasChanged = originalDangerousGoodsValue !== dangerousGoods?.value;
+
+		return dangerousGoods?.value === false && dangerousGoods.dirty && valueHasChanged
+			? 'By selecting this field it will delete all previous ADR field inputs'
+			: null;
+	}
+
+	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 }
