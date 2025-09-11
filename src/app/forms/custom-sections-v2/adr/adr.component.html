@@ -17,7 +17,7 @@
 
 
         <!--   Declarations seen section -->
-        <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
+        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
         <govuk-form-group-checkbox
           label="Manufacturer brake declaration"
           formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
@@ -47,14 +47,14 @@
             />
           }
         }
-        <!--   Declarations seen (Owner/operator declaration )-->
+        <!--   Declarations seen (Owner/operator declaration)-->
         <govuk-form-group-checkbox
           label="Owner/operator declaration"
           formControlName="techRecord_adrDetails_declarationsSeen"
           [value]="true"
         />
-        <!--  &lt;!&ndash; New Certificate required &ndash;&gt;-->
-        <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
+        <!--  New Certificate required -->
+        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
         <govuk-form-group-checkbox
           label="Yes"
           formControlName="techRecord_adrDetails_newCertificateRequested"
@@ -68,7 +68,7 @@
           [hint]="'These will not be shown on the ADR certificate'"
         />
         <!-- ADR Additional Examiner Note History -->
-        <h2 class="govuk-heading-m">Additional examiner notes history</h2>
+        <h2 class="govuk-heading-s">Additional examiner notes history</h2>
         @if (getADRExaminerNotes()?.value; as notes) {
           @if (notes?.length; as notesCount) {
             <table class="govuk-table">
