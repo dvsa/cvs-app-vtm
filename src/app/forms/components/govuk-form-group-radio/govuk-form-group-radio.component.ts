@@ -3,9 +3,9 @@ import { Component, forwardRef, input, model, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { TagDirective } from '@directives/tag/tag.directive';
-import { MultiOption } from '@models/options.model';
-
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
+import { MultiOption } from '@models/options.model';
+import { GOVUK_RADIOS } from './govuk-form-group-radio.model';
 
 @Component({
 	selector: 'govuk-form-group-radio',
@@ -13,6 +13,10 @@ import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-
 	templateUrl: './govuk-form-group-radio.component.html',
 	styleUrls: ['./govuk-form-group-radio.component.scss'],
 	providers: [
+		{
+			provide: GOVUK_RADIOS,
+			useExisting: forwardRef(() => GovukFormGroupRadioComponent),
+		},
 		{
 			provide: NG_VALUE_ACCESSOR,
 			useExisting: forwardRef(() => GovukFormGroupRadioComponent),
@@ -27,7 +31,7 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	orientation = input<RadioGroupOrientation>('vertical');
 	value = model<string | number | boolean | null>(null);
 
-	readonly options = input.required<MultiOption<unknown>[]>();
+	readonly options = input<MultiOption<unknown>[]>([]);
 
 	writeValue(obj: any): void {
 		this.value.set(obj);

@@ -14,14 +14,16 @@
     </legend>
 
     @if (controlHint()) {
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+      <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
     }
 
     @if (hasError) {
       @let firstError = (control?.errors | keyvalue)?.[0]?.value;
       <p class="govuk-error-message" id="{{ errorId }}">
         <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+        <span>{{
+          typeof firstError === 'string' ? firstError : firstError.error
+        }}</span>
       </p>
     }
 
@@ -32,34 +34,40 @@
       </p>
     }
 
-    <div class="govuk-radios" [class.govuk-radios--inline]="orientation() === 'horizontal'" data-module="govuk-radios">
-      @for (option of options(); track option) {
-        <div class="govuk-radios__item">
-          <input
-            id="{{ id }}-{{ option.value }}-radio"
-            class="govuk-radios__input"
-            type="radio"
-            name="{{ id }}"
-            [value]="option.value"
-            [checked]="option.value === value()"
-            [attr.aria-describedby]="hintId"
-            [attr.aria-labelledby]="id + '-' + option.value + '-label'"
-            [attr.data-testid]="id"
-            [class.govuk-radios__input--error]="hasError"
-            [(ngModel)]="value"
-            (ngModelChange)="onChange($event)"
-            [disabled]="disabled()"
-            (blur)="onTouched()"
+    <div
+      class="govuk-radios"
+      [class.govuk-radios--inline]="orientation() === 'horizontal'"
+      data-module="govuk-radios"
+    >
+      <ng-content>
+        @for (option of options(); track option) {
+          <div class="govuk-radios__item">
+            <input
+              id="{{ id }}-{{ option.value }}-radio"
+              class="govuk-radios__input"
+              type="radio"
+              name="{{ id }}"
+              [value]="option.value"
+              [checked]="option.value === value()"
+              [attr.aria-describedby]="hintId"
+              [attr.aria-labelledby]="id + '-' + option.value + '-label'"
+              [attr.data-testid]="id"
+              [class.govuk-radios__input--error]="hasError"
+              [(ngModel)]="value"
+              (ngModelChange)="onChange($event)"
+              [disabled]="disabled()"
+              (blur)="onTouched()"
             />
-          <label
-          class="govuk-radios__label govuk-label"
-            id="{{ id }}-{{ option.value }}-label"
-            for="{{ id }}-{{ option.value }}-radio"
+            <label
+              class="govuk-radios__label govuk-label"
+              id="{{ id }}-{{ option.value }}-label"
+              for="{{ id }}-{{ option.value }}-radio"
             >
-            {{ option.label }}
-          </label>
-        </div>
-      }
+              {{ option.label }}
+            </label>
+          </div>
+        }
+      </ng-content>
     </div>
   </fieldset>
 </div>

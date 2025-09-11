@@ -1,11 +1,11 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
-  <!--  Date of First Registration -->
   @if (shouldDisplayFormControl('techRecord_adrDetails_dangerousGoods')) {
-    <govuk-form-group-radio
-      label="Able to carry dangerous goods"
-      formControlName="techRecord_adrDetails_dangerousGoods"
-      [options]="YES_NO_OPTIONS"
-      [warning]="canDisplayDangerousGoodsWarning"
-    />
+    <govuk-form-group-radio formControlName="techRecord_adrDetails_dangerousGoods" [warning]="canDisplayDangerousGoodsWarning">
+      <govuk-radio label="Yes" [value]="true">
+        <!-- Add conditionally shown ADR content here -->
+        <h3 class="govuk-heading-m">Applicant details</h3>
+      </govuk-radio>
+      <govuk-radio label="No" [value]="false"></govuk-radio>
+    </govuk-form-group-radio>
   }
 </div>

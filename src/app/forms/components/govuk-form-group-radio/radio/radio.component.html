@@ -1,0 +1,36 @@
+@if (radios) {
+  <div class="govuk-radios__item">
+    <input
+      class="govuk-radios__input"
+      id="{{ radios.controlId() }}-{{ value() }}-radio"
+      name="{{ name() || radios.controlId() }}"
+      type="radio"
+      [value]="value()"
+      [checked]="radios.value() === value()"
+      [(ngModel)]="radios.value"
+      (ngModelChange)="radios.onChange($event)"
+      [attr.data-aria-controls]="'conditional-' + radios.controlId()"
+    />
+
+    @if (label()) {
+      <label
+        class="govuk-label govuk-radios__label"
+        [for]="radios.controlId() + '-' + value() + '-radio'"
+      >
+        {{ label() }}
+      </label>
+    }
+
+    @if (hint()) {
+      <div class="govuk-hint govuk-radios__hint">{{ hint() }}</div>
+    }
+  </div>
+
+  <div
+    class="govuk-radios__conditional"
+    [class.govuk-radios__conditional--hidden]="radios.value() !== value()"
+    [id]="'conditional-' + radios.controlId()"
+  >
+    <ng-content></ng-content>
+  </div>
+}

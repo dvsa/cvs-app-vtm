@@ -1,7 +1,7 @@
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -9,6 +9,7 @@ import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-for
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
+import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { YES_NO_OPTIONS } from '@models/options.model';
@@ -29,58 +30,21 @@ import { ReplaySubject } from 'rxjs';
 		ToUppercaseDirective,
 		GovukCheckboxGroupComponent,
 		GovukFormGroupAutocompleteComponent,
+		RadioComponent,
 	],
 })
 export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	// TODO properly type this at some point
-	form = this.fb.group<any>({});
+	form = this.fb.group<any>({
+		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+	});
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
 	ngOnInit(): void {
-		this.addControls(this.controlsBasedOffVehicleType, this.form);
-
 		// Attach all form controls to parent
 		this.init(this.form);
-	}
-
-	get controlsBasedOffVehicleType() {
-		switch (this.getVehicleType()) {
-			case VehicleTypes.HGV:
-				return this.hgvFields;
-			// case VehicleTypes.PSV:
-			//   return this.psvFields;
-			case VehicleTypes.TRL:
-				return this.trlFields;
-			// case VehicleTypes.SMALL_TRL:
-			//   return this.smallTrlFields;
-			case VehicleTypes.LGV:
-				return this.lgvFields;
-			// case VehicleTypes.CAR:
-			//   return this.carFields;
-			// case VehicleTypes.MOTORCYCLE:
-			//   return this.motorcycleFields;
-			default:
-				return {};
-		}
-	}
-
-	get lgvFields(): Partial<Record<keyof TechRecordType<'lgv'>, FormControl>> {
-		return {
-			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
-		};
-	}
-
-	get trlFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
-		return {
-			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
-		};
-	}
-
-	get hgvFields(): Partial<Record<keyof TechRecordType<'hgv'>, FormControl>> {
-		return {
-			techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
-		};
 	}
 
 	getVehicleType(): VehicleTypes {
