@@ -1,0 +1,72 @@
+<div class="govuk-!-padding-4"  [formGroup]="form">
+  <!--  Name or Company -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_name')) {
+    <govuk-form-group-input
+      label="Name or company"
+      formControlName="techRecord_applicantDetails_name"
+      [width]="FormNodeWidth.XL"
+    />
+  }
+
+  <!--  Address line 1 -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address1')) {
+    <govuk-form-group-input
+      label="Address line 1"
+      formControlName="techRecord_applicantDetails_address1"
+    />
+  }
+
+  <!--  Address line 2 -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address2')) {
+    <govuk-form-group-input
+      label="Address line 2 (optional)"
+      formControlName="techRecord_applicantDetails_address2"
+    />
+  }
+
+  <!--  Town or City -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_postTown')) {
+    <govuk-form-group-input
+      label="Town or city"
+      formControlName="techRecord_applicantDetails_postTown"
+      [width]="FormNodeWidth.XL"
+    />
+  }
+
+  <!--  County -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_address3')) {
+    <govuk-form-group-input
+      label="County"
+      formControlName="techRecord_applicantDetails_address3"
+      [width]="FormNodeWidth.XL"
+    />
+  }
+
+  <!--  Postcode -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_postCode')) {
+    <govuk-form-group-input
+      label="Postcode"
+      formControlName="techRecord_applicantDetails_postCode"
+      [width]="FormNodeWidth.L"
+    />
+  }
+
+  <!--  Telephone number -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')) {
+    <govuk-form-group-input
+      label="Telephone number"
+      formControlName="techRecord_applicantDetails_telephoneNumber"
+      [width]="FormNodeWidth.L"
+    />
+  }
+
+  <!--  Email address -->
+  @if (shouldDisplayFormControl('techRecord_applicantDetails_emailAddress')) {
+    <govuk-form-group-input
+      label="Email address"
+      formControlName="techRecord_applicantDetails_emailAddress"
+      [width]="FormNodeWidth.XL"
+      [nullIfEmpty]="true"
+    />
+  }
+</div>
