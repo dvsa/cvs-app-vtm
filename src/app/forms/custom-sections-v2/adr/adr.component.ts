@@ -14,6 +14,7 @@ import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-grou
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject } from 'rxjs';
 
 @Component({
@@ -37,6 +38,22 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	// TODO properly type this at some point
 	form = this.fb.group<any>({
 		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+		// Applicant Details
+		techRecord_adrDetails_applicantDetails_name: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
+		]),
+		techRecord_adrDetails_applicantDetails_street: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(150, 'Street must be less than or equal to 150 characters'),
+		]),
+		techRecord_adrDetails_applicantDetails_town: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(100, 'Town must be less than or equal to 100 characters'),
+		]),
+		techRecord_adrDetails_applicantDetails_city: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(100, 'City must be less than or equal to 100 characters'),
+		]),
+		techRecord_adrDetails_applicantDetails_postcode: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(25, 'Postcode must be less than or equal to 25 characters'),
+		]),
 	});
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -77,4 +94,5 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	}
 
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
+	protected readonly FormNodeWidth = FormNodeWidth;
 }

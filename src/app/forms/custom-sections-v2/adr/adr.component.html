@@ -4,6 +4,34 @@
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
         <h3 class="govuk-heading-m">Applicant details</h3>
+
+        <!-- Applicant Details Name -->
+        <govuk-form-group-input
+          label="Name"
+          formControlName="techRecord_adrDetails_applicantDetails_name"
+        />
+        <!-- Applicant Details Street -->
+        <govuk-form-group-input
+          label="Street"
+          formControlName="techRecord_adrDetails_applicantDetails_street"
+        />
+        <!-- Applicant Details Town -->
+        <govuk-form-group-input
+          label="Town"
+          formControlName="techRecord_adrDetails_applicantDetails_town"
+        />
+        <!-- Applicant Details City -->
+        <govuk-form-group-input
+          label="City"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_adrDetails_applicantDetails_city"
+        />
+        <!-- Applicant Details Postcode -->
+        <govuk-form-group-input
+          label="Postcode"
+          [width]="FormNodeWidth.L"
+          formControlName="techRecord_adrDetails_applicantDetails_postcode"
+        />
       </govuk-radio>
       <govuk-radio label="No" [value]="false"></govuk-radio>
     </govuk-form-group-radio>
