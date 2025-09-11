@@ -27,7 +27,7 @@
       </p>
     }
 
-    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+    <div class="govuk-checkboxes" [class.govuk-checkboxes--small]="size() === 'small'" data-module="govuk-checkboxes">
       @for (option of options(); track option) {
         <div class="govuk-checkboxes__item">
           <input

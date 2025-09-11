@@ -1,3 +1,7 @@
 .govuk-radios__conditional:not(:has(*)) {
   margin-bottom: 0;
 }
+
+.govuk-radios__conditional::ng-deep .govuk-form-group:last-of-type {
+  margin-bottom: 30px;
+}
