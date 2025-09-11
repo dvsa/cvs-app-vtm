@@ -29,6 +29,7 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	readonly focus = output<FocusEvent>();
 
 	orientation = input<RadioGroupOrientation>('vertical');
+	size = input<'small' | 'regular'>('regular');
 	value = model<string | number | boolean | null>(null);
 
 	readonly options = input<MultiOption<unknown>[]>([]);

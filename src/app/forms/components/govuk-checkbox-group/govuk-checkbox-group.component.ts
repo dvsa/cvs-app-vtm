@@ -23,6 +23,7 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 	readonly focus = output<FocusEvent>();
 
 	value = model<unknown[] | null>(null);
+	size = input<'small' | 'regular'>('regular');
 
 	readonly options =
 		input.required<

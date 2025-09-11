@@ -4,6 +4,89 @@
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
         <h3 class="govuk-heading-m">Applicant details</h3>
+
+         <!-- ADR details -->
+         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
+          <govuk-form-group-select
+            class="govuk-label--s"
+            label="ADR body type"
+            defaultOption="Select ADR body type"
+            formControlName="techRecord_adrDetails_vehicleDetails_type"
+            [options]="adrBodyTypesOptions"
+            [allowNull]="true"
+          />
+         }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
+            <govuk-form-group-radio
+              class="govuk-label--s"
+              size="small"
+              label="Vehicle used on international journeys"
+              formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
+              [options]="usedOnInternationJourneysOptions"
+            />
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_approvalDate')) {
+            <govuk-form-group-date
+              class="govuk-label--s"
+              label="Date processed"
+              formControlName="techRecord_adrDetails_vehicleDetails_approvalDate"
+            />
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_permittedDangerousGoods')) {
+            <govuk-checkbox-group
+              class="govuk-label--s"
+              size="small"
+              label="Permitted dangerous goods"
+              formControlName="techRecord_adrDetails_permittedDangerousGoods"
+              [options]="permittedDangerousGoodsOptions"
+            />
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_bodyDeclaration_type')) {
+            @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
+              <govuk-form-group-radio
+                class="govuk-label--s"
+                size="small"
+                label="Body declaration"
+                formControlName="techRecord_adrDetails_bodyDeclaration_type"
+                [options]="bodyDeclarationOptions"
+              />
+            }
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_compatibilityGroupJ')) {
+            @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
+              <govuk-form-group-radio
+                class="govuk-label--s"
+                size="small"
+                label="Compatibility group J"
+                formControlName="techRecord_adrDetails_compatibilityGroupJ"
+                [options]="compatibilityGroupJOptions"
+              />
+            }
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_additionalNotes_number')) {
+            <govuk-checkbox-group
+              class="govuk-label--s"
+              size="small"
+              label="Guidance notes"
+              formControlName="techRecord_adrDetails_additionalNotes_number"
+              [options]="guidanceNotesOptions"
+            /> 
+          }
+
+          @if (shouldDisplayFormControl('techRecord_adrDetails_adrTypeApprovalNo')) {
+            <govuk-form-group-input
+              class="govuk-label--s"
+              label="ADR type approval number"
+              [width]="FormNodeWidth.L"
+              formControlName="techRecord_adrDetails_adrTypeApprovalNo"
+            />
+          }
       </govuk-radio>
       <govuk-radio label="No" [value]="false"></govuk-radio>
     </govuk-form-group-radio>
