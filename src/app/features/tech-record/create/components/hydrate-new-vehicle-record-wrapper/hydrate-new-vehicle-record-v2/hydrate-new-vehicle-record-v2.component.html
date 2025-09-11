@@ -154,6 +154,19 @@
                       >
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
+
+                      @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'last-applicant'"
+                          [title]="'Last applicant'"
+                          [description]="'Contact details for the last applicant.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
+                        </app-accordion>
+                      }
+
                       <app-accordion
                         [id]="'notes'"
                         [title]="'Notes'"
@@ -163,6 +176,7 @@
                       >
                         <app-notes [techRecord]="techRecord"></app-notes>
                       </app-accordion>
+
                       <app-accordion
                         [id]="'reason-for-creation'"
                         [title]="'Reason for creation'"
