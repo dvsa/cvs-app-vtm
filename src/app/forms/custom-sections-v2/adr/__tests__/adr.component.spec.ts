@@ -9,6 +9,7 @@ import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-recor
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
+import { updateScrollPosition } from '@store/technical-records';
 import { of } from 'rxjs';
 import { AdrComponent } from '../adr.component';
 
@@ -30,7 +31,17 @@ describe('AdrComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				{
+					provide: ActivatedRoute,
+					useValue: {
+						params: of([{ id: 1 }]),
+						snapshot: {
+							data: {
+								reason: 'edit',
+							},
+						},
+					},
+				},
 			],
 		}).compileComponents();
 
@@ -63,6 +74,26 @@ describe('AdrComponent', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('getEditAdditionalExaminerNotePage', () => {
+		it('should dispatch updateScrollPosition with current scroll position and navigate to the correct route', () => {
+			const examinerNoteIndex = 2;
+			const reason = 'edit';
+			const expectedRoute = `../${reason}/edit-additional-examiner-note/${examinerNoteIndex}`;
+
+			jest.spyOn(component.viewportScroller, 'getScrollPosition').mockReturnValue([0, 100]);
+			jest.spyOn(component.store, 'dispatch');
+			jest.spyOn(component.router, 'navigate');
+
+			component.getEditAdditionalExaminerNotePage(examinerNoteIndex);
+
+			expect(component.store.dispatch).toHaveBeenCalledWith(updateScrollPosition({ position: [0, 100] }));
+			expect(component.router.navigate).toHaveBeenCalledWith([expectedRoute], {
+				relativeTo: component.route,
+				state: component.techRecord,
+			});
 		});
 	});
 
