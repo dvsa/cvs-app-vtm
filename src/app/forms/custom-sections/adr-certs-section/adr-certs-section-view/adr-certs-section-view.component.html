@@ -11,22 +11,37 @@
       <th scope="col" class="govuk-table__header">Certificate Link</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="govuk-table__body">
       @for (certificate of adrCertificateHistory; track i; let i = $index) {
-        <tr>
-          <td class="govuk-table__cell" [id]="'adr-generated-timestamp-' + i">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
-          <td class="govuk-table__cell" [id]="'adr-created-by-name-' + i">{{certificate.createdByName}}</td>
-          <td class="govuk-table__cell" [id]="'adr-certificate-type-' + i">{{certificate.certificateType}}</td>
-          <td class="govuk-table__cell" [id]="'adr-view-certificate-link-' + i">
-            <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">View</button>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-generated-timestamp-' + i">
+            {{ certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-created-by-name-' + i">
+            {{ certificate.createdByName }}
+          </td>
+          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-certificate-type-' + i">
+            {{ certificate.certificateType }}
+          </td>
+          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-view-certificate-link-' + i">
+            <a
+              href="javascript:void(0)" 
+              class="govuk-link govuk-link--no-visited-state"
+              [params]="documentParams(certificate)" 
+              [fileName]="getFileName(certificate)" 
+              appRetrieveDocument
+            >
+              View
+            </a>
           </td>
         </tr>
       }
     </tbody>
   </table>
-  <app-pagination tableName="adr-certificate-history"
-                  [numberOfItems]="numberOfADRCertificates"
-                  (paginationOptionsChange)="handlePaginationChange($event)"
+  <app-pagination 
+    tableName="adr-certificate-history"
+    [numberOfItems]="numberOfADRCertificates"
+    (paginationOptionsChange)="handlePaginationChange($event)"
   />
 } @else {
   <dl class="govuk-summary-list">
@@ -35,7 +50,6 @@
     </div>
   </dl>
 }
-
 
 @if (!isArchived) {
   <div class="govuk-button-group">
