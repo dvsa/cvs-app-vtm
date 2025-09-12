@@ -5,3 +5,7 @@
     @extend .govuk-label--s;
   }
 }
+
+.border-b-0 {
+  border-bottom: none !important;
+}
