@@ -12,6 +12,10 @@
   }
 }
 
+.govuk-\!-margin-bottom-0::ng-deep > .govuk-form-group {
+  margin-bottom: 0 !important;
+}
+
 .border-b-0 {
   border-bottom: none !important;
 }

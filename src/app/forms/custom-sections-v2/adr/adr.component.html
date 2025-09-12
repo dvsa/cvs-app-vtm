@@ -1,6 +1,11 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
   @if (shouldDisplayFormControl('techRecord_adrDetails_dangerousGoods')) {
-    <govuk-form-group-radio formControlName="techRecord_adrDetails_dangerousGoods" [warning]="canDisplayDangerousGoodsWarning">
+    <govuk-form-group-radio 
+      class="govuk-label--s"
+      label="Approved to carry dangerous goods"
+      formControlName="techRecord_adrDetails_dangerousGoods" 
+      [warning]="canDisplayDangerousGoodsWarning"
+    >
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
         <h3 class="govuk-heading-s">Applicant details</h3>
@@ -118,6 +123,7 @@
         <!--   Declarations seen section -->
         <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
         <govuk-form-group-checkbox
+          class="govuk-!-margin-bottom-0"
           label="Manufacturer brake declaration"
           formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
           [value]="true"
@@ -133,6 +139,7 @@
           />
           <!-- Brake endurance -->
           <govuk-form-group-checkbox
+            class="govuk-!-margin-bottom-0"
             label="Brake endurance"
             formControlName="techRecord_adrDetails_brakeEndurance"
             [value]="true"
