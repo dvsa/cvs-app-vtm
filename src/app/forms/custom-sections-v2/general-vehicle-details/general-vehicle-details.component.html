@@ -54,12 +54,23 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
-    <govuk-form-group-select
-      label="Vehicle configuration"
-      [defaultOption]="'Select configuration'"
-      [options]="vehicleConfigurationOptions"
-      formControlName="techRecord_vehicleConfiguration"
-    ></govuk-form-group-select>
+    @if(techRecord().techRecord_vehicleType === VehicleTypes.CAR) {
+      <govuk-form-group-input
+        type="text"
+        class="capitalise"
+        label="Vehicle configuration"
+        formControlName="techRecord_vehicleConfiguration"
+        [width]="FormNodeWidth.L"
+      ></govuk-form-group-input>
+    }
+    @else {
+      <govuk-form-group-select
+        label="Vehicle configuration"
+        [defaultOption]="'Select configuration'"
+        [options]="vehicleConfigurationOptions"
+        formControlName="techRecord_vehicleConfiguration"
+      ></govuk-form-group-select>
+    }
   }
 
 

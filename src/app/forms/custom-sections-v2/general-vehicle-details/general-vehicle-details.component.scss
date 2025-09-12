@@ -13,3 +13,7 @@
     @extend .govuk-label--s;
   }
 }
+
+.capitalise::ng-deep input {
+  text-transform: capitalize;
+}
