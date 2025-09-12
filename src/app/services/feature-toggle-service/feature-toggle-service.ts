@@ -20,7 +20,7 @@ export class FeatureToggleService {
 
 	async loadConfig() {
 		await this.loadRemoteConfig();
-		//await this.loadLocalConfig();
+		// await this.loadLocalConfig();
 	}
 
 	async loadLocalConfig() {
