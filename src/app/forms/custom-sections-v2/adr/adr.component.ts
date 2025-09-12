@@ -50,13 +50,13 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
 		]),
 		techRecord_adrDetails_applicantDetails_street: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(150, 'Street must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Address line 1 must be less than or equal to 150 characters'),
 		]),
 		techRecord_adrDetails_applicantDetails_town: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'Town must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'Address line 2 (optional) must be less than or equal to 100 characters'),
 		]),
 		techRecord_adrDetails_applicantDetails_city: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'City must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'Town or city must be less than or equal to 100 characters'),
 		]),
 		techRecord_adrDetails_applicantDetails_postcode: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(25, 'Postcode must be less than or equal to 25 characters'),
