@@ -72,3 +72,10 @@
   display: flex;
   align-items: center;
 }
+
+/* TODO: remove when we upgrade govuk-frontend */
+.govuk-\!-text-break-word {
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
