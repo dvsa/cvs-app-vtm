@@ -1,10 +1,42 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
   @if (shouldDisplayFormControl('techRecord_adrDetails_dangerousGoods')) {
-    <govuk-form-group-radio formControlName="techRecord_adrDetails_dangerousGoods" [warning]="canDisplayDangerousGoodsWarning">
+    <govuk-form-group-radio 
+      class="govuk-label--s"
+      label="Approved to carry dangerous goods"
+      formControlName="techRecord_adrDetails_dangerousGoods" 
+      [warning]="canDisplayDangerousGoodsWarning"
+    >
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
-        <h3 class="govuk-heading-m">Applicant details</h3>
+        <h3 class="govuk-heading-s">Applicant details</h3>
 
+        <!-- Applicant Details Name -->
+        <govuk-form-group-input
+          label="Name"
+          formControlName="techRecord_adrDetails_applicantDetails_name"
+        />
+        <!-- Applicant Details Street -->
+        <govuk-form-group-input
+          label="Address line 1"
+          formControlName="techRecord_adrDetails_applicantDetails_street"
+        />
+        <!-- Applicant Details Town -->
+        <govuk-form-group-input
+          label="Address line 2 (optional)"
+          formControlName="techRecord_adrDetails_applicantDetails_town"
+        />
+        <!-- Applicant Details City -->
+        <govuk-form-group-input
+          label="Town or city"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_adrDetails_applicantDetails_city"
+        />
+        <!-- Applicant Details Postcode -->
+        <govuk-form-group-input
+          label="Postcode"
+          [width]="FormNodeWidth.L"
+          formControlName="techRecord_adrDetails_applicantDetails_postcode"
+        />
          <!-- ADR details -->
          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
           <govuk-form-group-select
@@ -76,7 +108,7 @@
               label="Guidance notes"
               formControlName="techRecord_adrDetails_additionalNotes_number"
               [options]="guidanceNotesOptions"
-            /> 
+            />
           }
 
           @if (shouldDisplayFormControl('techRecord_adrDetails_adrTypeApprovalNo')) {
@@ -87,6 +119,120 @@
               formControlName="techRecord_adrDetails_adrTypeApprovalNo"
             />
           }
+
+        <!--   Declarations seen section -->
+        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
+        <govuk-form-group-checkbox
+          class="govuk-!-margin-bottom-0"
+          label="Manufacturer brake declaration"
+          formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
+          [value]="true"
+          [size]="'small'"
+        />
+        @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
+          <!-- Issuer -->
+          <govuk-form-group-textarea
+            label="Issuer"
+            formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
+            class="govuk-label--s"
+            [maxLength]="500"
+          />
+          <!-- Brake endurance -->
+          <govuk-form-group-checkbox
+            class="govuk-!-margin-bottom-0"
+            label="Brake endurance"
+            formControlName="techRecord_adrDetails_brakeEndurance"
+            [value]="true"
+            [size]="'small'"
+          />
+          <!-- Weight (tonnes) -->
+          @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
+            <govuk-form-group-input
+              label="Weight"
+              class="govuk-label--s"
+              formControlName="techRecord_adrDetails_weight"
+              type="decimal"
+              suffix="Tonnes"
+              [width]="FormNodeWidth.M"
+            />
+          }
+        }
+        <!--   Declarations seen (Owner/operator declaration)-->
+        <govuk-form-group-checkbox
+          label="Owner/operator declaration"
+          formControlName="techRecord_adrDetails_declarationsSeen"
+          [value]="true"
+          [size]="'small'"
+        />
+        <!--  New Certificate required -->
+        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
+        <govuk-form-group-checkbox
+          label="Yes"
+          formControlName="techRecord_adrDetails_newCertificateRequested"
+          [value]="true"
+          [size]="'small'"
+        />
+        <!-- ADR Additional Examiner Note -->
+        <govuk-form-group-textarea
+          label="Additional examiner notes"
+          class="govuk-label--s"
+          formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
+          [maxLength]="1024"
+          [hint]="'These will not be shown on the ADR certificate'"
+        />
+        <!-- ADR Additional Examiner Note History -->
+        <h2 class="govuk-heading-s">Additional examiner notes history</h2>
+        @if (getADRExaminerNotes()?.value; as notes) {
+          @if (notes?.length; as notesCount) {
+            <table class="govuk-table">
+              <tbody class="govuk-table__body">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Notes</th>
+                <th scope="col" class="govuk-table__header">Created By</th>
+                <th scope="col" class="govuk-table__header">Date</th>
+                <th scope="col" class="govuk-table__header"></th>
+              </tr>
+                @if (pagination.paginationOptions(); as page) {
+                  @for (note of notes.slice(page.start, page.end); track note;  let index = $index) {
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell whitespace-pre-wrap">
+                        <span>{{ note.note | defaultNullOrEmpty }}</span>
+                      </td>
+                      <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
+                      <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+                      <td class="govuk-table__cell">
+                        <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
+                          Edit
+                        </a>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+            <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+          } @else {
+            <dl class="govuk-summary-list ">
+              <div class="govuk-summary-list__row border-b-0">
+                <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+              </div>
+            </dl>
+          }
+        } @else {
+          <dl class="govuk-summary-list ">
+            <div class="govuk-summary-list__row border-b-0">
+              <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+            </div>
+          </dl>
+        }
+        <!-- ADR Certificate Notes -->
+        <govuk-form-group-textarea
+          label="ADR certificate notes"
+          class="govuk-label--s"
+          formControlName="techRecord_adrDetails_adrCertificateNotes"
+          [hint]="'These will be shown on the ADR certificate'"
+          [maxLength]="1500"
+        />
       </govuk-radio>
       <govuk-radio label="No" [value]="false"></govuk-radio>
     </govuk-form-group-radio>

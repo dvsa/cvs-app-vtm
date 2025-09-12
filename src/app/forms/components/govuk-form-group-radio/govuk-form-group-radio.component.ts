@@ -2,14 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
-import { TagDirective } from '@directives/tag/tag.directive';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOption } from '@models/options.model';
 import { GOVUK_RADIOS } from './govuk-form-group-radio.model';
 
 @Component({
 	selector: 'govuk-form-group-radio',
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, TagDirective],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent],
 	templateUrl: './govuk-form-group-radio.component.html',
 	styleUrls: ['./govuk-form-group-radio.component.scss'],
 	providers: [

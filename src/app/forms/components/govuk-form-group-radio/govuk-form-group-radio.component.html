@@ -1,7 +1,7 @@
 <div class="govuk-form-group" [id]="id">
   <fieldset class="govuk-fieldset" role="group">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      <h1 class="govuk-fieldset__heading" tag>
+      <h1 class="govuk-fieldset__heading tags">
         {{ controlLabel() }}
         @if (tags().length) {
           <div>
@@ -14,12 +14,12 @@
     </legend>
 
     @if (controlHint()) {
-      <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
+      <div class="govuk-hint" [id]="hintId">{{ controlHint() }}</div>
     }
 
     @if (hasError) {
       @let firstError = (control?.errors | keyvalue)?.[0]?.value;
-      <p class="govuk-error-message" id="{{ errorId }}">
+      <p class="govuk-error-message" [id]="errorId">
         <span class="govuk-visually-hidden">Error: </span>
         <span>{{
           typeof firstError === 'string' ? firstError : firstError.error

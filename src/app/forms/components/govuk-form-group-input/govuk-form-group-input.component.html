@@ -1,7 +1,7 @@
 <div class="govuk-form-group">
   @if (controlLabel()) {
     <h1 class="govuk-label-wrapper">
-      <label class="govuk-label govuk-label--m tags" tag>
+      <label class="govuk-label govuk-label--m tags" [htmlFor]="id">
         {{ controlLabel() }}
         @if (tags().length) {
           <div class="tags">
@@ -15,12 +15,12 @@
   }
 
   @if (controlHint()) {
-    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
   }
 
   @if (hasError) {
     @let firstError = (control?.errors | keyvalue)?.[0]?.value;
-    <p class="govuk-error-message" id="{{ errorId }}">
+    <p class="govuk-error-message" [id]="errorId">
       <span class="govuk-visually-hidden">Error: </span>
       <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
     </p>
@@ -29,8 +29,8 @@
   @if (controlType() === 'text') {
     <input
       appNoEmojis
-      id="{{ id }}"
-      name="{{ id }}"
+      [id]="id"
+      [name]="id"
       [attr.aria-describedby]="hintId"
       [attr.aria-labelledby]="labelId"
       [attr.data-testid]="id"
@@ -47,8 +47,8 @@
   @if (controlType() === 'number') {
     <div class="govuk-input__wrapper">
       <input
-        id="{{ id }}"
-        name="{{ id }}"
+        [id]="id"
+        [name]="id"
         [attr.aria-describedby]="hintId"
         [attr.aria-labelledby]="labelId"
         [attr.data-testid]="id"
@@ -71,8 +71,8 @@
   @if (controlType() === 'numericString') {
     <input
       appNoEmojis
-      id="{{ id }}"
-      name="{{ id }}"
+      [id]="id"
+      [name]="id"
       [attr.aria-describedby]="hintId"
       [attr.aria-labelledby]="labelId"
       [attr.data-testid]="id"
@@ -89,8 +89,8 @@
   @if (controlType() === 'decimal') {
     <div class="govuk-input__wrapper">
       <input
-        id="{{ id }}"
-        name="{{ id }}"
+        [id]="id"
+        [name]="id"
         [attr.aria-describedby]="hintId"
         [attr.aria-labelledby]="labelId"
         [attr.data-testid]="id"

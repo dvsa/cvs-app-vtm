@@ -4,22 +4,12 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModu
 import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
-import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-
-import { TagDirective } from '@directives/tag/tag.directive';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'govuk-form-group-input',
-	imports: [
-		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
-		TagComponent,
-		TagDirective,
-		NumberOnlyDirective,
-		NoEmojisDirective,
-	],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, NumberOnlyDirective, NoEmojisDirective],
 	templateUrl: './govuk-form-group-input.component.html',
 	styleUrls: ['./govuk-form-group-input.component.scss'],
 	providers: [
