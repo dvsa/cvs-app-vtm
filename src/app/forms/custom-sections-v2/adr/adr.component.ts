@@ -2,7 +2,7 @@ import { AdrService } from '@/src/app/services/adr/adr.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { AsyncPipe, DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -12,6 +12,7 @@ import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tec
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -27,10 +28,10 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@models/options.model';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { updateScrollPosition } from '@store/technical-records';
+import { removeTC3TankInspection, updateScrollPosition } from '@store/technical-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { getOptionsFromEnum } from '../../utils/enum-map';
 
@@ -137,9 +138,35 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_adrCertificateNotes: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'ADR Certificate Notes must be less than or equal to 1500 characters'),
 		]),
+		// Tank Details > Tank Inspections
+		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: this.fb.control<string | null>('initial'),
+		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate number is required with ADR body type'),
+			this.commonValidators.maxLength(70, 'TC2: Certificate Number must be less than or equal to 70 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: this.fb.control<string | null>(null, [
+			this.commonValidators.date('TC2: Expiry date'),
+			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry date is required with ADR body type'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tc3Details: this.fb.array<FormGroup>([]),
+
+		// Miscellaneous
+		techRecord_adrDetails_memosApply: this.fb.control<string | null>(null),
+		techRecord_adrDetails_m145Statement: this.fb.control<boolean>(false),
+
+		// Battery List
+		techRecord_adrDetails_listStatementApplicable: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithBattery('Battery list applicable is required with ADR body type', true),
+		]),
+		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery List Applicable'),
+			this.commonValidators.maxLength(8, 'Reference number must be less than or equal to 8 characters'),
+		]),
 	});
 
 	adrBodyTypesOptions = getOptionsFromEnum(ADRBodyType);
+
+	memosApplyOptions = [{ value: '07/09 3mth leak ext ', label: 'Yes' }];
 
 	usedOnInternationJourneysOptions = [
 		{ value: 'yes', label: 'Yes' },
@@ -156,12 +183,16 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		{ value: ADRCompatibilityGroupJ.E, label: 'No' },
 	];
 
+	tc3InspectionOptions = getOptionsFromEnum(TC3Types);
+
 	bodyDeclarationOptions = getOptionsFromEnum(ADRBodyDeclarationTypes);
 
 	destroy$ = new ReplaySubject<boolean>(1);
-	techRecord = input.required<V3TechRecordModel>();
+	techRecord = input.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
 
 	ngOnInit(): void {
+		this.handleInitialiseSubsequentTankInspections();
+
 		// Attach all form controls to parent
 		this.init(this.form);
 
@@ -233,6 +264,39 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 	getADRExaminerNotes() {
 		return this.form.get('techRecord_adrDetails_additionalExaminerNotes') as FormArray;
+	}
+
+	handleInitialiseSubsequentTankInspections() {
+		this.techRecord()?.techRecord_adrDetails_tank_tankDetails_tc3Details?.forEach(() => this.addTC3TankInspection());
+	}
+
+	addTC3TankInspection() {
+		this.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.push(
+			this.fb.group({
+				tc3Type: this.fb.control<string | null>(null, [
+					this.adrValidators.requiresOnePopulatedTC3Field(
+						'TC3 Subsequent inspection must have at least one populated field'
+					),
+				]),
+				tc3PeriodicNumber: this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(75, 'TC3: Certificate Number must be less than or equal to 75 characters'),
+					this.adrValidators.requiresOnePopulatedTC3Field(
+						'TC3 Subsequent inspection must have at least one populated field'
+					),
+				]),
+				tc3PeriodicExpiryDate: this.fb.control<string | null>(null, [
+					this.commonValidators.date('TC3: Expiry date'),
+					this.adrValidators.requiresOnePopulatedTC3Field(
+						'TC3 Subsequent inspection must have at least one populated field'
+					),
+				]),
+			})
+		);
+	}
+
+	removeTC3TankInspection(index: number) {
+		this.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.removeAt(index);
+		this.store.dispatch(removeTC3TankInspection({ index }));
 	}
 
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;

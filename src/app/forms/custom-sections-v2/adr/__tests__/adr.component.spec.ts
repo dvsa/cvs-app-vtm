@@ -6,6 +6,7 @@ import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveF
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { TC3Details } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -94,6 +95,50 @@ describe('AdrComponent', () => {
 				relativeTo: component.route,
 				state: component.techRecord,
 			});
+		});
+	});
+
+	describe('addTC3TankInspection', () => {
+		it('should add an empty TC3 tank inspection to the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
+			const spy = jest.spyOn(arr, 'push');
+			component.addTC3TankInspection();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('removeTC3TankInspection', () => {
+		it('should remove the TC3 tank inspection at the specified index from the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
+			const spy = jest.spyOn(arr, 'removeAt');
+			component.removeTC3TankInspection(1);
+			expect(spy).toHaveBeenCalledWith(1);
+		});
+	});
+
+	describe('handleInitialiseSubsequentTankInspections', () => {
+		it('should call addTC3TankInspection for each item in techRecord_adrDetails_tank_tankDetails_tc3Details', () => {
+			const mockDetails: TC3Details[] = [
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '1',
+					tc3PeriodicExpiryDate: null,
+				},
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '2',
+					tc3PeriodicExpiryDate: null,
+				},
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '3',
+					tc3PeriodicExpiryDate: null,
+				},
+			];
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tc3Details = mockDetails;
+			const spy = jest.spyOn(component, 'addTC3TankInspection');
+			component.handleInitialiseSubsequentTankInspections();
+			expect(spy).toHaveBeenCalledTimes(mockDetails.length);
 		});
 	});
 
