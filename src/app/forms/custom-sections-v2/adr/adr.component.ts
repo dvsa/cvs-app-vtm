@@ -159,7 +159,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.adrValidators.requiredWithBattery('Battery list applicable is required with ADR body type', true),
 		]),
 		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery List Applicable'),
+			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery list applicable'),
 			this.commonValidators.maxLength(8, 'Reference number must be less than or equal to 8 characters'),
 		]),
 	});
