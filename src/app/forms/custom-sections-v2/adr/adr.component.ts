@@ -12,8 +12,8 @@ import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tec
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum';
-import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -29,7 +29,7 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@models/options.model';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeUNNumber, updateScrollPosition } from '@store/technical-records';
@@ -220,10 +220,11 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	tankStatementSelectOptions = getOptionsFromEnum(ADRTankDetailsTankStatementSelect);
 
 	destroy$ = new ReplaySubject<boolean>(1);
-	techRecord = input.required<V3TechRecordModel>();
+	techRecord = input.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
 
 	ngOnInit(): void {
 		// Attach all form controls to parent
+		this.handleInitialiseUNNumbers();
 		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
@@ -294,6 +295,36 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 	getADRExaminerNotes() {
 		return this.form.get('techRecord_adrDetails_additionalExaminerNotes') as FormArray;
+	}
+
+	handleInitialiseUNNumbers() {
+		const unNumbers = this.techRecord()?.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+
+		// If there are un numbers, then prepopulate them
+		if (Array.isArray(unNumbers) && unNumbers.length > 0) {
+			unNumbers?.forEach((number, index) => {
+				this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
+					this.fb.control<string | null>(number, [
+						this.commonValidators.maxLength(1500, () => ({
+							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
+							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+						})),
+					])
+				);
+			});
+		}
+
+		// Otherwise, add a single empty UN number
+		else {
+			this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
+				this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(1500, () => ({
+						error: 'UN number 1 must be less than or equal to 1500 characters',
+						anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+					})),
+				])
+			);
+		}
 	}
 
 	addUNNumber() {
