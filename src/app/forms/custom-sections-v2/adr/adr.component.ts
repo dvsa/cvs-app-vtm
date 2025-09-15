@@ -124,14 +124,13 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 		// Tank Details
 		techRecord_adrDetails_tank_tankDetails_tankManufacturer: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank Make is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'Tank Make must be less than or equal to 70 characters'),
+			this.adrValidators.requiredWithTankOrBattery('Tank make is required with ADR body type'),
+			this.commonValidators.maxLength(70, 'Tank make must be less than or equal to 70 characters'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture is required with ADR body type'),
-			this.commonValidators.pastOrCurrentYear('Tank Year of manufacture must be the current or a past year'),
-			this.commonValidators.min(1000, 'Tank Year of manufacture must be greater than or equal to 1000'),
-			this.commonValidators.max(9999, 'Tank Year of manufacture must be less than or equal to 9999'),
+			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture is required with ADR body type'),
+			this.commonValidators.pastOrCurrentYear('Tank year of manufacture must be the current or a past year'),
+			this.commonValidators.min(1000, 'Tank year of manufacture must be greater than or equal to 1000'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
@@ -158,7 +157,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
 			this.adrValidators.requiresAUnNumberOrReferenceNumber(
-				'Reference number or UN number 1 is required when selecting Product List'
+				'Reference number or UN number 1 is required when selecting Product list'
 			),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array<FormControl<string | null>>(
@@ -166,12 +165,12 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			[
 				this.adrValidators.requiresAllUnNumbersToBePopulated(),
 				this.adrValidators.requiresAUnNumberOrReferenceNumber(
-					'Reference number or UN number 1 is required when selecting Product List'
+					'Reference number or UN number 1 is required when selecting Product list'
 				),
 			]
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Additional Details must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Additional details must be less than or equal to 1500 characters'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'Special provisions must be less than or equal to 1024 characters'),
