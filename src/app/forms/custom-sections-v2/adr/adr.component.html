@@ -123,7 +123,7 @@
         <!--     When ADR body type contains the words 'tank' or 'battery' -->
         @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
           <!-- Tank details section -->
-          <span class="govuk-label govuk-label--m">Tank Details</span>
+          <h3 class="govuk-label govuk-label--s">Tank Details</h3>
           <ng-container>
             <!-- Tank Make -->
             <govuk-form-group-input
@@ -166,6 +166,7 @@
               class="govuk-label--s"
               formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
               [options]="tankStatementSubstancePermittedOptions"
+              size="small"
             />
             <!-- When tank statement (substances permitted) is 'Under UN Number' -->
             @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
@@ -175,6 +176,7 @@
                 class="govuk-label--s"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
                 [options]="tankStatementSelectOptions"
+                size="small"
               />
               <!-- When select is 'statement' -->
               @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
