@@ -2,7 +2,7 @@ import { AdrService } from '@/src/app/services/adr/adr.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { AsyncPipe, DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -12,6 +12,8 @@ import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tec
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukCheckboxGroupComponent } from '@forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -30,7 +32,8 @@ import { YES_NO_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { updateScrollPosition } from '@store/technical-records';
+import { removeUNNumber, updateScrollPosition } from '@store/technical-records';
+import _ from 'lodash';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { getOptionsFromEnum } from '../../utils/enum-map';
 
@@ -118,6 +121,61 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_adrTypeApprovalNo: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(40, 'ADR type approval number must be less than or equal to 40 characters'),
 		]),
+
+		// Tank Details
+		techRecord_adrDetails_tank_tankDetails_tankManufacturer: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Tank Make is required with ADR body type'),
+			this.commonValidators.maxLength(70, 'Tank Make must be less than or equal to 70 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture is required with ADR body type'),
+			this.commonValidators.pastOrCurrentYear('Tank Year of manufacture must be the current or a past year'),
+			this.commonValidators.min(1000, 'Tank Year of manufacture must be greater than or equal to 1000'),
+			this.commonValidators.max(9999, 'Tank Year of manufacture must be less than or equal to 9999'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
+			this.commonValidators.maxLength(50, 'Manufacturer serial number must be less than or equal to 50 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Tank type approval number is required with ADR body type'),
+			this.commonValidators.maxLength(65, 'Tank type approval number must be less than or equal to 65 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankCode: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Code is required with ADR body type'),
+			this.commonValidators.maxLength(30, 'Code must be less than or equal to 30 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithTankOrBattery('Substances permitted is required with ADR body type'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_select: this.fb.control<string | null>(
+			null,
+			this.adrValidators.requiredWithTankStatement('Select is required with Substances permitted')
+		),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_statement: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.adrValidators.requiresAUnNumberOrReferenceNumber(
+				'Reference number or UN number 1 is required when selecting Product List'
+			),
+		]),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: this.fb.array<FormControl<string | null>>(
+			[],
+			[
+				this.adrValidators.requiresAllUnNumbersToBePopulated(),
+				this.adrValidators.requiresAUnNumberOrReferenceNumber(
+					'Reference number or UN number 1 is required when selecting Product List'
+				),
+			]
+		),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(1500, 'Additional Details must be less than or equal to 1500 characters'),
+		]),
+		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
+			this.commonValidators.maxLength(1500, 'Special provisions must be less than or equal to 1024 characters'),
+		]),
 		techRecord_adrDetails_declarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationIssuer: this.fb.control<string | null>(null, [
@@ -157,6 +215,10 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	];
 
 	bodyDeclarationOptions = getOptionsFromEnum(ADRBodyDeclarationTypes);
+
+	tankStatementSubstancePermittedOptions = getOptionsFromEnum(ADRTankStatementSubstancePermitted);
+
+	tankStatementSelectOptions = getOptionsFromEnum(ADRTankDetailsTankStatementSelect);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
@@ -233,6 +295,33 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 	getADRExaminerNotes() {
 		return this.form.get('techRecord_adrDetails_additionalExaminerNotes') as FormArray;
+	}
+
+	addUNNumber() {
+		const arr = this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+		const allNumbersPopulated = arr.value.every((value: string | null) => !!value);
+
+		if (allNumbersPopulated) {
+			arr.push(
+				this.fb.control<string | null>(null, [
+					this.commonValidators.maxLength(1500, (control) => {
+						const index = _.indexOf(arr.controls, control);
+						return {
+							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
+							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+						};
+					}),
+				])
+			);
+		}
+
+		arr.markAsTouched();
+		arr.updateValueAndValidity();
+	}
+
+	removeUNNumber(index: number) {
+		this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.removeAt(index);
+		this.store.dispatch(removeUNNumber({ index }));
 	}
 
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
