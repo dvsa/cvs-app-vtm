@@ -1,9 +1,9 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
   @if (shouldDisplayFormControl('techRecord_adrDetails_dangerousGoods')) {
-    <govuk-form-group-radio 
+    <govuk-form-group-radio
       class="govuk-label--s"
       label="Approved to carry dangerous goods"
-      formControlName="techRecord_adrDetails_dangerousGoods" 
+      formControlName="techRecord_adrDetails_dangerousGoods"
       [warning]="canDisplayDangerousGoodsWarning"
     >
       <govuk-radio label="Yes" [value]="true">
@@ -118,6 +118,125 @@
               formControlName="techRecord_adrDetails_adrTypeApprovalNo"
             />
           }
+
+
+
+        <!--         @TODO - remove if check when rebasing with initial tank ticket -->
+        @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
+          <!-- Tank Inspections section -->
+          <ng-container>
+            <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Tank inspections</span>
+            <!-- TC2: Certificate Number -->
+            <govuk-form-group-input
+              class="govuk-label govuk-label--s"
+              label="TC2: Certificate number"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
+            />
+            <!-- TC2: Expiry Date -->
+            <govuk-form-group-date
+              class="govuk-label govuk-label--s"
+              label="TC2: Expiry date"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
+            />
+            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+            <!-- TC3: Inspections -->
+            <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+              @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
+                <fieldset
+                  class="govuk-fieldset"
+                  formGroupName="{{ i }}"
+                >
+                  <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
+                  <!-- TC3 Inspection Type -->
+                  <govuk-form-group-select
+                    class="govuk-label govuk-label--s"
+                    label="TC3: Inspection type"
+                    formControlName="tc3Type"
+                    [options]="tc3InspectionOptions"
+                    [allowNull]="true"
+                    [defaultOption]="'Select inspection type'"
+                  />
+                  <!-- TC3 Certificate Number -->
+                  <govuk-form-group-input
+                    class="govuk-label govuk-label--s"
+                    label="TC3: Certificate number"
+                    formControlName="tc3PeriodicNumber"
+                  />
+                  <!-- TC3 Expiry Date -->
+                  <govuk-form-group-date
+                    class="govuk-label govuk-label--s"
+                    [id]="'tc3PeriodicExpiryDate_' + i"
+                    label="TC3: Expiry date"
+                    formControlName="tc3PeriodicExpiryDate"
+                  />
+                  <!-- TC3 Footer -->
+                  <p class="govuk-body govuk-!-text-align-left">
+                    <button
+                      type="button"
+                      class="govuk-button govuk-button--warning"
+                      data-module="govuk-button"
+                      role="button"
+                      (click)="removeTC3TankInspection(i)"
+                    >
+                      Remove inspection
+                    </button>
+                  </p>
+                  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+                </fieldset>
+              }
+            </div>
+            <p class="govuk-body">
+              <button
+                type="button"
+                class="govuk-button govuk-button--secondary"
+                data-module="govuk-button"
+                role="button"
+                (click)="addTC3TankInspection()"
+              >
+                Add subsequent inspection
+              </button>
+            </p>
+          </ng-container>
+          <!-- Memo 07/09 (3 month extension) can be applied -->
+          <govuk-checkbox-group
+            class="govuk-label govuk-label--s"
+            label="Memo 07/09 (3 month extension) can be applied"
+            formControlName="techRecord_adrDetails_memosApply"
+            [options]="memosApplyOptions"
+            [hint]="'Only applicable for vehicles used on national journeys'"
+            [size]="'small'"
+          />
+          <!-- M145 -->
+          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_m145Statement">M145</label>
+          <govuk-form-group-checkbox
+            class="govuk-label govuk-label--s"
+            label="Yes"
+            formControlName="techRecord_adrDetails_m145Statement"
+            [value]="true"
+            [size]="'small'"
+          />
+        }
+        <!--   When ADR body type contains 'battery' -->
+        @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
+          <!-- Battery list applicable -->
+          <govuk-form-group-radio
+            class="govuk-label govuk-label--s"
+            label="Battery list applicable"
+            formControlName="techRecord_adrDetails_listStatementApplicable"
+            [options]="YES_NO_OPTIONS"
+            [size]="'small'"
+          />
+          <!-- When Battery list applicable is true -->
+          @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
+            <!-- Battery list reference number -->
+            <govuk-form-group-input
+              class="govuk-label govuk-label--s"
+              label="Reference number"
+              [width]="FormNodeWidth.L"
+              formControlName="techRecord_adrDetails_batteryListNumber"
+            />
+          }
+        }
 
         <!--   Declarations seen section -->
         <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
