@@ -104,9 +104,14 @@ export class AdrValidatorsService {
 			if (control.parent && this.adrService.canDisplayTankOrBatterySection(control.root.value)) {
 				const tc3InspectionType = control.parent.get('tc3Type');
 				const tc3PeriodicNumber = control.parent.get('tc3PeriodicNumber');
-				const tc3ExpiryDate = control.parent.get('tc3ExpiryDate');
-				if (!tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value) {
+				const tc3ExpiryDate = control.parent.get('tc3PeriodicExpiryDate');
+				const allFieldsEmpty = !tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value;
+
+				if (allFieldsEmpty) {
 					return { required: message };
+				}
+				if (!allFieldsEmpty) {
+					[tc3InspectionType, tc3PeriodicNumber, tc3ExpiryDate].map((ctrl) => ctrl?.setErrors(null));
 				}
 			}
 
