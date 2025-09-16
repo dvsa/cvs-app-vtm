@@ -253,7 +253,7 @@
           <govuk-form-group-textarea
             label="Issuer"
             formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
-            class="govuk-label--s"
+            class="govuk-label--s govuk-!-margin-top-4"
             [maxLength]="500"
           />
           <!-- Brake endurance -->
@@ -268,10 +268,10 @@
           @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
             <govuk-form-group-input
               label="Weight"
-              class="govuk-label--s"
+              class="govuk-label--s govuk-!-margin-top-4"
               formControlName="techRecord_adrDetails_weight"
               type="decimal"
-              suffix="Tonnes"
+              suffix="tonnes"
               [width]="FormNodeWidth.M"
             />
           }
@@ -331,16 +331,16 @@
             </table>
             <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
           } @else {
-            <dl class="govuk-summary-list ">
+            <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row border-b-0">
-                <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+                <dt class="govuk-summary-list__value">No additional examiner notes history available</dt>
               </div>
             </dl>
           }
         } @else {
-          <dl class="govuk-summary-list ">
+          <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row border-b-0">
-              <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+              <dt class="govuk-summary-list__value">No additional examiner notes history available</dt>
             </div>
           </dl>
         }
