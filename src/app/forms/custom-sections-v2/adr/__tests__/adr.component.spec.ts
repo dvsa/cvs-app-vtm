@@ -192,7 +192,7 @@ describe('AdrComponent', () => {
 				],
 			});
 
-			const options = structuredClone(PERMITTED_DANGEROUS_GOODS_OPTIONS);
+			const options = PERMITTED_DANGEROUS_GOODS_OPTIONS;
 			expect(component.permittedDangerousGoodsOptions).toEqual(options);
 
 			component.handleADRBodyTypeChange();

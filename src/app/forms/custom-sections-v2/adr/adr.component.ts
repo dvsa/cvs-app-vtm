@@ -173,7 +173,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		{ value: 'n/a', label: 'Not applicable' },
 	];
 
-	permittedDangerousGoodsOptions = structuredClone(PERMITTED_DANGEROUS_GOODS_OPTIONS);
+	permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS;
 
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
@@ -219,8 +219,6 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => {
-				const options = structuredClone(PERMITTED_DANGEROUS_GOODS_OPTIONS);
-
 				// When the ADR body type is a tank or battery, remove the explosives type 2 and 3 from the permitted dangerous goods list
 				if (this.adrService.canDisplayTankOrBatterySection(this.form.getRawValue() as any)) {
 					this.form.patchValue({
@@ -232,11 +230,11 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 						techRecord_adrDetails_bodyDeclaration_type: null,
 					});
 
-					this.permittedDangerousGoodsOptions = options.filter(({ value }) => {
+					this.permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS.filter(({ value }) => {
 						return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
 					});
 				} else {
-					this.permittedDangerousGoodsOptions = options;
+					this.permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS;
 				}
 			});
 	}

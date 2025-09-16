@@ -7,15 +7,15 @@ import { EUVehicleCategory as PSVCategories } from '@dvsa/cvs-type-definitions/t
 import { EUVehicleCategory as TRLCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TyreUseCode as HGVTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TRLTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
-import { CouplingTypeCodeEnum } from '@models/coupling-type-enum.js';
-import { EmissionStandard } from '@models/test-types/emissions.enum.js';
+import { CouplingTypeCodeEnum } from '@models/coupling-type-enum';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
 import {
 	HgvPsvVehicleConfiguration,
 	TrlVehicleConfiguration,
 	VehicleConfiguration,
-} from '@models/vehicle-configuration.enum.js';
+} from '@models/vehicle-configuration.enum';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar, getSortedOptionsFromEnum } from '../forms/utils/enum-map';
-import { VehicleSize } from './vehicle-size.enum.js';
+import { VehicleSize } from './vehicle-size.enum';
 import {
 	FitmentCode,
 	FrameDescriptions,
