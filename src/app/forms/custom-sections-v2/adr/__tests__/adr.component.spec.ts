@@ -167,6 +167,22 @@ describe('AdrComponent', () => {
 		});
 	});
 
+	describe('handleInitialiseUNNumbers', () => {
+		it('should push a new UN number into the form if none exist', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalled();
+		});
+		it('should push multiple un numbers into the form if they exist on the tech record', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = ['123', '456'];
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalledTimes(2);
+		});
+	});
+
 	describe('handleADRBodyTypeChange', () => {
 		it('should subscribe to ADR body type changes', () => {
 			const spy = jest.spyOn(
