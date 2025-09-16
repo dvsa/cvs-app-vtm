@@ -42,10 +42,9 @@
           <govuk-form-group-select
             class="govuk-label--s"
             label="ADR body type"
-            defaultOption="Select ADR body type"
+            [defaultOption]="'Select ADR body type'"
             formControlName="techRecord_adrDetails_vehicleDetails_type"
             [options]="adrBodyTypesOptions"
-            [allowNull]="true"
           />
          }
 
@@ -53,7 +52,7 @@
             <govuk-form-group-radio
               class="govuk-label--s"
               size="small"
-              label="Vehicle used on international journeys"
+              label="Is the vehicle used on international journeys"
               formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
               [options]="usedOnInternationJourneysOptions"
             />

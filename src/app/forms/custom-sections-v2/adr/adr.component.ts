@@ -2,8 +2,7 @@ import { AdrService } from '@/src/app/services/adr/adr.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { AsyncPipe, DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { FormArray } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
@@ -26,7 +25,7 @@ import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-gr
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { YES_NO_OPTIONS } from '@models/options.model';
+import { PERMITTED_DANGEROUS_GOODS_OPTIONS, YES_NO_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -147,7 +146,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		{ value: 'n/a', label: 'Not applicable' },
 	];
 
-	permittedDangerousGoodsOptions = getOptionsFromEnum(ADRDangerousGood);
+	permittedDangerousGoodsOptions = structuredClone(PERMITTED_DANGEROUS_GOODS_OPTIONS);
 
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
@@ -189,7 +188,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => {
-				const options = getOptionsFromEnum(ADRDangerousGood);
+				const options = structuredClone(PERMITTED_DANGEROUS_GOODS_OPTIONS);
 
 				// When the ADR body type is a tank or battery, remove the explosives type 2 and 3 from the permitted dangerous goods list
 				if (this.adrService.canDisplayTankOrBatterySection(this.form.getRawValue() as any)) {
