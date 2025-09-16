@@ -54,7 +54,7 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
-    @if(techRecord().techRecord_vehicleType === VehicleTypes.MOTORCYCLE) {
+    @if(techRecord().techRecord_vehicleType === VehicleTypes.MOTORCYCLE || techRecord().techRecord_vehicleType === VehicleTypes.CAR) {
       <govuk-form-group-input
         type="text"
         class="capitalise"

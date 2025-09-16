@@ -1,3 +1,4 @@
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { EUVehicleCategory as CARCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as HGVCategories } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
@@ -186,3 +187,13 @@ export const TRL_TYRE_USE_CODE_OPTIONS = getOptionsFromEnum(TRLTyreUseCode);
 export const SPEED_CATEGORY_SYMBOL_OPTIONS = getOptionsFromEnum(SpeedCategorySymbol);
 
 export const FITMENT_CODE_OPTIONS = getOptionsFromEnumOneChar(FitmentCode);
+
+export const PERMITTED_DANGEROUS_GOODS_OPTIONS = [
+	{ value: ADRDangerousGood.FP, label: 'FP <61 (FL)' },
+	{ value: ADRDangerousGood.AT, label: 'AT' },
+	{ value: ADRDangerousGood.MEMU, label: 'MEMU' },
+	{ value: ADRDangerousGood.CARBON_DISULPHIDE, label: 'Carbon disulphide' },
+	{ value: ADRDangerousGood.HYDROGEN, label: 'Hydrogen' },
+	{ value: ADRDangerousGood.EXPLOSIVES_TYPE_2, label: 'Explosives (type 2)' },
+	{ value: ADRDangerousGood.EXPLOSIVES_TYPE_3, label: 'Explosives (type 3)' },
+];
