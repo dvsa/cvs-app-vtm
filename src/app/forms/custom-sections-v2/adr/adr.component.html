@@ -208,19 +208,27 @@
                           </label>
                         </h1>
                         @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
-                          <table class="govuk-table">
+                          <table class="govuk-table margin-b-0">
                             <tbody class="govuk-table__body">
                             <tr class="govuk-table__row">
-                              <td class="govuk-table__cell">
+                              <td class="govuk-table__cell border-b-0">
                                 <govuk-form-group-input
                                   id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                                   [width]="FormNodeWidth.XL"
                                   formControlName="{{ i }}"
                                 />
                               </td>
-                              <td class="govuk-table__cell">
-                                <p class="govuk-body">
-                                  <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
+                              <td class="govuk-table__cell border-b-0">
+                                <p class="govuk-body margin-b-0">
+                                  <button
+                                    type="button"
+                                    class="govuk-button govuk-button--warning"
+                                    data-module="govuk-button"
+                                    role="button"
+                                    (click)="removeUNNumber(i)"
+                                  >
+                                    Remove
+                                  </button>
                                 </p>
                               </td>
                             </tr>
@@ -236,8 +244,17 @@
                       </div>
                     </fieldset>
                   }
+
                   <p class="govuk-body">
-                    <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
+                    <button
+                      type="button"
+                      class="govuk-button govuk-button--secondary"
+                      data-module="govuk-button"
+                      role="button"
+                      (click)="addUNNumber()"
+                    >
+                      Add UN number
+                    </button>
                   </p>
                 </div>
                 <!-- Additional details -->
