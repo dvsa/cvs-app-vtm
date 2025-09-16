@@ -1,3 +1,4 @@
+import { PERMITTED_DANGEROUS_GOODS_OPTIONS } from '@/src/app/models/options.model';
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -6,7 +7,7 @@ import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveF
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { TC3Details } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { updateScrollPosition } from '@store/technical-records';
@@ -77,6 +78,31 @@ describe('AdrComponent', () => {
 		});
 	});
 
+	describe('addUNNumber', () => {
+		it('should not allow the adding of a UN number if the previous one is empty', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(arr, 'push');
+			component.addUNNumber();
+			expect(spy).not.toHaveBeenCalled();
+		});
+		it('should add an empty UN number to the form array if the all prior ones are filled in', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			arr.patchValue(['123']);
+			const spy = jest.spyOn(arr, 'push');
+			component.addUNNumber();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('removeUNNumber', () => {
+		it('should remove the UN number at the specified index from the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(arr, 'removeAt');
+			component.removeUNNumber(1);
+			expect(spy).toHaveBeenCalledWith(1);
+		});
+	});
+
 	describe('getEditAdditionalExaminerNotePage', () => {
 		it('should dispatch updateScrollPosition with current scroll position and navigate to the correct route', () => {
 			const examinerNoteIndex = 2;
@@ -94,6 +120,66 @@ describe('AdrComponent', () => {
 				relativeTo: component.route,
 				state: component.techRecord,
 			});
+		});
+	});
+
+	describe('addTC3TankInspection', () => {
+		it('should add an empty TC3 tank inspection to the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
+			const spy = jest.spyOn(arr, 'push');
+			component.addTC3TankInspection();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('removeTC3TankInspection', () => {
+		it('should remove the TC3 tank inspection at the specified index from the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
+			const spy = jest.spyOn(arr, 'removeAt');
+			component.removeTC3TankInspection(1);
+			expect(spy).toHaveBeenCalledWith(1);
+		});
+	});
+
+	describe('handleInitialiseSubsequentTankInspections', () => {
+		it('should call addTC3TankInspection for each item in techRecord_adrDetails_tank_tankDetails_tc3Details', () => {
+			const mockDetails: TC3Details[] = [
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '1',
+					tc3PeriodicExpiryDate: null,
+				},
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '2',
+					tc3PeriodicExpiryDate: null,
+				},
+				{
+					tc3Type: null,
+					tc3PeriodicNumber: '3',
+					tc3PeriodicExpiryDate: null,
+				},
+			];
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tc3Details = mockDetails;
+			const spy = jest.spyOn(component, 'addTC3TankInspection');
+			component.handleInitialiseSubsequentTankInspections();
+			expect(spy).toHaveBeenCalledTimes(mockDetails.length);
+		});
+	});
+
+	describe('handleInitialiseUNNumbers', () => {
+		it('should push a new UN number into the form if none exist', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalled();
+		});
+		it('should push multiple un numbers into the form if they exist on the tech record', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = ['123', '456'];
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalledTimes(2);
 		});
 	});
 
@@ -147,7 +233,7 @@ describe('AdrComponent', () => {
 				],
 			});
 
-			const options = getOptionsFromEnum(ADRDangerousGood);
+			const options = PERMITTED_DANGEROUS_GOODS_OPTIONS;
 			expect(component.permittedDangerousGoodsOptions).toEqual(options);
 
 			component.handleADRBodyTypeChange();

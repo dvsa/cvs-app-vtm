@@ -351,9 +351,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
-			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
+				{ value: VehicleConfiguration.OTHER, disabled: true },
+				[this.commonValidators.required('Vehicle configuration is required')]
+			),
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.M1, disabled: true }),
@@ -401,9 +402,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
-			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
+				{ value: VehicleConfiguration.OTHER, disabled: true },
+				[this.commonValidators.required('Vehicle configuration is required')]
+			),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Vehicle class is required'),
 			]),
