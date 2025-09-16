@@ -119,6 +119,163 @@
             />
           }
 
+        <!--     When ADR body type contains the words 'tank' or 'battery' -->
+        @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
+          <!-- Tank details section -->
+          <h3 class="govuk-label govuk-label--s">Tank Details</h3>
+          <ng-container>
+            <!-- Tank Make -->
+            <govuk-form-group-input
+              label="Tank make"
+              class="govuk-label--s"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
+            />
+            <!-- Tank Year of manufacture -->
+            <govuk-form-group-input
+              label="Tank year of manufacture"
+              class="govuk-label--s"
+              [width]="FormNodeWidth.S"
+              type="number"
+              formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
+            />
+            <!-- Tank manufacturer serial number -->
+            <govuk-form-group-input
+              label="Manufacturer serial number"
+              class="govuk-label--s"
+              [width]="FormNodeWidth.L"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
+            />
+            <!-- Tank type approval number -->
+            <govuk-form-group-input
+              label="Tank type approval number"
+              class="govuk-label--s"
+              [width]="FormNodeWidth.L"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
+            />
+            <!-- Tank code -->
+            <govuk-form-group-input
+              label="Code"
+              class="govuk-label--s"
+              [width]="FormNodeWidth.L"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
+            />
+            <!-- Substances permitted -->
+            <govuk-form-group-radio
+              label="Substances permitted"
+              class="govuk-label--s"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
+              [options]="tankStatementSubstancePermittedOptions"
+              size="small"
+            />
+            <!-- When tank statement (substances permitted) is 'Under UN Number' -->
+            @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
+              <!-- Tank statement select -->
+              <govuk-form-group-radio
+                label="Select"
+                class="govuk-label--s"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+                [options]="tankStatementSelectOptions"
+                size="small"
+              />
+              <!-- When select is 'statement' -->
+              @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
+                <!-- Reference number -->
+                <govuk-form-group-input
+                  label="Reference number"
+                  class="govuk-label--s"
+                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
+                />
+              }
+              <!-- When select is 'product '-->
+              @if (adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))) {
+                <!-- Reference number -->
+                <govuk-form-group-input
+                  label="Reference number"
+                  class="govuk-label--s"
+                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
+                />
+                <!-- UN numbers -->
+                <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
+                  @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; track inspection; let i = $index) {
+                    <fieldset
+                      class="govuk-fieldset"
+                    >
+                      <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
+                            UN number {{ i + 1 }}
+                          </label>
+                        </h1>
+                        @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
+                          <table class="govuk-table margin-b-0">
+                            <tbody class="govuk-table__body">
+                            <tr class="govuk-table__row">
+                              <td class="govuk-table__cell border-b-0">
+                                <govuk-form-group-input
+                                  id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                                  [width]="FormNodeWidth.XL"
+                                  formControlName="{{ i }}"
+                                />
+                              </td>
+                              <td class="govuk-table__cell border-b-0">
+                                <p class="govuk-body margin-b-0">
+                                  <button
+                                    type="button"
+                                    class="govuk-button govuk-button--warning"
+                                    data-module="govuk-button"
+                                    role="button"
+                                    (click)="removeUNNumber(i)"
+                                  >
+                                    Remove
+                                  </button>
+                                </p>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        } @else {
+                          <govuk-form-group-input
+                            id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                            [width]="FormNodeWidth.XL"
+                            formControlName="{{ i }}"
+                          />
+                        }
+                      </div>
+                    </fieldset>
+                  }
+
+                  <p class="govuk-body">
+                    <button
+                      type="button"
+                      class="govuk-button govuk-button--secondary"
+                      data-module="govuk-button"
+                      role="button"
+                      (click)="addUNNumber()"
+                    >
+                      Add UN number
+                    </button>
+                  </p>
+                </div>
+                <!-- Additional details -->
+                <govuk-form-group-textarea
+                  label="Additional details"
+                  class="govuk-label--s"
+                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
+                  [maxLength]="1500"
+                />
+
+              }
+            }
+          </ng-container>
+          <!-- Special provisions -->
+          <govuk-form-group-textarea
+            label="Special provisions"
+            class="govuk-label--s"
+            formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
+            [maxLength]="1024"
+          />
+        }
+
 
 
         <!--         @TODO - remove if check when rebasing with initial tank ticket -->

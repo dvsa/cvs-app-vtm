@@ -78,6 +78,31 @@ describe('AdrComponent', () => {
 		});
 	});
 
+	describe('addUNNumber', () => {
+		it('should not allow the adding of a UN number if the previous one is empty', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(arr, 'push');
+			component.addUNNumber();
+			expect(spy).not.toHaveBeenCalled();
+		});
+		it('should add an empty UN number to the form array if the all prior ones are filled in', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			arr.patchValue(['123']);
+			const spy = jest.spyOn(arr, 'push');
+			component.addUNNumber();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('removeUNNumber', () => {
+		it('should remove the UN number at the specified index from the form array', () => {
+			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(arr, 'removeAt');
+			component.removeUNNumber(1);
+			expect(spy).toHaveBeenCalledWith(1);
+		});
+	});
+
 	describe('getEditAdditionalExaminerNotePage', () => {
 		it('should dispatch updateScrollPosition with current scroll position and navigate to the correct route', () => {
 			const examinerNoteIndex = 2;
@@ -139,6 +164,22 @@ describe('AdrComponent', () => {
 			const spy = jest.spyOn(component, 'addTC3TankInspection');
 			component.handleInitialiseSubsequentTankInspections();
 			expect(spy).toHaveBeenCalledTimes(mockDetails.length);
+		});
+	});
+
+	describe('handleInitialiseUNNumbers', () => {
+		it('should push a new UN number into the form if none exist', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalled();
+		});
+		it('should push multiple un numbers into the form if they exist on the tech record', () => {
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			const spy = jest.spyOn(control, 'push');
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = ['123', '456'];
+			component.handleInitialiseUNNumbers();
+			expect(spy).toHaveBeenCalledTimes(2);
 		});
 	});
 
