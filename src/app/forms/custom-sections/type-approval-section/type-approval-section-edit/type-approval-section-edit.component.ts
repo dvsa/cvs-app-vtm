@@ -1,22 +1,22 @@
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, type OnDestroy, type OnInit, inject, input } from '@angular/core';
 import {
-	AbstractControl,
+	type AbstractControl,
 	ControlContainer,
 	FormBuilder,
-	FormControl,
+	type FormControl,
 	FormGroup,
 	FormsModule,
 	ReactiveFormsModule,
-	ValidationErrors,
-	ValidatorFn,
+	type ValidationErrors,
+	type ValidatorFn,
 } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { ApprovalType as TRLApprovalTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as HGVAndPSVApprovalTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import type { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { type V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject } from 'rxjs';
@@ -51,12 +51,18 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 	protected readonly TagType = TagType;
 	protected readonly TagTypeLabels = TagTypeLabels;
 
+	trlApprovalTypes = getOptionsFromEnum(TRLApprovalTypes);
+	hgvAndPsvApprovalTypes = getOptionsFromEnum(HGVAndPSVApprovalTypes);
+
 	techRecord = input.required<V3TechRecordModel>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
 	form = this.fb.group<TypeApprovalSectionForm>({
-		techRecord_approvalType: this.fb.nonNullable.control<string | null>({ value: null, disabled: false }),
+		techRecord_approvalType: this.fb.nonNullable.control<string | null>({
+			value: null,
+			disabled: false,
+		}),
 		techRecord_approvalTypeNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
 			this.requiredWithApprovalType('Approval type number is required with Approval type'),
 		]),
@@ -74,7 +80,10 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		// Set validator in ngOnInit, as this required vehicle type from inputs
 		this.form.controls.techRecord_approvalType?.setValidators([
-			this.commonValidators.isOneOf(this.approvalTypeEnum, 'Approval type is required'),
+			this.commonValidators.isOneOf(
+				this.vehicleType === VehicleTypes.TRL ? this.trlApprovalTypes : this.hgvAndPsvApprovalTypes,
+				'Approval type is required'
+			),
 		]);
 
 		this.addControlsBasedOffVehicleType();
@@ -153,13 +162,5 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 				this.commonValidators.pastDate('COIF Certifier date must be in the past'),
 			]),
 		};
-	}
-
-	get approvalTypeEnum() {
-		return this.vehicleType === VehicleTypes.TRL ? TRLApprovalTypes : HGVAndPSVApprovalTypes;
-	}
-
-	get approvalTypes() {
-		return getOptionsFromEnum(this.approvalTypeEnum);
 	}
 }

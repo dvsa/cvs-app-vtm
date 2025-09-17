@@ -1,25 +1,22 @@
 @if (techRecord(); as tr) {
   @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
     <div [formGroup]="form">
-      <!-- Approval type -->
       @if (shouldDisplayFormControl('techRecord_approvalType')) {
         <govuk-form-group-select
-          label="Approval type"
-          formControlName="techRecord_approvalType"
-          [options]="approvalTypes"
-          [allowNull]="true"
+        label="Approval type"
+        formControlName="techRecord_approvalType"
+        [options]="tr.techRecord_vehicleType === VehicleTypes.TRL ? trlApprovalTypes : hgvAndPsvApprovalTypes"
+        [allowNull]="true"
         ></govuk-form-group-select>
       }
-      <!-- Approval type number -->
       @if (shouldDisplayFormControl('techRecord_approvalTypeNumber')) {
         <approval-type-number-input
           label="Approval type number"
           formControlName="techRecord_approvalTypeNumber"
           [width]="FormNodeWidth.XL"
           [approvalType]="tr.techRecord_approvalType || null"
-        ></approval-type-number-input>
-      }
-      <!-- National type number (NTA) -->
+          ></approval-type-number-input>
+        }
       @if (shouldDisplayFormControl('techRecord_ntaNumber')) {
         <govuk-form-group-input
           label="National type number"
@@ -27,9 +24,7 @@
           formControlName="techRecord_ntaNumber"
         ></govuk-form-group-input>
       }
-      <!--  PSV Only-->
       @if (vehicleType === VehicleTypes.PSV) {
-        <!-- COIF Serial number -->
         @if (shouldDisplayFormControl('techRecord_coifSerialNumber')) {
           <govuk-form-group-input
             label="COIF Serial number"
@@ -37,7 +32,6 @@
             formControlName="techRecord_coifSerialNumber"
           ></govuk-form-group-input>
         }
-        <!-- COIF Certifier name -->
         @if (shouldDisplayFormControl('techRecord_coifCertifierName')) {
           <govuk-form-group-input
             label="COIF Certifier name"
@@ -45,7 +39,6 @@
             formControlName="techRecord_coifCertifierName"
           ></govuk-form-group-input>
         }
-        <!-- COIF Certifier date -->
         @if (shouldDisplayFormControl('techRecord_coifDate')) {
           <govuk-form-group-date
             label="COIF Certifier date"
@@ -53,7 +46,6 @@
           ></govuk-form-group-date>
         }
       }
-      <!-- Variant number -->
       @if (shouldDisplayFormControl('techRecord_variantNumber')) {
         <govuk-form-group-input
           label="Variant number"
@@ -62,7 +54,6 @@
           formControlName="techRecord_variantNumber"
         ></govuk-form-group-input>
       }
-      <!-- Variant version number -->
       @if (shouldDisplayFormControl('techRecord_variantVersionNumber')) {
         <govuk-form-group-input
           label="Variant version number"
