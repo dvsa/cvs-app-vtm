@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterContentInit, AfterViewInit, Component, inject, input, DOCUMENT } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, DOCUMENT, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
