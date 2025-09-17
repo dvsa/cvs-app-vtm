@@ -45,16 +45,16 @@
     "@azure/msal-browser": "^3.24.0",
     "@dvsa/cvs-type-definitions": "^9.4.0",
     "@ngneat/cashew": "^4.1.0",
-    "@ngrx/effects": "^19.0.1",
-    "@ngrx/entity": "^19.0.1",
+    "@ngrx/effects": "^20.0.1",
+    "@ngrx/entity": "^20.0.1",
     "@ngrx/operators": "^18.1.0",
-    "@ngrx/router-store": "^19.0.1",
-    "@ngrx/store": "^19.0.1",
-    "@ngrx/store-devtools": "^19.0.1",
-    "@sentry/angular": "^8.35.0",
-    "@sentry/types": "^8.35.0",
+    "@ngrx/router-store": "^20.0.1",
+    "@ngrx/store": "^20.0.1",
+    "@ngrx/store-devtools": "^20.0.1",
+    "@sentry/angular": "^9.38.0",
+    "@sentry/types": "^9.38.0",
     "accessible-autocomplete": "^2.0.4",
-    "angular-google-tag-manager": "^1.10.0",
+    "angular-google-tag-manager": "^1.11.0",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
@@ -65,7 +65,7 @@
     "lodash": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
-    "ngrx-store-localstorage": "19.0.0",
+    "ngrx-store-localstorage": "20.0.0",
     "rxjs": "^7.8.1",
     "stream-browserify": "^3.0.0",
     "tslib": "^2.7.0",
@@ -114,6 +114,12 @@
     "@nx/nx-darwin-x64": "18.0.4",
     "@nx/nx-linux-x64-gnu": "18.0.4",
     "@nx/nx-win32-x64-msvc": "18.0.4"
+  },
+  "overrides": {
+    "angular-google-tag-manager": {
+      "@angular/common": "20.3.0",
+      "@angular/compiler": "20.3.0"
+    }
   },
   "lint-staged": {
     "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched"

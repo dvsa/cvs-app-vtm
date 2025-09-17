@@ -1,5 +1,4 @@
 import type { LogsModel } from '@models/logs/logs.model';
-import { ActionReducerMap } from '@ngrx/store';
 // eslint-disable-next-line import/no-cycle
 import {
 	GlobalErrorState,
@@ -97,7 +96,7 @@ export const initialAppState = {
 	[STORE_FEATURE_LOGS_KEY]: initialLogState,
 };
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers = {
 	[STORE_FEATURE_DEFECTS_KEY]: defectsReducer,
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: globalErrorReducer,
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: referenceDataReducer,

@@ -75,7 +75,7 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 
 // IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching resourceType
 
-export const initialReferenceDataState: ReferenceDataState = {
+export const initialReferenceDataState = {
 	[ReferenceDataResourceType.Brakes]: getInitialState(ReferenceDataResourceType.Brakes),
 	[ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
 	[ReferenceDataResourceType.HgvMake]: getInitialState(ReferenceDataResourceType.HgvMake),

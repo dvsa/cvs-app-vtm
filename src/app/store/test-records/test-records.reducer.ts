@@ -77,7 +77,7 @@ export const testResultAdapter: EntityAdapter<TestResultModel> = createEntityAda
 	selectId: selectTestResultId,
 });
 
-export const initialTestResultsState = testResultAdapter.getInitialState<Extras>({
+export const initialTestResultsState: EntityState<TestResultModel> & Extras = testResultAdapter.getInitialState({
 	error: '',
 	loading: false,
 });
