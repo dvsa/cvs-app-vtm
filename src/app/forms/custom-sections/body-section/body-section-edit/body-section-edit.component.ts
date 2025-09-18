@@ -10,6 +10,7 @@ import {
 	BodyTypeDescription,
 	articulatedHgvBodyTypeCodeMap,
 	hgvBodyTypeCodeMap,
+	trlBodyTypeCodeMap,
 	vehicleBodyTypeCodeMap,
 	vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
@@ -26,7 +27,7 @@ import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, take
 import { GovukFormGroupAutocompleteComponent } from '../../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
-import { getOptionsFromEnum } from '../../../utils/enum-map';
+import { getOptionsFromEnum, getSortedOptionsFromEnum } from '../../../utils/enum-map';
 
 @Component({
 	selector: 'app-body-section-edit',
@@ -98,6 +99,10 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 					this.handleBodyTypeDescriptionChange(value);
 				}
 			});
+
+		if (this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
+			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
+		}
 
 		this.handleUpdateVehicleConfiguration();
 	}
