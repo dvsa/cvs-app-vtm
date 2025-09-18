@@ -5,7 +5,7 @@
   "main": "index.js",
   "engines": {
     "node": "22.16.*",
-    "npm": "10.8.*"
+    "npm": "10.9.*"
   },
   "scripts": {
     "ng": "ng",

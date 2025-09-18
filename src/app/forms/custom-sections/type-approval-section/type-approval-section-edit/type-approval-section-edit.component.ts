@@ -81,7 +81,7 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 		// Set validator in ngOnInit, as this required vehicle type from inputs
 		this.form.controls.techRecord_approvalType?.setValidators([
 			this.commonValidators.isOneOf(
-				this.vehicleType === VehicleTypes.TRL ? this.trlApprovalTypes : this.hgvAndPsvApprovalTypes,
+				this.vehicleType === VehicleTypes.TRL ? TRLApprovalTypes : HGVAndPSVApprovalTypes,
 				'Approval type is required'
 			),
 		]);
