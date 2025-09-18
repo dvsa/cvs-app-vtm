@@ -6,6 +6,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import _ from 'lodash';
 import { Observable, map, take, tap } from 'rxjs';
 
 export const techRecordCleanResolver: ResolveFn<Observable<boolean>> = (route) => {
@@ -14,11 +15,27 @@ export const techRecordCleanResolver: ResolveFn<Observable<boolean>> = (route) =
 	return store.select(selectTechRecord).pipe(
 		take(1),
 		map((vehicleTechRecord) => vehicleTechRecord as TechRecordType<'put'>),
+		map((vehicleTechRecord) => sortAdditionalExaminerNotes(vehicleTechRecord, route)),
 		map((vehicleTechRecord) => cleanseApprovalType(vehicleTechRecord, route)),
 		map((vehicleTechRecord) => cleanseADRDetails(vehicleTechRecord, route)),
 		tap((vehicleTechRecord) => store.dispatch(updateEditingTechRecord({ vehicleTechRecord }))),
 		map(() => true)
 	);
+};
+
+const sortAdditionalExaminerNotes = (record: TechRecordType<'put'>, route: ActivatedRouteSnapshot) => {
+	if (!route.data['isEditing']) return record;
+
+	const type = record.techRecord_vehicleType;
+	if (type === VehicleTypes.HGV || type === VehicleTypes.LGV || type === VehicleTypes.TRL) {
+		record.techRecord_adrDetails_additionalExaminerNotes = _.orderBy(
+			record.techRecord_adrDetails_additionalExaminerNotes,
+			['createdAtDate'],
+			['desc']
+		);
+	}
+
+	return record;
 };
 
 export const cleanseApprovalType = (record: TechRecordType<'put'>, route: ActivatedRouteSnapshot) => {

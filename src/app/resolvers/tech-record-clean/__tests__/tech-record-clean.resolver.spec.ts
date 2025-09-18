@@ -117,4 +117,53 @@ describe('techRecordCleanResolver', () => {
 			);
 		});
 	});
+
+	it('should sort additional examiner notes by createdAtDate in descending order', async () => {
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		jest.spyOn(store, 'select').mockReturnValue(
+			of({
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_additionalExaminerNotes: [
+					{
+						createdAtDate: '2023-01-01T00:00:00.000Z',
+						note: 'Note 2',
+					},
+					{
+						createdAtDate: '2025-12-31T00:00:00.000Z',
+						note: 'Note 3',
+					},
+					{
+						createdAtDate: '2022-12-30T00:00:00.000Z',
+						note: 'Note 1',
+					},
+				],
+			})
+		);
+		const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
+		const resolveResult = await firstValueFrom(result);
+
+		expect(resolveResult).toBe(true);
+		expect(dispatchSpy).toHaveBeenCalledTimes(1);
+		expect(dispatchSpy).toHaveBeenCalledWith(
+			expect.objectContaining({
+				vehicleTechRecord: {
+					techRecord_vehicleType: 'hgv',
+					techRecord_adrDetails_additionalExaminerNotes: [
+						{
+							createdAtDate: '2025-12-31T00:00:00.000Z',
+							note: 'Note 3',
+						},
+						{
+							createdAtDate: '2023-01-01T00:00:00.000Z',
+							note: 'Note 2',
+						},
+						{
+							createdAtDate: '2022-12-30T00:00:00.000Z',
+							note: 'Note 1',
+						},
+					],
+				},
+			})
+		);
+	});
 });

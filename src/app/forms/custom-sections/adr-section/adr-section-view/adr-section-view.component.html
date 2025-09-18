@@ -322,7 +322,7 @@
         </div>
       </dl>
       <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
-      @if (vm.techRecord_adrDetails_additionalExaminerNotes; as notes) {
+      @if (sortAdditionalExaminerNotes(vm.techRecord_adrDetails_additionalExaminerNotes); as notes) {
         @if (notes?.length; as notesCount) {
           <table class="govuk-table">
             <tbody class="govuk-table__body">
