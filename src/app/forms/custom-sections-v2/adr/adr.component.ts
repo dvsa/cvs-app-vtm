@@ -28,7 +28,11 @@ import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-gr
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
-import { PERMITTED_DANGEROUS_GOODS_OPTIONS, YES_NO_OPTIONS } from '@models/options.model';
+import {
+	ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED,
+	PERMITTED_DANGEROUS_GOODS_OPTIONS,
+	YES_NO_OPTIONS,
+} from '@models/options.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -173,7 +177,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.commonValidators.maxLength(1500, 'Additional details must be less than or equal to 1500 characters'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Special provisions must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Special provisions must be less than or equal to 1024 characters'),
 		]),
 		techRecord_adrDetails_declarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationsSeen: this.fb.control<boolean>(false),
@@ -417,4 +421,5 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly FormNodeWidth = FormNodeWidth;
+	protected readonly ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED = ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED;
 }

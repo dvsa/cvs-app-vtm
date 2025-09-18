@@ -197,3 +197,14 @@ export const PERMITTED_DANGEROUS_GOODS_OPTIONS = [
 	{ value: ADRDangerousGood.EXPLOSIVES_TYPE_2, label: 'Explosives (type 2)' },
 	{ value: ADRDangerousGood.EXPLOSIVES_TYPE_3, label: 'Explosives (type 3)' },
 ];
+
+export const ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED = [
+	{
+		value: 'Substances permitted under the tank code and any special provisions specified in 9 may be carried',
+		label: 'Substances permitted under the tank code and any special provisions specified in no.9 may be carried',
+	},
+	{
+		value: 'Substances (Class UN number and if necessary packing group and proper shipping name) may be carried',
+		label: 'Substances (Class UN number and if necessary packing group and proper shipping name) may be carried',
+	},
+];
