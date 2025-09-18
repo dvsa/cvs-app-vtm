@@ -28,11 +28,13 @@ const sortAdditionalExaminerNotes = (record: TechRecordType<'put'>, route: Activ
 
 	const type = record.techRecord_vehicleType;
 	if (type === VehicleTypes.HGV || type === VehicleTypes.LGV || type === VehicleTypes.TRL) {
-		record.techRecord_adrDetails_additionalExaminerNotes = _.orderBy(
-			record.techRecord_adrDetails_additionalExaminerNotes,
-			['createdAtDate'],
-			['desc']
-		);
+		if (Array.isArray(record.techRecord_adrDetails_additionalExaminerNotes)) {
+			record.techRecord_adrDetails_additionalExaminerNotes = _.orderBy(
+				record.techRecord_adrDetails_additionalExaminerNotes,
+				['createdAtDate'],
+				['desc']
+			);
+		}
 	}
 
 	return record;
