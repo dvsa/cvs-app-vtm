@@ -391,19 +391,19 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.fb.group({
 				tc3Type: this.fb.control<string | null>(null, [
 					this.adrValidators.requiresOnePopulatedTC3Field(
-						'TC3 Subsequent inspection must have at least one populated field'
+						'TC3: Subsequent inspection must have at least one populated field'
 					),
 				]),
 				tc3PeriodicNumber: this.fb.control<string | null>(null, [
 					this.commonValidators.maxLength(75, 'TC3: Certificate Number must be less than or equal to 75 characters'),
 					this.adrValidators.requiresOnePopulatedTC3Field(
-						'TC3 Subsequent inspection must have at least one populated field'
+						'TC3: Subsequent inspection must have at least one populated field'
 					),
 				]),
 				tc3PeriodicExpiryDate: this.fb.control<string | null>(null, [
 					this.commonValidators.date('TC3: Expiry date'),
 					this.adrValidators.requiresOnePopulatedTC3Field(
-						'TC3 Subsequent inspection must have at least one populated field'
+						'TC3: Subsequent inspection must have at least one populated field'
 					),
 				]),
 			})
