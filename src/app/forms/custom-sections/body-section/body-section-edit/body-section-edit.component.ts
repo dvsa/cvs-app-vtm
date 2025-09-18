@@ -5,10 +5,11 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn }
 import { TagType } from '@components/tag/tag.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import {
 	BodyTypeCode,
 	BodyTypeDescription,
+	articulatedHgvBodyTypeCodeMap,
+	hgvBodyTypeCodeMap,
 	vehicleBodyTypeCodeMap,
 	vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
@@ -25,6 +26,7 @@ import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, take
 import { GovukFormGroupAutocompleteComponent } from '../../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
+import { getOptionsFromEnum } from '../../../utils/enum-map';
 
 @Component({
 	selector: 'app-body-section-edit',
@@ -50,6 +52,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 
 	form: FormGroup = this.fb.group({});
 
+	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 
 	dtpNumbers$ = combineLatest([
@@ -118,9 +121,21 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 			.pipe(ofType(updateVehicleConfiguration))
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(({ vehicleConfiguration }) => {
-				if (this.techRecord()?.techRecord_vehicleType === VehicleTypes.HGV) {
+				const vehicleType = this.techRecord()?.techRecord_vehicleType;
+
+				if (!vehicleConfiguration) {
+					return;
+				}
+
+				if (vehicleType === VehicleTypes.HGV) {
+					if (vehicleConfiguration === null) {
+						this.bodyTypes = [];
+					}
+
 					// When vehicle configuration is set to articulated, update the body type description and code
 					if (vehicleConfiguration === VehicleConfiguration.ARTICULATED) {
+						this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort());
+
 						this.form.patchValue({
 							techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
 							techRecord_bodyType_code: BodyTypeCode.A,
@@ -128,16 +143,18 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 					}
 
 					// When vehicle configuration is rigid, clear artic body description and code
-					const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
-					const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
-					if (
-						vehicleConfiguration === VehicleConfiguration.RIGID &&
-						(bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED)
-					) {
-						this.form.patchValue({
-							techRecord_bodyType_description: null,
-							techRecord_bodyType_code: null,
-						});
+					if (vehicleConfiguration === VehicleConfiguration.RIGID) {
+						this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort());
+
+						const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
+						const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
+
+						if (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
+							this.form.patchValue({
+								techRecord_bodyType_description: null,
+								techRecord_bodyType_code: null,
+							});
+						}
 					}
 				}
 
@@ -256,17 +273,6 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 				),
 			]),
 		};
-	}
-
-	get bodyTypes(): MultiOptions {
-		let vehicleType: string = this.techRecord().techRecord_vehicleType;
-
-		if (this.techRecord().techRecord_vehicleType === 'hgv') {
-			vehicleType = `${this.techRecord().techRecord_vehicleConfiguration}Hgv`;
-		}
-		const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
-		const values = [...optionsMap.values()];
-		return getOptionsFromEnum(values.sort());
 	}
 
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
