@@ -31,16 +31,20 @@ export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
 	return a.resourceKey;
 };
-interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
+
+interface Loading {
 	loading: boolean;
 }
 
-export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase> {
-	loading: boolean;
+interface Extras extends Loading {
 	searchReturn: ReferenceDataModelBase[] | null;
 	term: string | null;
 	filter: string | null;
 }
+
+interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase>, Loading {}
+
+export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase>, Extras {}
 
 export type ReferenceDataState = Record<
 	ReferenceDataResourceType,
@@ -52,7 +56,9 @@ function createAdapter() {
 	return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
 }
 
-function getInitialState(resourceType: ReferenceDataResourceType) {
+function getInitialState(
+	resourceType: ReferenceDataResourceType
+): (EntityState<ReferenceDataModelBase> & ReferenceDataEntityState) | ReferenceDataEntityStateSearch {
 	return resourceTypeAdapters[`${resourceType}`].getInitialState({ loading: false });
 }
 

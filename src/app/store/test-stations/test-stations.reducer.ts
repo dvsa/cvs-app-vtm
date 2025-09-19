@@ -11,10 +11,12 @@ import {
 	fetchTestStationsSuccess,
 } from './test-stations.actions';
 
-export interface TestStationsState extends EntityState<TestStation> {
-	loading: boolean;
+interface Extras {
 	error: string;
+	loading: boolean;
 }
+
+export interface TestStationsState extends EntityState<TestStation>, Extras {}
 
 export const STORE_FEATURE_TEST_STATIONS_KEY = 'testStations';
 
@@ -24,7 +26,10 @@ export const testStationsAdapter: EntityAdapter<TestStation> = createEntityAdapt
 	selectId: (testStation) => testStation.testStationId,
 });
 
-export const initialTestStationsState = testStationsAdapter.getInitialState({ loading: false, error: '' });
+export const initialTestStationsState: EntityState<TestStation> & Extras = testStationsAdapter.getInitialState({
+	loading: false,
+	error: '',
+});
 
 export const testStationsReducer = createReducer(
 	initialTestStationsState,

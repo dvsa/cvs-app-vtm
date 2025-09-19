@@ -11,10 +11,12 @@ import {
 	fetchDefectsSuccess,
 } from './defects.actions';
 
-export interface DefectsState extends EntityState<Defect> {
-	loading: boolean;
+interface Extras {
 	error: string;
+	loading: boolean;
 }
+
+export interface DefectsState extends EntityState<Defect>, Extras {}
 
 export const STORE_FEATURE_DEFECTS_KEY = 'Defects';
 
@@ -24,7 +26,10 @@ export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>
 	selectId: (defect) => `${defect.imNumber}: ${defect.imDescription}`,
 });
 
-export const initialDefectsState = defectsAdapter.getInitialState({ loading: false, error: '' });
+export const initialDefectsState: EntityState<Defect> & Extras = defectsAdapter.getInitialState({
+	loading: false,
+	error: '',
+});
 
 export const defectsReducer = createReducer(
 	initialDefectsState,

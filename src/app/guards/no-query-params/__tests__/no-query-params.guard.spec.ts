@@ -42,6 +42,7 @@ describe('NoQueryParamsGuard', () => {
 
 		it('should return an empty url when the previous navigation is undefined', (done) => {
 			const mockNavigation: Navigation = {
+				abort(): void {},
 				id: 1,
 				initialUrl: '/some/path' as unknown as UrlTree,
 				extractedUrl: {} as UrlTree,
@@ -59,6 +60,7 @@ describe('NoQueryParamsGuard', () => {
 
 		it('should return the previous Url if the previous navigation is defined', (done) => {
 			const mockNavigation: Navigation = {
+				abort(): void {},
 				id: 1,
 				initialUrl: '/some/path' as unknown as UrlTree,
 				extractedUrl: {} as UrlTree,

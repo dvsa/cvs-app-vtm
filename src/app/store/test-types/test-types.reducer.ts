@@ -15,11 +15,15 @@ export const testTypesAdapter: EntityAdapter<TestType | TestTypeCategory> = crea
 	TestType | TestTypeCategory
 >();
 
-export interface TestTypeState extends EntityState<TestType | TestTypeCategory> {
+interface Extras {
 	loading: boolean;
 }
 
-export const initialTestTypeState = testTypesAdapter.getInitialState({ loading: false });
+export interface TestTypeState extends EntityState<TestType | TestTypeCategory>, Extras {}
+
+export const initialTestTypeState: EntityState<TestType | TestTypeCategory> & Extras = testTypesAdapter.getInitialState(
+	{ loading: false }
+);
 
 export const testTypesReducer = createReducer(
 	initialTestTypeState,

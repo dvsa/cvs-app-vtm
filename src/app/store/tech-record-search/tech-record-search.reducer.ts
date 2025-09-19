@@ -3,10 +3,12 @@ import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from './tech-record-search.actions';
 
-export interface SearchResultState extends EntityState<TechRecordSearchSchema> {
-	loading: boolean;
+interface Extras {
 	error: string;
+	loading: boolean;
 }
+
+export interface SearchResultState extends EntityState<TechRecordSearchSchema>, Extras {}
 
 export const STORE_FEATURE_SEARCH_TECH_RESULTS_KEY = 'techSearchResults';
 
@@ -19,7 +21,8 @@ export const techSearchResultAdapter: EntityAdapter<TechRecordSearchSchema> =
 		selectId: (result) => `${result.systemNumber}#${result.createdTimestamp}`,
 	});
 
-export const initialTechSearchResultState = techSearchResultAdapter.getInitialState({ loading: false, error: '' });
+export const initialTechSearchResultState: EntityState<TechRecordSearchSchema> & Extras =
+	techSearchResultAdapter.getInitialState({ loading: false, error: '' });
 
 export const techSearchResultReducer = createReducer(
 	initialTechSearchResultState,
