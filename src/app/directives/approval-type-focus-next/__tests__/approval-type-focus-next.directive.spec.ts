@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ApprovalTypeFocusNextDirective } from '../approval-type-focus-next.directive';
@@ -19,7 +19,7 @@ describe('ApprovalTypeFocusNext', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [TestComponent],
-			providers: [TemplateRef],
+			providers: [],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(TestComponent);
