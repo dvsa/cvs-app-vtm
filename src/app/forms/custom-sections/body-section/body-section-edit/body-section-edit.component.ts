@@ -133,8 +133,6 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 	}
 
 	handleUpdateVehicleConfiguration() {
-		// this.assignBodyTypes(this.techRecord()?.techRecord_vehicleConfiguration || '');
-
 		this.actions
 			.pipe(ofType(updateVehicleConfiguration))
 			.pipe(takeUntil(this.destroy$))
