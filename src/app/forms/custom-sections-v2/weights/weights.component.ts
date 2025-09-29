@@ -24,6 +24,7 @@ type WeightsForm = Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, F
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly VehicleTypes = VehicleTypes;
+	protected showDimensionsWarning = false;
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
@@ -54,31 +55,31 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get hgvControls() {
 		return {
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_trainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_trainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train EEC Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_trainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train Design Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train GB Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_maxTrainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train EEC weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_maxTrainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train Design Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 		};
 	}
@@ -98,5 +99,14 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	get techRecordAxles() {
 		return this.parent.get('techRecord_axles') as FormArray;
+	}
+
+	showAddAxleButton() {
+		return (this.techRecord()?.techRecord_noOfAxles ?? 0) < 10;
+	}
+
+	removeAxle(index: number) {
+		this.axlesService.removeAxle(this.parent, this.techRecord().techRecord_vehicleType, index);
+		this.showDimensionsWarning = true;
 	}
 }

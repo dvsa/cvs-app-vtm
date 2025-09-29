@@ -8,6 +8,15 @@
         <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle weight details</h2>
         <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle weights.'"/>
       }
+      @if (
+        parent.get('techRecord_axles')?.value.length > 0 &&
+        showDimensionsWarning
+        ) {
+        <app-field-warning-message [warningMessage]="' '">
+          <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
+          <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
+        </app-field-warning-message>
+      }
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
         <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle {{ i + 1 }}</h2>
         @if (techRecordAxles.at(i).invalid) {
@@ -50,7 +59,7 @@
             data-module="govuk-button"
             role="button"
             [id]="'weights_remove-{{ i + 1}}'"
-            (click)="axlesService.removeAxle(parent, techRecord().techRecord_vehicleType, i)"
+            (click)="removeAxle(i)"
           >
             Remove axle
           </button>
@@ -68,6 +77,7 @@
           type="number"
           formControlName="techRecord_grossGbWeight"
           class="govuk-label--s"
+          [showErrors]="false"
           [suffix]="'kg'"
         />
 
@@ -76,6 +86,7 @@
           type="number"
           formControlName="techRecord_grossEecWeight"
           class="govuk-label--s"
+          [showErrors]="false"
           [suffix]="'kg'"
         />
     }
@@ -84,6 +95,7 @@
         type="number"
         formControlName="techRecord_grossDesignWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
     </div>
@@ -100,6 +112,7 @@
         type="number"
         formControlName="techRecord_trainGbWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
 
@@ -108,6 +121,7 @@
         type="number"
         formControlName="techRecord_trainEecWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
     }
@@ -116,6 +130,7 @@
       type="number"
       formControlName="techRecord_trainDesignWeight"
       class="govuk-label--s"
+      [showErrors]="false"
       [suffix]="'kg'"
     />
   </div>
@@ -131,6 +146,7 @@
         type="number"
         formControlName="techRecord_maxTrainGbWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
 
@@ -139,6 +155,7 @@
         type="number"
         formControlName="techRecord_maxTrainEecWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
 
@@ -147,19 +164,22 @@
         type="number"
         formControlName="techRecord_maxTrainDesignWeight"
         class="govuk-label--s"
+        [showErrors]="false"
         [suffix]="'kg'"
       />
     </div>
   }
 
-  <button
-    type="button"
-    class="govuk-button govuk-button--secondary"
-    data-module="govuk-button"
-    role="button"
-    id="weightsAddAxle"
-    (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
-  >
-    Add axle
-  </button>
+  @if (showAddAxleButton()) {
+    <button
+      type="button"
+      class="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      role="button"
+      id="weightsAddAxle"
+      (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
+    >
+      Add axle
+    </button>
+  }
 </div>

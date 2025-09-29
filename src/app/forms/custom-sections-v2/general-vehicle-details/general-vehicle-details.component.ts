@@ -614,13 +614,17 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		const isHGVorTRL = vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL;
 		this.form.patchValue({ techRecord_noOfAxles: 0 });
 		this.technicalRecordService.updateEditingTechRecord({
-			techRecord_noOfAxles: 0,
+			...this.techRecord(),
 			techRecord_axles: [],
+			techRecord_noOfAxles: 0,
 		} as any);
 
 		if (isHGVorTRL) {
 			this.technicalRecordService.updateEditingTechRecord({
+				...this.techRecord(),
+				techRecord_axles: [],
 				techRecord_dimensions_axleSpacing: [],
+				techRecord_noOfAxles: 0,
 			} as any);
 		}
 		this.axlesService.removeAllAxles(this.parent, vehicleType);
