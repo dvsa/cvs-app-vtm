@@ -24,7 +24,7 @@ type WeightsForm = Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, F
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly VehicleTypes = VehicleTypes;
-	protected showDimensionsWarning = false;
+	showDimensionsWarning = false;
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();

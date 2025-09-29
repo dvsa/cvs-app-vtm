@@ -327,7 +327,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		it('should enable the axle input, reset axles to 0, and update tech record', () => {
 			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
 			const patchSpy = jest.spyOn(component.form, 'patchValue');
-			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord');
+			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation();
 			const removeAllAxlesSpy = jest.spyOn(component.axlesService, 'removeAllAxles').mockImplementation();
 
 			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
@@ -337,11 +337,10 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(setLockSpy).toHaveBeenCalledWith(false);
 			expect(patchSpy).toHaveBeenCalledWith({ techRecord_noOfAxles: 0 });
 			expect(updateSpy).toHaveBeenCalledWith({
-				techRecord_noOfAxles: 0,
+				...component.techRecord(),
 				techRecord_axles: [],
-			});
-			expect(updateSpy).toHaveBeenCalledWith({
 				techRecord_dimensions_axleSpacing: [],
+				techRecord_noOfAxles: 0,
 			});
 			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
@@ -354,11 +353,9 @@ describe('GeneralVehicleDetailsComponent', () => {
 			component.clearAxleInput();
 
 			expect(updateSpy).toHaveBeenCalledWith({
-				techRecord_noOfAxles: 0,
+				...component.techRecord(),
 				techRecord_axles: [],
-			});
-			expect(updateSpy).not.toHaveBeenCalledWith({
-				techRecord_dimensions_axleSpacing: [],
+				techRecord_noOfAxles: 0,
 			});
 			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
