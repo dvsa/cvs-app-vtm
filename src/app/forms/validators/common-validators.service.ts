@@ -229,9 +229,3 @@ export class CommonValidatorsService {
 		return (control) => (control.value === '[INVALID_OPTION]' ? { invalidOption: message } : null);
 	}
 }
-
-type MaxValidatorOptions = {
-	size: number;
-	message: (control: AbstractControl) => GlobalError;
-	useValidator?: () => boolean;
-};
