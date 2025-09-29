@@ -100,13 +100,13 @@ export class AxlesService {
 
 			// Weight fields
 			weights_gbWeight: this.fb.control<number | null>(axle?.weights_gbWeight || null, [
-				this.maxWeight('weights_gbWeight'),
+				this.maxWeight('GB Weight', 'weights_gbWeight'),
 			]),
 			weights_eecWeight: this.fb.control<number | null>(axle?.weights_eecWeight || null, [
-				this.maxWeight('weights_eecWeight'),
+				this.maxWeight('EEC Weight', 'weights_eecWeight'),
 			]),
 			weights_designWeight: this.fb.control<number | null>(axle?.weights_designWeight || null, [
-				this.maxWeight('weights_designWeight'),
+				this.maxWeight('Design Weight', 'weights_designWeight'),
 			]),
 		});
 	}
@@ -270,45 +270,13 @@ export class AxlesService {
 		});
 	}
 
-	/*
-	maxWeight(options: {
-		size: number;
-		message: (control: AbstractControl) => GlobalError;
-		useValidator?: () => boolean;
-	}): ValidatorFn {
-		return (control) => {
-			if (options.useValidator && !options.useValidator()) return null;
-
-			const index = control.get('axleNumber')?.value || 0;
-			const GBWeight = control.get('weights_gbWeight')?.value;
-			const EECWeight = control.get('weights_eecWeight')?.value;
-			const DesignWeight = control.get('weights_designWeight')?.value;
-			const error = `Axle ${index} GB, EEC, Design Weight must be less than or equal to 99999kg`;
-
-			if (GBWeight && GBWeight > options.size) {
-				return { max: { error, anchorLink: `weights_gbWeight-${index}` } };
-			}
-
-			if (EECWeight && EECWeight > options.size) {
-				return { max: { error, anchorLink: `weights_eecWeight-${index}` } };
-			}
-
-			if (DesignWeight && DesignWeight > options.size) {
-				return { max: { error, anchorLink: `weights_designWeight-${index}` } };
-			}
-
-			return null;
-		};
-	}
-  */
-
-	maxWeight(id: string): ValidatorFn {
+	maxWeight(label: string, id: string): ValidatorFn {
 		return this.commonValidators.max(99999, (control) => {
 			const index = control.parent?.get('axleNumber')?.value || 0;
 			return {
 				error: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? `Axle ${index} GB, EEC, Design Weight must be less than or equal to 99999kg`
-					: `Axle ${index} GB Weight must be less than or equal to 99999`,
+					: `Axle ${index} ${label} must be less than or equal to 99999`,
 				anchorLink: `${id}-${index}`,
 			};
 		});
