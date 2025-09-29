@@ -3,6 +3,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import {
@@ -37,6 +38,7 @@ import { getOptionsFromEnum } from '../../../utils/enum-map';
 		GovukFormGroupSelectComponent,
 		GovukFormGroupAutocompleteComponent,
 		AsyncPipe,
+		ToUppercaseDirective,
 	],
 })
 export class BodySectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {
