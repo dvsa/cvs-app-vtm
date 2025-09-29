@@ -155,6 +155,19 @@
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
 
+                      <!-- Emissions and exemptions (immediately above ADR) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'emissions-and-exemptions'"
+                          [title]="'Emissions and exemptions'"
+                          [description]="'Euro standard, emissions limit, tacho exemption.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
+                        </app-accordion>
+                      }
+
                       @if (
                         techRecord.techRecord_vehicleType === 'hgv' ||
                         techRecord.techRecord_vehicleType === 'trl' ||

@@ -1,0 +1,49 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!-- Drawbar coupling fitted (HGV only) -->
+  @if (shouldDisplayFormControl('techRecord_drawbarCouplingFitted')) {
+    <govuk-form-group-radio
+      label="Drawbar coupling fitted"
+      formControlName="techRecord_drawbarCouplingFitted"
+      [options]="YES_NO_OPTIONS"
+    ></govuk-form-group-radio>
+  }
+
+  <!-- Euro standard (HGV and PSV) -->
+  @if (shouldDisplayFormControl('techRecord_euroStandard')) {
+    <govuk-form-group-radio
+      label="Euro standard"
+      formControlName="techRecord_euroStandard"
+      [options]="EMISSION_STANDARD_OPTIONS"
+    ></govuk-form-group-radio>
+  }
+
+  <!-- Emission limit (smoke absorption coefficient) (HGV and PSV) -->
+  @if (shouldDisplayFormControl('techRecord_emissionsLimit')) {
+    <govuk-form-group-input
+      label="Emission limit (smoke absorption coefficient)"
+      formControlName="techRecord_emissionsLimit"
+      type="decimal"
+      [width]="FormNodeWidth.XXS"
+    >
+      <div class="govuk-input__suffix" aria-hidden="true">m<sup><small>-1</small></sup></div>
+    </govuk-form-group-input>
+  }
+
+  <!-- Speed limiter exempt (HGV and PSV) -->
+  @if (shouldDisplayFormControl('techRecord_speedLimiterMrk')) {
+    <govuk-form-group-radio
+      label="Speed limiter exempt"
+      formControlName="techRecord_speedLimiterMrk"
+      [options]="YES_NO_OPTIONS"
+    ></govuk-form-group-radio>
+  }
+
+  <!-- Tacho exempt (HGV and PSV) -->
+  @if (shouldDisplayFormControl('techRecord_tachoExemptMrk')) {
+    <govuk-form-group-radio
+      label="Tacho exempt"
+      formControlName="techRecord_tachoExemptMrk"
+      [options]="YES_NO_OPTIONS"
+    ></govuk-form-group-radio>
+  }
+</div>

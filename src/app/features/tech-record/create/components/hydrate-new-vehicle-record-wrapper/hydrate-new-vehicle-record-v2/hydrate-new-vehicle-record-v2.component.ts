@@ -3,6 +3,7 @@ import { AccordionComponent } from '@/src/app/components/accordion/accordion.com
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
+import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -42,6 +43,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		AdrComponent,
 		LastApplicantComponent,
 		AdrComponent,
+		EmissionsAndExemptionsComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
