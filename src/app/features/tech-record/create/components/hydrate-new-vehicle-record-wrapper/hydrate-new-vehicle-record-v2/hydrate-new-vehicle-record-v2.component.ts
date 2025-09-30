@@ -160,4 +160,17 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 		return "Tell us why you're creating this record.";
 	}
+
+	get weightsAccordionDescription(): string {
+		switch (this.techRecord$()?.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return 'Axle, gross and train weights.';
+			case VehicleTypes.PSV:
+				return 'Axle weights, unladen weight.';
+			//case VehicleTypes.TRL:
+			//return '';
+			default:
+				return '';
+		}
+	}
 }
