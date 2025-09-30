@@ -155,6 +155,18 @@
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
 
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'dimensions'"
+                          [title]="'Dimensions'"
+                          [description]="'Axle distance, vehicle dimensions.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-dimensions [techRecord]="techRecord"></app-dimensions>
+                        </app-accordion>
+                      }
+
                       <!-- Emissions and exemptions (immediately above ADR) -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion
