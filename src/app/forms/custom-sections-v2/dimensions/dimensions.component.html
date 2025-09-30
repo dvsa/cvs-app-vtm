@@ -1,5 +1,5 @@
 @if (techRecord(); as tr) {
-  <div class="govuk-!-padding-4 main-dimensions" [formGroup]="form">
+  <div class="govuk-!-padding-4" [formGroup]="form">
     <!-- Front axle to rear axle-->
     <govuk-form-group-input
       formControlName="techRecord_frontAxleToRearAxle"
@@ -63,7 +63,7 @@
         <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
           Front of vehicle to 5th wheel coupling
         </span>
-        <div class="min-max">
+        <div class="flex-row">
           <!-- Front of vehicle to 5th wheel coupling minimum -->
           <govuk-form-group-input
             formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
@@ -86,7 +86,7 @@
         <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
           Front axle to 5th wheel coupling
         </span>
-        <div class="min-max">
+        <div class="flex-row">
           <!-- Front axle to 5th wheel coupling minimum -->
           <govuk-form-group-input
             formControlName="techRecord_frontAxleTo5thWheelMin"
