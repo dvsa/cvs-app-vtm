@@ -1,5 +1,11 @@
 @if (techRecord(); as tr) {
   <div class="govuk-!-padding-4" [formGroup]="form">
+    @if(
+      parent.get('techRecord_axles')?.value.length === 0 ||
+      !parent.get('techRecord_axles')?.value) {
+      <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
+    }
+
     <!-- Front axle to rear axle-->
     <govuk-form-group-input
       formControlName="techRecord_frontAxleToRearAxle"
@@ -31,8 +37,8 @@
 
     <!-- Length-->
     <div>
-      @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-        <app-field-warning-message [warningMessage]="lengthWarning"></app-field-warning-message>
+      @if (shouldShowLengthWarning()) {
+        <app-field-warning-message [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"></app-field-warning-message>
       }
       <govuk-form-group-input
         formControlName="techRecord_dimensions_length"
@@ -45,8 +51,8 @@
 
     <!-- Width-->
     <div>
-      @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-        <app-field-warning-message [warningMessage]="widthWarning"></app-field-warning-message>
+      @if (shouldShowWidthWarning()) {
+        <app-field-warning-message [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"></app-field-warning-message>
       }
 
       <govuk-form-group-input
@@ -60,7 +66,7 @@
     <!-- HGV only fields -->
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="min-max-container">
-        <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
           Front of vehicle to 5th wheel coupling
         </span>
         <div class="flex-row">
@@ -83,7 +89,7 @@
         </div>
       </div>
       <div class="min-max-container">
-        <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
           Front axle to 5th wheel coupling
         </span>
         <div class="flex-row">

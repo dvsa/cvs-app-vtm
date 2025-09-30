@@ -61,16 +61,28 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999mm'),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999mm'),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for front of vehicle to 5th wheel must be less than or equal to 99999mm'
+				),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999mm'),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for front of vehicle to 5th wheel must be less than or equal to 99999mm'
+				),
 			]),
 			techRecord_frontAxleTo5thWheelMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999mm'),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for front of vehicle to coupling device must be less than or equal to 99999mm'
+				),
 			]),
 			techRecord_frontAxleTo5thWheelMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999mm'),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for front of vehicle to coupling device must be less than or equal to 99999mm'
+				),
 			]),
 		};
 	}
@@ -87,16 +99,20 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 			: '';
 	}
 
-	get lengthWarning() {
-		return Number.parseInt(this.form.get('techRecord_dimensions_length')?.value, 10) > 12000
-			? 'This length dimension field value is greater than 12,000mm. Check your input before proceeding'
-			: '';
+	shouldShowLengthWarning(): boolean {
+		return (
+			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&
+			Number.parseInt(this.form.get('techRecord_dimensions_length')?.value, 10) > 12000
+		);
 	}
 
-	get widthWarning() {
-		return Number.parseInt(this.form.get('techRecord_dimensions_width')?.value, 10) > 2600
-			? 'This width dimension field value is greater than 2,600mm. Check your input before proceeding'
-			: '';
+	shouldShowWidthWarning(): boolean {
+		return (
+			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&
+			Number.parseInt(this.form.get('techRecord_dimensions_width')?.value, 10) > 2600
+		);
 	}
 
 	get axleSpacings(): FormArray<FormGroup> | undefined {
