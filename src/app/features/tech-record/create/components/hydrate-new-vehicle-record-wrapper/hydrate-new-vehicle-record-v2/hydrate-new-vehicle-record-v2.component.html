@@ -168,6 +168,19 @@
                         </app-accordion>
                       }
 
+                          <!-- @TODO: Add trl and psv check when doing respective tickets -->
+                      @if (techRecord.techRecord_vehicleType === 'hgv') {
+                        <app-accordion
+                          [id]="'weights'"
+                          [title]="'Weights'"
+                          [description]="'Axle, gross and train weights.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-weights [techRecord]="techRecord"></app-weights>
+                        </app-accordion>
+                      }
+
                       @if (
                         techRecord.techRecord_vehicleType === 'hgv' ||
                         techRecord.techRecord_vehicleType === 'trl' ||

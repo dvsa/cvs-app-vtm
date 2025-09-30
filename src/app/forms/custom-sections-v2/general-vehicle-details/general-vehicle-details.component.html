@@ -243,12 +243,45 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_noOfAxles')) {
-    <govuk-form-group-input
-      label="Number of axles"
-      [hint]="'This will affect how many axle-related fields appear in the record'"
-      formControlName="techRecord_noOfAxles"
-      [width]="FormNodeWidth.XXS"
-      type="number"
-    ></govuk-form-group-input>
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--s" [htmlFor]="'techRecord_noOfAxles'">
+        Number of axles
+      </label>
+    </h1>
+    <div class="govuk-hint" [id]="'techRecord_noOfAxles-hint'"> This will affect how many axle-related fields appear in the record </div>
+    <div class="flex-row">
+      <govuk-form-group-input
+        formControlName="techRecord_noOfAxles"
+        [width]="FormNodeWidth.XXS"
+        [value]="techRecord().techRecord_noOfAxles"
+        type="number"
+      />
+
+      @if (isAxlesDisabled) {
+        <button
+          type="button"
+          class="govuk-button govuk-button--warning"
+          data-module="govuk-button"
+          role="button"
+          id="clear-axles-button"
+          (click)="clearAxleInput()"
+        >
+          Remove and clear all axles
+        </button>
+      }
+
+      @if (!isAxlesDisabled) {
+        <button
+          type="button"
+          class="govuk-button"
+          data-module="govuk-button"
+          role="button"
+          id="confirm-axles-button"
+          (click)="lockAndUpdateAxles()"
+        >
+          Confirm number of axles
+        </button>
+      }
+    </div>
   }
 </div>

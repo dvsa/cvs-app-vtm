@@ -18,12 +18,14 @@
     <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
   }
 
-  @if (hasError) {
+  @if (hasError && showErrors()) {
     @let firstError = (control?.errors | keyvalue)?.[0]?.value;
-    <p class="govuk-error-message" [id]="errorId">
-      <span class="govuk-visually-hidden">Error: </span>
-      <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
-    </p>
+    @if (firstError) {
+      <p class="govuk-error-message" [id]="errorId">
+        <span class="govuk-visually-hidden">Error: </span>
+        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+      </p>
+    }
   }
 
   <div class="govuk-input__wrapper">

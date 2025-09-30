@@ -46,7 +46,9 @@ describe('GeneralVehicleDetailsComponent', () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<
 			Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>
-		>({});
+		>({
+			techRecord_noOfAxles: new FormControl(0),
+		});
 		const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 
 		await TestBed.configureTestingModule({
@@ -304,6 +306,58 @@ describe('GeneralVehicleDetailsComponent', () => {
 					expect(cdrSpy).toHaveBeenCalled();
 					expect(formSpy).toHaveBeenCalled();
 				});
+		});
+	});
+
+	describe('lockAndUpdateAxles', () => {
+		it('should disable the axle input, update tech record, and add axles', () => {
+			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
+			const addAxleSpy = jest.spyOn(component.axlesService, 'addAxle').mockImplementation();
+			component.form.get('techRecord_noOfAxles')?.setValue(3);
+			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
+
+			component.lockAndUpdateAxles();
+
+			expect(setLockSpy).toHaveBeenCalledWith(true);
+			expect(addAxleSpy).toHaveBeenCalledTimes(3);
+		});
+	});
+
+	describe('clearAxleInput', () => {
+		it('should enable the axle input, reset axles to 0, and update tech record', () => {
+			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
+			const patchSpy = jest.spyOn(component.form, 'patchValue');
+			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation();
+			const removeAllAxlesSpy = jest.spyOn(component.axlesService, 'removeAllAxles').mockImplementation();
+
+			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
+
+			component.clearAxleInput();
+
+			expect(setLockSpy).toHaveBeenCalledWith(false);
+			expect(patchSpy).toHaveBeenCalledWith({ techRecord_noOfAxles: 0 });
+			expect(updateSpy).toHaveBeenCalledWith({
+				...component.techRecord(),
+				techRecord_axles: [],
+				techRecord_dimensions_axleSpacing: [],
+				techRecord_noOfAxles: 0,
+			});
+			expect(removeAllAxlesSpy).toHaveBeenCalled();
+		});
+
+		it('should not update axleSpacing for non-HGV/TRL types', () => {
+			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation();
+			const removeAllAxlesSpy = jest.spyOn(component.axlesService, 'removeAllAxles').mockImplementation();
+			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.PSV } as any);
+
+			component.clearAxleInput();
+
+			expect(updateSpy).toHaveBeenCalledWith({
+				...component.techRecord(),
+				techRecord_axles: [],
+				techRecord_noOfAxles: 0,
+			});
+			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
 	});
 });

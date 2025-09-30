@@ -1,18 +1,27 @@
-import { Injectable, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Injectable, inject, signal } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
+import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AxlesService {
 	fb = inject(FormBuilder);
+	featureToggleService = inject(FeatureToggleService);
 	commonValidators = inject(CommonValidatorsService);
+
+	private lockAxlesSignal = signal(false);
+	lockAxles$ = this.lockAxlesSignal.asReadonly();
+
+	setLockAxles(lock: boolean) {
+		this.lockAxlesSignal.set(lock);
+	}
 
 	sortAxles(axles: Axles) {
 		return axles.sort((a, b) => (a.axleNumber || 0) - (b.axleNumber || 0));
@@ -91,31 +100,13 @@ export class AxlesService {
 
 			// Weight fields
 			weights_gbWeight: this.fb.control<number | null>(axle?.weights_gbWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} GB Weight must be less than or equal to 99999`,
-						anchorLink: `weights_gbWeight-${index}`,
-					};
-				}),
+				this.maxWeight('GB Weight', 'weights_gbWeight'),
 			]),
 			weights_eecWeight: this.fb.control<number | null>(axle?.weights_eecWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} EEC Weight must be less than or equal to 99999`,
-						anchorLink: `weights_eecWeight-${index}`,
-					};
-				}),
+				this.maxWeight('EEC Weight', 'weights_eecWeight'),
 			]),
 			weights_designWeight: this.fb.control<number | null>(axle?.weights_designWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} Design Weight must be less than or equal to 99999`,
-						anchorLink: `weights_designWeight-${index}`,
-					};
-				}),
+				this.maxWeight('Design Weight', 'weights_designWeight'),
 			]),
 		});
 	}
@@ -279,6 +270,18 @@ export class AxlesService {
 		});
 	}
 
+	maxWeight(label: string, id: string): ValidatorFn {
+		return this.commonValidators.max(99999, (control) => {
+			const index = control.parent?.get('axleNumber')?.value || 0;
+			return {
+				error: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? `Axle ${index} GB, EEC, Design Weight must be less than or equal to 99999kg`
+					: `Axle ${index} ${label} must be less than or equal to 99999`,
+				anchorLink: `${id}-${index}`,
+			};
+		});
+	}
+
 	generateAxleSpacingsForm(techRecord: TechRecordType<'hgv' | 'trl'>) {
 		const axleSpacings = techRecord.techRecord_dimensions_axleSpacing ?? [];
 		return this.fb.array(axleSpacings.map((spacing) => this.generateAxleSpacingForm(spacing)));
@@ -297,6 +300,7 @@ export class AxlesService {
 		const axlesForm = parent.get('techRecord_axles') as FormArray;
 
 		if (axlesForm.controls.length < 10) {
+			this.setLockAxles(true);
 			const axleNumber = axlesForm.controls.length + 1;
 			axlesForm.setErrors(null);
 			axlesForm.push(this.generateAxleForm(type, { axleNumber }));
@@ -315,6 +319,16 @@ export class AxlesService {
 		}
 
 		axlesForm.setErrors({ length: 'Cannot have more than 10 axles' });
+	}
+
+	removeAllAxles(parent: FormGroup, type: 'hgv' | 'psv' | 'trl') {
+		const axlesForm = parent.get('techRecord_axles') as FormArray;
+		const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
+		axlesForm.clear();
+
+		if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
+			axleSpacingsForm.clear();
+		}
 	}
 
 	removeAxle(parent: FormGroup, type: 'hgv' | 'psv' | 'trl', index: number) {
