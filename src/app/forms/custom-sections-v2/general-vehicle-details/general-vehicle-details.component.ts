@@ -1,8 +1,7 @@
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { TagType } from '@components/tag/tag.component';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -44,7 +43,8 @@ import {
 import { PsvMake, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
+import { AxlesService } from '@services/axles/axles.service';
+import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
@@ -70,18 +70,18 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
-	protected readonly TagTypeLabels = TagTypeLabels;
 	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly TagType = TagType;
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;
 	protected readonly VEHICLE_SUBCLASS_OPTIONS = VEHICLE_SUBCLASS_OPTIONS;
 	protected readonly MONTHS = MONTHS;
 	protected readonly FRAME_DESCRIPTION_OPTIONS = FRAME_DESCRIPTION_OPTIONS;
+	protected readonly MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS = MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 
 	optionsService = inject(MultiOptionsService);
 	referenceDataService = inject(ReferenceDataService);
 	cdr = inject(ChangeDetectorRef);
+	axlesService = inject(AxlesService);
 
 	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
@@ -96,9 +96,21 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
+	isAxlesDisabled = false;
 
 	// TODO properly type this at some point
 	form = this.fb.group<any>({});
+
+	constructor() {
+		super();
+
+		effect(() => {
+			this.isAxlesDisabled = this.axlesService.lockAxles$();
+			this.isAxlesDisabled
+				? this.form.get('techRecord_noOfAxles')?.disable()
+				: this.form.get('techRecord_noOfAxles')?.enable();
+		});
+	}
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
@@ -581,5 +593,40 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			this.cdr.detectChanges();
 		}
 	}
-	protected readonly MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS = MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
+
+	lockAndUpdateAxles() {
+		this.axlesService.setLockAxles(true);
+
+		// logic for populating other sections based on axles amount
+		const noOfAxles = this.form.get('techRecord_noOfAxles')?.getRawValue() ?? 0;
+		const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
+
+		Array.from({ length: noOfAxles }, (_, i) => i + 1).forEach(() => {
+			this.axlesService.addAxle(this.parent, vehicleType);
+		});
+	}
+
+	clearAxleInput() {
+		this.axlesService.setLockAxles(false);
+
+		// logic to clear axles from other sections
+		const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
+		const isHGVorTRL = vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL;
+		this.form.patchValue({ techRecord_noOfAxles: 0 });
+		this.technicalRecordService.updateEditingTechRecord({
+			...this.techRecord(),
+			techRecord_axles: [],
+			techRecord_noOfAxles: 0,
+		} as any);
+
+		if (isHGVorTRL) {
+			this.technicalRecordService.updateEditingTechRecord({
+				...this.techRecord(),
+				techRecord_axles: [],
+				techRecord_dimensions_axleSpacing: [],
+				techRecord_noOfAxles: 0,
+			} as any);
+		}
+		this.axlesService.removeAllAxles(this.parent, vehicleType);
+	}
 }

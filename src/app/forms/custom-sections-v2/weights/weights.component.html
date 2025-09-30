@@ -1,0 +1,185 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <div class="govuk-table__body" [formGroup]="parent">
+    <ng-container formArrayName="techRecord_axles">
+      @if (
+        parent.get('techRecord_axles')?.value.length === 0 ||
+        !parent.get('techRecord_axles')?.value
+        ) {
+        <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle weight details</h2>
+        <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle weights.'"/>
+      }
+      @if (
+        parent.get('techRecord_axles')?.value.length > 0 &&
+        showDimensionsWarning
+        ) {
+        <app-field-warning-message [warningMessage]="' '">
+          <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
+          <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
+        </app-field-warning-message>
+      }
+      @for (axle of techRecordAxles.controls; track axle; let i = $index) {
+        <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle {{ i + 1 }}</h2>
+        @if (techRecordAxles.at(i).invalid) {
+          <app-field-error-message [name]="`Axle-${ i + 1 }`" [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`"/>
+        }
+        <div class="axle" formGroupName="{{ i }}">
+          <govuk-form-group-input
+            [label]="'GB'"
+            id="weights_gbWeight-{{ i + 1 }}"
+            type="number"
+            formControlName="weights_gbWeight"
+            class="govuk-label--s"
+            [suffix]="'kg'"
+            [showErrors]="false"
+          />
+
+          <govuk-form-group-input
+            [label]="'EEC'"
+            id="weights_eecWeight-{{ i + 1 }}"
+            type="number"
+            formControlName="weights_eecWeight"
+            class="govuk-label--s"
+            [suffix]="'kg'"
+            [showErrors]="false"
+          />
+
+          <govuk-form-group-input
+            [label]="'Design'"
+            id="weights_designWeight-{{ i + 1 }}"
+            type="number"
+            formControlName="weights_designWeight"
+            class="govuk-label--s"
+            [suffix]="'kg'"
+            [showErrors]="false"
+          />
+
+          <button
+            type="button"
+            class="govuk-button govuk-button--warning"
+            data-module="govuk-button"
+            role="button"
+            [id]="'weights_remove-{{ i + 1}}'"
+            (click)="removeAxle(i)"
+          >
+            Remove axle
+          </button>
+        </div>
+      }
+    </ng-container>
+    <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Gross</h2>
+    @if (form.get('techRecord_grossGbWeight')?.invalid || form.get('techRecord_grossEecWeight')?.invalid || form.get('techRecord_grossDesignWeight')?.invalid) {
+      <app-field-error-message [name]="'gross-weight'" [error]="'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'"/>
+    }
+    <div class="axle">
+    @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
+        <govuk-form-group-input
+          [label]="'GB'"
+          type="number"
+          formControlName="techRecord_grossGbWeight"
+          class="govuk-label--s"
+          [showErrors]="false"
+          [suffix]="'kg'"
+        />
+
+        <govuk-form-group-input
+          [label]="'EEC'"
+          type="number"
+          formControlName="techRecord_grossEecWeight"
+          class="govuk-label--s"
+          [showErrors]="false"
+          [suffix]="'kg'"
+        />
+    }
+      <govuk-form-group-input
+        [label]="'Design'"
+        type="number"
+        formControlName="techRecord_grossDesignWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+    </div>
+  </div>
+
+  <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Train</h2>
+  @if (form.get('techRecord_trainGbWeight')?.invalid || form.get('techRecord_trainEecWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
+    <app-field-error-message [name]="'train-weight'" [error]="'Train GB, EEC, Design Weight must be less than or equal to 99999kg'"/>
+  }
+  <div class="axle">
+    @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
+      <govuk-form-group-input
+        [label]="'GB'"
+        type="number"
+        formControlName="techRecord_trainGbWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+
+      <govuk-form-group-input
+        [label]="'EEC'"
+        type="number"
+        formControlName="techRecord_trainEecWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+    }
+    <govuk-form-group-input
+      [label]="'Design'"
+      type="number"
+      formControlName="techRecord_trainDesignWeight"
+      class="govuk-label--s"
+      [showErrors]="false"
+      [suffix]="'kg'"
+    />
+  </div>
+
+  @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+    <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Max train</h2>
+    @if (form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_maxTrainEecWeight')?.invalid || form.get('techRecord_maxTrainDesignWeight')?.invalid) {
+      <app-field-error-message [name]="'max-train-weight'" [error]="'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'"/>
+    }
+    <div class="axle">
+      <govuk-form-group-input
+        [label]="'GB'"
+        type="number"
+        formControlName="techRecord_maxTrainGbWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+
+      <govuk-form-group-input
+        [label]="'EEC'"
+        type="number"
+        formControlName="techRecord_maxTrainEecWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+
+      <govuk-form-group-input
+        [label]="'Design'"
+        type="number"
+        formControlName="techRecord_maxTrainDesignWeight"
+        class="govuk-label--s"
+        [showErrors]="false"
+        [suffix]="'kg'"
+      />
+    </div>
+  }
+
+  @if (showAddAxleButton()) {
+    <button
+      type="button"
+      class="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      role="button"
+      id="weightsAddAxle"
+      (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
+    >
+      Add axle
+    </button>
+  }
+</div>

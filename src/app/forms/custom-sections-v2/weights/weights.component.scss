@@ -1,0 +1,26 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-label--s::ng-deep > .govuk-form-group {
+  > fieldset > legend > .govuk-fieldset__heading, > label, > h1 > label {
+    @extend .govuk-label--s;
+  }
+}
+
+:host {
+  govuk-form-group-input::ng-deep .govuk-form-group label
+  {
+    @extend .govuk-label;
+    font-weight: 400;
+  }
+}
+
+.govuk-button--warning {
+  white-space: nowrap;
+}
+
+.axle {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}

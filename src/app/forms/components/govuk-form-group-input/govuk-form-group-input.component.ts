@@ -32,6 +32,8 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 
 	readonly nullIfEmpty = input<boolean>(false);
 
+	readonly showErrors = input<boolean>(true);
+
 	get style(): string {
 		const width = this.width();
 		const errorClass = this.hasError ? 'govuk-input--error' : '';
