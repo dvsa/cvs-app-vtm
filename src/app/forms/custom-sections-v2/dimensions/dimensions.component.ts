@@ -38,8 +38,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 	get controlsBasedOffVehicleType() {
 		switch (this.techRecord().techRecord_vehicleType) {
-			// case VehicleTypes.PSV:
-			//   return this.psvControls;
+			case VehicleTypes.PSV:
+				return this.psvControls;
 			case VehicleTypes.HGV:
 				return this.hgvControls;
 			// case VehicleTypes.TRL:
@@ -71,6 +71,23 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 			]),
 			techRecord_frontAxleTo5thWheelMax: this.fb.control<string | null>(null, [
 				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999mm'),
+			]),
+		};
+	}
+
+	get psvControls() {
+		return {
+			techRecord_dimensions_height: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Height must be less than or equal to 99999mm'),
+			]),
+			techRecord_dimensions_length: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Length must be less than or equal to 99999mm'),
+			]),
+			techRecord_dimensions_width: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Width must be less than or equal to 99999mm'),
+			]),
+			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999mm'),
 			]),
 		};
 	}
