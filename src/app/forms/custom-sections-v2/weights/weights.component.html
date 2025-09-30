@@ -6,14 +6,16 @@
         !parent.get('techRecord_axles')?.value
         ) {
         <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle weight details</h2>
-        <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle weights.'"/>
+        <app-field-warning-message 
+          id="enter-number-of-axles-warning-message"
+          [warningMessage]="'Enter the number of axles to be able to add axle weights.'"/>
       }
 
       @if (
         parent.get('techRecord_axles')?.value.length > 0 &&
         showDimensionsWarning
         ) {
-        <app-field-warning-message [warningMessage]="' '">
+        <app-field-warning-message id="axle-distances-cleared-warning-message" [warningMessage]="' '">
           <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
           <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
         </app-field-warning-message>
@@ -219,13 +221,8 @@
 
   <!-- Inline error message for PSV -->
   @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-    @if (
-      form.get('techRecord_grossKerbWeight')?.invalid ||
-      form.get('techRecord_grossLadenWeight')?.invalid ||
-      form.get('techRecord_grossGbWeight')?.invalid ||
-      form.get('techRecord_grossDesignWeight')?.invalid
-    ) {
-      <app-field-error-message [name]="'train-weight'" [error]="'Gross Kerb, Laden, GB Max, Design Weight must be less than or equal to 99999kg'"/>
+    @if(form.get('techRecord_trainGbWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
+      <app-field-error-message [name]="'train-weight'" [error]="'Train GB Max, Design Weight must be less than or equal to 99999kg'"/>
     }
   }
 
