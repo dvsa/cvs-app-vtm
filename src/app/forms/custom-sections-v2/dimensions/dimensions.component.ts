@@ -1,12 +1,11 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { Actions } from '@ngrx/effects';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject } from 'rxjs';
 
@@ -22,7 +21,6 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
 
-	actions = inject(Actions);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);

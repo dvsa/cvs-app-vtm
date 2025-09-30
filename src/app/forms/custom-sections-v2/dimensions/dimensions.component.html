@@ -38,7 +38,7 @@
     <!-- Length-->
     <div>
       @if (shouldShowLengthWarning()) {
-        <app-field-warning-message [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"></app-field-warning-message>
+        <app-field-warning-message id="dimensions-length-warning" [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"></app-field-warning-message>
       }
       <govuk-form-group-input
         formControlName="techRecord_dimensions_length"
@@ -52,7 +52,7 @@
     <!-- Width-->
     <div>
       @if (shouldShowWidthWarning()) {
-        <app-field-warning-message [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"></app-field-warning-message>
+        <app-field-warning-message id="dimensions-width-warning" [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"></app-field-warning-message>
       }
 
       <govuk-form-group-input
