@@ -1,4 +1,93 @@
 @if (techRecord(); as tr) {
   @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+    <div class="main-dimensions" [formGroup]="form">
+      <!-- Front axle to rear axle-->
+      <govuk-form-group-input
+        formControlName="techRecord_frontAxleToRearAxle"
+        label="Front axle to rear axle"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      ></govuk-form-group-input>
+
+      <!-- Length-->
+      <div>
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+          <app-field-warning-message [warningMessage]="lengthWarning"></app-field-warning-message>
+        }
+
+        <govuk-form-group-input
+          formControlName="techRecord_dimensions_length"
+          label="Length"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        ></govuk-form-group-input>
+      </div>
+
+      <!-- Width-->
+      <div>
+        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+          <app-field-warning-message [warningMessage]="widthWarning"></app-field-warning-message>
+        }
+
+        <govuk-form-group-input
+          formControlName="techRecord_dimensions_width"
+          label="Width"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        ></govuk-form-group-input>
+      </div>
+      <!-- HGV only fields -->
+      @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
+        <div class="min-max-container">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Front of vehicle to 5th wheel coupling
+          </span>
+          <div class="min-max">
+            <!-- Front of vehicle to 5th wheel coupling minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+            <!-- Front of vehicle to 5th wheel coupling maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+        <div class="min-max-container">
+          <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
+            Front axle to 5th wheel coupling
+          </span>
+          <div class="min-max">
+            <!-- Front axle to 5th wheel coupling minimum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontAxleTo5thWheelMin"
+              label="Minimum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+            <!-- Front axle to 5th wheel coupling maximum -->
+            <govuk-form-group-input
+              formControlName="techRecord_frontAxleTo5thWheelMax"
+              label="Maximum"
+              [width]="Widths.XS"
+              suffix="mm"
+              type="number"
+            ></govuk-form-group-input>
+          </div>
+        </div>
+      }
+    </div>
   }
 }
