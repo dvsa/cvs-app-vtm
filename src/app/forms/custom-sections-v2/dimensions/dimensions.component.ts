@@ -61,13 +61,13 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 			techRecord_frontVehicleTo5thWheelCouplingMin: this.fb.control<string | null>(null, [
 				this.commonValidators.max(
 					99999,
-					'Minimum value for front of vehicle to 5th wheel must be less than or equal to 99999mm'
+					'Minimum value for front of vehicle to fifth wheel must be less than or equal to 99999mm'
 				),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMax: this.fb.control<string | null>(null, [
 				this.commonValidators.max(
 					99999,
-					'Maximum value for front of vehicle to 5th wheel must be less than or equal to 99999mm'
+					'Maximum value for front of vehicle to fifth wheel must be less than or equal to 99999mm'
 				),
 			]),
 			techRecord_frontAxleTo5thWheelMin: this.fb.control<string | null>(null, [

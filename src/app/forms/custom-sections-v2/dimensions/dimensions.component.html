@@ -3,7 +3,7 @@
     @if(
       parent.get('techRecord_axles')?.value.length === 0 ||
       !parent.get('techRecord_axles')?.value) {
-      <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
+      <app-field-warning-message id="dimensions-axle-distance-warning" [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
     }
 
     @if (hasEnoughAxlesToDisplay()) {
@@ -38,7 +38,7 @@
               <govuk-form-group-input
                 [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
                 formControlName="value"
-                label="Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)"
+                label="Axle {{ i + 1 }} to axle {{ i + 2 }}"
                 [width]="Widths.XS"
                 suffix="mm"
                 type="number"
@@ -156,6 +156,7 @@
             [width]="Widths.XS"
             suffix="mm"
             type="number"
+            class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
           <!-- Front of vehicle to 5th wheel coupling maximum -->
           <govuk-form-group-input
@@ -164,6 +165,7 @@
             [width]="Widths.XS"
             suffix="mm"
             type="number"
+            class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
         </div>
       </div>
@@ -179,6 +181,7 @@
             [width]="Widths.XS"
             suffix="mm"
             type="number"
+            class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
           <!-- Front axle to 5th wheel coupling maximum -->
           <govuk-form-group-input
@@ -187,6 +190,7 @@
             [width]="Widths.XS"
             suffix="mm"
             type="number"
+            class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
         </div>
       </div>
