@@ -221,7 +221,7 @@
 
   <!-- Inline error message for PSV -->
   @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-    @if(form.get('techRecord_trainGbWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
+    @if(form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
       <app-field-error-message [name]="'train-weight'" [error]="'Train GB Max, Design Weight must be less than or equal to 99999kg'"/>
     }
   }
