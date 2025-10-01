@@ -131,13 +131,13 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get trlControls() {
 		return {
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_couplingType: this.fb.control<string | null>(null),
 			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
