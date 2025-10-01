@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
@@ -216,31 +216,13 @@ export class AxlesService {
 
 			// Weights fields
 			weights_gbWeight: this.fb.control<number | null>(axle?.weights_gbWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} GB Weight must be less than or equal to 99999`,
-						anchorLink: `weights_gbWeight-${index}`,
-					};
-				}),
+				this.maxWeightHGV('GB Weight', 'weights_gbWeight'),
 			]),
 			weights_eecWeight: this.fb.control<number | null>(axle?.weights_eecWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} EEC Weight must be less than or equal to 99999`,
-						anchorLink: `weights_eecWeight-${index}`,
-					};
-				}),
+				this.maxWeightHGV('EEC Weight', 'weights_eecWeight'),
 			]),
 			weights_designWeight: this.fb.control<number | null>(axle?.weights_designWeight || null, [
-				this.commonValidators.max(99999, (control: AbstractControl) => {
-					const index = control.parent?.get('axleNumber')?.value || 0;
-					return {
-						error: `Axle ${index} Design Weight must be less than or equal to 99999`,
-						anchorLink: `weights_designWeight-${index}`,
-					};
-				}),
+				this.maxWeightHGV('Design Weight', 'weights_designWeight'),
 			]),
 		});
 	}
