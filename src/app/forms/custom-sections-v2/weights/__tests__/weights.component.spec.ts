@@ -11,7 +11,6 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.component';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -28,9 +27,20 @@ describe('WeightsComponent', () => {
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
-		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl'>, FormControl>>>({
+		formGroupDirective.form = new FormGroup({
 			techRecord_axles: new FormControl([]),
 			techRecord_grossGbWeight: new FormControl(),
+			techRecord_grossEecWeight: new FormControl(),
+			techRecord_grossDesignWeight: new FormControl(),
+			techRecord_unladenWeight: new FormControl(),
+			techRecord_grossKerbWeight: new FormControl(),
+			techRecord_grossLadenWeight: new FormControl(),
+			techRecord_trainGbWeight: new FormControl(),
+			techRecord_trainEecWeight: new FormControl(),
+			techRecord_trainDesignWeight: new FormControl(),
+			techRecord_maxTrainGbWeight: new FormControl(),
+			techRecord_maxTrainEecWeight: new FormControl(),
+			techRecord_maxTrainDesignWeight: new FormControl(),
 		});
 		const mockTechRecord = { ...mockVehicleTechnicalRecord('hgv'), techRecord_axles: [] };
 
@@ -62,6 +72,15 @@ describe('WeightsComponent', () => {
 			component.ngOnInit();
 
 			expect(parentFormSpy).toHaveBeenCalled();
+		});
+
+		it('should listen for changes to the gross kerb weight, and gross laden weight', () => {
+			const handleGrossKerbWeightChangeSpy = jest.spyOn(component, 'handleGrossKerbWeightChange');
+			const handleGrossLadenWeightChangeSpy = jest.spyOn(component, 'handleGrossLadenWeightChange');
+			component.ngOnInit();
+
+			expect(handleGrossKerbWeightChangeSpy).toHaveBeenCalled();
+			expect(handleGrossLadenWeightChangeSpy).toHaveBeenCalled();
 		});
 	});
 
@@ -128,6 +147,48 @@ describe('WeightsComponent', () => {
 			component.removeAxle(2);
 
 			expect(component.showDimensionsWarning).toBe(true);
+		});
+	});
+
+	describe('handleGrossKerbWeightChange', () => {
+		it('should call the updateBrakeForces function from the store', () => {
+			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
+			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
+			component.ngOnInit();
+			component.form.patchValue({ techRecord_grossKerbWeight: 100 });
+
+			expect(updateBrakeForcesSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('handleGrossLadenWeightChange', () => {
+		it('should call the updateBrakeForces function from the store', () => {
+			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
+			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
+			component.ngOnInit();
+			component.form.patchValue({ techRecord_grossLadenWeight: 100 });
+
+			expect(updateBrakeForcesSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('calculateGrossLadenWeight', () => {
+		it('should return the gross laden weight, based on the gross kerb weight and the standing capacity', () => {
+			const seatsUpperDeck = 22;
+			const seatsLowerDeck = 22;
+			const standingCapacity = 22;
+			const manufactureYear = 1988;
+			const grossKerbWeight = 100;
+
+			component.form.patchValue({
+				techRecord_seatsUpperDeck: seatsUpperDeck,
+				techRecord_seatsLowerDeck: seatsLowerDeck,
+				techRecord_manufactureYear: manufactureYear,
+				techRecord_grossKerbWeight: grossKerbWeight,
+				techRecord_standingCapacity: standingCapacity,
+			});
+
+			expect(component.calculateGrossLadenWeight()).toEqual(65);
 		});
 	});
 });
