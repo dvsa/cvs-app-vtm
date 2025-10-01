@@ -166,7 +166,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	get weightsAccordionDescription(): string {
 		switch (this.techRecord$()?.techRecord_vehicleType) {
 			case VehicleTypes.HGV:
-				return 'Axle, gross and train weights.';
+				return 'Axle, gross, and train weights.';
 			case VehicleTypes.PSV:
 				return 'Axle weights, unladen weight.';
 			case VehicleTypes.TRL:

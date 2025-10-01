@@ -167,6 +167,18 @@
                         </app-accordion>
                       }
 
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'weights'"
+                          [title]="'Weights'"
+                          [description]="weightsAccordionDescription"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-weights [techRecord]="techRecord"></app-weights>
+                        </app-accordion>
+                      }
+
                       <!-- Emissions and exemptions (immediately above ADR) -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion
@@ -177,18 +189,6 @@
                           [isExpanded]="false"
                         >
                           <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
-                        </app-accordion>
-                      }
-
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'weights'"
-                          [title]="'Weights'"
-                          [description]="weightsAccordionDescription"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-weights [techRecord]="techRecord"></app-weights>
                         </app-accordion>
                       }
 
