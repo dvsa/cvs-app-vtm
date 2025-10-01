@@ -3,7 +3,7 @@
     @if(
       parent.get('techRecord_axles')?.value.length === 0 ||
       !parent.get('techRecord_axles')?.value) {
-      <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
+      <app-field-warning-message id="dimensions-axle-distance-warning" [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
     }
 
     <!-- Front axle to rear axle-->
