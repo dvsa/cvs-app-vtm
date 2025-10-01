@@ -6,6 +6,12 @@
   }
 }
 
+.govuk-\!-font-weight-bold::ng-deep > .govuk-form-group {
+  > fieldset > legend > .govuk-fieldset__heading, > label, > h1 > label {
+    @extend .govuk-\!-font-weight-bold;
+  }
+}
+
 :host {
   govuk-form-group-input::ng-deep .govuk-form-group label
   {
@@ -23,4 +29,8 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
   align-items: end;
+}
+
+.remove-axle-button-psv {
+  margin-bottom: 1.25rem;
 }
