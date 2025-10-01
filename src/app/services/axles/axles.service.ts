@@ -253,14 +253,19 @@ export class AxlesService {
 
 	generateAxleSpacingsForm(techRecord: TechRecordType<'hgv' | 'trl'>) {
 		const axleSpacings = techRecord.techRecord_dimensions_axleSpacing ?? [];
-		return this.fb.array(axleSpacings.map((spacing) => this.generateAxleSpacingForm(spacing)));
+		return this.fb.array(axleSpacings.map((spacing, index) => this.generateAxleSpacingForm(spacing, index)));
 	}
 
-	generateAxleSpacingForm(spacing?: AxleSpacing) {
+	generateAxleSpacingForm(spacing: AxleSpacing, axlesNumber: number) {
 		return this.fb.group({
 			axles: this.fb.control<string>(spacing?.axles || ''),
 			value: this.fb.control<number | null>(spacing?.value || null, [
-				this.commonValidators.max(99999, 'Axle spacing must be less than 99999 mm'),
+				this.commonValidators.max(99999, () => {
+					return {
+						error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than 99999mm`,
+						anchorLink: `techRecord_dimensions_axleSpacing_${axlesNumber - 2}_value`,
+					};
+				}),
 			]),
 		});
 	}
@@ -277,10 +282,13 @@ export class AxlesService {
 			if ((type === VehicleTypes.TRL || type === VehicleTypes.HGV) && axlesForm.controls.length > 1) {
 				const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
 				axleSpacingsForm.push(
-					this.generateAxleSpacingForm({
-						axles: `${axleNumber - 1}-${axleNumber}`,
-						value: null,
-					})
+					this.generateAxleSpacingForm(
+						{
+							axles: `${axleNumber - 1}-${axleNumber}`,
+							value: null,
+						},
+						axleNumber
+					)
 				);
 			}
 

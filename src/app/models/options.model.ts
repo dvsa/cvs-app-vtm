@@ -156,7 +156,14 @@ export const SUSPENSION_TYRE_OPTIONS: MultiOptions = [
 
 export const EMISSION_STANDARD_OPTIONS: MultiOptions = [
 	{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
-	...getOptionsFromEnum(EmissionStandard),
+	{ label: '0.03 g/kWh Euro IV PM', value: EmissionStandard.EuroIVPM },
+	{ label: 'Euro 3', value: EmissionStandard.Euro3 },
+	{ label: 'Euro 4', value: EmissionStandard.Euro4 },
+	{ label: 'Euro 5', value: EmissionStandard.Euro5 },
+	{ label: 'Euro 6', value: EmissionStandard.Euro6 },
+	{ label: 'Euro V', value: EmissionStandard.EuroV },
+	{ label: 'Euro VI', value: EmissionStandard.EuroVI },
+	{ label: 'Full electric', value: EmissionStandard.FullElectric },
 ];
 
 export const COUPLING_TYPE_OPTIONS: MultiOptions = [

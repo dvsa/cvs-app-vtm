@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from '@forms/custom-sections-v2/adr/adr.component';
+import { DimensionsComponent } from '@forms/custom-sections-v2/dimensions/dimensions.component';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@forms/custom-sections-v2/last-applicant/last-applicant.component';
 import { NotesComponent } from '@forms/custom-sections-v2/notes/notes.component';
@@ -49,6 +50,7 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		AdrComponent,
 		EmissionsAndExemptionsComponent,
 		WeightsComponent,
+		DimensionsComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
