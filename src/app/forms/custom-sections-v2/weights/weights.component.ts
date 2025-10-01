@@ -90,7 +90,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get psvControls() {
 		return {
 			techRecord_unladenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Unladen Weight must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Gross Unladen Weight must be less than or equal to 99999kg'),
 			]),
 			techRecord_grossKerbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(
