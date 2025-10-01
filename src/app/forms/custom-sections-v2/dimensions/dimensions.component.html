@@ -63,7 +63,14 @@
         type="number"
       ></govuk-form-group-input>
     </div>
-    <!-- HGV only fields -->
+    <!--   Height (PSV Only)   -->
+      <govuk-form-group-input
+        formControlName="techRecord_dimensions_height"
+        label="Height"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      />    <!-- HGV only fields -->
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="min-max-container">
         <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
