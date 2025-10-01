@@ -5,6 +5,11 @@
   {
     @extend .govuk-label--s;
   }
+
+  govuk-form-group-input.govuk-\!-font-weight-regular::ng-deep .govuk-form-group label {
+    font-weight: 400 !important;
+  }
+
   .flex-row {
     display: flex;
     flex-wrap: wrap;

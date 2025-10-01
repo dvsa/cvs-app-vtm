@@ -6,14 +6,28 @@
       <app-field-warning-message [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
     }
 
-    <!-- Front axle to rear axle-->
-    <govuk-form-group-input
-      formControlName="techRecord_frontAxleToRearAxle"
-      label="Front axle to rear axle"
-      [width]="Widths.XS"
-      suffix="mm"
-      type="number"
-    ></govuk-form-group-input>
+    @if (hasEnoughAxlesToDisplay()) {
+      <!-- Front axle to rear axle-->
+        <govuk-form-group-input
+          formControlName="techRecord_frontAxleToRearAxle"
+          label="Front axle to rear axle"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        />
+
+      @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+        <!-- Front axle to rear of trailer -->
+        <govuk-form-group-input
+          formControlName="techRecord_rearAxleToRearTrl"
+          label="Front axle to rear of trailer"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        />
+      }
+    }
+
 
     <!-- Axles spacings (HGV and TRL) -->
     @if (tr.techRecord_vehicleType !== VehicleTypes.PSV && parent.get('techRecord_dimensions_axleSpacing')) {
@@ -63,6 +77,71 @@
         type="number"
       ></govuk-form-group-input>
     </div>
+
+    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+        Coupling centre to rear axle
+      </span>
+      <div class="flex-row">
+        <!-- Coupling centre to rear axle minimum -->
+        <govuk-form-group-input
+          formControlName="techRecord_couplingCenterToRearAxleMin"
+          label="Minimum"
+          [width]="Widths.XS"
+          class="govuk-!-font-weight-regular"
+          suffix="mm"
+          type="number"
+        />
+        <!-- Coupling centre to rear axle maximum -->
+        <govuk-form-group-input
+          formControlName="techRecord_couplingCenterToRearAxleMax"
+          label="Maximum"
+          [width]="Widths.XS"
+          class="govuk-!-font-weight-regular"
+          suffix="mm"
+          type="number"
+        />
+      </div>
+
+      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+        Coupling centre to rear of trailer
+      </span>
+      <div class="flex-row">
+        <!-- Coupling centre to rear axle minimum -->
+        @if (couplingCenterToRearTrlMinWarning) {
+          <app-field-warning-message id="coupling-centre-to-rear-of-trailer-minimum-warning" [warningMessage]="couplingCenterToRearTrlMinWarning"/>
+        }
+        <govuk-form-group-input
+          formControlName="techRecord_couplingCenterToRearTrlMin"
+          label="Minimum"
+          [width]="Widths.XS"
+          class="govuk-!-font-weight-regular"
+          suffix="mm"
+          type="number"
+        />
+        <!-- Coupling centre to rear axle maximum -->
+        @if (couplingCenterToRearTrlMaxWarning) {
+          <app-field-warning-message id="coupling-centre-to-rear-of-trailer-maximum-warning" [warningMessage]="couplingCenterToRearTrlMaxWarning"/>
+        }
+        <govuk-form-group-input
+          formControlName="techRecord_couplingCenterToRearTrlMax"
+          label="Maximum"
+          [width]="Widths.XS"
+          class="govuk-!-font-weight-regular"
+          suffix="mm"
+          type="number"
+        />
+      </div>
+
+      <govuk-form-group-input
+        formControlName="techRecord_centreOfRearmostAxleToRearOfTrl"
+        label="Centre of rear axle to rear of trailer"
+        [width]="Widths.XS"
+        suffix="mm"
+        type="number"
+      />
+    }
+
     <!-- HGV only fields -->
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="min-max-container">

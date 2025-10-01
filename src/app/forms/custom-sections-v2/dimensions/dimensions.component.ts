@@ -40,8 +40,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 			//   return this.psvControls;
 			case VehicleTypes.HGV:
 				return this.hgvControls;
-			// case VehicleTypes.TRL:
-			//   return this.trlControls;
+			case VehicleTypes.TRL:
+				return this.trlControls;
 			default:
 				return {};
 		}
@@ -85,6 +85,53 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 		};
 	}
 
+	get trlControls() {
+		return {
+			techRecord_dimensions_length: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Length must be less than or equal to 99999mm'),
+			]),
+			techRecord_dimensions_width: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Width must be less than or equal to 99999mm'),
+			]),
+			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999mm'),
+			]),
+			techRecord_rearAxleToRearTrl: this.fb.control<string | null>(null, [
+				this.commonValidators.max(99999, 'Rear axle to rear of trailer must be less than or equal to 99999mm'),
+			]),
+			techRecord_centreOfRearmostAxleToRearOfTrl: this.fb.control<string | null>(null, [
+				this.commonValidators.max(
+					99999,
+					'Centre of rear axle to rear of trailer must be less than or equal to 99999mm'
+				),
+			]),
+			techRecord_couplingCenterToRearAxleMin: this.fb.control<string | null>(null, [
+				this.commonValidators.max(
+					99999,
+					'Minimum value for coupling centre to rear axle must be less than or equal to 99999mm '
+				),
+			]),
+			techRecord_couplingCenterToRearAxleMax: this.fb.control<string | null>(null, [
+				this.commonValidators.max(
+					99999,
+					'Maximum value for coupling centre to rear axle must be less than or equal to 99999mm '
+				),
+			]),
+			techRecord_couplingCenterToRearTrlMin: this.fb.control<string | null>(null, [
+				this.commonValidators.max(
+					99999,
+					'Minimum value for coupling centre to rear of trailer must be less than or equal to 99999mm'
+				),
+			]),
+			techRecord_couplingCenterToRearTrlMax: this.fb.control<string | null>(null, [
+				this.commonValidators.max(
+					99999,
+					'Maximum value for coupling centre to rear of trailer must be less than or equal to 99999mm'
+				),
+			]),
+		};
+	}
+
 	get couplingCenterToRearTrlMinWarning() {
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMin')?.value, 10) > 12000
 			? 'The coupling centre to rear of trailer minimum field value is greater than 12,000mm. Check your input before proceeding'
@@ -115,6 +162,15 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 	get axleSpacings(): FormArray<FormGroup> | undefined {
 		return this.parent.get('techRecord_dimensions_axleSpacing') as FormArray;
+	}
+
+	hasEnoughAxlesToDisplay() {
+		const isHGVorPSV =
+			this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+			this.techRecord().techRecord_vehicleType === VehicleTypes.PSV;
+		const isTRL = this.techRecord().techRecord_vehicleType === VehicleTypes.TRL;
+		const hasMoreThanOneAxles = (this.parent.get('techRecord_axles') as FormArray)?.value.length > 1;
+		return isHGVorPSV || (isTRL && hasMoreThanOneAxles);
 	}
 
 	ngOnDestroy(): void {
