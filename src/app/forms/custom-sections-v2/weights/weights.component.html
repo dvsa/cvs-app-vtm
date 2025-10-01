@@ -34,7 +34,7 @@
         }
 
         @if (techRecordAxles.at(i).invalid) {
-          @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+          @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
             <app-field-error-message [name]="`Axle-${ i + 1 }`"
                                      [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`" />
           }
@@ -133,8 +133,8 @@
     </ng-container>
     <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Gross</h2>
 
-    <!-- Inline error message for HGV -->
-    @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+    <!-- Inline error message for HGV & TRL-->
+    @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
       @if (form.get('techRecord_grossGbWeight')?.invalid || form.get('techRecord_grossEecWeight')?.invalid || form.get('techRecord_grossDesignWeight')?.invalid) {
         <app-field-error-message [name]="'gross-weight'"
                                  [error]="'Gross GB, EEC, Design Weight must be less than or equal to 99999kg'" />

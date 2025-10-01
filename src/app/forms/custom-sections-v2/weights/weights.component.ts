@@ -141,7 +141,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 			]),
 			techRecord_couplingType: this.fb.control<string | null>(null),
 			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max load on coupling (optional) must be less than or equal to 99999kg'),
+				this.commonValidators.max(99999, 'Max load on coupling must be less than or equal to 99999kg'),
 			]),
 		};
 	}
