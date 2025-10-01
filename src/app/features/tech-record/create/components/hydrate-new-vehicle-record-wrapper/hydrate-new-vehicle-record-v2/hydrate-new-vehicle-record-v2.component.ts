@@ -167,8 +167,8 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 				return 'Axle, gross and train weights.';
 			case VehicleTypes.PSV:
 				return 'Axle weights, unladen weight.';
-			//case VehicleTypes.TRL:
-			//return '';
+			case VehicleTypes.TRL:
+				return 'Axle, gross weights and coupling type.';
 			default:
 				return '';
 		}

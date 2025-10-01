@@ -6,7 +6,9 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
+import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
+import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -20,6 +22,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupInputComponent,
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
+		GovukFormGroupSelectComponent,
 	],
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
@@ -125,12 +128,30 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		};
 	}
 
+	get trlControls() {
+		return {
+			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99999, 'Gross GB Weight must be less than or equal to 99999kg'),
+			]),
+			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99999, 'Gross EEC Weight must be less than or equal to 99999kg'),
+			]),
+			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99999, 'Gross Design Weight must be less than or equal to 99999kg'),
+			]),
+			techRecord_couplingType: this.fb.control<string | null>(null),
+			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
+				this.commonValidators.max(99999, 'Max load on coupling (optional) must be less than or equal to 99999kg'),
+			]),
+		};
+	}
+
 	get controlsBasedOffVehicleType() {
 		switch (this.techRecord().techRecord_vehicleType) {
 			case VehicleTypes.HGV:
 				return this.hgvControls;
-			// case VehicleTypes.TRL:
-			// return this.trlControls;
+			case VehicleTypes.TRL:
+				return this.trlControls;
 			case VehicleTypes.PSV:
 				return this.psvControls;
 			default:
@@ -222,4 +243,6 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + techRecord_standingCapacity + 1; // Add 1 for the driver
 		return Math.ceil(totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight);
 	}
+
+	protected readonly CouplingTypeOptions = CouplingTypeOptions;
 }
