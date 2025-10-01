@@ -1,4 +1,4 @@
-import { EMISSION_STANDARD_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -90,5 +90,6 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
+	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
 }
