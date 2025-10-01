@@ -278,10 +278,12 @@ export class AxlesService {
 		return this.fb.group({
 			axles: this.fb.control<string>(spacing?.axles || ''),
 			value: this.fb.control<number | null>(spacing?.value || null, [
-				this.commonValidators.max(
-					99999,
-					`Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than 99999 mm`
-				),
+				this.commonValidators.max(99999, () => {
+					return {
+						error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than 99999 mm`,
+						anchorLink: `techRecord_dimensions_axleSpacing_${axlesNumber - 2}_value`,
+					};
+				}),
 			]),
 		});
 	}
