@@ -328,7 +328,11 @@ export class AxlesService {
 
 				// Relabel axle spacings
 				for (let i = 0; i < axleSpacingsForm.controls.length; i++) {
-					axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}` });
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}`, value: null });
+					} else {
+						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}` });
+					}
 				}
 			}
 
