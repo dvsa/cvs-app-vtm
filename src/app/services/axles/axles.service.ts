@@ -322,6 +322,9 @@ export class AxlesService {
 				axlesForm.at(i).patchValue({ axleNumber: i + 1 });
 			}
 
+			if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				parent.get('techRecord_frontAxleToRearAxle')?.patchValue(null);
+			}
 			if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
 				const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
 				axleSpacingsForm.removeAt(index - 1 >= 0 ? index - 1 : 0);
@@ -329,6 +332,24 @@ export class AxlesService {
 				// Relabel axle spacings
 				for (let i = 0; i < axleSpacingsForm.controls.length; i++) {
 					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						if (type === VehicleTypes.TRL) {
+							parent.patchValue({
+								techRecord_rearAxleToRearTrl: null,
+								techRecord_centreOfRearmostAxleToRearOfTrl: null,
+								techRecord_couplingCenterToRearTrlMin: null,
+								techRecord_couplingCenterToRearTrlMax: null,
+								techRecord_couplingCenterToRearAxleMin: null,
+								techRecord_couplingCenterToRearAxleMax: null,
+							});
+						}
+						if (type === VehicleTypes.HGV) {
+							parent.patchValue({
+								techRecord_frontVehicleTo5thWheelCouplingMin: null,
+								techRecord_frontVehicleTo5thWheelCouplingMax: null,
+								techRecord_frontAxleTo5thWheelMin: null,
+								techRecord_frontAxleTo5thWheelMax: null,
+							});
+						}
 						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}`, value: null });
 					} else {
 						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}` });
