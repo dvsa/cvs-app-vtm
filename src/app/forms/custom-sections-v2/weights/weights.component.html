@@ -230,7 +230,7 @@
                                  [error]="'Train GB Max, Design Weight must be less than or equal to 99999kg'" />
 
       }
-
+    }
       <div class="axle">
         @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
           <govuk-form-group-input
@@ -273,7 +273,6 @@
         />
       </div>
     }
-  }
   @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
     <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Max train</h2>
 
