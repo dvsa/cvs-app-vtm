@@ -1,16 +1,19 @@
-<div class="govuk-!-padding-4" [formGroup]="form">
+@let showNoAxlesWarning = parent.get('techRecord_axles')?.value.length === 0 ||
+  !parent.get('techRecord_axles')?.value;
+@let dimensionsWarning = parent.get('techRecord_axles')?.value.length > 0 &&
+  showDimensionsWarning;
+
+<div [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning" [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning" [formGroup]="form">
   <div class="govuk-table__body" [formGroup]="parent">
     <ng-container formArrayName="techRecord_axles">
-      @if (parent.get('techRecord_axles')?.value.length === 0 ||
-      !parent.get('techRecord_axles')?.value) {
+      @if (showNoAxlesWarning) {
         <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle weight details</h2>
         <app-field-warning-message
           id="enter-number-of-axles-warning-message"
           [warningMessage]="'Enter the number of axles to be able to add axle weights.'" />
       }
 
-      @if (parent.get('techRecord_axles')?.value.length > 0 &&
-      showDimensionsWarning) {
+      @if (dimensionsWarning) {
         <app-field-warning-message id="axle-distances-cleared-warning-message" [warningMessage]="' '">
           <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
           <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
