@@ -1,8 +1,9 @@
 @if (techRecord(); as tr) {
   <div class="govuk-!-padding-4" [formGroup]="form">
     @if(
-      parent.get('techRecord_axles')?.value.length === 0 ||
-      !parent.get('techRecord_axles')?.value) {
+      (parent.get('techRecord_axles')?.value.length === 0 ||
+      !parent.get('techRecord_axles')?.value) &&
+      tr.techRecord_vehicleType !== VehicleTypes.PSV) {
       <app-field-warning-message id="dimensions-axle-distance-warning" [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
     }
 
