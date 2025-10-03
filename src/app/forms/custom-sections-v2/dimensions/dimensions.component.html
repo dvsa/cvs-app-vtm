@@ -4,7 +4,11 @@
       (parent.get('techRecord_axles')?.value.length === 0 ||
       !parent.get('techRecord_axles')?.value) &&
       tr.techRecord_vehicleType !== VehicleTypes.PSV) {
+      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+        Axle distance
+      </span>
       <app-field-warning-message id="dimensions-axle-distance-warning" [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
+      <div class="govuk-!-padding-bottom-8"></div>
     }
 
     @if (hasEnoughAxlesToDisplay()) {
@@ -158,10 +162,10 @@
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
       <div class="min-max-container">
         <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Front of vehicle to 5th wheel coupling
+          Front of vehicle to fifth wheel
         </span>
         <div class="flex-row">
-          <!-- Front of vehicle to 5th wheel coupling minimum -->
+          <!-- Front of vehicle to fifth wheel minimum -->
           <govuk-form-group-input
             formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
             label="Minimum"
@@ -170,7 +174,7 @@
             type="number"
             class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
-          <!-- Front of vehicle to 5th wheel coupling maximum -->
+          <!-- Front of vehicle to fifth wheel maximum -->
           <govuk-form-group-input
             formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
             label="Maximum"
@@ -183,10 +187,10 @@
       </div>
       <div class="min-max-container">
         <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Front axle to 5th wheel coupling
+          Front of vehicle to coupling device
         </span>
         <div class="flex-row">
-          <!-- Front axle to 5th wheel coupling minimum -->
+          <!-- Front of vehicle to coupling device minimum -->
           <govuk-form-group-input
             formControlName="techRecord_frontAxleTo5thWheelMin"
             label="Minimum"
@@ -195,7 +199,7 @@
             type="number"
             class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
-          <!-- Front axle to 5th wheel coupling maximum -->
+          <!-- Front of vehicle to coupling device maximum -->
           <govuk-form-group-input
             formControlName="techRecord_frontAxleTo5thWheelMax"
             label="Maximum"
