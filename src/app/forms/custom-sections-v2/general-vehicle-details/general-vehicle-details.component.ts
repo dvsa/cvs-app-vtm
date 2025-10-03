@@ -595,15 +595,17 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	}
 
 	lockAndUpdateAxles() {
-		this.axlesService.setLockAxles(true);
-
-		// logic for populating other sections based on axles amount
 		const noOfAxles = this.form.get('techRecord_noOfAxles')?.getRawValue() ?? 0;
-		const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
+		if (noOfAxles <= 10) {
+			this.axlesService.setLockAxles(true);
 
-		Array.from({ length: noOfAxles }, (_, i) => i + 1).forEach(() => {
-			this.axlesService.addAxle(this.parent, vehicleType);
-		});
+			// logic for populating other sections based on axles amount
+			const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
+
+			Array.from({ length: noOfAxles }, (_, i) => i + 1).forEach(() => {
+				this.axlesService.addAxle(this.parent, vehicleType);
+			});
+		}
 	}
 
 	clearAxleInput() {
