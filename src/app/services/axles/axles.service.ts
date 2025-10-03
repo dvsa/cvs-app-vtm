@@ -262,7 +262,7 @@ export class AxlesService {
 			value: this.fb.control<number | null>(spacing?.value || null, [
 				this.commonValidators.max(99999, () => {
 					return {
-						error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than 99999mm`,
+						error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than or equal to 99999mm`,
 						anchorLink: `techRecord_dimensions_axleSpacing_${axlesNumber - 2}_value`,
 					};
 				}),
