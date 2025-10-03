@@ -3,7 +3,12 @@
 @let dimensionsWarning = parent.get('techRecord_axles')?.value.length > 0 &&
   showDimensionsWarning;
 
-<div [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning" [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning" [formGroup]="form">
+<div 
+  [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning"
+  [class.govuk-!-padding-right-4]="showNoAxlesWarning || dimensionsWarning"  
+  [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning" 
+  [formGroup]="form"
+>
   <div class="govuk-table__body" [formGroup]="parent">
     <ng-container formArrayName="techRecord_axles">
       @if (showNoAxlesWarning) {
