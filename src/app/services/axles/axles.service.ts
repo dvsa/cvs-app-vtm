@@ -244,7 +244,7 @@ export class AxlesService {
 			const index = control.parent?.get('axleNumber')?.value || 0;
 			return {
 				error: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? `Axle ${index} Kerb, Laden, GB, EEC, Design Weight must be less than or equal to 99999kg`
+					? `Axle ${index} Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`
 					: `Axle ${index} ${label} must be less than or equal to 99999`,
 				anchorLink: `${id}-${index}`,
 			};
