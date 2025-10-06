@@ -147,7 +147,7 @@
     <!-- Inline error message for PSV -->
     @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
       @if (form.get('techRecord_grossKerbWeight')?.invalid || form.get('techRecord_grossLadenWeight')?.invalid || form.get('techRecord_grossGbWeight')?.invalid || form.get('techRecord_grossDesignWeight')?.invalid) {
-        <app-field-error-message [name]="'train-weight'"
+        <app-field-error-message [name]="'gross-weight'"
                                  [error]="'Gross Kerb, Laden, GB Max, Design Weight must be less than or equal to 99999kg'" />
       }
     }
