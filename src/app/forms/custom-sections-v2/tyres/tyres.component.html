@@ -1,7 +1,9 @@
 @if (techRecord(); as tr) {
-  <div class="govuk-!-padding-4" [formGroup]="form">
+  <div class="govuk-!-padding-4" [formGroup]="parent">
     @if (parent.get('techRecord_axles')) {
+      <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
+        <ng-container formGroupName="{{i}}">
         <div class="input-row">
           <caption class="govuk-table__caption govuk-table__caption--m">
             Axle {{i+1}} tyre details
@@ -64,7 +66,9 @@
               [allowNull]="true"
             ></govuk-form-group-select>
         </div>
+        </ng-container>
       }
+      </ng-container>
     }
 
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
