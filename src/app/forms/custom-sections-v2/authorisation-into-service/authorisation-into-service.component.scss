@@ -1,0 +1,8 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+:host {
+  govuk-form-group-date::ng-deep .govuk-form-group .govuk-fieldset__heading
+  {
+    @extend .govuk-label--s;
+  }
+}
