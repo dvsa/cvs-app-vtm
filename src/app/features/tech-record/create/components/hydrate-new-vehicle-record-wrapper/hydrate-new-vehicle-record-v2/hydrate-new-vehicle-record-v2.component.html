@@ -145,6 +145,7 @@
                   <ng-template #template>
                     <!-- TODO: Replace accordions here -->
                     <ng-container [formGroup]="form">
+                      <!-- General vehicle details section-->
                       <app-accordion
                         [id]="'general-vehicle-details'"
                         [title]="'General vehicle details'"
@@ -155,6 +156,7 @@
                         <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
 
+                      <!-- Dimensions section-->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                         <app-accordion
                           [id]="'dimensions'"
@@ -167,6 +169,7 @@
                         </app-accordion>
                       }
 
+                      <!-- Weights section-->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                         <app-accordion
                           [id]="'weights'"
@@ -176,6 +179,19 @@
                           [isExpanded]="false"
                         >
                           <app-weights [techRecord]="techRecord"></app-weights>
+                        </app-accordion>
+                      }
+
+                      <!-- Tyres section-->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'tyres'"
+                          [title]="'Tyres'"
+                          [description]="'Tyre details, tyre use code.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-tyres [techRecord]="techRecord"></app-tyres>
                         </app-accordion>
                       }
 
