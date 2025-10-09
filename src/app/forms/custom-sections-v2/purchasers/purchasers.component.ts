@@ -51,7 +51,7 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 		]),
 		techRecord_purchaserDetails_faxNumber: this.fb.control(null),
 		techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
-			this.commonValidators.maxLength(1024, 'Purchaser Notes must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Purchaser notes must be less than or equal to 1024 characters'),
 		]),
 	});
 
