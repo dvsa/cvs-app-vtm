@@ -10,15 +10,15 @@
           </caption>
         </div>
         <div class="input-row">
-          <button class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
-            Search
+          <button class="govuk-button govuk-button--secondary" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
+            Search for tyre details
           </button>
           <button
             type="button"
             class="govuk-button govuk-button--warning remove-axle-button-psv"
             data-module="govuk-button"
             role="button"
-            [id]="'weights_remove-{{ i + 1}}'"
+            [id]="'tyres_remove-{{ i + 1}}'"
             (click)="removeAxle(i)"
           >
             Remove axle
@@ -87,7 +87,7 @@
         class="govuk-button govuk-button--secondary"
         data-module="govuk-button"
         role="button"
-        id="weightsAddAxle"
+        id="tyresAddAxle"
         (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
       >
         Add axle
