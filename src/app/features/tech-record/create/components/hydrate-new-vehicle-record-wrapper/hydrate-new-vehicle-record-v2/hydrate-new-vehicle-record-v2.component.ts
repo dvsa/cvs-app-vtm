@@ -18,6 +18,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from '@forms/custom-sections-v2/adr/adr.component';
 import { DimensionsComponent } from '@forms/custom-sections-v2/dimensions/dimensions.component';
+import { DocumentsComponent } from '@forms/custom-sections-v2/documents/documents.component';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@forms/custom-sections-v2/last-applicant/last-applicant.component';
 import { NotesComponent } from '@forms/custom-sections-v2/notes/notes.component';
@@ -51,6 +52,7 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		EmissionsAndExemptionsComponent,
 		WeightsComponent,
 		DimensionsComponent,
+		DocumentsComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {

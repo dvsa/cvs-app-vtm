@@ -219,6 +219,18 @@
                         </app-accordion>
                       }
 
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'documents'"
+                          [title]="'Documents'"
+                          [description]="'Microfilm document details.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-documents [techRecord]="techRecord"></app-documents>
+                        </app-accordion>
+                      }
+
                       <app-accordion
                         [id]="'notes'"
                         [title]="'Notes'"
