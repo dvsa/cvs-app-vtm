@@ -207,6 +207,18 @@
                           <app-adr [techRecord]="techRecord"></app-adr>
                         </app-accordion>
                       }
+                      @if (techRecord$()?.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'purchasers'"
+                          [title]="'Purchasers'"
+                          [description]="'Contact details for the purchaser.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-purchasers [techRecord]="$any(techRecord)"></app-purchasers>
+                        </app-accordion>
+                      }
+
                       @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
                         <app-accordion
                           [id]="'last-applicant'"
