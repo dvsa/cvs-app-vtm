@@ -192,6 +192,19 @@
                         </app-accordion>
                       }
 
+                      <!-- Disability Discrimination Act (DDA) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'dda'"
+                          [title]="'Disability Discrimination Act'"
+                          [description]="'DDA certificate, accessibility, schedules.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-dda [techRecord]="techRecord"></app-dda>
+                        </app-accordion>
+                      }
+
                       @if (
                         techRecord.techRecord_vehicleType === 'hgv' ||
                         techRecord.techRecord_vehicleType === 'trl' ||

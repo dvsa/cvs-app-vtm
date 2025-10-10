@@ -1,0 +1,97 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!-- DDA certificate issued -->
+  <govuk-form-group-radio
+    [label]="'DDA certificate issued'"
+    [options]="YES_NO_NULL_OPTIONS"
+    formControlName="techRecord_dda_certificateIssued"
+  ></govuk-form-group-radio>
+
+  <!-- Wheelchair fittings -->
+  <govuk-form-group-textarea
+    [label]="'Wheelchair fittings'"
+    formControlName="techRecord_dda_wheelchairFittings"
+    [hint]="'Enter details about wheelchair fittings'"
+    [maxLength]="250"
+  ></govuk-form-group-textarea>
+
+  <!-- Wheelchair lift present -->
+  <govuk-form-group-radio
+    [id]="'techRecord_dda_wheelchairLiftPresent'"
+    [label]="'Wheelchair lift present'"
+    formControlName="techRecord_dda_wheelchairLiftPresent"
+  >
+    <govuk-radio label="Yes" [value]="true">
+      <!-- Conditionally show details about the wheelchair lift -->
+      <govuk-form-group-textarea
+        [hint]="'Enter details about the wheelchair lift'"
+        [maxLength]="250"
+        class="govuk-label"
+  
+        formControlName="techRecord_dda_wheelchairLiftInformation"
+      ></govuk-form-group-textarea>
+    </govuk-radio>
+    <govuk-radio label="No" [value]="false" />
+    <govuk-radio label="I do not know" [value]="null" />
+  </govuk-form-group-radio>
+
+  <!-- Wheelchair ramp present -->
+  <govuk-form-group-radio
+    [id]="'techRecord_dda_wheelchairRampPresent'"
+    [label]="'Wheelchair ramp present'"
+    formControlName="techRecord_dda_wheelchairRampPresent"
+  >
+    <!-- Conditionally show details about the wheelchair ramp -->
+    <govuk-radio label="Yes" [value]="true">
+      <govuk-form-group-textarea
+        [hint]="'Enter details about the wheelchair ramp'"
+        [maxLength]="250"
+        class="govuk-label"
+  
+        formControlName="techRecord_dda_wheelchairRampInformation"
+      ></govuk-form-group-textarea>
+    </govuk-radio>
+    <govuk-radio label="No" [value]="false" />
+    <govuk-radio label="I do not know" [value]="null" />
+  </govuk-form-group-radio>
+
+  <!-- Minimum emergency exits needed -->
+  <govuk-form-group-input
+    [label]="'Minimum emergency exits needed'"
+    formControlName="techRecord_dda_minEmergencyExits"
+    type="number"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- Outswing -->
+  <govuk-form-group-textarea
+    [label]="'Outswing'"
+    formControlName="techRecord_dda_outswing"
+    [hint]="'Enter details about outswing'"
+    [maxLength]="250"
+  ></govuk-form-group-textarea>
+
+  <!-- DDA schedules -->
+  <govuk-form-group-textarea
+    [label]="'DDA schedules'"
+    formControlName="techRecord_dda_ddaSchedules"
+    [hint]="'Enter details about DDA schedules'"
+    [maxLength]="250"
+  ></govuk-form-group-textarea>
+
+  <!-- Number of seatbelts fitted -->
+  <govuk-form-group-input
+    [label]="'Number of seatbelts fitted'"
+    formControlName="techRecord_dda_seatbeltsFitted"
+    type="number"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- DDA notes -->
+  <govuk-form-group-textarea
+    [label]="'DDA notes'"
+    formControlName="techRecord_dda_ddaNotes"
+    [hint]="'Enter DDA notes'"
+    [maxLength]="1024"
+    [width]="FormNodeWidth.XS"
+  ></govuk-form-group-textarea>
+</div>
