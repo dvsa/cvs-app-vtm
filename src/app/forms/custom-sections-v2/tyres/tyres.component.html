@@ -108,6 +108,17 @@
       ></govuk-form-group-select>
     }
 
+    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      <govuk-form-group-select
+        label="Tyre use code"
+        formControlName="techRecord_tyreUseCode"
+        class="govuk-label--s"
+        [defaultOption]="'Select tyre use code'"
+        [width]="FormNodeWidth.XL"
+        [options]="TRL_TYRE_USE_CODE_OPTIONS"
+      ></govuk-form-group-select>
+    }
+
     @if (showAddAxleButton()) {
       <button
         type="button"

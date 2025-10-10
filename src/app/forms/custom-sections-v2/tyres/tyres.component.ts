@@ -10,7 +10,12 @@ import { FieldWarningMessageComponent } from '@forms/components/field-warning-me
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { FITMENT_CODE_OPTIONS, HGV_TYRE_USE_CODE_OPTIONS, SPEED_CATEGORY_SYMBOL_OPTIONS } from '@models/options.model';
+import {
+	FITMENT_CODE_OPTIONS,
+	HGV_TYRE_USE_CODE_OPTIONS,
+	SPEED_CATEGORY_SYMBOL_OPTIONS,
+	TRL_TYRE_USE_CODE_OPTIONS,
+} from '@models/options.model';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
@@ -215,4 +220,5 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
+	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 }
