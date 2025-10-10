@@ -9,7 +9,6 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  width: 100px;
 }
 
 .govuk-label--s::ng-deep > .govuk-form-group {
@@ -25,12 +24,7 @@
 }
 
 :host {
-  govuk-form-group-input::ng-deep .govuk-form-group label
-  {
-    @extend .govuk-label;
-    font-weight: 400;
-  }
-  govuk-form-group-select::ng-deep .govuk-form-group label
+  .input-group::ng-deep .govuk-form-group label
   {
     @extend .govuk-label;
     font-weight: 400;

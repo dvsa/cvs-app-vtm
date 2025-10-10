@@ -1,11 +1,12 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { KeyValuePipe, ViewportScroller } from '@angular/common';
+import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -27,7 +28,7 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 		ReactiveFormsModule,
 		GovukFormGroupInputComponent,
 		GovukFormGroupSelectComponent,
-		KeyValuePipe,
+		FieldWarningMessageComponent,
 	],
 })
 export class TyresComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
@@ -48,6 +49,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	form: FormGroup = this.fb.group({});
 	tyresReferenceData: ReferenceDataTyre[] = [];
 	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
+	showDimensionsWarning = false;
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
@@ -167,7 +169,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		// this.checkFitmentCodeHasChanged(changes);
+		this.checkFitmentCodeHasChanged(changes);
 		// TODO add this in later ticket
 		// this.checkAxleWeights(changes);
 	}
@@ -178,6 +180,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 	removeAxle(index: number) {
 		this.axlesService.removeAxle(this.parent, this.techRecord().techRecord_vehicleType, index);
+		this.showDimensionsWarning = true;
 	}
 
 	ngOnDestroy(): void {

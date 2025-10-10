@@ -1,16 +1,38 @@
+@let showNoAxlesWarning = parent.get('techRecord_axles')?.value.length === 0 ||
+  !parent.get('techRecord_axles')?.value;
+@let dimensionsWarning = parent.get('techRecord_axles')?.value.length > 0 &&
+  showDimensionsWarning;
+
 @if (techRecord(); as tr) {
   <div class="govuk-!-padding-4" [formGroup]="parent">
+    @if (showNoAxlesWarning) {
+      <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Tyre details</h2>
+      <app-field-warning-message
+        id="enter-number-of-axles-warning-message"
+        [warningMessage]="'Enter the number of axles to be able to add axle weights.'" />
+    }
+    @if (dimensionsWarning) {
+      <app-field-warning-message id="axle-distances-cleared-warning-message" [warningMessage]="' '">
+        <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
+        <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
+      </app-field-warning-message>
+    }
     @if (parent.get('techRecord_axles')) {
       <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
         <ng-container formGroupName="{{i}}">
         <div class="input-row">
-          <caption class="govuk-table__caption govuk-table__caption--m">
+          <caption class="govuk-table__caption govuk-table__caption--s govuk-!-margin-bottom-2">
             Axle {{i+1}} tyre details
           </caption>
         </div>
         <div class="input-row">
-          <button class="govuk-button govuk-button--secondary" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
+          <button
+            class="govuk-button govuk-button--secondary"
+            id="tyres_search-{{ i + 1 }}"
+            (click)="getTyreSearchPage(axle.value.axleNumber)"
+            type="button"
+          >
             Search for tyre details
           </button>
           <button
@@ -31,33 +53,37 @@
             id="tyres_tyreCode-{{ i + 1 }}"
             type="number"
             formControlName="tyres_tyreCode"
-            [width]="FormNodeWidth.XS"
+            [width]="FormNodeWidth.M"
             (blur)="getTyresRefData(i + 1)"
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
+              class="input-group"
               id="tyres_tyreSize-{{ i + 1 }}"
               formControlName="tyres_tyreSize"
-              [width]="FormNodeWidth.XXXL"
+              [width]="FormNodeWidth.XXL"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-input
               label="Ply"
+              class="input-group"
               id="tyres_plyRating-{{ i + 1 }}"
               formControlName="tyres_plyRating"
-              [width]="FormNodeWidth.XXS"
+              [width]="FormNodeWidth.XS"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-input
               label="Load index"
+              class="input-group"
               id="tyres_dataTrAxles-{{ i + 1 }}"
               type="number"
               formControlName="tyres_dataTrAxles"
-              [width]="FormNodeWidth.XXS"
+              [width]="FormNodeWidth.S"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-select
               label="S/D"
+              class="input-group"
               id="tyres_fitmentCode-{{ i + 1 }}"
               formControlName="tyres_fitmentCode"
               [width]="FormNodeWidth.XS"
@@ -75,9 +101,10 @@
       <govuk-form-group-select
         label="Tyre use code"
         formControlName="techRecord_tyreUseCode"
-        [width]="FormNodeWidth.UNSET"
+        class="govuk-label--s"
+        [defaultOption]="'Select tyre use code'"
+        [width]="FormNodeWidth.XL"
         [options]="HGV_TYRE_USE_CODE_OPTIONS"
-        [allowNull]="true"
       ></govuk-form-group-select>
     }
 

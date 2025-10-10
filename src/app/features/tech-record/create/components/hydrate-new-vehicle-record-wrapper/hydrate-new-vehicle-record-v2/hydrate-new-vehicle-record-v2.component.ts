@@ -22,38 +22,38 @@ import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/genera
 import { LastApplicantComponent } from '@forms/custom-sections-v2/last-applicant/last-applicant.component';
 import { NotesComponent } from '@forms/custom-sections-v2/notes/notes.component';
 import { ReasonForCreationComponent } from '@forms/custom-sections-v2/reason-for-creation/reason-for-creation.component';
+import { TyresComponent } from '@forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.component';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { RouterService } from '@services/router/router.service';
 import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
-import { TyresComponent } from '@forms/custom-sections-v2/tyres/tyres.component';
 
 @Component({
 	selector: 'app-hydrate-new-vehicle-record-v2',
 	templateUrl: './hydrate-new-vehicle-record-v2.component.html',
 	styleUrls: ['./hydrate-new-vehicle-record-v2.component.scss'],
-  imports: [
-    AccordionControlComponent,
-    AccordionComponent,
-    NgTemplateOutlet,
-    ButtonComponent,
-    NumberPlateComponent,
-    DefaultNullOrEmpty,
-    TagComponent,
-    FormatVehicleTypePipe,
-    GeneralVehicleDetailsComponent,
-    ReactiveFormsModule,
-    NotesComponent,
-    ReasonForCreationComponent,
-    AdrComponent,
-    LastApplicantComponent,
-    AdrComponent,
-    EmissionsAndExemptionsComponent,
-    WeightsComponent,
-    DimensionsComponent,
-    TyresComponent,
-  ],
+	imports: [
+		AccordionControlComponent,
+		AccordionComponent,
+		NgTemplateOutlet,
+		ButtonComponent,
+		NumberPlateComponent,
+		DefaultNullOrEmpty,
+		TagComponent,
+		FormatVehicleTypePipe,
+		GeneralVehicleDetailsComponent,
+		ReactiveFormsModule,
+		NotesComponent,
+		ReasonForCreationComponent,
+		AdrComponent,
+		LastApplicantComponent,
+		AdrComponent,
+		EmissionsAndExemptionsComponent,
+		WeightsComponent,
+		DimensionsComponent,
+		TyresComponent,
+	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);

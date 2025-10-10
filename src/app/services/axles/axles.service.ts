@@ -5,8 +5,10 @@ import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/ps
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
+import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable({
 	providedIn: 'root',
@@ -92,7 +94,12 @@ export class AxlesService {
 				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
 				this.commonValidators.minLength(0, 'Ply Rating must be greater than or equal to 0'),
 			]),
-			tyres_fitmentCode: this.fb.control<string | null>(axle?.tyres_fitmentCode || null),
+			// TODO remove feature flag when released to production and flag disabled
+			tyres_fitmentCode: this.fb.control<string | null>(
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? FitmentCodeEnum.Single
+					: axle?.tyres_fitmentCode || null
+			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.commonValidators.max(999, 'Data TR Axles must be less than or equal to 999'),
 				this.commonValidators.min(0, 'Data TR Axles must be greater than or equal to 0'),
@@ -208,7 +215,12 @@ export class AxlesService {
 				this.commonValidators.max(2, 'Ply rating must be less than or equal to 2'),
 				this.commonValidators.min(0, 'Ply rating must be greater than or equal to 0'),
 			]),
-			tyres_fitmentCode: this.fb.control<string | null>(axle?.tyres_fitmentCode || null),
+			// TODO remove feature flag when released to production and flag disabled
+			tyres_fitmentCode: this.fb.control<string | null>(
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? FitmentCodeEnum.Single
+					: axle?.tyres_fitmentCode || null
+			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
 				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
