@@ -17,8 +17,7 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
-	// TODO properly type this at some point
-	form = this.fb.group<any>({
+	form = this.fb.group({
 		techRecord_applicantDetails_name: this.fb.control(null, [
 			this.commonValidators.maxLength(150, 'Name or company must be less than or equal to 150 characters'),
 		]),
@@ -52,6 +51,9 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 	ngOnInit(): void {
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

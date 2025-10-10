@@ -98,8 +98,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	techRecord = input.required<V3TechRecordModel>();
 	isAxlesDisabled = false;
 
-	// TODO properly type this at some point
-	form = this.fb.group<any>({});
+	form = this.fb.group({});
 
 	constructor() {
 		super();
@@ -153,6 +152,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		if (vehicleType === VehicleTypes.TRL) {
 			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
 		}
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord());
 	}
 
 	get controlsBasedOffVehicleType() {

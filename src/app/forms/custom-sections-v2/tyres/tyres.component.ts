@@ -171,6 +171,9 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord());
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {

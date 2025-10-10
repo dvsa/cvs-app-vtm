@@ -43,6 +43,9 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		this.handleGrossKerbWeightChange();
 		this.handleGrossLadenWeightChange();
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord());
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

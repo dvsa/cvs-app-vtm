@@ -15,7 +15,6 @@ export class ReasonForCreationComponent extends EditBaseComponent implements OnI
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
-	// TODO properly type this at some point
 	form = this.fb.group({
 		techRecord_reasonForCreation: this.fb.control('', [
 			this.commonValidators.required('Reason for creation is required'),
@@ -25,6 +24,9 @@ export class ReasonForCreationComponent extends EditBaseComponent implements OnI
 
 	ngOnInit(): void {
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
