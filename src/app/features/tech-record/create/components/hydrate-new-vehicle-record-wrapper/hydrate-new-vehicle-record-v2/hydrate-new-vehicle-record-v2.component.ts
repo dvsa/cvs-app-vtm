@@ -3,6 +3,7 @@ import { AccordionComponent } from '@/src/app/components/accordion/accordion.com
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
+import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
@@ -17,10 +18,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from '@forms/custom-sections-v2/adr/adr.component';
+import { AuthorisationIntoServiceComponent } from '@forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
 import { DimensionsComponent } from '@forms/custom-sections-v2/dimensions/dimensions.component';
+import { DocumentsComponent } from '@forms/custom-sections-v2/documents/documents.component';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@forms/custom-sections-v2/last-applicant/last-applicant.component';
 import { NotesComponent } from '@forms/custom-sections-v2/notes/notes.component';
+import { PurchasersComponent } from '@forms/custom-sections-v2/purchasers/purchasers.component';
 import { ReasonForCreationComponent } from '@forms/custom-sections-v2/reason-for-creation/reason-for-creation.component';
 import { TyresComponent } from '@forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.component';
@@ -52,6 +56,10 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		EmissionsAndExemptionsComponent,
 		WeightsComponent,
 		DimensionsComponent,
+		DDAComponent,
+		DocumentsComponent,
+		AuthorisationIntoServiceComponent,
+		PurchasersComponent,
 		TyresComponent,
 	],
 })

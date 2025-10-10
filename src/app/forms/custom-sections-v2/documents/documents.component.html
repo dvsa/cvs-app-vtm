@@ -1,0 +1,26 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  @if (techRecord(); as tr) {
+    @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      <govuk-form-group-autocomplete
+        formControlName="techRecord_microfilm_microfilmDocumentType"
+        label="Microfilm document type"
+        [placeholder]="'Select document type'"
+        [options$]="documentTypes$()"
+        [width]="FormNodeWidth.XL"
+        [allowEmpty]="true"
+      ></govuk-form-group-autocomplete>
+
+      <govuk-form-group-input
+        formControlName="techRecord_microfilm_microfilmRollNumber"
+        label="Microfilm roll number"
+        [width]="FormNodeWidth.XL"
+      ></govuk-form-group-input>
+
+      <govuk-form-group-input
+        formControlName="techRecord_microfilm_microfilmSerialNumber"
+        label="Microfilm serial number"
+        [width]="FormNodeWidth.XL"
+      ></govuk-form-group-input>
+    }
+  }
+</div>
