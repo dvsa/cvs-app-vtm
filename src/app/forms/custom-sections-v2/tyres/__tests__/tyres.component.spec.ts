@@ -35,7 +35,7 @@ describe('TyresSectionEditComponent', () => {
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup({
-			techRecord_axles: new FormControl(),
+			techRecord_axles: new FormControl([]),
 			tyres_tyreCode: new FormControl(),
 			tyres_tyreSize: new FormControl(),
 			tyres_plyRating: new FormControl(),
@@ -80,7 +80,14 @@ describe('TyresSectionEditComponent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnDestroy();
 			// should only have techRecord axles in parent form when this component is destroyed (as this is shared)
-			expect(Object.keys(parent.controls)).toEqual(['techRecord_axles']);
+			expect(Object.keys(parent.controls)).toEqual([
+				'techRecord_axles',
+				'tyres_tyreCode',
+				'tyres_tyreSize',
+				'tyres_plyRating',
+				'tyres_dataTrAxles',
+				'tyres_fitmentCode',
+			]);
 		});
 
 		it('should complete destroy$ subject', () => {
