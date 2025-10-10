@@ -74,14 +74,14 @@ export class AxlesService {
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						error: `Axle ${index} tyre code must be greater than or equal to 0`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
