@@ -360,4 +360,41 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
 	});
+
+	describe('bodyMakeRequiredWithDangerousGoods', () => {
+		it('should return an error if dangerous goods is true and body make is empty', () => {
+			const control = new FormControl('');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(true),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toEqual({
+				required: 'You must select a body make if the vehicle is approved to carry dangerous goods',
+			});
+		});
+
+		it('should return null if dangerous goods is true and body make is not empty', () => {
+			const control = new FormControl('Some Make');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(true),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toBeNull();
+		});
+
+		it('should return null if dangerous goods is false and body make is empty', () => {
+			const control = new FormControl('');
+			const parent = new FormGroup({
+				techRecord_adrDetails_dangerousGoods: new FormControl(false),
+				techRecord_make: control,
+			});
+			control.setParent(parent);
+			const validator = component.bodyMakeRequiredWithDangerousGoods();
+			expect(validator(control)).toBeNull();
+		});
+	});
 });

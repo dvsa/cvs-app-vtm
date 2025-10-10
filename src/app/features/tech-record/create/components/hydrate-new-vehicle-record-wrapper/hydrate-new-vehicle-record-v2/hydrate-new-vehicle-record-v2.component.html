@@ -192,6 +192,19 @@
                         </app-accordion>
                       }
 
+                      <!-- Disability Discrimination Act (DDA) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'dda'"
+                          [title]="'Disability Discrimination Act'"
+                          [description]="'DDA certificate, accessibility, schedules.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-dda [techRecord]="techRecord"></app-dda>
+                        </app-accordion>
+                      }
+
                       @if (
                         techRecord.techRecord_vehicleType === 'hgv' ||
                         techRecord.techRecord_vehicleType === 'trl' ||
@@ -228,6 +241,18 @@
                           [isExpanded]="false"
                         >
                           <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
+                        </app-accordion>
+                      }
+
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'documents'"
+                          [title]="'Documents'"
+                          [description]="'Microfilm document details.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-documents [techRecord]="techRecord"></app-documents>
                         </app-accordion>
                       }
 

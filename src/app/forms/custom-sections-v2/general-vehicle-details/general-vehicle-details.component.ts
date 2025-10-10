@@ -1,7 +1,7 @@
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -198,7 +198,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
-				// this.bodyMakeRequiredWithDangerousGoods(),
+				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
@@ -302,7 +302,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_frameDescription: this.fb.control<string | null>(null),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
-				// this.bodyMakeRequiredWithDangerousGoods(),
+				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
@@ -630,5 +630,14 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			} as any);
 		}
 		this.axlesService.removeAllAxles(this.parent, vehicleType);
+	}
+
+	bodyMakeRequiredWithDangerousGoods(): ValidatorFn {
+		return (control) => {
+			if (control.parent && control.parent.get('techRecord_adrDetails_dangerousGoods')?.value && !control.value) {
+				return { required: 'You must select a body make if the vehicle is approved to carry dangerous goods' };
+			}
+			return null;
+		};
 	}
 }
