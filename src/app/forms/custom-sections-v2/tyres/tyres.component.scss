@@ -11,6 +11,11 @@
   flex-direction: column;
 }
 
+.govuk-input--size {
+  min-width: 2em !important;
+  width: 11em !important;
+}
+
 .govuk-label--s::ng-deep > .govuk-form-group {
   > fieldset > legend > .govuk-fieldset__heading, > label, > h1 > label {
     @extend .govuk-label--s;

@@ -58,10 +58,10 @@
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
-              class="input-group medium-large"
+              class="input-group govuk-input--size"
               id="tyres_tyreSize-{{ i + 1 }}"
               formControlName="tyres_tyreSize"
-              [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.M : FormNodeWidth.XXL"
+              [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.UNSET : FormNodeWidth.XXL"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-input
