@@ -2,6 +2,11 @@ name: CI
 
 on:
   push:
+  pull_request:
+    branches: ['develop', 'feature/VTMDEV-1']
+
+permissions:
+  contents: read
 
 jobs:
   security:
@@ -10,3 +15,106 @@ jobs:
       args: '--all-projects'
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Build
+        run: npm run build --ignore-scripts -- --configuration production
+
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Run tests
+        run: npm run test:workflow
+
+  lint:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Run linter
+        run: npm run lint
+
+  audit:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Run audit
+        run: npm audit --audit-level=critical
+
+  sonar:
+    if: github.event_name == 'pull_request'
+    runs-on: X64
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: ${{ secrets.DVSA_AWS_REGION }}
+          role-session-name: 'cvs-app-vtm'
+
+      - uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: sonarqube-gha
+          parse-json-secrets: true
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Run SonarQube scanner
+        run: |
+          npm run sonar-scanner -- \
+          -Dsonar.host.url=${{ env.SONARQUBE_GHA_URL }} \
+          -Dsonar.token=${{ env.SONARQUBE_GHA_TOKEN }} \
+          -Dsonar.login=${{ env.SONARQUBE_GHA_TOKEN }} \
+          -Dsonar.projectName=${{ github.repository }} \
+          -Dsonar.projectVersion=1.0.${{ github.run_id }}
