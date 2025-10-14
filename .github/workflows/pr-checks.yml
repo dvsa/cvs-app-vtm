@@ -25,8 +25,7 @@ jobs:
         run: npm run build --ignore-scripts -- --configuration production
 
   test:
-    runs-on:
-      - ARM64
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js

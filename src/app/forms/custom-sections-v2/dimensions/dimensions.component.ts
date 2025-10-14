@@ -32,6 +32,9 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord());
 	}
 
 	get controlsBasedOffVehicleType() {

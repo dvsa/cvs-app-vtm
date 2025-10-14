@@ -18,14 +18,16 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
-	// TODO properly type this at some point
-	form = this.fb.group<any>({});
+	form = this.fb.group({});
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
 
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord());
 	}
 
 	get controlsBasedOffVehicleType() {
