@@ -60,7 +60,10 @@ describe('GeneralVehicleDetailsComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{
+					provide: MultiOptionsService,
+					useValue: { getOptions: jest.fn(), loadOptions: jest.fn() },
+				},
 				{ provide: ReferenceDataService, useValue: mockRefDataService },
 			],
 		}).compileComponents();
@@ -124,7 +127,9 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('getVehicleType', () => {
 		it('should return the vehicle type', () => {
-			const mockTechRecord = { techRecord_vehicleType: VehicleTypes.HGV } as V3TechRecordModel;
+			const mockTechRecord = {
+				techRecord_vehicleType: VehicleTypes.HGV,
+			} as V3TechRecordModel;
 			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
@@ -313,7 +318,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		it('should disable the axle input, update tech record, and add axles', () => {
 			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
 			const addAxleSpy = jest.spyOn(component.axlesService, 'addAxle').mockImplementation();
-			component.form.get('techRecord_noOfAxles')?.setValue(3);
+			component.form.patchValue({ techRecord_noOfAxles: 3 });
 			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
 
 			component.lockAndUpdateAxles();
