@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: ['develop', 'feature/VTMDEV-1']
 
+permissions:
+  contents: read
+
 jobs:
   security:
     uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v2
