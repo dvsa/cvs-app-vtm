@@ -206,10 +206,19 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		};
 	}
 
+	get psvControls() {
+		return {
+			techRecord_speedRestriction: this.fb.control<number | null>(null, [
+				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
+				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99'),
+			]),
+		};
+	}
+
 	get controlsBasedOffVehicleType() {
 		switch (this.techRecord().techRecord_vehicleType) {
-			// case VehicleTypes.PSV:
-			//   return this.psvControls;
+			case VehicleTypes.PSV:
+				return this.psvControls;
 			case VehicleTypes.HGV:
 				return this.hgvTrlControls;
 			case VehicleTypes.TRL:

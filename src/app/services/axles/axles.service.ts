@@ -130,14 +130,14 @@ export class AxlesService {
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						error: `Axle ${index} tyre code must be greater than or equal to 0`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
@@ -151,7 +151,12 @@ export class AxlesService {
 				this.commonValidators.min(0, 'Ply Rating must be greater than or equal to 0'),
 			]),
 			tyres_speedCategorySymbol: this.fb.control<string | null>(axle?.tyres_speedCategorySymbol || null),
-			tyres_fitmentCode: this.fb.control<string | null>(axle?.tyres_fitmentCode || null),
+			// TODO remove feature flag when released to production and flag disabled
+			tyres_fitmentCode: this.fb.control<string | null>(
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? FitmentCodeEnum.Single
+					: axle?.tyres_fitmentCode || null
+			),
 			tyres_dataTrAxles: this.fb.control<number | null>(axle?.tyres_dataTrAxles || null, [
 				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
 				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
@@ -195,14 +200,14 @@ export class AxlesService {
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be less than or equal to 99999`,
+						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `Tyre ${index} Code must be greater than or equal to 0`,
+						error: `Axle ${index} tyre code must be greater than or equal to 0`,
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),

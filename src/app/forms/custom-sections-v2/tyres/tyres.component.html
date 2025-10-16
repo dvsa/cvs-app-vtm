@@ -53,15 +53,15 @@
             id="tyres_tyreCode-{{ i + 1 }}"
             type="number"
             formControlName="tyres_tyreCode"
-            [width]="FormNodeWidth.M"
+            [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.XS : FormNodeWidth.M"
             (blur)="getTyresRefData(i + 1)"
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
-              class="input-group"
+              class="input-group govuk-input--size"
               id="tyres_tyreSize-{{ i + 1 }}"
               formControlName="tyres_tyreSize"
-              [width]="FormNodeWidth.XXL"
+              [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.UNSET : FormNodeWidth.XXL"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-input
@@ -69,7 +69,7 @@
               class="input-group"
               id="tyres_plyRating-{{ i + 1 }}"
               formControlName="tyres_plyRating"
-              [width]="FormNodeWidth.XS"
+              [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.XXS : FormNodeWidth.XS"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
             <govuk-form-group-input
@@ -81,6 +81,18 @@
               [width]="FormNodeWidth.S"
               (blur)="getTyresRefData(i + 1)"
             ></govuk-form-group-input>
+
+          @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
+            <govuk-form-group-select
+              label="SR"
+              class="input-group"
+              id="tyres_speedCategorySymbol-{{ i + 1 }}"
+              formControlName="tyres_speedCategorySymbol"
+              [width]="FormNodeWidth.XS"
+              [options]="SPEED_CATEGORY_SYMBOL_OPTIONS"
+              (blur)="getTyresRefData(i + 1)"
+            ></govuk-form-group-select>
+          }
             <govuk-form-group-select
               label="S/D"
               class="input-group"
