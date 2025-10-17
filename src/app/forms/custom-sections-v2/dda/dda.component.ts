@@ -41,7 +41,7 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.commonValidators.maxLength(250, 'Wheelchair ramp information must be less than or equal to 250 characters'),
 		]),
 		techRecord_dda_minEmergencyExits: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Minimum emergency exits needed must be less than or equal to 99'),
+			this.commonValidators.max(99, 'Minimum emergency exits required must be less than or equal to 99'),
 		]),
 		techRecord_dda_outswing: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(250, 'Outswing must be less than or equal to 250 characters'),

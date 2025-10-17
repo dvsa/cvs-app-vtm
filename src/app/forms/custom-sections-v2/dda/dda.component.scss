@@ -8,8 +8,11 @@
     @extend .govuk-label--s;
   }
 
-  govuk-form-group-textarea.govuk-label::ng-deep .govuk-form-group label
-  {
-    @extend .govuk-label;
+  govuk-form-group-textarea::ng-deep {
+    .govuk-form-group {
+      .govuk-hint, label {
+        margin-bottom: 5px;
+      }
+    }
   }
 }
