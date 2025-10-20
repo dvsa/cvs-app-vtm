@@ -3,10 +3,10 @@
 @let dimensionsWarning = parent.get('techRecord_axles')?.value.length > 0 &&
   showDimensionsWarning;
 
-<div 
+<div
   [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning"
-  [class.govuk-!-padding-right-4]="showNoAxlesWarning || dimensionsWarning"  
-  [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning" 
+  [class.govuk-!-padding-right-4]="showNoAxlesWarning || dimensionsWarning"
+  [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning"
   [formGroup]="form"
 >
   <div class="govuk-table__body" [formGroup]="parent">
@@ -41,7 +41,7 @@
           </button>
         }
 
-        @if (techRecordAxles.at(i).invalid) {
+        @if (techRecordAxles.at(i).invalid && !techRecordAxles.hasError('noAxleData')) {
           @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
             <app-field-error-message [name]="`Axle-${ i + 1 }`"
                                      [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`" />
