@@ -14,12 +14,12 @@
       @if (showNoAxlesWarning) {
         <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle weight details</h2>
         <app-field-warning-message
-          id="enter-number-of-axles-warning-message"
+          id="enter-number-of-axles-weights-warning-message"
           [warningMessage]="'Enter the number of axles to be able to add axle weights.'" />
       }
 
       @if (dimensionsWarning) {
-        <app-field-warning-message id="axle-distances-cleared-warning-message" [warningMessage]="' '">
+        <app-field-warning-message id="axle-distances-cleared-weights-warning-message" [warningMessage]="' '">
           <p class="govuk-!-margin-0">Axle distances have been cleared because you removed an axle.</p>
           <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
         </app-field-warning-message>
@@ -41,16 +41,14 @@
           </button>
         }
 
-        @if (techRecordAxles.at(i).invalid && !techRecordAxles.hasError('noAxleData')) {
-          @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
-            <app-field-error-message [name]="`Axle-${ i + 1 }`"
-                                     [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`" />
-          }
+        @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV && (techRecordAxles.at(i).get('weights_gbWeight')?.invalid || techRecordAxles.at(i).get('weights_eecWeight')?.invalid || techRecordAxles.at(i).get('weights_designWeight')?.invalid)) {
+          <app-field-error-message [name]="`Axle-${ i + 1 }-weights`"
+                                    [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`" />
+        }
 
-          @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-            <app-field-error-message [name]="`Axle-${ i + 1 }`"
-                                     [error]="`Axle ${ i + 1 } Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`" />
-          }
+        @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV && (techRecordAxles.at(i).get('weights_kerbWeight')?.invalid || techRecordAxles.at(i).get('weights_ladenWeight')?.invalid || techRecordAxles.at(i).get('weights_gbWeight')?.invalid || techRecordAxles.hasError('weights_designWeight'))) {
+          <app-field-error-message [name]="`Axle-${ i + 1 }-weights`"
+                                    [error]="`Axle ${ i + 1 } Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`" />
         }
 
         <div class="axle" formGroupName="{{ i }}">
