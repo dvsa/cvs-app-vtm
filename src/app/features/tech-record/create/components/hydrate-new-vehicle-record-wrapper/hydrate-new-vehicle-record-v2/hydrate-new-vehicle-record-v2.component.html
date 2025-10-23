@@ -194,6 +194,18 @@
                           <app-tyres [techRecord]="techRecord"></app-tyres>
                         </app-accordion>
                       }
+                      <!-- configuration -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
+                        <app-accordion
+                          [id]="'configuration'"
+                          [title]="'Configuration'"
+                          [description]="'Off-road, fuel system, road friendly suspension.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-configuration [techRecord]="techRecord"></app-configuration>
+                        </app-accordion>
+                      }
 
                       <!-- Emissions and exemptions (immediately above ADR) -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {

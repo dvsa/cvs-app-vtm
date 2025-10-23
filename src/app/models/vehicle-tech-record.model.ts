@@ -67,7 +67,6 @@ export enum TrailerFormType {
 }
 
 export enum FuelTypes {
-	DIESELPETROL = 'DieselPetrol',
 	DIESEL = 'Diesel',
 	PETROL = 'Petrol',
 	HYBRID = 'Hybrid',

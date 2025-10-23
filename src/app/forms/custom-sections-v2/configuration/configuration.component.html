@@ -1,0 +1,37 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!-- Off road vehicle -->
+  <govuk-form-group-radio
+    formControlName="techRecord_offRoad"
+    label="Off-road vehicle"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Departmental vehicle marker -->
+  <govuk-form-group-radio
+    formControlName="techRecord_departmentalVehicleMarker"
+    label="Departmental vehicle marker"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Alteration marker -->
+  <govuk-form-group-radio
+    formControlName="techRecord_alterationMarker"
+    label="Alteration marker"
+    [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+
+  <!-- Fuel / propulsion system -->
+  <govuk-form-group-select
+    formControlName="techRecord_fuelPropulsionSystem"
+      label="Fuel system"
+      [defaultOption]="'Select fuel system'"
+      [options]="FUEL_PROPULSION_SYSTEM_OPTIONS"
+  ></govuk-form-group-select>
+
+  <!-- Road friendly suspension -->
+  <govuk-form-group-radio
+      label="Road friendly suspension"
+      formControlName="techRecord_roadFriendly"
+      [options]="YES_NO_OPTIONS"
+  ></govuk-form-group-radio>
+</div>
