@@ -21,7 +21,7 @@ export class ManufacturerComponent extends EditBaseComponent implements OnInit, 
 
 	form = this.fb.group({
 		techRecord_manufacturerDetails_name: this.fb.control(null, [
-			this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Name or company must be less than or equal to 150 characters'),
 		]),
 		techRecord_manufacturerDetails_address1: this.fb.control(null, [
 			this.commonValidators.maxLength(60, 'Address line 1 must be less than or equal to 60 characters'),
