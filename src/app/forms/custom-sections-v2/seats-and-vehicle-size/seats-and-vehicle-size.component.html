@@ -1,0 +1,63 @@
+<div [formGroup]="form">
+  <!-- Upper Deck -->
+  <govuk-form-group-input
+    label="Upper deck"
+    [width]="FormNodeWidth.M"
+    formControlName="techRecord_seatsUpperDeck"
+    type="number"
+  ></govuk-form-group-input>
+
+  <!-- Lower Deck -->
+  <govuk-form-group-input
+    label="Lower deck"
+    [width]="FormNodeWidth.M"
+    formControlName="techRecord_seatsLowerDeck"
+    type="number"
+  ></govuk-form-group-input>
+
+  <!-- Standing Capacity -->
+  <govuk-form-group-input
+    label="Standing capacity"
+    formControlName = 'techRecord_standingCapacity'
+    type="number"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- Wheelchair Capacity  -->
+  <govuk-form-group-input
+    formControlName="techRecord_dda_wheelchairCapacity"
+    type="number"
+    label="Wheelchair capacity"
+  ></govuk-form-group-input>
+
+  <!--  Vehicle class-->
+  <govuk-form-group-select
+    label="Vehicle class"
+    [hint]="'Vehicle class is calculated automatically based on the number of seats and standing capacity.'"
+    formControlName="techRecord_vehicleClass_description"
+    [options]="PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS"
+    [allowNull]="true"
+  ></govuk-form-group-select>
+
+  <!-- Vehicle size -->
+  <govuk-form-group-radio
+    label="Vehicle size"
+    formControlName="techRecord_vehicleSize"
+    [options]="VEHICLE_SIZE_OPTIONS"
+    [hint]="'Vehicle size is calculated automatically based on the number of seats and standing capacity.'"
+  ></govuk-form-group-radio>
+
+  <!--  Number of Seatbelts -->
+  <govuk-form-group-input
+    label="Number of seat belts"
+    formControlName="techRecord_numberOfSeatbelts"
+    type="numericString"
+    [width]="FormNodeWidth.XXS"
+  ></govuk-form-group-input>
+
+  <!-- Seatbelt installation approval date / type approved -->
+  <govuk-form-group-date
+    label="Seatbelt installation approval date / type approved"
+    formControlName="techRecord_seatbeltInstallationApprovalDate"
+  ></govuk-form-group-date>
+</div>

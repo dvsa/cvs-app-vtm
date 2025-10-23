@@ -130,17 +130,6 @@
   }
 <!--  End of PSV only fields -->
 
-  @if (shouldDisplayFormControl('techRecord_vehicleClass_description')
-      && techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-    <govuk-form-group-input
-      type="text"
-      formControlName="techRecord_vehicleClass_description"
-      label="Vehicle class"
-      [width]="FormNodeWidth.L"
-    >
-    </govuk-form-group-input>
-  }
-
 
   @if (shouldDisplayFormControl('techRecord_vehicleSubclass')) {
     <govuk-checkbox-group

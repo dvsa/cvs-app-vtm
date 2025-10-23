@@ -208,6 +208,19 @@
                         </app-accordion>
                       }
 
+                      <!-- Seats and vehicle size -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'seats-and-vehicle-size'"
+                          [title]="'Seats and vehicle size'"
+                          [description]="'Seats, vehicle size, seatbelts.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
+                        </app-accordion>
+                      }
+
                       <!-- Disability Discrimination Act (DDA) -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion

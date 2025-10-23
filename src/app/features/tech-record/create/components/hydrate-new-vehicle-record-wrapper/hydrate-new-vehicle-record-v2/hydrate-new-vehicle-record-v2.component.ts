@@ -26,6 +26,7 @@ import { LastApplicantComponent } from '@forms/custom-sections-v2/last-applicant
 import { NotesComponent } from '@forms/custom-sections-v2/notes/notes.component';
 import { PurchasersComponent } from '@forms/custom-sections-v2/purchasers/purchasers.component';
 import { ReasonForCreationComponent } from '@forms/custom-sections-v2/reason-for-creation/reason-for-creation.component';
+import { SeatsAndVehicleSizeComponent } from '@forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.component';
 import { Store } from '@ngrx/store';
@@ -61,6 +62,7 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		AuthorisationIntoServiceComponent,
 		PurchasersComponent,
 		TyresComponent,
+		SeatsAndVehicleSizeComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
