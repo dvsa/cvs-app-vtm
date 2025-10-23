@@ -66,6 +66,12 @@
             >
               {{ option.label }}
             </label>
+
+            @if (option.hint) {
+              <div class="govuk--radios__hint govuk-hint govuk-!-padding-left-3">
+                {{ option.hint }}
+              </div>
+            }
           </div>
         }
       </ng-content>

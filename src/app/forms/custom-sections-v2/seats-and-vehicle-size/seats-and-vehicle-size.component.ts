@@ -7,11 +7,7 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import {
-	EXEMPT_OR_NOT_OPTIONS,
-	PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
-	VEHICLE_SIZE_OPTIONS,
-} from '@models/options.model';
+import { EXEMPT_OR_NOT_OPTIONS, VEHICLE_SIZE_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReplaySubject } from 'rxjs';
@@ -108,11 +104,23 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 		this.destroy$.complete();
 	}
 
+	VehicleClassOptions = [
+		{
+			label: 'Small PSV',
+			value: 'small psv (ie: less than or equal to 22 seats)',
+			hint: 'Less than or equal to 22 passengers',
+		},
+		{
+			label: 'Large PSV',
+			value: 'large psv(ie: greater than 23 seats)',
+			hint: 'Greater than or equal to 23 passengers',
+		},
+	];
+
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly TagType = TagType;
 	protected readonly TagTypeLabels = TagTypeLabels;
-	protected readonly PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS = PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 	protected readonly VEHICLE_SIZE_OPTIONS = VEHICLE_SIZE_OPTIONS;
 }

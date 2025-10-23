@@ -1,8 +1,8 @@
-<div [formGroup]="form">
+<div class="govuk-!-padding-4"  [formGroup]="form">
   <!-- Upper Deck -->
   <govuk-form-group-input
     label="Upper deck"
-    [width]="FormNodeWidth.M"
+    [width]="FormNodeWidth.XS"
     formControlName="techRecord_seatsUpperDeck"
     type="number"
   ></govuk-form-group-input>
@@ -10,7 +10,7 @@
   <!-- Lower Deck -->
   <govuk-form-group-input
     label="Lower deck"
-    [width]="FormNodeWidth.M"
+    [width]="FormNodeWidth.XS"
     formControlName="techRecord_seatsLowerDeck"
     type="number"
   ></govuk-form-group-input>
@@ -20,7 +20,7 @@
     label="Standing capacity"
     formControlName = 'techRecord_standingCapacity'
     type="number"
-    [width]="FormNodeWidth.XXS"
+    [width]="FormNodeWidth.XS"
   ></govuk-form-group-input>
 
   <!-- Wheelchair Capacity  -->
@@ -28,16 +28,16 @@
     formControlName="techRecord_dda_wheelchairCapacity"
     type="number"
     label="Wheelchair capacity"
+    [width]="FormNodeWidth.XS"
   ></govuk-form-group-input>
 
   <!--  Vehicle class-->
-  <govuk-form-group-select
+  <govuk-form-group-radio
     label="Vehicle class"
     [hint]="'Vehicle class is calculated automatically based on the number of seats and standing capacity.'"
     formControlName="techRecord_vehicleClass_description"
-    [options]="PSV_VEHICLE_CLASS_DESCRIPTION_OPTIONS"
-    [allowNull]="true"
-  ></govuk-form-group-select>
+    [options]="VehicleClassOptions"
+  ></govuk-form-group-radio>
 
   <!-- Vehicle size -->
   <govuk-form-group-radio
