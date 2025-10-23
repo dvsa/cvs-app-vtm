@@ -4,6 +4,7 @@
     <govuk-form-group-input
       label="Name or company"
       formControlName="techRecord_manufacturerDetails_name"
+      [width]="FormNodeWidth.XL"
     ></govuk-form-group-input>
   }
 
@@ -29,6 +30,7 @@
       label="Town or city"
       [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_postTown"
+      [width]="FormNodeWidth.XL"
     ></govuk-form-group-input>
   }
 
@@ -54,7 +56,7 @@
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_telephoneNumber')) {
     <govuk-form-group-input
       label="Telephone number"
-      [width]="FormNodeWidth.XL"
+      [width]="FormNodeWidth.L"
       formControlName="techRecord_manufacturerDetails_telephoneNumber"
     ></govuk-form-group-input>
   }
