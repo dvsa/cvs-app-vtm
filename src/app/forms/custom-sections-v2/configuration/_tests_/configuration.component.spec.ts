@@ -1,6 +1,7 @@
 import { initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
 	ControlContainer,
@@ -13,11 +14,13 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ConfigurationComponent } from '@forms/custom-sections-v2/configuration/configuration.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
 describe('ConfigurationComponent', () => {
 	let component: ConfigurationComponent;
+	let componentRef: ComponentRef<ConfigurationComponent>;
 	let fixture: ComponentFixture<ConfigurationComponent>;
 	let formGroupDirective: FormGroupDirective;
 	let controlContainer: ControlContainer;
@@ -27,6 +30,7 @@ describe('ConfigurationComponent', () => {
 		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'trl' | 'psv'>, FormControl>>>({
 			techRecord_departmentalVehicleMarker: new FormControl(),
 		});
+		const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 
 		await TestBed.configureTestingModule({
 			imports: [FormsModule, ReactiveFormsModule, ConfigurationComponent],
@@ -53,6 +57,10 @@ describe('ConfigurationComponent', () => {
 
 		fixture = TestBed.createComponent(ConfigurationComponent);
 		component = fixture.componentInstance;
+		componentRef = fixture.componentRef;
+		componentRef.setInput('techRecord', mockTechRecord);
+		component.form.reset();
+		fixture.detectChanges();
 	});
 
 	it('should create', () => {
