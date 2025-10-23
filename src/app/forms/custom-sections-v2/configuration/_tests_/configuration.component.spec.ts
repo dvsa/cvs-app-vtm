@@ -16,14 +16,17 @@ import { ConfigurationComponent } from '@forms/custom-sections-v2/configuration/
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
-describe('DocumentsComponent', () => {
+describe('ConfigurationComponent', () => {
 	let component: ConfigurationComponent;
 	let fixture: ComponentFixture<ConfigurationComponent>;
 	let formGroupDirective: FormGroupDirective;
+	let controlContainer: ControlContainer;
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
-		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv'>, FormControl>>>({});
+		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'hgv' | 'trl' | 'psv'>, FormControl>>>({
+			techRecord_departmentalVehicleMarker: new FormControl(),
+		});
 
 		await TestBed.configureTestingModule({
 			imports: [FormsModule, ReactiveFormsModule, ConfigurationComponent],
@@ -46,11 +49,52 @@ describe('DocumentsComponent', () => {
 			],
 		}).compileComponents();
 
+		controlContainer = TestBed.inject(ControlContainer);
+
 		fixture = TestBed.createComponent(ConfigurationComponent);
 		component = fixture.componentInstance;
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	describe('ngOnInit', () => {
+		it('should attach its form to its parent form', () => {
+			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			component.ngOnInit();
+
+			expect(parentFormSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('ngOnDestroy', () => {
+		it('should unsubscribe from all subscriptions', () => {
+			const spy = jest.spyOn(component.destroy$, 'complete');
+			component.ngOnDestroy();
+			expect(spy).toHaveBeenCalled();
+		});
+
+		it('should detach its form from its parent form', () => {
+			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			component.ngOnDestroy();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('shouldDisplayFormControl', () => {
+		it('should return true if the form control exists on the form', () => {
+			const formSpy = jest.spyOn(component.form, 'get');
+			const returnValue = component.shouldDisplayFormControl('techRecord_departmentalVehicleMarker');
+			expect(formSpy).toHaveBeenCalled();
+			expect(returnValue).toEqual(true);
+		});
+
+		it('should return false if the form control does not exists on the form', () => {
+			const formSpy = jest.spyOn(component.form, 'get');
+			const returnValue = component.shouldDisplayFormControl('fake_control');
+			expect(formSpy).toHaveBeenCalled();
+			expect(returnValue).toEqual(false);
+		});
 	});
 });

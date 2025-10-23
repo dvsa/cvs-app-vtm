@@ -187,4 +187,15 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 				return '';
 		}
 	}
+
+	get configAccordionDescription(): string {
+		switch (this.techRecord$()?.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return 'Off-road, fuel system, road friendly suspension.';
+			case VehicleTypes.TRL:
+				return 'Vehicle markers, road friendly suspension.';
+			default:
+				return '';
+		}
+	}
 }

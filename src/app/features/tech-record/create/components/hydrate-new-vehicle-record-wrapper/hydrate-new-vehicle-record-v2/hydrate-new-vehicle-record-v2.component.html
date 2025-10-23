@@ -195,11 +195,11 @@
                         </app-accordion>
                       }
                       <!-- configuration -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                         <app-accordion
                           [id]="'configuration'"
                           [title]="'Configuration'"
-                          [description]="'Off-road, fuel system, road friendly suspension.'"
+                          [description]="configAccordionDescription"
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
