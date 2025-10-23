@@ -5,6 +5,7 @@ import { NumberPlateComponent } from '@/src/app/components/number-plate/number-p
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
+import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -61,6 +62,7 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		AuthorisationIntoServiceComponent,
 		PurchasersComponent,
 		TyresComponent,
+		ManufacturerComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
