@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
@@ -89,10 +89,6 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
-	}
-
-	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
 	}
 
 	ngOnDestroy(): void {
