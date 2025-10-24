@@ -119,9 +119,12 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
-				this.techRecordAxles
-					.at(axleNumber - 1)
-					?.setErrors({ noAxleData: `Axle ${axleNumber} tyre code not in database` });
+				const tyreCode = this.techRecordAxles.at(axleNumber - 1).get('tyres_tyreCode');
+				if (tyreCode && !tyreCode.hasError('max')) {
+					const errors = tyreCode.errors ? tyreCode.errors : {};
+					tyreCode.setErrors({ ...errors, noAxleData: `Axle ${axleNumber} tyre code not in database` });
+				}
+
 				return;
 			}
 

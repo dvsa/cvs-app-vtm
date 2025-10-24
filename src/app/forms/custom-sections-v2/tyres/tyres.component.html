@@ -26,8 +26,8 @@
       <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
         <div
-          [class.govuk-form-group]="techRecordAxles.at(i)?.hasError('noAxleData')"
-          [class.govuk-form-group--error]="techRecordAxles.at(i)?.hasError('noAxleData')"
+          [class.govuk-form-group]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
+          [class.govuk-form-group--error]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
         >
         <ng-container formGroupName="{{i}}">
         <div class="input-row">
@@ -55,10 +55,10 @@
             Remove axle
           </button>
         </div>
-          @if (techRecordAxles.at(i)?.hasError('noAxleData')) {
+          @if (techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')) {
             <app-field-error-message
               [name]="'tyres-invalid-tyre-code-error'"
-              [error]="techRecordAxles.at(i)?.getError('noAxleData')" />
+              [error]="techRecordAxles.at(i).get('tyres_tyreCode')?.getError('noAxleData')" />
           }
         <div class="input-row">
           <govuk-form-group-input
@@ -69,6 +69,7 @@
             formControlName="tyres_tyreCode"
             [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.XS : FormNodeWidth.M"
             (blur)="getTyresRefData(i + 1)"
+            [showErrors]="!techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
