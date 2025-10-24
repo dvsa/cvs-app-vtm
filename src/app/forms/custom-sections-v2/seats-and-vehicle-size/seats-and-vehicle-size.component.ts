@@ -50,8 +50,8 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.max(150, 'Number of seat belts must be less than or equal to 150'),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
-			this.commonValidators.date('Seatbelt installation approval date / type approved'),
-			this.commonValidators.pastDate('Seatbelt installation approval date / type approved must be in the past'),
+			this.commonValidators.date('Seatbelt installation approval date'),
+			this.commonValidators.pastDate('Seatbelt installation approval date must be in the past'),
 		]),
 	});
 
