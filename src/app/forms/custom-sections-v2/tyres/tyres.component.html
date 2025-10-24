@@ -55,11 +55,15 @@
             Remove axle
           </button>
         </div>
-          @if (techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')) {
-            <app-field-error-message
-              [name]="'tyres-invalid-tyre-code-error'"
-              [error]="techRecordAxles.at(i).get('tyres_tyreCode')?.getError('noAxleData')" />
-          }
+        <!-- If tyre code is not found, and this is the only error, show this message -->
+        @let tyreCode = techRecordAxles.at(i).get('tyres_tyreCode');
+        @let showTyreCodeNotFoundError = tyreCode?.hasError('noAxleData') && !tyreCode?.hasError('max');
+        @if (showTyreCodeNotFoundError) {
+          @let error = tyreCode?.getError('noAxleData');
+          <app-field-error-message
+            [name]="'tyres-invalid-tyre-code-error'"
+            [error]="typeof error === 'string' ? error : error.error" />
+        }
         <div class="input-row">
           <govuk-form-group-input
             label="Code"
@@ -69,7 +73,7 @@
             formControlName="tyres_tyreCode"
             [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.XS : FormNodeWidth.M"
             (blur)="getTyresRefData(i + 1)"
-            [showErrors]="!techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
+            [showErrors]="!showTyreCodeNotFoundError"
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
