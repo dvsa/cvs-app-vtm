@@ -1,0 +1,81 @@
+<div class="govuk-!-padding-4" [formGroup]="form">
+  <!--  Name or company -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_name')) {
+    <govuk-form-group-input
+      label="Name or company"
+      formControlName="techRecord_manufacturerDetails_name"
+      [width]="FormNodeWidth.XL"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Address line 1 -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_address1')) {
+    <govuk-form-group-input
+      label="Address line 1"
+      formControlName="techRecord_manufacturerDetails_address1"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Address line 2 -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_address2')) {
+    <govuk-form-group-input
+      label="Address line 2 (optional)"
+      formControlName="techRecord_manufacturerDetails_address2"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Town or city -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_postTown')) {
+    <govuk-form-group-input
+      label="Town or city"
+      [width]="FormNodeWidth.XL"
+      formControlName="techRecord_manufacturerDetails_postTown"
+      [width]="FormNodeWidth.XL"
+    ></govuk-form-group-input>
+  }
+
+  <!--  County -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_address3')) {
+    <govuk-form-group-input
+      label="County"
+      [width]="FormNodeWidth.XL"
+      formControlName="techRecord_manufacturerDetails_address3"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Postcode -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_postCode')) {
+    <govuk-form-group-input
+      label="Postcode"
+      [width]="FormNodeWidth.L"
+      formControlName="techRecord_manufacturerDetails_postCode"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Telephone number -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_telephoneNumber')) {
+    <govuk-form-group-input
+      label="Telephone number"
+      [width]="FormNodeWidth.L"
+      formControlName="techRecord_manufacturerDetails_telephoneNumber"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Email address -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_emailAddress')) {
+    <govuk-form-group-input
+      label="Email address"
+      [width]="FormNodeWidth.XL"
+      formControlName="techRecord_manufacturerDetails_emailAddress"
+    ></govuk-form-group-input>
+  }
+
+  <!--  Manufacturer notes -->
+  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_manufacturerNotes')) {
+    <govuk-form-group-textarea
+      label="Manufacturer notes"
+      [maxLength]="1024"
+      formControlName="techRecord_manufacturerDetails_manufacturerNotes"
+    ></govuk-form-group-textarea>
+  }
+</div>
