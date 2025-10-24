@@ -5,7 +5,6 @@ import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tec
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
-import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { EXEMPT_OR_NOT_OPTIONS, VEHICLE_SIZE_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -20,7 +19,6 @@ import { ReplaySubject } from 'rxjs';
 		ReactiveFormsModule,
 		GovukFormGroupRadioComponent,
 		GovukFormGroupInputComponent,
-		GovukFormGroupSelectComponent,
 		GovukFormGroupDateComponent,
 	],
 })
