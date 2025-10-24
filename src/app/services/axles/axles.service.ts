@@ -9,6 +9,7 @@ import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -65,12 +66,25 @@ export class AxlesService {
 		}
 	}
 
+	refDataValidator(): ValidatorFn {
+		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+			? this.commonValidators.doesTyresRefDataExist(ReferenceDataResourceType.Tyres, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `!!!Axle ${index} tyre code not in database`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				})
+			: (control) => null;
+	}
+
 	generateHGVAxleForm(axle?: HGVAxles) {
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(axle?.axleNumber || null),
 
 			// Tyres fields
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
+				this.refDataValidator(),
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {

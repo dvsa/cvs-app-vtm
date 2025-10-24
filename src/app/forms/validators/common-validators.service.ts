@@ -1,10 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, inject } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { Store } from '@ngrx/store';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import validateDate from 'validate-govuk-date';
 import { GlobalError } from '../../core/components/global-error/global-error.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CommonValidatorsService {
+	store = inject(Store);
+
 	isOneOf<T>(value: T, message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && typeof value === 'object' && !Object.values(value as object).includes(control.value)) {
@@ -227,5 +232,28 @@ export class CommonValidatorsService {
 
 	invalidOption(message: string): ValidatorFn {
 		return (control) => (control.value === '[INVALID_OPTION]' ? { invalidOption: message } : null);
+	}
+
+	doesTyresRefDataExist(
+		refData: ReferenceDataResourceType,
+		func: (control: AbstractControl) => GlobalError
+	): ValidatorFn;
+	doesTyresRefDataExist(refData: ReferenceDataResourceType, message: string): ValidatorFn;
+	doesTyresRefDataExist(
+		refData: ReferenceDataResourceType,
+		message: string | ((control: AbstractControl) => GlobalError)
+	): ValidatorFn {
+		return (control: AbstractControl) => {
+			if (control.value) {
+				const tyresRefData = this.store.selectSignal(selectAllReferenceDataByResourceType(refData)) as Signal<
+					ReferenceDataTyre[]
+				>;
+				const refDataFound = tyresRefData()?.find((tyre) => tyre.code === String(control.value));
+				if (!refDataFound) {
+					return { noAxleData: typeof message === 'string' ? message : message(control) };
+				}
+			}
+			return null;
+		};
 	}
 }
