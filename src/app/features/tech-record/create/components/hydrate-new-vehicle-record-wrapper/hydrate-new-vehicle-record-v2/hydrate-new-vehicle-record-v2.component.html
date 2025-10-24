@@ -195,7 +195,7 @@
                         </app-accordion>
                       }
                       <!-- configuration -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion
                           [id]="'configuration'"
                           [title]="'Configuration'"

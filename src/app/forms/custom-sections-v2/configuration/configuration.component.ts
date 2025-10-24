@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -15,7 +16,12 @@ import { ReplaySubject } from 'rxjs';
 	templateUrl: './configuration.component.html',
 	styleUrls: ['./configuration.component.scss'],
 
-	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupSelectComponent],
+	imports: [
+		ReactiveFormsModule,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupInputComponent,
+	],
 })
 export class ConfigurationComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly VehicleTypes = VehicleTypes;
@@ -34,6 +40,8 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 				return this.hgvFields;
 			case VehicleTypes.TRL:
 				return this.trlFields;
+			case VehicleTypes.PSV:
+				return this.psvFields;
 			default:
 				return {};
 		}
@@ -59,6 +67,18 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
 			techRecord_suspensionType: this.fb.control<string | null>(null),
+		};
+	}
+
+	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
+		return {
+			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
+			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
+			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
+			techRecord_speedRestriction: this.fb.control<number | null>(null, [
+				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
+				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99'),
+			]),
 		};
 	}
 

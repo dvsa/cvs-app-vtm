@@ -35,7 +35,16 @@
         [options]="FUEL_PROPULSION_SYSTEM_OPTIONS"
     />
   }
-
+  @if (shouldDisplayFormControl('techRecord_speedRestriction')) {
+  <govuk-form-group-input
+    class="govuk-!-margin-bottom-7"
+    type="number"
+    label="Speed restriction"
+    formControlName="techRecord_speedRestriction"
+    [width]="FormNodeWidth.XS"
+    suffix="mph"
+  ></govuk-form-group-input>
+  }
   <!-- Road friendly suspension -->
   @if (shouldDisplayFormControl('techRecord_roadFriendly')) {
     <govuk-form-group-radio
@@ -47,8 +56,8 @@
   @if (shouldDisplayFormControl('techRecord_suspensionType')) {
     <govuk-form-group-select
       formControlName="techRecord_suspensionType"
-      label="Suspension system"
-      [defaultOption]="'Select suspension system'"
+      label="Suspension type"
+      [defaultOption]="'Select suspension type'"
       [options]="SUSPENSION_TYRE_OPTIONS"
     />
   }

@@ -200,6 +200,8 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 				return 'Off-road, fuel system, road friendly suspension.';
 			case VehicleTypes.TRL:
 				return 'Vehicle markers, road friendly suspension.';
+			case VehicleTypes.PSV:
+				return 'Vehicle markers, fuel system, speed restriction.';
 			default:
 				return '';
 		}
