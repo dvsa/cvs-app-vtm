@@ -28,11 +28,11 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 
 	form = this.fb.group({
 		techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Upper deck must be less than or equal to 99'),
+			this.commonValidators.max(99, 'Upper deck seats must be less than or equal to 99'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Lower deck must be less than or equal to 999'),
+			this.commonValidators.max(999, 'Lower deck seats must be less than or equal to 999'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_standingCapacity: this.fb.control<number | null>(null, [

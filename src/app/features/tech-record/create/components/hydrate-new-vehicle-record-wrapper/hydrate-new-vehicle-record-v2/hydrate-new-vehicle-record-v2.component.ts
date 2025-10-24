@@ -5,6 +5,7 @@ import { NumberPlateComponent } from '@/src/app/components/number-plate/number-p
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
+import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -19,6 +20,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from '@forms/custom-sections-v2/adr/adr.component';
 import { AuthorisationIntoServiceComponent } from '@forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
+import { ConfigurationComponent } from '@forms/custom-sections-v2/configuration/configuration.component';
 import { DimensionsComponent } from '@forms/custom-sections-v2/dimensions/dimensions.component';
 import { DocumentsComponent } from '@forms/custom-sections-v2/documents/documents.component';
 import { GeneralVehicleDetailsComponent } from '@forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
@@ -62,6 +64,8 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		AuthorisationIntoServiceComponent,
 		PurchasersComponent,
 		TyresComponent,
+		ManufacturerComponent,
+		ConfigurationComponent,
 		SeatsAndVehicleSizeComponent,
 	],
 })
@@ -138,7 +142,9 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	onCancel(): void {
-		this.router.navigate([TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL], { relativeTo: this.route });
+		this.router.navigate([TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL], {
+			relativeTo: this.route,
+		});
 	}
 
 	onCreateNewRecord(): void {
@@ -183,6 +189,17 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 				return 'Axle weights, unladen weight.';
 			case VehicleTypes.TRL:
 				return 'Axle, gross weights and coupling type.';
+			default:
+				return '';
+		}
+	}
+
+	get configAccordionDescription(): string {
+		switch (this.techRecord$()?.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return 'Off-road, fuel system, road friendly suspension.';
+			case VehicleTypes.TRL:
+				return 'Vehicle markers, road friendly suspension.';
 			default:
 				return '';
 		}
