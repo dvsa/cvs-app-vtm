@@ -1,18 +1,20 @@
 <div class="govuk-!-padding-4"  [formGroup]="form">
   <!-- Upper Deck -->
   <govuk-form-group-input
-    label="Upper deck"
-    [width]="FormNodeWidth.XS"
+    label="Upper deck seats"
+    [width]="FormNodeWidth.XXS"
     formControlName="techRecord_seatsUpperDeck"
     type="number"
+    class="govuk-label--s"
   ></govuk-form-group-input>
 
   <!-- Lower Deck -->
   <govuk-form-group-input
-    label="Lower deck"
-    [width]="FormNodeWidth.XS"
+    label="Lower deck seats"
+    [width]="FormNodeWidth.XXS"
     formControlName="techRecord_seatsLowerDeck"
     type="number"
+    class="govuk-label--s"
   ></govuk-form-group-input>
 
   <!-- Standing Capacity -->
@@ -20,7 +22,8 @@
     label="Standing capacity"
     formControlName = 'techRecord_standingCapacity'
     type="number"
-    [width]="FormNodeWidth.XS"
+    [width]="FormNodeWidth.XXS"
+    class="govuk-label--s"
   ></govuk-form-group-input>
 
   <!-- Wheelchair Capacity  -->
@@ -28,15 +31,17 @@
     formControlName="techRecord_dda_wheelchairCapacity"
     type="number"
     label="Wheelchair capacity"
-    [width]="FormNodeWidth.XS"
+    [width]="FormNodeWidth.XXS"
+    class="govuk-label--s"
   ></govuk-form-group-input>
 
   <!--  Vehicle class-->
   <govuk-form-group-radio
     label="Vehicle class"
-    [hint]="'Vehicle class is calculated automatically based on the number of seats and standing capacity.'"
+    [hint]="'Vehicle class is calculated based on the number of seats and standing capacity'"
     formControlName="techRecord_vehicleClass_description"
     [options]="VehicleClassOptions"
+    class="govuk-label--s"
   ></govuk-form-group-radio>
 
   <!-- Vehicle size -->
@@ -44,7 +49,8 @@
     label="Vehicle size"
     formControlName="techRecord_vehicleSize"
     [options]="VEHICLE_SIZE_OPTIONS"
-    [hint]="'Vehicle size is calculated automatically based on the number of seats and standing capacity.'"
+    [hint]="'Vehicle size is calculated based on the number of seats and standing capacity'"
+    class="govuk-label--s"
   ></govuk-form-group-radio>
 
   <!--  Number of Seatbelts -->
@@ -53,11 +59,13 @@
     formControlName="techRecord_numberOfSeatbelts"
     type="numericString"
     [width]="FormNodeWidth.XXS"
+    class="govuk-label--s"
   ></govuk-form-group-input>
 
   <!-- Seatbelt installation approval date / type approved -->
   <govuk-form-group-date
     label="Seatbelt installation approval date / type approved"
     formControlName="techRecord_seatbeltInstallationApprovalDate"
+    class="govuk-label--s"
   ></govuk-form-group-date>
 </div>
