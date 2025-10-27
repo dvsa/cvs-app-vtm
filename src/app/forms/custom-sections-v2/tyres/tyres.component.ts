@@ -6,6 +6,7 @@ import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
@@ -34,6 +35,7 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 		GovukFormGroupInputComponent,
 		GovukFormGroupSelectComponent,
 		FieldWarningMessageComponent,
+		FieldErrorMessageComponent,
 	],
 })
 export class TyresComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
@@ -79,7 +81,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 			(axle as PSVAxles).tyres_speedCategorySymbol = tyre.speedCategorySymbol;
 		}
 
-		this.techRecordAxles.patchValue(axlesClone);
+		this.techRecordAxles.at(axleIndex).patchValue(axle);
 		this.technicalRecordService.updateEditingTechRecord({ techRecord_axles: axlesClone } as any);
 	}
 
@@ -117,7 +119,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
-				this.techRecordAxles.setErrors({ noAxleData: `Cannot find data of this tyre on axle ${axleNumber}` });
 				return;
 			}
 

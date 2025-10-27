@@ -1,8 +1,10 @@
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { State, initialAppState } from '@/src/app/store';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { provideMockStore } from '@ngrx/store/testing';
 import { ApprovalTypeNumber } from '../approval-type-number';
 
 @Component({
@@ -35,6 +37,7 @@ describe('ApprovalTypeNumber', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [HostComponent],
+			providers: [provideMockStore<State>({ initialState: initialAppState })],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(HostComponent);

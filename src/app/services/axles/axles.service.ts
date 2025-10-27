@@ -4,6 +4,7 @@ import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hg
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
@@ -65,6 +66,18 @@ export class AxlesService {
 		}
 	}
 
+	refDataValidator(): ValidatorFn {
+		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+			? this.commonValidators.doesTyresRefDataExist(ReferenceDataResourceType.Tyres, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `Axle ${index} tyre code not in database`,
+						anchorLink: `tyres_tyreCode-${index}`,
+					};
+				})
+			: (control) => null;
+	}
+
 	generateHGVAxleForm(axle?: HGVAxles) {
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(axle?.axleNumber || null),
@@ -85,6 +98,7 @@ export class AxlesService {
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
+				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
@@ -141,6 +155,7 @@ export class AxlesService {
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
+				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
@@ -211,6 +226,7 @@ export class AxlesService {
 						anchorLink: `tyres_tyreCode-${index}`,
 					};
 				}),
+				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.max(12, 'Tyre Size must be less than or equal to 12'),

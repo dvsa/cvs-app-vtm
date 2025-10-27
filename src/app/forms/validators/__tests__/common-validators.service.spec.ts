@@ -1,5 +1,7 @@
+import { State, initialAppState } from '@/src/app/store';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
+import { provideMockStore } from '@ngrx/store/testing';
 import { CommonValidatorsService } from '../common-validators.service';
 
 describe('CommonValidatorsService', () => {
@@ -7,7 +9,7 @@ describe('CommonValidatorsService', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			providers: [CommonValidatorsService],
+			providers: [CommonValidatorsService, provideMockStore<State>({ initialState: initialAppState })],
 		}).compileComponents();
 
 		service = TestBed.inject(CommonValidatorsService);

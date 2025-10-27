@@ -1,6 +1,8 @@
+import { State, initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { AxlesService } from '../axles.service';
 
@@ -9,7 +11,12 @@ describe('AxlesService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [FeatureToggleService, provideHttpClient(), provideHttpClientTesting()],
+			providers: [
+				FeatureToggleService,
+				provideMockStore<State>({ initialState: initialAppState }),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+			],
 		});
 		service = TestBed.inject(AxlesService);
 	});

@@ -25,6 +25,10 @@
     @if (parent.get('techRecord_axles')) {
       <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
+        <div
+          [class.govuk-form-group]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
+          [class.govuk-form-group--error]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
+        >
         <ng-container formGroupName="{{i}}">
         <div class="input-row">
           <caption class="govuk-table__caption govuk-table__caption--s govuk-!-margin-bottom-2">
@@ -51,6 +55,15 @@
             Remove axle
           </button>
         </div>
+        <!-- If tyre code is not found, and this is the only error, show this message -->
+        @let tyreCode = techRecordAxles.at(i).get('tyres_tyreCode');
+        @let showTyreCodeNotFoundError = tyreCode?.hasError('noAxleData') && !tyreCode?.hasError('max');
+        @if (showTyreCodeNotFoundError) {
+          @let error = tyreCode?.getError('noAxleData');
+          <app-field-error-message
+            [name]="'tyres-invalid-tyre-code-error'"
+            [error]="typeof error === 'string' ? error : error.error" />
+        }
         <div class="input-row">
           <govuk-form-group-input
             label="Code"
@@ -60,6 +73,7 @@
             formControlName="tyres_tyreCode"
             [width]="tr.techRecord_vehicleType === VehicleTypes.PSV ? FormNodeWidth.XS : FormNodeWidth.M"
             (blur)="getTyresRefData(i + 1)"
+            [showErrors]="!showTyreCodeNotFoundError"
           ></govuk-form-group-input>
             <govuk-form-group-input
               label="Size"
@@ -111,6 +125,7 @@
             ></govuk-form-group-select>
         </div>
         </ng-container>
+        </div>
       }
       </ng-container>
     }

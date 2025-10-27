@@ -1,6 +1,8 @@
 name: CD (Deploy)
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 on:
+  push:
+    branches: ['develop']
   workflow_dispatch:
     inputs:
       environment:
@@ -32,7 +34,7 @@ jobs:
         id: environment
         uses: dvsa/cvs-github-actions/environment@develop
         with:
-          environment: ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment }}
+          environment: ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}
           output-summary: false
 
   build-application:
@@ -63,7 +65,7 @@ jobs:
           role-session-name: GHA-VTM-Config
 
       - name: Get app config from AWS Secrets Manager
-        run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
+        run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
 
       - name: Build App
         env:
