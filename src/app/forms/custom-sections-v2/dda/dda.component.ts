@@ -60,6 +60,9 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 	ngOnInit(): void {
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	ngOnDestroy(): void {

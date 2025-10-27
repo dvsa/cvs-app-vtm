@@ -3,6 +3,7 @@ import { AccordionComponent } from '@/src/app/components/accordion/accordion.com
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
+import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
@@ -67,6 +68,7 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		ManufacturerComponent,
 		ConfigurationComponent,
 		SeatsAndVehicleSizeComponent,
+		BrakesComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
@@ -205,5 +207,11 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			default:
 				return '';
 		}
+	}
+
+	get brakesAccordionDescription(): string {
+		return this.techRecord$()?.techRecord_vehicleType === VehicleTypes.PSV
+			? 'Brake codes, retarders, parking brakes.'
+			: 'Axle brake details, parking brakes.';
 	}
 }
