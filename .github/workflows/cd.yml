@@ -1,6 +1,8 @@
 name: CD (Deploy)
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 on:
+  push:
+    branches: ['develop']
   workflow_dispatch:
     inputs:
       environment:
