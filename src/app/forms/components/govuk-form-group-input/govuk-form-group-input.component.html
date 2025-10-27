@@ -42,7 +42,7 @@
         (ngModelChange)="writeValue($event)"
         (blur)="onTouched(); onBlur($event)"
         [class]="style"
-        [disabled]="control?.disabled || false"
+        [disabled]="control?.disabled || disabled() || false"
         [maxlength]="maxlength()"
         />
     }
@@ -62,7 +62,7 @@
         inputmode="numeric"
         (blur)="onTouched(); onBlur($event)"
         [class]="style"
-        [disabled]="control?.disabled || false"
+        [disabled]="control?.disabled || disabled() || false"
         />
     }
 
@@ -80,7 +80,7 @@
         appNumberOnly
         (blur)="onTouched(); onBlur($event)"
         [class]="style"
-        [disabled]="control?.disabled || false"
+        [disabled]="control?.disabled || disabled() || false"
         />
     }
 
@@ -99,7 +99,7 @@
         pattern="^\d*\.?\d*$"
         (blur)="onTouched(); onBlur($event)"
         [class]="style"
-        [disabled]="control?.disabled || false"
+        [disabled]="control?.disabled || disabled() || false"
         />
     }
 

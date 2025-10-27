@@ -16,7 +16,7 @@ export class GovukFormGroupBaseComponent {
 
 	readonly controlHint = input('', { alias: 'hint' });
 
-	readonly controlName = input.required<string>({ alias: 'formControlName' });
+	readonly controlName = input<string>('', { alias: 'formControlName' });
 
 	readonly controlLabel = input('', { alias: 'label' });
 
