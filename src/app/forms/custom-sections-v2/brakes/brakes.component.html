@@ -1,49 +1,57 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
   @if (techRecord(); as tr) {
     @if(tr.techRecord_vehicleType === VehicleTypes.TRL) {
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header"></th>
-            <th scope="col" class="govuk-table__header">Brake actuator</th>
-            <th scope="col" class="govuk-table__header">Lever length</th>
-            <th scope="col" class="govuk-table__header">Spring brake parking</th>
-          </tr>
-        </thead>
         @if(parent.get('techRecord_axles')) {
-          <tbody class="govuk-table__body" [formGroup]="parent">
+          <ng-container [formGroup]="parent">
             <ng-container formArrayName="techRecord_axles">
               @for(axle of axles.controls; track axle; let i = $index) {
-                <tr class="govuk-table__row" formGroupName="{{ i }}">
-                  <th class="govuk-table__header" scope="row">Axle {{ axle.value.axleNumber }}</th>
-                  <td class="govuk-table__cell">
+                <ng-container formGroupName="{{ i }}">
+                  <label class="govuk-label govuk-label--s">Axle {{ axle.value.axleNumber }} brake details</label>
+                  @if (techRecordAxles.at(i).get('brakes_brakeActuator')?.invalid || techRecordAxles.at(i).get('brakes_leverLength')?.invalid) {
+                    <app-field-error-message [name]="'axle ' + axle.value.axleNumber + ' brake details'"
+                                             [error]="'Brake actuator and Lever length must be less than or equal to 999mm'" />
+                  }
+                  <div class="input-row">
                     <govuk-form-group-input
-                    id="brakes_brakeActuator-{{ i + 1 }}"
-                    type="number"
-                    formControlName="brakes_brakeActuator"
-                    ></govuk-form-group-input>
-                  </td>
-                  <td class="govuk-table__cell">
+                      label="Brake actuator"
+                      id="brakes_brakeActuator-{{ i + 1 }}"
+                      type="number"
+                      class="input-group"
+                      formControlName="brakes_brakeActuator"
+                      [suffix]="'mm'"
+                      [width]="FormNodeWidth.M"
+                      [showErrors]="false"
+                    />
+
                     <govuk-form-group-input
-                    id="brakes_leverLength-{{ i + 1 }}"
-                    type="number"
-                    formControlName="brakes_leverLength"
-                    ></govuk-form-group-input>
-                  </td>
-                  <td class="govuk-table__cell">
+                      label="Lever length"
+                      id="brakes_leverLength-{{ i + 1 }}"
+                      type="number"
+                      class="input-group"
+                      formControlName="brakes_leverLength"
+                      [suffix]="'mm'"
+                      [width]="FormNodeWidth.M"
+                      [showErrors]="false"
+                    />
+
                     <govuk-form-group-select
-                    id="brakes_springBrakeParking-{{ i + 1 }}"
-                    formControlName="brakes_springBrakeParking"
-                    [options]="booleanOptions"
-                    [allowNull]="true"
-                    ></govuk-form-group-select>
-                  </td>
-                </tr>
+                      label="Spring brake parking"
+                      id="brakes_springBrakeParking-{{ i + 1 }}"
+                      class="input-group select-width"
+                      formControlName="brakes_springBrakeParking"
+                      [options]="booleanOptions"
+                      [allowNull]="true"
+                    />
+                  </div>
+                </ng-container>
+              } @empty {
+                <app-field-warning-message
+                  id="enter-number-of-axles-brake-details-warning-message"
+                  [warningMessage]="'Enter the number of axles to be able to add axle brake details.'" />
               }
             </ng-container>
-          </tbody>
+          </ng-container>
         }
-      </table>
 
       <div class="radio-buttons">
         <govuk-form-group-radio
@@ -166,7 +174,7 @@
 
         @if (showNoAxlesWarning) {
           <app-field-warning-message
-          id="enter-number-of-axles-brakes-warning-message"
+          id="enter-number-of-axles-parking-brakes-warning-message"
           [warningMessage]="'Enter the number of axles to be able to add parking brakes.'" />
         }
 

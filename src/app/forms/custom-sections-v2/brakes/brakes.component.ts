@@ -6,6 +6,7 @@ import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/tech
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Retarders, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -30,6 +31,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		GovukFormGroupSelectComponent,
 		GovukFormGroupAutocompleteComponent,
 		FieldWarningMessageComponent,
+		FieldErrorMessageComponent,
 	],
 })
 export class BrakesComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -65,6 +67,10 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
+
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -76,6 +82,10 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 			default:
 				return {};
 		}
+	}
+
+	get techRecordAxles() {
+		return this.parent.get('techRecord_axles') as FormArray;
 	}
 
 	get psvControls() {

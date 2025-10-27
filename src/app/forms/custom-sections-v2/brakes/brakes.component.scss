@@ -34,3 +34,8 @@
 .govuk-\!-margin-bottom-12::ng-deep > .govuk-form-group {
   margin-bottom: 12px !important;
 }
+
+.select-width::ng-deep .govuk-select {
+  min-width: 10.5rem;
+  max-width: 10.5rem;
+}
