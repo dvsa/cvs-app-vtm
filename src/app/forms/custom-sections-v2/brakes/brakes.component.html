@@ -73,10 +73,11 @@
       <govuk-form-group-autocomplete
         formControlName="techRecord_brakes_brakeCodeOriginal"
         label="Brake code"
-        hint="If year of manufacture is 1988, check your brake code"
+        hint="Check your brake code if year of manufacture is 1988"
         [width]="FormNodeWidth.XL"
         [prefix]="brakeCodePrefix"
         [options$]="brakeCodeOptions$"
+        [placeholder]="'Enter brake code'"
       />
 
       <govuk-form-group-input
@@ -118,6 +119,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 45) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
         <govuk-form-group-input
           label="Secondary"
@@ -126,6 +128,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 22.5) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
         <govuk-form-group-input
           label="Parking"
@@ -134,6 +137,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 16) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
       </div>
 
@@ -146,6 +150,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 50) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
         <govuk-form-group-input
           label="Secondary"
@@ -154,6 +159,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 25) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
         <govuk-form-group-input
           label="Parking"
@@ -162,6 +168,7 @@
           [disabled]="true"
           [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 16) / 100)"
           [width]="FormNodeWidth.M"
+          [suffix]="'kg'"
         ></govuk-form-group-input>
       </div>
     }

@@ -105,7 +105,12 @@
 
     <!-- Provide suffix via string input -->
     @if (suffix()) {
-      <div class="govuk-input__suffix" aria-hidden="true">{{ suffix() }}</div>
+      <div 
+        class="govuk-input__suffix" 
+        [class.govuk-input__suffix-disabled]="control?.disabled || disabled() || false" 
+        aria-hidden="true">
+        {{ suffix() }}
+      </div>
     }
 
     <!-- Also allow providing of suffix via content projection for more complex suffixes -->
