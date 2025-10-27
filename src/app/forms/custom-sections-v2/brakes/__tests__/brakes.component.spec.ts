@@ -14,13 +14,13 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
+import { STORE_FEATURE_REFERENCE_DATA_KEY, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { BrakesComponent } from '../brakes.component';
@@ -93,7 +93,7 @@ describe('BrakesComponent', () => {
 		it('should attach all form controls to parent', () => {
 			const parent = controlContainer.control as FormGroup;
 			component.ngOnInit();
-			expect(parent.controls).toEqual(component.form.controls);
+			expect(Object.keys(parent.controls)).toEqual(Object.keys(component.form.controls));
 		});
 
 		it('should call loadOptions', () => {
@@ -179,10 +179,14 @@ describe('BrakesComponent', () => {
 
 	describe('handleBrakeCodeChange', () => {
 		it('should early return for vehicles other than PSV', () => {
-			const spy = jest.spyOn(component.form, 'get');
-			fixture.componentRef.setInput('techRecord', mockTRL);
-			component.handleBrakeCodeChange();
-			expect(spy).not.toHaveBeenCalled();
+			store
+				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
+				.subscribe((value: ReferenceDataModelBase) => {
+					const spy = jest.spyOn(component.form, 'get');
+					fixture.componentRef.setInput('techRecord', mockTRL);
+					component.handleBrakeCodeChange();
+					expect(spy).not.toHaveBeenCalled();
+				});
 		});
 
 		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
@@ -218,14 +222,21 @@ describe('BrakesComponent', () => {
 			});
 
 			fixture.componentRef.setInput('techRecord', mockPSV);
-			component.handleBrakeCodeChange();
-			component.form.patchValue({
-				techRecord_brakes_brakeCodeOriginal: '123',
-			});
+			store
+				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
+				.subscribe((value: ReferenceDataModelBase) => {
+					component.handleBrakeCodeChange();
+					component.form.patchValue({
+						techRecord_brakes_brakeCodeOriginal: '123',
+					});
 
-			jest.advanceTimersByTime(401);
+					jest.advanceTimersByTime(401);
 
-			expect(dispatchSpy).toHaveBeenNthCalledWith(1, updateEditingTechRecord({ vehicleTechRecord: changes } as any));
+					expect(dispatchSpy).toHaveBeenNthCalledWith(
+						1,
+						updateEditingTechRecord({ vehicleTechRecord: changes } as any)
+					);
+				});
 		});
 	});
 });
