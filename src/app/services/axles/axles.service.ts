@@ -194,15 +194,29 @@ export class AxlesService {
 	}
 
 	generateTRLAxleForm(axle?: TRLAxles) {
+		const featureEnabled = this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails');
+
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(axle?.axleNumber || null),
 
 			// Brakes fields
 			brakes_brakeActuator: this.fb.control<number | null>(axle?.brakes_brakeActuator || null, [
-				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
+				this.commonValidators.max(999, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `${featureEnabled ? 'Brake actuator and Lever length' : 'This field'} must be less than or equal to 999`,
+						anchorLink: `brakes_brakeActuator-${index}`,
+					};
+				}),
 			]),
 			brakes_leverLength: this.fb.control<number | null>(axle?.brakes_leverLength || null, [
-				this.commonValidators.max(999, 'This field must be less than or equal to 999'),
+				this.commonValidators.max(999, (control) => {
+					const index = control.parent?.get('axleNumber')?.value || 0;
+					return {
+						error: `${featureEnabled ? 'Brake actuator and Lever length' : 'This field'} must be less than or equal to 999`,
+						anchorLink: `brakes_leverLength-${index}`,
+					};
+				}),
 			]),
 			brakes_springBrakeParking: this.fb.control<boolean | null>(
 				typeof axle?.brakes_springBrakeParking === 'boolean' ? axle?.brakes_springBrakeParking : null,
@@ -238,9 +252,7 @@ export class AxlesService {
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? FitmentCodeEnum.Single
-					: axle?.tyres_fitmentCode || null
+				featureEnabled ? FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
