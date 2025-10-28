@@ -59,6 +59,9 @@ export class ManufacturerComponent extends EditBaseComponent implements OnInit, 
 	ngOnInit(): void {
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

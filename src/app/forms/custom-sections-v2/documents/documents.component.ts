@@ -36,6 +36,9 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	get controls() {

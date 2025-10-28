@@ -262,6 +262,9 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	getVehicleType(): VehicleTypes {

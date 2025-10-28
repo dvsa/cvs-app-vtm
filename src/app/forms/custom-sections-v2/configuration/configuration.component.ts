@@ -76,7 +76,6 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
 			techRecord_speedRestriction: this.fb.control<number | null>(null, [
-				this.commonValidators.min(0, 'Speed restriction must be greater than or equal to 0'),
 				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99mph'),
 			]),
 		};
@@ -90,6 +89,9 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		// Attach all form controls to parent
 		this.init(this.form);
+
+		// Prepopulate form with current tech record
+		this.form.patchValue(this.techRecord() as any);
 	}
 
 	ngOnDestroy(): void {
