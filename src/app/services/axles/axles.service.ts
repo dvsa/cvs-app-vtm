@@ -204,7 +204,9 @@ export class AxlesService {
 				this.commonValidators.max(999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `${featureEnabled ? 'Brake actuator and Lever length' : 'This field'} must be less than or equal to 999`,
+						error: featureEnabled
+							? 'Brake actuator and Lever length must be less than or equal to 999mm'
+							: 'This field must be less than or equal to 999',
 						anchorLink: `brakes_brakeActuator-${index}`,
 					};
 				}),
@@ -213,7 +215,9 @@ export class AxlesService {
 				this.commonValidators.max(999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
-						error: `${featureEnabled ? 'Brake actuator and Lever length' : 'This field'} must be less than or equal to 999`,
+						error: featureEnabled
+							? 'Brake actuator and Lever length must be less than or equal to 999mm'
+							: 'This field must be less than or equal to 999',
 						anchorLink: `brakes_leverLength-${index}`,
 					};
 				}),
