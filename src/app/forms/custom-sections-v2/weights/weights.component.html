@@ -41,14 +41,27 @@
           </button>
         }
 
-        @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV && (techRecordAxles.at(i).get('weights_gbWeight')?.invalid || techRecordAxles.at(i).get('weights_eecWeight')?.invalid || techRecordAxles.at(i).get('weights_designWeight')?.invalid)) {
-          <app-field-error-message [name]="`Axle-${ i + 1 }-weights`"
-                                    [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`" />
+        @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV && (
+          techRecordAxles.at(i).get('weights_gbWeight')?.invalid || 
+          techRecordAxles.at(i).get('weights_eecWeight')?.invalid || 
+          techRecordAxles.at(i).get('weights_designWeight')?.invalid
+        )) {
+          <app-field-error-message 
+            [name]="`Axle-${ i + 1 }-weights`"
+            [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`">
+          </app-field-error-message>
         }
 
-        @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV && (techRecordAxles.at(i).get('weights_kerbWeight')?.invalid || techRecordAxles.at(i).get('weights_ladenWeight')?.invalid || techRecordAxles.at(i).get('weights_gbWeight')?.invalid || techRecordAxles.hasError('weights_designWeight'))) {
-          <app-field-error-message [name]="`Axle-${ i + 1 }-weights`"
-                                    [error]="`Axle ${ i + 1 } Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`" />
+        @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV && (
+          techRecordAxles.at(i).get('weights_kerbWeight')?.invalid || 
+          techRecordAxles.at(i).get('weights_ladenWeight')?.invalid || 
+          techRecordAxles.at(i).get('weights_gbWeight')?.invalid || 
+          techRecordAxles.at(i).get('weights_designWeight')?.invalid
+        )) {
+          <app-field-error-message 
+            [name]="`Axle-${ i + 1 }-weights`"
+            [error]="`Axle ${ i + 1 } Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`">
+          </app-field-error-message>
         }
 
         <div class="axle" formGroupName="{{ i }}">
