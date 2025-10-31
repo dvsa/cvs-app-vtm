@@ -45,9 +45,11 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
 			this.commonValidators.required('Vehicle class is required'),
 		]),
-		techRecord_vehicleSize: this.fb.control<string | null>(null),
+		techRecord_vehicleSize: this.fb.control<string | null>(null, [
+			this.commonValidators.required('Vehicle size is required'),
+		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
-			this.commonValidators.max(150, 'Number of seat belts must be less than or equal to 150'),
+			this.commonValidators.max(150, 'Number of seatbelts must be less than or equal to 150'),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Seatbelt installation approval date'),
