@@ -61,7 +61,7 @@
         @if (showTyreCodeNotFoundError) {
           @let error = tyreCode?.getError('noAxleData');
           <app-field-error-message
-            [name]="'tyres-invalid-tyre-code-error'"
+            [name]="`tyres-${ i + 1 }-invalid-tyre-code`"
             [error]="typeof error === 'string' ? error : error.error" />
         }
         <div class="input-row">
