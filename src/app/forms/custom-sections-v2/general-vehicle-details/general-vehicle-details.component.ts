@@ -214,7 +214,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
+				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -263,7 +263,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
+				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -315,7 +315,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be 10 characters or less'),
+				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
