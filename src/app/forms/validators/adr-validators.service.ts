@@ -101,17 +101,34 @@ export class AdrValidatorsService {
 
 	requiresOnePopulatedTC3Field(message: string): ValidatorFn {
 		return (control) => {
-			if (control.parent && this.adrService.canDisplayTankOrBatterySection(control.root.value)) {
+			if (
+				control.parent &&
+				control.parent.parent instanceof FormArray &&
+				this.adrService.canDisplayTankOrBatterySection(control.root.value)
+			) {
+				const index = control.parent.parent.controls.indexOf(control.parent);
 				const tc3InspectionType = control.parent.get('tc3Type');
 				const tc3PeriodicNumber = control.parent.get('tc3PeriodicNumber');
 				const tc3ExpiryDate = control.parent.get('tc3PeriodicExpiryDate');
 				const allFieldsEmpty = !tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value;
 
 				if (allFieldsEmpty) {
-					return { required: message };
+					return {
+						required: {
+							error: message,
+							anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3Type`,
+						},
+					};
 				}
+
 				if (!allFieldsEmpty) {
-					[tc3InspectionType, tc3PeriodicNumber, tc3ExpiryDate].map((ctrl) => ctrl?.setErrors(null));
+					[tc3InspectionType, tc3PeriodicNumber, tc3ExpiryDate].map((ctrl) => {
+						// If another field has been populated, then clear the required error against all controls, but keep other errors
+						if (ctrl && ctrl.errors && 'required' in ctrl.errors) {
+							const { required, ...otherErrors } = ctrl.errors;
+							ctrl.setErrors(Object.keys(otherErrors).length ? otherErrors : null);
+						}
+					});
 				}
 			}
 

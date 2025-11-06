@@ -3,7 +3,7 @@
   <fieldset class="govuk-fieldset">
     @if (controlLabel()) {
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading tags" id="{{ labelId }}">
+        <h1 class="govuk-fieldset__heading tags" [id]="labelId">
           {{ controlLabel() }}
           @if (tags().length) {
             <div class="tags">
@@ -17,11 +17,11 @@
     }
 
     @if (controlHint()) {
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+      <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
     }
 
     @if (hasError) {
-      <p class="govuk-error-message" id="{{ errorId }}">
+      <p class="govuk-error-message" [id]="errorId">
         <span class="govuk-visually-hidden">Error: </span>
         <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
       </p>
@@ -31,15 +31,15 @@
       @for (option of options(); track option) {
         <div class="govuk-checkboxes__item">
           <input
-            id="{{ id }}-{{ option.value }}-checkbox"
-            name="{{ id }}-{{ option.value }}-checkbox"
+            [id]="`${id}-${option.value}-checkbox`"
+            [name]="`${id}-${option.value}-checkbox`"
             type="checkbox"
             class="govuk-checkboxes__input"
             [checked]="isChecked(option.value)"
             (input)="toggle(option.value)"
-            [attr.aria-labelledby]="controlId() + '-' + option.value + '-label'"
+            [attr.aria-labelledby]="`${id}-${option.value}-label`"
             />
-          <label class="govuk-label govuk-checkboxes__label" id="{{ id }}-{{ option.value }}-label" for="{{ id }}-{{ option.value }}-checkbox">
+          <label class="govuk-label govuk-checkboxes__label" [id]="`${id}-${option.value}-label`" [htmlFor]="`${id}-${option.value}-checkbox`">
             {{ option.label }}
           </label>
         </div>

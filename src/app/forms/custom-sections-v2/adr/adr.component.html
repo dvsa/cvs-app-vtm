@@ -220,6 +220,7 @@
                               <td class="govuk-table__cell border-b-0">
                                 <p class="govuk-body margin-b-0">
                                   <button
+                                    [id]="`remove-un-number-${i + 1}`"
                                     type="button"
                                     class="govuk-button govuk-button--warning"
                                     data-module="govuk-button"
@@ -246,6 +247,7 @@
 
                   <p class="govuk-body">
                     <button
+                      [id]="'add-un-number-button'"
                       type="button"
                       class="govuk-button govuk-button--secondary"
                       data-module="govuk-button"
@@ -300,6 +302,7 @@
                   <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
                   <!-- TC3 Inspection Type -->
                   <govuk-form-group-select
+                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
                     class="govuk-label govuk-label--s"
                     label="TC3: Inspection type"
                     formControlName="tc3Type"
@@ -308,14 +311,15 @@
                   />
                   <!-- TC3 Certificate Number -->
                   <govuk-form-group-input
+                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
                     class="govuk-label govuk-label--s"
                     label="TC3: Certificate number"
                     formControlName="tc3PeriodicNumber"
                   />
                   <!-- TC3 Expiry Date -->
                   <govuk-form-group-date
+                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
                     class="govuk-label govuk-label--s"
-                    [id]="'tc3PeriodicExpiryDate_' + i"
                     label="TC3: Expiry date"
                     formControlName="tc3PeriodicExpiryDate"
                   />
