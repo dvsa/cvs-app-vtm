@@ -1,8 +1,17 @@
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
-import { type AbstractControl, ReactiveFormsModule, type ValidationErrors, type ValidatorFn } from '@angular/forms';
+import {
+	type AbstractControl,
+	type FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	type ValidationErrors,
+	type ValidatorFn,
+} from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ApprovalType as TRLApprovalTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as HGVAndPSVApprovalTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import type { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -16,7 +25,13 @@ import { ReplaySubject } from 'rxjs';
 	selector: 'app-approval-type',
 	templateUrl: './approval-type.component.html',
 	styleUrls: ['./approval-type.component.scss'],
-	imports: [ReactiveFormsModule, ApprovalTypeNumber, GovukFormGroupInputComponent, GovukFormGroupSelectComponent],
+	imports: [
+		ReactiveFormsModule,
+		ApprovalTypeNumber,
+		GovukFormGroupInputComponent,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupDateComponent,
+	],
 })
 export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -24,7 +39,7 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	trlApprovalTypes = getOptionsFromEnum(TRLApprovalTypes);
 	hgvAndPsvApprovalTypes = getOptionsFromEnum(HGVAndPSVApprovalTypes);
 
-	form = this.fb.group({
+	form: FormGroup = this.fb.group({
 		techRecord_approvalType: this.fb.nonNullable.control<string | null>({
 			value: null,
 			disabled: false,
@@ -45,9 +60,18 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 
 	ngOnInit(): void {
 		this.init(this.form);
+		this.addControlsBasedOffVehicleType();
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
+	}
+
+	private addControlsBasedOffVehicleType() {
+		const vehicleControls = this.controlsBasedOffVehicleType;
+
+		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
+			this.form.addControl(key, control, { emitEvent: false });
+		}
 	}
 
 	requiredWithApprovalType(message: string): ValidatorFn {
@@ -69,6 +93,32 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 
 	shouldDisplayFormControl(formControlName: string) {
 		return !!this.form.get(formControlName);
+	}
+
+	get controlsBasedOffVehicleType() {
+		if (this.vehicleType === VehicleTypes.PSV) {
+			return this.psvOnlyFields;
+		}
+		return null;
+	}
+
+	private get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
+		return {
+			techRecord_coifSerialNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
+				this.commonValidators.maxLength(8, 'COIF serial number must be less than or equal to 8 characters'),
+			]),
+			techRecord_coifCertifierName: this.fb.control<string | null>({ value: null, disabled: false }, [
+				this.commonValidators.maxLength(20, 'COIF certifier name must be less than or equal to 20 characters'),
+			]),
+			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
+				this.commonValidators.date('COIF certifier date'),
+				this.commonValidators.pastDate('COIF certifier date must be in the past'),
+			]),
+		};
+	}
+
+	get vehicleType(): VehicleTypes {
+		return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord());
 	}
 
 	ngOnDestroy(): void {

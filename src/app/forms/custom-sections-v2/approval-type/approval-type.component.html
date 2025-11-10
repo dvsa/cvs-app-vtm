@@ -1,22 +1,46 @@
 @if (techRecord(); as tr) {
   @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
     <div [formGroup]="form" class="govuk-!-padding-4">
-        <govuk-form-group-select
+      <govuk-form-group-select
+        class="govuk-label govuk-label--s"
+        label="Approval type"
+        formControlName="techRecord_approvalType"
+        [options]="tr.techRecord_vehicleType === VehicleTypes.TRL ? trlApprovalTypes : hgvAndPsvApprovalTypes"
+        [defaultOption]="'Select approval type'"
+      ></govuk-form-group-select>
+      @if (tr.techRecord_approvalType) {
+        <approval-type-number-input
           class="govuk-label govuk-label--s"
-          label="Approval type"
-          formControlName="techRecord_approvalType"
-          [options]="tr.techRecord_vehicleType === VehicleTypes.TRL ? trlApprovalTypes : hgvAndPsvApprovalTypes"
-          [defaultOption]="'Select approval type'"
-        ></govuk-form-group-select>
-        @if (tr.techRecord_approvalType) {
-          <approval-type-number-input
-            class="govuk-label govuk-label--s"
-            label="Approval type number"
-            formControlName="techRecord_approvalTypeNumber"
-            [width]="FormNodeWidth.XL"
-            [approvalType]="tr.techRecord_approvalType || null"
-          ></approval-type-number-input>
-        }
+          label="Approval type number"
+          formControlName="techRecord_approvalTypeNumber"
+          [width]="FormNodeWidth.XL"
+          [approvalType]="tr.techRecord_approvalType || null"
+        ></approval-type-number-input>
+      }
+      <govuk-form-group-input
+        label="National type number"
+        [width]="FormNodeWidth.XL"
+        formControlName="techRecord_ntaNumber"
+      ></govuk-form-group-input>
+      @if (vehicleType === VehicleTypes.PSV) {
+        <govuk-form-group-input
+          class="govuk-label govuk-label--s"
+          label="COIF serial number"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_coifSerialNumber"
+        ></govuk-form-group-input>
+        <govuk-form-group-input
+          class="govuk-label govuk-label--s"
+          label="COIF certifier name"
+          [width]="FormNodeWidth.XL"
+          formControlName="techRecord_coifCertifierName"
+        ></govuk-form-group-input>
+        <govuk-form-group-date
+          class="govuk-label govuk-label--s"
+          label="COIF certifier date"
+          formControlName="techRecord_coifDate"
+        ></govuk-form-group-date>
+      }
         <govuk-form-group-input
           class="govuk-label govuk-label--s"
           label="National type number"
