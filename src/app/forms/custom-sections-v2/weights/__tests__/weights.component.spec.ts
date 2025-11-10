@@ -140,14 +140,6 @@ describe('WeightsComponent', () => {
 
 			expect(removeAxleSpy).toHaveBeenCalled();
 		});
-
-		it('should set showDimensionsWarning to true so it can display the warning message', () => {
-			component.showDimensionsWarning = false;
-
-			component.removeAxle(2);
-
-			expect(component.showDimensionsWarning).toBe(true);
-		});
 	});
 
 	describe('handleGrossKerbWeightChange', () => {

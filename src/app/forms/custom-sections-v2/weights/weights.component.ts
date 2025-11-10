@@ -29,8 +29,6 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 
-	showDimensionsWarning = false;
-
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
@@ -166,13 +164,16 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		return this.parent.get('techRecord_axles') as FormArray;
 	}
 
+	get showDimensionsWarning() {
+		return this.axlesService.showDimensionsWarning;
+	}
+
 	showAddAxleButton() {
 		return (this.techRecord()?.techRecord_noOfAxles ?? 0) < 10;
 	}
 
 	removeAxle(index: number) {
 		this.axlesService.removeAxle(this.parent, this.techRecord().techRecord_vehicleType, index);
-		this.showDimensionsWarning = true;
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {

@@ -56,7 +56,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	form: FormGroup = this.fb.group({});
 	tyresReferenceData: ReferenceDataTyre[] = [];
 	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
-	showDimensionsWarning = false;
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
@@ -166,6 +165,10 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		return this.parent.get('techRecord_axles') as FormArray;
 	}
 
+	get showDimensionsWarning() {
+		return this.axlesService.showDimensionsWarning;
+	}
+
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
 		this.loadReferenceData();
@@ -189,7 +192,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 	removeAxle(index: number) {
 		this.axlesService.removeAxle(this.parent, this.techRecord().techRecord_vehicleType, index);
-		this.showDimensionsWarning = true;
 	}
 
 	ngOnDestroy(): void {
