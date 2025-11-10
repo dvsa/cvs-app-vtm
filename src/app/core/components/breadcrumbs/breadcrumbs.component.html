@@ -1,4 +1,15 @@
-@if (breadcrumbs$ | async; as breadcrumbs) {
+@let backlink = backlink$ | async;
+
+@if (backlink != null) {
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a [routerLink]="backlink" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
+      </li>
+    </ol>
+  </div>
+} 
+@else if (breadcrumbs$ | async; as breadcrumbs) {
   @if (breadcrumbs.length) {
     <div class="govuk-breadcrumbs">
       <ol class="govuk-breadcrumbs__list">

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { TechRecordCreateRoutes } from '@models/routes.enum';
+import { RootRoutes, TechRecordCreateRoutes } from '@models/routes.enum';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 
 export const routes: Routes = [
@@ -17,7 +17,13 @@ export const routes: Routes = [
 					import('./create-wrapper/create-tech-record-wrapper.component').then(
 						(m) => m.CreateTechRecordWrapperComponent
 					),
-				data: { roles: Roles.TechRecordCreate },
+				data: {
+					roles: Roles.TechRecordCreate,
+					backlink: {
+						url: RootRoutes.ROOT,
+						featureFlags: ['techrecordredesigncreate'],
+					},
+				},
 				children: [],
 			},
 			{
@@ -34,6 +40,10 @@ export const routes: Routes = [
 							roles: Roles.TechRecordCreate,
 							isCustomLayout: true,
 							isEditing: true,
+							backlink: {
+								url: RootRoutes.CREATE_TECHNICAL_RECORD,
+								featureFlags: ['techrecordredesigncreatedetails'],
+							},
 						},
 					},
 					{
@@ -46,6 +56,10 @@ export const routes: Routes = [
 							roles: Roles.TechRecordCreate,
 							isEditing: true,
 							title: 'Are you sure you want to cancel creating this record?',
+							backlink: {
+								url: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
+								featureFlags: ['techrecordredesigncreatedetails'],
+							},
 						},
 					},
 					{
@@ -62,7 +76,13 @@ export const routes: Routes = [
 				path: TechRecordCreateRoutes.DUPLICATE_VIN,
 				loadComponent: () =>
 					import('../components/duplicate-vin/duplicate-vin.component').then((m) => m.DuplicateVinComponent),
-				data: { roles: Roles.TechRecordCreate },
+				data: {
+					roles: Roles.TechRecordCreate,
+					backlink: {
+						url: RootRoutes.CREATE_TECHNICAL_RECORD,
+						featureFlags: ['techrecordredesigncreate'],
+					},
+				},
 			},
 		],
 	},

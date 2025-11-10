@@ -2,20 +2,20 @@
   <div class="govuk-radios__item">
     <input
       class="govuk-radios__input"
-      id="{{ radios.controlId() }}-{{ value() }}-radio"
-      name="{{ name() || radios.controlId() }}"
+      [id]="`${radios.id}-${value()}-radio`"
+      [name]="`${ name() || radios.id }`"
       type="radio"
       [value]="value()"
       [checked]="radios.value() === value()"
       [(ngModel)]="radios.value"
       (ngModelChange)="radios.onChange($event)"
-      [attr.data-aria-controls]="'conditional-' + radios.controlId()"
+      [attr.data-aria-controls]="`conditional-${radios.id}`"
     />
 
     @if (label()) {
       <label
         class="govuk-label govuk-radios__label"
-        [for]="radios.controlId() + '-' + value() + '-radio'"
+        [htmlFor]="`${radios.id}-${value()}-radio`"
       >
         {{ label() }}
       </label>
@@ -29,7 +29,7 @@
   <div
     class="govuk-radios__conditional"
     [class.govuk-radios__conditional--hidden]="radios.value() !== value()"
-    [id]="'conditional-' + radios.controlId()"
+    [id]="`conditional-${radios.id}`"
   >
     <ng-content></ng-content>
   </div>

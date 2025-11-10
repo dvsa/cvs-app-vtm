@@ -3,7 +3,6 @@ import { AsyncPipe, NgClass } from '@angular/common';
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Breadcrumbs2Component } from '@core/components/breadcrumbs-2/breadcrumbs-2.component';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
@@ -42,7 +41,6 @@ import { State } from './store';
 		FooterComponent,
 		AsyncPipe,
 		BreadcrumbsComponent,
-		Breadcrumbs2Component,
 	],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -54,11 +52,9 @@ export class AppComponent implements OnInit, OnDestroy {
 	analyticsService = inject(AnalyticsService);
 	featureToggleService = inject(FeatureToggleService);
 
-	currentDate = new Date();
 	private destroy$ = new Subject<void>();
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
-	private interval?: ReturnType<typeof setInterval>;
 
 	isStandardLayout$ = this.store.pipe(
 		select(selectRouteData),
@@ -68,14 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 		)
 	);
-
-	get isTechRecordRedesignFlagEnabled(): boolean {
-		return (
-			this.featureToggleService.isFeatureEnabled('techrecordredesign') ||
-			this.featureToggleService.isFeatureEnabled('techrecordredesigncreate') ||
-			this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-		);
-	}
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {

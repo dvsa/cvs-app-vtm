@@ -304,24 +304,7 @@ describe('AdrValidatorsService', () => {
 					},
 				],
 			});
-			expect(validator(control.controls[0])).toBeNull();
-		});
-
-		it('should return null when the tank or battery section is visible and one field is populated', () => {
-			const validator = service.requiresOnePopulatedTC3Field('message');
-			const control = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as FormArray;
-			form.patchValue({
-				techRecord_adrDetails_dangerousGoods: true,
-				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
-				techRecord_adrDetails_tank_tankDetails_tc3Details: [
-					{
-						tc3Type: 'type',
-						tc3PeriodicNumber: null,
-						tc3PeriodicExpiryDate: null,
-					},
-				],
-			});
-			expect(validator(control.controls[0])).toEqual({ required: 'message' });
+			expect(validator(control.controls[0].get('tc3Type') as FormControl)).toBeNull();
 		});
 
 		it('should return an error when the tank or battery section is visible and no fields are populated', () => {
@@ -338,7 +321,12 @@ describe('AdrValidatorsService', () => {
 					},
 				],
 			});
-			expect(validator(control.controls[0])).toEqual({ required: 'message' });
+			expect(validator(control.controls[0].get('tc3Type') as FormControl)).toEqual({
+				required: {
+					anchorLink: 'techRecord_adrDetails_tank_tankDetails_tc3Details_0_tc3Type',
+					error: 'message',
+				},
+			});
 		});
 	});
 

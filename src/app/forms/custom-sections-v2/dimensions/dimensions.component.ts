@@ -1,13 +1,14 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
+import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-dimensions',
@@ -20,6 +21,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly Widths = FormNodeWidth;
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
+	axlesService = inject(AxlesService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
@@ -35,6 +37,21 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
+		this.parent.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((parentValue) => {
+			const allFields = Object.keys(this.form.value);
+			const excludedFields = [
+				'techRecord_dimensions_length',
+				'techRecord_dimensions_width',
+				'techRecord_dimensions_height',
+			];
+			const fields = allFields.filter((field) => !excludedFields.includes(field));
+
+			fields.forEach((field) => {
+				if (parentValue[field] && this.axlesService.showDimensionsWarning) {
+					this.axlesService.showDimensionsWarning = false;
+				}
+			});
+		});
 	}
 
 	get controlsBasedOffVehicleType() {

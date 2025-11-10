@@ -12,11 +12,7 @@
   }"
 >
   <main class="govuk-main-wrapper {{ isStandardLayout ? '' : 'full-width' }}">
-    @if (isTechRecordRedesignFlagEnabled) {
-      <app-breadcrumbs-2></app-breadcrumbs-2>
-    } @else {
-      <app-breadcrumbs></app-breadcrumbs>
-    }
+    <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
     <app-global-warning></app-global-warning>
     <app-spinner [loading]="loading"></app-spinner>

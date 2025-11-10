@@ -15,7 +15,7 @@ export class RoleGuard implements CanActivate {
 			filter((status: InteractionStatus) => InteractionStatus.None === status),
 			switchMap(() => this.userService.roles$),
 			map((roles) => {
-				return roles?.some((x) => next.data['roles'].includes(x)) || false;
+				return roles?.some((x) => next.data['roles']?.includes(x)) || false;
 			})
 		);
 	}

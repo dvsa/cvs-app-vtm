@@ -186,19 +186,22 @@ export class CommonValidatorsService {
 		};
 	}
 
-	date(label: string): ValidatorFn {
+	date(label: string, id?: (control: AbstractControl) => string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
 			const [d] = (control.value as string).split('T');
 			const [year, month, day] = d.split('-');
 			const { error, errors } = validateDate(day || '', month || '', year || '', label);
+			const anchorLink = id?.(control) || label;
 
 			if (error && errors?.length) {
-				return { invalidDate: errors[0].reason };
+				return id ? { invalidDate: { error: errors[0].reason, anchorLink } } : { invalidDate: errors[0].reason };
 			}
 
 			if (year.length !== 4) {
-				return { invalidDate: `'${label || 'Date'}' year must be four digits` };
+				return id
+					? { invalidDate: { error: `'${label || 'Date'}' year must be four digits`, anchorLink } }
+					: { invalidDate: `'${label || 'Date'}' year must be four digits` };
 			}
 
 			return null;

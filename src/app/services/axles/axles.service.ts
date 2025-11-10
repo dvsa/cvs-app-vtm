@@ -4,10 +4,10 @@ import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hg
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
-import { CommonValidatorsService } from '../../forms/validators/common-validators.service';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
@@ -21,6 +21,7 @@ export class AxlesService {
 
 	private lockAxlesSignal = signal(false);
 	lockAxles$ = this.lockAxlesSignal.asReadonly();
+	showDimensionsWarning = false;
 
 	setLockAxles(lock: boolean) {
 		this.lockAxlesSignal.set(lock);
@@ -172,7 +173,7 @@ export class AxlesService {
 					? FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
-			tyres_dataTrAxles: this.fb.control<number | null>(axle?.tyres_dataTrAxles || null, [
+			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
 				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
 			]),
@@ -361,7 +362,6 @@ export class AxlesService {
 		const axlesForm = parent.get('techRecord_axles') as FormArray;
 		const minLength = type === VehicleTypes.TRL ? 1 : 2;
 		const axles = axlesForm.value;
-
 		if (Array.isArray(axles) && axles.length > minLength) {
 			axlesForm.setErrors(null);
 			axlesForm.removeAt(index);
@@ -405,7 +405,7 @@ export class AxlesService {
 					}
 				}
 			}
-
+			this.showDimensionsWarning = true;
 			return;
 		}
 

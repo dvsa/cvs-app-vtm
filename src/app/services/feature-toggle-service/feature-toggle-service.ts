@@ -58,11 +58,8 @@ export class FeatureToggleService {
 		this.config.set(config);
 	}
 
-	isFeatureEnabled(key: string) {
+	isFeatureEnabled(...keys: string[]) {
 		if (!this.config()) return false;
-		const feature = get(this.config(), key);
-		if (!feature) return false;
-
-		return feature.enabled;
+		return keys?.some((key) => get(this.config(), key)?.enabled);
 	}
 }

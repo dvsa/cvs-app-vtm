@@ -21,10 +21,13 @@
     }
 
     @if (hasError) {
-      <p class="govuk-error-message" id="{{ errorId }}">
-        <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (control?.errors | keyvalue)?.[0]?.value }}</span>
-      </p>
+      @let firstError = (control?.errors | keyvalue)?.[0]?.value;
+      @if (firstError) {
+        <p class="govuk-error-message" [id]="errorId">
+          <span class="govuk-visually-hidden">Error: </span>
+          <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+        </p>
+      }
     }
 
     <div class="govuk-checkboxes" [class.govuk-checkboxes--small]="size() === 'small'" data-module="govuk-checkboxes">
