@@ -240,6 +240,7 @@
                         </app-accordion>
                       }
 
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                       <app-accordion
                         [id]="'weights'"
                         [title]="'Weights'"
