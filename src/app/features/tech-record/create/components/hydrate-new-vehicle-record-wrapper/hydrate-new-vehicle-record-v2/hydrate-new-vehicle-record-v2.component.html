@@ -157,16 +157,18 @@
                       </app-accordion>
 
 
-                      <!-- Approval type details section-->
-                      <app-accordion
-                        [id]="'approval-type'"
-                        [title]="'Approval type'"
-                        [description]="'Approval type, national type, variant number.'"
-                        [type]="'condensed'"
-                        [isExpanded]="false"
-                      >
-                        <app-approval-type [techRecord]="techRecord"></app-approval-type>
-                      </app-accordion>
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <!-- Approval type details section-->
+                        <app-accordion
+                          [id]="'approval-type'"
+                          [title]="'Approval type'"
+                          [description]="'Approval type, national type, variant number.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-approval-type [techRecord]="techRecord"></app-approval-type>
+                        </app-accordion>
+                      }
 
                       <!-- Dimensions section-->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
