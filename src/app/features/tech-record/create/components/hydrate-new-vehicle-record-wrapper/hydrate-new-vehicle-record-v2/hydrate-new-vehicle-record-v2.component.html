@@ -45,7 +45,7 @@
                       <app-accordion
                         [id]="'approval-type'"
                         [title]="'Approval type'"
-                        [description]="'Approval type, national type, variant number.'"
+                        [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Approval type, COIF number, variant number.' : 'Approval type, national type, variant number.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
