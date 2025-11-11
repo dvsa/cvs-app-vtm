@@ -173,10 +173,7 @@ export class AxlesService {
 					? FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
-			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
-			]),
+			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }),
 
 			// Weights fields
 			weights_kerbWeight: this.fb.control<number | null>(axle?.weights_kerbWeight || null, [
