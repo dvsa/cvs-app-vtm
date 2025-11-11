@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -31,8 +32,13 @@ import { FeatureConfig } from '../feature-toggle-service/feature-toggle-service'
 export class HttpService {
 	private readonly http = inject(HttpClient);
 	private static readonly TIMEOUT = 30000;
+	// These following can be attached to any inbound (GET) / outbound (POST/PUT) requests
+	// The API response interceptor handles logic to encode requests & decode responses
 	private static readonly GetGzippedPayloadHeaders = new HttpHeaders({
-		'x-accept-encoding': 'base64+gzip',
+		[CompressionHeaders.inbound.request]: CompressionHeaders.compressionValue,
+	});
+	private static readonly PostPutGzippedPayloadHeaders = new HttpHeaders({
+		[CompressionHeaders.outbound.request]: CompressionHeaders.compressionValue,
 	});
 
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
@@ -512,6 +518,7 @@ export class HttpService {
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
 			{
 				params,
+				headers: HttpService.GetGzippedPayloadHeaders,
 			}
 		);
 	}
@@ -521,7 +528,9 @@ export class HttpService {
 			throw new Error('Required parameter body was null or undefined when calling testResultsPost.');
 		}
 
-		return this.http.post<any>(`${environment.VTM_API_URI}/test-results`, body);
+		return this.http.post<{ testResultId: string }>(`${environment.VTM_API_URI}/test-results`, body, {
+			headers: HttpService.PostPutGzippedPayloadHeaders,
+		});
 	}
 
 	testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string) {
@@ -535,7 +544,10 @@ export class HttpService {
 
 		return this.http.put<CompleteTestResults>(
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
-			body
+			body,
+			{
+				headers: HttpService.PostPutGzippedPayloadHeaders,
+			}
 		);
 	}
 

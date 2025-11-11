@@ -26,6 +26,8 @@ export const recallsResolver: ResolveFn<Observable<RecallsSchema | undefined>> =
 
 	store.dispatch(getRecalls());
 
+	// @TODO: Doing this causes a delay as it waits for success or failure -
+	//  might be better to return undefined and capture this via an effect which doesn't block navigation
 	return actions$.pipe(
 		ofType(getRecallsSuccess, getRecallsFailure),
 		take(1),

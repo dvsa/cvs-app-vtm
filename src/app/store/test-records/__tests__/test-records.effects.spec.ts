@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -779,7 +779,9 @@ describe('TestResultsEffects', () => {
 				// mock service call
 				jest
 					.spyOn(testResultsService, 'postTestResult')
-					.mockReturnValue(cold('---b|', { b: testResult }) as unknown as Observable<HttpResponse<unknown>>);
+					.mockReturnValue(
+						cold('---b|', { testResultId: testResult }) as unknown as Observable<{ testResultId: string }>
+					);
 
 				// expect effect to return success action
 				expectObservable(effects.createTestResult$).toBe('----b', {
