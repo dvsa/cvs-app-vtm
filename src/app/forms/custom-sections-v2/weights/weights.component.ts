@@ -168,6 +168,10 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		return this.axlesService.showDimensionsWarning;
 	}
 
+	get invalidAxlesAll() {
+		return this.axlesService.allInvalidAxles;
+	}
+
 	showAddAxleButton() {
 		return (this.techRecord()?.techRecord_noOfAxles ?? 0) < 10;
 	}

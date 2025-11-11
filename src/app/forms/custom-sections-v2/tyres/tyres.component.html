@@ -22,6 +22,20 @@
         <p class="govuk-!-margin-0">Re-enter any axle distances in the dimensions section.</p>
       </app-field-warning-message>
     }
+    @if (invalidAxlesAll.length > 0) {
+      <app-field-warning-message [warningMessage]="' '">
+        <p class="m-0">The GB Axle weight is greater than the selected weight for axle(s)
+          @for (axle of invalidAxlesAll; track axle; let i = $index; let isLast = $last) {
+            @if (invalidAxlesAll.length > 1 && isLast) {
+              and
+            }
+            {{ axle }}@if (invalidAxlesAll.length > 2 && i < (invalidAxlesAll.length - 2)) {
+              ,
+            }
+          }
+        </p>
+      </app-field-warning-message>
+    }
     @if (parent.get('techRecord_axles')) {
       <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {

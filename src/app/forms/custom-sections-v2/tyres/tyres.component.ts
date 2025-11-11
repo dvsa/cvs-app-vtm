@@ -1,5 +1,5 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
-import { FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
+import { Axle, FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -56,6 +56,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	form: FormGroup = this.fb.group({});
 	tyresReferenceData: ReferenceDataTyre[] = [];
 	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
+	invalidAxles: Array<number> = [];
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
@@ -149,6 +150,10 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		this.router.navigate([route], { relativeTo: this.route, state: this.techRecord() });
 	}
 
+	get invalidAxlesAll() {
+		return this.axlesService.allInvalidAxles;
+	}
+
 	loadReferenceData() {
 		combineLatest([
 			this.referenceDataService.getAll$(ReferenceDataResourceType.Tyres).pipe(filter(Boolean)),
@@ -182,8 +187,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.checkFitmentCodeHasChanged(changes);
-		// TODO add this in later ticket
-		// this.checkAxleWeights(changes);
+		this.checkAxleWeights(changes);
 	}
 
 	showAddAxleButton() {
@@ -224,6 +228,34 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 			default:
 				return {};
 		}
+	}
+
+	checkAxleWeights(changes: SimpleChanges) {
+		this.axlesService.allInvalidAxles = this.invalidAxles = [];
+
+		if (
+			!changes['techRecord']?.currentValue?.techRecord_axles ||
+			(changes['techRecord']?.previousValue &&
+				!changes['techRecord']?.previousValue.techRecord_axles &&
+				changes['techRecord']?.currentValue?.techRecord_axles ===
+					changes['techRecord']?.previousValue?.techRecord_axles)
+		) {
+			return;
+		}
+
+		changes['techRecord'].currentValue.techRecord_axles.forEach((axle: Axle) => {
+			if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
+				const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
+					axle.tyres_dataTrAxles?.toString(),
+					axle.tyres_fitmentCode,
+					this.tyreLoadIndexReferenceData
+				);
+				if (weightValue && axle.weights_gbWeight > weightValue) {
+					this.invalidAxles.push(axle.axleNumber);
+					this.axlesService.allInvalidAxles = this.invalidAxles;
+				}
+			}
+		});
 	}
 
 	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;

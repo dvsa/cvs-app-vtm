@@ -25,10 +25,25 @@
         </app-field-warning-message>
       }
 
+      @if (invalidAxlesAll.length > 0) {
+        <app-field-warning-message [warningMessage]="' '">
+          <p class="m-0">The GB Axle weight is greater than the selected weight for axle(s)
+            @for (axle of invalidAxlesAll; track axle; let i = $index; let isLast = $last) {
+              @if (invalidAxlesAll.length > 1 && isLast) {
+                and
+              }
+              {{ axle }}@if (invalidAxlesAll.length > 2 && i < (invalidAxlesAll.length - 2)) {
+                ,
+              }
+            }
+          </p>
+        </app-field-warning-message>
+      }
+
       @if (techRecordAxles) {
         @for (axle of techRecordAxles.controls; track axle; let i = $index) {
           <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle {{ i + 1 }}</h2>
-  
+
           @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
             <button
               type="button"
@@ -41,30 +56,30 @@
               Remove axle
             </button>
           }
-  
+
           @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV && (
-            techRecordAxles.at(i).get('weights_gbWeight')?.invalid || 
-            techRecordAxles.at(i).get('weights_eecWeight')?.invalid || 
+            techRecordAxles.at(i).get('weights_gbWeight')?.invalid ||
+            techRecordAxles.at(i).get('weights_eecWeight')?.invalid ||
             techRecordAxles.at(i).get('weights_designWeight')?.invalid
           )) {
-            <app-field-error-message 
+            <app-field-error-message
               [name]="`Axle-${ i + 1 }-weights`"
               [error]="`Axle ${ i + 1 } GB, EEC, Design Weight must be less than or equal to 99999kg`">
             </app-field-error-message>
           }
-  
+
           @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV && (
-            techRecordAxles.at(i).get('weights_kerbWeight')?.invalid || 
-            techRecordAxles.at(i).get('weights_ladenWeight')?.invalid || 
-            techRecordAxles.at(i).get('weights_gbWeight')?.invalid || 
+            techRecordAxles.at(i).get('weights_kerbWeight')?.invalid ||
+            techRecordAxles.at(i).get('weights_ladenWeight')?.invalid ||
+            techRecordAxles.at(i).get('weights_gbWeight')?.invalid ||
             techRecordAxles.at(i).get('weights_designWeight')?.invalid
           )) {
-            <app-field-error-message 
+            <app-field-error-message
               [name]="`Axle-${ i + 1 }-weights`"
               [error]="`Axle ${ i + 1 } Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`">
             </app-field-error-message>
           }
-  
+
           <div class="axle" formGroupName="{{ i }}">
             @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
               <govuk-form-group-input
@@ -77,7 +92,7 @@
                 [showErrors]="false"
               />
             }
-  
+
             @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
               <govuk-form-group-input
                 [label]="'EEC'"
@@ -89,7 +104,7 @@
                 [showErrors]="false"
               />
             }
-  
+
             @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
               <govuk-form-group-input
                 [label]="'Kerb'"
@@ -101,7 +116,7 @@
                 [showErrors]="false"
               />
             }
-  
+
             @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
               <govuk-form-group-input
                 [label]="'Laden'"
@@ -113,7 +128,7 @@
                 [showErrors]="false"
               />
             }
-  
+
             @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
               <govuk-form-group-input
                 [label]="'GB max'"
@@ -125,7 +140,7 @@
                 [showErrors]="false"
               />
             }
-  
+
             <govuk-form-group-input
               [label]="'Design'"
               id="weights_designWeight-{{ i + 1 }}"
@@ -135,7 +150,7 @@
               [suffix]="'kg'"
               [showErrors]="false"
             />
-  
+
             @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
               <button
                 type="button"
