@@ -37,6 +37,10 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
+		this.shouldShowDimensionsWarning();
+	}
+
+	shouldShowDimensionsWarning() {
 		this.parent.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((parentValue) => {
 			const allFields = Object.keys(this.form.value);
 			const excludedFields = [
@@ -44,11 +48,23 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 				'techRecord_dimensions_width',
 				'techRecord_dimensions_height',
 			];
-			const fields = allFields.filter((field) => !excludedFields.includes(field));
 
+			const allAxleSpacing = this.axleSpacings;
+			allAxleSpacing?.controls.forEach((axleControl, index) => {
+				const axleValue = axleControl.value;
+				if (axleValue.value) {
+					this.axlesService.axleDistancesWithValues = true;
+				}
+			});
+
+			const fields = allFields.filter((field) => !excludedFields.includes(field));
 			fields.forEach((field) => {
-				if (parentValue[field] && this.axlesService.showDimensionsWarning) {
+				if (
+					(parentValue[field] && this.axlesService.showDimensionsWarning) ||
+					(this.axlesService.axleDistancesWithValues && this.axlesService.showDimensionsWarning)
+				) {
 					this.axlesService.showDimensionsWarning = false;
+					this.axlesService.axleDistancesWithValues = false;
 				}
 			});
 		});

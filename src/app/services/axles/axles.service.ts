@@ -22,6 +22,7 @@ export class AxlesService {
 	private lockAxlesSignal = signal(false);
 	lockAxles$ = this.lockAxlesSignal.asReadonly();
 	showDimensionsWarning = false;
+	axleDistancesWithValues = false;
 
 	setLockAxles(lock: boolean) {
 		this.lockAxlesSignal.set(lock);
