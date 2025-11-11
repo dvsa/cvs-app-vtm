@@ -6,7 +6,6 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -14,7 +13,6 @@ import { UserService } from '@services/user-service/user-service';
 import {
 	clearADRDetailsBeforeUpdate,
 	createVehicleRecord,
-	createVehicleRecordSuccess,
 	selectTechRecord,
 	updateADRAdditionalExaminerNotes,
 } from '@store/technical-records';
@@ -31,7 +29,6 @@ import { TechRecordTitleComponent } from '../../../../components/tech-record-tit
 	imports: [TechRecordTitleComponent, ButtonComponent, TechRecordSummaryComponent, AsyncPipe],
 })
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
-	actions$ = inject(Actions);
 	globalErrorService = inject(GlobalErrorService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
@@ -52,14 +49,6 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 	private destroy$ = new Subject<void>();
 
 	ngOnInit(): void {
-		this.actions$
-			.pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
-			.subscribe(({ vehicleTechRecord }) => {
-				void this.router.navigate([
-					`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`,
-				]);
-			});
-
 		this.userService$.name$.pipe(takeUntil(this.destroy$)).subscribe((name) => {
 			this.username = name;
 		});

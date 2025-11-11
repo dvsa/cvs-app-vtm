@@ -1,24 +1,27 @@
 import { AccordionControlComponent } from '@/src/app/components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
-import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
-import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
-import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
-import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { RootRoutes } from '@/src/app/models/routes.enum';
+import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
-import { selectSectionState, selectTechRecord } from '@/src/app/store/technical-records';
+import {
+	clearADRDetailsBeforeUpdate,
+	createVehicleRecord,
+	selectSectionState,
+	selectTechRecord,
+	updateADRAdditionalExaminerNotes,
+} from '@/src/app/store/technical-records';
+import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { AdrComponent } from '@forms/custom-sections-v2/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections-v2/approval-type/approval-type.component';
 import { AuthorisationIntoServiceComponent } from '@forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
@@ -36,7 +39,10 @@ import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.comp
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { RouterService } from '@services/router/router.service';
+import { name } from '@store/user/user-service.reducer';
 import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
+import { TechRecordFiltersComponent } from '../../../../components/tech-record-filters/tech-record-filters.component';
+import { TechRecordSummaryCardComponent } from '../../../../components/tech-record-summary-card/tech-record-summary-card.component';
 
 @Component({
 	selector: 'app-hydrate-new-vehicle-record-v2',
@@ -47,10 +53,6 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		AccordionComponent,
 		NgTemplateOutlet,
 		ButtonComponent,
-		NumberPlateComponent,
-		DefaultNullOrEmpty,
-		TagComponent,
-		FormatVehicleTypePipe,
 		GeneralVehicleDetailsComponent,
 		ReactiveFormsModule,
 		NotesComponent,
@@ -70,12 +72,13 @@ import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
 		ConfigurationComponent,
 		SeatsAndVehicleSizeComponent,
 		BrakesComponent,
+		TechRecordSummaryCardComponent,
+		TechRecordFiltersComponent,
 		ApprovalTypeComponent,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);
-	route = inject(ActivatedRoute);
 	router = inject(Router);
 	fb = inject(FormBuilder);
 	techRecordService = inject(TechnicalRecordService);
@@ -86,14 +89,11 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 	techRecord$ = this.store.selectSignal(selectTechRecord);
 	sectionStates$ = this.store.selectSignal(selectSectionState);
+	username$ = this.store.selectSignal(name);
 
-	readonly TagType = TagType;
 	readonly VehicleTypes = VehicleTypes;
-	readonly StatusCodes = StatusCodes;
 
-	form = this.fb.group<
-		Partial<Record<keyof TechRecordType<'hgv' | 'psv' | 'trl' | 'car' | 'lgv' | 'motorcycle'>, FormControl>>
-	>({});
+	form = this.fb.group<Partial<Record<keyof TechRecordType<'put'>, FormControl>>>({});
 	destroy = new ReplaySubject<boolean>(1);
 	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 
@@ -141,16 +141,6 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		this.destroy.complete();
 	}
 
-	onChange(): void {
-		this.router.navigate([RootRoutes.CREATE_TECHNICAL_RECORD]);
-	}
-
-	onCancel(): void {
-		this.router.navigate([TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL], {
-			relativeTo: this.route,
-		});
-	}
-
 	onCreateNewRecord(): void {
 		this.form.markAllAsTouched();
 
@@ -160,14 +150,19 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			this.globalErrorService.clearErrors();
-			// TODO: submit record
+
+			// TODO: modify if new design is included in batch create
+			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username$() }));
+			this.store.dispatch(clearADRDetailsBeforeUpdate());
+
+			const vehicle = nullADRDetails(this.techRecord$() as TechRecordType<'put'>);
+			this.store.dispatch(createVehicleRecord({ vehicle }));
 		}
 	}
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe((val) => {
-			// TODO: remove any type
-			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as any);
+		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
+			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
 		});
 	}
 

@@ -1,0 +1,64 @@
+.vehicle-summary {
+  position: sticky !important;
+  top: 40px;
+}
+
+@media (max-width: 1000px) {
+  .vehicle-summary {
+    position: relative !important;
+    top: auto;
+  }
+}
+
+.govuk-accordion--vtm {
+  padding: 0px;
+  border: 1px solid #b1b4b6;
+}
+
+::ng-deep.govuk-accordion__controls .govuk-accordion__show-all {
+  margin-bottom: 0;
+}
+
+.govuk-accordion__section-header-vtm {
+  padding: 0 20px 0 20px;
+  border-top: 1px solid #b1b4b6;
+}
+
+.govuk-accordion__section-header-vtm-top {
+  padding: 0 20px 0 20px;
+  border-top: none;
+}
+
+.govuk-accordion__section-heading-top-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  background-color: #f3f2f1;
+}
+
+.govuk-accordion__section-heading-top {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.govuk-accordion-heading-vtm {
+  font-family: 'GDS Transport', arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14px;
+  padding: 5px 2px 5px 0;
+  border-width: 0;
+  color: black;
+  background: none;
+  line-height: 1.3157894737;
+}
+
+.filter-box {
+  padding: 5px 20px 5px 20px;
+}

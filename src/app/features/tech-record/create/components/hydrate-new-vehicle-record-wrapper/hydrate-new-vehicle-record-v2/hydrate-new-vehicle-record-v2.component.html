@@ -7,122 +7,7 @@
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-        <div class="govuk-summary-card">
-          <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l">
-              Summary
-            </h2>
-            <ul class="govuk-summary-card__actions">
-              <li class="govuk-summary-card__action">
-                <a id="change-link" class="govuk-link" href="javascript:void(0)" (click)="onChange()">
-                  Change<span class="govuk-visually-hidden"></span>
-                </a>
-              </li>
-              <li class="govuk-summary-card__action">
-                <a id="cancel-link" class="govuk-link" href="javascript:void(0)" (click)="onCancel()">
-                  Cancel<span class="govuk-visually-hidden"></span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="govuk-summary-card__content">
-            <dl class="govuk-summary-list govuk-summary-list--no-border">
-              <!-- Vehicle type -->
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                  Vehicle type
-                </dt>
-              </div>
-              <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicleType">
-                  {{ techRecord.techRecord_vehicleType | defaultNullOrEmpty | formatVehicleType }}
-                </dd>
-              </div>
-              <!-- VIN -->
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                  VIN
-                </dt>
-              </div>
-              <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--vin" id="vin">
-                  {{ techRecord.vin | defaultNullOrEmpty }}
-                </dd>
-              </div>
-              <!-- Trailer ID (TRL, Small TRL) -->
-              @if (
-                techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
-                $any(techRecord.techRecord_vehicleType) === VehicleTypes.SMALL_TRL
-              ) {
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                    Trailer ID
-                  </dt>
-                </div>
-                <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="trailer-id">
-                    <app-number-plate [vrm]="$any(techRecord).trailerId | defaultNullOrEmpty" />
-                  </dd>
-                </div>
-              } @else {
-                <!-- Primary VRM (HGV, PSV, LGV, Car, Motorcycle) -->
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                    VRM
-                  </dt>
-                </div>
-                <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="current-vrm">
-                    <app-number-plate [vrm]="techRecord.primaryVrm | defaultNullOrEmpty" />
-                  </dd>
-                </div>
-              }
-              <!-- Previous VRM not (TRL, Small TRL)-->
-              @if (
-                techRecord.techRecord_vehicleType !== VehicleTypes.TRL &&
-                $any(techRecord.techRecord_vehicleType) !== VehicleTypes.SMALL_TRL
-              ) {
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                    Previous VRM
-                  </dt>
-                </div>
-                <div class="govuk-summary-list__row--value">
-                  <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="previous-vrm">
-
-                  </dd>
-                </div>
-              }
-              <!-- Record type -->
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                  Record type
-                </dt>
-              </div>
-              <div class="govuk-summary-list__row--value">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
-                  <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
-                    {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
-                  </app-tag>
-                </dd>
-              </div>
-              <!-- Record status -->
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-                  Record status
-                </dt>
-              </div>
-              <div class="govuk-summary-list__row--last">
-                <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
-                  <!-- In create mode this is always Incomplete -->
-                  <app-tag [type]="TagType.RED">
-                    Incomplete
-                  </app-tag>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </div>
+        <app-tech-record-summary-card [mode]="'create'" [techRecord]="techRecord" />
 
         <div class="govuk-button-group govuk-button-group-record">
           <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>
@@ -132,275 +17,248 @@
       <!-- Accordion -->
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <form>
-            <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
-              <div class="govuk-accordion__section-heading-top-container">
-                <h2 class="govuk-accordion__section-heading-top">
-                  <span class="govuk-accordion-heading-vtm">
-                    Technical record
-                  </span>
-                </h2>
+          <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+            <div class="govuk-accordion__section-heading-top-container">
+              <h2 class="govuk-accordion__section-heading-top">
+                <span class="govuk-accordion-heading-vtm">
+                  Technical record
+                </span>
+              </h2>
 
-                <app-accordion-control [sectionState]="sectionStates$()">
-                  <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
-                  <ng-template #template>
-                    <!-- TODO: Replace accordions here -->
-                    <ng-container [formGroup]="form">
-                      <!-- General vehicle details section-->
+              <app-accordion-control [sectionState]="sectionStates$()">
+                <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
+                <ng-template #template>
+                  <ng-container [formGroup]="form">
+                    <!-- General vehicle details section-->
+                    <app-accordion
+                      [id]="'general-vehicle-details'"
+                      [title]="'General vehicle details'"
+                      [description]="'Date of registration, body details, EU category.'"
+                      [type]="'condensed'"
+                      [isExpanded]="false"
+                    >
+                      <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
+                    </app-accordion>
+
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <!-- Approval type details section-->
                       <app-accordion
-                        [id]="'general-vehicle-details'"
-                        [title]="'General vehicle details'"
-                        [description]="'Date of registration, body details, EU category.'"
+                        [id]="'approval-type'"
+                        [title]="'Approval type'"
+                        [description]="'Approval type, national type, variant number.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
-                        <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
+                        <app-approval-type [techRecord]="techRecord"></app-approval-type>
                       </app-accordion>
+                    }
 
-
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <!-- Approval type details section-->
-                        <app-accordion
-                          [id]="'approval-type'"
-                          [title]="'Approval type'"
-                          [description]="'Approval type, national type, variant number.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-approval-type [techRecord]="techRecord"></app-approval-type>
-                        </app-accordion>
-                      }
-
-                      <!-- Dimensions section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'dimensions'"
-                          [title]="'Dimensions'"
-                          [description]="'Axle distance, vehicle dimensions.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-dimensions [techRecord]="techRecord"></app-dimensions>
-                        </app-accordion>
-                      }
-
-                      <!-- Weights section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'weights'"
-                          [title]="'Weights'"
-                          [description]="weightsAccordionDescription"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-weights [techRecord]="techRecord"></app-weights>
-                        </app-accordion>
-                      }
-
-                      <!-- Tyres section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'tyres'"
-                          [title]="'Tyres'"
-                          [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-tyres [techRecord]="techRecord"></app-tyres>
-                        </app-accordion>
-                      }
-                      <!-- configuration -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-                        <app-accordion
-                          [id]="'configuration'"
-                          [title]="'Configuration'"
-                          [description]="configAccordionDescription"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-configuration [techRecord]="techRecord"></app-configuration>
-                        </app-accordion>
-                      }
-
-                      <!-- Emissions and exemptions (immediately above ADR) -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-                        <app-accordion
-                          [id]="'emissions-and-exemptions'"
-                          [title]="'Emissions and exemptions'"
-                          [description]="'Euro standard, emissions limit, tacho exemption.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
-                        </app-accordion>
-                      }
-
-                      <!-- Seats and vehicle size -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-                        <app-accordion
-                          [id]="'seats-and-vehicle-size'"
-                          [title]="'Seats and vehicle size'"
-                          [description]="'Seats, vehicle size, seatbelts.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
-                        </app-accordion>
-                      }
-
-                      <!-- Brakes -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'brakes'"
-                          [title]="'Brakes'"
-                          [description]="brakesAccordionDescription"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-brakes [techRecord]="techRecord"></app-brakes>
-                        </app-accordion>
-                      }
-
-                      <!-- Disability Discrimination Act (DDA) -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-                        <app-accordion
-                          [id]="'dda'"
-                          [title]="'Disability Discrimination Act'"
-                          [description]="'DDA certificate, accessibility, schedules.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-dda [techRecord]="techRecord"></app-dda>
-                        </app-accordion>
-                      }
-
-                      @if (
-                        techRecord.techRecord_vehicleType === 'hgv' ||
-                        techRecord.techRecord_vehicleType === 'trl' ||
-                        techRecord.techRecord_vehicleType === 'lgv'
-                        ) {
-                        <app-accordion
-                          [id]="'adr'"
-                          [title]="'ADR'"
-                          [description]="'Approval for carrying dangerous goods.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-adr [techRecord]="techRecord"></app-adr>
-                        </app-accordion>
-                      }
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'authorisation-into-service'"
-                          [title]="'Authorisation into service'"
-                          [description]="'COC date, authorisation date, rejected date.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
-                        </app-accordion>
-
-                        <app-accordion
-                          [id]="'purchasers'"
-                          [title]="'Purchasers'"
-                          [description]="'Contact details for the purchaser.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-purchasers [techRecord]="techRecord"></app-purchasers>
-                        </app-accordion>
-
-                        <app-accordion
-                          [id]="'manufacturer'"
-                          [title]="'Manufacturer'"
-                          [description]="'Contact details for the manufacturer.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
-                        </app-accordion>
-                      }
-
-                      @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
-                        <app-accordion
-                          [id]="'last-applicant'"
-                          [title]="'Last applicant'"
-                          [description]="'Contact details for the last applicant.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
-                        </app-accordion>
-                      }
-
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-                        <app-accordion
-                          [id]="'documents'"
-                          [title]="'Documents'"
-                          [description]="'Microfilm document details.'"
-                          [type]="'condensed'"
-                          [isExpanded]="false"
-                        >
-                          <app-documents [techRecord]="techRecord"></app-documents>
-                        </app-accordion>
-                      }
-
+                    <!-- Dimensions section-->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                       <app-accordion
-                        [id]="'notes'"
-                        [title]="'Notes'"
-                        [description]="'Notes attached to this record.'"
+                        [id]="'dimensions'"
+                        [title]="'Dimensions'"
+                        [description]="'Axle distance, vehicle dimensions.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
-                        <app-notes [techRecord]="techRecord"></app-notes>
+                        <app-dimensions [techRecord]="techRecord"></app-dimensions>
                       </app-accordion>
+                    }
 
+                    <!-- Weights section-->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                       <app-accordion
-                        [id]="'reason-for-creation'"
-                        [title]="'Reason for creation'"
-                        [description]="generateRFCDescription()"
+                        [id]="'weights'"
+                        [title]="'Weights'"
+                        [description]="weightsAccordionDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
-                        <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                        <app-weights [techRecord]="techRecord"></app-weights>
                       </app-accordion>
-                    </ng-container>
-                  </ng-template>
-                </app-accordion-control>
-              </div>
+                    }
 
-              <div class="filter-box">
-                <dt class="govuk-summary-list__key-filter">
-                  Filter by
-                </dt>
-                <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-                  <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="plates">
-                    <span class="app-c-filter-summary__remove-filter-text">
-                      <span class="govuk-visually-hidden">Remove filter</span>
-                      Plates
-                    </span>
-                  </a>
-                </dd>
-                <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-                  <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="required">
-                    <span class="app-c-filter-summary__remove-filter-text">
-                      <span class="govuk-visually-hidden">Remove filter</span>
-                      Required
-                    </span>
-                  </a>
-                </dd>
-                <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-                  <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="adr">
-                    <span class="app-c-filter-summary__remove-filter-text">
-                      <span class="govuk-visually-hidden">Remove filter</span>
-                      ADR
-                    </span>
-                  </a>
-                </dd>
-              </div>
+                    <!-- Tyres section-->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <app-accordion
+                        [id]="'tyres'"
+                        [title]="'Tyres'"
+                        [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-tyres [techRecord]="techRecord"></app-tyres>
+                      </app-accordion>
+                    }
 
-              <!-- Accordions appear here -->
-              <ng-container [ngTemplateOutlet]="template"></ng-container>
+                    <!-- configuration -->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                      <app-accordion
+                        [id]="'configuration'"
+                        [title]="'Configuration'"
+                        [description]="configAccordionDescription"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-configuration [techRecord]="techRecord"></app-configuration>
+                      </app-accordion>
+                    }
+
+                    <!-- Emissions and exemptions (immediately above ADR) -->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                      <app-accordion
+                        [id]="'emissions-and-exemptions'"
+                        [title]="'Emissions and exemptions'"
+                        [description]="'Euro standard, emissions limit, tacho exemption.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
+                      </app-accordion>
+                    }
+
+                    <!-- Seats and vehicle size -->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                      <app-accordion
+                        [id]="'seats-and-vehicle-size'"
+                        [title]="'Seats and vehicle size'"
+                        [description]="'Seats, vehicle size, seatbelts.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
+                      </app-accordion>
+                    }
+
+                    <!-- Brakes -->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <app-accordion
+                        [id]="'brakes'"
+                        [title]="'Brakes'"
+                        [description]="brakesAccordionDescription"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-brakes [techRecord]="techRecord"></app-brakes>
+                      </app-accordion>
+                    }
+
+                    <!-- Disability Discrimination Act (DDA) -->
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                      <app-accordion
+                        [id]="'dda'"
+                        [title]="'Disability Discrimination Act'"
+                        [description]="'DDA certificate, accessibility, schedules.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-dda [techRecord]="techRecord"></app-dda>
+                      </app-accordion>
+                    }
+
+                    <!-- ADR -->
+                    @if (
+                      techRecord.techRecord_vehicleType === 'hgv' ||
+                      techRecord.techRecord_vehicleType === 'trl' ||
+                      techRecord.techRecord_vehicleType === 'lgv'
+                      ) {
+                      <app-accordion
+                        [id]="'adr'"
+                        [title]="'ADR'"
+                        [description]="'Approval for carrying dangerous goods.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-adr [techRecord]="techRecord"></app-adr>
+                      </app-accordion>
+                    }
+
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <app-accordion
+                        [id]="'authorisation-into-service'"
+                        [title]="'Authorisation into service'"
+                        [description]="'COC date, authorisation date, rejected date.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
+                      </app-accordion>
+
+                      <app-accordion
+                        [id]="'purchasers'"
+                        [title]="'Purchasers'"
+                        [description]="'Contact details for the purchaser.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-purchasers [techRecord]="techRecord"></app-purchasers>
+                      </app-accordion>
+
+                      <app-accordion
+                        [id]="'manufacturer'"
+                        [title]="'Manufacturer'"
+                        [description]="'Contact details for the manufacturer.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
+                      </app-accordion>
+                    }
+
+                    @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
+                      <app-accordion
+                        [id]="'last-applicant'"
+                        [title]="'Last applicant'"
+                        [description]="'Contact details for the last applicant.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
+                      </app-accordion>
+                    }
+
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <app-accordion
+                        [id]="'documents'"
+                        [title]="'Documents'"
+                        [description]="'Microfilm document details.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-documents [techRecord]="techRecord"></app-documents>
+                      </app-accordion>
+                    }
+
+                    <app-accordion
+                      [id]="'notes'"
+                      [title]="'Notes'"
+                      [description]="'Notes attached to this record.'"
+                      [type]="'condensed'"
+                      [isExpanded]="false"
+                    >
+                      <app-notes [techRecord]="techRecord"></app-notes>
+                    </app-accordion>
+
+                    <app-accordion
+                      [id]="'reason-for-creation'"
+                      [title]="'Reason for creation'"
+                      [description]="generateRFCDescription()"
+                      [type]="'condensed'"
+                      [isExpanded]="false"
+                    >
+                      <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                    </app-accordion>
+                  </ng-container>
+                </ng-template>
+              </app-accordion-control>
             </div>
+
+            <app-tech-record-filters />
+
+            <!-- Accordions appear here -->
+            <ng-container [ngTemplateOutlet]="template"></ng-container>
+          </div>
         </form>
       </div>
     </div>

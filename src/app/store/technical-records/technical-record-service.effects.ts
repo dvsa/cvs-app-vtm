@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
@@ -73,6 +74,7 @@ export class TechnicalRecordServiceEffects {
 	private userService = inject(UserService);
 	private store = inject<Store<State>>(Store);
 	private dfs = inject(DynamicFormService);
+	private router = inject(Router);
 
 	getTechnicalRecordHistory$ = createEffect(() =>
 		this.actions$.pipe(
@@ -356,6 +358,20 @@ export class TechnicalRecordServiceEffects {
 				)
 			)
 		)
+	);
+
+	createVehicleSuccess = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createVehicleRecordSuccess),
+				tap(({ vehicleTechRecord }) =>
+					this.router.navigate(['tech-records', vehicleTechRecord.systemNumber, vehicleTechRecord.createdTimestamp], {
+						queryParams: { from: 'create' },
+						queryParamsHandling: 'merge',
+					})
+				)
+			),
+		{ dispatch: false }
 	);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

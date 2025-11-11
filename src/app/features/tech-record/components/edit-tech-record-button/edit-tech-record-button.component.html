@@ -1,6 +1,6 @@
 @if ((isArchived$ | async) === false) {
   @if (!isEditing()) {
-    <app-button [id]="customId() + 'edit'" (clicked)="checkIfEditableReasonRequired()">Amend</app-button>
+    <app-button [id]="customId() + 'edit'" (clicked)="checkIfEditableReasonRequired()">Amend record</app-button>
   } @else {
     <app-button-group>
       <app-button [id]="customId() + 'submit'" (clicked)="submit()">Review</app-button>

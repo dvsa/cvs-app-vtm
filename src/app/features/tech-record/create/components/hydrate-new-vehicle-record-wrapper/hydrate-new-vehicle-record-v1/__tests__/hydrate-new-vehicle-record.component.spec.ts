@@ -1,17 +1,14 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
-import { selectRouteData } from '@store/router/router.selectors';
-import { createVehicleRecordSuccess } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from '../hydrate-new-vehicle-record.component';
 
@@ -85,22 +82,5 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 			expect(dispatchSpy).not.toHaveBeenCalled();
 		});
-
-		it('should navigate back', fakeAsync(() => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-			store.overrideSelector(selectRouteData, { data: { isEditing: true } });
-
-			component.handleSubmit();
-
-			actions$.next(
-				createVehicleRecordSuccess({
-					vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
-				})
-			);
-			tick();
-
-			expect(navigateSpy).toHaveBeenCalledTimes(1);
-		}));
 	});
 });

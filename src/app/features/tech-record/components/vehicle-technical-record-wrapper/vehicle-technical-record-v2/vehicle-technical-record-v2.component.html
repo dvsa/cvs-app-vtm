@@ -1,14 +1,254 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
+    @if (from() === 'create') {
+      <app-banner type="success">
+        <ng-container title>Success</ng-container>
+        <ng-container content>You have created a technical record.</ng-container>
+      </app-banner>
+    }
+
     <p class="govuk-heading-xl govuk-!-font-weight-bold">{{ isEditing ? 'Amend' : 'View' }} technical record</p>
 
-    <app-edit-tech-record-button
-      class="right"
-      *appRoleRequired="roles.TechRecordAmend"
-      [(isEditing)]="isEditing"
-      [isDirty]="isDirty"
-      customId="bottom"
-      (submitChange)="handleSubmit()"
-    ></app-edit-tech-record-button>
+    @if (techRecord(); as techRecord) {
+      <div class="govuk-grid-row">
+        <!-- Summary card -->
+        <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
+          <app-tech-record-summary-card [mode]="'view'" [techRecord]="$any(techRecord)" />
+  
+          <div class="govuk-button-group govuk-button-group-record">
+            <app-edit-tech-record-button
+              class="right"
+              *appRoleRequired="roles.TechRecordAmend"
+              [(isEditing)]="isEditing"
+              [isDirty]="isDirty"
+              customId="bottom"
+              (submitChange)="handleSubmit()"
+            ></app-edit-tech-record-button>
+          </div>
+        </div>
+  
+        <!-- Accordion -->
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+          <form>
+            <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+              <div class="govuk-accordion__section-heading-top-container">
+                <h2 class="govuk-accordion__section-heading-top">
+                  <span class="govuk-accordion-heading-vtm">
+                    Technical record
+                  </span>
+                </h2>
+
+                <app-accordion-control [sectionState]="sectionStates$()">
+                  <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
+                  <ng-template #template>
+                    <ng-container [formGroup]="form">
+                      <!-- General vehicle details section-->
+                      <app-accordion
+                        [id]="'general-vehicle-details'"
+                        [title]="'General vehicle details'"
+                        [description]="'Date of registration, body details, EU category.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-general-vehicle-details [techRecord]="$any(techRecord)"></app-general-vehicle-details>
+                      </app-accordion>
+  
+                      <!-- Dimensions section-->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'dimensions'"
+                          [title]="'Dimensions'"
+                          [description]="'Axle distance, vehicle dimensions.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-dimensions [techRecord]="$any(techRecord)"></app-dimensions>
+                        </app-accordion>
+                      }
+  
+                      <!-- Weights section-->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'weights'"
+                          [title]="'Weights'"
+                          [description]="weightsAccordionDescription"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-weights [techRecord]="$any(techRecord)"></app-weights>
+                        </app-accordion>
+                      }
+  
+                      <!-- Tyres section-->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'tyres'"
+                          [title]="'Tyres'"
+                          [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-tyres [techRecord]="$any(techRecord)"></app-tyres>
+                        </app-accordion>
+                      }
+                      <!-- configuration -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'configuration'"
+                          [title]="'Configuration'"
+                          [description]="configAccordionDescription"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-configuration [techRecord]="$any(techRecord)"></app-configuration>
+                        </app-accordion>
+                      }
+  
+                      <!-- Emissions and exemptions (immediately above ADR) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'emissions-and-exemptions'"
+                          [title]="'Emissions and exemptions'"
+                          [description]="'Euro standard, emissions limit, tacho exemption.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-emissions-and-exemptions [techRecord]="$any(techRecord)"></app-emissions-and-exemptions>
+                        </app-accordion>
+                      }
+  
+                      <!-- Seats and vehicle size -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'seats-and-vehicle-size'"
+                          [title]="'Seats and vehicle size'"
+                          [description]="'Seats, vehicle size, seatbelts.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-seats-and-vehicle-size [techRecord]="$any(techRecord)"></app-seats-and-vehicle-size>
+                        </app-accordion>
+                      }
+  
+                      <!-- Brakes -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'brakes'"
+                          [title]="'Brakes'"
+                          [description]="brakesAccordionDescription"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-brakes [techRecord]="$any(techRecord)"></app-brakes>
+                        </app-accordion>
+                      }
+  
+                      <!-- Disability Discrimination Act (DDA) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'dda'"
+                          [title]="'Disability Discrimination Act'"
+                          [description]="'DDA certificate, accessibility, schedules.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-dda [techRecord]="$any(techRecord)"></app-dda>
+                        </app-accordion>
+                      }
+  
+                      @if (
+                        techRecord.techRecord_vehicleType === 'hgv' ||
+                        techRecord.techRecord_vehicleType === 'trl' ||
+                        techRecord.techRecord_vehicleType === 'lgv'
+                        ) {
+                        <app-accordion
+                          [id]="'adr'"
+                          [title]="'ADR'"
+                          [description]="'Approval for carrying dangerous goods.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-adr [techRecord]="$any(techRecord)"></app-adr>
+                        </app-accordion>
+                      }
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'authorisation-into-service'"
+                          [title]="'Authorisation into service'"
+                          [description]="'COC date, authorisation date, rejected date.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-authorisation-into-service [techRecord]="$any(techRecord)"></app-authorisation-into-service>
+                        </app-accordion>
+  
+                        <app-accordion
+                          [id]="'purchasers'"
+                          [title]="'Purchasers'"
+                          [description]="'Contact details for the purchaser.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-purchasers [techRecord]="$any(techRecord)"></app-purchasers>
+                        </app-accordion>
+  
+                        <app-accordion
+                          [id]="'manufacturer'"
+                          [title]="'Manufacturer'"
+                          [description]="'Contact details for the manufacturer.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-manufacturer [techRecord]="$any(techRecord)"></app-manufacturer>
+                        </app-accordion>
+                      }
+  
+                      @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV) {
+                        <app-accordion
+                          [id]="'last-applicant'"
+                          [title]="'Last applicant'"
+                          [description]="'Contact details for the last applicant.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-last-applicant [techRecord]="$any(techRecord)"></app-last-applicant>
+                        </app-accordion>
+                      }
+  
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'documents'"
+                          [title]="'Documents'"
+                          [description]="'Microfilm document details.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-documents [techRecord]="$any(techRecord)"></app-documents>
+                        </app-accordion>
+                      }
+  
+                      <app-accordion
+                        [id]="'notes'"
+                        [title]="'Notes'"
+                        [description]="'Notes attached to this record.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                      >
+                        <app-notes [techRecord]="$any(techRecord)"></app-notes>
+                      </app-accordion>
+                    </ng-container>
+                  </ng-template>
+                </app-accordion-control>
+              </div>
+              
+              <app-tech-record-filters />
+  
+              <!-- Accordions appear here -->
+              <ng-container [ngTemplateOutlet]="template"></ng-container>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
   </div>
 </div>
