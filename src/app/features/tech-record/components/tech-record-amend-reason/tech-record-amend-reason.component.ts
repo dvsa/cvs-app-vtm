@@ -27,14 +27,14 @@ export class TechRecordAmendReasonComponent {
 
 	reasons: Array<FormNodeOption<string>> = [
 		{
-			label: 'Correcting an error',
+			label: 'Some details need to be added or changed',
 			value: ReasonForEditing.CORRECTING_AN_ERROR,
-			hint: 'Amend the current technical record',
+			hint: 'Choose this to amend the technical record',
 		},
 		{
-			label: 'Notifiable alteration needed',
+			label: 'A notifiable alteration is needed',
 			value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
-			hint: 'Create a new provisional technical record',
+			hint: 'Choose this to create a new provisional technical record',
 		},
 	];
 
