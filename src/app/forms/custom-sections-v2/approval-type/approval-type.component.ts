@@ -40,13 +40,10 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	hgvAndPsvApprovalTypes = getOptionsFromEnum(HGVAndPSVApprovalTypes);
 
 	form: FormGroup = this.fb.group({
-		techRecord_approvalType: this.fb.nonNullable.control<string | null>(
-			{
-				value: null,
-				disabled: false,
-			},
-			this.vehicleType === VehicleTypes.TRL ? [this.commonValidators.required('Approval type is required')] : []
-		),
+		techRecord_approvalType: this.fb.nonNullable.control<string | null>({
+			value: null,
+			disabled: false,
+		}),
 		techRecord_approvalTypeNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
 			this.requiredWithApprovalType('Approval type number is required with Approval type'),
 		]),
