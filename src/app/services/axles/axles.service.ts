@@ -405,6 +405,7 @@ export class AxlesService {
 				}
 			}
 			this.showDimensionsWarning = true;
+			this.axleDistancesWithValues = false;
 			return;
 		}
 
