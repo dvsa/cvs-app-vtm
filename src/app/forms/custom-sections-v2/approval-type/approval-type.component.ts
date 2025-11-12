@@ -19,7 +19,7 @@ import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-approval-type',
@@ -61,6 +61,13 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	ngOnInit(): void {
 		this.init(this.form);
 		this.addControlsBasedOffVehicleType();
+
+		const approvalType = this.form.get('techRecord_approvalType');
+		approvalType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			if (value) {
+				this.form.patchValue({ techRecord_approvalTypeNumber: null });
+			}
+		});
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
