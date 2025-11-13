@@ -15,6 +15,7 @@ import {
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -23,7 +24,8 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { selectMergedRouteUrl } from '../router/router.selectors';
 import {
 	amendVin,
 	amendVinSuccess,
@@ -364,7 +366,10 @@ export class TechnicalRecordServiceEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createVehicleRecordSuccess),
-				tap(({ vehicleTechRecord }) =>
+				concatLatestFrom(() => this.store.select(selectMergedRouteUrl)),
+				// only redirect to the new record details if they've come from the create page
+				filter(([_, mergedRouteUrl]) => mergedRouteUrl === 'create/new-record-details'),
+				tap(([{ vehicleTechRecord }]) =>
 					this.router.navigate(['tech-records', vehicleTechRecord.systemNumber, vehicleTechRecord.createdTimestamp], {
 						queryParams: { from: 'create' },
 						queryParamsHandling: 'merge',
