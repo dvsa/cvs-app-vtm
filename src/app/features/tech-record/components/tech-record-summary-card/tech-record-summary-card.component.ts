@@ -8,6 +8,7 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 
 @Component({
 	selector: 'app-tech-record-summary-card',
@@ -27,7 +28,9 @@ export class TechRecordSummaryCardComponent {
 	route = inject(ActivatedRoute);
 
 	mode = input.required<'view' | 'edit' | 'create'>();
-	techRecord = input.required<V3TechRecordModel>();
+	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
+		transform: (value) => value as TechRecordType<'get'>,
+	});
 
 	readonly Roles = Roles;
 	readonly TagType = TagType;

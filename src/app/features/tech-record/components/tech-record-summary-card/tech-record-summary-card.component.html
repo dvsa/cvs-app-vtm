@@ -188,8 +188,9 @@
         <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== 'view'">
           <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
             <!-- In create mode this is always Incomplete -->
-            <app-tag [type]="TagType.RED">
-              Incomplete
+            @let completeness = techRecord.techRecord_recordCompleteness;
+            <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
+              {{ mode() === 'create' ? 'Incomplete' : techRecord.techRecord_recordCompleteness }}
             </app-tag>
           </dd>
         </div>
