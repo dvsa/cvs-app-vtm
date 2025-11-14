@@ -71,9 +71,6 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 		const currentApprovalType = changes['techRecord']?.currentValue?.techRecord_approvalType;
 		const previousApprovalType = changes['techRecord']?.previousValue?.techRecord_approvalType;
 
-		if (!currentApprovalType) return;
-		if (!previousApprovalType) return;
-
 		if (!isEqual(currentApprovalType, previousApprovalType)) {
 			this.form.patchValue({ techRecord_approvalTypeNumber: null });
 		}
