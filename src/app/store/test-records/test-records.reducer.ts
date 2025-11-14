@@ -201,6 +201,11 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		return testResult;
 	}
 
+	// Ensure body model is null when empty, so it doesn't affect downstream services
+	if (testResult.model === '') {
+		testResult.model = null;
+	}
+
 	// Remove recalls from non HGV/PSV/TRL tests
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
