@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
 import {
 	type AbstractControl,
 	type FormControl,
@@ -19,7 +19,8 @@ import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { isEqual } from 'lodash';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-approval-type',
@@ -33,7 +34,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupDateComponent,
 	],
 })
-export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy {
+export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	trlApprovalTypes = getOptionsFromEnum(TRLApprovalTypes);
@@ -62,29 +63,26 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 		this.init(this.form);
 		this.addControlsBasedOffVehicleType();
 
-		const approvalType = this.form.get('techRecord_approvalType');
-		approvalType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value) {
-				this.form.patchValue({ techRecord_approvalTypeNumber: null });
-			}
-		});
-
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
 	}
 
-	private addControlsBasedOffVehicleType() {
-		const vehicleControls = this.controlsBasedOffVehicleType;
+	ngOnChanges(changes: SimpleChanges): void {
+		const currentApprovalType = changes['techRecord']?.currentValue?.techRecord_approvalType;
+		const previousApprovalType = changes['techRecord']?.previousValue?.techRecord_approvalType;
 
-		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
-			this.form.addControl(key, control, { emitEvent: false });
+		if (!currentApprovalType) return;
+		if (!previousApprovalType) return;
+
+		if (!isEqual(currentApprovalType, previousApprovalType)) {
+			this.form.patchValue({ techRecord_approvalTypeNumber: null });
 		}
 	}
 
 	requiredWithApprovalType(message: string): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
 			const approvalType = control.parent?.get('techRecord_approvalType')?.value;
-			const approvalTypeNumber = control.value;
+			const approvalTypeNumber = control.parent?.get('techRecord_approvalTypeNumber')?.value;
 
 			if (approvalType && !approvalTypeNumber) {
 				const error: GlobalError = {
@@ -96,6 +94,14 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 
 			return null;
 		};
+	}
+
+	private addControlsBasedOffVehicleType() {
+		const vehicleControls = this.controlsBasedOffVehicleType;
+
+		for (const [key, control] of Object.entries(vehicleControls ?? {})) {
+			this.form.addControl(key, control, { emitEvent: false });
+		}
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
