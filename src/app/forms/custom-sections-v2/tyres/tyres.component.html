@@ -23,7 +23,7 @@
       </app-field-warning-message>
     }
     @if (invalidAxlesAll.length > 0) {
-      <app-field-warning-message [warningMessage]="' '">
+      <app-field-warning-message id="axle-weights-tyres-warning-message"  [warningMessage]="' '">
         <p class="m-0">The GB Axle weight is greater than the selected weight for axle(s)
           @for (axle of invalidAxlesAll; track axle; let i = $index; let isLast = $last) {
             @if (invalidAxlesAll.length > 1 && isLast) {
