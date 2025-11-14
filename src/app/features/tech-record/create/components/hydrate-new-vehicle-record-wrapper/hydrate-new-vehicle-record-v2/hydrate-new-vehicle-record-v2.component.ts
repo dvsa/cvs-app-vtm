@@ -156,6 +156,9 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			this.store.dispatch(clearADRDetailsBeforeUpdate());
 
 			const vehicle = nullADRDetails(this.techRecord$() as TechRecordType<'put'>);
+			// Set no of axles to null if it is 0, so it correctly saves as a skeleton record (for heavy vehicles)
+			vehicle.techRecord_noOfAxles = vehicle.techRecord_noOfAxles === 0 ? null : vehicle.techRecord_noOfAxles;
+
 			this.store.dispatch(createVehicleRecord({ vehicle }));
 		}
 	}
