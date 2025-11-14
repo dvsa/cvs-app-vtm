@@ -616,11 +616,11 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		// logic to clear axles from other sections
 		const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
 		const isHGVorTRL = vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL;
-		this.form.patchValue({ techRecord_noOfAxles: 0 });
+		this.form.patchValue({ techRecord_noOfAxles: null });
 		this.technicalRecordService.updateEditingTechRecord({
 			...this.techRecord(),
 			techRecord_axles: [],
-			techRecord_noOfAxles: 0,
+			techRecord_noOfAxles: null,
 		} as any);
 
 		if (isHGVorTRL) {
@@ -628,7 +628,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				...this.techRecord(),
 				techRecord_axles: [],
 				techRecord_dimensions_axleSpacing: [],
-				techRecord_noOfAxles: 0,
+				techRecord_noOfAxles: null,
 			} as any);
 		}
 		this.axlesService.removeAllAxles(this.parent, vehicleType);

@@ -340,12 +340,12 @@ describe('GeneralVehicleDetailsComponent', () => {
 			component.clearAxleInput();
 
 			expect(setLockSpy).toHaveBeenCalledWith(false);
-			expect(patchSpy).toHaveBeenCalledWith({ techRecord_noOfAxles: 0 });
+			expect(patchSpy).toHaveBeenCalledWith({ techRecord_noOfAxles: null });
 			expect(updateSpy).toHaveBeenCalledWith({
 				...component.techRecord(),
 				techRecord_axles: [],
 				techRecord_dimensions_axleSpacing: [],
-				techRecord_noOfAxles: 0,
+				techRecord_noOfAxles: null,
 			});
 			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
@@ -360,7 +360,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 			expect(updateSpy).toHaveBeenCalledWith({
 				...component.techRecord(),
 				techRecord_axles: [],
-				techRecord_noOfAxles: 0,
+				techRecord_noOfAxles: null,
 			});
 			expect(removeAllAxlesSpy).toHaveBeenCalled();
 		});
