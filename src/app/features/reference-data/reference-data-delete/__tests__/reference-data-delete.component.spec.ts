@@ -10,7 +10,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { ReferenceDataDeleteComponent } from '../reference-data-delete.component';
 
-describe('ReferenceDataAddComponent', () => {
+describe('ReferenceDataDeleteComponent', () => {
 	let component: ReferenceDataDeleteComponent;
 	let fixture: ComponentFixture<ReferenceDataDeleteComponent>;
 	let store: MockStore<State>;
@@ -46,13 +46,13 @@ describe('ReferenceDataAddComponent', () => {
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
-	describe('navigateBack', () => {
+	describe('back', () => {
 		it('should clear all errors', () => {
 			jest.spyOn(router, 'navigate').mockImplementation();
 
 			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-			component.navigateBack();
+			component.back();
 
 			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
 		});
@@ -60,24 +60,19 @@ describe('ReferenceDataAddComponent', () => {
 		it('should navigate back to the previous page', () => {
 			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-			component.navigateBack();
+			component.back();
 
 			expect(navigateSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
 		});
 	});
-	describe('handleFormChange', () => {
-		it('should change reason for deletion to the form value', () => {
-			component.handleFormChange({ reason: 'test reason' });
 
-			expect(component.reasonForDeletion).toEqual({ reason: 'test reason' });
-		});
-	});
-	describe('handleSubmit', () => {
+	describe('submit', () => {
 		it('will not dispatch there is no reason for deletion', () => {
-			component.type = ReferenceDataResourceType.CountryOfRegistration;
+			fixture.componentRef.setInput('type', ReferenceDataResourceType.CountryOfRegistration);
+			component.form.patchValue({ reason: '' });
 			const dispatch = jest.spyOn(store, 'dispatch');
 
-			component.handleSubmit();
+			component.submit();
 
 			expect(dispatch).not.toHaveBeenCalledWith({
 				reason: 'test reason',
@@ -87,21 +82,20 @@ describe('ReferenceDataAddComponent', () => {
 			});
 		});
 		it('will dispatches if there is a reason and type defined', () => {
-			fixture.ngZone?.run(() => {
-				component.type = ReferenceDataResourceType.CountryOfRegistration;
-				component.key = 'testkey';
-				component.handleFormChange({ reason: 'test reason' });
-				const dispatch = jest.spyOn(store, 'dispatch');
+			fixture.componentRef.setInput('type', ReferenceDataResourceType.CountryOfRegistration);
+			fixture.componentRef.setInput('key', 'testkey');
+			component.form.patchValue({ reason: 'test reason' });
 
-				component.handleSubmit();
+			const dispatch = jest.spyOn(store, 'dispatch');
 
-				expect(dispatch).toHaveBeenCalled();
-				expect(dispatch).toHaveBeenCalledWith({
-					reason: 'test reason',
-					resourceKey: 'testkey',
-					resourceType: 'COUNTRY_OF_REGISTRATION',
-					type: '[API/reference-data] deleteReferenceDataItem',
-				});
+			component.submit();
+
+			expect(dispatch).toHaveBeenCalled();
+			expect(dispatch).toHaveBeenCalledWith({
+				reason: 'test reason',
+				resourceKey: 'testkey',
+				resourceType: 'COUNTRY_OF_REGISTRATION',
+				type: '[API/reference-data] deleteReferenceDataItem',
 			});
 		});
 	});

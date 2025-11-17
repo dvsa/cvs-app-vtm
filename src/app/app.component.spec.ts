@@ -2,7 +2,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalModule } from '@azure/msal-angular';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
@@ -14,8 +14,8 @@ import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { Observable, of } from 'rxjs';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { routes } from './app.routes';
 import { State, initialAppState } from './store';
 
 describe('AppComponent', () => {
@@ -26,15 +26,9 @@ describe('AppComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				AppComponent,
-				MsalModule,
-				RouterTestingModule,
-				PageNotFoundComponent,
-				AppRoutingModule,
-				StoreModule.forRoot({}),
-			],
+			imports: [AppComponent, MsalModule, RouterTestingModule, PageNotFoundComponent, StoreModule.forRoot({})],
 			providers: [
+				provideRouter(routes),
 				provideMockStore<State>({ initialState: initialAppState }),
 				provideHttpClient(),
 				provideHttpClientTesting(),

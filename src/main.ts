@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, enableProdMode, importProvidersFrom } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
 import {
 	MSAL_GUARD_CONFIG,
 	MSAL_INSTANCE,
@@ -25,8 +25,8 @@ import { provideHttpCache, withHttpCacheInterceptor } from '@ngneat/cashew';
 import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
-import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 import { InterceptorModule } from './app/interceptors/interceptor.module';
 import { UserService } from './app/services/user-service/user-service';
 import { AppStoreModule } from './app/store/app-store.module';
@@ -76,7 +76,6 @@ bootstrapApplication(AppComponent, {
 	providers: [
 		importProvidersFrom(
 			BrowserModule,
-			AppRoutingModule,
 			MsalModule,
 			AppStoreModule,
 			InterceptorModule,
@@ -142,6 +141,11 @@ bootstrapApplication(AppComponent, {
 		MsalGuard,
 		MsalBroadcastService,
 		UserService,
+		provideRouter(
+			routes,
+			withComponentInputBinding(),
+			withRouterConfig({ onSameUrlNavigation: 'reload', paramsInheritanceStrategy: 'always' })
+		),
 		provideHttpClient(withInterceptors([withHttpCacheInterceptor()]), withInterceptorsFromDi()),
 		provideHttpCache({
 			mode: 'stateManagement',

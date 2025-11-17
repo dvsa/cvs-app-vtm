@@ -6,6 +6,7 @@ import {
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
+import { selectRouteNestedParams } from '../router/router.selectors';
 import {
 	ReferenceDataEntityStateSearch,
 	referenceDataFeatureState,
@@ -27,6 +28,29 @@ export const selectReferenceDataByResourceKey = (
 	createSelector(referenceDataFeatureState, (state) =>
 		isResourceType(resourceType) ? state[resourceType].entities[resourceKey] : undefined
 	);
+
+export const selectReferenceDataAdminTypeByRouteResourceKey = createSelector(
+	selectRouteNestedParams,
+	referenceDataFeatureState,
+	(params, state) => {
+		const resourceType = decodeURIComponent(params['type']);
+		return resourceType ? state[ReferenceDataResourceType.ReferenceDataAdminType].entities[resourceType] : undefined;
+	}
+);
+
+export const selectReferenceDataByRouteResourceKey = createSelector(
+	selectRouteNestedParams,
+	referenceDataFeatureState,
+	(params, state) => {
+		const resourceKey = decodeURIComponent(params['key']);
+		const resourceType = decodeURIComponent(params['type']);
+		if (isResourceType(resourceType)) {
+			return state[resourceType].entities[resourceKey];
+		}
+
+		return undefined;
+	}
+);
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, (state) =>
 	Object.values(state).some((feature) => feature.loading)

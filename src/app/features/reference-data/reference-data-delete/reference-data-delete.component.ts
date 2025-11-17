@@ -1,155 +1,98 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
+import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
+import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
+import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
+import { Roles } from '@/src/app/models/roles.enum';
+import { ReferenceDataService } from '@/src/app/services/reference-data/reference-data.service';
+import {
+	deleteReferenceDataItem,
+	fetchReferenceDataByKey,
+	selectReferenceDataAdminTypeByRouteResourceKey,
+	selectReferenceDataByResourceKey,
+	selectReferenceDataByRouteResourceKey,
+} from '@/src/app/store/reference-data';
+import { Component, effect, inject, input } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
-import {
-	DynamicFormGroupComponent,
-	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
-} from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { Roles } from '@models/roles.enum';
-import { ValidatorNames } from '@models/validators.enum';
-import { Store, select } from '@ngrx/store';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import {
-	CustomFormGroup,
-	FormNodeEditTypes,
-	FormNodeTypes,
-	FormNodeWidth,
-} from '@services/dynamic-forms/dynamic-form.types';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import {
-	ReferenceDataState,
-	deleteReferenceDataItem,
-	fetchReferenceDataByKey,
-	selectReferenceDataByResourceKey,
-} from '@store/reference-data';
-import { Observable, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+selectReferenceDataByResourceKey;
 
 @Component({
 	selector: 'app-reference-data-delete',
 	templateUrl: './reference-data-delete.component.html',
-	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
+	imports: [
+		RoleRequiredDirective,
+		GovukFormGroupTextareaComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		ButtonGroupComponent,
+		ButtonComponent,
+	],
 })
-export class ReferenceDataDeleteComponent implements OnInit {
-	globalErrorService = inject(GlobalErrorService);
-	referenceDataService = inject(ReferenceDataService);
-	route = inject(ActivatedRoute);
+export class ReferenceDataDeleteComponent {
+	fb = inject(FormBuilder);
+	store = inject(Store);
 	router = inject(Router);
-	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+	route = inject(ActivatedRoute);
+	validators = inject(CommonValidatorsService);
+	referenceDataService = inject(ReferenceDataService);
+	globalErrorService = inject(GlobalErrorService);
 
-	type!: ReferenceDataResourceType;
-	key!: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	reasonForDeletion: any;
-	isFormDirty = false;
-	isFormInvalid = true;
+	key = input('', { transform: (key: string) => decodeURIComponent(key) });
+	type = input(undefined, {
+		transform: (type: string | undefined) =>
+			type ? (decodeURIComponent(type) as ReferenceDataResourceType) : undefined,
+	});
 
-	reasonTemplate = {
-		name: 'reason-for-deletion',
-		type: FormNodeTypes.GROUP,
-		label: 'reason',
-		children: [
-			{
-				name: 'reason',
-				label: 'Reason for Deletion',
-				type: FormNodeTypes.CONTROL,
-				editType: FormNodeEditTypes.TEXTAREA,
-				validators: [
-					{
-						name: ValidatorNames.Required,
-					},
-				],
-			},
-		],
-	};
+	refData$ = this.store.selectSignal(selectReferenceDataByRouteResourceKey);
+	refDataAdmin$ = this.store.selectSignal(selectReferenceDataAdminTypeByRouteResourceKey);
 
-	readonly sections = viewChildren(DynamicFormGroupComponent);
+	Roles = Roles;
 
-	ngOnInit(): void {
-		this.route.parent?.params.pipe(take(1)).subscribe((params) => {
-			this.type = params['type'];
+	form = this.fb.nonNullable.group({
+		reason: this.fb.nonNullable.control('', [this.validators.required('Reason for Deletion is required')]),
+	});
 
-			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-		});
+	constructor() {
+		effect(() => {
+			const resourceKey = this.key();
+			const resourceType = this.type();
 
-		this.route.params.pipe(take(1)).subscribe((params) => {
-			this.key = decodeURIComponent(params['key']);
+			if (resourceType) {
+				this.referenceDataService.loadReferenceDataByKey(
+					ReferenceDataResourceType.ReferenceDataAdminType,
+					resourceType
+				);
+			}
 
-			if (this.type && this.key) {
-				this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
+			if (resourceType && resourceKey) {
+				this.store.dispatch(fetchReferenceDataByKey({ resourceType, resourceKey }));
 			}
 		});
 	}
 
-	get roles(): typeof Roles {
-		return Roles;
-	}
+	submit(): void {
+		this.form.markAllAsTouched();
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refData$(): Observable<any> {
-		return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
-	}
+		const resourceKey = this.key();
+		const resourceType = this.type();
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
-	}
-
-	get widths(): typeof FormNodeWidth {
-		return FormNodeWidth;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	handleFormChange(event: any) {
-		this.reasonForDeletion = event;
-	}
-
-	checkForms(): void {
-		const forms = this.sections().map((section) => section.form) as Array<CustomFormGroup>;
-
-		this.isFormDirty = forms.some((form) => form.dirty);
-
-		this.setErrors(forms);
-
-		this.isFormInvalid = forms.some((form) => form.invalid);
-	}
-
-	setErrors(forms: Array<CustomFormGroup>): void {
-		const errors: GlobalError[] = [];
-
-		forms.forEach((form) => DynamicFormService.validate(form, errors));
-
-		if (errors.length) {
-			this.globalErrorService.setErrors(errors);
-			return;
+		if (this.form.invalid) {
+			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
 		}
 
-		this.globalErrorService.clearErrors();
+		if (this.form.valid && resourceKey && resourceType) {
+			const reason = this.form.controls.reason.value.replace(/\n/g, '\\n');
+			this.store.dispatch(deleteReferenceDataItem({ resourceKey, resourceType, reason }));
+		}
 	}
 
-	navigateBack() {
+	back(): void {
 		this.globalErrorService.clearErrors();
-		void this.router.navigate(['../..'], { relativeTo: this.route });
-	}
-
-	handleSubmit() {
-		this.checkForms();
-
-		if (this.isFormInvalid || !this.reasonForDeletion) return;
-
-		this.store.dispatch(
-			deleteReferenceDataItem({
-				resourceType: this.type,
-				resourceKey: this.key,
-				reason: this.reasonForDeletion.reason,
-			})
-		);
+		this.router.navigate(['../..'], { relativeTo: this.route });
 	}
 }

@@ -1,7 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
@@ -10,7 +8,7 @@ import { RootRoutes } from '@models/routes.enum';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 
-const routes: Routes = [
+export const routes: Routes = [
 	{
 		path: RootRoutes.ROOT,
 		resolve: { title: titleResolver },
@@ -93,8 +91,3 @@ const routes: Routes = [
 			import('@core/components/page-not-found/page-not-found.component').then((m) => m.PageNotFoundComponent),
 	},
 ];
-@NgModule({
-	imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
-	exports: [RouterModule],
-})
-export class AppRoutingModule {}
