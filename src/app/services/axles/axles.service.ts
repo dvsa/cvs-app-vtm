@@ -118,8 +118,8 @@ export class AxlesService {
 					: axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.commonValidators.max(999, 'Data TR Axles must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Data TR Axles must be greater than or equal to 0'),
+				this.commonValidators.max(999, 'Data TR Axles'),
+				this.commonValidators.min(0, 'Data TR Axles'),
 			]),
 
 			// Weight fields
@@ -162,11 +162,11 @@ export class AxlesService {
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
-				this.commonValidators.min(0, 'Tyre Size must be greater than or equal to 0'),
+				this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
 				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
-				this.commonValidators.min(0, 'Ply Rating must be greater than or equal to 0'),
+				this.commonValidators.min(0, 'Ply Rating'),
 			]),
 			tyres_speedCategorySymbol: this.fb.control<string | null>(axle?.tyres_speedCategorySymbol || null),
 			// TODO remove feature flag when released to production and flag disabled
@@ -247,20 +247,20 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.max(12, 'Tyre Size must be less than or equal to 12'),
-				this.commonValidators.min(0, 'Tyre Size must be greater than or equal to 0'),
+				this.commonValidators.max(12, 'Tyre Size'),
+				this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.max(2, 'Ply rating must be less than or equal to 2'),
-				this.commonValidators.min(0, 'Ply rating must be greater than or equal to 0'),
+				this.commonValidators.max(2, 'Ply rating'),
+				this.commonValidators.min(0, 'Ply rating'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
 				featureEnabled ? FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.commonValidators.max(999, 'Load index must be less than or equal to 999'),
-				this.commonValidators.min(0, 'Load index must be greater than or equal to 0'),
+				this.commonValidators.max(999, 'Load index'),
+				this.commonValidators.min(0, 'Load index'),
 			]),
 
 			// Weights fields

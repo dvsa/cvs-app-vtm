@@ -47,7 +47,7 @@ export class DDASectionEditComponent extends EditBaseComponent implements OnInit
 		return {
 			techRecord_dda_certificateIssued: this.fb.control<boolean | null>(null),
 			techRecord_dda_wheelchairCapacity: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Wheelchair capacity must be less than or equal to 99'),
+				this.commonValidators.max(99, 'Wheelchair capacity'),
 			]),
 			techRecord_dda_wheelchairFittings: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(250, 'Wheelchair fittings must be less than or equal to 250 characters'),
@@ -67,7 +67,7 @@ export class DDASectionEditComponent extends EditBaseComponent implements OnInit
 				),
 			]),
 			techRecord_dda_minEmergencyExits: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Minimum emergency exits needed must be less than or equal to 99'),
+				this.commonValidators.max(99, 'Minimum emergency exits needed'),
 			]),
 			techRecord_dda_outswing: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(250, 'Outswing must be less than or equal to 250 characters'),
@@ -76,7 +76,7 @@ export class DDASectionEditComponent extends EditBaseComponent implements OnInit
 				this.commonValidators.maxLength(250, 'DDA schedules must be less than or equal to 250 characters'),
 			]),
 			techRecord_dda_seatbeltsFitted: this.fb.control<number | null>(null, [
-				this.commonValidators.max(999, 'Seatbelts fitted must be less than or equal to 999'),
+				this.commonValidators.max(999, 'Seatbelts fitted'),
 			]),
 			techRecord_dda_ddaNotes: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1024, 'DDA notes must be less than or equal to 1024 characters'),

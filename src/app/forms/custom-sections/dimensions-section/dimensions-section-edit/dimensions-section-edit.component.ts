@@ -65,75 +65,61 @@ export class DimensionsSectionEditComponent extends EditBaseComponent implements
 
 	get hgvControls() {
 		return {
-			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length must be less than or equal to 99999'),
-			]),
-			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width must be less than or equal to 99999'),
-			]),
+			techRecord_dimensions_length: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Length')]),
+			techRecord_dimensions_width: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Width')]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Front axle to rear axle'),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Minimum'),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Maximum'),
 			]),
 			techRecord_frontAxleTo5thWheelMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Minimum'),
 			]),
 			techRecord_frontAxleTo5thWheelMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Maximum'),
 			]),
 		};
 	}
 
 	get psvControls() {
 		return {
-			techRecord_dimensions_height: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Height must be less than or equal to 99999'),
-			]),
-			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length must be less than or equal to 99999'),
-			]),
-			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width must be less than or equal to 99999'),
-			]),
+			techRecord_dimensions_height: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Height')]),
+			techRecord_dimensions_length: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Length')]),
+			techRecord_dimensions_width: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Width')]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Front axle to rear axle'),
 			]),
 		};
 	}
 
 	get trlControls() {
 		return {
-			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length must be less than or equal to 99999'),
-			]),
-			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width must be less than or equal to 99999'),
-			]),
+			techRecord_dimensions_length: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Length')]),
+			techRecord_dimensions_width: this.fb.control<string | null>(null, [this.commonValidators.max(99999, 'Width')]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Front axle to rear axle'),
 			]),
 			techRecord_rearAxleToRearTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Rear axle to rear of trailer must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Rear axle to rear of trailer'),
 			]),
 			techRecord_centreOfRearmostAxleToRearOfTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Centre of rear axle to rear of trailer must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Centre of rear axle to rear of trailer'),
 			]),
 			techRecord_couplingCenterToRearAxleMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Minimum'),
 			]),
 			techRecord_couplingCenterToRearAxleMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Maximum'),
 			]),
 			techRecord_couplingCenterToRearTrlMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Minimum'),
 			]),
 			techRecord_couplingCenterToRearTrlMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum must be less than or equal to 99999'),
+				this.commonValidators.max(99999, 'Maximum'),
 			]),
 		};
 	}

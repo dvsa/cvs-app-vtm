@@ -20,12 +20,18 @@ export class CommonValidatorsService {
 		};
 	}
 
-	max(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	max(size: number, message: string): ValidatorFn;
-	max(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	max(size: number, func: (control: AbstractControl) => GlobalError, suffix?: string): ValidatorFn;
+	max(size: number, message: string, suffix?: string): ValidatorFn;
+	max(size: number, message: string | ((control: AbstractControl) => GlobalError), suffix?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
-				return { max: typeof message === 'string' ? message : message(control) };
+				suffix = suffix || '';
+				return {
+					max:
+						typeof message === 'string'
+							? `${message} must be less than or equal to ${size}${suffix}`
+							: message(control),
+				};
 			}
 
 			return null;
@@ -37,7 +43,9 @@ export class CommonValidatorsService {
 	min(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value < size) {
-				return { min: typeof message === 'string' ? message : message(control) };
+				return {
+					min: typeof message === 'string' ? `${message} must be greater than or equal to ${size}` : message(control),
+				};
 			}
 
 			return null;

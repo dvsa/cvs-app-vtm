@@ -189,7 +189,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -234,7 +234,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -288,7 +288,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -335,7 +335,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -356,7 +356,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -386,7 +386,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -407,7 +407,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
+				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
@@ -425,11 +425,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: false }),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [
-				this.commonValidators.max(10, 'Number of wheels driven must be less than or equal to 10'),
+				this.commonValidators.max(10, 'Number of wheels driven'),
 			]),
-			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.max(10, 'Number of axles must be less than or equal to 10'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.max(10, 'Number of axles')]),
 		};
 	}
 

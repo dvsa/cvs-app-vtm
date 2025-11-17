@@ -119,8 +119,8 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture is required with ADR body type'),
 			this.commonValidators.pastOrCurrentYear('Tank Year of manufacture must be the current or a past year'),
-			this.commonValidators.min(1000, 'Tank Year of manufacture must be greater than or equal to 1000'),
-			this.commonValidators.max(9999, 'Tank Year of manufacture must be less than or equal to 9999'),
+			this.commonValidators.min(1000, 'Tank Year of manufacture'),
+			this.commonValidators.max(9999, 'Tank Year of manufacture'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
@@ -198,7 +198,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		]),
 		techRecord_adrDetails_brakeEndurance: this.fb.control<boolean>(false),
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99999999, 'Weight (tonnes) must be less than or equal to 99999999'),
+			this.commonValidators.max(99999999, 'Weight (tonnes)'),
 			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes) is required'),
 			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) Max 2 decimal places'),
 		]),
