@@ -189,32 +189,29 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number must be less than or equal to 6 characters'),
+				this.commonValidators2.maxLength(6, 'DTp number'),
 			]),
 			techRecord_make: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
+				this.commonValidators2.maxLength(50, 'Body make'),
 				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
+				this.commonValidators2.maxLength(30, 'Body model'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators2.required('Vehicle configuration'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators2.required('Body type'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
+				this.commonValidators2.maxLength(10, 'Conversion reference number'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -222,7 +219,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+				this.commonValidators2.range(2, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -234,36 +231,33 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.required('DTp number is required'),
+				this.commonValidators2.required('DTp number'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators2.required('Vehicle configuration'),
 			]),
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }),
 			techRecord_bodyModel: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20 characters'),
+				this.commonValidators2.maxLength(20, 'Body model'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators2.required('Body type'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Model literal must be less than or equal to 30 characters'),
+				this.commonValidators2.maxLength(30, 'Model literal'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
+				this.commonValidators2.maxLength(1, 'Function code'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
+				this.commonValidators2.maxLength(10, 'Conversion reference number'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -271,7 +265,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+				this.commonValidators2.range(2, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -288,34 +282,31 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [this.commonValidators.date('Date of first use')]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number must be less than or equal to 6 characters'),
+				this.commonValidators2.maxLength(6, 'DTp number'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators2.required('Vehicle configuration'),
 			]),
 			techRecord_frameDescription: this.fb.control<string | null>(null),
 			techRecord_make: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
+				this.commonValidators2.maxLength(50, 'Body make'),
 				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
+				this.commonValidators2.maxLength(30, 'Body model'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators2.required('Body type'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number must be less than or equal to 10 characters'),
+				this.commonValidators2.maxLength(10, 'Conversion reference number'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -323,7 +314,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
+				this.commonValidators2.range(1, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -335,19 +326,16 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators2.required('Vehicle configuration'),
 			]),
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.N1, disabled: true }),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
+				this.commonValidators2.range(2, 20, 'Number of axles'),
 			]),
 		};
 	}
@@ -356,24 +344,21 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
 				{ value: VehicleConfiguration.OTHER, disabled: true },
-				[this.commonValidators.required('Vehicle configuration is required')]
+				[this.commonValidators2.required('Vehicle configuration')]
 			),
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.M1, disabled: true }),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
+				this.commonValidators2.range(2, 20, 'Number of axles'),
 			]),
 		};
 	}
@@ -386,17 +371,14 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
 			techRecord_vehicleClass_description: this.fb.control<string | null>({ value: 'trailer', disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(EUVehicleCategory.O1),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
+				this.commonValidators2.range(1, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -407,28 +389,25 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture must be greater than or equal to 1000'),
-				this.commonValidators.xYearsAfterCurrent(
-					1,
-					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-				),
+				this.commonValidators2.min(1000, 'Year of manufacture'),
+				this.commonValidators2.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
 				{ value: VehicleConfiguration.OTHER, disabled: true },
-				[this.commonValidators.required('Vehicle configuration is required')]
+				[this.commonValidators2.required('Vehicle configuration')]
 			),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators2.required('Vehicle class'),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: false }),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [
-				this.commonValidators.max(10, 'Number of wheels driven must be less than or equal to 10'),
+				this.commonValidators2.max(10, 'Number of wheels driven'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.max(10, 'Number of axles must be less than or equal to 10'),
+				this.commonValidators2.max(10, 'Number of axles'),
 			]),
 		};
 	}

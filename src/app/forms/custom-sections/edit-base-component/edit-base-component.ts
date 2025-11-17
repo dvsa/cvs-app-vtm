@@ -3,6 +3,7 @@ import { AbstractControl, ControlContainer, FormBuilder, FormGroup } from '@angu
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { CommonValidators2Service } from '@forms/validators/common-validators-2.service';
 
 @Component({
 	selector: 'app-edit-base-component',
@@ -14,6 +15,7 @@ export class EditBaseComponent {
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);
 	commonValidators = inject(CommonValidatorsService);
+  commonValidators2 = inject(CommonValidators2Service);
 
 	get parent() {
 		return this.controlContainer.control as FormGroup;
