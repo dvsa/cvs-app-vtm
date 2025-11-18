@@ -39,7 +39,7 @@ export class NotesComponent extends EditBaseComponent implements OnInit, OnDestr
 	get defaultFields() {
 		return {
 			techRecord_notes: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
-				this.commonValidators.maxLength(1024, 'Notes must be less than or equal to 1024 characters'),
+				this.commonValidators.maxLength(1024, 'Notes'),
 			]),
 		};
 	}
@@ -47,10 +47,10 @@ export class NotesComponent extends EditBaseComponent implements OnInit, OnDestr
 	get psvFields() {
 		return {
 			techRecord_remarks: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
-				this.commonValidators.maxLength(1024, 'Notes must be less than or equal to 1024 characters'),
+				this.commonValidators.maxLength(1024, 'Notes'),
 			]),
 			techRecord_dispensations: this.fb.control<string | undefined>({ value: undefined, disabled: false }, [
-				this.commonValidators.maxLength(160, 'Dispensations must be less than or equal to 160 characters'),
+				this.commonValidators.maxLength(160, 'Dispensations'),
 			]),
 		};
 	}

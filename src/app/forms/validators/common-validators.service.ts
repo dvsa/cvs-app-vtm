@@ -69,7 +69,12 @@ export class CommonValidatorsService {
 	maxLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
-				return { maxLength: typeof message === 'string' ? message : message(control) };
+				return {
+					maxLength:
+						typeof message === 'string'
+							? `${message} must be less than or equal to ${length} characters`
+							: message(control),
+				};
 			}
 
 			return null;

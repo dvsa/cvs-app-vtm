@@ -94,38 +94,32 @@ export class TRLPurchasersSectionEditComponent implements OnInit, OnDestroy {
 	private get trlOnlyFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
 			techRecord_purchaserDetails_name: this.fb.control(null, [
-				this.commonValidators.maxLength(150, 'Name or company must be less than or equal to 150 characters'),
+				this.commonValidators.maxLength(150, 'Name or company'),
 			]),
 			techRecord_purchaserDetails_address1: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Address line 1 must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Address line 1'),
 			]),
 			techRecord_purchaserDetails_address2: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Address line 2 must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Address line 2'),
 			]),
 			techRecord_purchaserDetails_postTown: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Town or city must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Town or city'),
 			]),
-			techRecord_purchaserDetails_address3: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'County must be less than or equal to 60 characters'),
-			]),
-			techRecord_purchaserDetails_postCode: this.fb.control(null, [
-				this.commonValidators.maxLength(12, 'Postcode must be less than or equal to 12 characters'),
-			]),
+			techRecord_purchaserDetails_address3: this.fb.control(null, [this.commonValidators.maxLength(60, 'County')]),
+			techRecord_purchaserDetails_postCode: this.fb.control(null, [this.commonValidators.maxLength(12, 'Postcode')]),
 			techRecord_purchaserDetails_telephoneNumber: this.fb.control(null, [
-				this.commonValidators.maxLength(25, 'Telephone number must be less than or equal to 25 characters'),
+				this.commonValidators.maxLength(25, 'Telephone number'),
 			]),
 			techRecord_purchaserDetails_emailAddress: this.fb.control(null, [
-				this.commonValidators.maxLength(255, 'Email address must be less than or equal to 255 characters'),
+				this.commonValidators.maxLength(255, 'Email address'),
 				this.commonValidators.pattern(
 					"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
 					'Enter an email address in the correct format, like name@example.com'
 				),
 			]),
-			techRecord_purchaserDetails_faxNumber: this.fb.control(null, [
-				this.commonValidators.maxLength(25, 'Fax Number must be less than or equal to 25 characters'),
-			]),
+			techRecord_purchaserDetails_faxNumber: this.fb.control(null, [this.commonValidators.maxLength(25, 'Fax Number')]),
 			techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
-				this.commonValidators.maxLength(1024, 'Purchaser Notes must be less than or equal to 1024 characters'),
+				this.commonValidators.maxLength(1024, 'Purchaser Notes'),
 			]),
 		};
 	}

@@ -71,19 +71,19 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
 		// Applicant Details
 		techRecord_adrDetails_applicantDetails_name: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Name'),
 		]),
 		techRecord_adrDetails_applicantDetails_street: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(150, 'Address line 1 must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Address line 1'),
 		]),
 		techRecord_adrDetails_applicantDetails_town: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'Address line 2 (optional) must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'Address line 2 (optional)'),
 		]),
 		techRecord_adrDetails_applicantDetails_city: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'Town or city must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'Town or city'),
 		]),
 		techRecord_adrDetails_applicantDetails_postcode: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(25, 'Postcode must be less than or equal to 25 characters'),
+			this.commonValidators.maxLength(25, 'Postcode'),
 		]),
 		// ADR Details
 		techRecord_adrDetails_vehicleDetails_type: this.fb.control<string | null>(null, [
@@ -118,13 +118,13 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			]
 		),
 		techRecord_adrDetails_adrTypeApprovalNo: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(40, 'ADR type approval number must be less than or equal to 40 characters'),
+			this.commonValidators.maxLength(40, 'ADR type approval number'),
 		]),
 
 		// Tank Details
 		techRecord_adrDetails_tank_tankDetails_tankManufacturer: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank make is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'Tank make must be less than or equal to 70 characters'),
+			this.commonValidators.maxLength(70, 'Tank make'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture is required with ADR body type'),
@@ -133,15 +133,15 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
-			this.commonValidators.maxLength(50, 'Manufacturer serial number must be less than or equal to 50 characters'),
+			this.commonValidators.maxLength(50, 'Manufacturer serial number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank type approval number is required with ADR body type'),
-			this.commonValidators.maxLength(65, 'Tank type approval number must be less than or equal to 65 characters'),
+			this.commonValidators.maxLength(65, 'Tank type approval number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankCode: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Code is required with ADR body type'),
-			this.commonValidators.maxLength(30, 'Code must be less than or equal to 30 characters'),
+			this.commonValidators.maxLength(30, 'Code'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Substances permitted is required with ADR body type'),
@@ -151,10 +151,10 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.adrValidators.requiredWithTankStatement('Select is required with Substances permitted')
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_statement: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Reference number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Reference number'),
 			this.adrValidators.requiresAUnNumberOrReferenceNumber(
 				'Reference number or UN number 1 is required when selecting Product list'
 			),
@@ -169,15 +169,15 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			]
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Additional details must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Additional details'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1024, 'Special provisions must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Special provisions'),
 		]),
 		techRecord_adrDetails_declarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationIssuer: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(500, 'Issuer must be less than or equal to 500 characters'),
+			this.commonValidators.maxLength(500, 'Issuer'),
 		]),
 		techRecord_adrDetails_brakeEndurance: this.fb.control<boolean>(false),
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
@@ -188,16 +188,16 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_newCertificateRequested: this.fb.control<boolean>(false),
 		techRecord_adrDetails_additionalExaminerNotes: this.fb.control<AdditionalExaminerNotes[] | null>(null),
 		techRecord_adrDetails_additionalExaminerNotes_note: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1024, 'Additional examiner notes must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Additional examiner notes'),
 		]),
 		techRecord_adrDetails_adrCertificateNotes: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'ADR certificate notes must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'ADR certificate notes'),
 		]),
 		// Tank Details > Tank Inspections
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: this.fb.control<string | null>('initial'),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate number is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'TC2: Certificate Number must be less than or equal to 70 characters'),
+			this.commonValidators.maxLength(70, 'TC2: Certificate Number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('TC2: Expiry date'),
@@ -215,7 +215,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery list applicable'),
-			this.commonValidators.maxLength(8, 'Reference number must be less than or equal to 8 characters'),
+			this.commonValidators.maxLength(8, 'Reference number'),
 		]),
 	});
 

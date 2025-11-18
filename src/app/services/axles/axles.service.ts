@@ -104,11 +104,11 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
+				this.commonValidators.maxLength(12, 'Tyre Size'),
 				this.commonValidators.minLength(0, 'Tyre Size must be greater than or equal to 0'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
+				this.commonValidators.maxLength(2, 'Ply Rating'),
 				this.commonValidators.minLength(0, 'Ply Rating must be greater than or equal to 0'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
@@ -161,11 +161,11 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size must be less than or equal to 12 characters'),
+				this.commonValidators.maxLength(12, 'Tyre Size'),
 				this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating must be less than or equal to 2 characters'),
+				this.commonValidators.maxLength(2, 'Ply Rating'),
 				this.commonValidators.min(0, 'Ply Rating'),
 			]),
 			tyres_speedCategorySymbol: this.fb.control<string | null>(axle?.tyres_speedCategorySymbol || null),

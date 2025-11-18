@@ -261,21 +261,19 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 	get hgvAndTrailerFields(): Partial<Record<keyof TechRecordType<'hgv' | 'trl'>, FormControl>> {
 		return {
 			techRecord_make: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(50, 'Body make must be less than or equal to 50 characters'),
+				this.commonValidators.maxLength(50, 'Body make'),
 				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
-			techRecord_model: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Body model must be less than or equal to 30 characters'),
-			]),
+			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number must be less than or equal to 6 characters'),
+				this.commonValidators.maxLength(6, 'DTp number'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
+				this.commonValidators.maxLength(1, 'Function code'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
 				this.commonValidators.pattern(
@@ -289,29 +287,27 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 	get psvFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(30, 'Chassis make must be less than or equal to 30 characters'),
+				this.commonValidators.maxLength(30, 'Chassis make'),
 			]),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(20, 'Chassis model must be less than or equal to 20 characters'),
+				this.commonValidators.maxLength(20, 'Chassis model'),
 			]),
 			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.maxLength(20, 'Body make must be less than or equal to 20 characters'),
+				this.commonValidators.maxLength(20, 'Body make'),
 			]),
-			techRecord_bodyModel: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(20, 'Body model must be less than or equal to 20 characters'),
-			]),
+			techRecord_bodyModel: this.fb.control<string | null>(null, [this.commonValidators.maxLength(20, 'Body model')]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type is required'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Model literal must be less than or equal to 30 characters'),
+				this.commonValidators.maxLength(30, 'Model literal'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
 				this.commonValidators.required('DTp number is required'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code must be less than or equal to 1 characters'),
+				this.commonValidators.maxLength(1, 'Function code'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
 				this.commonValidators.pattern(

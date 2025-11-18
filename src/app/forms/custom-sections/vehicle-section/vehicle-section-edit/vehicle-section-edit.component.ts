@@ -213,7 +213,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.required('Vehicle configuration is required'),
 			]),
 			techRecord_couplingType: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Coupling type (optional) must be less than or equal to 1 characters'),
+				this.commonValidators.maxLength(1, 'Coupling type (optional)'),
 			]),
 			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Max load on coupling (optional)'),

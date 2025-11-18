@@ -68,18 +68,12 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 		if (status) {
 			this.form.controls.reason.setValidators([
 				this.validators.required('Enter a reason for showing the record in VTA'),
-				this.validators.maxLength(
-					100,
-					'Reason for showing the record in VTA must be less than or equal to 100 characters'
-				),
+				this.validators.maxLength(100, 'Reason for showing the record in VTA'),
 			]);
 		} else {
 			this.form.controls.reason.setValidators([
 				this.validators.required('Enter a reason for hiding the record in VTA'),
-				this.validators.maxLength(
-					100,
-					'Reason for hiding the record in VTA must be less than or equal to 100 characters'
-				),
+				this.validators.maxLength(100, 'Reason for hiding the record in VTA'),
 			]);
 		}
 	}
