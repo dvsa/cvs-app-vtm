@@ -241,7 +241,7 @@ export class CommonValidatorsService {
 			const inputYear = control.value;
 			const maxYear = currentYear + xYears;
 			if (inputYear && (inputYear > maxYear || inputYear < 0)) {
-				return { xYearsAfterCurrent: message };
+				return { xYearsAfterCurrent: `${message} must be equal to or before ${new Date().getFullYear() + xYears}` };
 			}
 
 			return null;

@@ -94,10 +94,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 		techRecord_manufactureYear: this.fb.control<number | null>(null, [
 			this.commonValidators.max(9999, 'Year of manufacture'),
 			this.commonValidators.min(1000, 'Year of manufacture'),
-			this.commonValidators.xYearsAfterCurrent(
-				1,
-				`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
-			),
+			this.commonValidators.xYearsAfterCurrent(1, 'Year of manufacture'),
 		]),
 		techRecord_statusCode: this.fb.control<string | null>(null),
 	});
