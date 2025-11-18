@@ -89,7 +89,9 @@ export class CommonValidatorsService {
 			if (typeof control.value !== 'number') return null;
 
 			if (control.value < min || control.value > max) {
-				return { range: typeof message === 'string' ? message : message(control) };
+				return {
+					range: typeof message === 'string' ? `${message} must be between ${min} and ${max}` : message(control),
+				};
 			}
 
 			return null;

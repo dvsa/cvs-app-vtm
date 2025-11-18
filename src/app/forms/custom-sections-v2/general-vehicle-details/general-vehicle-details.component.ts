@@ -220,7 +220,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+				this.commonValidators.range(2, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -267,7 +267,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles must be between 2 and 10'),
+				this.commonValidators.range(2, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -317,7 +317,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
+				this.commonValidators.range(1, 10, 'Number of axles'),
 			]),
 		};
 	}
@@ -340,9 +340,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.N1, disabled: true }),
-			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.range(2, 20, 'Number of axles')]),
 		};
 	}
 
@@ -366,9 +364,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.M1, disabled: true }),
-			techRecord_noOfAxles: this.fb.control<number | null>(2, [
-				this.commonValidators.range(2, 20, 'Number of axles must be between 2 and 20'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.range(2, 20, 'Number of axles')]),
 		};
 	}
 
@@ -390,7 +386,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_vehicleClass_description: this.fb.control<string | null>({ value: 'trailer', disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(EUVehicleCategory.O1),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles must be between 1 and 10'),
+				this.commonValidators.range(1, 10, 'Number of axles'),
 			]),
 		};
 	}
