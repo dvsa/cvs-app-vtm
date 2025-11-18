@@ -188,7 +188,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			]),
 			techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Seatbelt installation approval date / type approved'),
-				this.commonValidators.pastDate('Seatbelt installation approval date / type approved must be in the past'),
+				this.commonValidators.pastDate('Seatbelt installation approval date / type approved'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),

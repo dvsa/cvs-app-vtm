@@ -159,7 +159,7 @@ export class TypeApprovalSectionEditComponent implements OnInit, OnDestroy {
 			]),
 			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
 				this.commonValidators.date('COIF Certifier date'),
-				this.commonValidators.pastDate('COIF Certifier date must be in the past'),
+				this.commonValidators.pastDate('COIF Certifier date'),
 			]),
 		};
 	}

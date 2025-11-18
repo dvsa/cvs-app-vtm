@@ -129,7 +129,7 @@ export class CommonValidatorsService {
 	pastDate(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && new Date(control.value) > new Date()) {
-				return { pastDate: message };
+				return { pastDate: `${message} must be in the past` };
 			}
 
 			return null;

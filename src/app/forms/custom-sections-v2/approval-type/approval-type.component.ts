@@ -122,7 +122,7 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 			]),
 			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
 				this.commonValidators.date('COIF certifier date'),
-				this.commonValidators.pastDate('COIF certifier date must be in the past'),
+				this.commonValidators.pastDate('COIF certifier date'),
 			]),
 		};
 	}

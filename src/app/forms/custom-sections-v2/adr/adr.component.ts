@@ -92,7 +92,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Date processed'),
-			this.commonValidators.pastDate('Date processed must be in the past'),
+			this.commonValidators.pastDate('Date processed'),
 			this.adrValidators.requiredWithDangerousGoods(
 				'Date processed is required with Approved to carry dangerous goods'
 			),
