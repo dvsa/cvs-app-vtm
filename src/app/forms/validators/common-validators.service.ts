@@ -139,7 +139,7 @@ export class CommonValidatorsService {
 	pastOrCurrentYear(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && +control.value > new Date().getFullYear()) {
-				return { pastOrCurrentYear: message };
+				return { pastOrCurrentYear: `${message} must be the current or a past year` };
 			}
 
 			return null;
@@ -228,7 +228,7 @@ export class CommonValidatorsService {
 	required(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				return { required: typeof message === 'string' ? message : message(control) };
+				return { required: typeof message === 'string' ? `${message} is required` : message(control) };
 			}
 
 			return null;

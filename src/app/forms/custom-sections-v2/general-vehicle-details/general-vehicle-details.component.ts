@@ -204,11 +204,11 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators.required('Body type'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
@@ -238,11 +238,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 					`Year of manufacture must be equal to or before ${new Date().getFullYear() + 1}`
 				),
 			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.required('DTp number is required'),
-			]),
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [this.commonValidators.required('DTp number')]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, []),
@@ -250,7 +248,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_bodyModel: this.fb.control<string | null>(null, [this.commonValidators.maxLength(20, 'Body model')]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators.required('Body type'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Model literal'),
@@ -295,7 +293,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.maxLength(6, 'DTp number'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_frameDescription: this.fb.control<string | null>(null),
 			techRecord_make: this.fb.control<string | null>(null, [
@@ -305,7 +303,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators.required('Body type'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
@@ -336,7 +334,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.N1, disabled: true }),
@@ -359,7 +357,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
 				{ value: VehicleConfiguration.OTHER, disabled: true },
-				[this.commonValidators.required('Vehicle configuration is required')]
+				[this.commonValidators.required('Vehicle configuration')]
 			),
 			// default subclass to undefined as null is not allowed and an emtpy array creates a complete record instead of skeleton
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
@@ -408,10 +406,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
 				{ value: VehicleConfiguration.OTHER, disabled: true },
-				[this.commonValidators.required('Vehicle configuration is required')]
+				[this.commonValidators.required('Vehicle configuration')]
 			),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: false }),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [

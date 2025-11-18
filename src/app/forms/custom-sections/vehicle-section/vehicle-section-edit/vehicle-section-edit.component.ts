@@ -128,7 +128,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
 			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value)'),
@@ -141,7 +141,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
 			techRecord_tachoExemptMrk: this.fb.control<boolean | null>(null),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(VehicleClassDescription.HeavyGoodsVehicle, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),
@@ -160,7 +160,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Emission limit (m-1) (plate value)'),
@@ -168,7 +168,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			]),
 			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99, 'Upper deck'),
@@ -202,7 +202,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.TRL, disabled: true }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(VehicleClassDescription.Trailer, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_departmentalVehicleMarker: this.fb.control<boolean | null>(null),
@@ -210,7 +210,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [this.commonValidators.date('Date of first use')]),
 			techRecord_suspensionType: this.fb.control<string | null>(null),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_couplingType: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Coupling type (optional)'),
@@ -235,7 +235,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(null, [this.commonValidators.max(99, 'Number of axles')]),
 		};
@@ -254,7 +254,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.max(99, 'Number of axles')]),
 		};
@@ -273,7 +273,7 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.date('Date of first registration'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.max(99, 'Number of axles')]),
 		};
@@ -289,10 +289,10 @@ export class VehicleSectionEditComponent extends EditBaseComponent implements On
 				this.commonValidators.max(9999, 'Number of wheels driven'),
 			]),
 			techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Vehicle class is required'),
+				this.commonValidators.required('Vehicle class'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration is required'),
+				this.commonValidators.required('Vehicle configuration'),
 			]),
 			techRecord_regnDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first registration'),

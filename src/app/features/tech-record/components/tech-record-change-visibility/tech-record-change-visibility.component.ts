@@ -67,12 +67,22 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 		const status = this.techRecord()?.techRecord_hiddenInVta;
 		if (status) {
 			this.form.controls.reason.setValidators([
-				this.validators.required('Enter a reason for showing the record in VTA'),
+				this.validators.required(() => {
+					return {
+						error: 'Enter a reason for showing the record in VTA',
+						anchorLink: 'reason',
+					};
+				}),
 				this.validators.maxLength(100, 'Reason for showing the record in VTA'),
 			]);
 		} else {
 			this.form.controls.reason.setValidators([
-				this.validators.required('Enter a reason for hiding the record in VTA'),
+				this.validators.required(() => {
+					return {
+						error: 'Enter a reason for hiding the record in VTA',
+						anchorLink: 'reason',
+					};
+				}),
 				this.validators.maxLength(100, 'Reason for hiding the record in VTA'),
 			]);
 		}

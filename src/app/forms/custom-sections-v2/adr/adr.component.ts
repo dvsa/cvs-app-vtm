@@ -128,7 +128,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture is required with ADR body type'),
-			this.commonValidators.pastOrCurrentYear('Tank year of manufacture must be the current or a past year'),
+			this.commonValidators.pastOrCurrentYear('Tank year of manufacture'),
 			this.commonValidators.min(1000, 'Tank year of manufacture'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [

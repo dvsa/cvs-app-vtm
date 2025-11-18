@@ -266,7 +266,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators.required('Body type'),
 			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
@@ -298,14 +298,12 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 			techRecord_bodyModel: this.fb.control<string | null>(null, [this.commonValidators.maxLength(20, 'Body model')]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null, []),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
-				this.commonValidators.required('Body type is required'),
+				this.commonValidators.required('Body type'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Model literal'),
 			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.required('DTp number is required'),
-			]),
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [this.commonValidators.required('DTp number')]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(1, 'Function code'),
 			]),
