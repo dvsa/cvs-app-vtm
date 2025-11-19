@@ -2,6 +2,7 @@ import { AccordionControlComponent } from '@/src/app/components/accordion-contro
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { AdrCertificatesComponent } from '@/src/app/forms/custom-sections-v2/adr-certificates/adr-certificates.component';
 import { AdrComponent } from '@/src/app/forms/custom-sections-v2/adr/adr.component';
 import { AuthorisationIntoServiceComponent } from '@/src/app/forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
@@ -67,6 +68,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ReactiveFormsModule,
 		NgTemplateOutlet,
 		TechRecordFiltersComponent,
+		AdrCertificatesComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {

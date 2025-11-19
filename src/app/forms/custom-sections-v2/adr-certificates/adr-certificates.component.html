@@ -1,0 +1,85 @@
+@if (techRecord(); as techRecord) {
+  <div class="govuk-!-padding-4">
+    @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+      <div class="govuk-button-group">
+        <app-button
+          [id]="'generate-adr-cert'"
+          design="secondary"
+          *appRoleRequired="[Roles.TestResultCreateContingency, Roles.TestResultCreateDeskAssessment]"
+          (clicked)="generateADRCertificate()"
+        >
+          Generate an ADR certificate
+        </app-button>
+      </div>
+    }
+
+    @if (adrCertificateHistory.length) {
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-!-margin-bottom-4">ADR certificates history</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Certificate type</th>
+            <th scope="col" class="govuk-table__header">Created by</th>
+            <th scope="col" class="govuk-table__header">Date</th>
+            <th scope="col" class="govuk-table__header">Time</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          @for (certificate of adrCertificateHistory; track i; let i = $index) {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell" [id]="`adr-certificate-type-${i}`">
+                <a 
+                  class="govuk-link govuk-!-text-break-word whitespace-pre-line"
+                  href="javascript:void(0)"
+                  appRetrieveDocument
+                  [params]="documentParams(certificate)" 
+                  [fileName]="getFileName(certificate)" 
+                  >
+                  {{ certificate.certificateType | titlecase }}
+                </a>
+              </td>
+              <td class="govuk-table__cell" [id]="`adr-created-by-name-${i}`">
+                <a 
+                  class="govuk-link govuk-!-text-break-word whitespace-pre-line"
+                  href="javascript:void(0)"
+                  appRetrieveDocument
+                  [params]="documentParams(certificate)" 
+                  [fileName]="getFileName(certificate)" 
+                  >
+                  {{ certificate.createdByName | defaultNullOrEmpty }}
+                </a>
+              </td>
+              <td class="govuk-table__cell" [id]="`adr-generated-date-${i}`">
+                <a 
+                  class="govuk-link govuk-!-text-break-word whitespace-pre-line"
+                  href="javascript:void(0)"
+                  appRetrieveDocument
+                  [params]="documentParams(certificate)" 
+                  [fileName]="getFileName(certificate)" 
+                  >
+                  {{ certificate.generatedTimestamp | date : 'dd/MM/yyyy' }}
+                </a>
+              </td>
+              <td class="govuk-table__cell" [id]="`adr-generated-time-${i}`">
+                <a 
+                  class="govuk-link govuk-!-text-break-word whitespace-pre-line"
+                  href="javascript:void(0)"
+                  appRetrieveDocument
+                  [params]="documentParams(certificate)" 
+                  [fileName]="getFileName(certificate)" 
+                  >
+                  {{ certificate.generatedTimestamp | date : 'HH:mm' }}
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <app-pagination 
+        tableName="adr-certificate-history"
+        [numberOfItems]="numberOfADRCertificates"
+        (paginationOptionsChange)="handlePaginationChange($event)"
+      ></app-pagination>
+    }
+  </div>
+}
