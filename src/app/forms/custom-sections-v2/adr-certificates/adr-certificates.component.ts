@@ -82,7 +82,7 @@ export class AdrCertificatesComponent {
 				this.viewportScroller.scrollToPosition([0, 0]);
 				this.globalErrorService.addError({
 					error:
-						'This vehicle is not able to carry dangerous goods, add ADR details to the technical record to generate a certificate.',
+						'This vehicle is not able to carry dangerous goods. Add ADR details to the technical record to generate a certificate.',
 				});
 				return;
 			}
