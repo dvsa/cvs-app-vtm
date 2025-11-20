@@ -201,6 +201,16 @@
                         >
                           <app-manufacturer [techRecord]="$any(techRecord)"></app-manufacturer>
                         </app-accordion>
+
+                        <app-accordion
+                          [id]="'letter-of-authorisation'"
+                          [title]="'Letter of authorisation'"
+                          [description]="'Generate and send a letter of authorisation.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
+                        </app-accordion>
                       }
   
                       @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV) {
