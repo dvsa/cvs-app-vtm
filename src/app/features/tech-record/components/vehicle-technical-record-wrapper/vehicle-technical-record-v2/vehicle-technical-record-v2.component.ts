@@ -13,6 +13,7 @@ import { DocumentsComponent } from '@/src/app/forms/custom-sections-v2/documents
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { GeneralVehicleDetailsComponent } from '@/src/app/forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@/src/app/forms/custom-sections-v2/last-applicant/last-applicant.component';
+import { LetterOfAuthorisationComponent } from '@/src/app/forms/custom-sections-v2/letter-of-authorisation/letter-of-authorisation.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
 import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
@@ -25,7 +26,7 @@ import { V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-r
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
-import { selectSectionState } from '@/src/app/store/technical-records';
+import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -69,6 +70,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ReactiveFormsModule,
 		NgTemplateOutlet,
 		TechRecordFiltersComponent,
+		LetterOfAuthorisationComponent,
 		AdrCertificatesComponent,
 		PlatesComponent,
 	],
@@ -119,6 +121,11 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 								this.axlesService.generateAxleSpacingsForm(techRecord)
 							);
 						}
+					}
+
+					// Fetch technical record history and load into state
+					if ('systemNumber' in techRecord && techRecord['systemNumber']) {
+						this.store.dispatch(getBySystemNumber({ systemNumber: techRecord.systemNumber }));
 					}
 				}
 			});
