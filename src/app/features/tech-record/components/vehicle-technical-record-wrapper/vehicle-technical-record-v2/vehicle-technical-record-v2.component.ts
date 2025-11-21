@@ -2,6 +2,7 @@ import { AccordionControlComponent } from '@/src/app/components/accordion-contro
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { AdrCertificatesComponent } from '@/src/app/forms/custom-sections-v2/adr-certificates/adr-certificates.component';
 import { AdrComponent } from '@/src/app/forms/custom-sections-v2/adr/adr.component';
 import { AuthorisationIntoServiceComponent } from '@/src/app/forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
@@ -15,6 +16,7 @@ import { LastApplicantComponent } from '@/src/app/forms/custom-sections-v2/last-
 import { LetterOfAuthorisationComponent } from '@/src/app/forms/custom-sections-v2/letter-of-authorisation/letter-of-authorisation.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
+import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
@@ -69,6 +71,8 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		NgTemplateOutlet,
 		TechRecordFiltersComponent,
 		LetterOfAuthorisationComponent,
+		AdrCertificatesComponent,
+		PlatesComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {

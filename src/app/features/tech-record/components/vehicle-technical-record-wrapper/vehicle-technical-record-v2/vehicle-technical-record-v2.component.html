@@ -104,7 +104,7 @@
                         </app-accordion>
                       }
   
-                      <!-- Emissions and exemptions (immediately above ADR) -->
+                      <!-- Emissions and exemptions -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion
                           [id]="'emissions-and-exemptions'"
@@ -155,7 +155,21 @@
                           <app-dda [techRecord]="$any(techRecord)"></app-dda>
                         </app-accordion>
                       }
+
+                      <!-- Plates -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                        <app-accordion
+                          [id]="'plates'"
+                          [title]="'Plates'"
+                          [description]="'Generate and view plates.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-plates [techRecord]="techRecord"></app-plates>
+                        </app-accordion>
+                      }
   
+                      <!-- ADR -->
                       @if (
                         techRecord.techRecord_vehicleType === 'hgv' ||
                         techRecord.techRecord_vehicleType === 'trl' ||
@@ -171,6 +185,24 @@
                           <app-adr [techRecord]="$any(techRecord)"></app-adr>
                         </app-accordion>
                       }
+
+                      <!-- ADR certificates -->
+                      @if (
+                        techRecord.techRecord_vehicleType === 'hgv' ||
+                        techRecord.techRecord_vehicleType === 'trl' ||
+                        techRecord.techRecord_vehicleType === 'lgv'
+                        ) {
+                        <app-accordion
+                          [id]="'adr-certs'"
+                          [title]="'ADR certificates'"
+                          [description]="'Generate and view ADR certificates.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
+                        </app-accordion>
+                      }
+
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                         <app-accordion
                           [id]="'authorisation-into-service'"
