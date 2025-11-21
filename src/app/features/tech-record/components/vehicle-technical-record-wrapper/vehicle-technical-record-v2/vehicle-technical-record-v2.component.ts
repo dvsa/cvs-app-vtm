@@ -15,6 +15,7 @@ import { GeneralVehicleDetailsComponent } from '@/src/app/forms/custom-sections-
 import { LastApplicantComponent } from '@/src/app/forms/custom-sections-v2/last-applicant/last-applicant.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
+import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
@@ -69,6 +70,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		NgTemplateOutlet,
 		TechRecordFiltersComponent,
 		AdrCertificatesComponent,
+		PlatesComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
