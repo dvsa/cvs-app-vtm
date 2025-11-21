@@ -15,7 +15,6 @@ import {
 	selectTechRecord,
 	updateADRAdditionalExaminerNotes,
 } from '@/src/app/store/technical-records';
-import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -155,9 +154,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username$() }));
 			this.store.dispatch(clearADRDetailsBeforeUpdate());
 
-			const vehicle = nullADRDetails(this.techRecord$() as TechRecordType<'put'>);
-			// Set no of axles to null if it is 0, so it correctly saves as a skeleton record (for heavy vehicles)
-			vehicle.techRecord_noOfAxles = vehicle.techRecord_noOfAxles === 0 ? null : vehicle.techRecord_noOfAxles;
+			const vehicle = this.technicalRecordService.fixTechRecord(this.techRecord$() as TechRecordType<'put'>);
 
 			this.store.dispatch(createVehicleRecord({ vehicle }));
 		}
