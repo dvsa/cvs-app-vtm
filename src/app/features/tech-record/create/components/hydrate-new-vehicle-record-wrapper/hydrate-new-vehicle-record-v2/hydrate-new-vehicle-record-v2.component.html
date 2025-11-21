@@ -36,8 +36,11 @@
                       [description]="'Date of registration, body details, EU category.'"
                       [type]="'condensed'"
                       [isExpanded]="false"
+                      appFilterByTags
+                      [tagNames]="['Plates']"
+                      [filters]="filters()"
                     >
-                      <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
+                      <app-general-vehicle-details [techRecord]="techRecord" [filters]="filters()"></app-general-vehicle-details>
                     </app-accordion>
 
                     @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
@@ -48,8 +51,11 @@
                         [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Approval type, COIF number, variant number.' : 'Approval type, national type, variant number.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-approval-type [techRecord]="techRecord"></app-approval-type>
+                        <app-approval-type [techRecord]="techRecord" [filters]="filters()"></app-approval-type>
                       </app-accordion>
                     }
 
@@ -61,8 +67,11 @@
                         [description]="'Axle distance, vehicle dimensions.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-dimensions [techRecord]="techRecord"></app-dimensions>
+                        <app-dimensions [techRecord]="techRecord" [filters]="filters()"></app-dimensions>
                       </app-accordion>
                     }
 
@@ -74,8 +83,11 @@
                         [description]="weightsAccordionDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-weights [techRecord]="techRecord"></app-weights>
+                        <app-weights [techRecord]="techRecord" [filters]="filters()"></app-weights>
                       </app-accordion>
                     }
 
@@ -87,8 +99,11 @@
                         [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-tyres [techRecord]="techRecord"></app-tyres>
+                        <app-tyres [techRecord]="techRecord" [filters]="filters()"></app-tyres>
                       </app-accordion>
                     }
 
@@ -100,8 +115,11 @@
                         [description]="configAccordionDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-configuration [techRecord]="techRecord"></app-configuration>
+                        <app-configuration [techRecord]="techRecord" [filters]="filters()"></app-configuration>
                       </app-accordion>
                     }
 
@@ -113,8 +131,11 @@
                         [description]="'Euro standard, emissions limit, tacho exemption.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
-                        <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
+                        <app-emissions-and-exemptions [techRecord]="techRecord" [filters]="filters()"></app-emissions-and-exemptions>
                       </app-accordion>
                     }
 
@@ -126,6 +147,9 @@
                         [description]="'Seats, vehicle size, seatbelts.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
                       </app-accordion>
@@ -139,6 +163,9 @@
                         [description]="brakesAccordionDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-brakes [techRecord]="techRecord"></app-brakes>
                       </app-accordion>
@@ -152,6 +179,9 @@
                         [description]="'DDA certificate, accessibility, schedules.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-dda [techRecord]="techRecord"></app-dda>
                       </app-accordion>
@@ -169,6 +199,9 @@
                         [description]="'Approval for carrying dangerous goods.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-adr [techRecord]="techRecord"></app-adr>
                       </app-accordion>
@@ -181,6 +214,9 @@
                         [description]="'COC date, authorisation date, rejected date.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
                       </app-accordion>
@@ -191,6 +227,9 @@
                         [description]="'Contact details for the purchaser.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-purchasers [techRecord]="techRecord"></app-purchasers>
                       </app-accordion>
@@ -201,6 +240,9 @@
                         [description]="'Contact details for the manufacturer.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
                       </app-accordion>
@@ -213,6 +255,9 @@
                         [description]="'Contact details for the last applicant.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="['Plates']"
+                        [filters]="filters()"
                       >
                         <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
                       </app-accordion>
@@ -225,6 +270,9 @@
                         [description]="'Microfilm document details.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
                       >
                         <app-documents [techRecord]="techRecord"></app-documents>
                       </app-accordion>
@@ -236,6 +284,9 @@
                       [description]="'Notes attached to this record.'"
                       [type]="'condensed'"
                       [isExpanded]="false"
+                      appFilterByTags
+                      [tagNames]="[]"
+                      [filters]="filters()"
                     >
                       <app-notes [techRecord]="techRecord"></app-notes>
                     </app-accordion>
@@ -246,6 +297,9 @@
                       [description]="generateRFCDescription()"
                       [type]="'condensed'"
                       [isExpanded]="false"
+                      appFilterByTags
+                      [tagNames]="[]"
+                      [filters]="filters()"
                     >
                       <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
                     </app-accordion>
@@ -254,7 +308,7 @@
               </app-accordion-control>
             </div>
 
-            <app-tech-record-filters />
+            <app-tech-record-filters [tags]="tags" [(ngModel)]="filters" />
 
             <!-- Accordions appear here -->
             <ng-container [ngTemplateOutlet]="template"></ng-container>

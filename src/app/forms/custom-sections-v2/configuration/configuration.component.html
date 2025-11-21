@@ -5,6 +5,9 @@
       formControlName="techRecord_offRoad"
       label="Off-road vehicle"
       [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     />
   }
 
@@ -14,6 +17,9 @@
       formControlName="techRecord_departmentalVehicleMarker"
       label="Departmental vehicle marker"
       [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     />
   }
 
@@ -23,6 +29,9 @@
       formControlName="techRecord_alterationMarker"
       label="Alteration marker"
       [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     />
   }
 
@@ -33,6 +42,9 @@
       label="Fuel system"
       [defaultOption]="'Select fuel system'"
       [options]="FUEL_PROPULSION_SYSTEM_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     />
   }
 
@@ -45,6 +57,9 @@
       formControlName="techRecord_speedRestriction"
       [width]="FormNodeWidth.XS"
       suffix="mph"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     ></govuk-form-group-input>
   }
 
@@ -54,6 +69,9 @@
       label="Road friendly suspension"
       formControlName="techRecord_roadFriendly"
       [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="['Plates']"
+      [filters]="filters()"
     />
   }
 
@@ -64,6 +82,9 @@
       label="Suspension type"
       [defaultOption]="'Select suspension type'"
       [options]="SUSPENSION_TYRE_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     />
   }
 </div>  

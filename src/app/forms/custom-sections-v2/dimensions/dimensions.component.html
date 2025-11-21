@@ -19,6 +19,9 @@
           [width]="Widths.XS"
           suffix="mm"
           type="number"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
 
       @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
@@ -29,14 +32,20 @@
           [width]="Widths.XS"
           suffix="mm"
           type="number"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
       }
     }
 
-
     <!-- Axles spacings (HGV and TRL) -->
     @if (tr.techRecord_vehicleType !== VehicleTypes.PSV && parent.get('techRecord_dimensions_axleSpacing')) {
-      <ng-container [formGroup]="parent">
+      <div
+        [formGroup]="parent"                         
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()">
         <ng-container formArrayName="techRecord_dimensions_axleSpacing">
           @for (axle of axleSpacings?.controls; track axle; let i = $index) {
             <ng-container [formGroup]="axle">
@@ -51,11 +60,11 @@
             </ng-container>
           }
         </ng-container>
-      </ng-container>
+      </div>
     }
 
     <!-- Length-->
-    <div>
+    <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
       @if (shouldShowLengthWarning()) {
         <app-field-warning-message id="dimensions-length-warning" [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"></app-field-warning-message>
       }
@@ -69,7 +78,7 @@
     </div>
 
     <!-- Width-->
-    <div>
+    <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
       @if (shouldShowWidthWarning()) {
         <app-field-warning-message id="dimensions-width-warning" [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"></app-field-warning-message>
       }
@@ -84,69 +93,76 @@
     </div>
 
     @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-      <!--   Height (PSV Only)   -->
+      <!-- Height (PSV Only)   -->
         <govuk-form-group-input
           formControlName="techRecord_dimensions_height"
           label="Height"
           [width]="Widths.XS"
           suffix="mm"
           type="number"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
     }
 
     @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
-      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-        Coupling centre to rear axle
-      </span>
-      <div class="flex-row">
-        <!-- Coupling centre to rear axle minimum -->
-        <govuk-form-group-input
-          formControlName="techRecord_couplingCenterToRearAxleMin"
-          label="Minimum"
-          [width]="Widths.XS"
-          class="govuk-!-font-weight-regular"
-          suffix="mm"
-          type="number"
-        />
-        <!-- Coupling centre to rear axle maximum -->
-        <govuk-form-group-input
-          formControlName="techRecord_couplingCenterToRearAxleMax"
-          label="Maximum"
-          [width]="Widths.XS"
-          class="govuk-!-font-weight-regular"
-          suffix="mm"
-          type="number"
-        />
+      <div appFilterByTags [tagNames]="[]" [filters]="filters()">
+        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+          Coupling centre to rear axle
+        </span>
+        <div class="flex-row">
+          <!-- Coupling centre to rear axle minimum -->
+          <govuk-form-group-input
+            formControlName="techRecord_couplingCenterToRearAxleMin"
+            label="Minimum"
+            [width]="Widths.XS"
+            class="govuk-!-font-weight-regular"
+            suffix="mm"
+            type="number"
+          />
+          <!-- Coupling centre to rear axle maximum -->
+          <govuk-form-group-input
+            formControlName="techRecord_couplingCenterToRearAxleMax"
+            label="Maximum"
+            [width]="Widths.XS"
+            class="govuk-!-font-weight-regular"
+            suffix="mm"
+            type="number"
+          />
+        </div>
       </div>
 
-      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-        Coupling centre to rear of trailer
-      </span>
-      <div class="flex-row">
-        <!-- Coupling centre to rear axle minimum -->
-        @if (couplingCenterToRearTrlMinWarning) {
-          <app-field-warning-message id="coupling-centre-to-rear-of-trailer-minimum-warning" [warningMessage]="couplingCenterToRearTrlMinWarning"/>
-        }
-        <govuk-form-group-input
-          formControlName="techRecord_couplingCenterToRearTrlMin"
-          label="Minimum"
-          [width]="Widths.XS"
-          class="govuk-!-font-weight-regular"
-          suffix="mm"
-          type="number"
-        />
-        <!-- Coupling centre to rear axle maximum -->
-        @if (couplingCenterToRearTrlMaxWarning) {
-          <app-field-warning-message id="coupling-centre-to-rear-of-trailer-maximum-warning" [warningMessage]="couplingCenterToRearTrlMaxWarning"/>
-        }
-        <govuk-form-group-input
-          formControlName="techRecord_couplingCenterToRearTrlMax"
-          label="Maximum"
-          [width]="Widths.XS"
-          class="govuk-!-font-weight-regular"
-          suffix="mm"
-          type="number"
-        />
+      <div appFilterByTags [tagNames]="[]" [filters]="filters()">
+        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+          Coupling centre to rear of trailer
+        </span>
+        <div class="flex-row">
+          <!-- Coupling centre to rear axle minimum -->
+          @if (couplingCenterToRearTrlMinWarning) {
+            <app-field-warning-message id="coupling-centre-to-rear-of-trailer-minimum-warning" [warningMessage]="couplingCenterToRearTrlMinWarning"/>
+          }
+          <govuk-form-group-input
+            formControlName="techRecord_couplingCenterToRearTrlMin"
+            label="Minimum"
+            [width]="Widths.XS"
+            class="govuk-!-font-weight-regular"
+            suffix="mm"
+            type="number"
+          />
+          <!-- Coupling centre to rear axle maximum -->
+          @if (couplingCenterToRearTrlMaxWarning) {
+            <app-field-warning-message id="coupling-centre-to-rear-of-trailer-maximum-warning" [warningMessage]="couplingCenterToRearTrlMaxWarning"/>
+          }
+          <govuk-form-group-input
+            formControlName="techRecord_couplingCenterToRearTrlMax"
+            label="Maximum"
+            [width]="Widths.XS"
+            class="govuk-!-font-weight-regular"
+            suffix="mm"
+            type="number"
+          />
+        </div>
       </div>
 
       <govuk-form-group-input
@@ -155,12 +171,15 @@
         [width]="Widths.XS"
         suffix="mm"
         type="number"
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()"
       />
     }
 
     <!-- HGV only fields -->
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
-      <div class="min-max-container">
+      <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
         <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
           Front of vehicle to fifth wheel
         </span>
@@ -174,6 +193,7 @@
             type="number"
             class="govuk-!-font-weight-regular"
           ></govuk-form-group-input>
+
           <!-- Front of vehicle to fifth wheel maximum -->
           <govuk-form-group-input
             formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
@@ -185,7 +205,8 @@
           ></govuk-form-group-input>
         </div>
       </div>
-      <div class="min-max-container">
+
+      <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
         <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
           Front of vehicle to coupling device
         </span>

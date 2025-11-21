@@ -35,6 +35,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	axlesService = inject(AxlesService);
 
 	form = this.fb.group({});
+	filters = input<string[]>([]);
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);

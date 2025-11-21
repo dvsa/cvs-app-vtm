@@ -1,4 +1,5 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +15,13 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	selector: 'app-dimensions',
 	templateUrl: './dimensions.component.html',
 	styleUrls: ['./dimensions.component.scss'],
-	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupInputComponent, FieldWarningMessageComponent],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupInputComponent,
+		FieldWarningMessageComponent,
+		FilterByTagsDirective,
+	],
 })
 export class DimensionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;
@@ -28,6 +35,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	destroy$ = new ReplaySubject<boolean>(1);
 
 	form: FormGroup = this.fb.group({});
+	filters = input<string[]>([]);
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);

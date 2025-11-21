@@ -2,28 +2,21 @@
   <dt class="govuk-summary-list__key-filter">
     Filter by
   </dt>
-  <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-    <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="plates">
-      <span class="app-c-filter-summary__remove-filter-text">
-        <span class="govuk-visually-hidden">Remove filter</span>
-        Plates
-      </span>
-    </a>
-  </dd>
-  <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-    <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="required">
-      <span class="app-c-filter-summary__remove-filter-text">
-        <span class="govuk-visually-hidden">Remove filter</span>
-        Required
-      </span>
-    </a>
-  </dd>
-  <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-    <a class="app-c-filter-summary__remove-filter" href="javascript:void(0)" id="adr">
-      <span class="app-c-filter-summary__remove-filter-text">
-        <span class="govuk-visually-hidden">Remove filter</span>
-        ADR
-      </span>
-    </a>
-  </dd>
+  @for (tag of tags(); track $index) {
+    <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
+      @let active = value().includes(tag);
+      <a 
+        class="app-c-filter-summary__remove-filter" 
+        [class.active-filter]="active"
+        href="javascript:void(0)" 
+        [id]="tag.toLowerCase()" 
+        (click)="toggle(tag)"
+      >
+        <span class="app-c-filter-summary__remove-filter-text">
+          <span class="govuk-visually-hidden">Remove filter</span>
+          {{ active ? '× ' : '' }} {{ tag }}
+        </span>
+      </a>
+    </dd>
+  }
 </div>

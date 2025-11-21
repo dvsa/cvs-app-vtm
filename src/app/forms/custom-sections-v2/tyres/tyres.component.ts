@@ -57,6 +57,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	tyresReferenceData: ReferenceDataTyre[] = [];
 	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
 	invalidAxles: Array<number> = [];
+	filters = input<string[]>([]);
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();

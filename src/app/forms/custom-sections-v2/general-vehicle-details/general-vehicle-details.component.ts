@@ -1,6 +1,7 @@
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -71,6 +72,7 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 		GovukFormGroupAutocompleteComponent,
 		TrimWhitespaceDirective,
 		NoSpaceDirective,
+		FilterByTagsDirective,
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -100,6 +102,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
 	isAxlesDisabled = false;
 
 	form = this.fb.group({});

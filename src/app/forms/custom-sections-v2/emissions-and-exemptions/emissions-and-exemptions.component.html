@@ -5,6 +5,9 @@
       label="Drawbar coupling fitted"
       formControlName="techRecord_drawbarCouplingFitted"
       [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     ></govuk-form-group-radio>
   }
 
@@ -14,6 +17,9 @@
       label="Euro standard"
       formControlName="techRecord_euroStandard"
       [options]="EMISSION_STANDARD_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     ></govuk-form-group-radio>
   }
 
@@ -24,6 +30,9 @@
       formControlName="techRecord_emissionsLimit"
       type="decimal"
       [width]="FormNodeWidth.XXS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     >
       <div class="govuk-input__suffix" aria-hidden="true">m<sup><small>-1</small></sup></div>
     </govuk-form-group-input>
@@ -35,6 +44,9 @@
       label="Speed limiter exempt"
       formControlName="techRecord_speedLimiterMrk"
       [options]="EXEMPT_OR_NOT_OPTIONS"
+      appFilterByTags
+      [tagNames]="['Plates']"
+      [filters]="filters()"
     ></govuk-form-group-radio>
   }
 
@@ -44,6 +56,9 @@
       label="Tacho exempt"
       formControlName="techRecord_tachoExemptMrk"
       [options]="EXEMPT_OR_NOT_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     ></govuk-form-group-radio>
   }
 </div>
