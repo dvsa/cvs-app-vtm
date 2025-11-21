@@ -79,3 +79,7 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+a.govuk-link:link.govuk-link-visited {
+  color: $govuk-link-visited-colour;
+}

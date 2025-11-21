@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { Directive, HostListener, inject, input } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
@@ -17,6 +17,7 @@ export class RetrieveDocumentDirective {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 	private documentsService = inject(DocumentsService);
+	private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
 	@HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
 		if (this.certNotNeeded()) return;
@@ -36,11 +37,17 @@ export class RetrieveDocumentDirective {
 						break;
 					case HttpEventType.Response:
 						this.documentsService.openDocumentFromResponse(this.fileName(), response.body, this.fileType());
+						this.markAsVisited();
 						this.store.dispatch(setSpinnerState({ showSpinner: false }));
 						break;
 					default:
 						break;
 				}
 			});
+	}
+
+	markAsVisited() {
+		if (this.elementRef.nativeElement.classList.contains('govuk-link-visited')) return;
+		this.elementRef.nativeElement.classList.add('govuk-link-visited');
 	}
 }

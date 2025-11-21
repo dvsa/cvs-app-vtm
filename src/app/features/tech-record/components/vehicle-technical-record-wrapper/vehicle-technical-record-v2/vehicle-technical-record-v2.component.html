@@ -186,6 +186,23 @@
                         </app-accordion>
                       }
 
+                      <!-- ADR certificates -->
+                      @if (
+                        techRecord.techRecord_vehicleType === 'hgv' ||
+                        techRecord.techRecord_vehicleType === 'trl' ||
+                        techRecord.techRecord_vehicleType === 'lgv'
+                        ) {
+                        <app-accordion
+                          [id]="'adr-certs'"
+                          [title]="'ADR certificates'"
+                          [description]="'Generate and view ADR certificates.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
+                        </app-accordion>
+                      }
+
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                         <app-accordion
                           [id]="'authorisation-into-service'"
