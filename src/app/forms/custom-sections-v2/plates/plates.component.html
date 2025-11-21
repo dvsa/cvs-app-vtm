@@ -1,0 +1,120 @@
+@if (techRecord(); as techRecord) {
+  <div class="govuk-!-padding-4">
+    @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT) {
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <app-button id="generate-plate-link" design="secondary" *appRoleRequired="Roles.TechRecordAmend" (clicked)="generatePlate()">
+            Generate and send plate
+          </app-button>
+        </div>
+      </div>
+    } @else {
+      <app-field-warning-message
+        [id]="'unable-to-generate-plates-on-non-current-warning'"
+        warningMessage="Generating plates is only applicable to current technical records."
+      ></app-field-warning-message>
+    }
+
+    @if (plates.length) {
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-!-margin-bottom-4">Plates history</caption>
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Serial</th>
+            <th scope="col" class="govuk-table__header">Reason</th>
+            <th scope="col" class="govuk-table__header">Issuer</th>
+            <th scope="col" class="govuk-table__header">Issue date</th>
+            <th scope="col" class="govuk-table__header">Time</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          @for (plate of plates; track i; let i = $index) {
+            <tr class="govuk-table__row">
+              <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
+                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+                  <a 
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    [id]="`plate-link${i}`"
+                    appRetrieveDocument
+                    [params]="documentParams"
+                    [fileName]="fileName"
+                    >
+                    {{ plate.plateSerialNumber | defaultNullOrEmpty }}
+                  </a>
+                } @else {
+                  {{ plate.plateSerialNumber | defaultNullOrEmpty }}
+                }
+              </td>
+              <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-reason-${i}`">
+                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+                  <a 
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    [id]="`plate-link${i}`"
+                    appRetrieveDocument
+                    [params]="documentParams"
+                    [fileName]="fileName"
+                    >
+                    {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
+                  </a>
+                } @else {
+                  {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
+                }
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issuer-${i}`">
+                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+                  <a 
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    [id]="`plate-link${i}`"
+                    appRetrieveDocument
+                    [params]="documentParams"
+                    [fileName]="fileName"
+                    >
+                    {{ plate.plateIssuer | defaultNullOrEmpty }}
+                  </a>
+                } @else {
+                  {{ plate.plateIssuer | defaultNullOrEmpty }}
+                }
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
+                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+                  <a 
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    [id]="`plate-link${i}`"
+                    appRetrieveDocument
+                    [params]="documentParams"
+                    [fileName]="fileName"
+                    >
+                    {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
+                  </a>
+                } @else {
+                  {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
+                }
+              </td>
+              <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
+                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+                  <a 
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    [id]="`plate-link${i}`"
+                    appRetrieveDocument
+                    [params]="documentParams"
+                    [fileName]="fileName"
+                    >
+                    {{ plate.plateIssueDate | date : 'HH:mm' }}
+                  </a>
+                } @else {
+                  {{ plate.plateIssueDate | date : 'HH:mm' }}
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <app-pagination tableName="plate-history" [numberOfItems]="numberOfPlates" (paginationOptionsChange)="handlePaginationChange($event)" />
+    }
+  </div>
+}
