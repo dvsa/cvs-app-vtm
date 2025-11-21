@@ -48,6 +48,7 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
+import { nullADRDetails } from '../../store/technical-records/technical-record-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -349,5 +350,66 @@ export class TechnicalRecordService {
 		return techRecord.techRecord_brakes_brakeCodeOriginal
 			? `${prefix.padStart(3, '0')}${techRecord.techRecord_brakes_brakeCodeOriginal}`
 			: '-';
+	}
+
+	isAdrVehicle(
+		techRecord: TechRecordType<'get' | 'put'>
+	): techRecord is TechRecordTypeVehicle<'hgv' | 'lgv' | 'trl', 'get' | 'put'> {
+		if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) return true;
+		if (techRecord.techRecord_vehicleType === VehicleTypes.LGV) return true;
+		return this.isHeavyTrailer(techRecord);
+	}
+
+	isHeavyTrailer(techRecord: TechRecordType<'get' | 'put'>): techRecord is TechRecordTypeVehicle<'trl', 'get' | 'put'> {
+		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+			return (
+				techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O1 &&
+				techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O2
+			);
+		}
+
+		return false;
+	}
+
+	isHeavyVehicle(
+		techRecord: TechRecordType<'get' | 'put'>
+	): techRecord is TechRecordTypeVehicle<'hgv' | 'psv' | 'trl', 'get' | 'put'> {
+		if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) return true;
+		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) return true;
+		return this.isHeavyTrailer(techRecord);
+	}
+
+	/**
+	 * Corrects data inconsistencies in the tech record, preparing it for submission.
+	 *
+	 * @param techRecord
+	 * @returns
+	 */
+	fixTechRecord(techRecord: TechRecordType<'put'>): TechRecordType<'put'> {
+		// Null ADR fields for HGV/TRL/LGV that would be hidden given the ADR options selected
+		techRecord = nullADRDetails(techRecord);
+
+		// Set no of axles to null if it is 0, so it correctly saves as a skeleton record (for heavy vehicles)
+		techRecord.techRecord_noOfAxles = techRecord.techRecord_noOfAxles === 0 ? null : techRecord.techRecord_noOfAxles;
+
+		// For PSV tech records, null wheelchair lift/ramp information when the vehicle has no lift/ramp
+		if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+			if (techRecord.techRecord_dda_wheelchairLiftPresent !== true) {
+				techRecord.techRecord_dda_wheelchairLiftInformation = null;
+			}
+			if (techRecord.techRecord_dda_wheelchairRampPresent !== true) {
+				techRecord.techRecord_dda_wheelchairRampInformation = null;
+			}
+		}
+
+		// For Small TRL, set vehicle type to TRL
+		if (
+			techRecord.techRecord_euVehicleCategory === EUVehicleCategory.O1 ||
+			techRecord.techRecord_euVehicleCategory === EUVehicleCategory.O2
+		) {
+			techRecord.techRecord_vehicleType = VehicleTypes.TRL;
+		}
+
+		return techRecord;
 	}
 }
