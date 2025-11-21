@@ -1,4 +1,6 @@
+import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -67,6 +69,8 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 		ToUppercaseDirective,
 		GovukCheckboxGroupComponent,
 		GovukFormGroupAutocompleteComponent,
+		TrimWhitespaceDirective,
+		NoSpaceDirective,
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
