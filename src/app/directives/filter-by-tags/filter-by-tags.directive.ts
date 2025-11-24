@@ -19,16 +19,16 @@ export class FilterByTagsDirective {
 
 			// If no filters are applied, show the element
 			if (filters.length === 0) {
-				return this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'initial');
+				return this.renderer.setStyle(element, 'display', 'initial');
 			}
 
 			// If filters have been applied, but none match the tags, hide the element
-			if (filters.some((filter) => !tagNames.includes(filter))) {
-				return this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+			if (filters.every((filter) => !tagNames.includes(filter))) {
+				return this.renderer.setStyle(element, 'display', 'none');
 			}
 
 			// Otherwise, show the element
-			this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'initial');
+			this.renderer.setStyle(element, 'display', 'initial');
 		});
 	}
 }
