@@ -3,6 +3,8 @@
     techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
     techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
     <govuk-form-group-input
+      appTrimWhitespace
+      appNoSpace
       type="text"
       formControlName="techRecord_brakes_dtpNumber"
       label="DTp number"
@@ -43,6 +45,8 @@
   }
   @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
     <govuk-form-group-autocomplete
+      appTrimWhitespace
+      appNoSpace
       formControlName="techRecord_brakes_dtpNumber"
       label="DTp number"
       [options$]="dtpNumbers$"
@@ -114,6 +118,8 @@
     label="Conversion reference number"
     type="text"
     appToUppercase
+    appTrimWhitespace
+    appNoSpace
     [width]="FormNodeWidth.L"
   ></govuk-form-group-input>
 </div>

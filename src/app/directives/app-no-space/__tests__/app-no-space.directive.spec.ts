@@ -128,4 +128,52 @@ describe('NoSpaceDirective', () => {
 			});
 		});
 	});
+
+	describe('should remove all whitespaces on paste', () => {
+		it('with form', () => {
+			input1.value = 'this has spaces   ';
+
+			input1.dispatchEvent(new Event('paste'));
+
+			setTimeout(() => {
+				expect(input1.value).toBe('thishasspaces');
+				expect(component.form.get('foo')?.value).toBe('thishasspaces');
+			}, 0);
+		});
+
+		it('without form', () => {
+			input2.value = 'this has spaces   ';
+			input2.dispatchEvent(new Event('paste'));
+
+			setTimeout(() => {
+				expect(input2.value).toBe('thishasspaces');
+			}, 0);
+		});
+
+		describe('it should dispatch the appropriate number of input events', () => {
+			it('with form', () => {
+				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				input1.value = 'this has spaces   ';
+				input1.dispatchEvent(new Event('paste'));
+
+				setTimeout(() => {
+					expect(input1.value).toBe('thishasspaces');
+					expect(component.form.get('foo')?.value).toBe('thishasspaces');
+					expect(input1.value).toBe('thishasspaces');
+					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+				}, 0);
+			});
+
+			it('without form', () => {
+				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				input2.value = 'this has spaces   ';
+				input2.dispatchEvent(new Event('paste'));
+
+				setTimeout(() => {
+					expect(input2.value).toBe('thishasspaces');
+					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+				});
+			});
+		});
+	});
 });

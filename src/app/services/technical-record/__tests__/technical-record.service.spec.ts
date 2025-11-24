@@ -1,3 +1,4 @@
+import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -807,6 +808,171 @@ describe('TechnicalRecordService', () => {
 					techRecord_grossLadenWeight: 4440,
 				} as TechRecordTypeVehicle<'psv', 'put'>)
 			).toBe('04412345');
+		});
+	});
+
+	describe('isHeavyVehicle', () => {
+		it('should return true if the vehicle type is PSV', () => {
+			expect(
+				service.isHeavyVehicle({
+					techRecord_vehicleType: 'psv',
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return true if the vehicle type is HGV', () => {
+			expect(
+				service.isHeavyVehicle({
+					techRecord_vehicleType: 'hgv',
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return true if the vehicle type is a heavy TRL', () => {
+			expect(
+				service.isHeavyVehicle({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O4,
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return false if the vehicle type is TRL but the EU vehicle category is not O3 or O4', () => {
+			expect(
+				service.isHeavyVehicle({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O1,
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+
+		it('should return false if the vehicle type is not HGV, PSV, or TRL', () => {
+			expect(
+				service.isHeavyVehicle({
+					techRecord_vehicleType: 'car',
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+	});
+
+	describe('isAdrVehicle', () => {
+		it('should return true if the vehicle type is HGV', () => {
+			expect(
+				service.isAdrVehicle({
+					techRecord_vehicleType: 'hgv',
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return true if the vehicle type is LGV', () => {
+			expect(
+				service.isAdrVehicle({
+					techRecord_vehicleType: 'lgv',
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return true if the vehicle type is TRL, and the EU vehicle category is O3 or O4', () => {
+			expect(
+				service.isAdrVehicle({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O3,
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return false if the vehicle type is TRL, and the EU vehicle category is O1 or O2', () => {
+			expect(
+				service.isAdrVehicle({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O1,
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+
+		it('should return false if the vehicle type is not HGV, LGV, or TRL', () => {
+			expect(
+				service.isAdrVehicle({
+					techRecord_vehicleType: 'car',
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+	});
+
+	describe('isHeavyTrailer', () => {
+		it('should return true if the vehicle type is TRL and the EU vehicle category is O3 or O4', () => {
+			expect(
+				service.isHeavyTrailer({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O3,
+				} as TechRecordType<'put'>)
+			).toBe(true);
+		});
+
+		it('should return false if the vehicle type is TRL and the EU vehicle category is O1 or O2', () => {
+			expect(
+				service.isHeavyTrailer({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O1,
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+
+		it('should return false if the vehicle type is not TRL', () => {
+			expect(
+				service.isHeavyTrailer({
+					techRecord_vehicleType: 'car',
+				} as TechRecordType<'put'>)
+			).toBe(false);
+		});
+	});
+
+	describe('fixTechRecord', () => {
+		it('should convert 0 noOfAxles to null', () => {
+			expect(
+				service.fixTechRecord({
+					techRecord_vehicleType: 'car',
+					techRecord_noOfAxles: 0,
+				} as TechRecordType<'put'>)
+			).toEqual({
+				...nullADRDetails({
+					techRecord_vehicleType: 'car',
+					techRecord_noOfAxles: null,
+				} as TechRecordType<'put'>),
+			});
+		});
+
+		it('should set the vehicle type to TRL if the EU vehicle category is O1 or O2', () => {
+			expect(
+				service.fixTechRecord({
+					techRecord_vehicleType: 'small trl' as VehicleTypes,
+					techRecord_euVehicleCategory: EUVehicleCategory.O1,
+				} as TechRecordType<'put'>)
+			).toEqual(
+				expect.objectContaining({
+					techRecord_vehicleType: 'trl',
+					techRecord_euVehicleCategory: EUVehicleCategory.O1,
+					techRecord_noOfAxles: undefined,
+				})
+			);
+		});
+
+		it('should wipe ramp/lift present information when no lift/ramp is present', () => {
+			expect(
+				service.fixTechRecord({
+					techRecord_vehicleType: 'psv',
+					techRecord_dda_wheelchairLiftPresent: false,
+					techRecord_dda_wheelchairLiftInformation: 'test',
+					techRecord_dda_wheelchairRampPresent: false,
+					techRecord_dda_wheelchairRampInformation: 'test',
+				} as TechRecordType<'put'>)
+			).toEqual({
+				techRecord_vehicleType: 'psv',
+				techRecord_dda_wheelchairLiftPresent: false,
+				techRecord_dda_wheelchairLiftInformation: null,
+				techRecord_dda_wheelchairRampPresent: false,
+				techRecord_dda_wheelchairRampInformation: null,
+			});
 		});
 	});
 });

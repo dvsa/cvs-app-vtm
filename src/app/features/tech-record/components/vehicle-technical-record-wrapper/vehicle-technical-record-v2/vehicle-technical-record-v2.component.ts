@@ -2,6 +2,7 @@ import { AccordionControlComponent } from '@/src/app/components/accordion-contro
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { AdrCertificatesComponent } from '@/src/app/forms/custom-sections-v2/adr-certificates/adr-certificates.component';
 import { AdrComponent } from '@/src/app/forms/custom-sections-v2/adr/adr.component';
 import { AuthorisationIntoServiceComponent } from '@/src/app/forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
@@ -12,8 +13,10 @@ import { DocumentsComponent } from '@/src/app/forms/custom-sections-v2/documents
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { GeneralVehicleDetailsComponent } from '@/src/app/forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@/src/app/forms/custom-sections-v2/last-applicant/last-applicant.component';
+import { LetterOfAuthorisationComponent } from '@/src/app/forms/custom-sections-v2/letter-of-authorisation/letter-of-authorisation.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
+import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
@@ -23,7 +26,7 @@ import { V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-r
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
-import { selectSectionState } from '@/src/app/store/technical-records';
+import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -67,6 +70,9 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ReactiveFormsModule,
 		NgTemplateOutlet,
 		TechRecordFiltersComponent,
+		LetterOfAuthorisationComponent,
+		AdrCertificatesComponent,
+		PlatesComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -115,6 +121,11 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 								this.axlesService.generateAxleSpacingsForm(techRecord)
 							);
 						}
+					}
+
+					// Fetch technical record history and load into state
+					if ('systemNumber' in techRecord && techRecord['systemNumber']) {
+						this.store.dispatch(getBySystemNumber({ systemNumber: techRecord.systemNumber }));
 					}
 				}
 			});

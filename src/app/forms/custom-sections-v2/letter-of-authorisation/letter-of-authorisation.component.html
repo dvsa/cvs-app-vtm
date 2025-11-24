@@ -1,0 +1,84 @@
+<div class="govuk-!-padding-4">
+  @if (techRecord(); as techRecord) {
+    @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED && correctApprovalType && !currentTechRecord()) {
+      <app-button 
+        *appRoleRequired="Roles.TechRecordAmend"
+        id="generate-letters-link" 
+        design="secondary"
+        (clicked)="generateLetter()" 
+      >
+        Generate and send letter
+      </app-button>
+
+      @if (letter) {
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Letter issuer</dt>
+            <dd id="letter-issuer" class="govuk-summary-list__value">
+              {{ letter.letterIssuer | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Letter type</dt>
+            <dd id="letter-type" class="govuk-summary-list__value">
+              {{ letter.letterType | defaultNullOrEmpty }}
+            </dd>
+            <dd id="letter-link" class="govuk-summary-list__value govuk-!-text-align-right">
+              <a 
+                id="test-certificate-link"
+                class="govuk-link"
+                href="javascript:void(0)"
+                appRetrieveDocument 
+                [params]="documentParams" 
+                [fileName]="fileName"
+              >
+                View letter
+              </a>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Paragraph ID</dt>
+            <dd id="letter-paragraphid" class="govuk-summary-list__value">
+              {{ letter.paragraphId | defaultNullOrEmpty }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Date requested</dt>
+            <dd id="letter-date" class="govuk-summary-list__value">
+              {{ letter.letterDateRequested | date : 'dd/MM/yyyy' }} at {{ letter.letterDateRequested | date : 'HH:mm' }}
+            </dd>
+          </div>
+        </dl>
+      } @else {
+        <p class="govuk-body" id="no-letter-of-authorisation-message">
+          This trailer does not have a letter of authorisation.
+        </p>
+      }
+    } @else {
+      @if (techRecord.techRecord_statusCode === StatusCodes.PROVISIONAL) {
+        @if (currentTechRecord()) {
+          <app-field-warning-message
+            id="cannot-generate-letter-of-authorisation-on-non-current-warning"
+            warningMessage="Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters."
+          ></app-field-warning-message>
+        }
+      }
+
+      @if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
+        <app-field-warning-message
+          id="cannot-generate-letter-of-authorisation-on-non-current-warning"
+          warningMessage="Generating letters is not applicable to archived technical records."
+        ></app-field-warning-message>
+      }
+
+      @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT) {
+        @if (!correctApprovalType) {
+          <app-field-warning-message
+            id="cannot-generate-letter-of-authorisation-with-wrong-approval-type-warning"
+            warningMessage="This trailer does not have the right approval type to be eligible for a letter of authorisation."
+          ></app-field-warning-message>
+        }
+      }
+    }
+  }
+</div>

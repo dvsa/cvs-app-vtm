@@ -13,7 +13,7 @@
       <div class="govuk-grid-row">
         <!-- Summary card -->
         <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-          <app-tech-record-summary-card [mode]="'view'" [techRecord]="$any(techRecord)" />
+          <app-tech-record-summary-card [mode]="'view'" [techRecord]="techRecord" />
   
           <div class="govuk-button-group govuk-button-group-record">
             <app-edit-tech-record-button
@@ -50,11 +50,11 @@
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
-                        <app-general-vehicle-details [techRecord]="$any(techRecord)"></app-general-vehicle-details>
+                        <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
                       </app-accordion>
   
                       <!-- Dimensions section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (technicalRecordService.isHeavyVehicle(techRecord)) {
                         <app-accordion
                           [id]="'dimensions'"
                           [title]="'Dimensions'"
@@ -62,12 +62,12 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-dimensions [techRecord]="$any(techRecord)"></app-dimensions>
+                          <app-dimensions [techRecord]="techRecord"></app-dimensions>
                         </app-accordion>
                       }
   
                       <!-- Weights section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (technicalRecordService.isHeavyVehicle(techRecord)) {
                         <app-accordion
                           [id]="'weights'"
                           [title]="'Weights'"
@@ -75,12 +75,12 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-weights [techRecord]="$any(techRecord)"></app-weights>
+                          <app-weights [techRecord]="techRecord"></app-weights>
                         </app-accordion>
                       }
   
                       <!-- Tyres section-->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (technicalRecordService.isHeavyVehicle(techRecord)) {
                         <app-accordion
                           [id]="'tyres'"
                           [title]="'Tyres'"
@@ -88,11 +88,12 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-tyres [techRecord]="$any(techRecord)"></app-tyres>
+                          <app-tyres [techRecord]="techRecord"></app-tyres>
                         </app-accordion>
                       }
+
                       <!-- configuration -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                      @if (technicalRecordService.isHeavyVehicle(techRecord)) {
                         <app-accordion
                           [id]="'configuration'"
                           [title]="'Configuration'"
@@ -100,11 +101,11 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-configuration [techRecord]="$any(techRecord)"></app-configuration>
+                          <app-configuration [techRecord]="techRecord"></app-configuration>
                         </app-accordion>
                       }
   
-                      <!-- Emissions and exemptions (immediately above ADR) -->
+                      <!-- Emissions and exemptions -->
                       @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
                         <app-accordion
                           [id]="'emissions-and-exemptions'"
@@ -113,7 +114,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-emissions-and-exemptions [techRecord]="$any(techRecord)"></app-emissions-and-exemptions>
+                          <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
                         </app-accordion>
                       }
   
@@ -126,12 +127,12 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-seats-and-vehicle-size [techRecord]="$any(techRecord)"></app-seats-and-vehicle-size>
+                          <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
                         </app-accordion>
                       }
   
                       <!-- Brakes -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || technicalRecordService.isHeavyTrailer(techRecord)) {
                         <app-accordion
                           [id]="'brakes'"
                           [title]="'Brakes'"
@@ -139,7 +140,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-brakes [techRecord]="$any(techRecord)"></app-brakes>
+                          <app-brakes [techRecord]="techRecord"></app-brakes>
                         </app-accordion>
                       }
   
@@ -152,15 +153,25 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-dda [techRecord]="$any(techRecord)"></app-dda>
+                          <app-dda [techRecord]="techRecord"></app-dda>
+                        </app-accordion>
+                      }
+
+                      <!-- Plates -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || technicalRecordService.isHeavyTrailer(techRecord)) {
+                        <app-accordion
+                          [id]="'plates'"
+                          [title]="'Plates'"
+                          [description]="'Generate and view plates.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-plates [techRecord]="techRecord"></app-plates>
                         </app-accordion>
                       }
   
-                      @if (
-                        techRecord.techRecord_vehicleType === 'hgv' ||
-                        techRecord.techRecord_vehicleType === 'trl' ||
-                        techRecord.techRecord_vehicleType === 'lgv'
-                        ) {
+                      <!-- ADR -->
+                      @if (technicalRecordService.isAdrVehicle(techRecord)) {
                         <app-accordion
                           [id]="'adr'"
                           [title]="'ADR'"
@@ -168,10 +179,24 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-adr [techRecord]="$any(techRecord)"></app-adr>
+                          <app-adr [techRecord]="techRecord"></app-adr>
                         </app-accordion>
                       }
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+
+                      <!-- ADR certificates -->
+                      @if (technicalRecordService.isAdrVehicle(techRecord)) {
+                        <app-accordion
+                          [id]="'adr-certs'"
+                          [title]="'ADR certificates'"
+                          [description]="'Generate and view ADR certificates.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
+                        </app-accordion>
+                      }
+
+                      @if (technicalRecordService.isHeavyTrailer(techRecord)) {
                         <app-accordion
                           [id]="'authorisation-into-service'"
                           [title]="'Authorisation into service'"
@@ -179,7 +204,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-authorisation-into-service [techRecord]="$any(techRecord)"></app-authorisation-into-service>
+                          <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
                         </app-accordion>
   
                         <app-accordion
@@ -189,7 +214,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-purchasers [techRecord]="$any(techRecord)"></app-purchasers>
+                          <app-purchasers [techRecord]="techRecord"></app-purchasers>
                         </app-accordion>
   
                         <app-accordion
@@ -199,7 +224,17 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-manufacturer [techRecord]="$any(techRecord)"></app-manufacturer>
+                          <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
+                        </app-accordion>
+
+                        <app-accordion
+                          [id]="'letter-of-authorisation'"
+                          [title]="'Letter of authorisation'"
+                          [description]="'Generate and send a letter of authorisation.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
                         </app-accordion>
                       }
   
@@ -211,11 +246,11 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-last-applicant [techRecord]="$any(techRecord)"></app-last-applicant>
+                          <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
                         </app-accordion>
                       }
   
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      @if (technicalRecordService.isHeavyVehicle(techRecord)) {
                         <app-accordion
                           [id]="'documents'"
                           [title]="'Documents'"
@@ -223,7 +258,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-documents [techRecord]="$any(techRecord)"></app-documents>
+                          <app-documents [techRecord]="techRecord"></app-documents>
                         </app-accordion>
                       }
   
@@ -234,7 +269,7 @@
                         [type]="'condensed'"
                         [isExpanded]="false"
                       >
-                        <app-notes [techRecord]="$any(techRecord)"></app-notes>
+                        <app-notes [techRecord]="techRecord"></app-notes>
                       </app-accordion>
                     </ng-container>
                   </ng-template>

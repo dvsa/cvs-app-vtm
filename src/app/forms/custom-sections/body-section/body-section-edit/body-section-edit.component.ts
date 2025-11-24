@@ -1,3 +1,5 @@
+import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { VehicleConfiguration } from '@/src/app/models/vehicle-configuration.enum';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
@@ -39,6 +41,8 @@ import { getOptionsFromEnum } from '../../../utils/enum-map';
 		GovukFormGroupAutocompleteComponent,
 		AsyncPipe,
 		ToUppercaseDirective,
+		TrimWhitespaceDirective,
+		NoSpaceDirective,
 	],
 })
 export class BodySectionEditComponent extends EditBaseComponent implements OnInit, OnDestroy {

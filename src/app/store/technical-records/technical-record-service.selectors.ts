@@ -1,5 +1,5 @@
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectRouteDataProperty } from '@store/router/router.selectors';
 import { detailedDiff } from 'deep-object-diff';
@@ -39,6 +39,21 @@ export const selectTechRecord = createSelector(
 	editingTechRecord,
 	(viewableTechRecord, isEditing, editableTechRecord): V3TechRecordModel | undefined => {
 		return isEditing ? editableTechRecord : viewableTechRecord;
+	}
+);
+
+// Return the current tech record from the history, if it exists
+export const selectCurrentTechRecordFromHistory = createSelector(selectTechRecordHistory, (history) => {
+	return history?.find((record) => record.techRecord_statusCode === StatusCodes.CURRENT);
+});
+
+// Return the current tech record from the history, excluding the one we're currently viewing
+export const selectNonViewedCurrentTechRecordFromHistory = createSelector(
+	selectTechRecord,
+	selectCurrentTechRecordFromHistory,
+	(techRecord, currentTechRecord) => {
+		if (techRecord?.techRecord_statusCode === StatusCodes.CURRENT) return undefined;
+		return currentTechRecord;
 	}
 );
 

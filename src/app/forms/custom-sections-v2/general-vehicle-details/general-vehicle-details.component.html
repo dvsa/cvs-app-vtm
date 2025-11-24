@@ -42,13 +42,18 @@
         label="DTp number"
         [width]="FormNodeWidth.XL"
         [placeholder]="'Select DTp number'"
-        [options$]="dtpNumbers$"/>
+        [options$]="dtpNumbers$"
+        appTrimWhitespace
+        appNoSpace
+      />
     } @else {
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_brakes_dtpNumber"
         label="DTp number"
         [width]="FormNodeWidth.L"
+        appTrimWhitespace
+        appNoSpace
       />
     }
   }
@@ -210,6 +215,8 @@
       label="Conversion reference number"
       type="text"
       appToUppercase
+      appTrimWhitespace
+      appNoSpace
       [width]="FormNodeWidth.L"
     ></govuk-form-group-input>
   }
