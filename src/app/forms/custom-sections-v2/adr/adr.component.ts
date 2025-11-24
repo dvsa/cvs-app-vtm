@@ -87,35 +87,25 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		// ADR Details
 		techRecord_adrDetails_vehicleDetails_type: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithDangerousGoods('ADR body type is required with Approved to carry dangerous goods'),
+			this.adrValidators.requiredWithDangerousGoods('ADR body type'),
 		]),
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Date processed'),
 			this.commonValidators.pastDate('Date processed'),
-			this.adrValidators.requiredWithDangerousGoods(
-				'Date processed is required with Approved to carry dangerous goods'
-			),
+			this.adrValidators.requiredWithDangerousGoods('Date processed'),
 		]),
 		techRecord_adrDetails_permittedDangerousGoods: this.fb.control<string[] | null>(
 			[],
-			[
-				this.adrValidators.requiredWithDangerousGoods(
-					'Permitted dangerous goods is required with Approved to carry dangerous goods'
-				),
-			]
+			[this.adrValidators.requiredWithDangerousGoods('Permitted dangerous goods')]
 		),
 		techRecord_adrDetails_bodyDeclaration_type: this.fb.control<string | undefined>(undefined, []),
 		techRecord_adrDetails_compatibilityGroupJ: this.fb.control<boolean | null>(null, [
-			this.adrValidators.requiredWithExplosives('Compatibility group J is required with Permitted dangerous goods'),
+			this.adrValidators.requiredWithExplosives('Compatibility group J'),
 		]),
 		techRecord_adrDetails_additionalNotes_number: this.fb.control<string[]>(
 			[],
-			[
-				this.adrValidators.requiredWithDangerousGoods(
-					'Guidance notes is required with Approved to carry dangerous goods'
-				),
-			]
+			[this.adrValidators.requiredWithDangerousGoods('Guidance notes')]
 		),
 		techRecord_adrDetails_adrTypeApprovalNo: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(40, 'ADR type approval number'),
@@ -123,32 +113,32 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 		// Tank Details
 		techRecord_adrDetails_tank_tankDetails_tankManufacturer: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank make is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Tank make'),
 			this.commonValidators.maxLength(70, 'Tank make'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture'),
 			this.commonValidators.pastOrCurrentYear('Tank year of manufacture'),
 			this.commonValidators.min(1000, 'Tank year of manufacture'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number'),
 			this.commonValidators.maxLength(50, 'Manufacturer serial number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank type approval number is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Tank type approval number'),
 			this.commonValidators.maxLength(65, 'Tank type approval number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankCode: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Code is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Code'),
 			this.commonValidators.maxLength(30, 'Code'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Substances permitted is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Substances permitted'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_select: this.fb.control<string | null>(
 			null,
-			this.adrValidators.requiredWithTankStatement('Select is required with Substances permitted')
+			this.adrValidators.requiredWithTankStatement('Select')
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_statement: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1500, 'Reference number'),
@@ -182,7 +172,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_brakeEndurance: this.fb.control<boolean>(false),
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
 			this.commonValidators.max(99999999, 'Weight (tonnes)'),
-			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes) is required'),
+			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes)'),
 			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) Max 2 decimal places'),
 		]),
 		techRecord_adrDetails_newCertificateRequested: this.fb.control<boolean>(false),
@@ -196,12 +186,12 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		// Tank Details > Tank Inspections
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: this.fb.control<string | null>('initial'),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate number is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate number'),
 			this.commonValidators.maxLength(70, 'TC2: Certificate Number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('TC2: Expiry date'),
-			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry date is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry date'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc3Details: this.fb.array<FormGroup>([]),
 
@@ -211,10 +201,10 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 		// Battery List
 		techRecord_adrDetails_listStatementApplicable: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithBattery('Battery list applicable is required with ADR body type', true),
+			this.adrValidators.requiredWithBattery('Battery list applicable', true),
 		]),
 		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery list applicable'),
+			this.adrValidators.requiredWithBatteryListApplicable('Reference number'),
 			this.commonValidators.maxLength(8, 'Reference number'),
 		]),
 	});
