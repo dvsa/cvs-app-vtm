@@ -1,6 +1,7 @@
 import { AccordionControlComponent } from '@/src/app/components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
@@ -16,8 +17,8 @@ import {
 	updateADRAdditionalExaminerNotes,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnDestroy, OnInit, inject, model } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -74,6 +75,8 @@ import { TechRecordSummaryCardComponent } from '../../../../components/tech-reco
 		TechRecordSummaryCardComponent,
 		TechRecordFiltersComponent,
 		ApprovalTypeComponent,
+		FormsModule,
+		FilterByTagsDirective,
 	],
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
@@ -97,6 +100,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
 
 	isEditing = false;
+	filters = model<string[]>([]);
 
 	ngOnInit(): void {
 		this.isEditing$.pipe(takeUntil(this.destroy)).subscribe((editing) => {
@@ -210,5 +214,15 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		return this.techRecord$()?.techRecord_vehicleType === VehicleTypes.PSV
 			? 'Brake codes, retarders, parking brakes.'
 			: 'Axle brake details, parking brakes.';
+	}
+
+	get tags(): string[] {
+		switch (this.techRecord$()?.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return ['Plates', 'Required', 'ADR'];
+			// TODO: update with other vehicle types
+			default:
+				return [];
+		}
 	}
 }

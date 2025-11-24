@@ -5,6 +5,9 @@
       label="Date of first registration"
       [hint]="'For example, 27 3 2024'"
       formControlName="techRecord_regnDate"
+      appFilterByTags
+      [filters]="filters()"
+      [tagNames]="[]"
     ></govuk-form-group-date>
   }
 

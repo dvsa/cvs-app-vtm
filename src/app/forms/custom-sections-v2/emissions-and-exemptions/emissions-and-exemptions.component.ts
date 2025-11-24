@@ -1,3 +1,4 @@
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
@@ -12,13 +13,14 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 	selector: 'app-emissions-and-exemptions',
 	templateUrl: './emissions-and-exemptions.component.html',
 	styleUrls: ['./emissions-and-exemptions.component.scss'],
-	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupInputComponent],
+	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupInputComponent, FilterByTagsDirective],
 })
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
 	form = this.fb.group({});
+	filters = input<string[]>([]);
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);

@@ -59,6 +59,8 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 		]),
 	});
 
+	filters = input<string[]>([]);
+
 	ngOnInit(): void {
 		this.init(this.form);
 		this.addControlsBasedOffVehicleType();
