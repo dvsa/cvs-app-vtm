@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
@@ -12,7 +14,7 @@ describe('AdrValidatorsService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [AdrValidatorsService],
+			providers: [AdrValidatorsService, provideHttpClient(), provideHttpClientTesting()],
 		});
 
 		service = TestBed.inject(AdrValidatorsService);
