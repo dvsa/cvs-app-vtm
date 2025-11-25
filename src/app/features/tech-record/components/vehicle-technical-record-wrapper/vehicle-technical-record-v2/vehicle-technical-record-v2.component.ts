@@ -2,8 +2,10 @@ import { AccordionControlComponent } from '@/src/app/components/accordion-contro
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { AdrCertificatesComponent } from '@/src/app/forms/custom-sections-v2/adr-certificates/adr-certificates.component';
 import { AdrComponent } from '@/src/app/forms/custom-sections-v2/adr/adr.component';
+import { ApprovalTypeComponent } from '@/src/app/forms/custom-sections-v2/approval-type/approval-type.component';
 import { AuthorisationIntoServiceComponent } from '@/src/app/forms/custom-sections-v2/authorisation-into-service/authorisation-into-service.component';
 import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brakes.component';
 import { ConfigurationComponent } from '@/src/app/forms/custom-sections-v2/configuration/configuration.component';
@@ -28,7 +30,7 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnInit, inject, input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -73,6 +75,8 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		LetterOfAuthorisationComponent,
 		AdrCertificatesComponent,
 		PlatesComponent,
+		ApprovalTypeComponent,
+		FilterByTagsDirective,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -93,6 +97,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	destroy = new ReplaySubject<boolean>(1);
 
 	form = this.fb.group({});
+	filters = model<string[]>([]);
 
 	readonly VehicleTypes = VehicleTypes;
 
@@ -175,5 +180,15 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 		return this.techRecord()?.techRecord_vehicleType === VehicleTypes.PSV
 			? 'Brake codes, retarders, parking brakes.'
 			: 'Axle brake details, parking brakes.';
+	}
+
+	get tags(): string[] {
+		switch (this.techRecord()?.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return ['Plates', 'Required', 'ADR', 'Records'];
+			// TODO: update with other vehicle types
+			default:
+				return [];
+		}
 	}
 }

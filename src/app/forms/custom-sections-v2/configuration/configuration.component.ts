@@ -1,3 +1,4 @@
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -21,6 +22,7 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupRadioComponent,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupInputComponent,
+		FilterByTagsDirective,
 	],
 })
 export class ConfigurationComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -33,6 +35,7 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 	form: FormGroup = this.fb.group({});
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
 
 	get controlsBasedOffVehicleType() {
 		switch (this.getVehicleType()) {
