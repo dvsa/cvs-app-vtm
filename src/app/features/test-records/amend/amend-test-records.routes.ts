@@ -155,6 +155,19 @@ export const routes: Routes = [
 				canActivate: [RoleGuard],
 			},
 			{
+				path: 'retrieve-media-pack',
+				loadComponent: () =>
+					import('./views/retrieve-media-pack/retrieve-media-pack.component').then((m) => m.RetrieveMediaPackComponent),
+				data: { title: 'Retrieve media pack', roles: Roles.TestResultView },
+				canActivate: [RoleGuard],
+			},
+			{
+				path: 'media',
+				loadComponent: () => import('./views/media/media.component').then((m) => m.MediaComponent),
+				data: { title: 'Media pack', roles: Roles.TestResultView },
+				canActivate: [RoleGuard],
+			},
+			{
 				path: TestRecordAmendRoutes.CANCEL_TEST,
 				loadComponent: () =>
 					import('./views/confirm-cancellation/confirm-cancellation.component').then(

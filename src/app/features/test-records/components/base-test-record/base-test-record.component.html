@@ -1,18 +1,24 @@
 <app-vehicle-header [isEditing]="isEditing()" [testResult]="testResult()" [testNumber]="testNumber$ | async" [isReview]="isReview()">
   @if (!isReview() && testResult().testStatus !== statuses.CANCELLED) {
-    <app-button-group class="page-actions">
-      <ng-container *appRoleRequired="roles.TestResultAmend">
-        @if (isTestTypeGroupEditable$ | async) {
-          <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
-          <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
-        } @else {
-          <app-banner>
-            <ng-container title>Important</ng-container>
-            <ng-container content>Editing this record is not currently supported</ng-container>
-          </app-banner>
-        }
-      </ng-container>
-    </app-button-group>
+    <div class="header-wrapper">
+      <app-button-group class="page-actions">
+        <ng-container *appRoleRequired="roles.TestResultAmend">
+          @if (isTestTypeGroupEditable$ | async) {
+            <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
+            <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
+          } @else {
+            <app-banner>
+              <ng-container title>Important</ng-container>
+              <ng-container content>Editing this record is not currently supported</ng-container>
+            </app-banner>
+          }
+        </ng-container>
+      </app-button-group>
+  
+      <app-button-group>
+        <app-button id="retrieve-media" type="link" design="secondary" [routerLink]="['retrieve-media-pack']">Retrieve media pack</app-button>
+      </app-button-group>
+    </div>
   }
 </app-vehicle-header>
 

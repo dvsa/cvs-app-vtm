@@ -1,0 +1,42 @@
+<div class="govuk-grid-row home-page">
+  @if (!sent) {
+    <div class="govuk-grid-column-full">
+      <app-banner>
+        <div title>Important</div>
+        <div class="govuk-!-margin-bottom-4" content>
+          Test media may not be available immediately. 
+        </div>
+        <div class="govuk-body" content>
+          This can take up to 24 hours. We will email a link to view the media when it is available.
+        </div>
+      </app-banner>
+
+      <h2 class="govuk-heading-xl govuk-!-font-weight-bold">Retrieve media pack</h2>
+
+      <p class="govuk-body">
+        I confirm that I have read and understood the <a href="https://www.gov.uk/government/publications/vehicle-testing-media-pack-guidance-for-dvsa-approved-vehicle-testing-centres" class="govuk-link">media pack guidance</a> 
+        and wish to continue.
+      </p>
+
+      <form [formGroup]="form">
+        <govuk-form-group-radio formControlName="confirm">
+          <govuk-radio label="I understand" [value]="true"  />
+        </govuk-form-group-radio>
+      </form>
+      
+      <app-button-group>
+        <app-button [disabled]="form.controls.confirm.value === false" (clicked)="onContinue()">
+          Retrieve media pack
+        </app-button>
+        <app-button design="link">Cancel</app-button>
+      </app-button-group>
+    </div>
+  } @else {
+    <app-banner type="success">
+      <div title>Success</div>
+      <div class="govuk-!-margin-bottom-4" content>
+        Your request has been sent. We will email you when the media is available.
+      </div>
+    </app-banner>
+  }
+</div>

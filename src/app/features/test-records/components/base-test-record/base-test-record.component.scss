@@ -16,3 +16,9 @@
 .page-actions app-button::ng-deep #cancel-test {
   margin-bottom: 0;
 }
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
