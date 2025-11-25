@@ -66,86 +66,82 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 		// Applicant Details
 		techRecord_adrDetails_applicantDetails_name: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Name'),
 		]),
 		techRecord_adrDetails_applicantDetails_street: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(150, 'Street must be less than or equal to 150 characters'),
+			this.commonValidators.maxLength(150, 'Street'),
 		]),
 		techRecord_adrDetails_applicantDetails_town: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'Town must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'Town'),
 		]),
 		techRecord_adrDetails_applicantDetails_city: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(100, 'City must be less than or equal to 100 characters'),
+			this.commonValidators.maxLength(100, 'City'),
 		]),
 		techRecord_adrDetails_applicantDetails_postcode: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(25, 'Postcode must be less than or equal to 25 characters'),
+			this.commonValidators.maxLength(25, 'Postcode'),
 		]),
 
 		// ADR Details
 		techRecord_adrDetails_vehicleDetails_type: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithDangerousGoods('ADR body type is required with Able to carry dangerous goods'),
+			this.adrValidators.requiredWithDangerousGoods('ADR body type'),
 		]),
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Date processed'),
-			this.commonValidators.pastDate('Date processed must be in the past'),
-			this.adrValidators.requiredWithDangerousGoods('Date processed is required with Able to carry dangerous goods'),
+			this.commonValidators.pastDate('Date processed'),
+			this.adrValidators.requiredWithDangerousGoods('Date processed'),
 		]),
 		techRecord_adrDetails_permittedDangerousGoods: this.fb.control<string[] | null>(
 			[],
-			[
-				this.adrValidators.requiredWithDangerousGoods(
-					'Permitted dangerous goods is required with Able to carry dangerous goods'
-				),
-			]
+			[this.adrValidators.requiredWithDangerousGoods('Permitted dangerous goods')]
 		),
 		techRecord_adrDetails_bodyDeclaration_type: this.fb.control<string | undefined>(undefined, []),
 		techRecord_adrDetails_compatibilityGroupJ: this.fb.control<boolean | null>(null, [
-			this.adrValidators.requiredWithExplosives('Compatibility group J is required with Permitted dangerous goods'),
+			this.adrValidators.requiredWithExplosives('Compatibility group J'),
 		]),
 		techRecord_adrDetails_additionalNotes_number: this.fb.control<string[]>(
 			[],
-			[this.adrValidators.requiredWithDangerousGoods('Guidance notes is required with Able to carry dangerous goods')]
+			[this.adrValidators.requiredWithDangerousGoods('Guidance notes')]
 		),
 		techRecord_adrDetails_adrTypeApprovalNo: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(40, 'ADR type approval number must be less than or equal to 40 characters'),
+			this.commonValidators.maxLength(40, 'ADR type approval number'),
 		]),
 
 		// Tank Details
 		techRecord_adrDetails_tank_tankDetails_tankManufacturer: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank Make is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'Tank Make must be less than or equal to 70 characters'),
+			this.adrValidators.requiredWithTankOrBattery('Tank Make'),
+			this.commonValidators.maxLength(70, 'Tank Make'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture is required with ADR body type'),
-			this.commonValidators.pastOrCurrentYear('Tank Year of manufacture must be the current or a past year'),
-			this.commonValidators.min(1000, 'Tank Year of manufacture must be greater than or equal to 1000'),
-			this.commonValidators.max(9999, 'Tank Year of manufacture must be less than or equal to 9999'),
+			this.adrValidators.requiredWithTankOrBattery('Tank Year of manufacture'),
+			this.commonValidators.pastOrCurrentYear('Tank Year of manufacture'),
+			this.commonValidators.min(1000, 'Tank Year of manufacture'),
+			this.commonValidators.max(9999, 'Tank Year of manufacture'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number is required with ADR body type'),
-			this.commonValidators.maxLength(50, 'Manufacturer serial number must be less than or equal to 50 characters'),
+			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number'),
+			this.commonValidators.maxLength(50, 'Manufacturer serial number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Tank type approval number is required with ADR body type'),
-			this.commonValidators.maxLength(65, 'Tank type approval number must be less than or equal to 65 characters'),
+			this.adrValidators.requiredWithTankOrBattery('Tank type approval number'),
+			this.commonValidators.maxLength(65, 'Tank type approval number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankCode: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Code is required with ADR body type'),
-			this.commonValidators.maxLength(30, 'Code must be less than or equal to 30 characters'),
+			this.adrValidators.requiredWithTankOrBattery('Code'),
+			this.commonValidators.maxLength(30, 'Code'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('Substances permitted is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('Substances permitted'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_select: this.fb.control<string | null>(
 			null,
-			this.adrValidators.requiredWithTankStatement('Select is required with Substances permitted')
+			this.adrValidators.requiredWithTankStatement('Select')
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_statement: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Reference number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Reference number must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Reference number'),
 			this.adrValidators.requiresAUnNumberOrReferenceNumber(
 				'Reference number or UN number 1 is required when selecting Product List'
 			),
@@ -160,21 +156,21 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 			]
 		),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Additional Details must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'Additional Details'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_specialProvisions: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'Special provisions must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Special provisions'),
 		]),
 
 		// Tank Details > Tank Inspections
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: this.fb.control<string | null>('initial'),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate Number is required with ADR body type'),
-			this.commonValidators.maxLength(70, 'TC2: Certificate Number must be less than or equal to 70 characters'),
+			this.adrValidators.requiredWithTankOrBattery('TC2: Certificate Number'),
+			this.commonValidators.maxLength(70, 'TC2: Certificate Number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('TC2: Expiry Date'),
-			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry Date is required with ADR body type'),
+			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry Date'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc3Details: this.fb.array<FormGroup>([]),
 
@@ -184,22 +180,22 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 
 		// Battery List
 		techRecord_adrDetails_listStatementApplicable: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithBattery('Battery List Applicable is required with ADR body type', true),
+			this.adrValidators.requiredWithBattery('Battery List Applicable', true),
 		]),
 		techRecord_adrDetails_batteryListNumber: this.fb.control<string | null>(null, [
-			this.adrValidators.requiredWithBatteryListApplicable('Reference number is required with Battery List Applicable'),
-			this.commonValidators.maxLength(8, 'Reference number must be less than or equal to 8 characters'),
+			this.adrValidators.requiredWithBatteryListApplicable('Reference number'),
+			this.commonValidators.maxLength(8, 'Reference number'),
 		]),
 
 		// Brake declaration
 		techRecord_adrDetails_brakeDeclarationsSeen: this.fb.control<boolean>(false),
 		techRecord_adrDetails_brakeDeclarationIssuer: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(500, 'Issuer must be less than or equal to 500 characters'),
+			this.commonValidators.maxLength(500, 'Issuer'),
 		]),
 		techRecord_adrDetails_brakeEndurance: this.fb.control<boolean>(false),
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99999999, 'Weight (tonnes) must be less than or equal to 99999999'),
-			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes) is required'),
+			this.commonValidators.max(99999999, 'Weight (tonnes)'),
+			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes)'),
 			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) Max 2 decimal places'),
 		]),
 
@@ -209,11 +205,11 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		// Miscellaneous
 		techRecord_adrDetails_newCertificateRequested: this.fb.control<boolean>(false),
 		techRecord_adrDetails_additionalExaminerNotes_note: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1024, 'Additional Examiner Notes must be less than or equal to 1024 characters'),
+			this.commonValidators.maxLength(1024, 'Additional Examiner Notes'),
 		]),
 		techRecord_adrDetails_additionalExaminerNotes: this.fb.control<AdditionalExaminerNotes[] | null>(null),
 		techRecord_adrDetails_adrCertificateNotes: this.fb.control<string | null>(null, [
-			this.commonValidators.maxLength(1500, 'ADR Certificate Notes must be less than or equal to 1500 characters'),
+			this.commonValidators.maxLength(1500, 'ADR Certificate Notes'),
 		]),
 	});
 
@@ -333,7 +329,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 					),
 				]),
 				tc3PeriodicNumber: this.fb.control<string | null>(null, [
-					this.commonValidators.maxLength(75, 'TC3: Certificate Number must be less than or equal to 75 characters'),
+					this.commonValidators.maxLength(75, 'TC3: Certificate Number'),
 					this.adrValidators.requiresOnePopulatedTC3Field(
 						'TC3 Subsequent inspection must have at least one populated field'
 					),

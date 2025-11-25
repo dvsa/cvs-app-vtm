@@ -41,39 +41,33 @@ export class ManufacturerSectionEditComponent extends EditBaseComponent implemen
 	// once the work has been done to export and import that value on the FE
 	get defaultFields() {
 		return {
-			techRecord_manufacturerDetails_name: this.fb.control(null, [
-				this.commonValidators.maxLength(150, 'Name must be less than or equal to 150 characters'),
-			]),
+			techRecord_manufacturerDetails_name: this.fb.control(null, [this.commonValidators.maxLength(150, 'Name')]),
 			techRecord_manufacturerDetails_address1: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Address line 1 must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Address line 1'),
 			]),
 			techRecord_manufacturerDetails_address2: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Address line 2 must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Address line 2'),
 			]),
 			techRecord_manufacturerDetails_postTown: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'Town or city must be less than or equal to 60 characters'),
+				this.commonValidators.maxLength(60, 'Town or city'),
 			]),
-			techRecord_manufacturerDetails_address3: this.fb.control(null, [
-				this.commonValidators.maxLength(60, 'County must be less than or equal to 60 characters'),
-			]),
-			techRecord_manufacturerDetails_postCode: this.fb.control(null, [
-				this.commonValidators.maxLength(12, 'Postcode must be less than or equal to 12 characters'),
-			]),
+			techRecord_manufacturerDetails_address3: this.fb.control(null, [this.commonValidators.maxLength(60, 'County')]),
+			techRecord_manufacturerDetails_postCode: this.fb.control(null, [this.commonValidators.maxLength(12, 'Postcode')]),
 			techRecord_manufacturerDetails_telephoneNumber: this.fb.control(null, [
-				this.commonValidators.maxLength(25, 'Telephone number must be less than or equal to 25 characters'),
+				this.commonValidators.maxLength(25, 'Telephone number'),
 			]),
 			techRecord_manufacturerDetails_emailAddress: this.fb.control(null, [
-				this.commonValidators.maxLength(255, 'Email address must be less than or equal to 255 characters'),
+				this.commonValidators.maxLength(255, 'Email address'),
 				this.commonValidators.pattern(
 					"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
 					'Email address Enter an email address in the correct format, like name@example.com'
 				),
 			]),
 			techRecord_manufacturerDetails_faxNumber: this.fb.control(null, [
-				this.commonValidators.maxLength(25, 'Fax number must be less than or equal to 25 characters'),
+				this.commonValidators.maxLength(25, 'Fax number'),
 			]),
 			techRecord_manufacturerDetails_manufacturerNotes: this.fb.control(null, [
-				this.commonValidators.maxLength(1024, 'Manufacturer notes must be less than or equal to 1024 characters'),
+				this.commonValidators.maxLength(1024, 'Manufacturer notes'),
 			]),
 		};
 	}

@@ -64,22 +64,22 @@ export class AuthorisationIntoServiceSectionEditComponent implements OnInit, OnD
 	get trailerFields(): Partial<Record<keyof TechRecordType<'trl'>, FormControl>> {
 		return {
 			techRecord_authIntoService_cocIssueDate: this.fb.control<string | null>(null, [
-				this.commonValidators.pastDate('COC issue date must be in the past'),
+				this.commonValidators.pastDate('COC issue date'),
 				this.commonValidators.date('COC issue date'),
 			]),
 			techRecord_authIntoService_dateReceived: this.fb.control<string | null>(null, [
-				this.commonValidators.pastDate('Date received must be in the past'),
+				this.commonValidators.pastDate('Date received'),
 				this.commonValidators.date('Date received'),
 			]),
 			techRecord_authIntoService_datePending: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date pending'),
 			]),
 			techRecord_authIntoService_dateAuthorised: this.fb.control<string | null>(null, [
-				this.commonValidators.pastDate('Date authorised must be in the past'),
+				this.commonValidators.pastDate('Date authorised'),
 				this.commonValidators.date('Date authorised'),
 			]),
 			techRecord_authIntoService_dateRejected: this.fb.control<string | null>(null, [
-				this.commonValidators.pastDate('Date rejected must be in the past'),
+				this.commonValidators.pastDate('Date rejected'),
 				this.commonValidators.date('Date rejected'),
 			]),
 		};

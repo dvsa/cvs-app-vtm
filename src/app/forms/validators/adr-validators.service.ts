@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { FormArray, ValidatorFn } from '@angular/forms';
 import { AdrService } from '@services/adr/adr.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class AdrValidatorsService {
 	adrService = inject(AdrService);
+	featureToggleService = inject(FeatureToggleService);
 
 	requiredWithDangerousGoods(message: string): ValidatorFn {
 		return (control) => {
@@ -14,7 +16,10 @@ export class AdrValidatorsService {
 				(!control.value || (Array.isArray(control.value) && control.value.length === 0)) &&
 				this.adrService.canDisplayDangerousGoodsSection(control.parent.value)
 			) {
-				return { required: message };
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: `${message} is required with Approved to carry dangerous goods` };
+				}
+				return { required: `${message} is required with Able to carry dangerous goods` };
 			}
 
 			return null;
@@ -28,7 +33,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayCompatibilityGroupJSection(control.parent.value)
 			) {
-				return { required: message };
+				return { required: `${message} is required with Permitted dangerous goods` };
 			}
 
 			return null;
@@ -43,7 +48,7 @@ export class AdrValidatorsService {
 				}
 
 				if (!control.value) {
-					return { required: message };
+					return { required: `${message} is required with ADR body type` };
 				}
 			}
 
@@ -54,7 +59,7 @@ export class AdrValidatorsService {
 	requiredWithTankOrBattery(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayTankOrBatterySection(control.parent.value)) {
-				return { required: message };
+				return { required: `${message} is required with ADR body type` };
 			}
 
 			return null;
@@ -68,7 +73,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayTankStatementSelectSection(control.parent.value)
 			) {
-				return { required: message };
+				return { required: `${message} is required with Substances permitted` };
 			}
 
 			return null;
@@ -78,7 +83,7 @@ export class AdrValidatorsService {
 	requiredWithBrakeEndurance(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayWeightSection(control.parent.value)) {
-				return { required: message };
+				return { required: `${message} is required` };
 			}
 
 			return null;
@@ -92,7 +97,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayBatteryListNumberSection(control.parent.value)
 			) {
-				return { required: message };
+				return { required: `${message} is required with Battery list applicable` };
 			}
 
 			return null;

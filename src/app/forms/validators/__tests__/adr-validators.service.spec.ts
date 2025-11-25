@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
@@ -12,7 +14,7 @@ describe('AdrValidatorsService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [AdrValidatorsService],
+			providers: [AdrValidatorsService, provideHttpClient(), provideHttpClientTesting()],
 		});
 
 		service = TestBed.inject(AdrValidatorsService);
@@ -74,7 +76,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_dangerousGoods: true,
 				techRecord_adrDetails_applicantDetails_name: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with Able to carry dangerous goods' });
 		});
 	});
 
@@ -109,7 +111,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_permittedDangerousGoods: [ADRDangerousGood.EXPLOSIVES_TYPE_2],
 				techRecord_adrDetails_compatibilityGroupJ: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with Permitted dangerous goods' });
 		});
 	});
 
@@ -143,7 +145,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
 				techRecord_adrDetails_listStatementApplicable: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with ADR body type' });
 		});
 	});
 
@@ -177,7 +179,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_TANK,
 				techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with ADR body type' });
 		});
 	});
 
@@ -213,7 +215,7 @@ describe('AdrValidatorsService', () => {
 					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
 				techRecord_adrDetails_tank_tankDetails_tankStatement_select: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with Substances permitted' });
 		});
 	});
 
@@ -248,7 +250,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_brakeEndurance: true,
 				techRecord_adrDetails_weight: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required' });
 		});
 	});
 
@@ -286,7 +288,7 @@ describe('AdrValidatorsService', () => {
 				techRecord_adrDetails_listStatementApplicable: true,
 				techRecord_adrDetails_batteryListNumber: null,
 			});
-			expect(validator(control)).toEqual({ required: 'message' });
+			expect(validator(control)).toEqual({ required: 'message is required with Battery list applicable' });
 		});
 	});
 

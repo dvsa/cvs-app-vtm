@@ -20,12 +20,18 @@ export class CommonValidatorsService {
 		};
 	}
 
-	max(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	max(size: number, message: string): ValidatorFn;
-	max(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	max(size: number, func: (control: AbstractControl) => GlobalError, suffix?: string): ValidatorFn;
+	max(size: number, message: string, suffix?: string): ValidatorFn;
+	max(size: number, message: string | ((control: AbstractControl) => GlobalError), suffix?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
-				return { max: typeof message === 'string' ? message : message(control) };
+				suffix = suffix || '';
+				return {
+					max:
+						typeof message === 'string'
+							? `${message} must be less than or equal to ${size}${suffix}`
+							: message(control),
+				};
 			}
 
 			return null;
@@ -37,7 +43,9 @@ export class CommonValidatorsService {
 	min(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value < size) {
-				return { min: typeof message === 'string' ? message : message(control) };
+				return {
+					min: typeof message === 'string' ? `${message} must be greater than or equal to ${size}` : message(control),
+				};
 			}
 
 			return null;
@@ -61,7 +69,12 @@ export class CommonValidatorsService {
 	maxLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
-				return { maxLength: typeof message === 'string' ? message : message(control) };
+				return {
+					maxLength:
+						typeof message === 'string'
+							? `${message} must be less than or equal to ${length} characters`
+							: message(control),
+				};
 			}
 
 			return null;
@@ -76,7 +89,9 @@ export class CommonValidatorsService {
 			if (typeof control.value !== 'number') return null;
 
 			if (control.value < min || control.value > max) {
-				return { range: typeof message === 'string' ? message : message(control) };
+				return {
+					range: typeof message === 'string' ? `${message} must be between ${min} and ${max}` : message(control),
+				};
 			}
 
 			return null;
@@ -114,7 +129,7 @@ export class CommonValidatorsService {
 	pastDate(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && new Date(control.value) > new Date()) {
-				return { pastDate: message };
+				return { pastDate: `${message} must be in the past` };
 			}
 
 			return null;
@@ -124,7 +139,7 @@ export class CommonValidatorsService {
 	pastOrCurrentYear(message: string): ValidatorFn {
 		return (control) => {
 			if (control.value && +control.value > new Date().getFullYear()) {
-				return { pastOrCurrentYear: message };
+				return { pastOrCurrentYear: `${message} must be the current or a past year` };
 			}
 
 			return null;
@@ -213,7 +228,7 @@ export class CommonValidatorsService {
 	required(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				return { required: typeof message === 'string' ? message : message(control) };
+				return { required: typeof message === 'string' ? `${message} is required` : message(control) };
 			}
 
 			return null;
@@ -226,7 +241,7 @@ export class CommonValidatorsService {
 			const inputYear = control.value;
 			const maxYear = currentYear + xYears;
 			if (inputYear && (inputYear > maxYear || inputYear < 0)) {
-				return { xYearsAfterCurrent: message };
+				return { xYearsAfterCurrent: `${message} must be equal to or before ${new Date().getFullYear() + xYears}` };
 			}
 
 			return null;

@@ -28,32 +28,30 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 
 	form = this.fb.group({
 		techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Upper deck seats must be less than or equal to 99'),
+			this.commonValidators.max(99, 'Upper deck seats'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Lower deck seats must be less than or equal to 999'),
+			this.commonValidators.max(999, 'Lower deck seats'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_standingCapacity: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Standing capacity must be less than or equal to 999'),
+			this.commonValidators.max(999, 'Standing capacity'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_dda_wheelchairCapacity: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Wheelchair capacity must be less than or equal to 99'),
+			this.commonValidators.max(99, 'Wheelchair capacity'),
 		]),
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle class is required'),
+			this.commonValidators.required('Vehicle class'),
 		]),
-		techRecord_vehicleSize: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle size is required'),
-		]),
+		techRecord_vehicleSize: this.fb.control<string | null>(null, [this.commonValidators.required('Vehicle size')]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
-			this.commonValidators.max(150, 'Number of seatbelts must be less than or equal to 150'),
+			this.commonValidators.max(150, 'Number of seatbelts'),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Seatbelt installation approval date'),
-			this.commonValidators.pastDate('Seatbelt installation approval date must be in the past'),
+			this.commonValidators.pastDate('Seatbelt installation approval date'),
 		]),
 	});
 

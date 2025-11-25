@@ -49,13 +49,13 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 			this.requiredWithApprovalType('Approval type number is required with Approval type'),
 		]),
 		techRecord_ntaNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(40, 'National type number must be less than or equal to 40 characters'),
+			this.commonValidators.maxLength(40, 'National type number'),
 		]),
 		techRecord_variantNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(35, 'Variant number must be less than or equal to 35 characters'),
+			this.commonValidators.maxLength(35, 'Variant number'),
 		]),
 		techRecord_variantVersionNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(35, 'Variant version number must be less than or equal to 35 characters'),
+			this.commonValidators.maxLength(35, 'Variant version number'),
 		]),
 	});
 
@@ -117,14 +117,14 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	private get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
 			techRecord_coifSerialNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-				this.commonValidators.maxLength(8, 'COIF serial number must be less than or equal to 8 characters'),
+				this.commonValidators.maxLength(8, 'COIF serial number'),
 			]),
 			techRecord_coifCertifierName: this.fb.control<string | null>({ value: null, disabled: false }, [
-				this.commonValidators.maxLength(20, 'COIF certifier name must be less than or equal to 20 characters'),
+				this.commonValidators.maxLength(20, 'COIF certifier name'),
 			]),
 			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
 				this.commonValidators.date('COIF certifier date'),
-				this.commonValidators.pastDate('COIF certifier date must be in the past'),
+				this.commonValidators.pastDate('COIF certifier date'),
 			]),
 		};
 	}

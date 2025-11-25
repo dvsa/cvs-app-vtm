@@ -39,7 +39,7 @@ describe('CommonValidatorsService', () => {
 		it('should return an error object if the control has a value greater than the max', () => {
 			const control = new FormControl(15);
 			const result = service.max(10, 'message')(control);
-			expect(result).toEqual({ max: 'message' });
+			expect(result).toEqual({ max: 'message must be less than or equal to 10' });
 		});
 	});
 
@@ -65,7 +65,7 @@ describe('CommonValidatorsService', () => {
 		it('should return an error object if the control has a value less than the min', () => {
 			const control = new FormControl(5);
 			const result = service.min(10, 'message')(control);
-			expect(result).toEqual({ min: 'message' });
+			expect(result).toEqual({ min: 'message must be greater than or equal to 10' });
 		});
 	});
 
@@ -91,7 +91,7 @@ describe('CommonValidatorsService', () => {
 		it('should return an error object if the control has a value greater than the max length', () => {
 			const control = new FormControl('12345678901');
 			const result = service.maxLength(10, 'message')(control);
-			expect(result).toEqual({ maxLength: 'message' });
+			expect(result).toEqual({ maxLength: 'message must be less than or equal to 10 characters' });
 		});
 	});
 
@@ -131,7 +131,7 @@ describe('CommonValidatorsService', () => {
 		it('should return an error object if the control has a value that is a future date', () => {
 			const control = new FormControl('2025-01-01'); // current date mocked as 2024-01-01
 			const result = service.pastDate('message')(control);
-			expect(result).toEqual({ pastDate: 'message' });
+			expect(result).toEqual({ pastDate: 'message must be in the past' });
 		});
 	});
 

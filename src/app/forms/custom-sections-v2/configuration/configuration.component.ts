@@ -79,7 +79,7 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
 			techRecord_speedRestriction: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Speed restriction must be less than or equal to 99mph'),
+				this.commonValidators.max(99, 'Speed restriction', 'mph'),
 			]),
 		};
 	}
