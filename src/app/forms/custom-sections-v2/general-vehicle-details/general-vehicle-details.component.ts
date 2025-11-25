@@ -435,6 +435,16 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		this.destroy$.complete();
 	}
 
+	get bodyTypeFilterOptions() {
+		switch (this.getVehicleType()) {
+			case VehicleTypes.HGV:
+			case VehicleTypes.TRL:
+				return ['Required'];
+			default:
+				return [];
+		}
+	}
+
 	get EUCategoryOptions() {
 		switch (this.getVehicleType()) {
 			case VehicleTypes.HGV:
