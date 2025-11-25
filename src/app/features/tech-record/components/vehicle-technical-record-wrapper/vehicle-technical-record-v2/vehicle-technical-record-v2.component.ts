@@ -186,6 +186,8 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 		switch (this.techRecord()?.techRecord_vehicleType) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR', 'Records'];
+			case VehicleTypes.PSV:
+				return ['Required', 'Records'];
 			// TODO: update with other vehicle types
 			default:
 				return [];

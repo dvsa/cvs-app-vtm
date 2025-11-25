@@ -1,3 +1,4 @@
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
@@ -20,11 +21,13 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupRadioComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
+		FilterByTagsDirective,
 	],
 })
 export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
 
 	form = this.fb.group({
 		techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [

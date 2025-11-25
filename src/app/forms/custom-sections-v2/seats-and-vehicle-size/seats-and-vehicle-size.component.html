@@ -6,6 +6,9 @@
     formControlName="techRecord_seatsUpperDeck"
     type="number"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="['Required']"
   ></govuk-form-group-input>
 
   <!-- Lower Deck -->
@@ -15,6 +18,9 @@
     formControlName="techRecord_seatsLowerDeck"
     type="number"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="['Required']"
   ></govuk-form-group-input>
 
   <!-- Standing Capacity -->
@@ -24,6 +30,9 @@
     type="number"
     [width]="FormNodeWidth.XXS"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="[]"
   ></govuk-form-group-input>
 
   <!-- Wheelchair Capacity  -->
@@ -33,6 +42,9 @@
     label="Wheelchair capacity"
     [width]="FormNodeWidth.XXS"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="[]"
   ></govuk-form-group-input>
 
   <!--  Vehicle class-->
@@ -42,6 +54,9 @@
     formControlName="techRecord_vehicleClass_description"
     [options]="VehicleClassOptions"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="['Required']"
   ></govuk-form-group-radio>
 
   <!-- Vehicle size -->
@@ -51,6 +66,9 @@
     [options]="VEHICLE_SIZE_OPTIONS"
     [hint]="'Vehicle size is calculated based on the number of seats and standing capacity'"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="['Required']"
   ></govuk-form-group-radio>
 
   <!--  Number of Seatbelts -->
@@ -60,6 +78,9 @@
     type="numericString"
     [width]="FormNodeWidth.XXS"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="[]"
   ></govuk-form-group-input>
 
   <!-- Seatbelt installation approval date -->
@@ -67,5 +88,8 @@
     label="Seatbelt installation approval date"
     formControlName="techRecord_seatbeltInstallationApprovalDate"
     class="govuk-label--s"
+    appFilterByTags
+    [filters]="filters()"
+    [tagNames]="[]"
   ></govuk-form-group-date>
 </div>

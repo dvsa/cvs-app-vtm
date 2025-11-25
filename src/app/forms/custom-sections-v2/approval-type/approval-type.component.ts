@@ -1,3 +1,4 @@
+import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
 import {
 	type AbstractControl,
@@ -32,6 +33,7 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupInputComponent,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupDateComponent,
+		FilterByTagsDirective,
 	],
 })
 export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
