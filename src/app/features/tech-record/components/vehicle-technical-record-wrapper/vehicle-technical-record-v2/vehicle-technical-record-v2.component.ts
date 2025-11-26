@@ -21,6 +21,7 @@ import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.c
 import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
+import { TestResultsComponent } from '@/src/app/forms/custom-sections-v2/test-records/test-records.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
 import { Roles } from '@/src/app/models/roles.enum';
@@ -29,11 +30,13 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
 import { Store } from '@ngrx/store';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordFiltersComponent } from '../../tech-record-filters/tech-record-filters.component';
@@ -77,6 +80,9 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		PlatesComponent,
 		ApprovalTypeComponent,
 		FilterByTagsDirective,
+		TestResultsComponent,
+		AsyncPipe,
+		TechnicalRecordsHistoryComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -86,6 +92,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	router = inject(Router);
 	axlesService = inject(AxlesService);
 	technicalRecordService = inject(TechnicalRecordService);
+	testRecordService = inject(TestRecordsService);
 
 	techRecord = input<V3TechRecordModel>();
 	from = this.store.selectSignal(selectQueryParam('from'));
@@ -99,6 +106,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	form = this.fb.group({});
 	filters = model<string[]>([]);
 
+	testResults$ = this.testRecordService.testRecords$;
 	readonly VehicleTypes = VehicleTypes;
 
 	ngOnInit(): void {

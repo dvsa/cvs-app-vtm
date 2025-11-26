@@ -1,0 +1,65 @@
+@if (techRecord(); as techRecord) {
+  <div class="govuk-!-padding-4">
+    @if (showCreateTestButton()) {
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <app-button
+            [id]="'generate-adr-cert'"
+            design="secondary"
+            *appRoleRequired="[Roles.TestResultCreateContingency, Roles.TestResultCreateDeskAssessment]"
+            (clicked)="createTest(techRecord)"
+          >
+            Create test
+          </app-button>
+        </div>
+      </div>
+      @if (testResults().length) {
+        <table class="govuk-table">
+          <caption class="govuk-table__caption govuk-!-margin-bottom-4">
+            Test Record History
+          </caption>
+          <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Test Type</th>
+            <th scope="col" class="govuk-table__header">Result</th>
+            <th scope="col" class="govuk-table__header">Date</th>
+            <th scope="col" class="govuk-table__header">Time</th>
+          </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            @for (test of paginatedTestFields; track i; let i = $index) {
+              <tr>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link"
+                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
+                     [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</a>
+                </td>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link"
+                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
+                     [id]="'test-record-summary-result-' + i">{{ getResult(test) | titlecase }}</a>
+                </td>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link"
+                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
+                     [id]="'test-record-summary-date-' + i">{{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy' }}</a>
+                </td>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link"
+                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
+                     [id]="'test-record-summary-time-' + i">{{ test.testTypeStartTimestamp | date : 'HH:mm' }}</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords"
+                        (paginationOptionsChange)="handlePaginationChange($event)" />
+      } @else {
+        <h2 class="govuk-heading-m">Test Records</h2>
+        <h3 class="govuk-heading-s">No test records found.</h3>
+      }
+    }
+  </div>
+}
