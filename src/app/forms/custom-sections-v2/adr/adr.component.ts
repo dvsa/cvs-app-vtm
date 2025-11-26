@@ -5,6 +5,7 @@ import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
+import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyDeclarationTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyDeclarationType.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
@@ -56,6 +57,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		GovukFormGroupCheckboxComponent,
 		GovukFormGroupTextareaComponent,
 		PaginationComponent,
+		FilterByTagsDirective,
 	],
 })
 export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -65,6 +67,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 	viewportScroller = inject(ViewportScroller);
+	filters = input<string[]>([]);
 
 	// TODO properly type this at some point
 	form = this.fb.group({

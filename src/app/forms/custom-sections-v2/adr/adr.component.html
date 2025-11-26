@@ -14,28 +14,43 @@
         <govuk-form-group-input
           label="Name"
           formControlName="techRecord_adrDetails_applicantDetails_name"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Street -->
         <govuk-form-group-input
           label="Address line 1"
           formControlName="techRecord_adrDetails_applicantDetails_street"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Town -->
         <govuk-form-group-input
           label="Address line 2 (optional)"
           formControlName="techRecord_adrDetails_applicantDetails_town"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details City -->
         <govuk-form-group-input
           label="Town or city"
           [width]="FormNodeWidth.XL"
           formControlName="techRecord_adrDetails_applicantDetails_city"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Postcode -->
         <govuk-form-group-input
           label="Postcode"
           [width]="FormNodeWidth.L"
           formControlName="techRecord_adrDetails_applicantDetails_postcode"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
          <!-- ADR details -->
          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
@@ -45,6 +60,9 @@
             [defaultOption]="'Select body type'"
             formControlName="techRecord_adrDetails_vehicleDetails_type"
             [options]="adrBodyTypesOptions"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
          }
 
@@ -55,6 +73,9 @@
               label="Is the vehicle used on international journeys?"
               formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
               [options]="usedOnInternationJourneysOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
