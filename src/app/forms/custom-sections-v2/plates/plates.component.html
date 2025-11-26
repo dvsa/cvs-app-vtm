@@ -29,88 +29,50 @@
         </thead>
         <tbody class="govuk-table__body">
           @for (plate of plates; track i; let i = $index) {
-            <tr class="govuk-table__row">
-              <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
-                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-                  <a 
-                    class="govuk-link"
-                    href="javascript:void(0)"
-                    [id]="`plate-link${i}`"
-                    appRetrieveDocument
-                    [params]="documentParams"
-                    [fileName]="fileName"
-                    >
-                    {{ plate.plateSerialNumber | defaultNullOrEmpty }}
-                  </a>
-                } @else {
+            @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+              <a 
+                class="govuk-link govuk-table__row"
+                href="javascript:void(0)"
+                [id]="`plate-link${i}`"
+                appRetrieveDocument
+                [params]="documentParams"
+                [fileName]="fileName"
+              >
+                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}
-                }
-              </td>
-              <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-reason-${i}`">
-                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-                  <a 
-                    class="govuk-link"
-                    href="javascript:void(0)"
-                    [id]="`plate-link${i}`"
-                    appRetrieveDocument
-                    [params]="documentParams"
-                    [fileName]="fileName"
-                    >
-                    {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
-                  </a>
-                } @else {
+                </td>
+                <td scope="row" class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issue-reason-${i}`">
                   {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
-                }
-              </td>
-              <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issuer-${i}`">
-                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-                  <a 
-                    class="govuk-link"
-                    href="javascript:void(0)"
-                    [id]="`plate-link${i}`"
-                    appRetrieveDocument
-                    [params]="documentParams"
-                    [fileName]="fileName"
-                    >
-                    {{ plate.plateIssuer | defaultNullOrEmpty }}
-                  </a>
-                } @else {
+                </td>
+                <td class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issuer-${i}`">
                   {{ plate.plateIssuer | defaultNullOrEmpty }}
-                }
-              </td>
-              <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
-                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-                  <a 
-                    class="govuk-link"
-                    href="javascript:void(0)"
-                    [id]="`plate-link${i}`"
-                    appRetrieveDocument
-                    [params]="documentParams"
-                    [fileName]="fileName"
-                    >
-                    {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
-                  </a>
-                } @else {
+                </td>
+                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
                   {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
-                }
-              </td>
-              <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
-                @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-                  <a 
-                    class="govuk-link"
-                    href="javascript:void(0)"
-                    [id]="`plate-link${i}`"
-                    appRetrieveDocument
-                    [params]="documentParams"
-                    [fileName]="fileName"
-                    >
-                    {{ plate.plateIssueDate | date : 'HH:mm' }}
-                  </a>
-                } @else {
+                </td>
+                <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
                   {{ plate.plateIssueDate | date : 'HH:mm' }}
-                }
-              </td>
-            </tr>
+                </td>
+              </a> 
+            } @else {     
+              <tr class="govuk-table__row" [id]="`plate-link${i}`">
+                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
+                  {{ plate.plateSerialNumber | defaultNullOrEmpty }}
+                </td>
+                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-reason-${i}`">
+                  {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
+                </td>
+                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issuer-${i}`">
+                  {{ plate.plateIssuer | defaultNullOrEmpty }}
+                </td>
+                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
+                  {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
+                </td>
+                <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
+                  {{ plate.plateIssueDate | date : 'HH:mm' }}
+                </td>
+              </tr>
+            }
           }
         </tbody>
       </table>
