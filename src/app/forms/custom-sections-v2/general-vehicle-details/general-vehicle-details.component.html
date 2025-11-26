@@ -184,7 +184,7 @@
       [options]="VEHICLE_SUBCLASS_OPTIONS"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="vehicleSubclassFilterOptions"
     ></govuk-checkbox-group>
   }
 
@@ -293,7 +293,7 @@
       [options]="EUCategoryOptions"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="euVehicleCategoryFilterOptions"
     ></govuk-form-group-radio>
   }
 
@@ -324,7 +324,7 @@
           [value]="techRecord().techRecord_noOfAxles === 0 ? null : techRecord().techRecord_noOfAxles"
           type="number"
         />
-  
+
         @if (isAxlesDisabled) {
           <button
             type="button"
@@ -337,7 +337,7 @@
             Remove and clear all axles
           </button>
         }
-  
+
         @if (!isAxlesDisabled) {
           <button
             type="button"
