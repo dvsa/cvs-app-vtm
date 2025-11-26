@@ -237,7 +237,7 @@
         [options]="bodyTypes"
         appFilterByTags
         [filters]="filters()"
-        [tagNames]="[]"
+        [tagNames]="bodyTypeFilterOptions"
       >
       </govuk-form-group-select>
     }
@@ -324,7 +324,7 @@
           [value]="techRecord().techRecord_noOfAxles === 0 ? null : techRecord().techRecord_noOfAxles"
           type="number"
         />
-  
+
         @if (isAxlesDisabled) {
           <button
             type="button"
@@ -337,7 +337,7 @@
             Remove and clear all axles
           </button>
         }
-  
+
         @if (!isAxlesDisabled) {
           <button
             type="button"
