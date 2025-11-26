@@ -32,6 +32,7 @@
         <tbody class="govuk-table__body">
           @for (certificate of adrCertificateHistory; track i; let i = $index) {
             <a
+              [id]="`adr-certificate-link-${i}`"
               class="govuk-link govuk-table__row"
               href="javascript:void(0)"
               appRetrieveDocument
