@@ -59,10 +59,10 @@
                 <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}
                 </td>
-                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-reason-${i}`">
+                <td scope="row" class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issue-reason-${i}`">
                   {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
                 </td>
-                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issuer-${i}`">
+                <td class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issuer-${i}`">
                   {{ plate.plateIssuer | defaultNullOrEmpty }}
                 </td>
                 <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
