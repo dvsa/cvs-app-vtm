@@ -20,6 +20,7 @@ import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufa
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
 import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
+import { ReasonForCreationComponent } from '@/src/app/forms/custom-sections-v2/reason-for-creation/reason-for-creation.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
@@ -77,6 +78,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		PlatesComponent,
 		ApprovalTypeComponent,
 		FilterByTagsDirective,
+		ReasonForCreationComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -185,14 +187,22 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	get tags(): string[] {
 		switch (this.techRecord()?.techRecord_vehicleType) {
 			case VehicleTypes.HGV:
-				return ['Plates', 'Required', 'ADR', 'Records'];
+				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.PSV:
-				return ['Required', 'Records'];
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			// TODO: update with other vehicle types
 			case VehicleTypes.TRL:
-				return ['Required', 'ADR'];
+				return this.isEditing ? ['Required', 'ADR'] : ['Required', 'ADR', 'Records'];
 			default:
 				return [];
 		}
+	}
+
+	generateRFCDescription(): string {
+		// TODO: Update this method to return a dynamic description message
+		// based on if user is creating or amending a record.
+		// return "Tell us why you're amending this record.";
+
+		return "Tell us why you're creating this record.";
 	}
 }
