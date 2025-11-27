@@ -332,6 +332,30 @@
                         </app-accordion>
                       }
 
+                      @if (!isEditing) {
+                        <app-accordion
+                          [id]="'technical-records-history'"
+                          [title]="'Technical records history'"
+                          [description]="'View technical records history.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-technical-record-history [techRecord]="techRecord"></app-technical-record-history>
+                        </app-accordion>
+                      }
+
+                      @if (!isEditing) {
+                        <app-accordion
+                          [id]="'test-records'"
+                          [title]="'Test records'"
+                          [description]="'Create and view test records.'"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                        >
+                          <app-test-records [testResults]="(testResults$ | async) || []" [techRecord]="techRecord"></app-test-records>
+                        </app-accordion>
+                      }
+
                       <app-accordion
                         [id]="'notes'"
                         [title]="'Notes'"

@@ -1,0 +1,44 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-table {
+  border: 1px solid #b1b4b6;
+  border-collapse: collapse;
+}
+
+.govuk-table th, .govuk-table td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.govuk-table th:first-child, .govuk-table td:first-child {
+  white-space: nowrap !important;
+  width: 10% !important;
+  padding-left: 10px;
+}
+
+.govuk-table th:not(:first-child), .govuk-table td {
+  width: auto !important;
+}
+
+.plates-table th:nth-child(3) {
+  padding-right: 90px;
+}
+
+.govuk-table td:nth-child(4), .govuk-table th:nth-child(4) {
+  padding-right: 10px;
+}
+
+.govuk-table td:nth-child(5), .govuk-table th:nth-child(5) {
+  text-align: right;
+  padding-right: 10px;
+}
+
+
+.govuk-table a {
+  width: 100%;
+  display: table-row;
+}
+
+.break-all {
+  word-break: break-all;
+}
