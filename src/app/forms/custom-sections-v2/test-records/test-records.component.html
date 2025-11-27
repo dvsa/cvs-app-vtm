@@ -15,8 +15,8 @@
       </div>
       @if (testResults().length) {
         <table class="govuk-table">
-          <caption class="govuk-table__caption govuk-!-margin-bottom-4">
-            Test Record History
+          <caption class="govuk-table__caption govuk-!-margin-bottom-4 govuk-body">
+            Test record history
           </caption>
           <thead class="govuk-table__head">
           <tr class="govuk-table__row">
@@ -28,28 +28,24 @@
           </thead>
           <tbody class="govuk-table__body">
             @for (test of paginatedTestFields; track i; let i = $index) {
-              <tr>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link"
-                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
-                     [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</a>
+              <a
+                [id]="`adr-certificate-link-${i}`"
+                class="govuk-link govuk-table__row"
+                routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
+              >
+                <td class="govuk-table__cell whitespac-pre-line"[id]="'test-record-summary-name-' + i">
+                {{ test.testTypeName }}
                 </td>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link"
-                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
-                     [id]="'test-record-summary-result-' + i">{{ getResult(test) | titlecase }}</a>
+                <td class="govuk-table__cell whitespac-pre-line" [id]="'test-record-summary-result-' + i">
+                  {{ getResult(test) | titlecase }}
                 </td>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link"
-                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
-                     [id]="'test-record-summary-date-' + i">{{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy' }}</a>
+                <td class="govuk-table__cell whitespac-pre-line" [id]="'test-record-summary-date-' + i">
+                  {{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy' }}
                 </td>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link"
-                     routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
-                     [id]="'test-record-summary-time-' + i">{{ test.testTypeStartTimestamp | date : 'HH:mm' }}</a>
+                <td class="govuk-table__cell whitespac-pre-line" [id]="'test-record-summary-time-' + i">
+                  {{ test.testTypeStartTimestamp | date : 'HH:mm' }}
                 </td>
-              </tr>
+              </a>
             }
           </tbody>
         </table>
@@ -57,8 +53,8 @@
         <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords"
                         (paginationOptionsChange)="handlePaginationChange($event)" />
       } @else {
-        <h2 class="govuk-heading-m">Test Records</h2>
-        <h3 class="govuk-heading-s">No test records found.</h3>
+        <h2 class="govuk-heading-s">Test records history</h2>
+        <h3 class="govuk-body">No test records found.</h3>
       }
     }
   </div>

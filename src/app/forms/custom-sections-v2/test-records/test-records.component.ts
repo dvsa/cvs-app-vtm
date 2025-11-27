@@ -114,14 +114,6 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 		return test.testResultStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : test.testResult;
 	}
 
-	getTestTypeName(testResult: TestResultModel): string {
-		return testResult.testTypes.map((t) => t.testTypeName).join(',');
-	}
-
-	getTestTypeResults(testResult: TestResultModel): string {
-		return testResult.testTypes.map((t) => t.testResult).join(',');
-	}
-
 	handlePaginationChange(event?: { start: number; end: number }): void {
 		if (!event) return;
 		this.pageStart = event.start;
