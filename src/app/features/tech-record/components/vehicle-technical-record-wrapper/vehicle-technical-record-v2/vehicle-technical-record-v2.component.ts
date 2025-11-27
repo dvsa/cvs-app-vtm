@@ -30,11 +30,14 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
+import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordFiltersComponent } from '../../tech-record-filters/tech-record-filters.component';
@@ -79,6 +82,9 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ApprovalTypeComponent,
 		FilterByTagsDirective,
 		ReasonForCreationComponent,
+		TechnicalRecordsHistoryComponent,
+		TestResultsComponent,
+		AsyncPipe,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -88,7 +94,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	router = inject(Router);
 	axlesService = inject(AxlesService);
 	technicalRecordService = inject(TechnicalRecordService);
-
+	testRecordService = inject(TestRecordsService);
 	techRecord = input<V3TechRecordModel>();
 	from = this.store.selectSignal(selectQueryParam('from'));
 	sectionStates$ = this.store.selectSignal(selectSectionState);
@@ -100,6 +106,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 
 	form = this.fb.group({});
 	filters = model<string[]>([]);
+	testResults$ = this.testRecordService.testRecords$;
 
 	readonly VehicleTypes = VehicleTypes;
 
