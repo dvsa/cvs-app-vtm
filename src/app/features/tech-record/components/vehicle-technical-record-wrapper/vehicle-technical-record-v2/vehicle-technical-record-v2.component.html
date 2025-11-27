@@ -201,7 +201,7 @@
                       }
 
                       <!-- Plates -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || technicalRecordService.isHeavyTrailer(techRecord)) {
+                      @if ((techRecord.techRecord_vehicleType === VehicleTypes.HGV || technicalRecordService.isHeavyTrailer(techRecord)) && !isEditing) {
                         <app-accordion
                           [id]="'plates'"
                           [title]="'Plates'"
@@ -225,15 +225,15 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                           appFilterByTags
-                          [tagNames]="[]"
+                          [tagNames]="['ADR']"
                           [filters]="filters()"
                         >
-                          <app-adr [techRecord]="techRecord"></app-adr>
+                          <app-adr [techRecord]="techRecord" [filters]="filters()"></app-adr>
                         </app-accordion>
                       }
 
                       <!-- ADR certificates -->
-                      @if (technicalRecordService.isAdrVehicle(techRecord)) {
+                      @if (technicalRecordService.isAdrVehicle(techRecord) && !isEditing) {
                         <app-accordion
                           [id]="'adr-certs'"
                           [title]="'ADR certificates'"
@@ -241,7 +241,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                           appFilterByTags
-                          [tagNames]="[]"
+                          [tagNames]="['ADR']"
                           [filters]="filters()"
                         >
                           <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
@@ -368,6 +368,21 @@
                       >
                         <app-notes [techRecord]="techRecord"></app-notes>
                       </app-accordion>
+
+                      @if (isEditing) {
+                        <app-accordion
+                          [id]="'reason-for-creation'"
+                          [title]="'Reason for creation'"
+                          [description]="generateRFCDescription()"
+                          [type]="'condensed'"
+                          [isExpanded]="false"
+                          appFilterByTags
+                          [tagNames]="['Plates', 'Required', 'ADR']"
+                          [filters]="filters()"
+                        >
+                          <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                        </app-accordion>
+                      }
                     </ng-container>
                   </ng-template>
                 </app-accordion-control>

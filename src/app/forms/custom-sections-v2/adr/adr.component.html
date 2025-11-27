@@ -14,28 +14,43 @@
         <govuk-form-group-input
           label="Name"
           formControlName="techRecord_adrDetails_applicantDetails_name"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Street -->
         <govuk-form-group-input
           label="Address line 1"
           formControlName="techRecord_adrDetails_applicantDetails_street"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Town -->
         <govuk-form-group-input
           label="Address line 2 (optional)"
           formControlName="techRecord_adrDetails_applicantDetails_town"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details City -->
         <govuk-form-group-input
           label="Town or city"
           [width]="FormNodeWidth.XL"
           formControlName="techRecord_adrDetails_applicantDetails_city"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- Applicant Details Postcode -->
         <govuk-form-group-input
           label="Postcode"
           [width]="FormNodeWidth.L"
           formControlName="techRecord_adrDetails_applicantDetails_postcode"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
          <!-- ADR details -->
          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
@@ -45,6 +60,9 @@
             [defaultOption]="'Select body type'"
             formControlName="techRecord_adrDetails_vehicleDetails_type"
             [options]="adrBodyTypesOptions"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
          }
 
@@ -55,6 +73,9 @@
               label="Is the vehicle used on international journeys?"
               formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
               [options]="usedOnInternationJourneysOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
@@ -63,6 +84,9 @@
               class="govuk-label--s"
               label="Date processed"
               formControlName="techRecord_adrDetails_vehicleDetails_approvalDate"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
@@ -73,6 +97,9 @@
               label="Permitted dangerous goods"
               formControlName="techRecord_adrDetails_permittedDangerousGoods"
               [options]="permittedDangerousGoodsOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
@@ -84,6 +111,9 @@
                 label="Body declaration"
                 formControlName="techRecord_adrDetails_bodyDeclaration_type"
                 [options]="bodyDeclarationOptions"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
               />
             }
           }
@@ -96,6 +126,9 @@
                 label="Compatibility group J"
                 formControlName="techRecord_adrDetails_compatibilityGroupJ"
                 [options]="compatibilityGroupJOptions"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
               />
             }
           }
@@ -107,6 +140,9 @@
               label="Guidance notes"
               formControlName="techRecord_adrDetails_additionalNotes_number"
               [options]="guidanceNotesOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
@@ -116,6 +152,9 @@
               label="ADR type approval number"
               [width]="FormNodeWidth.L"
               formControlName="techRecord_adrDetails_adrTypeApprovalNo"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
 
@@ -129,6 +168,9 @@
               label="Tank make"
               class="govuk-label--s"
               formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- Tank Year of manufacture -->
             <govuk-form-group-input
@@ -137,6 +179,9 @@
               [width]="FormNodeWidth.S"
               type="number"
               formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- Tank manufacturer serial number -->
             <govuk-form-group-input
@@ -144,6 +189,9 @@
               class="govuk-label--s"
               [width]="FormNodeWidth.L"
               formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- Tank type approval number -->
             <govuk-form-group-input
@@ -151,6 +199,9 @@
               class="govuk-label--s"
               [width]="FormNodeWidth.L"
               formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- Tank code -->
             <govuk-form-group-input
@@ -158,6 +209,9 @@
               class="govuk-label--s"
               [width]="FormNodeWidth.L"
               formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- Substances permitted -->
             <govuk-form-group-radio
@@ -166,6 +220,9 @@
               formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
               [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
               size="small"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- When tank statement (substances permitted) is 'Under UN Number' -->
             @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
@@ -176,6 +233,9 @@
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
                 [options]="tankStatementSelectOptions"
                 size="small"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
               />
               <!-- When select is 'statement' -->
               @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
@@ -184,6 +244,9 @@
                   label="Reference number"
                   class="govuk-label--s"
                   formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
+                  appFilterByTags
+                  [filters]="filters()"
+                  [tagNames]="['ADR']"
                 />
               }
               <!-- When select is 'product '-->
@@ -193,6 +256,9 @@
                   label="Reference number"
                   class="govuk-label--s"
                   formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
+                  appFilterByTags
+                  [filters]="filters()"
+                  [tagNames]="['ADR']"
                 />
                 <!-- UN numbers -->
                 <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
@@ -215,6 +281,9 @@
                                   id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                                   [width]="FormNodeWidth.XL"
                                   formControlName="{{ i }}"
+                                  appFilterByTags
+                                  [filters]="filters()"
+                                  [tagNames]="['ADR']"
                                 />
                               </td>
                               <td class="govuk-table__cell border-b-0">
@@ -239,6 +308,9 @@
                             id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
                             [width]="FormNodeWidth.XL"
                             formControlName="{{ i }}"
+                            appFilterByTags
+                            [filters]="filters()"
+                            [tagNames]="['ADR']"
                           />
                         }
                       </div>
@@ -264,6 +336,9 @@
                   class="govuk-label--s"
                   formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
                   [maxLength]="1500"
+                  appFilterByTags
+                  [filters]="filters()"
+                  [tagNames]="['ADR']"
                 />
 
               }
@@ -275,6 +350,9 @@
             class="govuk-label--s"
             formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
             [maxLength]="1024"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
           <!-- Tank Inspections section -->
           <ng-container>
@@ -284,12 +362,18 @@
               class="govuk-label govuk-label--s"
               label="TC2: Certificate number"
               formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <!-- TC2: Expiry Date -->
             <govuk-form-group-date
               class="govuk-label govuk-label--s"
               label="TC2: Expiry date"
               formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
             <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
             <!-- TC3: Inspections -->
@@ -308,6 +392,9 @@
                     formControlName="tc3Type"
                     [options]="tc3InspectionOptions"
                     [defaultOption]="'Select inspection type'"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
                   />
                   <!-- TC3 Certificate Number -->
                   <govuk-form-group-input
@@ -315,6 +402,9 @@
                     class="govuk-label govuk-label--s"
                     label="TC3: Certificate number"
                     formControlName="tc3PeriodicNumber"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
                   />
                   <!-- TC3 Expiry Date -->
                   <govuk-form-group-date
@@ -322,6 +412,9 @@
                     class="govuk-label govuk-label--s"
                     label="TC3: Expiry date"
                     formControlName="tc3PeriodicExpiryDate"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
                   />
                   <!-- TC3 Footer -->
                   <p class="govuk-body govuk-!-text-align-left">
@@ -361,6 +454,9 @@
             [options]="memosApplyOptions"
             [hint]="'Only applicable for vehicles used on national journeys'"
             [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
           <!-- M145 -->
           <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_m145Statement">M145</label>
@@ -370,6 +466,9 @@
             formControlName="techRecord_adrDetails_m145Statement"
             [value]="true"
             [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
         }
         <!--   When ADR body type contains 'battery' -->
@@ -381,6 +480,9 @@
             formControlName="techRecord_adrDetails_listStatementApplicable"
             [options]="YES_NO_OPTIONS"
             [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
           <!-- When Battery list applicable is true -->
           @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
@@ -390,6 +492,9 @@
               label="Reference number"
               [width]="FormNodeWidth.L"
               formControlName="techRecord_adrDetails_batteryListNumber"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
         }
@@ -402,6 +507,9 @@
           formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
           [value]="true"
           [size]="'small'"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
           <!-- Issuer -->
@@ -410,6 +518,9 @@
             formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
             class="govuk-label--s govuk-!-margin-top-4"
             [maxLength]="500"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
           <!-- Brake endurance -->
           <govuk-form-group-checkbox
@@ -418,6 +529,9 @@
             formControlName="techRecord_adrDetails_brakeEndurance"
             [value]="true"
             [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
           />
           <!-- Weight (tonnes) -->
           @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
@@ -428,6 +542,9 @@
               type="decimal"
               suffix="tonnes"
               [width]="FormNodeWidth.M"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
             />
           }
         }
@@ -437,6 +554,9 @@
           formControlName="techRecord_adrDetails_declarationsSeen"
           [value]="true"
           [size]="'small'"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!--  New Certificate required -->
         <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
@@ -445,6 +565,9 @@
           formControlName="techRecord_adrDetails_newCertificateRequested"
           [value]="true"
           [size]="'small'"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- ADR Additional Examiner Note -->
         <govuk-form-group-textarea
@@ -453,6 +576,9 @@
           formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
           [maxLength]="1024"
           [hint]="'These will not be shown on the ADR certificate'"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
         <!-- ADR Additional Examiner Note History -->
         <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Additional examiner notes history</h2>
@@ -506,6 +632,9 @@
           formControlName="techRecord_adrDetails_adrCertificateNotes"
           [hint]="'These will be shown on the ADR certificate'"
           [maxLength]="1500"
+          appFilterByTags
+          [filters]="filters()"
+          [tagNames]="['ADR']"
         />
       </govuk-radio>
       <govuk-radio label="No" [value]="false"></govuk-radio>

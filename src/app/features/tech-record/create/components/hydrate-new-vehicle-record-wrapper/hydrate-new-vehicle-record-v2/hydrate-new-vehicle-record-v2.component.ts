@@ -225,7 +225,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			case VehicleTypes.SMALL_TRL:
 				return ['Required'];
 			case VehicleTypes.TRL:
-				return ['Required'];
+				return ['Required', 'ADR'];
 			// TODO: update with other vehicle types
 			default:
 				return [];
