@@ -32,7 +32,7 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject, input } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
