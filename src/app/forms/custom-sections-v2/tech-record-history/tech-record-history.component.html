@@ -1,68 +1,82 @@
 @if (techRecordHistory$ | async) {
   <div class="govuk-!-padding-4">
-  <table class="govuk-table">
-    <caption class="govuk-table__caption govuk-!-margin-bottom-4">Technical records history</caption>
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-!-margin-bottom-4">Technical records history</caption>
 
-    <thead class="govuk-table__head">
+      <thead class="govuk-table__head">
 
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Status</th>
-      <th scope="col" class="govuk-table__header">Reason for creation</th>
-      <th scope="col" class="govuk-table__header">Created By</th>
-      <th scope="col" class="govuk-table__header">Date</th>
-      <th scope="col" class="govuk-table__header">Time</th>
-    </tr>
-    </thead>
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Status</th>
+        <th scope="col" class="govuk-table__header">Reason for creation</th>
+        <th scope="col" class="govuk-table__header">Created By</th>
+        <th scope="col" class="govuk-table__header">Date</th>
+        <th scope="col" class="govuk-table__header">Time</th>
+      </tr>
+      </thead>
 
-    <tbody class="govuk-table__body">
-      @for (searchResult of techRecordHistoryPage$ | async; track i; let i = $index) {
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell whitespace-pre-line" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
-            @if (searchResult.techRecord_statusCode == 'current') {
-              {{ searchResult.techRecord_statusCode | titlecase}}
-            } @else {
-            <a class="govuk-link" [routerLink]="[summaryLinkUrl(searchResult)]">{{ searchResult.techRecord_statusCode | titlecase}}</a>
-            }
-          </td>
+      <tbody class="govuk-table__body">
+        @for (searchResult of techRecordHistoryPage$ | async; track i; let i = $index) {
+          @if (searchResult.techRecord_statusCode == 'current') {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
+                {{ searchResult.techRecord_statusCode | titlecase }}
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+                <span>{{ searchResult.techRecord_reasonForCreation | titlecase }}</span>
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
+                {{ searchResult.techRecord_createdByName | titlecase }}
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.createdTimestamp + '-created-at-date-' + i">
+                {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}
+              </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.createdTimestamp + '-created-at-time-' + i">
+                {{ searchResult.createdTimestamp | date : 'HH:mm' }}
+              </td>
+            </tr>
+          } @else {
+            <a
+              [id]="`test-history-link-${i}`"
+              class="govuk-link govuk-table__row"
+              [routerLink]="[summaryLinkUrl(searchResult)]"
+            >
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
+                {{ searchResult.techRecord_statusCode | titlecase }}
+              </td>
 
-          <td class="govuk-table__cell whitespace-pre-line" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
-            @if (searchResult.techRecord_statusCode == 'current') {
-              <span>{{ searchResult.techRecord_reasonForCreation | titlecase}}</span>
-            } @else {
-            <a class="govuk-link" [routerLink]="[summaryLinkUrl(searchResult)]">{{ searchResult.techRecord_reasonForCreation | titlecase}}</a>
-            }
-          </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+                <span>{{ searchResult.techRecord_reasonForCreation | titlecase }}</span>
+              </td>
 
-          <td class="govuk-table__cell whitespace-pre-line" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
-            @if (searchResult.techRecord_statusCode == 'current') {
-              {{ searchResult.techRecord_createdByName | titlecase}}
-            } @else {
-            <a class="govuk-link" [routerLink]="[summaryLinkUrl(searchResult)]">{{ searchResult.techRecord_createdByName | titlecase}}</a>
-            }
-          </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
+                {{ searchResult.techRecord_createdByName | titlecase }}
+              </td>
 
-          <td class="govuk-table__cell whitespace-pre-line" [id]="searchResult.createdTimestamp + '-created-at-date-' + i">
-            @if (searchResult.techRecord_statusCode == 'current') {
-              {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}
-            } @else {
-            <a class="govuk-link" [routerLink]="[summaryLinkUrl(searchResult)]">{{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}</a>
-            }
-          </td>
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.createdTimestamp + '-created-at-date-' + i">
+                {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}
+              </td>
 
-          <td class="govuk-table__cell whitespace-pre-line" [id]="searchResult.createdTimestamp + '-created-at-time-' + i">
-            @if (searchResult.techRecord_statusCode == 'current') {
-              {{ searchResult.createdTimestamp | date : 'HH:mm' }}
-            } @else {
-            <a class="govuk-link" [routerLink]="[summaryLinkUrl(searchResult)]">{{ searchResult.createdTimestamp | date : 'HH:mm' }}</a>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-  <app-pagination tableName="tech-history"
-                  [numberOfItems]="(numberOfRecords$ | async) ?? 0"
-                  (paginationOptionsChange)="handlePaginationChange($event)"
-  />
+              <td class="govuk-table__cell whitespace-pre-line"
+                  [id]="searchResult.createdTimestamp + '-created-at-time-' + i">
+                {{ searchResult.createdTimestamp | date : 'HH:mm' }}
+              </td>
+            </a>
+          }
+        }
+      </tbody>
+    </table>
+    <app-pagination tableName="tech-history"
+                    [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+                    (paginationOptionsChange)="handlePaginationChange($event)"
+    />
   </div>
 }
