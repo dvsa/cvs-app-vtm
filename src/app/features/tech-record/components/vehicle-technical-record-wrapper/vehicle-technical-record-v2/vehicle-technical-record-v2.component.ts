@@ -191,7 +191,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	}
 
 	get tags(): string[] {
-		switch (this.techRecord()?.techRecord_vehicleType) {
+		switch (this.techRecord()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.PSV:
@@ -199,6 +199,8 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 			case VehicleTypes.TRL:
 				return ['Required'];
 			// TODO: update with other vehicle types
+			case VehicleTypes.SMALL_TRL:
+				return ['Required'];
 			default:
 				return [];
 		}
