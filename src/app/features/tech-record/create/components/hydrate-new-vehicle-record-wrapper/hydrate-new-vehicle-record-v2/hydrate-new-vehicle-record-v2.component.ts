@@ -217,13 +217,15 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	get tags(): string[] {
-		switch (this.techRecord$()?.techRecord_vehicleType) {
+		switch (this.techRecord$()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR'];
 			case VehicleTypes.PSV:
 				return ['Required'];
-			case VehicleTypes.TRL:
+			case VehicleTypes.SMALL_TRL:
 				return ['Required'];
+			case VehicleTypes.TRL:
+				return ['Required', 'ADR'];
 			// TODO: update with other vehicle types
 			default:
 				return [];
