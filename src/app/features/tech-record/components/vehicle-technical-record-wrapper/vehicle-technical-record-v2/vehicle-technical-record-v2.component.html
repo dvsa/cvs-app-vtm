@@ -340,7 +340,7 @@
                           [type]="'condensed'"
                           [isExpanded]="false"
                         >
-                          <app-technical-record-history [techRecord]="techRecord"></app-technical-record-history>
+                          <app-technical-record-history [techRecord]="$any(techRecord)"></app-technical-record-history>
                         </app-accordion>
                       }
 

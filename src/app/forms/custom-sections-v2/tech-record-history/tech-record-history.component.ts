@@ -6,7 +6,7 @@ import { PaginationComponent } from '@components/pagination/pagination.component
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { Observable, map } from 'rxjs';
 	imports: [ButtonComponent, DatePipe, PaginationComponent, RouterLink, AsyncPipe, TitleCasePipe],
 })
 export class TechnicalRecordsHistoryComponent extends EditBaseComponent implements OnInit {
-	techRecord = input.required<V3TechRecordModel>();
+	techRecord = input.required<TechRecordType<'get'>>();
 
 	cdr = inject(ChangeDetectorRef);
 
@@ -27,7 +27,7 @@ export class TechnicalRecordsHistoryComponent extends EditBaseComponent implemen
 
 	ngOnInit(): void {
 		const techRecord = this.techRecord();
-
+		console.log(techRecord);
 		if (techRecord) {
 			this.store.dispatch(getBySystemNumber({ systemNumber: (techRecord as TechRecordType<'get'>)?.systemNumber }));
 		}
