@@ -16,7 +16,7 @@
 
       <tbody class="govuk-table__body">
         @for (searchResult of techRecordHistoryPage$ | async; track i; let i = $index) {
-          @if (searchResult.techRecord_statusCode == 'current') {
+          @if (searchResult.createdTimestamp === techRecord().createdTimestamp) {
             <tr class="govuk-table__row">
               <td class="govuk-table__cell whitespace-pre-line"
                   [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
