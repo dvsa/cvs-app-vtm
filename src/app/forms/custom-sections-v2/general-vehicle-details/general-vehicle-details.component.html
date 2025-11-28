@@ -86,7 +86,7 @@
         [width]="FormNodeWidth.L"
         appFilterByTags
         [filters]="filters()"
-        [tagNames]="[]"
+        [tagNames]="techRecord().techRecord_vehicleType === VehicleTypes.MOTORCYCLE ? ['Required'] : []"
       ></govuk-form-group-input>
     }
     @else {
@@ -110,7 +110,7 @@
       formControlName="techRecord_vehicleClass_description"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="['Required']"
     ></govuk-form-group-select>
   }
 
@@ -305,7 +305,7 @@
       type="number"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="['Required']"
     ></govuk-form-group-input>
   }
 
