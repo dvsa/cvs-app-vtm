@@ -94,7 +94,7 @@
                 [suffix]="'kg'"
                 [showErrors]="false"
                 appFilterByTags
-                [tagNames]="[]"
+                [tagNames]="['Plates']"
                 [filters]="filters()"
               />
             }
@@ -109,7 +109,7 @@
                 [suffix]="'kg'"
                 [showErrors]="false"
                 appFilterByTags
-                [tagNames]="[]"
+                [tagNames]="['Plates']"
                 [filters]="filters()"
               />
             }
@@ -139,7 +139,7 @@
                 [suffix]="'kg'"
                 [showErrors]="false"
                 appFilterByTags
-                [tagNames]="[]"
+                [tagNames]="['Plates']"
                 [filters]="filters()"
               />
             }
@@ -168,7 +168,7 @@
               [suffix]="'kg'"
               [showErrors]="false"
               appFilterByTags
-              [tagNames]="[]"
+              [tagNames]="['Plates']"
               [filters]="filters()"
             />
 
@@ -180,6 +180,9 @@
                 role="button"
                 [id]="'weights_remove-{{ i + 1}}'"
                 (click)="removeAxle(i)"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
               >
                 Remove axle
               </button>
@@ -216,7 +219,7 @@
           [showErrors]="false"
           [suffix]="'kg'"
           appFilterByTags
-          [tagNames]="[]"
+          [tagNames]="['Plates']"
           [filters]="filters()"
         />
 
@@ -228,7 +231,7 @@
           [showErrors]="false"
           [suffix]="'kg'"
           appFilterByTags
-          [tagNames]="[]"
+          [tagNames]="['Plates']"
           [filters]="filters()"
         />
       }
@@ -279,7 +282,7 @@
         [showErrors]="false"
         [suffix]="'kg'"
         appFilterByTags
-        [tagNames]="[]"
+        [tagNames]="['Plates']"
         [filters]="filters()"
       />
     </div>
@@ -355,7 +358,7 @@
           [showErrors]="false"
           [suffix]="'kg'"
           appFilterByTags
-          [tagNames]="[]"
+          [tagNames]="['Plates']"
           [filters]="filters()"
         />
       </div>
