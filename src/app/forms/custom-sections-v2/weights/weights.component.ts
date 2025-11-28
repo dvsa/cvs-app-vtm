@@ -2,6 +2,7 @@ import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.typ
 import { updateBrakeForces } from '@/src/app/store/technical-records';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
+import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
@@ -23,6 +24,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
 		GovukFormGroupSelectComponent,
+		FilterByTagsDirective,
 	],
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {

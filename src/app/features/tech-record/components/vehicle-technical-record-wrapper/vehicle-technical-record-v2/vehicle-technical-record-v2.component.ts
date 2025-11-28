@@ -189,7 +189,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 			case VehicleTypes.PSV:
 				return ['Required', 'Records'];
 			case VehicleTypes.TRL:
-				return ['Required'];
+				return ['Required', 'Plates'];
 			// TODO: update with other vehicle types
 			default:
 				return [];

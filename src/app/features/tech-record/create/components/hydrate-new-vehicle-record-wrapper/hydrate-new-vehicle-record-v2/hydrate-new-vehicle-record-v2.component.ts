@@ -223,7 +223,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			case VehicleTypes.PSV:
 				return ['Required'];
 			case VehicleTypes.TRL:
-				return ['Required'];
+				return ['Plates', 'Required'];
 			// TODO: update with other vehicle types
 			default:
 				return [];
