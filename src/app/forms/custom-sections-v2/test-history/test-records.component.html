@@ -4,7 +4,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <app-button
-            [id]="'generate-adr-cert'"
+            [id]="'create-test-button'"
             design="secondary"
             *appRoleRequired="[Roles.TestResultCreateContingency, Roles.TestResultCreateDeskAssessment]"
             (clicked)="createTest(techRecord)"
