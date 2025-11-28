@@ -435,6 +435,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		this.destroy$.complete();
 	}
 
+	get dateOfFirstRegistrationFilterOptions() {
+		switch (this.getVehicleType()) {
+			case VehicleTypes.TRL:
+				return [];
+			default:
+				return ['Plates'];
+		}
+	}
+
 	get euVehicleCategoryFilterOptions() {
 		switch (this.getVehicleType() as VehicleTypes) {
 			case VehicleTypes.SMALL_TRL:

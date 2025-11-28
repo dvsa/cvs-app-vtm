@@ -52,6 +52,9 @@
               role="button"
               [id]="'weights_remove-{{ i + 1}}'"
               (click)="removeAxle(i)"
+              appFilterByTags
+              [tagNames]="[]"
+              [filters]="filters()"
             >
               Remove axle
             </button>
@@ -90,6 +93,9 @@
                 class="govuk-label--s"
                 [suffix]="'kg'"
                 [showErrors]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
               />
             }
 
@@ -102,6 +108,9 @@
                 class="govuk-label--s"
                 [suffix]="'kg'"
                 [showErrors]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
               />
             }
 
@@ -114,6 +123,9 @@
                 class="govuk-label--s"
                 [suffix]="'kg'"
                 [showErrors]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
               />
             }
 
@@ -126,6 +138,9 @@
                 class="govuk-label--s"
                 [suffix]="'kg'"
                 [showErrors]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
               />
             }
 
@@ -138,6 +153,9 @@
                 class="govuk-label--s"
                 [suffix]="'kg'"
                 [showErrors]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
               />
             }
 
@@ -149,6 +167,9 @@
               class="govuk-label--s"
               [suffix]="'kg'"
               [showErrors]="false"
+              appFilterByTags
+              [tagNames]="['Plates']"
+              [filters]="filters()"
             />
 
             @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
@@ -159,6 +180,9 @@
                 role="button"
                 [id]="'weights_remove-{{ i + 1}}'"
                 (click)="removeAxle(i)"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
               >
                 Remove axle
               </button>
@@ -194,6 +218,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="['Plates']"
+          [filters]="filters()"
         />
 
         <govuk-form-group-input
@@ -203,6 +230,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="['Plates']"
+          [filters]="filters()"
         />
       }
 
@@ -214,6 +244,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
 
         <govuk-form-group-input
@@ -223,6 +256,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
 
         <govuk-form-group-input
@@ -232,6 +268,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
         />
       }
 
@@ -242,6 +281,9 @@
         class="govuk-label--s"
         [showErrors]="false"
         [suffix]="'kg'"
+        appFilterByTags
+        [tagNames]="['Plates']"
+        [filters]="filters()"
       />
     </div>
   </div>
@@ -276,6 +318,9 @@
             class="govuk-label--s"
             [showErrors]="false"
             [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
           />
 
           <govuk-form-group-input
@@ -285,6 +330,9 @@
             class="govuk-label--s"
             [showErrors]="false"
             [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
           />
         }
 
@@ -296,6 +344,9 @@
             class="govuk-label--s"
             [showErrors]="false"
             [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
           />
         }
 
@@ -306,6 +357,9 @@
           class="govuk-label--s"
           [showErrors]="false"
           [suffix]="'kg'"
+          appFilterByTags
+          [tagNames]="['Plates']"
+          [filters]="filters()"
         />
       </div>
     }
@@ -325,6 +379,9 @@
         class="govuk-label--s"
         [showErrors]="false"
         [suffix]="'kg'"
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()"
       />
 
       <govuk-form-group-input
@@ -334,6 +391,9 @@
         class="govuk-label--s"
         [showErrors]="false"
         [suffix]="'kg'"
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()"
       />
 
       <govuk-form-group-input
@@ -343,6 +403,9 @@
         class="govuk-label--s"
         [showErrors]="false"
         [suffix]="'kg'"
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()"
       />
     </div>
   }
@@ -355,6 +418,9 @@
       formControlName="techRecord_couplingType"
       class="govuk-label--s"
       defaultOption="Select coupling type"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     ></govuk-form-group-select>
   }
 
@@ -367,6 +433,9 @@
       type="number"
       [width]="FormNodeWidth.M"
       [suffix]="'kg'"
+      appFilterByTags
+      [tagNames]="['Plates']"
+      [filters]="filters()"
     ></govuk-form-group-input>
   }
 
@@ -378,6 +447,9 @@
         formControlName="techRecord_unladenWeight"
         class="govuk-label--s govuk-!-font-weight-bold"
         [suffix]="'kg'"
+        appFilterByTags
+        [tagNames]="[]"
+        [filters]="filters()"
       />
     </div>
   }
@@ -390,6 +462,9 @@
       role="button"
       id="weightsAddAxle"
       (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
     >
       Add axle
     </button>
