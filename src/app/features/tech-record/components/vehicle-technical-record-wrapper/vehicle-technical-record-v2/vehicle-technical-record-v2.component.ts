@@ -34,6 +34,7 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
 import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
@@ -85,6 +86,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		TechnicalRecordsHistoryComponent,
 		TestResultsComponent,
 		AsyncPipe,
+		GovukFormGroupSelectComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -199,7 +201,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.CAR:
 			case VehicleTypes.LGV:
-				return this.isEditing ? ['Required'] : ['Required', 'Records'];
+				return this.isEditing ? ['Required', 'ADR'] : ['Required', 'Records', 'ADR'];
 			case VehicleTypes.TRL:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.SMALL_TRL:

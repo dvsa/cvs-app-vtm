@@ -50,7 +50,7 @@
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
-                        [tagNames]="['Plates', 'Required', 'ADR']"
+                        [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
                         [filters]="filters()"
                       >
                         <app-general-vehicle-details [techRecord]="techRecord" [filters]="filters()"></app-general-vehicle-details>
