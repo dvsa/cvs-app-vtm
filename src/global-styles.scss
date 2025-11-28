@@ -27,8 +27,8 @@
 }
 
 .whitespace-pre-line {
-  white-space: pre-line;
-  text-wrap: wrap;
+  white-space: pre-line !important;
+  text-wrap: wrap !important;
 }
 
 .tags {
