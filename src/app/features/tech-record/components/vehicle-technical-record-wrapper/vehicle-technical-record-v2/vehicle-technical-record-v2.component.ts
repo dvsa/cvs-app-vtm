@@ -20,6 +20,7 @@ import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufa
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
 import { PlatesComponent } from '@/src/app/forms/custom-sections-v2/plates/plates.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
+import { ReasonForCreationComponent } from '@/src/app/forms/custom-sections-v2/reason-for-creation/reason-for-creation.component';
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
@@ -29,11 +30,14 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
+import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordFiltersComponent } from '../../tech-record-filters/tech-record-filters.component';
@@ -77,6 +81,10 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		PlatesComponent,
 		ApprovalTypeComponent,
 		FilterByTagsDirective,
+		ReasonForCreationComponent,
+		TechnicalRecordsHistoryComponent,
+		TestResultsComponent,
+		AsyncPipe,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -86,7 +94,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	router = inject(Router);
 	axlesService = inject(AxlesService);
 	technicalRecordService = inject(TechnicalRecordService);
-
+	testRecordService = inject(TestRecordsService);
 	techRecord = input<V3TechRecordModel>();
 	from = this.store.selectSignal(selectQueryParam('from'));
 	sectionStates$ = this.store.selectSignal(selectSectionState);
@@ -98,6 +106,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 
 	form = this.fb.group({});
 	filters = model<string[]>([]);
+	testResults$ = this.testRecordService.testRecords$;
 
 	readonly VehicleTypes = VehicleTypes;
 
@@ -183,16 +192,28 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	}
 
 	get tags(): string[] {
-		switch (this.techRecord()?.techRecord_vehicleType) {
+		switch (this.techRecord()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
-				return ['Plates', 'Required', 'ADR', 'Records'];
+				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.PSV:
-				return ['Required', 'Records'];
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
+			case VehicleTypes.CAR:
+			case VehicleTypes.LGV:
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.TRL:
-				return ['Required', 'Plates'];
-			// TODO: update with other vehicle types
+				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
+			case VehicleTypes.SMALL_TRL:
+				return this.isEditing ? ['Required'] : ['Records'];
 			default:
 				return [];
 		}
+	}
+
+	generateRFCDescription(): string {
+		// TODO: Update this method to return a dynamic description message
+		// based on if user is creating or amending a record.
+		// return "Tell us why you're amending this record.";
+
+		return "Tell us why you're creating this record.";
 	}
 }

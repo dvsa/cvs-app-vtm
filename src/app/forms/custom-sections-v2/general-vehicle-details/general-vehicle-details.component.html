@@ -184,7 +184,7 @@
       [options]="VEHICLE_SUBCLASS_OPTIONS"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="['Required']"
     ></govuk-checkbox-group>
   }
 
@@ -198,7 +198,7 @@
       [width]="FormNodeWidth.L"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="['Plates']"
+      [tagNames]="['Plates', 'ADR']"
     >
     </govuk-form-group-select>
   }
@@ -293,7 +293,7 @@
       [options]="EUCategoryOptions"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="[]"
+      [tagNames]="euVehicleCategoryFilterOptions"
     ></govuk-form-group-radio>
   }
 

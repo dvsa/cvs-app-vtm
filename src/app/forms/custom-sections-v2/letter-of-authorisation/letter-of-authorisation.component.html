@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4">
+<div class="govuk-!-padding-left-4 govuk-!-padding-right-4">
   @if (techRecord(); as techRecord) {
     @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED && correctApprovalType && !currentTechRecord()) {
       <app-button 
