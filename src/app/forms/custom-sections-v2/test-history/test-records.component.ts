@@ -40,7 +40,6 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 	cdr = inject(ChangeDetectorRef);
 	form = this.fb.group({});
 	isArchived = false;
-	hasTestResultAmend: boolean | undefined = false;
 	pageStart?: number;
 	pageEnd?: number;
 
@@ -78,10 +77,7 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 		if (hiddenInVta) {
 			return 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.';
 		}
-		return this.hasTestResultAmend
-			? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
-			: 'This vehicle does not have enough information to be tested.' +
-					' Call the Contact Centre to complete this record so tests can be recorded against it.';
+		return 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.';
 	}
 
 	get numberOfRecords(): number {
