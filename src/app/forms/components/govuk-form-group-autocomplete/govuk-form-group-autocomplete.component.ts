@@ -60,10 +60,11 @@ export class GovukFormGroupAutocompleteComponent
 		super();
 
 		effect(() => {
-			const control = this.document.querySelector<HTMLInputElement>(`#${this.id}`);
-			if (control) {
-				this.disabled() ? control.setAttribute('disabled', 'disabled') : control.removeAttribute('disabled');
-			}
+			const control = this.document.querySelector(`#${this.id}`);
+
+			this.disabled()
+				? control?.removeAttribute('placeholder')
+				: control?.setAttribute('placeholder', this.placeholder());
 		});
 	}
 
