@@ -29,6 +29,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly Widths = FormNodeWidth;
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
+	readonly Modes = Modes;
+
 	axlesService = inject(AxlesService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
@@ -169,18 +171,24 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	}
 
 	get couplingCenterToRearTrlMinWarning() {
+		if (this.mode() !== Modes.EDIT) return '';
+
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMin')?.value, 10) > 12000
 			? 'The coupling centre to rear of trailer minimum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
 
 	get couplingCenterToRearTrlMaxWarning() {
+		if (this.mode() !== Modes.EDIT) return '';
+
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMax')?.value, 10) > 12000
 			? 'The coupling centre to rear of trailer maximum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
 
 	shouldShowLengthWarning(): boolean {
+		if (this.mode() !== Modes.EDIT) return false;
+
 		return (
 			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
 				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&
@@ -189,6 +197,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	}
 
 	shouldShowWidthWarning(): boolean {
+		if (this.mode() !== Modes.EDIT) return false;
+
 		return (
 			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
 				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&

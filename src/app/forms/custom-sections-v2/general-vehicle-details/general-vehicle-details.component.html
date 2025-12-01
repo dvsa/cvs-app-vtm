@@ -325,30 +325,32 @@
           type="number"
         />
 
-        @if (isAxlesDisabled) {
-          <button
-            type="button"
-            class="govuk-button govuk-button--warning"
-            data-module="govuk-button"
-            role="button"
-            id="clear-axles-button"
-            (click)="clearAxleInput()"
-          >
-            Remove and clear all axles
-          </button>
-        }
-
-        @if (!isAxlesDisabled) {
-          <button
-            type="button"
-            class="govuk-button"
-            data-module="govuk-button"
-            role="button"
-            id="confirm-axles-button"
-            (click)="lockAndUpdateAxles()"
-          >
-            Confirm number of axles
-          </button>
+        @if (mode() === Modes.EDIT) {
+          @if (isAxlesDisabled) {
+            <button
+              type="button"
+              class="govuk-button govuk-button--warning"
+              data-module="govuk-button"
+              role="button"
+              id="clear-axles-button"
+              (click)="clearAxleInput()"
+            >
+              Remove and clear all axles
+            </button>
+          }
+  
+          @if (!isAxlesDisabled) {
+            <button
+              type="button"
+              class="govuk-button"
+              data-module="govuk-button"
+              role="button"
+              id="confirm-axles-button"
+              (click)="lockAndUpdateAxles()"
+            >
+              Confirm number of axles
+            </button>
+          }
         }
       </div>
     </div>

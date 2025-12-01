@@ -47,6 +47,10 @@ export class GovukFormGroupBaseComponent {
 		this.onTouched = fn;
 	}
 
+	setDisabledState?(isDisabled: boolean): void {
+		this.disabled.set(isDisabled);
+	}
+
 	get control() {
 		return this.controlContainer.control?.get(this.controlName());
 	}

@@ -104,6 +104,10 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 		this.onTouched = fn;
 	}
 
+	setDisabledState(isDisabled: boolean): void {
+		isDisabled ? this.form.disable() : this.form.enable();
+	}
+
 	ngOnInit() {
 		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
 			const approvalTypeNumber1 = this.form?.get('approvalTypeNumber1')?.value;
