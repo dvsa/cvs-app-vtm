@@ -200,8 +200,9 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 			case VehicleTypes.PSV:
 				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.CAR:
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.LGV:
-				return this.isEditing ? ['Required', 'ADR'] : ['Required', 'Records', 'ADR'];
+				return this.isEditing ? ['Required', 'ADR'] : ['Required', 'ADR', 'Records'];
 			case VehicleTypes.TRL:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.SMALL_TRL:
