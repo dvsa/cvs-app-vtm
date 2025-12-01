@@ -13,6 +13,7 @@
           </app-button>
         </div>
       </div>
+    }
       @if (testResults().length) {
         <table class="govuk-table">
           <caption class="govuk-table__caption govuk-!-margin-bottom-4 govuk-body">
@@ -54,8 +55,7 @@
                         (paginationOptionsChange)="handlePaginationChange($event)" />
       } @else {
         <h2 class="govuk-heading-s">Test records history</h2>
-        <h3 class="govuk-body">No test records found.</h3>
+        <h3 class="govuk-body">No test results found.</h3>
       }
-    }
   </div>
 }
