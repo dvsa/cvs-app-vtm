@@ -77,6 +77,7 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
+	protected readonly Modes = Modes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;

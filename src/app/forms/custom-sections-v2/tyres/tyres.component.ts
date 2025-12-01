@@ -44,6 +44,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	readonly Widths = FormNodeWidth;
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
+	readonly Modes = Modes;
 
 	referenceDataService = inject(ReferenceDataService);
 	viewportScroller = inject(ViewportScroller);
@@ -194,6 +195,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	}
 
 	showAddAxleButton() {
+		if (this.mode() !== Modes.EDIT) return false;
 		return (this.techRecord()?.techRecord_noOfAxles ?? 0) < 10;
 	}
 

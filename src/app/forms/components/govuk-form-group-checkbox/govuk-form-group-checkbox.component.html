@@ -40,6 +40,7 @@
           [(ngModel)]="value"
           (ngModelChange)="onChange($event)"
           [attr.aria-labelledby]="controlId() + '-' + value() + '-label'"
+          [disabled]="disabled()"
         />
         <label class="govuk-label govuk-checkboxes__label" id="{{ id }}-{{ value() }}-label" for="{{ id }}-{{ value() }}-checkbox">
           {{ controlLabel() }}

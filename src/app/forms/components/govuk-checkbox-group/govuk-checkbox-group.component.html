@@ -38,6 +38,7 @@
             [checked]="isChecked(option.value)"
             (input)="toggle(option.value)"
             [attr.aria-labelledby]="`${id}-${option.value}-label`"
+            [disabled]="disabled()"
             />
           <label class="govuk-label govuk-checkboxes__label" [id]="`${id}-${option.value}-label`" [htmlFor]="`${id}-${option.value}-checkbox`">
             {{ option.label }}

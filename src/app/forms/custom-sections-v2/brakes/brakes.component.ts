@@ -40,6 +40,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly booleanOptions = YES_NO_OPTIONS;
 	protected readonly retarderOptions = getOptionsFromEnum(Retarders);
+	protected readonly Modes = Modes;
 
 	optionsService = inject(MultiOptionsService);
 	techRecord = input.required<V3TechRecordModel>();

@@ -98,4 +98,5 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
+	protected readonly Modes = Modes;
 }

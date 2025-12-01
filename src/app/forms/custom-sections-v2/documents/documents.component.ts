@@ -3,7 +3,6 @@ import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -15,13 +14,7 @@ import { ReplaySubject, of } from 'rxjs';
 	selector: 'app-documents',
 	templateUrl: './documents.component.html',
 	styleUrls: ['./documents.component.scss'],
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		GovukFormGroupInputComponent,
-		FieldWarningMessageComponent,
-		GovukFormGroupAutocompleteComponent,
-	],
+	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupInputComponent, GovukFormGroupAutocompleteComponent],
 })
 export class DocumentsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;

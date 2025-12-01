@@ -7,9 +7,13 @@
               @for(axle of axles.controls; track axle; let i = $index) {
                 <ng-container formGroupName="{{ i }}">
                   <label class="govuk-label govuk-label--s">Axle {{ axle.value.axleNumber }} brake details</label>
-                  @if (techRecordAxles.at(i).get('brakes_brakeActuator')?.invalid || techRecordAxles.at(i).get('brakes_leverLength')?.invalid) {
-                    <app-field-error-message [name]="'axle ' + axle.value.axleNumber + ' brake details'"
-                                             [error]="'Brake actuator and Lever length must be less than or equal to 999mm'" />
+                  @if (mode() === Modes.EDIT) {
+                    @if (techRecordAxles.at(i).get('brakes_brakeActuator')?.invalid || techRecordAxles.at(i).get('brakes_leverLength')?.invalid) {
+                      <app-field-error-message 
+                        [name]="'axle ' + axle.value.axleNumber + ' brake details'"
+                        [error]="'Brake actuator and Lever length must be less than or equal to 999mm'"
+                      ></app-field-error-message>
+                    }
                   }
                   <div class="input-row">
                     <govuk-form-group-input
@@ -45,9 +49,12 @@
                   </div>
                 </ng-container>
               } @empty {
-                <app-field-warning-message
-                  id="enter-number-of-axles-brake-details-warning-message"
-                  [warningMessage]="'Enter the number of axles to be able to add axle brake details.'" />
+                @if (mode() === Modes.EDIT) {
+                  <app-field-warning-message
+                    id="enter-number-of-axles-brake-details-warning-message"
+                    [warningMessage]="'Enter the number of axles to be able to add axle brake details.'"
+                  ></app-field-warning-message>
+                }
               }
             </ng-container>
           </ng-container>
@@ -177,12 +184,13 @@
       <div class="checkboxes" [formGroup]="parent">
         <label class="govuk-label govuk-label--s govuk-!-margin-bottom-15" for="parking-brake">Parking brake</label>
 
-        @let showNoAxlesWarning = parent.get('techRecord_axles')?.value.length === 0 || !parent.get('techRecord_axles')?.value;
-
-        @if (showNoAxlesWarning) {
-          <app-field-warning-message
-          id="enter-number-of-axles-parking-brakes-warning-message"
-          [warningMessage]="'Enter the number of axles to be able to add parking brakes.'" />
+        @if (mode() === Modes.EDIT) {
+          @if (parent.get('techRecord_axles')?.value.length === 0 || !parent.get('techRecord_axles')?.value) {
+            <app-field-warning-message
+              id="enter-number-of-axles-parking-brakes-warning-message"
+              [warningMessage]="'Enter the number of axles to be able to add parking brakes.'"
+            ></app-field-warning-message>
+          }
         }
 
         <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">

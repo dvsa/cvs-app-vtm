@@ -286,20 +286,22 @@
                                   [tagNames]="['ADR']"
                                 />
                               </td>
-                              <td class="govuk-table__cell border-b-0">
-                                <p class="govuk-body margin-b-0">
-                                  <button
-                                    [id]="`remove-un-number-${i + 1}`"
-                                    type="button"
-                                    class="govuk-button govuk-button--warning"
-                                    data-module="govuk-button"
-                                    role="button"
-                                    (click)="removeUNNumber(i)"
-                                  >
-                                    Remove
-                                  </button>
-                                </p>
-                              </td>
+                              @if (mode() === Modes.EDIT) {
+                                <td class="govuk-table__cell border-b-0">
+                                  <p class="govuk-body margin-b-0">
+                                    <button
+                                      [id]="`remove-un-number-${i + 1}`"
+                                      type="button"
+                                      class="govuk-button govuk-button--warning"
+                                      data-module="govuk-button"
+                                      role="button"
+                                      (click)="removeUNNumber(i)"
+                                    >
+                                      Remove
+                                    </button>
+                                  </p>
+                                </td>
+                              }
                             </tr>
                             </tbody>
                           </table>
@@ -317,18 +319,20 @@
                     </fieldset>
                   }
 
-                  <p class="govuk-body">
-                    <button
-                      [id]="'add-un-number-button'"
-                      type="button"
-                      class="govuk-button govuk-button--secondary"
-                      data-module="govuk-button"
-                      role="button"
-                      (click)="addUNNumber()"
-                    >
-                      Add UN number
-                    </button>
-                  </p>
+                  @if (mode() === Modes.EDIT) {
+                    <p class="govuk-body">
+                      <button
+                        [id]="'add-un-number-button'"
+                        type="button"
+                        class="govuk-button govuk-button--secondary"
+                        data-module="govuk-button"
+                        role="button"
+                        (click)="addUNNumber()"
+                      >
+                        Add UN number
+                      </button>
+                    </p>
+                  }
                 </div>
                 <!-- Additional details -->
                 <govuk-form-group-textarea
@@ -417,34 +421,39 @@
                     [tagNames]="['ADR']"
                   />
                   <!-- TC3 Footer -->
-                  <p class="govuk-body govuk-!-text-align-left">
-                    <button
-                      type="button"
-                      class="govuk-button govuk-button--warning"
-                      data-module="govuk-button"
-                      role="button"
-                      id="remove-subsequent-inspection-{{ i + 1 }}"
-                      (click)="removeTC3TankInspection(i)"
-                    >
-                      Remove inspection
-                    </button>
-                  </p>
+                  @if (mode() === Modes.EDIT) {
+                    <p class="govuk-body govuk-!-text-align-left">
+                      <button
+                        type="button"
+                        class="govuk-button govuk-button--warning"
+                        data-module="govuk-button"
+                        role="button"
+                        id="remove-subsequent-inspection-{{ i + 1 }}"
+                        (click)="removeTC3TankInspection(i)"
+                      >
+                        Remove inspection
+                      </button>
+                    </p>
+                  }
                   <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
                 </fieldset>
               }
             </div>
-            <p class="govuk-body">
-              <button
-                type="button"
-                class="govuk-button govuk-button--secondary"
-                data-module="govuk-button"
-                role="button"
-                id="add-subsequent-inspection"
-                (click)="addTC3TankInspection()"
-              >
-                Add subsequent inspection
-              </button>
-            </p>
+            
+            @if (mode() === Modes.EDIT) {
+              <p class="govuk-body">
+                <button
+                  type="button"
+                  class="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  role="button"
+                  id="add-subsequent-inspection"
+                  (click)="addTC3TankInspection()"
+                >
+                  Add subsequent inspection
+                </button>
+              </p>
+            }
           </ng-container>
           <!-- Memo 07/09 (3 month extension) can be applied -->
           <govuk-checkbox-group
@@ -600,11 +609,13 @@
                       </td>
                       <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
                       <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
-                      <td class="govuk-table__cell">
-                        <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
-                          Edit
-                        </a>
-                      </td>
+                      @if (mode() === Modes.EDIT) {
+                        <td class="govuk-table__cell">
+                          <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
+                            Edit
+                          </a>
+                        </td>
+                      }
                     </tr>
                   }
                 }
