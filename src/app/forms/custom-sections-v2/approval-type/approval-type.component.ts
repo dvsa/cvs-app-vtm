@@ -66,8 +66,8 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	mode = input.required<Modes>();
 
 	ngOnInit(): void {
-		this.init(this.form);
 		this.addControlsBasedOffVehicleType();
+		this.init(this.form);
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);

@@ -24,7 +24,7 @@
     }
   }
 
-  <div class="govuk-input--width-{{ width() }} internal-wrapper">
+  <div class="govuk-input--width-{{ width() }} internal-wrapper" [class.disabled]="disabled()">
     @if (prefix()) {
       <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
     }
