@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
@@ -16,6 +17,8 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 	protected readonly FormNodeWidth = FormNodeWidth;
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group({
 		techRecord_applicantDetails_name: this.fb.control(null, [this.commonValidators.maxLength(150, 'Name or company')]),

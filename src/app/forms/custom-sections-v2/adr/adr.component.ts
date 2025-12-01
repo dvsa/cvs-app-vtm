@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { AdrService } from '@/src/app/services/adr/adr.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { DatePipe, ViewportScroller } from '@angular/common';
@@ -68,6 +69,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	route = inject(ActivatedRoute);
 	viewportScroller = inject(ViewportScroller);
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	// TODO properly type this at some point
 	form = this.fb.group({

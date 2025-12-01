@@ -1,5 +1,6 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +37,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 	form: FormGroup = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);

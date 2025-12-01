@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
@@ -38,6 +39,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	form = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);

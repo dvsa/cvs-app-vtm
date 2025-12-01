@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_NULL_OPTIONS } from '@/src/app/models/options.model';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +27,8 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 	protected readonly YES_NO_NULL_OPTIONS = YES_NO_NULL_OPTIONS;
 
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group({
 		techRecord_dda_certificateIssued: this.fb.control<boolean | null>(null),
