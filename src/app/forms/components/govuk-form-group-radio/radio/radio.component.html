@@ -22,7 +22,7 @@
       </label>
     }
 
-    @if (hint()) {
+    @if (hint() && !radios.disabled()) {
       <div class="govuk-hint govuk-radios__hint">{{ hint() }}</div>
     }
   </div>

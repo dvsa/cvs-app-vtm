@@ -316,7 +316,11 @@
           Number of axles
         </label>
       </h1>
-      <div class="govuk-hint" [id]="'techRecord_noOfAxles-hint'"> This will affect how many axle-related fields appear in the record </div>
+      
+      @if (mode() === Modes.EDIT) {
+        <div class="govuk-hint" [id]="'techRecord_noOfAxles-hint'"> This will affect how many axle-related fields appear in the record </div>
+      }
+
       <div class="flex-row">
         <govuk-form-group-input
           formControlName="techRecord_noOfAxles"

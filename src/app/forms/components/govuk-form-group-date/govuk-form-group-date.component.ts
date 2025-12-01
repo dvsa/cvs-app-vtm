@@ -64,6 +64,7 @@ export class GovukFormGroupDateComponent
 	}
 
 	override setDisabledState(isDisabled: boolean): void {
+		this.disabled.set(isDisabled);
 		isDisabled ? this.form.disable() : this.form.enable();
 	}
 
