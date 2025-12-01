@@ -18,15 +18,15 @@
         @for (searchResult of techRecordHistoryPage$ | async; track i; let i = $index) {
           @if (searchResult.createdTimestamp === techRecord().createdTimestamp) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
                 {{ searchResult.techRecord_statusCode | titlecase }}
               </td>
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-reason-' + i">
                 <span>{{ searchResult.techRecord_reasonForCreation | titlecase }}</span>
               </td>
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
                 {{ searchResult.techRecord_createdByName | titlecase }}
               </td>
@@ -45,17 +45,17 @@
               class="govuk-link govuk-table__row"
               [routerLink]="[summaryLinkUrl(searchResult)]"
             >
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
                 {{ searchResult.techRecord_statusCode | titlecase }}
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-reason-' + i">
                 <span>{{ searchResult.techRecord_reasonForCreation | titlecase }}</span>
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line"
+              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
                   [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
                 {{ searchResult.techRecord_createdByName | titlecase }}
               </td>
