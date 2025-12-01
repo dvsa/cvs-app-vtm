@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { LettersSectionEditComponent } from '@forms/custom-sections/letters-section/letters-section-edit/letters-section-edit.component';
 import { LettersSectionViewComponent } from '@forms/custom-sections/letters-section/letters-section-view/letters-section-view.component';
@@ -10,10 +11,6 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 	imports: [LettersSectionViewComponent, LettersSectionEditComponent],
 })
 export class LettersSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit';
-
-// templateUrl: './letters-section.component.html',

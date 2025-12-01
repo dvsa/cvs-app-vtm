@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DocumentsSectionEditComponent } from '@forms/custom-sections/documents-section/documents-section-edit/documents-section-edit.component';
@@ -11,8 +12,6 @@ import { DocumentsSectionViewComponent } from '@forms/custom-sections/documents-
 	imports: [DocumentsSectionViewComponent, DocumentsSectionEditComponent, DocumentsSectionSummaryComponent],
 })
 export class DocumentsSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<TechRecordType<'hgv' | 'psv' | 'trl'>>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

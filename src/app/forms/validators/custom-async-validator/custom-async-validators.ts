@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Data } from '@angular/router';
 import { Condition, operatorEnum } from '@models/condition.model';
@@ -228,7 +229,7 @@ export class CustomAsyncValidators {
 					switch (vehicleType) {
 						case VehicleTypes.CAR:
 							control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
-							if (routeData['mode'] === 'create') {
+							if (routeData['mode'] === Modes.CREATE) {
 								control.disable();
 							}
 							break;
@@ -237,7 +238,7 @@ export class CustomAsyncValidators {
 							break;
 						case VehicleTypes.LGV:
 							control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
-							if (routeData['mode'] === 'create') {
+							if (routeData['mode'] === Modes.CREATE) {
 								control.disable();
 							}
 							break;

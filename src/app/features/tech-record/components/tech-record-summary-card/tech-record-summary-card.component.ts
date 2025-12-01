@@ -1,6 +1,7 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Roles } from '@/src/app/models/roles.enum';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
@@ -29,7 +30,7 @@ export class TechRecordSummaryCardComponent {
 	route = inject(ActivatedRoute);
 	technicalRecordService = inject(TechnicalRecordService);
 
-	mode = input.required<'view' | 'edit' | 'create'>();
+	mode = input.required<Modes>();
 	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
 		transform: (value) => value as TechRecordType<'get'>,
 	});

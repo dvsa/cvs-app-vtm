@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { ReasonForCreationSectionEditComponent } from './reason-for-creation-edit/reason-for-creation-edit.component';
@@ -15,8 +16,6 @@ import { ReasonForCreationSectionViewComponent } from './reason-for-creation-vie
 	],
 })
 export class ReasonForCreationSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';
