@@ -7,7 +7,7 @@
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-        <app-tech-record-summary-card [mode]="'create'" [techRecord]="techRecord" />
+        <app-tech-record-summary-card [mode]="Modes.CREATE" [techRecord]="techRecord" />
 
         <div class="govuk-button-group govuk-button-group-record">
           <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>

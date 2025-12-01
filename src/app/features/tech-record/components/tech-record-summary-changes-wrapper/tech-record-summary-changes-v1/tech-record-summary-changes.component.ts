@@ -1,4 +1,5 @@
 import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -118,6 +119,8 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 	userService$ = inject(UserService);
 	featureToggleService = inject(FeatureToggleService);
 	techRecordChangesService = inject(TechnicalRecordChangesService);
+
+	Modes = Modes;
 
 	ngOnInit(): void {
 		this.navigateUponSuccess();

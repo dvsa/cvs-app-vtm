@@ -93,16 +93,16 @@
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
     @switch (sectionName) {
       @case ('notesSection') {
-        <app-notes-section [techRecord]="techRecordEdited" mode="summary" />
+        <app-notes-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
       }
       @case ('audit') {
-        <app-audit-section [techRecord]="techRecordEdited" mode="summary" />
+        <app-audit-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
       }
       @case ('techRecordSummary') {
-        <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" mode="summary" />
+        <app-vehicle-section [techRecord]="techRecordEdited" [isCreateMode]="false" [mode]="Modes.SUMMARY" />
       }
       @case ('bodySection') {
-        <app-body-section [techRecord]="techRecordEdited" mode="summary" />
+        <app-body-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
       }
       @case ('dimensionsSection') {
         @if (
@@ -111,7 +111,7 @@
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
           <!-- Dimensions section -->
-          <app-dimensions-section [techRecord]="techRecordEdited" mode="summary" />
+          <app-dimensions-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
         }
       }
 
@@ -121,13 +121,13 @@
           techRecordEdited.techRecord_vehicleType === 'hgv' ||
           techRecordEdited.techRecord_vehicleType === 'psv'
           ) {
-          <app-documents-section [techRecord]="techRecordEdited" mode="summary"></app-documents-section>
+          <app-documents-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY"></app-documents-section>
         }
       }
       @case ('purchaserSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Purchaser section -->
-          <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+          <app-trl-purchasers-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
         }
       }
       @case ('approvalSection') {
@@ -136,12 +136,12 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          <app-type-approval-section [techRecord]="techRecordEdited" mode="summary"  />
+          <app-type-approval-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY"  />
         }
       }
       @case ('brakesSection'){
         @if (techRecordEdited.techRecord_vehicleType === 'psv' || techRecordEdited.techRecord_vehicleType === 'trl') {
-          <app-brakes-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+          <app-brakes-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY"  />
         }
       }
       @case('dda') {
@@ -149,7 +149,7 @@
           <!-- New Tyres section -->
           <app-dda-section
             [techRecord]="techRecordEdited"
-            [mode]="'summary'"
+            [mode]="Modes.SUMMARY" 
           ></app-dda-section>
         }
       }
@@ -159,7 +159,7 @@
           techRecordEdited.techRecord_vehicleType === 'psv' ||
           techRecordEdited.techRecord_vehicleType === 'trl'
           ) {
-          <app-tyres-section [techRecord]="techRecordEdited" [mode]="'summary'" />
+          <app-tyres-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY"  />
         }
       }
       @case ('weightsSection') {
@@ -178,21 +178,21 @@
             </div>
           }
 
-          <app-weights-section [techRecord]="techRecordEdited" [mode]="'summary'"/>
+          <app-weights-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
         }
       }
 
       @case ('authorizationIntoServiceSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New Authorization into service section -->
-          <app-authorisation-into-service-section [techRecord]="techRecordEdited" mode="summary" />
+          <app-authorisation-into-service-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
         }
       }
 
       @case('manufacturerSection') {
         @if (techRecordEdited.techRecord_vehicleType === 'trl') {
           <!-- New manufacturer section -->
-          <app-manufacturer-section [techRecord]="techRecordEdited" mode="summary"/>
+          <app-manufacturer-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY"/>
         }
       }
 
@@ -202,16 +202,16 @@
           techRecordEdited.techRecord_vehicleType === 'trl' ||
           techRecordEdited.techRecord_vehicleType === 'lgv'
           ) {
-          <app-adr-section [techRecord]="techRecordEdited" mode="summary" />
+          <app-adr-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
         }
       }
       @case ('techRecord') {
         <!-- New last applicant section -->
-        <app-last-applicant-section [techRecord]="techRecordEdited" mode="summary" />
+        <app-last-applicant-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
       }
       @case ('reasonForCreationSection') {
         <!-- New reason for creation section -->
-          <app-reason-for-creation-section [techRecord]="techRecordEdited" mode="summary" />
+          <app-reason-for-creation-section [techRecord]="techRecordEdited" [mode]="Modes.SUMMARY" />
 
       }
       @default {

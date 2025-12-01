@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { LastApplicantSectionEditComponent } from './last-applicant-section-edit/last-applicant-section-edit.component';
@@ -11,8 +12,6 @@ import { LastApplicantSectionViewComponent } from './last-applicant-section-view
 	imports: [LastApplicantSectionViewComponent, LastApplicantSectionEditComponent, LastApplicantSectionSummaryComponent],
 })
 export class LastApplicantSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';
