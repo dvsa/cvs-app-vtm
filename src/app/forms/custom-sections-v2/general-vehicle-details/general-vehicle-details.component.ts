@@ -103,8 +103,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
-	mode = input<Modes>(Modes.CREATE);
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 	isAxlesDisabled = false;
 
 	form = this.fb.group({});

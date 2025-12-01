@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +27,8 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 	readonly VehicleTypes = VehicleTypes;
 	readonly Widths = FormNodeWidth;
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 

@@ -1,4 +1,5 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -36,6 +37,7 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	get controlsBasedOffVehicleType() {
 		switch (this.getVehicleType()) {

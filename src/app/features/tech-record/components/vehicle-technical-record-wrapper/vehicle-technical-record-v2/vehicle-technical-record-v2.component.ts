@@ -100,7 +100,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	from = this.store.selectSignal(selectQueryParam('from'));
 	sectionStates$ = this.store.selectSignal(selectSectionState);
 
-	modes = Modes;
+	Modes = Modes;
 	roles = Roles;
 	isEditing = this.route.snapshot.data['isEditing'] ?? false;
 	isDirty = false;

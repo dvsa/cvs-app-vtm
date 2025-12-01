@@ -1,4 +1,5 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Axle, FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
@@ -58,6 +59,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
 	invalidAxles: Array<number> = [];
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();

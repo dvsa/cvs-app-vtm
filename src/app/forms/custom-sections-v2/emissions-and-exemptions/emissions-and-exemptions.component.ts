@@ -1,4 +1,5 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
@@ -21,6 +22,7 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 
 	form = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
