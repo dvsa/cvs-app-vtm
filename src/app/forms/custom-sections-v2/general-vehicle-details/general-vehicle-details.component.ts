@@ -328,9 +328,10 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.min(1000, 'Year of manufacture'),
 				this.commonValidators.xYearsAfterCurrent(1, 'Year of manufacture'),
 			]),
-			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(VehicleConfiguration.OTHER, [
-				this.commonValidators.required('Vehicle configuration'),
-			]),
+			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(
+				{ value: VehicleConfiguration.OTHER, disabled: true },
+				[this.commonValidators.required('Vehicle configuration')]
+			),
 			techRecord_vehicleSubclass: this.fb.control<string[] | undefined>({ value: undefined, disabled: false }),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: EUVehicleCategory.N1, disabled: true }),
 			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.range(2, 20, 'Number of axles')]),
