@@ -12,7 +12,9 @@ import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition } from '@store/technical-records';
+import { take } from 'rxjs';
 
 interface TestField {
 	testTypeStartTimestamp: string | Date;
@@ -38,14 +40,21 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 	globalErrorService = inject(GlobalErrorService);
 	viewportScroller = inject(ViewportScroller);
 	cdr = inject(ChangeDetectorRef);
+	userService = inject(UserService);
 	form = this.fb.group({});
 	isArchived = false;
 	pageStart?: number;
 	pageEnd?: number;
+	hasTestResultAmend: boolean | undefined = false;
 
 	ngOnInit(): void {
 		const techRecord = this.techRecord();
 		this.isArchived = techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+		this.userService.roles$.pipe(take(1)).subscribe((storedRoles) => {
+			this.hasTestResultAmend = storedRoles?.some((role) => {
+				return Roles.TestResultAmend.split(',').includes(role);
+			});
+		});
 	}
 
 	protected readonly Roles = Roles;
@@ -77,7 +86,10 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 		if (hiddenInVta) {
 			return 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.';
 		}
-		return 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.';
+		return this.hasTestResultAmend
+			? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
+			: 'This vehicle does not have enough information to be tested.' +
+					' Call the Contact Centre to complete this record so tests can be recorded against it.';
 	}
 
 	get numberOfRecords(): number {
