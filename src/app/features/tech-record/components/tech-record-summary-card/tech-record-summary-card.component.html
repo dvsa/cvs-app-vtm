@@ -92,7 +92,7 @@
         <!-- Previous VRM not (TRL, Small TRL)-->
         @if (
           techRecord.techRecord_vehicleType !== VehicleTypes.TRL &&
-          $any(techRecord.techRecord_vehicleType) !== VehicleTypes.SMALL_TRL
+          technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) !== VehicleTypes.SMALL_TRL
         ) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
@@ -100,8 +100,8 @@
             </dt>
           </div>
           <div class="govuk-summary-list__row--value">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="previous-vrm">
-              @let otherVrms = techRecord.secondaryVrms || [];
+            @let otherVrms = techRecord.secondaryVrms || [];
+            <dd class="govuk-summary-list__value govuk-summary-list__value--vin" [class.govuk-summary-list__value--vrm]="otherVrms.length" id="previous-vrm">
               @if (otherVrms.length) {
                 <app-number-plate
                   class="govuk-body govuk-!margin-bottom-0"
@@ -109,7 +109,7 @@
                   [isSecondary]="true"
                 ></app-number-plate>
               } @else {
-                <span class="govuk-body govuk-!-margin-bottom-0">None</span>
+                <span class="govuk-body govuk-!-margin-bottom-0">Not applicable</span>
               }
             </dd>
           </div>
@@ -179,21 +179,25 @@
             </app-tag>
           </dd>
         </div>
+
         <!-- Record status -->
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-            Record status
-          </dt>
-        </div>
-        <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== 'view'">
-          <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
-            <!-- In create mode this is always Incomplete -->
-            @let completeness = techRecord.techRecord_recordCompleteness;
-            <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
-              {{ mode() === 'create' ? 'Incomplete' : techRecord.techRecord_recordCompleteness }}
-            </app-tag>
-          </dd>
-        </div>
+        @if (mode() !== 'create') {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+              Record status
+            </dt>
+          </div>
+          <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== 'view'">
+            <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
+              <!-- In create mode this is always Incomplete -->
+              @let completeness = techRecord.techRecord_recordCompleteness;
+              <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
+                {{ mode() === 'create' ? 'Incomplete' : techRecord.techRecord_recordCompleteness }}
+              </app-tag>
+            </dd>
+          </div>
+        }
+
         <!-- Record visibility in VTA -->
         @if (mode() === 'view') {
           <div class="govuk-summary-list__row">

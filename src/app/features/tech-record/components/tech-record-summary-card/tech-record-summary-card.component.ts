@@ -6,6 +6,7 @@ import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -26,6 +27,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 export class TechRecordSummaryCardComponent {
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+	technicalRecordService = inject(TechnicalRecordService);
 
 	mode = input.required<'view' | 'edit' | 'create'>();
 	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
