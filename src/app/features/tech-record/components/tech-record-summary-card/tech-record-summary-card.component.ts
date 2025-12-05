@@ -29,7 +29,7 @@ export class TechRecordSummaryCardComponent {
 	route = inject(ActivatedRoute);
 	technicalRecordService = inject(TechnicalRecordService);
 
-	mode = input.required<'view' | 'edit' | 'create'>();
+	mode = input.required<'view' | 'edit' | 'create' | 'summary'>();
 	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
 		transform: (value) => value as TechRecordType<'get'>,
 	});

@@ -1,5 +1,276 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">View technical record changes</p>
+    <app-banner>
+      <ng-container title>Important</ng-container>
+      <ng-container content>Check your changes before you submit the technical record.</ng-container>
+    </app-banner>
+
+    <h1 class="govuk-heading-l">Review technical record</h1>
+
+    @if (amendedTechRecord(); as techRecord) {
+      <div class="govuk-grid-row">
+        <!-- Summary card -->
+        <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
+          <app-tech-record-summary-card [mode]="'summary'" [techRecord]="techRecord" />
+
+          <app-button-group>
+            <app-button [id]="'submit'" (clicked)="submit()">Submit</app-button>
+            <app-button [id]="'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
+          </app-button-group>
+        </div>
+
+        <!-- Accordion -->
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+          <form>
+            <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+              <div class="govuk-accordion__section-heading-top-container">
+                <h2 class="govuk-accordion__section-heading-top">
+                  <span class="govuk-accordion-heading-vtm">
+                    Technical record
+                  </span>
+                </h2>
+
+                <app-accordion-control [sectionState]="sectionStates$()">
+                  <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
+                  <ng-template #template>
+                    <ng-container [formGroup]="form">
+                      <!-- General vehicle details section-->
+                      @if (tcs.hasGeneralVehicleDetailsSectionChanged()) {
+                        <app-accordion
+                          [id]="'general-vehicle-details'"
+                          [title]="'General vehicle details'"
+                          [description]="'Date of registration, body details, EU category.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-general-vehicle-details [techRecord]="techRecord"></app-general-vehicle-details>
+                        </app-accordion>
+                      }
+
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasApprovalSectionChanged()) {
+                        <!-- Approval type details section-->
+                        <app-accordion
+                          [id]="'approval-type'"
+                          [title]="'Approval type'"
+                          [description]="technicalRecordService.getApprovalTypeAccordionDescription(techRecord)"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-approval-type [techRecord]="techRecord"></app-approval-type>
+                        </app-accordion>
+                      }
+
+                      <!-- Dimensions section-->
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasDimensionsSectionChanged()) {
+                        <app-accordion
+                          [id]="'dimensions'"
+                          [title]="'Dimensions'"
+                          [description]="'Axle distance, vehicle dimensions.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-dimensions [techRecord]="techRecord"></app-dimensions>
+                        </app-accordion>
+                      }
+
+                      <!-- Weights section-->
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasWeightSectionChanged()) {
+                        <app-accordion
+                          [id]="'weights'"
+                          [title]="'Weights'"
+                          [description]="technicalRecordService.getWeightsAccordionDescription(techRecord)"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-weights [techRecord]="techRecord"></app-weights>
+                        </app-accordion>
+                      }
+
+                      <!-- Tyres section-->
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasTyresSectionChanged()) {
+                        <app-accordion
+                          [id]="'tyres'"
+                          [title]="'Tyres'"
+                          [description]="technicalRecordService.getTyresAccordionDescription(techRecord)"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-tyres [techRecord]="techRecord"></app-tyres>
+                        </app-accordion>
+                      }
+
+                      <!-- configuration -->
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasConfigurationSectionChanged()) {
+                        <app-accordion
+                          [id]="'configuration'"
+                          [title]="'Configuration'"
+                          [description]="technicalRecordService.getConfigAccordionDescription(techRecord)"
+                          [type]="'condensed'"
+                          [isExpanded]="true"                        
+                        >
+                          <app-configuration [techRecord]="techRecord"></app-configuration>
+                        </app-accordion>
+                      }
+
+                      <!-- Emissions and exemptions -->
+                      @if ((techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) && tcs.hasEmissionsAndExemptionsSectionChanged()) {
+                        <app-accordion
+                          [id]="'emissions-and-exemptions'"
+                          [title]="'Emissions and exemptions'"
+                          [description]="'Euro standard, emissions limit, tacho exemption.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-emissions-and-exemptions [techRecord]="techRecord"></app-emissions-and-exemptions>
+                        </app-accordion>
+                      }
+
+                      <!-- Seats and vehicle size -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasSeatsAndVehicleSizeSectionChanged()) {
+                        <app-accordion
+                          [id]="'seats-and-vehicle-size'"
+                          [title]="'Seats and vehicle size'"
+                          [description]="'Seats, vehicle size, seatbelts.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-seats-and-vehicle-size [techRecord]="techRecord"></app-seats-and-vehicle-size>
+                        </app-accordion>
+                      }
+
+                      <!-- Brakes -->
+                      @if ((techRecord.techRecord_vehicleType === VehicleTypes.PSV || technicalRecordService.isHeavyTrailer(techRecord)) && tcs.hasBrakesSectionChanged()) {
+                        <app-accordion
+                          [id]="'brakes'"
+                          [title]="'Brakes'"
+                          [description]="technicalRecordService.getBrakesAccordionDescription(techRecord)"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-brakes [techRecord]="techRecord"></app-brakes>
+                        </app-accordion>
+                      }
+
+                      <!-- Disability Discrimination Act (DDA) -->
+                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasDDASectionChanged()) {
+                        <app-accordion
+                          [id]="'dda'"
+                          [title]="'Disability Discrimination Act'"
+                          [description]="'DDA certificate, accessibility, schedules.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-dda [techRecord]="techRecord"></app-dda>
+                        </app-accordion>
+                      }
+
+                      <!-- ADR -->
+                      @if (technicalRecordService.isAdrVehicle(techRecord) && tcs.hasADRSectionChanged()) {
+                        <app-accordion
+                          [id]="'adr'"
+                          [title]="'ADR'"
+                          [description]="'Approval for carrying dangerous goods.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-adr [techRecord]="techRecord"></app-adr>
+                        </app-accordion>
+                      }
+
+                      @if (technicalRecordService.isHeavyTrailer(techRecord)) {
+                        @if (tcs.hasAuthorisationIntoServiceSectionChanged()) {
+                          <app-accordion
+                            [id]="'authorisation-into-service'"
+                            [title]="'Authorisation into service'"
+                            [description]="'COC date, authorisation date, rejected date.'"
+                            [type]="'condensed'"
+                            [isExpanded]="true"
+                          >
+                            <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
+                          </app-accordion>
+                        }
+
+                        @if (tcs.hasPurchaserSectionChanged()) {
+                          <app-accordion
+                            [id]="'purchasers'"
+                            [title]="'Purchasers'"
+                            [description]="'Contact details for the purchaser.'"
+                            [type]="'condensed'"
+                            [isExpanded]="true"
+                          >
+                            <app-purchasers [techRecord]="techRecord"></app-purchasers>
+                          </app-accordion>
+                        }
+
+                        @if (tcs.hasManufacturerSectionChanged()) {
+                          <app-accordion
+                            [id]="'manufacturer'"
+                            [title]="'Manufacturer'"
+                            [description]="'Contact details for the manufacturer.'"
+                            [type]="'condensed'"
+                            [isExpanded]="true"
+                          >
+                            <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
+                          </app-accordion>
+                        }
+                      }
+
+                      @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV && tcs.hasLastApplicantSectionChanged()) {
+                        <app-accordion
+                          [id]="'last-applicant'"
+                          [title]="'Last applicant'"
+                          [description]="'Contact details for the last applicant.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
+                        </app-accordion>
+                      }
+
+                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasDocumentsSectionChanged()) {
+                        <app-accordion
+                          [id]="'documents'"
+                          [title]="'Documents'"
+                          [description]="'Microfilm document details.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-documents [techRecord]="techRecord"></app-documents>
+                        </app-accordion>
+                      }
+
+                      @if (tcs.hasNotesSectionChanged()) {
+                        <app-accordion
+                          [id]="'notes'"
+                          [title]="'Notes'"
+                          [description]="'Notes attached to this record.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-notes [techRecord]="techRecord"></app-notes>
+                        </app-accordion>
+                      }
+
+                      <app-accordion
+                        [id]="'reason-for-creation'"
+                        [title]="'Reason for creation'"
+                        [description]="`Tell us why you're creating this record.`"
+                        [type]="'condensed'"
+                        [isExpanded]="true"
+                      >
+                        <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                      </app-accordion>
+                    </ng-container>
+                  </ng-template>
+                </app-accordion-control>
+              </div>
+
+              <!-- Accordions appear here -->
+              <ng-container [ngTemplateOutlet]="template"></ng-container>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
   </div>
 </div>

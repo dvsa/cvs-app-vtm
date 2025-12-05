@@ -448,4 +448,20 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_declarationsSeen'
 		);
 	}
+
+	hasGeneralVehicleDetailsSectionChanged(): boolean {
+		return this.hasChanged();
+	}
+
+	hasConfigurationSectionChanged(): boolean {
+		return this.hasChanged();
+	}
+
+	hasEmissionsAndExemptionsSectionChanged(): boolean {
+		return this.hasChanged();
+	}
+
+	hasSeatsAndVehicleSizeSectionChanged(): boolean {
+		return this.hasChanged();
+	}
 }
