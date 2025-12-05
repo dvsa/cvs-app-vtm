@@ -7,7 +7,14 @@
       <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
         Axle distance
       </span>
-      <app-field-warning-message id="enter-number-of-axles-dimensions-warning-message" [warningMessage]="'Enter the number of axles to be able to add axle distances.'"></app-field-warning-message>
+      
+      @if (mode() === Modes.EDIT) {
+        <app-field-warning-message 
+          id="enter-number-of-axles-dimensions-warning-message" 
+          [warningMessage]="'Enter the number of axles to be able to add axle distances.'"
+        ></app-field-warning-message>
+      }
+
       <div class="govuk-!-padding-bottom-8"></div>
     }
 
@@ -66,8 +73,12 @@
     <!-- Length-->
     <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
       @if (shouldShowLengthWarning()) {
-        <app-field-warning-message id="dimensions-length-warning" [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"></app-field-warning-message>
+        <app-field-warning-message 
+          id="dimensions-length-warning" 
+          [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"
+        ></app-field-warning-message>
       }
+
       <govuk-form-group-input
         formControlName="techRecord_dimensions_length"
         label="Length"
@@ -80,7 +91,10 @@
     <!-- Width-->
     <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
       @if (shouldShowWidthWarning()) {
-        <app-field-warning-message id="dimensions-width-warning" [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"></app-field-warning-message>
+        <app-field-warning-message 
+          id="dimensions-width-warning" 
+          [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"
+        ></app-field-warning-message>
       }
 
       <govuk-form-group-input
@@ -140,8 +154,12 @@
         <div class="flex-row">
           <!-- Coupling centre to rear axle minimum -->
           @if (couplingCenterToRearTrlMinWarning) {
-            <app-field-warning-message id="coupling-centre-to-rear-of-trailer-minimum-warning" [warningMessage]="couplingCenterToRearTrlMinWarning"/>
+            <app-field-warning-message 
+              id="coupling-centre-to-rear-of-trailer-minimum-warning" 
+              [warningMessage]="couplingCenterToRearTrlMinWarning"
+            ></app-field-warning-message>
           }
+
           <govuk-form-group-input
             formControlName="techRecord_couplingCenterToRearTrlMin"
             label="Minimum"
@@ -153,10 +171,15 @@
             [tagNames]="['Plates']"
             [filters]="filters()"
           />
+          
           <!-- Coupling centre to rear axle maximum -->
           @if (couplingCenterToRearTrlMaxWarning) {
-            <app-field-warning-message id="coupling-centre-to-rear-of-trailer-maximum-warning" [warningMessage]="couplingCenterToRearTrlMaxWarning"/>
+            <app-field-warning-message 
+              id="coupling-centre-to-rear-of-trailer-maximum-warning" 
+              [warningMessage]="couplingCenterToRearTrlMaxWarning"
+            ></app-field-warning-message>
           }
+
           <govuk-form-group-input
             formControlName="techRecord_couplingCenterToRearTrlMax"
             label="Maximum"

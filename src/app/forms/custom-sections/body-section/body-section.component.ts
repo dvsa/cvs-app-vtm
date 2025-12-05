@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { BodySectionEditComponent } from './body-section-edit/body-section-edit.component';
@@ -11,8 +12,6 @@ import { BodySectionViewComponent } from './body-section-view/body-section-view.
 	imports: [BodySectionViewComponent, BodySectionEditComponent, BodySectionSummaryComponent],
 })
 export class BodySectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

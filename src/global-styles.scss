@@ -62,3 +62,8 @@
 #techRecord_brakes_dtpNumber.autocomplete__input {
   @extend .govuk-input--width-10;
 }
+
+.govuk-input__suffix-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

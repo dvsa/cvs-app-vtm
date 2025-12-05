@@ -37,10 +37,6 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 		this.onChange(obj);
 	}
 
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
-	}
-
 	toggle(option: any) {
 		const value = this.value();
 

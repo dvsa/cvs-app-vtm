@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
@@ -30,6 +31,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
+	protected readonly Modes = Modes;
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
@@ -38,6 +40,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	form = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
@@ -164,6 +167,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	showAddAxleButton() {
+		if (this.mode() !== Modes.EDIT) return false;
 		return (this.techRecord()?.techRecord_noOfAxles ?? 0) < 10;
 	}
 

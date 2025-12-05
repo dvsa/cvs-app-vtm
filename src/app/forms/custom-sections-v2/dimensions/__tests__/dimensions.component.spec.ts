@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -44,6 +45,7 @@ describe('DimensionsComponent', () => {
 		controlContainer = TestBed.inject(ControlContainer);
 
 		fixture = TestBed.createComponent(DimensionsComponent);
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.componentRef.setInput('techRecord', createMockPsv(100000));
 		component = fixture.componentInstance;
 		component.form.reset();

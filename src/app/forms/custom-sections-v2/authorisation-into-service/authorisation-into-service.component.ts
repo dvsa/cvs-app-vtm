@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -14,6 +15,8 @@ import { ReplaySubject } from 'rxjs';
 export class AuthorisationIntoServiceComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'trl'>, FormControl>>>({
 		techRecord_authIntoService_cocIssueDate: this.fb.control<string | null>(null, [

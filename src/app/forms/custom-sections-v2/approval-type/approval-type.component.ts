@@ -1,4 +1,5 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
 import {
 	type AbstractControl,
@@ -62,10 +63,11 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	});
 
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
-		this.init(this.form);
 		this.addControlsBasedOffVehicleType();
+		this.init(this.form);
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
@@ -86,9 +88,12 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 			const approvalTypeNumber = control.parent?.get('techRecord_approvalTypeNumber')?.value;
 
 			if (approvalType && !approvalTypeNumber) {
+				// Replace punctuation or spaces with underscores
+				const approvalTypeId = approvalType.replace(/[\p{P}\s]+/gu, '_');
+
 				const error: GlobalError = {
 					error: message,
-					anchorLink: `techRecord_approvalTypeNumber1-${approvalType}`,
+					anchorLink: `techRecord_approvalTypeNumber1-${approvalTypeId}`,
 				};
 				return { required: error };
 			}

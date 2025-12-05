@@ -1,4 +1,5 @@
 import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -99,6 +100,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	readonly isFormInvalid = output<boolean>();
 	readonly isCreateMode = input.required<boolean>();
 
+	Modes = Modes;
 	techRecordCalculated?: V3TechRecordModel;
 	sectionTemplates: Array<FormNode> = [];
 	middleIndex = 0;

@@ -37,10 +37,6 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 		this.value.set(obj);
 		this.onChange(obj);
 	}
-
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
-	}
 }
 
 export type RadioGroupOrientation = 'horizontal' | 'vertical';

@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { AdrService } from '@/src/app/services/adr/adr.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { DatePipe, ViewportScroller } from '@angular/common';
@@ -68,6 +69,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	route = inject(ActivatedRoute);
 	viewportScroller = inject(ViewportScroller);
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	// TODO properly type this at some point
 	form = this.fb.group({
@@ -297,6 +299,8 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	}
 
 	get canDisplayDangerousGoodsWarning() {
+		if (this.mode() !== Modes.EDIT) return null;
+
 		const originalDangerousGoodsValue = (this.store.selectSignal(techRecord)() as TechRecordType<'hgv' | 'lgv' | 'trl'>)
 			?.techRecord_adrDetails_dangerousGoods;
 		const dangerousGoods = this.form.get('techRecord_adrDetails_dangerousGoods');
@@ -424,4 +428,5 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED = ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED;
+	protected readonly Modes = Modes;
 }

@@ -25,6 +25,7 @@ import { ReasonForCreationComponent } from '@/src/app/forms/custom-sections-v2/r
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Roles } from '@/src/app/models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { AxlesService } from '@/src/app/services/axles/axles.service';
@@ -102,6 +103,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 	sectionStates$ = this.store.selectSignal(selectSectionState);
 	globalErrorService = inject(GlobalErrorService);
 
+	Modes = Modes;
 	roles = Roles;
 	isEditing = this.route.snapshot.data['isEditing'] ?? false;
 	isDirty = false;
@@ -181,7 +183,11 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 	}
 
 	get tags(): string[] {
-		switch (this.techRecord()?.techRecord_vehicleType as VehicleTypes) {
+		const techRecord = this.techRecord();
+		if (!techRecord) {
+			return [];
+		}
+		switch (this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord)) {
 			case VehicleTypes.HGV:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.PSV:
@@ -193,7 +199,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 			case VehicleTypes.TRL:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.SMALL_TRL:
-				return this.isEditing ? ['Required'] : ['Records'];
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.MOTORCYCLE:
 				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			default:

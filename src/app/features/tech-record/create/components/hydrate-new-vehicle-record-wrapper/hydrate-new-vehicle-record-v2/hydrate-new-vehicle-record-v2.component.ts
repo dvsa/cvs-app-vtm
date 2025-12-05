@@ -6,6 +6,7 @@ import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brake
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { RootRoutes } from '@/src/app/models/routes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
@@ -93,6 +94,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	sectionStates$ = this.store.selectSignal(selectSectionState);
 	username$ = this.store.selectSignal(name);
 
+	readonly Modes = Modes;
 	readonly VehicleTypes = VehicleTypes;
 
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'put'>, FormControl>>>({});
