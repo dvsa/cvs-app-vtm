@@ -86,9 +86,12 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 			const approvalTypeNumber = control.parent?.get('techRecord_approvalTypeNumber')?.value;
 
 			if (approvalType && !approvalTypeNumber) {
+				// Replace punctuation or spaces with underscores
+				const approvalTypeId = approvalType.replace(/[\p{P}\s]+/gu, '_');
+
 				const error: GlobalError = {
 					error: message,
-					anchorLink: `techRecord_approvalTypeNumber1-${approvalType}`,
+					anchorLink: `techRecord_approvalTypeNumber1-${approvalTypeId}`,
 				};
 				return { required: error };
 			}
