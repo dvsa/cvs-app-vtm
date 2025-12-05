@@ -194,7 +194,11 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	}
 
 	get tags(): string[] {
-		switch (this.techRecord()?.techRecord_vehicleType as VehicleTypes) {
+		const techRecord = this.techRecord();
+		if (!techRecord) {
+			return [];
+		}
+		switch (this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord)) {
 			case VehicleTypes.HGV:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.PSV:
@@ -206,7 +210,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 			case VehicleTypes.TRL:
 				return this.isEditing ? ['Plates', 'Required', 'ADR'] : ['Plates', 'Required', 'ADR', 'Records'];
 			case VehicleTypes.SMALL_TRL:
-				return this.isEditing ? ['Required'] : ['Records'];
+				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			case VehicleTypes.MOTORCYCLE:
 				return this.isEditing ? ['Required'] : ['Required', 'Records'];
 			default:
