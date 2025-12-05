@@ -35,6 +35,10 @@ export class TechnicalRecordChangesService {
 		// [] -> null/undefined
 		if (Array.isArray(a) && a.length === 0 && b != null) return false;
 
+		if (!isEqual(a, b)) {
+			console.log('has changed', property, a, b);
+		}
+
 		return !isEqual(a, b);
 	}
 
@@ -450,18 +454,66 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasGeneralVehicleDetailsSectionChanged(): boolean {
-		return this.hasChanged();
+		return this.hasChanged(
+			'techRecord_vehicleType',
+			'techRecord_vehicleClass_description',
+			'techRecord_regnDate',
+			'techRecord_manufactureYear',
+			'techRecord_brakes_dtpNumber',
+			'techRecord_make',
+			'techRecord_model',
+			'techRecord_vehicleConfiguration',
+			'techRecord_bodyType_code',
+			'techRecord_bodyType_description',
+			'techRecord_functionCode',
+			'techRecord_conversionRefNo',
+			'techRecord_euVehicleCategory',
+			'techRecord_noOfAxles',
+			'techRecord_chassisMake',
+			'techRecord_chassisModel',
+			'techRecord_bodyMake',
+			'techRecord_bodyModel',
+			'techRecord_modelLiteral',
+			'techRecord_manufactureMonth',
+			'techRecord_firstUseDate',
+			'techRecord_frameDescription',
+			'techRecord_vehicleSubclass',
+			'techRecord_numberOfWheelsDriven'
+		);
 	}
 
 	hasConfigurationSectionChanged(): boolean {
-		return this.hasChanged();
+		return this.hasChanged(
+			'techRecord_offRoad',
+			'techRecord_departmentalVehicleMarker',
+			'techRecord_alterationMarker',
+			'techRecord_fuelPropulsionSystem',
+			'techRecord_roadFriendly',
+			'techRecord_speedRestriction',
+			'techRecord_suspensionType'
+		);
 	}
 
 	hasEmissionsAndExemptionsSectionChanged(): boolean {
-		return this.hasChanged();
+		return this.hasChanged(
+			'techRecord_drawbarCouplingFitted',
+			'techRecord_euroStandard',
+			'techRecord_emissionsLimit',
+			'techRecord_speedLimiterMrk',
+			'techRecord_tachoExemptMrk'
+		);
 	}
 
 	hasSeatsAndVehicleSizeSectionChanged(): boolean {
-		return this.hasChanged();
+		return this.hasChanged(
+			'techRecord_seatsUpperDeck',
+			'techRecord_seatsLowerDeck',
+			'techRecord_standingCapacity',
+			'techRecord_dda_wheelchairCapacity',
+			'techRecord_vehicleClass_description',
+			'techRecord_vehicleSize',
+			'techRecord_numberOfSeatbelts',
+			'techRecord_seatbeltInstallationApprovalDate'
+		);
 	}
 }

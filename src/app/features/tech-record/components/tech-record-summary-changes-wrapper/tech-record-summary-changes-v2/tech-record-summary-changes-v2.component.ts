@@ -15,7 +15,6 @@ import { DocumentsComponent } from '@/src/app/forms/custom-sections-v2/documents
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { GeneralVehicleDetailsComponent } from '@/src/app/forms/custom-sections-v2/general-vehicle-details/general-vehicle-details.component';
 import { LastApplicantComponent } from '@/src/app/forms/custom-sections-v2/last-applicant/last-applicant.component';
-import { LetterOfAuthorisationComponent } from '@/src/app/forms/custom-sections-v2/letter-of-authorisation/letter-of-authorisation.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
 import { NotesComponent } from '@/src/app/forms/custom-sections-v2/notes/notes.component';
 import { PurchasersComponent } from '@/src/app/forms/custom-sections-v2/purchasers/purchasers.component';
@@ -32,7 +31,6 @@ import { UserService } from '@/src/app/services/user-service/user-service';
 import {
 	clearADRDetailsBeforeUpdate,
 	editingTechRecord,
-	getBySystemNumber,
 	selectSectionState,
 	techRecord,
 	updateADRAdditionalExaminerNotes,
@@ -75,7 +73,6 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		FormsModule,
 		ReactiveFormsModule,
 		NgTemplateOutlet,
-		LetterOfAuthorisationComponent,
 		ApprovalTypeComponent,
 		ReasonForCreationComponent,
 		BannerComponent,
@@ -111,34 +108,31 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 			this.username = name;
 		});
 
-		this.technicalRecordService.techRecord$
+		this.store
+			.select(editingTechRecord)
+			.pipe(take(1), takeUntil(this.destroy))
+			.subscribe((data) => {
+				if (!data) this.cancel();
+			});
+
+		this.store
+			.select(editingTechRecord)
 			.pipe(
 				skipWhile((techRecord) => !techRecord),
 				take(1)
 			)
 			.subscribe((techRecord) => {
-				if (techRecord) {
+				if (techRecord && this.technicalRecordService.isHeavyVehicle(techRecord)) {
+					this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
+
 					if (
-						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
-						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-						techRecord.techRecord_vehicleType === VehicleTypes.TRL
+						techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+						techRecord.techRecord_vehicleType === VehicleTypes.HGV
 					) {
-						this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
-
-						if (
-							techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
-							techRecord.techRecord_vehicleType === VehicleTypes.HGV
-						) {
-							this.form.addControl(
-								'techRecord_dimensions_axleSpacing',
-								this.axlesService.generateAxleSpacingsForm(techRecord)
-							);
-						}
-					}
-
-					// Fetch technical record history and load into state
-					if ('systemNumber' in techRecord && techRecord['systemNumber']) {
-						this.store.dispatch(getBySystemNumber({ systemNumber: techRecord.systemNumber }));
+						this.form.addControl(
+							'techRecord_dimensions_axleSpacing',
+							this.axlesService.generateAxleSpacingsForm(techRecord)
+						);
 					}
 				}
 			});
