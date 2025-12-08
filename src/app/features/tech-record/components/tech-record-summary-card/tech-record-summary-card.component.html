@@ -28,7 +28,7 @@
 
             @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a> 
+                <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
               </div>
             }
           </dt>
@@ -45,7 +45,7 @@
 
             @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a> 
+                <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
               </div>
             }
           </dt>
@@ -78,7 +78,7 @@
 
               @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vin']">Change</a> 
+                  <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
                 </div>
               }
             </dt>
@@ -123,49 +123,49 @@
               <div class="summary-link-wrapper">
                 @switch (techRecord.techRecord_statusCode) {
                   @case (StatusCodes.CURRENT) {
-                    <a 
+                    <a
                       *appRoleRequired="Roles.TechRecordArchive"
-                      class="govuk-link summary-link" 
-                      id="change-status-to-archive-link" 
+                      class="govuk-link summary-link"
+                      id="change-status-to-archive-link"
                       [routerLink]="['change-status']"
                       [queryParams]="{ to: 'archived' }"
                     >
                       <span>Archive</span>
-                    </a> 
+                    </a>
                   }
                   @case (StatusCodes.PROVISIONAL) {
                     <ul class="govuk-summary-list__actions-list">
                       <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
-                        <a 
-                          class="govuk-link summary-link" 
-                          id="change-status-to-archive-link" 
+                        <a
+                          class="govuk-link summary-link"
+                          id="change-status-to-archive-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'archived' }"
                         >
                           <span>Archive</span>
-                        </a> 
+                        </a>
                       </li>
                       <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
-                        <a 
-                          class="govuk-link summary-link" 
+                        <a
+                          class="govuk-link summary-link"
                           id="promote-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'current' }"
                         >
                           <span>Promote</span>
-                        </a> 
+                        </a>
                       </li>
                     </ul>
                   }
                   @case (StatusCodes.ARCHIVED) {
                     <a
-                      *appRoleRequired="Roles.TechRecordUnarchive" 
-                      class="govuk-link summary-link" 
-                      id="unarchive-link" 
+                      *appRoleRequired="Roles.TechRecordUnarchive"
+                      class="govuk-link summary-link"
+                      id="unarchive-link"
                       [routerLink]="['unarchive-record']"
                     >
                       <span>Unarchive</span>
-                    </a> 
+                    </a>
                   }
                 }
               </div>
@@ -207,7 +207,7 @@
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
                   <a class="govuk-link summary-link" id="change-record-visibility-in-vta-link" [routerLink]="['change-vta-visibility']">
                     Change
-                  </a> 
+                  </a>
                 </div>
               }
             </dt>
