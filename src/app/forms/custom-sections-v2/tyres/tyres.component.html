@@ -43,7 +43,7 @@
     @if (parent.get('techRecord_axles') && (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_axles'))) {
       <ng-container formArrayName="techRecord_axles">
       @for (axle of techRecordAxles.controls; track axle; let i = $index) {
-        @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}`)) {
+        @if (mode() !== Modes.SUMMARY || tcs.hasTyreChanged(i)) {
           <div
             [class.govuk-form-group]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"
             [class.govuk-form-group--error]="techRecordAxles.at(i).get('tyres_tyreCode')?.hasError('noAxleData')"

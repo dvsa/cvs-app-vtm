@@ -203,32 +203,36 @@
     }
 
     @if (parent.get('techRecord_axles')) {
-      <div class="checkboxes" [formGroup]="parent">
-        <label class="govuk-label govuk-label--s govuk-!-margin-bottom-15" for="parking-brake">Parking brake</label>
-
-        @if (mode() === Modes.EDIT) {
-          @if (parent.get('techRecord_axles')?.value.length === 0 || !parent.get('techRecord_axles')?.value) {
-            <app-field-warning-message
-              id="enter-number-of-axles-parking-brakes-warning-message"
-              [warningMessage]="'Enter the number of axles to be able to add parking brakes.'"
-            ></app-field-warning-message>
+      @if (mode() !== Modes.SUMMARY || tcs.hasParkingBrakesSectionChanged()) {
+        <div class="checkboxes" [formGroup]="parent">
+          <label class="govuk-label govuk-label--s govuk-!-margin-bottom-15" for="parking-brake">Parking brake</label>
+  
+          @if (mode() === Modes.EDIT) {
+            @if (parent.get('techRecord_axles')?.value.length === 0 || !parent.get('techRecord_axles')?.value) {
+              <app-field-warning-message
+                id="enter-number-of-axles-parking-brakes-warning-message"
+                [warningMessage]="'Enter the number of axles to be able to add parking brakes.'"
+              ></app-field-warning-message>
+            }
           }
-        }
-
-        <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
-          @for (axle of axles.controls; track axle; let i = $index) {
-            <ng-container formGroupName="{{ i }}">
-              <govuk-form-group-checkbox
-                class="govuk-!-margin-bottom-12"
-                formControlName="parkingBrakeMrk"
-                id="parkingBrakeMrk-{{ i + 1 }}-checkbox"
-                [value]="true"
-                label="Axle {{ i + 1 }} brake"
-              ></govuk-form-group-checkbox>
-            </ng-container>
-          }
+  
+          <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
+            @for (axle of axles.controls; track axle; let i = $index) {
+              @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.parkingBrakeMrk`)) {
+                <ng-container formGroupName="{{ i }}">
+                  <govuk-form-group-checkbox
+                    class="govuk-!-margin-bottom-12"
+                    formControlName="parkingBrakeMrk"
+                    id="parkingBrakeMrk-{{ i + 1 }}-checkbox"
+                    [value]="true"
+                    label="Axle {{ i + 1 }} brake"
+                  ></govuk-form-group-checkbox>
+                </ng-container>
+              }
+            }
+          </div>
         </div>
-      </div>
+      }
     }
   }
 </div>

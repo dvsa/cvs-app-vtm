@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
@@ -25,6 +26,9 @@ export class TechnicalRecordChangesService {
 
 		// null/undefined -> []
 		if (a == null && Array.isArray(b) && b.length === 0) return false;
+
+		// null/undefined -> false TODO: remove this if it becomes problematic
+		if (a == null && b === false) return false;
 
 		// [] -> null/undefined
 		if (Array.isArray(a) && a.length === 0 && b != null) return false;
@@ -211,8 +215,10 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasBrakesSectionChanged(): boolean {
+		// Edge case 1: Only detect parking brake changes when axles are modified
+		if (this.hasParkingBrakesSectionChanged()) return true;
+
 		return this.hasChanged(
-			'techRecord_axles',
 			'techRecord_brakes_brakeCode',
 			'techRecord_brakes_brakeCodeOriginal',
 			'techRecord_brakes_dataTrBrakeOne',
@@ -223,6 +229,19 @@ export class TechnicalRecordChangesService {
 			'techRecord_brakes_loadSensingValve',
 			'techRecord_brakes_antilockBrakingSystem'
 		);
+	}
+
+	hasParkingBrakesSectionChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this._hasChanged(`techRecord_axles.${index}.parkingBrakeMrk`);
+		});
 	}
 
 	hasDDASectionChanged(): boolean {
@@ -243,14 +262,19 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasTyresSectionChanged(): boolean {
+		// Edge case 1: Only detect tyre changes when axles are modified
+		if (this.hasAxleTyresChanged()) return true;
+
 		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-			? this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles')
-			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles', 'techRecord_speedRestriction');
+			? this.hasChanged('techRecord_tyreUseCode')
+			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_speedRestriction');
 	}
 
 	hasWeightSectionChanged(): boolean {
+		// Edge case 1: Only detect weight changes when axles are modified
+		if (this.hasAxleWeightsChanged()) return true;
+
 		return this.hasChanged(
-			'techRecord_axles',
 			'techRecord_grossGbWeight',
 			'techRecord_grossEecWeight',
 			'techRecord_grossDesignWeight',
@@ -577,5 +601,52 @@ export class TechnicalRecordChangesService {
 			'techRecord_numberOfSeatbelts',
 			'techRecord_seatbeltInstallationApprovalDate'
 		);
+	}
+
+	hasTyreChanged(i: number): boolean {
+		return this.hasChanged(
+			`techRecord_axles.${i}.tyres_tyreCode`,
+			`techRecord_axles.${i}.tyres_tyreSize`,
+			`techRecord_axles.${i}.tyres_plyRating`,
+			`techRecord_axles.${i}.tyres_dataTrAxles`,
+			`techRecord_axles.${i}.tyres_fitmentCode`,
+			`techRecord_axles.${i}.tyres_speedCategorySymbol`
+		);
+	}
+
+	hasWeightChanged(i: number): boolean {
+		return this.hasChanged(
+			`techRecord_axles.${i}.weights_gbWeight`,
+			`techRecord_axles.${i}.weights_eecWeight`,
+			`techRecord_axles.${i}.weights_designWeight`,
+			`techRecord_axles.${i}.weights_ladenWeight`,
+			`techRecord_axles.${i}.weights_kerbWeight`
+		);
+	}
+
+	hasAxleWeightsChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this.hasWeightChanged(index);
+		});
+	}
+
+	hasAxleTyresChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this.hasTyreChanged(index);
+		});
 	}
 }

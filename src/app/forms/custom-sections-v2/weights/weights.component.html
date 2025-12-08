@@ -44,7 +44,7 @@
 
       @if (techRecordAxles) {
         @for (axle of techRecordAxles.controls; track axle; let i = $index) {
-          @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}`)) {
+          @if (mode() !== Modes.SUMMARY || tcs.hasWeightChanged(i)) {
             <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Axle {{ i + 1 }}</h2>
 
             @if (mode() === Modes.EDIT) {
@@ -200,7 +200,9 @@
       }
     </ng-container>
 
-    @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossGbWeight', 'techRecord_grossEecWeight', 'techRecord_grossDesignWeight', 'techRecord_grossKerbWeight', 'techRecord_grossLadenWeight')) {
+    @let hgvGrossWeightsChanged = tcs.hasChanged('techRecord_grossGbWeight', 'techRecord_grossEecWeight', 'techRecord_grossDesignWeight');
+    @let psvGrossWeightsChanged = tcs.hasChanged('techRecord_grossKerbWeight', 'techRecord_grossLadenWeight', 'techRecord_grossGbWeight', 'techRecord_grossDesignWeight');
+    @if (mode() !== Modes.SUMMARY || (techRecord().techRecord_vehicleType === VehicleTypes.HGV && hgvGrossWeightsChanged) || (techRecord().techRecord_vehicleType === VehicleTypes.PSV && psvGrossWeightsChanged)) {
       <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Gross</h2>
     }
 
