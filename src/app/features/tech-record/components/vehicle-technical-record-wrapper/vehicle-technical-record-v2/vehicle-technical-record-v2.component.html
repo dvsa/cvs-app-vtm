@@ -13,7 +13,7 @@
       <div class="govuk-grid-row">
         <!-- Summary card -->
         <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-          <app-tech-record-summary-card [mode]="'view'" [techRecord]="techRecord" />
+          <app-tech-record-summary-card [mode]="Modes.VIEW" [techRecord]="techRecord" />
 
           <div class="govuk-button-group govuk-button-group-record">
             <app-edit-tech-record-button
@@ -53,7 +53,11 @@
                         [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
                         [filters]="filters()"
                       >
-                        <app-general-vehicle-details [techRecord]="techRecord" [filters]="filters()"></app-general-vehicle-details>
+                        <app-general-vehicle-details 
+                          [techRecord]="techRecord" 
+                          [filters]="filters()"
+                          [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                        ></app-general-vehicle-details>
                       </app-accordion>
 
                       @if (technicalRecordService.isHeavyVehicle(techRecord)) {
@@ -68,7 +72,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-approval-type [techRecord]="techRecord" [filters]="filters()"></app-approval-type>
+                          <app-approval-type 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-approval-type>
                         </app-accordion>
                       }
 
@@ -84,7 +92,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-dimensions [techRecord]="techRecord" [filters]="filters()"></app-dimensions>
+                          <app-dimensions 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-dimensions>
                         </app-accordion>
                       }
 
@@ -100,7 +112,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-weights [techRecord]="techRecord" [filters]="filters()"></app-weights>
+                          <app-weights 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-weights>
                         </app-accordion>
                       }
 
@@ -116,7 +132,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-tyres [techRecord]="techRecord" [filters]="filters()"></app-tyres>
+                          <app-tyres 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-tyres>
                         </app-accordion>
                       }
 
@@ -132,7 +152,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-configuration [techRecord]="techRecord" [filters]="filters()"></app-configuration>
+                          <app-configuration 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-configuration>
                         </app-accordion>
                       }
 
@@ -148,7 +172,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-emissions-and-exemptions [techRecord]="techRecord" [filters]="filters()"></app-emissions-and-exemptions>
+                          <app-emissions-and-exemptions 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-emissions-and-exemptions>
                         </app-accordion>
                       }
 
@@ -164,7 +192,11 @@
                           [tagNames]="['Required']"
                           [filters]="filters()"
                         >
-                          <app-seats-and-vehicle-size [techRecord]="techRecord" [filters]="filters()"></app-seats-and-vehicle-size>
+                          <app-seats-and-vehicle-size 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-seats-and-vehicle-size>
                         </app-accordion>
                       }
 
@@ -180,7 +212,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-brakes [techRecord]="techRecord"></app-brakes>
+                          <app-brakes 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-brakes>
                         </app-accordion>
                       }
 
@@ -196,7 +232,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-dda [techRecord]="techRecord"></app-dda>
+                          <app-dda 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-dda>
                         </app-accordion>
                       }
 
@@ -228,7 +268,11 @@
                           [tagNames]="['ADR']"
                           [filters]="filters()"
                         >
-                          <app-adr [techRecord]="techRecord" [filters]="filters()"></app-adr>
+                          <app-adr 
+                            [techRecord]="techRecord" 
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-adr>
                         </app-accordion>
                       }
 
@@ -259,7 +303,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-authorisation-into-service [techRecord]="techRecord"></app-authorisation-into-service>
+                          <app-authorisation-into-service 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-authorisation-into-service>
                         </app-accordion>
 
                         <app-accordion
@@ -272,7 +320,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-purchasers [techRecord]="techRecord"></app-purchasers>
+                          <app-purchasers 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-purchasers>
                         </app-accordion>
 
                         <app-accordion
@@ -285,7 +337,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-manufacturer [techRecord]="techRecord"></app-manufacturer>
+                          <app-manufacturer 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-manufacturer>
                         </app-accordion>
 
                         <app-accordion
@@ -313,7 +369,11 @@
                           [tagNames]="['Plates']"
                           [filters]="filters()"
                         >
-                          <app-last-applicant [techRecord]="techRecord"></app-last-applicant>
+                          <app-last-applicant 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-last-applicant>
                         </app-accordion>
                       }
 
@@ -328,7 +388,11 @@
                           [tagNames]="[]"
                           [filters]="filters()"
                         >
-                          <app-documents [techRecord]="techRecord"></app-documents>
+                          <app-documents 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-documents>
                         </app-accordion>
                       }
 
@@ -372,7 +436,11 @@
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-notes [techRecord]="techRecord"></app-notes>
+                        <app-notes 
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
+                          [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                        ></app-notes>
                       </app-accordion>
 
                       @if (isEditing) {
@@ -386,7 +454,11 @@
                           [tagNames]="['Plates', 'Required', 'ADR']"
                           [filters]="filters()"
                         >
-                          <app-reason-for-creation [techRecord]="techRecord"></app-reason-for-creation>
+                          <app-reason-for-creation 
+                            [techRecord]="techRecord"
+                            [filters]="filters()"
+                            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+                          ></app-reason-for-creation>
                         </app-accordion>
                       }
                     </ng-container>

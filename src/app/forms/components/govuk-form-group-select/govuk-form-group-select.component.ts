@@ -45,8 +45,4 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 		this.value.set(obj);
 		this.onChange(obj);
 	}
-
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
-	}
 }

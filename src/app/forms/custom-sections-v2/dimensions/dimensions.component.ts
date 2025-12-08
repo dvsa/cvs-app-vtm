@@ -1,5 +1,6 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +29,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly Widths = FormNodeWidth;
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
+	readonly Modes = Modes;
+
 	axlesService = inject(AxlesService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
@@ -36,6 +39,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 
 	form: FormGroup = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
@@ -167,18 +171,24 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	}
 
 	get couplingCenterToRearTrlMinWarning() {
+		if (this.mode() !== Modes.EDIT) return '';
+
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMin')?.value, 10) > 12000
 			? 'The coupling centre to rear of trailer minimum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
 
 	get couplingCenterToRearTrlMaxWarning() {
+		if (this.mode() !== Modes.EDIT) return '';
+
 		return Number.parseInt(this.form.get('techRecord_couplingCenterToRearTrlMax')?.value, 10) > 12000
 			? 'The coupling centre to rear of trailer maximum field value is greater than 12,000mm. Check your input before proceeding'
 			: '';
 	}
 
 	shouldShowLengthWarning(): boolean {
+		if (this.mode() !== Modes.EDIT) return false;
+
 		return (
 			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
 				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&
@@ -187,6 +197,8 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	}
 
 	shouldShowWidthWarning(): boolean {
+		if (this.mode() !== Modes.EDIT) return false;
+
 		return (
 			(this.techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
 				this.techRecord().techRecord_vehicleType === VehicleTypes.TRL) &&

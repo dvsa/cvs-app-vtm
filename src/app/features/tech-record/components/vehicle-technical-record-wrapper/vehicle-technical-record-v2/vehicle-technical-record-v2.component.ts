@@ -24,6 +24,7 @@ import { ReasonForCreationComponent } from '@/src/app/forms/custom-sections-v2/r
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Roles } from '@/src/app/models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { AxlesService } from '@/src/app/services/axles/axles.service';
@@ -34,7 +35,6 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
 import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
@@ -86,7 +86,6 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		TechnicalRecordsHistoryComponent,
 		TestResultsComponent,
 		AsyncPipe,
-		GovukFormGroupSelectComponent,
 	],
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
@@ -101,6 +100,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	from = this.store.selectSignal(selectQueryParam('from'));
 	sectionStates$ = this.store.selectSignal(selectSectionState);
 
+	Modes = Modes;
 	roles = Roles;
 	isEditing = this.route.snapshot.data['isEditing'] ?? false;
 	isDirty = false;

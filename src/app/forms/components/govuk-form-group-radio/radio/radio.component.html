@@ -10,6 +10,7 @@
       [(ngModel)]="radios.value"
       (ngModelChange)="radios.onChange($event)"
       [attr.data-aria-controls]="`conditional-${radios.id}`"
+      [disabled]="radios.disabled()"
     />
 
     @if (label()) {
@@ -21,7 +22,7 @@
       </label>
     }
 
-    @if (hint()) {
+    @if (hint() && !radios.disabled()) {
       <div class="govuk-hint govuk-radios__hint">{{ hint() }}</div>
     }
   </div>

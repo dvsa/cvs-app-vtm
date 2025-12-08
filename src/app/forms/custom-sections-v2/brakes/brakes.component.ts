@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
@@ -39,9 +40,12 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly booleanOptions = YES_NO_OPTIONS;
 	protected readonly retarderOptions = getOptionsFromEnum(Retarders);
+	protected readonly Modes = Modes;
 
 	optionsService = inject(MultiOptionsService);
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form: FormGroup = this.fb.group({});
 

@@ -1,4 +1,5 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
@@ -28,6 +29,7 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group({
 		techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [

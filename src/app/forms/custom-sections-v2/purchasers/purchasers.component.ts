@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -18,6 +19,8 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	// TODO properly type this at some point
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'trl'>, FormControl>>>({

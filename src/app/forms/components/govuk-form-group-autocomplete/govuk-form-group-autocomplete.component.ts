@@ -5,6 +5,7 @@ import {
 	Component,
 	DOCUMENT,
 	OnDestroy,
+	effect,
 	forwardRef,
 	inject,
 	input,
@@ -54,6 +55,18 @@ export class GovukFormGroupAutocompleteComponent
 
 	destroy = new ReplaySubject<boolean>(1);
 	valueSub = new BehaviorSubject<unknown>(null);
+
+	constructor() {
+		super();
+
+		effect(() => {
+			const control = this.document.querySelector(`#${this.id}`);
+
+			this.disabled()
+				? control?.removeAttribute('placeholder')
+				: control?.setAttribute('placeholder', this.placeholder());
+		});
+	}
 
 	ngAfterViewInit(): void {
 		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
@@ -106,10 +119,6 @@ export class GovukFormGroupAutocompleteComponent
 		this.value.set(obj);
 		this.valueSub.next(obj);
 		this.onChange(obj);
-	}
-
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
 	}
 
 	handleChange(event: Event) {

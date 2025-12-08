@@ -53,9 +53,5 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 		this.onChange(obj);
 	}
 
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
-	}
-
 	protected readonly FormNodeWidth = FormNodeWidth;
 }

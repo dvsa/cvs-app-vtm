@@ -35,21 +35,21 @@
     @if (techRecordCalculated) {
       @switch (sectionName) {
         @case ('notesSection') {
-          <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          <app-notes-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
         }
         @case ('audit') {
-          <app-audit-section [techRecord]="techRecordCalculated" [mode]="'view'"/>
+          <app-audit-section [techRecord]="techRecordCalculated" [mode]="Modes.VIEW"/>
         }
         @case ('techRecordSummary') {
-          <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          <app-vehicle-section [isCreateMode]="isCreateMode()" [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
         }
         @case ('bodySection') {
-          <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+          <app-body-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
         }
         @case ('purchaserSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Purchaser section -->
-            <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            <app-trl-purchasers-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
           }
         }
         @case ('dimensionsSection') {
@@ -59,7 +59,7 @@
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
             <!-- Dimensions section-->
-            <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-dimensions-section>
+            <app-dimensions-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"></app-dimensions-section>
           }
         }
         @case ('documentsSection') {
@@ -68,7 +68,7 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"></app-documents-section>
+            <app-documents-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"></app-documents-section>
           }
         }
         @case ('approvalSection') {
@@ -77,7 +77,7 @@
               techRecordCalculated.techRecord_vehicleType === 'psv') {
             <app-type-approval-section
               [techRecord]="techRecordCalculated"
-              [mode]="(isEditing$ | async) ? 'edit' : 'view'">
+              [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW">
             </app-type-approval-section>
           }
         }
@@ -85,7 +85,7 @@
           @if (techRecordCalculated.techRecord_vehicleType === 'trl' ||techRecordCalculated.techRecord_vehicleType === 'psv') {
             <app-brakes-section
               [techRecord]="techRecordCalculated"
-              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"
               (formChange)="handleFormState($event)"
             ></app-brakes-section>
           }
@@ -96,7 +96,7 @@
             <!-- New Tyres section -->
             <app-dda-section
               [techRecord]="techRecordCalculated"
-              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"
             ></app-dda-section>
           }
         }
@@ -106,7 +106,7 @@
             techRecordCalculated.techRecord_vehicleType === 'hgv' ||
             techRecordCalculated.techRecord_vehicleType === 'psv'
             ) {
-            <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-tyres-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW" />
           }
         }
         @case ('weightsSection') {
@@ -117,13 +117,13 @@
             ) {
             <app-weights-section
               [techRecord]="techRecordCalculated"
-              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"
             ></app-weights-section>
           }
         }
         @case ('lettersSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
-            <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            <app-letters-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
           }
         }
         @case ('platesSection') {
@@ -131,21 +131,21 @@
             <!-- New Plates Section -->
             <app-plates-section
                 [techRecord]="techRecordCalculated"
-                [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+                [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
           }
         }
 
         @case ('authorizationIntoServiceSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New Authorization into service section -->
-            <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-authorisation-into-service-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW" />
           }
         }
 
         @case('manufacturerSection') {
           @if (techRecordCalculated.techRecord_vehicleType === 'trl') {
             <!-- New manufacturer section -->
-            <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+            <app-manufacturer-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
           }
         }
 
@@ -155,7 +155,7 @@
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
             ) {
-              <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'"/>
+              <app-adr-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"/>
           }
         }
         @case ('adrCertificateSection') {
@@ -164,17 +164,17 @@
             techRecordCalculated.techRecord_vehicleType === 'trl' ||
             techRecordCalculated.techRecord_vehicleType === 'lgv'
             ) {
-            <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+            <app-adr-certs-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW" />
           }
         }
         @case ('techRecord') {
           <!-- New Last Applicant section -->
-          <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? 'edit' : 'view'" />
+          <app-last-applicant-section [techRecord]="techRecordCalculated" [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW" />
         }
         @case ('reasonForCreationSection') {
           <app-reason-for-creation-section
               [techRecord]="techRecordCalculated"
-              [mode]="(isEditing$ | async) ? 'edit' : 'view'"
+              [mode]="(isEditing$ | async) ? Modes.EDIT : Modes.VIEW"
           ></app-reason-for-creation-section>
 
         }
