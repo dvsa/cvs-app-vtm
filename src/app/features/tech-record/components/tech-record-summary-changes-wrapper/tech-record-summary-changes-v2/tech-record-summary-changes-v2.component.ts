@@ -22,6 +22,7 @@ import { ReasonForCreationComponent } from '@/src/app/forms/custom-sections-v2/r
 import { SeatsAndVehicleSizeComponent } from '@/src/app/forms/custom-sections-v2/seats-and-vehicle-size/seats-and-vehicle-size.component';
 import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { RouterService } from '@/src/app/services/router/router.service';
@@ -30,16 +31,20 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { UserService } from '@/src/app/services/user-service/user-service';
 import {
 	clearADRDetailsBeforeUpdate,
+	clearAllSectionStates,
+	clearScrollPosition,
 	editingTechRecord,
 	selectSectionState,
 	techRecord,
 	updateADRAdditionalExaminerNotes,
 	updateTechRecord,
+	updateTechRecordSuccess,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, combineLatest, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/tech-record-summary-card.component';
@@ -91,6 +96,7 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	userService = inject(UserService);
 	globalErrorService = inject(GlobalErrorService);
 	route = inject(ActivatedRoute);
+	actions = inject(Actions);
 
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
@@ -101,9 +107,12 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	username = '';
 	destroy = new ReplaySubject<boolean>(1);
 
+	readonly Modes = Modes;
 	readonly VehicleTypes = VehicleTypes;
 
 	ngOnInit(): void {
+		this.navigateUponSuccess();
+
 		this.userService.name$.pipe(takeUntil(this.destroy)).subscribe((name) => {
 			this.username = name;
 		});
@@ -145,6 +154,17 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	// TODO: Move this into an effect
+	navigateUponSuccess(): void {
+		this.actions.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy)).subscribe((vehicleTechRecord) => {
+			this.store.dispatch(clearAllSectionStates());
+			this.store.dispatch(clearScrollPosition());
+			void this.router.navigate([
+				`/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
+			]);
+		});
 	}
 
 	submit(): void {

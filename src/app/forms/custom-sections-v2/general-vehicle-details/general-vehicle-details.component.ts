@@ -3,6 +3,7 @@ import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -90,6 +91,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	referenceDataService = inject(ReferenceDataService);
 	cdr = inject(ChangeDetectorRef);
 	axlesService = inject(AxlesService);
+	tcs = inject(TechnicalRecordChangesService);
 
 	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
@@ -427,7 +429,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnDestroy(): void {

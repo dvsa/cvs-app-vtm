@@ -2,6 +2,7 @@ import { TagType } from '@/src/app/components/tag/tag.component';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -32,6 +33,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly Modes = Modes;
 
 	axlesService = inject(AxlesService);
+	tcs = inject(TechnicalRecordChangesService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
@@ -226,5 +228,10 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 }

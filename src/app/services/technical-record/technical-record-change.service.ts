@@ -2,25 +2,19 @@ import { Injectable, inject } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
-import { isEqual } from 'lodash';
+import { get, isEqual } from 'lodash';
+import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TechnicalRecordChangesService {
 	store = inject(Store);
+	featureToggleService = inject(FeatureToggleService);
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
 
-	private _hasChanged(property: string) {
-		const current = this.currentTechRecord();
-		const amended = this.amendedTechRecord();
-
-		if (!current || !amended) return true;
-
-		const a = current[property as keyof TechRecordType<'put'>];
-		const b = amended[property as keyof TechRecordType<'put'>];
-
+	private _isNotEqual(a: unknown, b: unknown): boolean {
 		// Do not count the following edge cases as changes
 
 		// null/undefined->'' or '' -> null/undefined
@@ -35,11 +29,24 @@ export class TechnicalRecordChangesService {
 		// [] -> null/undefined
 		if (Array.isArray(a) && a.length === 0 && b != null) return false;
 
-		if (!isEqual(a, b)) {
-			console.log('has changed', property, a, b);
+		// If array -> array, then re-run edge case check against each value
+		if (Array.isArray(a) && Array.isArray(b)) {
+			return a.some((value, index) => this._isNotEqual(value, b[index]));
 		}
 
 		return !isEqual(a, b);
+	}
+
+	private _hasChanged(property: string) {
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		const a = get(current, property);
+		const b = get(amended, property);
+
+		return this._isNotEqual(a, b);
 	}
 
 	hasChanged(...properties: string[]) {
@@ -236,7 +243,9 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasTyresSectionChanged(): boolean {
-		return this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles', 'techRecord_speedRestriction');
+		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+			? this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles')
+			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles', 'techRecord_speedRestriction');
 	}
 
 	hasWeightSectionChanged(): boolean {
@@ -258,6 +267,9 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasADRSectionChanged(): boolean {
+		// Edge case 1: New certificate requested null -> false is NOT a change
+		if (this.hasNewCertificateRequestedChanged()) return true;
+
 		return this.hasChanged(
 			'techRecord_adrDetails_dangerousGoods',
 			'techRecord_adrDetails_applicantDetails_name',
@@ -298,11 +310,61 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_brakeEndurance',
 			'techRecord_adrDetails_weight',
 			'techRecord_adrDetails_declarationsSeen',
-			'techRecord_adrDetails_newCertificateRequested',
+			//'techRecord_adrDetails_newCertificateRequested',
 			'techRecord_adrDetails_additionalExaminerNotes_note',
 			'techRecord_adrDetails_additionalExaminerNotes',
 			'techRecord_adrDetails_adrCertificateNotes'
 		);
+	}
+
+	hasADRApplicantSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_applicantDetails_name',
+			'techRecord_adrDetails_applicantDetails_street',
+			'techRecord_adrDetails_applicantDetails_town',
+			'techRecord_adrDetails_applicantDetails_city',
+			'techRecord_adrDetails_applicantDetails_postcode',
+			'techRecord_adrDetails_applicantDetails_telephoneNumber',
+			'techRecord_adrDetails_applicantDetails_emailAddress'
+		);
+	}
+
+	hasADRTankDetailsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+			'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+			'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+			'techRecord_adrDetails_tank_tankDetails_tankCode',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+			'techRecord_adrDetails_tank_tankDetails_specialProvisions'
+		);
+	}
+
+	hasADRTankInspectionsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+			'techRecord_adrDetails_tank_tankDetails_tc3Details'
+		);
+	}
+
+	hasNewCertificateRequestedChanged(): boolean {
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		const a = current['techRecord_adrDetails_newCertificateRequested' as keyof TechRecordType<'put'>];
+		const b = amended['techRecord_adrDetails_newCertificateRequested' as keyof TechRecordType<'put'>];
+
+		if (a == null && b === false) return false;
+
+		return this._hasChanged('techRecord_adrDetails_newCertificateRequested');
 	}
 
 	hasLastApplicantSectionChanged(): boolean {

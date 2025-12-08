@@ -1,6 +1,7 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import {
 	type AbstractControl,
 	type FormControl,
@@ -38,6 +39,8 @@ import { ReplaySubject } from 'rxjs';
 	],
 })
 export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
+	tcs = inject(TechnicalRecordChangesService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	trlApprovalTypes = getOptionsFromEnum(TRLApprovalTypes);
@@ -111,7 +114,8 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	get controlsBasedOffVehicleType() {

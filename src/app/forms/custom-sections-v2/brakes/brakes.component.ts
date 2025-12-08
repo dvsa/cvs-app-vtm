@@ -1,7 +1,9 @@
+import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
@@ -33,6 +35,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		GovukFormGroupAutocompleteComponent,
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
+		ToUppercaseDirective,
 	],
 })
 export class BrakesComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -42,7 +45,9 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	protected readonly retarderOptions = getOptionsFromEnum(Retarders);
 	protected readonly Modes = Modes;
 
+	tcs = inject(TechnicalRecordChangesService);
 	optionsService = inject(MultiOptionsService);
+
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -75,6 +80,11 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	get controlsBasedOffVehicleType() {

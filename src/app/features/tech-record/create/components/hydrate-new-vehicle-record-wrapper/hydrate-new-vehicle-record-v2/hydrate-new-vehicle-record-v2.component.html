@@ -7,7 +7,7 @@
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-        <app-tech-record-summary-card [mode]="Modes.CREATE" [techRecord]="techRecord" />
+        <app-tech-record-summary-card [mode]="Modes.EDIT" [techRecord]="techRecord" />
 
         <div class="govuk-button-group govuk-button-group-record">
           <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>
@@ -43,7 +43,7 @@
                       <app-general-vehicle-details 
                         [techRecord]="techRecord" 
                         [filters]="filters()"
-                        [mode]="Modes.CREATE"
+                        [mode]="Modes.EDIT"
                       ></app-general-vehicle-details>
                     </app-accordion>
 
@@ -62,7 +62,7 @@
                         <app-approval-type 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-approval-type>
                       </app-accordion>
                     }
@@ -82,7 +82,7 @@
                         <app-dimensions 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-dimensions>
                       </app-accordion>
                     }
@@ -102,7 +102,7 @@
                         <app-weights 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-weights>
                       </app-accordion>
                     }
@@ -122,7 +122,7 @@
                         <app-tyres 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-tyres>
                       </app-accordion>
                     }
@@ -142,7 +142,7 @@
                         <app-configuration 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-configuration>
                       </app-accordion>
                     }
@@ -162,7 +162,7 @@
                         <app-emissions-and-exemptions 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-emissions-and-exemptions>
                       </app-accordion>
                     }
@@ -182,7 +182,7 @@
                         <app-seats-and-vehicle-size 
                           [techRecord]="techRecord" 
                           [filters]="filters()"
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-seats-and-vehicle-size>
                       </app-accordion>
                     }
@@ -202,7 +202,7 @@
                         <app-brakes 
                           [techRecord]="techRecord"
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-brakes>
                       </app-accordion>
                     }
@@ -222,7 +222,7 @@
                         <app-dda 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-dda>
                       </app-accordion>
                     }
@@ -246,7 +246,7 @@
                         <app-adr 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-adr>
                       </app-accordion>
                     }
@@ -265,7 +265,7 @@
                         <app-authorisation-into-service 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-authorisation-into-service>
                       </app-accordion>
 
@@ -282,7 +282,7 @@
                         <app-purchasers 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-purchasers>
                       </app-accordion>
 
@@ -299,7 +299,7 @@
                         <app-manufacturer 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-manufacturer>
                       </app-accordion>
                     }
@@ -318,7 +318,7 @@
                         <app-last-applicant 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-last-applicant>
                       </app-accordion>
                     }
@@ -337,7 +337,7 @@
                         <app-documents 
                           [techRecord]="techRecord"                           
                           [filters]="filters()" 
-                          [mode]="Modes.CREATE"
+                          [mode]="Modes.EDIT"
                         ></app-documents>
                       </app-accordion>
                     }
@@ -355,7 +355,7 @@
                       <app-notes
                         [techRecord]="techRecord"
                         [filters]="filters()" 
-                        [mode]="Modes.CREATE"
+                        [mode]="Modes.EDIT"
                       ></app-notes>
                     </app-accordion>
 
@@ -372,7 +372,7 @@
                       <app-reason-for-creation 
                         [techRecord]="techRecord"
                         [filters]="filters()" 
-                        [mode]="Modes.CREATE"
+                        [mode]="Modes.EDIT"
                       ></app-reason-for-creation>
                     </app-accordion>
                   </ng-container>

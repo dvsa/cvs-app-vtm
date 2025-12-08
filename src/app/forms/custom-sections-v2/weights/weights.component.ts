@@ -1,5 +1,6 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +38,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	axlesService = inject(AxlesService);
+	tcs = inject(TechnicalRecordChangesService);
 
 	form = this.fb.group({});
 	filters = input<string[]>([]);
@@ -53,7 +55,8 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnDestroy(): void {
