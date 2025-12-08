@@ -200,7 +200,9 @@
       }
     </ng-container>
 
-    <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Gross</h2>
+    @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossGbWeight', 'techRecord_grossEecWeight', 'techRecord_grossDesignWeight', 'techRecord_grossKerbWeight', 'techRecord_grossLadenWeight')) {
+      <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Gross</h2>
+    }
 
     @if (mode() === Modes.EDIT) {
       <!-- Inline error message for HGV & TRL-->
@@ -316,31 +318,34 @@
   </div>
 
   @if (techRecord().techRecord_vehicleType !== VehicleTypes.TRL) {
-    <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Train</h2>
+    @let hgvTrainWeightsChanged = tcs.hasChanged('techRecord_trainGbWeight', 'techRecord_trainEecWeight', 'techRecord_trainDesignWeight');
+    @let psvTrainWeightsChanged = tcs.hasChanged('techRecord_maxTrainGbWeight', 'techRecord_trainDesignWeight');
 
-    @if (mode() === Modes.EDIT) {
-      <!-- Inline error message for HGV -->
-      @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
-        @if (form.get('techRecord_trainGbWeight')?.invalid || form.get('techRecord_trainEecWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
-          <app-field-error-message 
-            [name]="'train-weight'"
-            [error]="'Train GB, EEC, Design Weight must be less than or equal to 99999kg'"
-          ></app-field-error-message>
+    @if (mode() !== Modes.SUMMARY || (techRecord().techRecord_vehicleType === VehicleTypes.HGV && hgvTrainWeightsChanged) || (techRecord().techRecord_vehicleType === VehicleTypes.PSV && psvTrainWeightsChanged)) {
+      <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Train</h2>
+
+      @if (mode() === Modes.EDIT) {
+        <!-- Inline error message for HGV -->
+        @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+          @if (form.get('techRecord_trainGbWeight')?.invalid || form.get('techRecord_trainEecWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
+            <app-field-error-message 
+              [name]="'train-weight'"
+              [error]="'Train GB, EEC, Design Weight must be less than or equal to 99999kg'"
+            ></app-field-error-message>
+          }
+        }
+  
+        <!-- Inline error message for PSV -->
+        @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+          @if (form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
+            <app-field-error-message 
+              [name]="'train-weight'"
+              [error]="'Train GB Max, Design Weight must be less than or equal to 99999kg'"
+            ></app-field-error-message>
+          }
         }
       }
-
-
-      <!-- Inline error message for PSV -->
-      @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-        @if (form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_trainDesignWeight')?.invalid) {
-          <app-field-error-message 
-            [name]="'train-weight'"
-            [error]="'Train GB Max, Design Weight must be less than or equal to 99999kg'"
-          ></app-field-error-message>
-        }
-      }
-    }
-
+  
       <div class="axle">
         @if (techRecord().techRecord_vehicleType !== VehicleTypes.PSV) {
           @if (shouldDisplayFormControl('techRecord_trainGbWeight')) {
@@ -356,7 +361,7 @@
               [filters]="filters()"
             ></govuk-form-group-input>
           }
-
+  
           @if (shouldDisplayFormControl('techRecord_trainEecWeight')) {
             <govuk-form-group-input
               [label]="'EEC'"
@@ -371,7 +376,7 @@
             ></govuk-form-group-input>
           }
         }
-
+  
         @if (shouldDisplayFormControl('techRecord_maxTrainGbWeight')) {
           <govuk-form-group-input
             [label]="'GB max'"
@@ -385,8 +390,8 @@
             [filters]="filters()"
           ></govuk-form-group-input>
         }
-
-        @if (shouldDisplayFormControl('techRecord_maxTrainDesignWeight')) {
+  
+        @if (shouldDisplayFormControl('techRecord_trainDesignWeight')) {
           <govuk-form-group-input
             [label]="'Design'"
             type="number"
@@ -401,65 +406,68 @@
         }
       </div>
     }
-
-  @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
-    <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Max train</h2>
-
-    @if (mode() === Modes.EDIT) {
-      @if (form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_maxTrainEecWeight')?.invalid || form.get('techRecord_maxTrainDesignWeight')?.invalid) {
-        <app-field-error-message 
-          [name]="'max-train-weight'"
-          [error]="'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'"
-        ></app-field-error-message>
-      }
-    }
-
-    <div class="axle">
-      @if (shouldDisplayFormControl('techRecord_maxTrainGbWeight')) {
-        <govuk-form-group-input
-          [label]="'GB'"
-          type="number"
-          formControlName="techRecord_maxTrainGbWeight"
-          class="govuk-label--s"
-          [showErrors]="false"
-          [suffix]="'kg'"
-          appFilterByTags
-          [tagNames]="[]"
-          [filters]="filters()"
-        ></govuk-form-group-input>
-      }
-
-      @if (shouldDisplayFormControl('techRecord_maxTrainEecWeight')) {
-        <govuk-form-group-input
-          [label]="'EEC'"
-          type="number"
-          formControlName="techRecord_maxTrainEecWeight"
-          class="govuk-label--s"
-          [showErrors]="false"
-          [suffix]="'kg'"
-          appFilterByTags
-          [tagNames]="[]"
-          [filters]="filters()"
-        ></govuk-form-group-input>
-      }
-
-      @if (shouldDisplayFormControl('techRecord_maxTrainDesignWeight')) {
-        <govuk-form-group-input
-          [label]="'Design'"
-          type="number"
-          formControlName="techRecord_maxTrainDesignWeight"
-          class="govuk-label--s"
-          [showErrors]="false"
-          [suffix]="'kg'"
-          appFilterByTags
-          [tagNames]="[]"
-          [filters]="filters()"
-        ></govuk-form-group-input>
-      }
-    </div>
   }
 
-  <!-- coupling (TRL Only) -->
+  @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
+    @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_maxTrainGbWeight', 'techRecord_maxTrainEecWeight', 'techRecord_maxTrainDesignWeight')) {
+      <h2 class="govuk-label govuk-label--s govuk-!-margin-bottom-2">Max train</h2>
+
+      @if (mode() === Modes.EDIT) {
+        @if (form.get('techRecord_maxTrainGbWeight')?.invalid || form.get('techRecord_maxTrainEecWeight')?.invalid || form.get('techRecord_maxTrainDesignWeight')?.invalid) {
+          <app-field-error-message 
+            [name]="'max-train-weight'"
+            [error]="'Max train GB, EEC, Design Weight must be less than or equal to 99999kg'"
+          ></app-field-error-message>
+        }
+      }
+
+      <div class="axle">
+        @if (shouldDisplayFormControl('techRecord_maxTrainGbWeight')) {
+          <govuk-form-group-input
+            [label]="'GB'"
+            type="number"
+            formControlName="techRecord_maxTrainGbWeight"
+            class="govuk-label--s"
+            [showErrors]="false"
+            [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
+          ></govuk-form-group-input>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_maxTrainEecWeight')) {
+          <govuk-form-group-input
+            [label]="'EEC'"
+            type="number"
+            formControlName="techRecord_maxTrainEecWeight"
+            class="govuk-label--s"
+            [showErrors]="false"
+            [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
+          ></govuk-form-group-input>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_maxTrainDesignWeight')) {
+          <govuk-form-group-input
+            [label]="'Design'"
+            type="number"
+            formControlName="techRecord_maxTrainDesignWeight"
+            class="govuk-label--s"
+            [showErrors]="false"
+            [suffix]="'kg'"
+            appFilterByTags
+            [tagNames]="[]"
+            [filters]="filters()"
+          ></govuk-form-group-input>
+        }
+      </div>
+    }
+  }
+
+  <!-- Coupling type (TRL Only) -->
   @if (shouldDisplayFormControl('techRecord_couplingType')) {
     <govuk-form-group-select
       [label]="'Coupling type'"

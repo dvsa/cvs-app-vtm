@@ -311,58 +311,60 @@
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
                   <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
                     @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; track inspection; let i = $index) {
-                      <fieldset class="govuk-fieldset">
-                        <div class="govuk-form-group">
-                          <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
-                              UN number {{ i + 1 }}
-                            </label>
-                          </h1>
-                          @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
-                            <table class="govuk-table margin-b-0">
-                              <tbody class="govuk-table__body">
-                              <tr class="govuk-table__row">
-                                <td class="govuk-table__cell border-b-0">
-                                  <govuk-form-group-input
-                                    id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                                    [width]="FormNodeWidth.XL"
-                                    formControlName="{{ i }}"
-                                    appFilterByTags
-                                    [filters]="filters()"
-                                    [tagNames]="['ADR']"
-                                  />
-                                </td>
-                                @if (mode() === Modes.EDIT) {
+                      @if (shouldDisplayFormControl(`techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.${i}`)) {
+                        <fieldset class="govuk-fieldset">
+                          <div class="govuk-form-group">
+                            <h1 class="govuk-label-wrapper">
+                              <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
+                                UN number {{ i + 1 }}
+                              </label>
+                            </h1>
+                            @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
+                              <table class="govuk-table margin-b-0">
+                                <tbody class="govuk-table__body">
+                                <tr class="govuk-table__row">
                                   <td class="govuk-table__cell border-b-0">
-                                    <p class="govuk-body margin-b-0">
-                                      <button
-                                        [id]="`remove-un-number-${i + 1}`"
-                                        type="button"
-                                        class="govuk-button govuk-button--warning"
-                                        data-module="govuk-button"
-                                        role="button"
-                                        (click)="removeUNNumber(i)"
-                                      >
-                                        Remove
-                                      </button>
-                                    </p>
+                                    <govuk-form-group-input
+                                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                                      [width]="FormNodeWidth.XL"
+                                      formControlName="{{ i }}"
+                                      appFilterByTags
+                                      [filters]="filters()"
+                                      [tagNames]="['ADR']"
+                                    />
                                   </td>
-                                }
-                              </tr>
-                              </tbody>
-                            </table>
-                          } @else {
-                            <govuk-form-group-input
-                              id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                              [width]="FormNodeWidth.XL"
-                              formControlName="{{ i }}"
-                              appFilterByTags
-                              [filters]="filters()"
-                              [tagNames]="['ADR']"
-                            />
-                          }
-                        </div>
-                      </fieldset>
+                                  @if (mode() === Modes.EDIT) {
+                                    <td class="govuk-table__cell border-b-0">
+                                      <p class="govuk-body margin-b-0">
+                                        <button
+                                          [id]="`remove-un-number-${i + 1}`"
+                                          type="button"
+                                          class="govuk-button govuk-button--warning"
+                                          data-module="govuk-button"
+                                          role="button"
+                                          (click)="removeUNNumber(i)"
+                                        >
+                                          Remove
+                                        </button>
+                                      </p>
+                                    </td>
+                                  }
+                                </tr>
+                                </tbody>
+                              </table>
+                            } @else {
+                              <govuk-form-group-input
+                                id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                                [width]="FormNodeWidth.XL"
+                                formControlName="{{ i }}"
+                                appFilterByTags
+                                [filters]="filters()"
+                                [tagNames]="['ADR']"
+                              />
+                            }
+                          </div>
+                        </fieldset>
+                      }
                     }
   
                     @if (mode() === Modes.EDIT) {
@@ -449,57 +451,59 @@
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc3Details')) {
               <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
                 @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
-                  <fieldset class="govuk-fieldset" formGroupName="{{ i }}">
-                    <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
-                    <!-- TC3 Inspection Type -->
-                    <govuk-form-group-select
-                      [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
-                      class="govuk-label govuk-label--s"
-                      label="TC3: Inspection type"
-                      formControlName="tc3Type"
-                      [options]="tc3InspectionOptions"
-                      [defaultOption]="'Select inspection type'"
-                      appFilterByTags
-                      [filters]="filters()"
-                      [tagNames]="['ADR']"
-                    />
-                    <!-- TC3 Certificate Number -->
-                    <govuk-form-group-input
-                      [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
-                      class="govuk-label govuk-label--s"
-                      label="TC3: Certificate number"
-                      formControlName="tc3PeriodicNumber"
-                      appFilterByTags
-                      [filters]="filters()"
-                      [tagNames]="['ADR']"
-                    />
-                    <!-- TC3 Expiry Date -->
-                    <govuk-form-group-date
-                      [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
-                      class="govuk-label govuk-label--s"
-                      label="TC3: Expiry date"
-                      formControlName="tc3PeriodicExpiryDate"
-                      appFilterByTags
-                      [filters]="filters()"
-                      [tagNames]="['ADR']"
-                    />
-                    <!-- TC3 Footer -->
-                    @if (mode() === Modes.EDIT) {
-                      <p class="govuk-body govuk-!-text-align-left">
-                        <button
-                          type="button"
-                          class="govuk-button govuk-button--warning"
-                          data-module="govuk-button"
-                          role="button"
-                          id="remove-subsequent-inspection-{{ i + 1 }}"
-                          (click)="removeTC3TankInspection(i)"
-                        >
-                          Remove inspection
-                        </button>
-                      </p>
-                    }
-                    <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-                  </fieldset>
+                  @if (shouldDisplayFormControl(`techRecord_adrDetails_tank_tankDetails_tc3Details.${i}`)) {
+                    <fieldset class="govuk-fieldset" formGroupName="{{ i }}">
+                      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
+                      <!-- TC3 Inspection Type -->
+                      <govuk-form-group-select
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Inspection type"
+                        formControlName="tc3Type"
+                        [options]="tc3InspectionOptions"
+                        [defaultOption]="'Select inspection type'"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Certificate Number -->
+                      <govuk-form-group-input
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Certificate number"
+                        formControlName="tc3PeriodicNumber"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Expiry Date -->
+                      <govuk-form-group-date
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Expiry date"
+                        formControlName="tc3PeriodicExpiryDate"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Footer -->
+                      @if (mode() === Modes.EDIT) {
+                        <p class="govuk-body govuk-!-text-align-left">
+                          <button
+                            type="button"
+                            class="govuk-button govuk-button--warning"
+                            data-module="govuk-button"
+                            role="button"
+                            id="remove-subsequent-inspection-{{ i + 1 }}"
+                            (click)="removeTC3TankInspection(i)"
+                          >
+                            Remove inspection
+                          </button>
+                        </p>
+                      }
+                      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+                    </fieldset>
+                  }
                 }
               </div>
             }

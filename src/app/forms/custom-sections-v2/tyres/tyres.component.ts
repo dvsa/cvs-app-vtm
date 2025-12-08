@@ -23,7 +23,7 @@ import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadInde
 import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { editingTechRecord, techRecord, updateScrollPosition } from '@store/technical-records';
+import { updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 
@@ -53,9 +53,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	route = inject(ActivatedRoute);
 	axlesService = inject(AxlesService);
 	tcs = inject(TechnicalRecordChangesService);
-
-	currentTechRecord = this.store.selectSignal(techRecord);
-	amendedTechRecord = this.store.selectSignal(editingTechRecord);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
