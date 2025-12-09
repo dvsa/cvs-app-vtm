@@ -321,9 +321,7 @@ function handleRemoveUNNumber(state: TechnicalRecordServiceState, action: { inde
 
 function handleAddSection(state: TechnicalRecordServiceState, action: { section: string | number }) {
 	const newState = cloneDeep(state);
-	console.log(action);
 	if (newState.sectionState?.includes(action.section)) return newState;
-	console.log('test');
 	return { ...newState, sectionState: newState.sectionState?.concat(action.section) };
 }
 
