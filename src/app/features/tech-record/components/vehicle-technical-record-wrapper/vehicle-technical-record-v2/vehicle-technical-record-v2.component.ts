@@ -151,6 +151,10 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 			});
 	}
 
+	getCurrentMode(): Modes {
+		return this.isEditing ? Modes.EDIT : Modes.VIEW;
+	}
+
 	ngAfterViewInit(): void {
 		if (!this.isEditing) {
 			this.form.disable();
