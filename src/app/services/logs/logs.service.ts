@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { saveLog } from '@store/logs/logs.actions';
 import { selectMergedRouteUrl } from '@store/router/router.selectors';
-import { id } from '@store/user/user-service.reducer';
+import { employeeId, id } from '@store/user/user-service.reducer';
 import { from, lastValueFrom, map } from 'rxjs';
 import { filter, mergeMap, switchMap, toArray } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ export class LogsProvider {
 	private httpService = inject(HttpService);
 	private store$ = inject(Store<LogsModel>);
 	private oid = this.store$.selectSignal(id);
+	private employeeId = this.store$.selectSignal(employeeId);
 
 	public sendLogs = (logs: Log[]) => {
 		if (!logs || logs?.length === 0) {
@@ -27,7 +28,8 @@ export class LogsProvider {
 					...log,
 					source: 'VTM',
 					appVersion: version,
-					employeeId: this.oid(),
+					employeeId: this.employeeId(),
+					oid: this.oid(),
 				})),
 				toArray(),
 				switchMap((authLogs: Log[]) => this.httpService.sendLogs(authLogs)),
