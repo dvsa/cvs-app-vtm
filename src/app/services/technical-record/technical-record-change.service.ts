@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { get, isEqual } from 'lodash';
@@ -291,9 +290,6 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasADRSectionChanged(): boolean {
-		// Edge case 1: New certificate requested null -> false is NOT a change
-		if (this.hasNewCertificateRequestedChanged()) return true;
-
 		return this.hasChanged(
 			'techRecord_adrDetails_dangerousGoods',
 			'techRecord_adrDetails_applicantDetails_name',
@@ -334,7 +330,7 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_brakeEndurance',
 			'techRecord_adrDetails_weight',
 			'techRecord_adrDetails_declarationsSeen',
-			//'techRecord_adrDetails_newCertificateRequested',
+			'techRecord_adrDetails_newCertificateRequested',
 			'techRecord_adrDetails_additionalExaminerNotes_note',
 			'techRecord_adrDetails_additionalExaminerNotes',
 			'techRecord_adrDetails_adrCertificateNotes'
@@ -375,20 +371,6 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
 			'techRecord_adrDetails_tank_tankDetails_tc3Details'
 		);
-	}
-
-	hasNewCertificateRequestedChanged(): boolean {
-		const current = this.currentTechRecord();
-		const amended = this.amendedTechRecord();
-
-		if (!current || !amended) return true;
-
-		const a = current['techRecord_adrDetails_newCertificateRequested' as keyof TechRecordType<'put'>];
-		const b = amended['techRecord_adrDetails_newCertificateRequested' as keyof TechRecordType<'put'>];
-
-		if (a == null && b === false) return false;
-
-		return this._hasChanged('techRecord_adrDetails_newCertificateRequested');
 	}
 
 	hasLastApplicantSectionChanged(): boolean {

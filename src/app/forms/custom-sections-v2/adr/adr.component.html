@@ -665,7 +665,7 @@
         }
 
         <!--  New Certificate required -->
-        @if (mode() !== Modes.SUMMARY || tcs.hasNewCertificateRequestedChanged()) {
+        @if (shouldDisplayFormControl('techRecord_adrDetails_newCertificateRequested')) {
           <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
 
           <govuk-form-group-checkbox
