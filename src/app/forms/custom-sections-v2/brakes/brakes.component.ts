@@ -1,4 +1,3 @@
-import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
@@ -35,7 +34,6 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		GovukFormGroupAutocompleteComponent,
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
-		ToUppercaseDirective,
 	],
 })
 export class BrakesComponent extends EditBaseComponent implements OnInit, OnDestroy {

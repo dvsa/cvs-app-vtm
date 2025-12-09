@@ -131,7 +131,7 @@
         }
       </div>
 
-      @if (tcs.hasChanged('techRecord_grossLadenWeight')) {
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossLadenWeight')) {
         <label class="govuk-label govuk-label--s">Brake efficiency (no wheels locked)</label>
 
         <div class="input-row">
@@ -165,7 +165,7 @@
         </div>
       }
 
-      @if (tcs.hasChanged('techRecord_grossKerbWeight')) {
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossKerbWeight')) {
         <label class="govuk-label govuk-label--s">Brake efficiency (up to and including half wheels locked)</label>
 
         <div class="input-row">
