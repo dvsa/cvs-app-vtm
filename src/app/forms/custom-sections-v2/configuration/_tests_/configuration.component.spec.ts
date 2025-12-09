@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -58,6 +59,7 @@ describe('ConfigurationComponent', () => {
 		fixture = TestBed.createComponent(ConfigurationComponent);
 		component = fixture.componentInstance;
 		componentRef = fixture.componentRef;
+		componentRef.setInput('mode', Modes.EDIT);
 		componentRef.setInput('techRecord', mockTechRecord);
 		component.form.reset();
 		fixture.detectChanges();

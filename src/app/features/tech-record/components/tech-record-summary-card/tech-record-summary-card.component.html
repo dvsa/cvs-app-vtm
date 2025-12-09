@@ -4,7 +4,7 @@
       <h2 class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l">
         Summary
       </h2>
-      @if (mode() === 'create') {
+      @if (mode() === Modes.CREATE) {
         <ul class="govuk-summary-card__actions">
           <li class="govuk-summary-card__action">
             <a id="change-link" class="govuk-link" href="javascript:void(0)" (click)="onChange()">
@@ -26,7 +26,7 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             Vehicle type
 
-            @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
                 <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
               </div>
@@ -43,7 +43,7 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             VIN
 
-            @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
                 <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
               </div>
@@ -76,7 +76,7 @@
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               VRM
 
-              @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+              @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
                   <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
                 </div>
@@ -119,7 +119,7 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             Record type
 
-            @if (mode() === 'view') {
+            @if (mode() === Modes.VIEW) {
               <div class="summary-link-wrapper">
                 @switch (techRecord.techRecord_statusCode) {
                   @case (StatusCodes.CURRENT) {
@@ -172,7 +172,7 @@
             }
           </dt>
         </div>
-        <div class="govuk-summary-list__row--value">
+        <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() === Modes.CREATE">
           <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
             <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
               {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
@@ -181,13 +181,13 @@
         </div>
 
         <!-- Record status -->
-        @if (mode() !== 'create') {
+        @if (mode() !== Modes.CREATE) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               Record status
             </dt>
           </div>
-          <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== 'view'">
+          <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== Modes.VIEW">
             <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
               @let completeness = techRecord.techRecord_recordCompleteness;
               <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
@@ -198,7 +198,7 @@
         }
 
         <!-- Record visibility in VTA -->
-        @if (mode() === 'view') {
+        @if (mode() === Modes.VIEW) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               Visibility in VTA
