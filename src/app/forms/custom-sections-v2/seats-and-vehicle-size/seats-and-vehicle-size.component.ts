@@ -46,9 +46,15 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.max(99, 'Wheelchair capacity'),
 		]),
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle class'),
+			this.commonValidators.required(
+				'Vehicle class',
+				'vehicle-class-description',
+				'techRecord_vehicleClass_description'
+			),
 		]),
-		techRecord_vehicleSize: this.fb.control<string | null>(null, [this.commonValidators.required('Vehicle size')]),
+		techRecord_vehicleSize: this.fb.control<string | null>(null, [
+			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
+		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 			this.commonValidators.max(150, 'Number of seatbelts'),
 		]),

@@ -64,9 +64,13 @@ export class CommonValidatorsService {
 		};
 	}
 
-	maxLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	maxLength(length: number, message: string): ValidatorFn;
-	maxLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	maxLength(length: number, func: (control: AbstractControl) => GlobalError, accordion?: string): ValidatorFn;
+	maxLength(length: number, message: string, accordion?: string): ValidatorFn;
+	maxLength(
+		length: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
 				return {
@@ -223,16 +227,23 @@ export class CommonValidatorsService {
 		};
 	}
 
-	required(func: (control: AbstractControl) => GlobalError, accordion?: string): ValidatorFn;
-	required(message: string, accordion?: string): ValidatorFn;
-	required(message: string | ((control: AbstractControl) => GlobalError), accordion?: string): ValidatorFn {
+	required(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
+	required(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	required(
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				let globalError: GlobalError = { error: '', anchorLink: 'techRecord_reasonForCreation', accordion: '' };
+				let globalError: GlobalError = { error: '', anchorLink: '', accordion: '' };
 				if (typeof message === 'string') {
 					globalError.error = `${message} is required`;
 				} else {
 					globalError = message(control);
+				}
+				if (anchorLink) {
+					globalError.anchorLink = anchorLink;
 				}
 				if (accordion) {
 					globalError.accordion = accordion;
