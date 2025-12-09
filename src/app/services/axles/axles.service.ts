@@ -76,6 +76,7 @@ export class AxlesService {
 					return {
 						error: `Axle ${index} tyre code not in database`,
 						anchorLink: `tyres_tyreCode-${index}`,
+						accordion: 'tyres',
 					};
 				})
 			: (control) => null;
@@ -92,6 +93,9 @@ export class AxlesService {
 					return {
 						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'tyres'
+							: undefined,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
@@ -118,7 +122,14 @@ export class AxlesService {
 					: axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.commonValidators.max(999, 'Data TR Axles'),
+				this.commonValidators.max(
+					999,
+					'Data TR Axles',
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres' : undefined,
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+						? 'tyres_dataTrAxles'
+						: undefined
+				),
 				this.commonValidators.min(0, 'Data TR Axles'),
 			]),
 
@@ -149,6 +160,9 @@ export class AxlesService {
 					return {
 						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'tyres'
+							: undefined,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
@@ -208,6 +222,9 @@ export class AxlesService {
 							? 'Brake actuator and Lever length must be less than or equal to 999mm'
 							: 'This field must be less than or equal to 999',
 						anchorLink: `brakes_brakeActuator-${index}`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'brakes'
+							: undefined,
 					};
 				}),
 			]),
@@ -219,6 +236,9 @@ export class AxlesService {
 							? 'Brake actuator and Lever length must be less than or equal to 999mm'
 							: 'This field must be less than or equal to 999',
 						anchorLink: `brakes_leverLength-${index}`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'brakes'
+							: undefined,
 					};
 				}),
 			]),
@@ -235,6 +255,9 @@ export class AxlesService {
 					return {
 						error: `Axle ${index} tyre code must be less than or equal to 99999`,
 						anchorLink: `tyres_tyreCode-${index}`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'tyres'
+							: undefined,
 					};
 				}),
 				this.commonValidators.min(0, (control) => {
@@ -247,11 +270,21 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.max(12, 'Tyre Size'),
+				this.commonValidators.max(
+					12,
+					'Tyre Size',
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres' : undefined,
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres_tyreSize' : undefined
+				),
 				this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.max(2, 'Ply rating'),
+				this.commonValidators.max(
+					2,
+					'Ply rating',
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres' : undefined,
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres_plyRating' : undefined
+				),
 				this.commonValidators.min(0, 'Ply rating'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
@@ -259,7 +292,14 @@ export class AxlesService {
 				featureEnabled ? FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.commonValidators.max(999, 'Load index'),
+				this.commonValidators.max(
+					999,
+					'Load index',
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') ? 'tyres' : undefined,
+					this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+						? 'tyres_dataTrAxles'
+						: undefined
+				),
 				this.commonValidators.min(0, 'Load index'),
 			]),
 
@@ -284,6 +324,9 @@ export class AxlesService {
 					? `Axle ${index} GB, EEC, Design Weight must be less than or equal to 99999kg`
 					: `Axle ${index} ${label} must be less than or equal to 99999`,
 				anchorLink: `${id}-${index}`,
+				accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? 'weights'
+					: undefined,
 			};
 		});
 	}
@@ -296,6 +339,9 @@ export class AxlesService {
 					? `Axle ${index} Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`
 					: `Axle ${index} ${label} must be less than or equal to 99999`,
 				anchorLink: `${id}-${index}`,
+				accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? 'weights'
+					: undefined,
 			};
 		});
 	}
@@ -313,6 +359,9 @@ export class AxlesService {
 					return {
 						error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than or equal to 99999mm`,
 						anchorLink: `techRecord_dimensions_axleSpacing_${axlesNumber - 2}_value`,
+						accordion: this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+							? 'dimensions'
+							: undefined,
 					};
 				}),
 			]),
