@@ -1,6 +1,7 @@
 import { TagType } from '@/src/app/components/tag/tag.component';
 import { Modes } from '@/src/app/models/modes.enum';
 import { Axle, FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { ViewportScroller } from '@angular/common';
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +52,8 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 	axlesService = inject(AxlesService);
+	tcs = inject(TechnicalRecordChangesService);
+
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
@@ -261,6 +264,11 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 				}
 			}
 		});
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;

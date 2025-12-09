@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
@@ -50,6 +51,7 @@ describe('ApprovalTypeComponent', () => {
 		fixture = TestBed.createComponent(ApprovalTypeComponent);
 		component = fixture.componentInstance;
 		componentRef = fixture.componentRef;
+		componentRef.setInput('mode', Modes.EDIT);
 		componentRef.setInput('techRecord', mockTechRecord);
 		component.form.reset();
 		fixture.detectChanges();

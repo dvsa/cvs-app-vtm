@@ -36,6 +36,7 @@ export class TechRecordSummaryCardComponent {
 	});
 
 	readonly Roles = Roles;
+	readonly Modes = Modes;
 	readonly TagType = TagType;
 	readonly StatusCodes = StatusCodes;
 	readonly VehicleTypes = VehicleTypes;

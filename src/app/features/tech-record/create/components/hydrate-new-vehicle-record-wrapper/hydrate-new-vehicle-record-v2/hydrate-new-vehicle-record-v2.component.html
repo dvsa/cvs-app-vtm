@@ -7,7 +7,7 @@
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-        <app-tech-record-summary-card [mode]="Modes.EDIT" [techRecord]="techRecord" />
+        <app-tech-record-summary-card [mode]="Modes.CREATE" [techRecord]="techRecord" />
 
         <div class="govuk-button-group govuk-button-group-record">
           <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>
@@ -52,7 +52,7 @@
                       <app-accordion
                         [id]="'approval-type'"
                         [title]="'Approval type'"
-                        [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Approval type, COIF number, variant number.' : 'Approval type, national type, variant number.'"
+                        [description]="technicalRecordService.getApprovalTypeAccordionDescription(techRecord)"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -92,7 +92,7 @@
                       <app-accordion
                         [id]="'weights'"
                         [title]="'Weights'"
-                        [description]="weightsAccordionDescription"
+                        [description]="technicalRecordService.getWeightsAccordionDescription(techRecord)"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -112,7 +112,7 @@
                       <app-accordion
                         [id]="'tyres'"
                         [title]="'Tyres'"
-                        [description]="techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.'"
+                        [description]="technicalRecordService.getTyresAccordionDescription(techRecord)"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -132,7 +132,7 @@
                       <app-accordion
                         [id]="'configuration'"
                         [title]="'Configuration'"
-                        [description]="configAccordionDescription"
+                        [description]="technicalRecordService.getConfigAccordionDescription(techRecord)"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -192,7 +192,7 @@
                       <app-accordion
                         [id]="'brakes'"
                         [title]="'Brakes'"
-                        [description]="brakesAccordionDescription"
+                        [description]="technicalRecordService.getBrakesAccordionDescription(techRecord)"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -362,7 +362,7 @@
                     <app-accordion
                       [id]="'reason-for-creation'"
                       [title]="'Reason for creation'"
-                      [description]="generateRFCDescription()"
+                      [description]="`Tell us why you're creating this record.`"
                       [type]="'condensed'"
                       [isExpanded]="false"
                       appFilterByTags

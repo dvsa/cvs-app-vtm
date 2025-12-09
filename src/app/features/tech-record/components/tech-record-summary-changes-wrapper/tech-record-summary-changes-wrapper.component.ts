@@ -4,9 +4,9 @@ import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes
 import { TechRecordSummaryChangesV2Component } from './tech-record-summary-changes-v2/tech-record-summary-changes-v2.component';
 
 @Component({
-	selector: 'app-search-wrapper',
+	selector: 'app-tech-record-summary-changes-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('techrecordredesign')) {
+    @if (featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
       <app-tech-record-summary-changes-v2 />
     } @else {
       <app-tech-record-summary-changes />

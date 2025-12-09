@@ -178,46 +178,6 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		}
 	}
 
-	generateRFCDescription(): string {
-		// TODO: Update this method to return a dynamic description message
-		// based on if user is creating or amending a record.
-		// return "Tell us why you're amending this record.";
-
-		return "Tell us why you're creating this record.";
-	}
-
-	get weightsAccordionDescription(): string {
-		switch (this.techRecord$()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Axle, gross, and train weights.';
-			case VehicleTypes.PSV:
-				return 'Axle weights, unladen weight.';
-			case VehicleTypes.TRL:
-				return 'Axle, gross weights and coupling type.';
-			default:
-				return '';
-		}
-	}
-
-	get configAccordionDescription(): string {
-		switch (this.techRecord$()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Off-road, fuel system, road friendly suspension.';
-			case VehicleTypes.TRL:
-				return 'Vehicle markers, road friendly suspension.';
-			case VehicleTypes.PSV:
-				return 'Vehicle markers, fuel system, speed restriction.';
-			default:
-				return '';
-		}
-	}
-
-	get brakesAccordionDescription(): string {
-		return this.techRecord$()?.techRecord_vehicleType === VehicleTypes.PSV
-			? 'Brake codes, retarders, parking brakes.'
-			: 'Axle brake details, parking brakes.';
-	}
-
 	get tags(): string[] {
 		switch (this.techRecord$()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:

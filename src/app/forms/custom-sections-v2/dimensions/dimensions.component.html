@@ -20,6 +20,7 @@
 
     @if (hasEnoughAxlesToDisplay()) {
       <!-- Front axle to rear axle-->
+      @if (shouldDisplayFormControl('techRecord_frontAxleToRearAxle')) {
         <govuk-form-group-input
           formControlName="techRecord_frontAxleToRearAxle"
           label="Front axle to rear axle"
@@ -29,9 +30,10 @@
           appFilterByTags
           [tagNames]="[]"
           [filters]="filters()"
-        />
+        ></govuk-form-group-input>
+      }
 
-      @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      @if (shouldDisplayFormControl('techRecord_rearAxleToRearTrl')) {
         <!-- Rear axle to rear of trailer -->
         <govuk-form-group-input
           formControlName="techRecord_rearAxleToRearTrl"
@@ -48,218 +50,250 @@
 
     <!-- Axles spacings (HGV and TRL) -->
     @if (tr.techRecord_vehicleType !== VehicleTypes.PSV && parent.get('techRecord_dimensions_axleSpacing')) {
-      <div
-        [formGroup]="parent"
-        appFilterByTags
-        [tagNames]="[]"
-        [filters]="filters()">
-        <ng-container formArrayName="techRecord_dimensions_axleSpacing">
-          @for (axle of axleSpacings?.controls; track axle; let i = $index) {
-            <ng-container [formGroup]="axle">
-              <govuk-form-group-input
-                [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
-                formControlName="value"
-                label="Axle {{ i + 1 }} to axle {{ i + 2 }}"
-                [width]="Widths.XS"
-                suffix="mm"
-                type="number"
-              ></govuk-form-group-input>
-            </ng-container>
-          }
-        </ng-container>
-      </div>
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_dimensions_axleSpacing')) {
+        <div [formGroup]="parent" appFilterByTags [tagNames]="[]" [filters]="filters()">
+          <ng-container formArrayName="techRecord_dimensions_axleSpacing">
+            @for (axle of axleSpacings?.controls; track axle; let i = $index) {
+              @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_dimensions_axleSpacing.${i}.value`)) {
+                <ng-container [formGroup]="axle">
+                  <govuk-form-group-input
+                    [id]="'techRecord_dimensions_axleSpacing_' + i + '_value'"
+                    formControlName="value"
+                    label="Axle {{ i + 1 }} to axle {{ i + 2 }}"
+                    [width]="Widths.XS"
+                    suffix="mm"
+                    type="number"
+                  ></govuk-form-group-input>
+                </ng-container>
+              }
+            }
+          </ng-container>
+        </div>
+      }
     }
 
     <!-- Length-->
-    <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
-      @if (shouldShowLengthWarning()) {
-        <app-field-warning-message 
-          id="dimensions-length-warning" 
-          [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"
-        ></app-field-warning-message>
-      }
-
-      <govuk-form-group-input
-        formControlName="techRecord_dimensions_length"
-        label="Length"
-        [width]="Widths.XS"
-        suffix="mm"
-        type="number"
-      ></govuk-form-group-input>
-    </div>
-
-    <!-- Width-->
-    <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
-      @if (shouldShowWidthWarning()) {
-        <app-field-warning-message 
-          id="dimensions-width-warning" 
-          [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"
-        ></app-field-warning-message>
-      }
-
-      <govuk-form-group-input
-        formControlName="techRecord_dimensions_width"
-        label="Width"
-        [width]="Widths.XS"
-        suffix="mm"
-        type="number"
-      ></govuk-form-group-input>
-    </div>
-
-    @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
-      <!-- Height (PSV Only)   -->
+    @if (shouldDisplayFormControl('techRecord_dimensions_length')) {
+      <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
+        @if (shouldShowLengthWarning()) {
+          <app-field-warning-message 
+            id="dimensions-length-warning" 
+            [warningMessage]="'This length dimension field value is greater than 12,000mm. Check your input before proceeding'"
+          ></app-field-warning-message>
+        }
+  
         <govuk-form-group-input
-          formControlName="techRecord_dimensions_height"
-          label="Height"
+          formControlName="techRecord_dimensions_length"
+          label="Length"
           [width]="Widths.XS"
           suffix="mm"
           type="number"
-          appFilterByTags
-          [tagNames]="[]"
-          [filters]="filters()"
-        />
+        ></govuk-form-group-input>
+      </div>
     }
 
-    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
-      <div appFilterByTags [tagNames]="[]" [filters]="filters()">
-        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Coupling centre to rear axle
-        </span>
-        <div class="flex-row">
-          <!-- Coupling centre to rear axle minimum -->
-          <govuk-form-group-input
-            formControlName="techRecord_couplingCenterToRearAxleMin"
-            label="Minimum"
-            [width]="Widths.XS"
-            class="govuk-!-font-weight-regular"
-            suffix="mm"
-            type="number"
-          />
-          <!-- Coupling centre to rear axle maximum -->
-          <govuk-form-group-input
-            formControlName="techRecord_couplingCenterToRearAxleMax"
-            label="Maximum"
-            [width]="Widths.XS"
-            class="govuk-!-font-weight-regular"
-            suffix="mm"
-            type="number"
-          />
-        </div>
-      </div>
-
+    <!-- Width-->
+    @if (shouldDisplayFormControl('techRecord_dimensions_width')) {
       <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
-        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Coupling centre to rear of trailer
-        </span>
-        <div class="flex-row">
-          <!-- Coupling centre to rear axle minimum -->
-          @if (couplingCenterToRearTrlMinWarning) {
-            <app-field-warning-message 
-              id="coupling-centre-to-rear-of-trailer-minimum-warning" 
-              [warningMessage]="couplingCenterToRearTrlMinWarning"
-            ></app-field-warning-message>
-          }
-
-          <govuk-form-group-input
-            formControlName="techRecord_couplingCenterToRearTrlMin"
-            label="Minimum"
-            [width]="Widths.XS"
-            class="govuk-!-font-weight-regular"
-            suffix="mm"
-            type="number"
-            appFilterByTags
-            [tagNames]="['Plates']"
-            [filters]="filters()"
-          />
-          
-          <!-- Coupling centre to rear axle maximum -->
-          @if (couplingCenterToRearTrlMaxWarning) {
-            <app-field-warning-message 
-              id="coupling-centre-to-rear-of-trailer-maximum-warning" 
-              [warningMessage]="couplingCenterToRearTrlMaxWarning"
-            ></app-field-warning-message>
-          }
-
-          <govuk-form-group-input
-            formControlName="techRecord_couplingCenterToRearTrlMax"
-            label="Maximum"
-            [width]="Widths.XS"
-            class="govuk-!-font-weight-regular"
-            suffix="mm"
-            type="number"
-            appFilterByTags
-            [tagNames]="['Plates']"
-            [filters]="filters()"
-          />
-        </div>
+        @if (shouldShowWidthWarning()) {
+          <app-field-warning-message 
+            id="dimensions-width-warning" 
+            [warningMessage]="'This width dimension field value is greater than 2,600mm. Check your input before proceeding'"
+          ></app-field-warning-message>
+        }
+  
+        <govuk-form-group-input
+          formControlName="techRecord_dimensions_width"
+          label="Width"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+        ></govuk-form-group-input>
       </div>
+    }
 
+    <!-- Height (PSV Only)   -->
+    @if (shouldDisplayFormControl('techRecord_dimensions_height')) {
       <govuk-form-group-input
-        formControlName="techRecord_centreOfRearmostAxleToRearOfTrl"
-        label="Centre of rear axle to rear of trailer"
+        formControlName="techRecord_dimensions_height"
+        label="Height"
         [width]="Widths.XS"
         suffix="mm"
         type="number"
         appFilterByTags
         [tagNames]="[]"
         [filters]="filters()"
-      />
+      ></govuk-form-group-input>
+    }
+
+    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_couplingCenterToRearAxleMin', 'techRecord_couplingCenterToRearAxleMax')) {
+        <div appFilterByTags [tagNames]="[]" [filters]="filters()">
+          <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+            Coupling centre to rear axle
+          </span>
+          <div class="flex-row">
+            <!-- Coupling centre to rear axle minimum -->
+            @if (shouldDisplayFormControl('techRecord_couplingCenterToRearAxleMin')) {
+              <govuk-form-group-input
+                formControlName="techRecord_couplingCenterToRearAxleMin"
+                label="Minimum"
+                [width]="Widths.XS"
+                class="govuk-!-font-weight-regular"
+                suffix="mm"
+                type="number"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Coupling centre to rear axle maximum -->
+            @if (shouldDisplayFormControl('techRecord_couplingCenterToRearAxleMax')) {
+              <govuk-form-group-input
+                formControlName="techRecord_couplingCenterToRearAxleMax"
+                label="Maximum"
+                [width]="Widths.XS"
+                class="govuk-!-font-weight-regular"
+                suffix="mm"
+                type="number"
+              ></govuk-form-group-input>
+            }
+          </div>
+        </div>
+      }
+
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_couplingCenterToRearTrlMin', 'techRecord_couplingCenterToRearTrlMax')) {
+        <div appFilterByTags [tagNames]="['Plates']" [filters]="filters()">
+          <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+            Coupling centre to rear of trailer
+          </span>
+          <div class="flex-row">
+            <!-- Coupling centre to rear axle minimum -->
+            @if (couplingCenterToRearTrlMinWarning) {
+              <app-field-warning-message 
+                id="coupling-centre-to-rear-of-trailer-minimum-warning" 
+                [warningMessage]="couplingCenterToRearTrlMinWarning"
+              ></app-field-warning-message>
+            }
+  
+            @if (shouldDisplayFormControl('techRecord_couplingCenterToRearTrlMin')) {
+              <govuk-form-group-input
+                formControlName="techRecord_couplingCenterToRearTrlMin"
+                label="Minimum"
+                [width]="Widths.XS"
+                class="govuk-!-font-weight-regular"
+                suffix="mm"
+                type="number"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              ></govuk-form-group-input>
+            }
+            
+            <!-- Coupling centre to rear axle maximum -->
+            @if (couplingCenterToRearTrlMaxWarning) {
+              <app-field-warning-message 
+                id="coupling-centre-to-rear-of-trailer-maximum-warning" 
+                [warningMessage]="couplingCenterToRearTrlMaxWarning"
+              ></app-field-warning-message>
+            }
+  
+            @if (shouldDisplayFormControl('techRecord_couplingCenterToRearTrlMax')) {
+              <govuk-form-group-input
+                formControlName="techRecord_couplingCenterToRearTrlMax"
+                label="Maximum"
+                [width]="Widths.XS"
+                class="govuk-!-font-weight-regular"
+                suffix="mm"
+                type="number"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              ></govuk-form-group-input>
+            }
+          </div>
+        </div>
+      }
+
+      @if (shouldDisplayFormControl('techRecord_centreOfRearmostAxleToRearOfTrl')) {
+        <govuk-form-group-input
+          formControlName="techRecord_centreOfRearmostAxleToRearOfTrl"
+          label="Centre of rear axle to rear of trailer"
+          [width]="Widths.XS"
+          suffix="mm"
+          type="number"
+          appFilterByTags
+          [tagNames]="[]"
+          [filters]="filters()"
+        ></govuk-form-group-input>
+      }
     }
 
     <!-- HGV only fields -->
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV) {
-      <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
-        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Front of vehicle to fifth wheel
-        </span>
-        <div class="flex-row">
-          <!-- Front of vehicle to fifth wheel minimum -->
-          <govuk-form-group-input
-            formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
-            label="Minimum"
-            [width]="Widths.XS"
-            suffix="mm"
-            type="number"
-            class="govuk-!-font-weight-regular"
-          ></govuk-form-group-input>
-
-          <!-- Front of vehicle to fifth wheel maximum -->
-          <govuk-form-group-input
-            formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
-            label="Maximum"
-            [width]="Widths.XS"
-            suffix="mm"
-            type="number"
-            class="govuk-!-font-weight-regular"
-          ></govuk-form-group-input>
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_frontVehicleTo5thWheelCouplingMin', 'techRecord_frontVehicleTo5thWheelCouplingMax', 'techRecord_frontAxleTo5thWheelMin', 'techRecord_frontAxleTo5thWheelMax')) {
+        <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
+          <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+            Front of vehicle to fifth wheel
+          </span>
+          <div class="flex-row">
+            <!-- Front of vehicle to fifth wheel minimum -->
+            @if (shouldDisplayFormControl('techRecord_frontVehicleTo5thWheelCouplingMin')) {
+              <govuk-form-group-input
+                formControlName="techRecord_frontVehicleTo5thWheelCouplingMin"
+                label="Minimum"
+                [width]="Widths.XS"
+                suffix="mm"
+                type="number"
+                class="govuk-!-font-weight-regular"
+              ></govuk-form-group-input>
+            }
+  
+            <!-- Front of vehicle to fifth wheel maximum -->
+            @if (shouldDisplayFormControl('techRecord_frontVehicleTo5thWheelCouplingMax')) {
+              <govuk-form-group-input
+                formControlName="techRecord_frontVehicleTo5thWheelCouplingMax"
+                label="Maximum"
+                [width]="Widths.XS"
+                suffix="mm"
+                type="number"
+                class="govuk-!-font-weight-regular"
+              ></govuk-form-group-input>
+            }
+          </div>
         </div>
-      </div>
-
-      <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
-        <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
-          Front of vehicle to coupling device
-        </span>
-        <div class="flex-row">
-          <!-- Front of vehicle to coupling device minimum -->
-          <govuk-form-group-input
-            formControlName="techRecord_frontAxleTo5thWheelMin"
-            label="Minimum"
-            [width]="Widths.XS"
-            suffix="mm"
-            type="number"
-            class="govuk-!-font-weight-regular"
-          ></govuk-form-group-input>
-          <!-- Front of vehicle to coupling device maximum -->
-          <govuk-form-group-input
-            formControlName="techRecord_frontAxleTo5thWheelMax"
-            label="Maximum"
-            [width]="Widths.XS"
-            suffix="mm"
-            type="number"
-            class="govuk-!-font-weight-regular"
-          ></govuk-form-group-input>
+      }
+      
+      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_frontAxleTo5thWheelMin', 'techRecord_frontAxleTo5thWheelMax')) {
+        <div class="min-max-container" appFilterByTags [tagNames]="[]" [filters]="filters()">
+          <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">
+            Front of vehicle to coupling device
+          </span>
+          <div class="flex-row">
+            <!-- Front of vehicle to coupling device minimum -->
+            @if (shouldDisplayFormControl('techRecord_frontAxleTo5thWheelMin')) {
+              <govuk-form-group-input
+                formControlName="techRecord_frontAxleTo5thWheelMin"
+                label="Minimum"
+                [width]="Widths.XS"
+                suffix="mm"
+                type="number"
+                class="govuk-!-font-weight-regular"
+              ></govuk-form-group-input>
+            }
+  
+            <!-- Front of vehicle to coupling device maximum -->
+            @if(shouldDisplayFormControl('techRecord_frontAxleTo5thWheelMax')) {
+              <govuk-form-group-input
+                formControlName="techRecord_frontAxleTo5thWheelMax"
+                label="Maximum"
+                [width]="Widths.XS"
+                suffix="mm"
+                type="number"
+                class="govuk-!-font-weight-regular"
+              ></govuk-form-group-input>
+            }
+          </div>
         </div>
-      </div>
+      }
     }
   </div>
 }

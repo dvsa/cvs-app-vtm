@@ -1,5 +1,6 @@
 import { Modes } from '@/src/app/models/modes.enum';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -13,6 +14,8 @@ import { ReplaySubject } from 'rxjs';
 	imports: [GovukFormGroupTextareaComponent, ReactiveFormsModule],
 })
 export class NotesComponent extends EditBaseComponent implements OnInit, OnDestroy {
+	tcs = inject(TechnicalRecordChangesService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
@@ -69,6 +72,11 @@ export class NotesComponent extends EditBaseComponent implements OnInit, OnDestr
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	protected readonly VehicleTypes = VehicleTypes;

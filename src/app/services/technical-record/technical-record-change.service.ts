@@ -1,26 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
-import { isEqual } from 'lodash';
+import { get, isEqual } from 'lodash';
+import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TechnicalRecordChangesService {
 	store = inject(Store);
+	featureToggleService = inject(FeatureToggleService);
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
 
-	private _hasChanged(property: string) {
-		const current = this.currentTechRecord();
-		const amended = this.amendedTechRecord();
-
-		if (!current || !amended) return true;
-
-		const a = current[property as keyof TechRecordType<'put'>];
-		const b = amended[property as keyof TechRecordType<'put'>];
-
+	private _isNotEqual(a: unknown, b: unknown): boolean {
 		// Do not count the following edge cases as changes
 
 		// null/undefined->'' or '' -> null/undefined
@@ -32,10 +26,30 @@ export class TechnicalRecordChangesService {
 		// null/undefined -> []
 		if (a == null && Array.isArray(b) && b.length === 0) return false;
 
+		// null/undefined -> false TODO: remove this if it becomes problematic
+		if (a == null && b === false) return false;
+
 		// [] -> null/undefined
 		if (Array.isArray(a) && a.length === 0 && b != null) return false;
 
+		// If array -> array, then re-run edge case check against each value
+		if (Array.isArray(a) && Array.isArray(b)) {
+			return a.some((value, index) => this._isNotEqual(value, b[index]));
+		}
+
 		return !isEqual(a, b);
+	}
+
+	private _hasChanged(property: string) {
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		const a = get(current, property);
+		const b = get(amended, property);
+
+		return this._isNotEqual(a, b);
 	}
 
 	hasChanged(...properties: string[]) {
@@ -200,8 +214,10 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasBrakesSectionChanged(): boolean {
+		// Edge case 1: Only detect parking brake changes when axles are modified
+		if (this.hasParkingBrakesSectionChanged()) return true;
+
 		return this.hasChanged(
-			'techRecord_axles',
 			'techRecord_brakes_brakeCode',
 			'techRecord_brakes_brakeCodeOriginal',
 			'techRecord_brakes_dataTrBrakeOne',
@@ -212,6 +228,19 @@ export class TechnicalRecordChangesService {
 			'techRecord_brakes_loadSensingValve',
 			'techRecord_brakes_antilockBrakingSystem'
 		);
+	}
+
+	hasParkingBrakesSectionChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this._hasChanged(`techRecord_axles.${index}.parkingBrakeMrk`);
+		});
 	}
 
 	hasDDASectionChanged(): boolean {
@@ -232,12 +261,19 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasTyresSectionChanged(): boolean {
-		return this.hasChanged('techRecord_tyreUseCode', 'techRecord_axles', 'techRecord_speedRestriction');
+		// Edge case 1: Only detect tyre changes when axles are modified
+		if (this.hasAxleTyresChanged()) return true;
+
+		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+			? this.hasChanged('techRecord_tyreUseCode')
+			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_speedRestriction');
 	}
 
 	hasWeightSectionChanged(): boolean {
+		// Edge case 1: Only detect weight changes when axles are modified
+		if (this.hasAxleWeightsChanged()) return true;
+
 		return this.hasChanged(
-			'techRecord_axles',
 			'techRecord_grossGbWeight',
 			'techRecord_grossEecWeight',
 			'techRecord_grossDesignWeight',
@@ -298,6 +334,42 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_additionalExaminerNotes_note',
 			'techRecord_adrDetails_additionalExaminerNotes',
 			'techRecord_adrDetails_adrCertificateNotes'
+		);
+	}
+
+	hasADRApplicantSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_applicantDetails_name',
+			'techRecord_adrDetails_applicantDetails_street',
+			'techRecord_adrDetails_applicantDetails_town',
+			'techRecord_adrDetails_applicantDetails_city',
+			'techRecord_adrDetails_applicantDetails_postcode',
+			'techRecord_adrDetails_applicantDetails_telephoneNumber',
+			'techRecord_adrDetails_applicantDetails_emailAddress'
+		);
+	}
+
+	hasADRTankDetailsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+			'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+			'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+			'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+			'techRecord_adrDetails_tank_tankDetails_tankCode',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+			'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+			'techRecord_adrDetails_tank_tankDetails_specialProvisions'
+		);
+	}
+
+	hasADRTankInspectionsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+			'techRecord_adrDetails_tank_tankDetails_tc3Details'
 		);
 	}
 
@@ -447,5 +519,116 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_weight',
 			'techRecord_adrDetails_declarationsSeen'
 		);
+	}
+
+	hasGeneralVehicleDetailsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_vehicleType',
+			'techRecord_vehicleClass_description',
+			'techRecord_regnDate',
+			'techRecord_manufactureYear',
+			'techRecord_brakes_dtpNumber',
+			'techRecord_make',
+			'techRecord_model',
+			'techRecord_vehicleConfiguration',
+			'techRecord_bodyType_code',
+			'techRecord_bodyType_description',
+			'techRecord_functionCode',
+			'techRecord_conversionRefNo',
+			'techRecord_euVehicleCategory',
+			'techRecord_noOfAxles',
+			'techRecord_chassisMake',
+			'techRecord_chassisModel',
+			'techRecord_bodyMake',
+			'techRecord_bodyModel',
+			'techRecord_modelLiteral',
+			'techRecord_manufactureMonth',
+			'techRecord_firstUseDate',
+			'techRecord_frameDescription',
+			'techRecord_vehicleSubclass',
+			'techRecord_numberOfWheelsDriven'
+		);
+	}
+
+	hasConfigurationSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_offRoad',
+			'techRecord_departmentalVehicleMarker',
+			'techRecord_alterationMarker',
+			'techRecord_fuelPropulsionSystem',
+			'techRecord_roadFriendly',
+			'techRecord_speedRestriction',
+			'techRecord_suspensionType'
+		);
+	}
+
+	hasEmissionsAndExemptionsSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_drawbarCouplingFitted',
+			'techRecord_euroStandard',
+			'techRecord_emissionsLimit',
+			'techRecord_speedLimiterMrk',
+			'techRecord_tachoExemptMrk'
+		);
+	}
+
+	hasSeatsAndVehicleSizeSectionChanged(): boolean {
+		return this.hasChanged(
+			'techRecord_seatsUpperDeck',
+			'techRecord_seatsLowerDeck',
+			'techRecord_standingCapacity',
+			'techRecord_dda_wheelchairCapacity',
+			'techRecord_vehicleClass_description',
+			'techRecord_vehicleSize',
+			'techRecord_numberOfSeatbelts',
+			'techRecord_seatbeltInstallationApprovalDate'
+		);
+	}
+
+	hasTyreChanged(i: number): boolean {
+		return this.hasChanged(
+			`techRecord_axles.${i}.tyres_tyreCode`,
+			`techRecord_axles.${i}.tyres_tyreSize`,
+			`techRecord_axles.${i}.tyres_plyRating`,
+			`techRecord_axles.${i}.tyres_dataTrAxles`,
+			`techRecord_axles.${i}.tyres_fitmentCode`,
+			`techRecord_axles.${i}.tyres_speedCategorySymbol`
+		);
+	}
+
+	hasWeightChanged(i: number): boolean {
+		return this.hasChanged(
+			`techRecord_axles.${i}.weights_gbWeight`,
+			`techRecord_axles.${i}.weights_eecWeight`,
+			`techRecord_axles.${i}.weights_designWeight`,
+			`techRecord_axles.${i}.weights_ladenWeight`,
+			`techRecord_axles.${i}.weights_kerbWeight`
+		);
+	}
+
+	hasAxleWeightsChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this.hasWeightChanged(index);
+		});
+	}
+
+	hasAxleTyresChanged(): boolean {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this.hasTyreChanged(index);
+		});
 	}
 }

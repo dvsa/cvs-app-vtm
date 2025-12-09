@@ -1,5 +1,5 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
-  @if (shouldDisplayFormControl('techRecord_adrDetails_dangerousGoods')) {
+  @if (form.get('techRecord_adrDetails_dangerousGoods')) {
     <govuk-form-group-radio
       class="govuk-label--s"
       label="Approved to carry dangerous goods"
@@ -8,52 +8,69 @@
     >
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
-        <h3 class="govuk-heading-s">Applicant details</h3>
+        @if (mode() !== Modes.SUMMARY || tcs.hasADRApplicantSectionChanged()) {
+          <h3 class="govuk-heading-s">Applicant details</h3>
+        }
 
         <!-- Applicant Details Name -->
-        <govuk-form-group-input
-          label="Name"
-          formControlName="techRecord_adrDetails_applicantDetails_name"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_name')) {
+          <govuk-form-group-input
+            label="Name"
+            formControlName="techRecord_adrDetails_applicantDetails_name"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
         <!-- Applicant Details Street -->
-        <govuk-form-group-input
-          label="Address line 1"
-          formControlName="techRecord_adrDetails_applicantDetails_street"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_street')) {
+          <govuk-form-group-input
+            label="Address line 1"
+            formControlName="techRecord_adrDetails_applicantDetails_street"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
         <!-- Applicant Details Town -->
-        <govuk-form-group-input
-          label="Address line 2 (optional)"
-          formControlName="techRecord_adrDetails_applicantDetails_town"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_town')) {
+          <govuk-form-group-input
+            label="Address line 2 (optional)"
+            formControlName="techRecord_adrDetails_applicantDetails_town"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
         <!-- Applicant Details City -->
-        <govuk-form-group-input
-          label="Town or city"
-          [width]="FormNodeWidth.XL"
-          formControlName="techRecord_adrDetails_applicantDetails_city"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_city')) {
+          <govuk-form-group-input
+            label="Town or city"
+            [width]="FormNodeWidth.XL"
+            formControlName="techRecord_adrDetails_applicantDetails_city"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
         <!-- Applicant Details Postcode -->
-        <govuk-form-group-input
-          label="Postcode"
-          [width]="FormNodeWidth.L"
-          formControlName="techRecord_adrDetails_applicantDetails_postcode"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
-         <!-- ADR details -->
-         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_postcode')) {
+          <govuk-form-group-input
+            label="Postcode"
+            [width]="FormNodeWidth.L"
+            formControlName="techRecord_adrDetails_applicantDetails_postcode"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
+        <!-- ADR details -->
+        @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
           <govuk-form-group-select
             class="govuk-label--s"
             label="ADR body type"
@@ -63,382 +80,433 @@
             appFilterByTags
             [filters]="filters()"
             [tagNames]="['ADR']"
-          />
-         }
+          ></govuk-form-group-select>
+        }
 
-          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
-            <govuk-form-group-radio
-              class="govuk-label--s"
-              size="small"
-              label="Is the vehicle used on international journeys?"
-              formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
-              [options]="usedOnInternationJourneysOptions"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_approvalDate')) {
-            <govuk-form-group-date
-              class="govuk-label--s"
-              label="Date processed"
-              formControlName="techRecord_adrDetails_vehicleDetails_approvalDate"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_permittedDangerousGoods')) {
-            <govuk-checkbox-group
-              class="govuk-label--s"
-              size="small"
-              label="Permitted dangerous goods"
-              formControlName="techRecord_adrDetails_permittedDangerousGoods"
-              [options]="permittedDangerousGoodsOptions"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_bodyDeclaration_type')) {
-            @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
-              <govuk-form-group-radio
-                class="govuk-label--s"
-                size="small"
-                label="Body declaration"
-                formControlName="techRecord_adrDetails_bodyDeclaration_type"
-                [options]="bodyDeclarationOptions"
-                appFilterByTags
-                [filters]="filters()"
-                [tagNames]="['ADR']"
-              />
-            }
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_compatibilityGroupJ')) {
-            @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
-              <govuk-form-group-radio
-                class="govuk-label--s"
-                size="small"
-                label="Compatibility group J"
-                formControlName="techRecord_adrDetails_compatibilityGroupJ"
-                [options]="compatibilityGroupJOptions"
-                appFilterByTags
-                [filters]="filters()"
-                [tagNames]="['ADR']"
-              />
-            }
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_additionalNotes_number')) {
-            <govuk-checkbox-group
-              class="govuk-label--s"
-              size="small"
-              label="Guidance notes"
-              formControlName="techRecord_adrDetails_additionalNotes_number"
-              [options]="guidanceNotesOptions"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-          }
-
-          @if (shouldDisplayFormControl('techRecord_adrDetails_adrTypeApprovalNo')) {
-            <govuk-form-group-input
-              class="govuk-label--s"
-              label="ADR type approval number"
-              [width]="FormNodeWidth.L"
-              formControlName="techRecord_adrDetails_adrTypeApprovalNo"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-          }
-
-        <!--     When ADR body type contains the words 'tank' or 'battery' -->
-        @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
-          <!-- Tank details section -->
-          <h3 class="govuk-label govuk-label--s">Tank details</h3>
-          <ng-container>
-            <!-- Tank Make -->
-            <govuk-form-group-input
-              label="Tank make"
-              class="govuk-label--s"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- Tank Year of manufacture -->
-            <govuk-form-group-input
-              label="Tank year of manufacture"
-              class="govuk-label--s"
-              [width]="FormNodeWidth.S"
-              type="number"
-              formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- Tank manufacturer serial number -->
-            <govuk-form-group-input
-              label="Manufacturer serial number"
-              class="govuk-label--s"
-              [width]="FormNodeWidth.L"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- Tank type approval number -->
-            <govuk-form-group-input
-              label="Tank type approval number"
-              class="govuk-label--s"
-              [width]="FormNodeWidth.L"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- Tank code -->
-            <govuk-form-group-input
-              label="Code"
-              class="govuk-label--s"
-              [width]="FormNodeWidth.L"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- Substances permitted -->
-            <govuk-form-group-radio
-              label="Substances permitted"
-              class="govuk-label--s"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
-              [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
-              size="small"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <!-- When tank statement (substances permitted) is 'Under UN Number' -->
-            @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
-              <!-- Tank statement select -->
-              <govuk-form-group-radio
-                label="Select"
-                class="govuk-label--s"
-                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
-                [options]="tankStatementSelectOptions"
-                size="small"
-                appFilterByTags
-                [filters]="filters()"
-                [tagNames]="['ADR']"
-              />
-              <!-- When select is 'statement' -->
-              @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
-                <!-- Reference number -->
-                <govuk-form-group-input
-                  label="Reference number"
-                  class="govuk-label--s"
-                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
-                  appFilterByTags
-                  [filters]="filters()"
-                  [tagNames]="['ADR']"
-                />
-              }
-              <!-- When select is 'product '-->
-              @if (adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))) {
-                <!-- Reference number -->
-                <govuk-form-group-input
-                  label="Reference number"
-                  class="govuk-label--s"
-                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
-                  appFilterByTags
-                  [filters]="filters()"
-                  [tagNames]="['ADR']"
-                />
-                <!-- UN numbers -->
-                <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
-                  @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; track inspection; let i = $index) {
-                    <fieldset
-                      class="govuk-fieldset"
-                    >
-                      <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
-                            UN number {{ i + 1 }}
-                          </label>
-                        </h1>
-                        @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
-                          <table class="govuk-table margin-b-0">
-                            <tbody class="govuk-table__body">
-                            <tr class="govuk-table__row">
-                              <td class="govuk-table__cell border-b-0">
-                                <govuk-form-group-input
-                                  id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                                  [width]="FormNodeWidth.XL"
-                                  formControlName="{{ i }}"
-                                  appFilterByTags
-                                  [filters]="filters()"
-                                  [tagNames]="['ADR']"
-                                />
-                              </td>
-                              @if (mode() === Modes.EDIT) {
-                                <td class="govuk-table__cell border-b-0">
-                                  <p class="govuk-body margin-b-0">
-                                    <button
-                                      [id]="`remove-un-number-${i + 1}`"
-                                      type="button"
-                                      class="govuk-button govuk-button--warning"
-                                      data-module="govuk-button"
-                                      role="button"
-                                      (click)="removeUNNumber(i)"
-                                    >
-                                      Remove
-                                    </button>
-                                  </p>
-                                </td>
-                              }
-                            </tr>
-                            </tbody>
-                          </table>
-                        } @else {
-                          <govuk-form-group-input
-                            id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                            [width]="FormNodeWidth.XL"
-                            formControlName="{{ i }}"
-                            appFilterByTags
-                            [filters]="filters()"
-                            [tagNames]="['ADR']"
-                          />
-                        }
-                      </div>
-                    </fieldset>
-                  }
-
-                  @if (mode() === Modes.EDIT) {
-                    <p class="govuk-body">
-                      <button
-                        [id]="'add-un-number-button'"
-                        type="button"
-                        class="govuk-button govuk-button--secondary"
-                        data-module="govuk-button"
-                        role="button"
-                        (click)="addUNNumber()"
-                      >
-                        Add UN number
-                      </button>
-                    </p>
-                  }
-                </div>
-                <!-- Additional details -->
-                <govuk-form-group-textarea
-                  label="Additional details"
-                  class="govuk-label--s"
-                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
-                  [maxLength]="1500"
-                  appFilterByTags
-                  [filters]="filters()"
-                  [tagNames]="['ADR']"
-                />
-
-              }
-            }
-          </ng-container>
-          <!-- Special provisions -->
-          <govuk-form-group-textarea
-            label="Special provisions"
+        @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
+          <govuk-form-group-radio
             class="govuk-label--s"
-            formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
-            [maxLength]="1024"
+            size="small"
+            label="Is the vehicle used on international journeys?"
+            formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
+            [options]="usedOnInternationJourneysOptions"
             appFilterByTags
             [filters]="filters()"
             [tagNames]="['ADR']"
-          />
+          ></govuk-form-group-radio>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_approvalDate')) {
+          <govuk-form-group-date
+            class="govuk-label--s"
+            label="Date processed"
+            formControlName="techRecord_adrDetails_vehicleDetails_approvalDate"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-date>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_permittedDangerousGoods')) {
+          <govuk-checkbox-group
+            class="govuk-label--s"
+            size="small"
+            label="Permitted dangerous goods"
+            formControlName="techRecord_adrDetails_permittedDangerousGoods"
+            [options]="permittedDangerousGoodsOptions"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-checkbox-group>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_bodyDeclaration_type')) {
+          @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
+            <govuk-form-group-radio
+              class="govuk-label--s"
+              size="small"
+              label="Body declaration"
+              formControlName="techRecord_adrDetails_bodyDeclaration_type"
+              [options]="bodyDeclarationOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-radio>
+          }
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_compatibilityGroupJ')) {
+          @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
+            <govuk-form-group-radio
+              class="govuk-label--s"
+              size="small"
+              label="Compatibility group J"
+              formControlName="techRecord_adrDetails_compatibilityGroupJ"
+              [options]="compatibilityGroupJOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-radio>
+          }
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_additionalNotes_number')) {
+          <govuk-checkbox-group
+            class="govuk-label--s"
+            size="small"
+            label="Guidance notes"
+            formControlName="techRecord_adrDetails_additionalNotes_number"
+            [options]="guidanceNotesOptions"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-checkbox-group>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_adrTypeApprovalNo')) {
+          <govuk-form-group-input
+            class="govuk-label--s"
+            label="ADR type approval number"
+            [width]="FormNodeWidth.L"
+            formControlName="techRecord_adrDetails_adrTypeApprovalNo"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
+        <!-- When ADR body type contains the words 'tank' or 'battery' -->
+        @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
+          <!-- Tank details section -->
+          @if (mode() !== Modes.SUMMARY || tcs.hasADRTankDetailsSectionChanged()) {
+            <h3 class="govuk-label govuk-label--s">Tank details</h3>
+          }
+
+          <ng-container>
+            <!-- Tank Make -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
+              <govuk-form-group-input
+                label="Tank make"
+                class="govuk-label--s"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Tank Year of manufacture -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
+              <govuk-form-group-input
+                label="Tank year of manufacture"
+                class="govuk-label--s"
+                [width]="FormNodeWidth.S"
+                type="number"
+                formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Tank manufacturer serial number -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
+              <govuk-form-group-input
+                label="Manufacturer serial number"
+                class="govuk-label--s"
+                [width]="FormNodeWidth.L"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Tank type approval number -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
+              <govuk-form-group-input
+                label="Tank type approval number"
+                class="govuk-label--s"
+                [width]="FormNodeWidth.L"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Tank code -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankCode')) {
+              <govuk-form-group-input
+                label="Code"
+                class="govuk-label--s"
+                [width]="FormNodeWidth.L"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
+            <!-- Substances permitted -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
+              <govuk-form-group-radio
+                label="Substances permitted"
+                class="govuk-label--s"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
+                [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
+                size="small"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-radio>
+            }
+
+            <!-- When tank statement (substances permitted) is 'Under UN Number' -->
+            @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
+              <!-- Tank statement select -->
+              @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
+                <govuk-form-group-radio
+                  label="Select"
+                  class="govuk-label--s"
+                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+                  [options]="tankStatementSelectOptions"
+                  size="small"
+                  appFilterByTags
+                  [filters]="filters()"
+                  [tagNames]="['ADR']"
+                ></govuk-form-group-radio>
+              }
+
+              <!-- When select is 'statement' -->
+              @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
+                <!-- Reference number -->
+                @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
+                  <govuk-form-group-input
+                    label="Reference number"
+                    class="govuk-label--s"
+                    formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
+                  ></govuk-form-group-input>
+                }
+              }
+
+              <!-- When select is 'product '-->
+              @if (adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))) {
+                <!-- Reference number -->
+                @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
+                  <govuk-form-group-input
+                    label="Reference number"
+                    class="govuk-label--s"
+                    formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
+                  ></govuk-form-group-input>
+                }
+
+                <!-- UN numbers -->
+                @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
+                  <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
+                    @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; track inspection; let i = $index) {
+                      @if (shouldDisplayFormControl(`techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.${i}`)) {
+                        <fieldset class="govuk-fieldset">
+                          <div class="govuk-form-group">
+                            <h1 class="govuk-label-wrapper">
+                              <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
+                                UN number {{ i + 1 }}
+                              </label>
+                            </h1>
+                            @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
+                              <table class="govuk-table margin-b-0">
+                                <tbody class="govuk-table__body">
+                                <tr class="govuk-table__row">
+                                  <td class="govuk-table__cell border-b-0">
+                                    <govuk-form-group-input
+                                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                                      [width]="FormNodeWidth.XL"
+                                      formControlName="{{ i }}"
+                                      appFilterByTags
+                                      [filters]="filters()"
+                                      [tagNames]="['ADR']"
+                                    />
+                                  </td>
+                                  @if (mode() === Modes.EDIT) {
+                                    <td class="govuk-table__cell border-b-0">
+                                      <p class="govuk-body margin-b-0">
+                                        <button
+                                          [id]="`remove-un-number-${i + 1}`"
+                                          type="button"
+                                          class="govuk-button govuk-button--warning"
+                                          data-module="govuk-button"
+                                          role="button"
+                                          (click)="removeUNNumber(i)"
+                                        >
+                                          Remove
+                                        </button>
+                                      </p>
+                                    </td>
+                                  }
+                                </tr>
+                                </tbody>
+                              </table>
+                            } @else {
+                              <govuk-form-group-input
+                                id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
+                                [width]="FormNodeWidth.XL"
+                                formControlName="{{ i }}"
+                                appFilterByTags
+                                [filters]="filters()"
+                                [tagNames]="['ADR']"
+                              />
+                            }
+                          </div>
+                        </fieldset>
+                      }
+                    }
+  
+                    @if (mode() === Modes.EDIT) {
+                      <p class="govuk-body">
+                        <button
+                          [id]="'add-un-number-button'"
+                          type="button"
+                          class="govuk-button govuk-button--secondary"
+                          data-module="govuk-button"
+                          role="button"
+                          (click)="addUNNumber()"
+                        >
+                          Add UN number
+                        </button>
+                      </p>
+                    }
+                  </div>
+                } 
+
+                <!-- Additional details -->
+                @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
+                  <govuk-form-group-textarea
+                    label="Additional details"
+                    class="govuk-label--s"
+                    formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
+                    [maxLength]="1500"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
+                  ></govuk-form-group-textarea>
+                }
+              }
+            }
+          </ng-container>
+
+          <!-- Special provisions -->
+          @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
+            <govuk-form-group-textarea
+              label="Special provisions"
+              class="govuk-label--s"
+              formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
+              [maxLength]="1024"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-textarea>
+          }
+
           <!-- Tank Inspections section -->
           <ng-container>
-            <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Tank inspections</span>
+            @if (mode() !== Modes.SUMMARY || tcs.hasADRTankInspectionsSectionChanged()) {
+              <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Tank inspections</span>
+            }
+
             <!-- TC2: Certificate Number -->
-            <govuk-form-group-input
-              class="govuk-label govuk-label--s"
-              label="TC2: Certificate number"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
+              <govuk-form-group-input
+                class="govuk-label govuk-label--s"
+                label="TC2: Certificate number"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+
             <!-- TC2: Expiry Date -->
-            <govuk-form-group-date
-              class="govuk-label govuk-label--s"
-              label="TC2: Expiry date"
-              formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
-              appFilterByTags
-              [filters]="filters()"
-              [tagNames]="['ADR']"
-            />
-            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
+              <govuk-form-group-date
+                class="govuk-label govuk-label--s"
+                label="TC2: Expiry date"
+                formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-date>
+            }
+
+            @if (mode() !== Modes.SUMMARY || tcs.hasADRTankInspectionsSectionChanged()) {
+              <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+            }
+            
             <!-- TC3: Inspections -->
-            <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
-              @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
-                <fieldset
-                  class="govuk-fieldset"
-                  formGroupName="{{ i }}"
-                >
-                  <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
-                  <!-- TC3 Inspection Type -->
-                  <govuk-form-group-select
-                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
-                    class="govuk-label govuk-label--s"
-                    label="TC3: Inspection type"
-                    formControlName="tc3Type"
-                    [options]="tc3InspectionOptions"
-                    [defaultOption]="'Select inspection type'"
-                    appFilterByTags
-                    [filters]="filters()"
-                    [tagNames]="['ADR']"
-                  />
-                  <!-- TC3 Certificate Number -->
-                  <govuk-form-group-input
-                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
-                    class="govuk-label govuk-label--s"
-                    label="TC3: Certificate number"
-                    formControlName="tc3PeriodicNumber"
-                    appFilterByTags
-                    [filters]="filters()"
-                    [tagNames]="['ADR']"
-                  />
-                  <!-- TC3 Expiry Date -->
-                  <govuk-form-group-date
-                    [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
-                    class="govuk-label govuk-label--s"
-                    label="TC3: Expiry date"
-                    formControlName="tc3PeriodicExpiryDate"
-                    appFilterByTags
-                    [filters]="filters()"
-                    [tagNames]="['ADR']"
-                  />
-                  <!-- TC3 Footer -->
-                  @if (mode() === Modes.EDIT) {
-                    <p class="govuk-body govuk-!-text-align-left">
-                      <button
-                        type="button"
-                        class="govuk-button govuk-button--warning"
-                        data-module="govuk-button"
-                        role="button"
-                        id="remove-subsequent-inspection-{{ i + 1 }}"
-                        (click)="removeTC3TankInspection(i)"
-                      >
-                        Remove inspection
-                      </button>
-                    </p>
+            @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc3Details')) {
+              <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+                @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
+                  @if (shouldDisplayFormControl(`techRecord_adrDetails_tank_tankDetails_tc3Details.${i}`)) {
+                    <fieldset class="govuk-fieldset" formGroupName="{{ i }}">
+                      <span class="govuk-label govuk-label--s govuk-!-margin-bottom-4">Subsequent {{ i + 1 }}</span>
+                      <!-- TC3 Inspection Type -->
+                      <govuk-form-group-select
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Inspection type"
+                        formControlName="tc3Type"
+                        [options]="tc3InspectionOptions"
+                        [defaultOption]="'Select inspection type'"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Certificate Number -->
+                      <govuk-form-group-input
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Certificate number"
+                        formControlName="tc3PeriodicNumber"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Expiry Date -->
+                      <govuk-form-group-date
+                        [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
+                        class="govuk-label govuk-label--s"
+                        label="TC3: Expiry date"
+                        formControlName="tc3PeriodicExpiryDate"
+                        appFilterByTags
+                        [filters]="filters()"
+                        [tagNames]="['ADR']"
+                      />
+                      <!-- TC3 Footer -->
+                      @if (mode() === Modes.EDIT) {
+                        <p class="govuk-body govuk-!-text-align-left">
+                          <button
+                            type="button"
+                            class="govuk-button govuk-button--warning"
+                            data-module="govuk-button"
+                            role="button"
+                            id="remove-subsequent-inspection-{{ i + 1 }}"
+                            (click)="removeTC3TankInspection(i)"
+                          >
+                            Remove inspection
+                          </button>
+                        </p>
+                      }
+                      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+                    </fieldset>
                   }
-                  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-                </fieldset>
-              }
-            </div>
+                }
+              </div>
+            }
             
             @if (mode() === Modes.EDIT) {
               <p class="govuk-body">
@@ -455,173 +523,217 @@
               </p>
             }
           </ng-container>
+
           <!-- Memo 07/09 (3 month extension) can be applied -->
-          <govuk-checkbox-group
-            class="govuk-label govuk-label--s"
-            label="Memo 07/09 (3 month extension) can be applied"
-            formControlName="techRecord_adrDetails_memosApply"
-            [options]="memosApplyOptions"
-            [hint]="'Only applicable for vehicles used on national journeys'"
-            [size]="'small'"
-            appFilterByTags
-            [filters]="filters()"
-            [tagNames]="['ADR']"
-          />
-          <!-- M145 -->
-          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_m145Statement">M145</label>
-          <govuk-form-group-checkbox
-            class="govuk-label govuk-label--s"
-            label="Yes"
-            formControlName="techRecord_adrDetails_m145Statement"
-            [value]="true"
-            [size]="'small'"
-            appFilterByTags
-            [filters]="filters()"
-            [tagNames]="['ADR']"
-          />
-        }
-        <!--   When ADR body type contains 'battery' -->
-        @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
-          <!-- Battery list applicable -->
-          <govuk-form-group-radio
-            class="govuk-label govuk-label--s"
-            label="Battery list applicable"
-            formControlName="techRecord_adrDetails_listStatementApplicable"
-            [options]="YES_NO_OPTIONS"
-            [size]="'small'"
-            appFilterByTags
-            [filters]="filters()"
-            [tagNames]="['ADR']"
-          />
-          <!-- When Battery list applicable is true -->
-          @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
-            <!-- Battery list reference number -->
-            <govuk-form-group-input
+          @if (shouldDisplayFormControl('techRecord_adrDetails_memosApply')) {
+            <govuk-checkbox-group
               class="govuk-label govuk-label--s"
-              label="Reference number"
-              [width]="FormNodeWidth.L"
-              formControlName="techRecord_adrDetails_batteryListNumber"
+              label="Memo 07/09 (3 month extension) can be applied"
+              formControlName="techRecord_adrDetails_memosApply"
+              [options]="memosApplyOptions"
+              [hint]="'Only applicable for vehicles used on national journeys'"
+              [size]="'small'"
               appFilterByTags
               [filters]="filters()"
               [tagNames]="['ADR']"
-            />
+            ></govuk-checkbox-group>
+          }
+
+          <!-- M145 -->
+          @if (shouldDisplayFormControl('techRecord_adrDetails_m145Statement')) {
+            <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_m145Statement">M145</label>
+
+            <govuk-form-group-checkbox
+              class="govuk-label govuk-label--s"
+              label="Yes"
+              formControlName="techRecord_adrDetails_m145Statement"
+              [value]="true"
+              [size]="'small'"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-checkbox>
           }
         }
 
-        <!--   Declarations seen section -->
-        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
-        <govuk-form-group-checkbox
-          class="govuk-!-margin-bottom-0"
-          label="Manufacturer brake declaration"
-          formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
-          [value]="true"
-          [size]="'small'"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
-        @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
-          <!-- Issuer -->
-          <govuk-form-group-textarea
-            label="Issuer"
-            formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
-            class="govuk-label--s govuk-!-margin-top-4"
-            [maxLength]="500"
-            appFilterByTags
-            [filters]="filters()"
-            [tagNames]="['ADR']"
-          />
-          <!-- Brake endurance -->
+        <!--   When ADR body type contains 'battery' -->
+        @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
+          <!-- Battery list applicable -->
+          @if (shouldDisplayFormControl('techRecord_adrDetails_listStatementApplicable')) {
+            <govuk-form-group-radio
+              class="govuk-label govuk-label--s"
+              label="Battery list applicable"
+              formControlName="techRecord_adrDetails_listStatementApplicable"
+              [options]="YES_NO_OPTIONS"
+              [size]="'small'"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-radio>
+          }
+
+          <!-- When Battery list applicable is true -->
+          @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
+            <!-- Battery list reference number -->
+            @if (shouldDisplayFormControl('techRecord_adrDetails_batteryListNumber')) {
+              <govuk-form-group-input
+                class="govuk-label govuk-label--s"
+                label="Reference number"
+                [width]="FormNodeWidth.L"
+                formControlName="techRecord_adrDetails_batteryListNumber"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
+          }
+        }
+
+        <!-- Declarations seen section -->
+        @if (shouldDisplayFormControl('techRecord_adrDetails_brakeDeclarationsSeen')) {
+          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
+
           <govuk-form-group-checkbox
             class="govuk-!-margin-bottom-0"
-            label="Brake endurance"
-            formControlName="techRecord_adrDetails_brakeEndurance"
+            label="Manufacturer brake declaration"
+            formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
             [value]="true"
             [size]="'small'"
             appFilterByTags
             [filters]="filters()"
             [tagNames]="['ADR']"
-          />
-          <!-- Weight (tonnes) -->
-          @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
-            <govuk-form-group-input
-              label="Weight"
+          ></govuk-form-group-checkbox>
+        }
+
+        @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
+          <!-- Issuer -->
+          @if (shouldDisplayFormControl('techRecord_adrDetails_brakeDeclarationIssuer')) {
+            <govuk-form-group-textarea
+              label="Issuer"
+              formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
               class="govuk-label--s govuk-!-margin-top-4"
-              formControlName="techRecord_adrDetails_weight"
-              type="decimal"
-              suffix="tonnes"
-              [width]="FormNodeWidth.M"
+              [maxLength]="500"
               appFilterByTags
               [filters]="filters()"
               [tagNames]="['ADR']"
-            />
+            ></govuk-form-group-textarea>
+          }
+
+          <!-- Brake endurance -->
+          @if (shouldDisplayFormControl('techRecord_adrDetails_brakeEndurance')) {
+            <govuk-form-group-checkbox
+              class="govuk-!-margin-bottom-0"
+              label="Brake endurance"
+              formControlName="techRecord_adrDetails_brakeEndurance"
+              [value]="true"
+              [size]="'small'"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-checkbox>
+          }
+
+          <!-- Weight (tonnes) -->
+          @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
+            @if (shouldDisplayFormControl('techRecord_adrDetails_weight')) {
+              <govuk-form-group-input
+                label="Weight"
+                class="govuk-label--s govuk-!-margin-top-4"
+                formControlName="techRecord_adrDetails_weight"
+                type="decimal"
+                suffix="tonnes"
+                [width]="FormNodeWidth.M"
+                appFilterByTags
+                [filters]="filters()"
+                [tagNames]="['ADR']"
+              ></govuk-form-group-input>
+            }
           }
         }
-        <!--   Declarations seen (Owner/operator declaration)-->
-        <govuk-form-group-checkbox
-          label="Owner/operator declaration"
-          formControlName="techRecord_adrDetails_declarationsSeen"
-          [value]="true"
-          [size]="'small'"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+
+        <!-- Declarations seen (Owner/operator declaration)-->
+        @if (shouldDisplayFormControl('techRecord_adrDetails_declarationsSeen')) {
+          <govuk-form-group-checkbox
+            label="Owner/operator declaration"
+            formControlName="techRecord_adrDetails_declarationsSeen"
+            [value]="true"
+            [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-checkbox>
+        }
+
         <!--  New Certificate required -->
-        <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
-        <govuk-form-group-checkbox
-          label="Yes"
-          formControlName="techRecord_adrDetails_newCertificateRequested"
-          [value]="true"
-          [size]="'small'"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_newCertificateRequested')) {
+          <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_newCertificateRequested">New certificate required</label>
+
+          <govuk-form-group-checkbox
+            label="Yes"
+            formControlName="techRecord_adrDetails_newCertificateRequested"
+            [value]="true"
+            [size]="'small'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-checkbox>
+        }
+
         <!-- ADR Additional Examiner Note -->
-        <govuk-form-group-textarea
-          label="Additional examiner notes"
-          class="govuk-label--s"
-          formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
-          [maxLength]="1024"
-          [hint]="'These will not be shown on the ADR certificate'"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_additionalExaminerNotes_note')) {
+          <govuk-form-group-textarea
+            label="Additional examiner notes"
+            class="govuk-label--s"
+            formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
+            [maxLength]="1024"
+            [hint]="'These will not be shown on the ADR certificate'"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-textarea>
+        }
+
         <!-- ADR Additional Examiner Note History -->
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Additional examiner notes history</h2>
-        @if (getADRExaminerNotes()?.value; as notes) {
-          @if (notes?.length; as notesCount) {
-            <table class="govuk-table">
-              <tbody class="govuk-table__body">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Notes</th>
-                <th scope="col" class="govuk-table__header">Created By</th>
-                <th scope="col" class="govuk-table__header">Date</th>
-                <th scope="col" class="govuk-table__header"></th>
-              </tr>
-                @if (pagination.paginationOptions(); as page) {
-                  @for (note of notes.slice(page.start, page.end); track note;  let index = $index) {
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell whitespace-pre-wrap">
-                        <span>{{ note.note | defaultNullOrEmpty }}</span>
-                      </td>
-                      <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
-                      <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
-                      @if (mode() === Modes.EDIT) {
-                        <td class="govuk-table__cell">
-                          <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
-                            Edit
-                          </a>
+        @if (mode() !== Modes.SUMMARY) {
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Additional examiner notes history</h2>
+          @if (getADRExaminerNotes()?.value; as notes) {
+            @if (notes?.length; as notesCount) {
+              <table class="govuk-table">
+                <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header">Notes</th>
+                  <th scope="col" class="govuk-table__header">Created By</th>
+                  <th scope="col" class="govuk-table__header">Date</th>
+                  <th scope="col" class="govuk-table__header"></th>
+                </tr>
+                  @if (pagination.paginationOptions(); as page) {
+                    @for (note of notes.slice(page.start, page.end); track note;  let index = $index) {
+                      <tr class="govuk-table__row">
+                        <td class="govuk-table__cell whitespace-pre-wrap">
+                          <span>{{ note.note | defaultNullOrEmpty }}</span>
                         </td>
-                      }
-                    </tr>
+                        <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
+                        <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+                        @if (mode() === Modes.EDIT) {
+                          <td class="govuk-table__cell">
+                            <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
+                              Edit
+                            </a>
+                          </td>
+                        }
+                      </tr>
+                    }
                   }
-                }
-              </tbody>
-            </table>
-            <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+                </tbody>
+              </table>
+              <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+            } @else {
+              <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row border-b-0">
+                  <dt class="govuk-summary-list__value">No additional examiner notes history available</dt>
+                </div>
+              </dl>
+            }
           } @else {
             <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row border-b-0">
@@ -629,25 +741,23 @@
               </div>
             </dl>
           }
-        } @else {
-          <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row border-b-0">
-              <dt class="govuk-summary-list__value">No additional examiner notes history available</dt>
-            </div>
-          </dl>
         }
+
         <!-- ADR Certificate Notes -->
-        <govuk-form-group-textarea
-          label="ADR certificate notes"
-          class="govuk-label--s"
-          formControlName="techRecord_adrDetails_adrCertificateNotes"
-          [hint]="'These will be shown on the ADR certificate'"
-          [maxLength]="1500"
-          appFilterByTags
-          [filters]="filters()"
-          [tagNames]="['ADR']"
-        />
+        @if (shouldDisplayFormControl('techRecord_adrDetails_adrCertificateNotes')) {
+          <govuk-form-group-textarea
+            label="ADR certificate notes"
+            class="govuk-label--s"
+            formControlName="techRecord_adrDetails_adrCertificateNotes"
+            [hint]="'These will be shown on the ADR certificate'"
+            [maxLength]="1500"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-textarea>
+        }
       </govuk-radio>
+
       <govuk-radio label="No" [value]="false"></govuk-radio>
     </govuk-form-group-radio>
   }

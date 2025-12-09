@@ -1,5 +1,6 @@
 import { Modes } from '@/src/app/models/modes.enum';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
@@ -13,6 +14,8 @@ import { ReplaySubject } from 'rxjs';
 	imports: [ReactiveFormsModule, GovukFormGroupDateComponent],
 })
 export class AuthorisationIntoServiceComponent extends EditBaseComponent implements OnInit, OnDestroy {
+	tcs = inject(TechnicalRecordChangesService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
 	filters = input<string[]>([]);
@@ -55,5 +58,10 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 }

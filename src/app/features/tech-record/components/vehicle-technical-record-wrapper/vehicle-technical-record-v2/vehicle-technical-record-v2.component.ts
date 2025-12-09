@@ -1,6 +1,7 @@
 import { AccordionControlComponent } from '@/src/app/components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { AdrCertificatesComponent } from '@/src/app/forms/custom-sections-v2/adr-certificates/adr-certificates.component';
@@ -32,9 +33,10 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnInit, inject, input, model } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
 import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
@@ -88,7 +90,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		AsyncPipe,
 	],
 })
-export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit {
+export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit, OnDestroy {
 	fb = inject(FormBuilder);
 	store = inject(Store);
 	route = inject(ActivatedRoute);
@@ -99,23 +101,25 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 	techRecord = input<V3TechRecordModel>();
 	from = this.store.selectSignal(selectQueryParam('from'));
 	sectionStates$ = this.store.selectSignal(selectSectionState);
+	globalErrorService = inject(GlobalErrorService);
 
 	Modes = Modes;
 	roles = Roles;
 	isEditing = this.route.snapshot.data['isEditing'] ?? false;
 	isDirty = false;
-	destroy = new ReplaySubject<boolean>(1);
 
 	form = this.fb.group({});
 	filters = model<string[]>([]);
 	testResults$ = this.testRecordService.testRecords$;
+	destroy = new ReplaySubject<boolean>(1);
 
 	readonly VehicleTypes = VehicleTypes;
 
 	ngOnInit(): void {
+		this.handleFormChanges();
+
 		this.technicalRecordService.techRecord$
 			.pipe(
-				takeUntil(this.destroy),
 				skipWhile((techRecord) => !techRecord),
 				take(1)
 			)
@@ -153,44 +157,29 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 		}
 	}
 
+	ngOnDestroy(): void {
+		this.destroy.next(true);
+		this.destroy.complete();
+	}
+
+	private handleFormChanges(): void {
+		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
+			this.technicalRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordTypeVerb<'put'>);
+		});
+	}
+
 	handleSubmit(): void {
-		this.router.navigate(['change-summary'], { relativeTo: this.route });
+		if (this.form.valid) {
+			this.router.navigate(['change-summary'], { relativeTo: this.route });
+		}
+
+		if (this.form.invalid) {
+			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
+		}
 	}
 
 	navigateBack(): void {
 		this.router.navigate(['../'], { relativeTo: this.route });
-	}
-
-	get weightsAccordionDescription(): string {
-		switch (this.techRecord()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Axle, gross, and train weights.';
-			case VehicleTypes.PSV:
-				return 'Axle weights, unladen weight.';
-			case VehicleTypes.TRL:
-				return 'Axle, gross weights and coupling type.';
-			default:
-				return '';
-		}
-	}
-
-	get configAccordionDescription(): string {
-		switch (this.techRecord()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Off-road, fuel system, road friendly suspension.';
-			case VehicleTypes.TRL:
-				return 'Vehicle markers, road friendly suspension.';
-			case VehicleTypes.PSV:
-				return 'Vehicle markers, fuel system, speed restriction.';
-			default:
-				return '';
-		}
-	}
-
-	get brakesAccordionDescription(): string {
-		return this.techRecord()?.techRecord_vehicleType === VehicleTypes.PSV
-			? 'Brake codes, retarders, parking brakes.'
-			: 'Axle brake details, parking brakes.';
 	}
 
 	get tags(): string[] {
@@ -216,13 +205,5 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit 
 			default:
 				return [];
 		}
-	}
-
-	generateRFCDescription(): string {
-		// TODO: Update this method to return a dynamic description message
-		// based on if user is creating or amending a record.
-		// return "Tell us why you're amending this record.";
-
-		return "Tell us why you're creating this record.";
 	}
 }

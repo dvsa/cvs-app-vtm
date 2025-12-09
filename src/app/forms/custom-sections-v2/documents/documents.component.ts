@@ -1,6 +1,7 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
@@ -19,6 +20,9 @@ import { ReplaySubject, of } from 'rxjs';
 export class DocumentsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;
 	readonly Widths = FormNodeWidth;
+
+	tcs = inject(TechnicalRecordChangesService);
+
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -56,6 +60,11 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	protected readonly FormNodeWidth = FormNodeWidth;
