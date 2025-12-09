@@ -10,66 +10,147 @@ import { GlobalError } from '../../core/components/global-error/global-error.int
 export class CommonValidatorsService {
 	store = inject(Store);
 
-	isOneOf<T>(value: T, message: string): ValidatorFn {
+	isOneOf<T>(value: T, message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && typeof value === 'object' && !Object.values(value as object).includes(control.value)) {
-				return { oneOf: message };
+				const globalError = { oneOf: { error: message, anchorLink: '', accordion: '' } };
+				if (anchorLink) {
+					globalError.oneOf.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.oneOf.accordion = accordion;
+				}
+				return globalError;
 			}
 
 			return null;
 		};
 	}
 
-	max(size: number, func: (control: AbstractControl) => GlobalError, suffix?: string): ValidatorFn;
-	max(size: number, message: string, suffix?: string): ValidatorFn;
-	max(size: number, message: string | ((control: AbstractControl) => GlobalError), suffix?: string): ValidatorFn {
+	max(
+		size: number,
+		func: (control: AbstractControl) => GlobalError,
+		suffix?: string,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	max(size: number, message: string, suffix?: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	max(
+		size: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		suffix?: string,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value > size) {
 				suffix = suffix || '';
-				return {
-					max:
-						typeof message === 'string'
-							? `${message} must be less than or equal to ${size}${suffix}`
-							: message(control),
+				if (typeof message !== 'string') {
+					return { max: message(control) };
+				}
+				const globalError = {
+					max: `${message} must be less than or equal to ${size}${suffix}`,
+					anchorLink: '',
+					accordion: '',
 				};
+				if (anchorLink) {
+					globalError.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.accordion = accordion;
+				}
+
+				return globalError;
 			}
 
 			return null;
 		};
 	}
 
-	min(size: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	min(size: number, message: string): ValidatorFn;
-	min(size: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	min(
+		size: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	min(size: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	min(
+		size: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value < size) {
-				return {
-					min: typeof message === 'string' ? `${message} must be greater than or equal to ${size}` : message(control),
+				if (typeof message !== 'string') {
+					return { min: message(control) };
+				}
+				const globalError = {
+					min: `${message} must be greater than or equal to ${size}`,
+					anchorLink: '',
+					accordion: '',
 				};
+				if (anchorLink) {
+					globalError.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.accordion = accordion;
+				}
+				return globalError;
 			}
 
 			return null;
 		};
 	}
 
-	minLength(length: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	minLength(length: number, message: string): ValidatorFn;
-	minLength(length: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	minLength(
+		length: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	minLength(length: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	minLength(
+		length: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length < length) {
-				return { minLength: typeof message === 'string' ? message : message(control) };
+				if (typeof message !== 'string') {
+					return { minLength: message(control) };
+				}
+				const globalError = {
+					minLength: `${message} must be at least ${length} characters`,
+					anchorLink: '',
+					accordion: '',
+				};
+				if (anchorLink) {
+					globalError.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.accordion = accordion;
+				}
+				return globalError;
 			}
 
 			return null;
 		};
 	}
 
-	maxLength(length: number, func: (control: AbstractControl) => GlobalError, accordion?: string): ValidatorFn;
-	maxLength(length: number, message: string, accordion?: string): ValidatorFn;
+	maxLength(
+		length: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	maxLength(length: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
 	maxLength(
 		length: number,
 		message: string | ((control: AbstractControl) => GlobalError),
-		accordion?: string
+		accordion?: string,
+		anchorLink?: string
 	): ValidatorFn {
 		return (control) => {
 			if (control.value && control.value.length > length) {
@@ -85,9 +166,21 @@ export class CommonValidatorsService {
 		};
 	}
 
-	range(min: number, max: number, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	range(min: number, max: number, message: string): ValidatorFn;
-	range(min: number, max: number, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	range(
+		min: number,
+		max: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	range(min: number, max: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	range(
+		min: number,
+		max: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
 			if (typeof control.value !== 'number') return null;
@@ -102,9 +195,19 @@ export class CommonValidatorsService {
 		};
 	}
 
-	pattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	pattern(pattern: string | RegExp, message: string): ValidatorFn;
-	pattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	pattern(
+		pattern: string | RegExp,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	pattern(pattern: string | RegExp, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	pattern(
+		pattern: string | RegExp,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && !new RegExp(pattern).test(control.value)) {
 				return { pattern: typeof message === 'string' ? message : message(control) };
@@ -114,9 +217,19 @@ export class CommonValidatorsService {
 		};
 	}
 
-	antipattern(pattern: string | RegExp, func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	antipattern(pattern: string | RegExp, message: string): ValidatorFn;
-	antipattern(pattern: string | RegExp, message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	antipattern(
+		pattern: string | RegExp,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	antipattern(pattern: string | RegExp, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	antipattern(
+		pattern: string | RegExp,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return (control) => {
 			if (control.value && new RegExp(pattern).test(control.value)) {
 				return { pattern: message };
@@ -126,11 +239,15 @@ export class CommonValidatorsService {
 		};
 	}
 
-	alphanumeric(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	alphanumeric(
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
 		return this.pattern('^[a-zA-Z0-9]*$', message as any);
 	}
 
-	pastDate(message: string): ValidatorFn {
+	pastDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && new Date(control.value) > new Date()) {
 				return { pastDate: `${message} must be in the past` };
@@ -140,7 +257,7 @@ export class CommonValidatorsService {
 		};
 	}
 
-	pastOrCurrentYear(message: string): ValidatorFn {
+	pastOrCurrentYear(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && +control.value > new Date().getFullYear()) {
 				return { pastOrCurrentYear: `${message} must be the current or a past year` };
@@ -150,7 +267,7 @@ export class CommonValidatorsService {
 		};
 	}
 
-	pastYear(message: string): ValidatorFn {
+	pastYear(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value) {
 				const currentYear = new Date().getFullYear();
@@ -163,7 +280,7 @@ export class CommonValidatorsService {
 		};
 	}
 
-	invalidDate(message: string): ValidatorFn {
+	invalidDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && Number.isNaN(Date.parse(control.value))) {
 				return { invalidDate: message };
@@ -205,7 +322,7 @@ export class CommonValidatorsService {
 		};
 	}
 
-	date(label: string, id?: (control: AbstractControl) => string): ValidatorFn {
+	date(label: string, id?: (control: AbstractControl) => string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
 			const [d] = (control.value as string).split('T');
@@ -255,7 +372,7 @@ export class CommonValidatorsService {
 		};
 	}
 
-	xYearsAfterCurrent(xYears: number, message: string): ValidatorFn {
+	xYearsAfterCurrent(xYears: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
 			const currentYear = new Date().getFullYear();
 			const inputYear = control.value;
@@ -268,18 +385,27 @@ export class CommonValidatorsService {
 		};
 	}
 
-	invalidOption(message: string): ValidatorFn {
+	invalidOption(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => (control.value === '[INVALID_OPTION]' ? { invalidOption: message } : null);
 	}
 
 	doesTyresRefDataExist(
 		refData: ReferenceDataResourceType,
-		func: (control: AbstractControl) => GlobalError
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
 	): ValidatorFn;
-	doesTyresRefDataExist(refData: ReferenceDataResourceType, message: string): ValidatorFn;
 	doesTyresRefDataExist(
 		refData: ReferenceDataResourceType,
-		message: string | ((control: AbstractControl) => GlobalError)
+		message: string,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	doesTyresRefDataExist(
+		refData: ReferenceDataResourceType,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
 	): ValidatorFn {
 		return (control: AbstractControl) => {
 			if (control.value) {
