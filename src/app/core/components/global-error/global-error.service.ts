@@ -93,6 +93,7 @@ export class GlobalErrorService {
 						errors.push({
 							error: typeof error === 'string' ? error : error.error,
 							anchorLink: typeof error === 'string' ? key : error.anchorLink,
+							accordion: error.accordion ?? undefined,
 						});
 					});
 				}
@@ -107,6 +108,7 @@ export class GlobalErrorService {
 					errors.push({
 						error: typeof error === 'string' ? error : error.error,
 						anchorLink: typeof error === 'string' ? key : error.anchorLink,
+						accordion: error.accordion ?? undefined,
 					});
 				}
 			}

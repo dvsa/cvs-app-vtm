@@ -223,12 +223,21 @@ export class CommonValidatorsService {
 		};
 	}
 
-	required(func: (control: AbstractControl) => GlobalError): ValidatorFn;
-	required(message: string): ValidatorFn;
-	required(message: string | ((control: AbstractControl) => GlobalError)): ValidatorFn {
+	required(func: (control: AbstractControl) => GlobalError, accordion?: string): ValidatorFn;
+	required(message: string, accordion?: string): ValidatorFn;
+	required(message: string | ((control: AbstractControl) => GlobalError), accordion?: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				return { required: typeof message === 'string' ? `${message} is required` : message(control) };
+				let globalError: GlobalError = { error: '', anchorLink: 'techRecord_reasonForCreation', accordion: '' };
+				if (typeof message === 'string') {
+					globalError.error = `${message} is required`;
+				} else {
+					globalError = message(control);
+				}
+				if (accordion) {
+					globalError.accordion = accordion;
+				}
+				return { required: globalError };
 			}
 
 			return null;

@@ -21,6 +21,7 @@ import {
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 import {
 	addSectionState,
+	addSectionStateFromGlobalError,
 	amendVin,
 	amendVinFailure,
 	amendVinSuccess,
@@ -170,6 +171,7 @@ export const vehicleTechRecordReducer = createReducer(
 	on(removeUNNumber, (state, action) => handleRemoveUNNumber(state, action)),
 
 	on(addSectionState, (state, action) => handleAddSection(state, action)),
+	on(addSectionStateFromGlobalError, (state, action) => handleAddSection(state, action)),
 	on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
 
@@ -319,7 +321,9 @@ function handleRemoveUNNumber(state: TechnicalRecordServiceState, action: { inde
 
 function handleAddSection(state: TechnicalRecordServiceState, action: { section: string | number }) {
 	const newState = cloneDeep(state);
+	console.log(action);
 	if (newState.sectionState?.includes(action.section)) return newState;
+	console.log('test');
 	return { ...newState, sectionState: newState.sectionState?.concat(action.section) };
 }
 

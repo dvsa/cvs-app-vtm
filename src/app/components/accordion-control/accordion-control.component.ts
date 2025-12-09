@@ -4,11 +4,15 @@ import {
 	ChangeDetectorRef,
 	Component,
 	ContentChildren,
+	OnInit,
 	QueryList,
 	inject,
 	input,
 	model,
 } from '@angular/core';
+import { Actions, ofType } from '@ngrx/effects';
+import { addSectionStateFromGlobalError } from '@store/technical-records';
+import { Subject, takeUntil } from 'rxjs';
 import { AccordionComponent } from '../accordion/accordion.component';
 
 @Component({
@@ -18,10 +22,21 @@ import { AccordionComponent } from '../accordion/accordion.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgClass],
 })
-export class AccordionControlComponent {
+export class AccordionControlComponent implements OnInit {
 	cdr = inject(ChangeDetectorRef);
+	actions$ = inject(Actions);
 
 	private accordionsList?: QueryList<AccordionComponent>;
+	private destroy$ = new Subject<void>();
+
+	ngOnInit() {
+		console.log('test');
+		this.actions$.pipe(ofType(addSectionStateFromGlobalError), takeUntil(this.destroy$)).subscribe(({ section }) => {
+			console.log('toggleAccordionById', section);
+			this.openAccordionById(section);
+		});
+	}
+
 	get accordions(): QueryList<AccordionComponent> | undefined {
 		return this.accordionsList;
 	}
@@ -70,6 +85,19 @@ export class AccordionControlComponent {
 	private toggleAccordions(): void {
 		if (this.accordions) {
 			this.accordions.forEach((a) => (this.isExpanded() ? a.open(a.id()) : a.close(a.id())));
+		}
+	}
+
+	private openAccordionById(accordionId: string) {
+		console.log('toggleAccordionById 1');
+		if (this.accordions) {
+			console.log('toggleAccordionById 2');
+			const accordion = this.accordions.find((a) => a.id() === accordionId);
+			console.log('toggleAccordionById 3');
+			if (accordion) {
+				console.log('toggleAccordionById 4');
+				accordion.open(accordion.id());
+			}
 		}
 	}
 }

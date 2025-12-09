@@ -1,5 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { addSectionStateFromGlobalError } from '@store/technical-records';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
@@ -10,10 +12,20 @@ import { GlobalErrorService } from './global-error.service';
 })
 export class GlobalErrorComponent {
 	globalErrorService = inject(GlobalErrorService);
+	store = inject(Store);
+	cdr = inject(ChangeDetectorRef);
 
 	goto(error: GlobalError) {
+		console.log(error);
 		if (error.anchorLink) {
 			let focusCount = 0;
+
+			if (error.accordion) {
+				console.log('accordion:', error.accordion);
+				this.cdr.markForCheck();
+
+				this.store.dispatch(addSectionStateFromGlobalError({ section: error.accordion }));
+			}
 
 			document
 				.querySelectorAll(`

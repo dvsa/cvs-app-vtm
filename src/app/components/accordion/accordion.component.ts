@@ -26,6 +26,7 @@ export class AccordionComponent {
 	}
 
 	open(sectionName: string | number | undefined): void {
+		console.log(sectionName);
 		this.isExpanded.set(true);
 		this.cdr.markForCheck();
 		if (sectionName) this.store.dispatch(addSectionState({ section: sectionName }));
