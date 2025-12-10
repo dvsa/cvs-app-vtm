@@ -379,18 +379,20 @@
           }
         }
   
-        @if (shouldDisplayFormControl('techRecord_maxTrainGbWeight')) {
-          <govuk-form-group-input
-            [label]="'GB max'"
-            type="number"
-            formControlName="techRecord_maxTrainGbWeight"
-            class="govuk-label--s"
-            [showErrors]="false"
-            [suffix]="'kg'"
-            appFilterByTags
-            [tagNames]="[]"
-            [filters]="filters()"
-          ></govuk-form-group-input>
+        @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
+          @if (shouldDisplayFormControl('techRecord_maxTrainGbWeight')) {
+            <govuk-form-group-input
+              [label]="'GB max'"
+              type="number"
+              formControlName="techRecord_maxTrainGbWeight"
+              class="govuk-label--s"
+              [showErrors]="false"
+              [suffix]="'kg'"
+              appFilterByTags
+              [tagNames]="[]"
+              [filters]="filters()"
+            ></govuk-form-group-input>
+          }
         }
   
         @if (shouldDisplayFormControl('techRecord_trainDesignWeight')) {
