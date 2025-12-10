@@ -431,18 +431,20 @@ export class CommonValidatorsService {
 	): ValidatorFn {
 		return (control) => {
 			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				let globalError: GlobalError = { error: '', anchorLink: '', accordion: '' };
-				if (typeof message === 'string') {
-					globalError.error = `${message} is required`;
-				} else {
-					globalError = message(control);
+				const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
+
+				if (typeof message !== 'string') {
+					return { required: message(control) };
 				}
+
 				if (anchorLink) {
 					globalError.anchorLink = anchorLink;
 				}
+
 				if (accordion) {
 					globalError.accordion = accordion;
 				}
+
 				return { required: globalError };
 			}
 
