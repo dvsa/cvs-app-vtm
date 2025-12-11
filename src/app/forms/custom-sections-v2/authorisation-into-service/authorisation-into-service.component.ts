@@ -17,22 +17,38 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'trl'>, FormControl>>>({
 		techRecord_authIntoService_cocIssueDate: this.fb.control<string | null>(null, [
-			this.commonValidators.pastDate('COC issue date'),
+			this.commonValidators.pastDate(
+				'COC issue date',
+				'authorisation-into-service',
+				'techRecord_authIntoService_cocIssueDate'
+			),
 			this.commonValidators.date('COC issue date'),
 		]),
 		techRecord_authIntoService_dateReceived: this.fb.control<string | null>(null, [
-			this.commonValidators.pastDate('Date received'),
+			this.commonValidators.pastDate(
+				'Date received',
+				'authorisation-into-service',
+				'techRecord_authIntoService_dateReceived'
+			),
 			this.commonValidators.date('Date received'),
 		]),
 		techRecord_authIntoService_datePending: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Date pending'),
 		]),
 		techRecord_authIntoService_dateAuthorised: this.fb.control<string | null>(null, [
-			this.commonValidators.pastDate('Date authorised'),
+			this.commonValidators.pastDate(
+				'Date authorised',
+				'authorisation-into-service',
+				'techRecord_authIntoService_dateAuthorised'
+			),
 			this.commonValidators.date('Date authorised'),
 		]),
 		techRecord_authIntoService_dateRejected: this.fb.control<string | null>(null, [
-			this.commonValidators.pastDate('Date rejected'),
+			this.commonValidators.pastDate(
+				'Date rejected',
+				'authorisation-into-service',
+				'techRecord_authIntoService_dateRejected'
+			),
 			this.commonValidators.date('Date rejected'),
 		]),
 	});

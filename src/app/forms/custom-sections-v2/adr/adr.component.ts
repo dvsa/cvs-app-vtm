@@ -95,7 +95,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Date processed'),
-			this.commonValidators.pastDate('Date processed'),
+			this.commonValidators.pastDate('Date processed', 'adr', 'techRecord_adrDetails_vehicleDetails_approvalDate'),
 			this.adrValidators.requiredWithDangerousGoods('Date processed'),
 		]),
 		techRecord_adrDetails_permittedDangerousGoods: this.fb.control<string[] | null>(
@@ -121,8 +121,17 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		techRecord_adrDetails_tank_tankDetails_yearOfManufacture: this.fb.control<number | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Tank year of manufacture'),
-			this.commonValidators.pastOrCurrentYear('Tank year of manufacture'),
-			this.commonValidators.min(1000, 'Tank year of manufacture'),
+			this.commonValidators.pastOrCurrentYear(
+				'Tank year of manufacture',
+				'adr',
+				'techRecord_adrDetails_tank_tankDetails_yearOfManufacture'
+			),
+			this.commonValidators.min(
+				1000,
+				'Tank year of manufacture',
+				'adr',
+				'techRecord_adrDetails_tank_tankDetails_yearOfManufacture'
+			),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithTankOrBattery('Manufacturer serial number'),
@@ -331,6 +340,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 						this.commonValidators.maxLength(1500, () => ({
 							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							accordion: 'adr',
 						})),
 					])
 				);
@@ -344,6 +354,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 					this.commonValidators.maxLength(1500, () => ({
 						error: 'UN number 1 must be less than or equal to 1500 characters',
 						anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+						accordion: 'adr',
 					})),
 				])
 			);
@@ -362,6 +373,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 						return {
 							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+							accordion: 'adr',
 						};
 					}),
 				])
@@ -396,6 +408,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 						return {
 							error: 'TC3: Certificate Number must be less than or equal to 75 characters',
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicNumber`,
+							accordion: 'adr',
 						};
 					}),
 					this.adrValidators.requiresOnePopulatedTC3Field(

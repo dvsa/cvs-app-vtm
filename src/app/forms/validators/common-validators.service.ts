@@ -400,22 +400,36 @@ export class CommonValidatorsService {
 		};
 	}
 
-	date(label: string, id?: (control: AbstractControl) => string, accordion?: string): ValidatorFn {
+	date(label: string, id?: string | ((control: AbstractControl) => string), accordion?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
 			const [d] = (control.value as string).split('T');
 			const [year, month, day] = d.split('-');
 			const { error, errors } = validateDate(day || '', month || '', year || '', label);
-			const anchorLink = id?.(control) || label;
+			const anchorLink = typeof id === 'string' ? id : id?.(control) || label;
 
 			if (error && errors?.length) {
-				return id ? { invalidDate: { error: errors[0].reason, anchorLink } } : { invalidDate: errors[0].reason };
+				const globalError = { invalidDate: { error: errors[0].reason, anchorLink: '', accordion: '' } };
+				if (id) {
+					globalError.invalidDate.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.invalidDate.accordion = accordion;
+				}
+				return globalError;
 			}
 
 			if (year.length !== 4) {
-				return id
-					? { invalidDate: { error: `'${label || 'Date'}' year must be four digits`, anchorLink } }
-					: { invalidDate: `'${label || 'Date'}' year must be four digits` };
+				const globalError = {
+					invalidDate: { error: `'${label || 'Date'}' year must be four digits`, anchorLink: '', accordion: '' },
+				};
+				if (id) {
+					globalError.invalidDate.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.invalidDate.accordion = accordion;
+				}
+				return globalError;
 			}
 
 			return null;

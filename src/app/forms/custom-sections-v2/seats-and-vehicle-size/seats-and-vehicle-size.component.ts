@@ -60,7 +60,11 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date('Seatbelt installation approval date'),
-			this.commonValidators.pastDate('Seatbelt installation approval date'),
+			this.commonValidators.pastDate(
+				'Seatbelt installation approval date',
+				'seats-and-vehicle-size',
+				'techRecord_seatbeltInstallationApprovalDate'
+			),
 		]),
 	});
 
