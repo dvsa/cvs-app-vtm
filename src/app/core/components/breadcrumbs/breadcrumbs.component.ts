@@ -1,5 +1,5 @@
 import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RouterService } from '@services/router/router.service';
@@ -9,9 +9,10 @@ import { distinctUntilChanged, map } from 'rxjs';
 	selector: 'app-breadcrumbs',
 	templateUrl: './breadcrumbs.component.html',
 	styleUrls: ['./breadcrumbs.component.scss'],
-	imports: [RouterLink, AsyncPipe, JsonPipe],
+	imports: [RouterLink, AsyncPipe],
 })
 export class BreadcrumbsComponent {
+	location = inject(Location);
 	routerService = inject(RouterService);
 	featureToggleService = inject(FeatureToggleService);
 
@@ -52,7 +53,7 @@ export class BreadcrumbsComponent {
 						return null;
 					}
 
-					return config.url;
+					return config;
 				}
 
 				currentRoute = currentRoute.firstChild;
