@@ -24,7 +24,11 @@ export class TechRecordComponent implements OnInit {
 	createdTimestamp?: string;
 
 	constructor() {
-		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+		// Only prevent reuse when route path params change i.e. diff tech record
+		// Allow reuse when only query parameters change (e.g., pagination)
+		this.router.routeReuseStrategy.shouldReuseRoute = (future, curr) => {
+			return future.routeConfig === curr.routeConfig && JSON.stringify(future.params) === JSON.stringify(curr.params);
+		};
 	}
 
 	ngOnInit(): void {
