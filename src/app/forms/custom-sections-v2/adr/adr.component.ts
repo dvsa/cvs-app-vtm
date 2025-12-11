@@ -94,7 +94,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		]),
 		techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: this.fb.control<string | null>(null),
 		techRecord_adrDetails_vehicleDetails_approvalDate: this.fb.control<string | null>(null, [
-			this.commonValidators.date('Date processed'),
+			this.commonValidators.date('Date processed', 'techRecord_adrDetails_vehicleDetails_approvalDate', 'adr'),
 			this.commonValidators.pastDate('Date processed', 'adr', 'techRecord_adrDetails_vehicleDetails_approvalDate'),
 			this.adrValidators.requiredWithDangerousGoods('Date processed'),
 		]),
@@ -202,7 +202,11 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.commonValidators.maxLength(70, 'TC2: Certificate Number'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: this.fb.control<string | null>(null, [
-			this.commonValidators.date('TC2: Expiry date'),
+			this.commonValidators.date(
+				'TC2: Expiry date',
+				'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+				'adr'
+			),
 			this.adrValidators.requiredWithTankOrBattery('TC2: Expiry date'),
 		]),
 		techRecord_adrDetails_tank_tankDetails_tc3Details: this.fb.array<FormGroup>([]),
@@ -416,11 +420,15 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 					),
 				]),
 				tc3PeriodicExpiryDate: this.fb.control<string | null>(null, [
-					this.commonValidators.date('TC3: Expiry date', (control) => {
-						const formArray = control.parent?.parent as FormArray;
-						const index = formArray.controls.indexOf(control.parent as FormGroup);
-						return `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`;
-					}),
+					this.commonValidators.date(
+						'TC3: Expiry date',
+						(control) => {
+							const formArray = control.parent?.parent as FormArray;
+							const index = formArray.controls.indexOf(control.parent as FormGroup);
+							return `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`;
+						},
+						'adr'
+					),
 					this.adrValidators.requiresOnePopulatedTC3Field(
 						'TC3: Subsequent inspection must have at least one populated field'
 					),

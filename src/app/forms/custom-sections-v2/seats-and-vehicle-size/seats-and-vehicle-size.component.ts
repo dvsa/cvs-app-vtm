@@ -59,7 +59,11 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.max(150, 'Number of seatbelts'),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
-			this.commonValidators.date('Seatbelt installation approval date'),
+			this.commonValidators.date(
+				'Seatbelt installation approval date',
+				'techRecord_seatbeltInstallationApprovalDate',
+				'seats-and-vehicle-size'
+			),
 			this.commonValidators.pastDate(
 				'Seatbelt installation approval date',
 				'seats-and-vehicle-size',

@@ -22,7 +22,11 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 				'authorisation-into-service',
 				'techRecord_authIntoService_cocIssueDate'
 			),
-			this.commonValidators.date('COC issue date'),
+			this.commonValidators.date(
+				'COC issue date',
+				'techRecord_authIntoService_cocIssueDate',
+				'authorisation-into-service'
+			),
 		]),
 		techRecord_authIntoService_dateReceived: this.fb.control<string | null>(null, [
 			this.commonValidators.pastDate(
@@ -30,10 +34,18 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 				'authorisation-into-service',
 				'techRecord_authIntoService_dateReceived'
 			),
-			this.commonValidators.date('Date received'),
+			this.commonValidators.date(
+				'Date received',
+				'techRecord_authIntoService_dateReceived',
+				'authorisation-into-service'
+			),
 		]),
 		techRecord_authIntoService_datePending: this.fb.control<string | null>(null, [
-			this.commonValidators.date('Date pending'),
+			this.commonValidators.date(
+				'Date pending',
+				'techRecord_authIntoService_datePending',
+				'authorisation-into-service'
+			),
 		]),
 		techRecord_authIntoService_dateAuthorised: this.fb.control<string | null>(null, [
 			this.commonValidators.pastDate(
@@ -41,7 +53,11 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 				'authorisation-into-service',
 				'techRecord_authIntoService_dateAuthorised'
 			),
-			this.commonValidators.date('Date authorised'),
+			this.commonValidators.date(
+				'Date authorised',
+				'techRecord_authIntoService_dateAuthorised',
+				'authorisation-into-service'
+			),
 		]),
 		techRecord_authIntoService_dateRejected: this.fb.control<string | null>(null, [
 			this.commonValidators.pastDate(
@@ -49,7 +65,11 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 				'authorisation-into-service',
 				'techRecord_authIntoService_dateRejected'
 			),
-			this.commonValidators.date('Date rejected'),
+			this.commonValidators.date(
+				'Date rejected',
+				'techRecord_authIntoService_dateRejected',
+				'authorisation-into-service'
+			),
 		]),
 	});
 
