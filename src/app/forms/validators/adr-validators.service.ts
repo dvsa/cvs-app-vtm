@@ -138,6 +138,15 @@ export class AdrValidatorsService {
 				const allFieldsEmpty = !tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value;
 
 				if (allFieldsEmpty) {
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						return {
+							required: {
+								error: message,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3Type`,
+								accordion: 'adr',
+							},
+						};
+					}
 					return {
 						required: {
 							error: message,
@@ -171,14 +180,34 @@ export class AdrValidatorsService {
 					const control = unNumbersArray?.controls[index];
 					if (control) {
 						const errors = control.errors || {};
-						control.setErrors({
-							...errors,
-							required: {
-								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
-								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
-							},
-						});
+						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+							control.setErrors({
+								...errors,
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+									accordion: 'adr',
+								},
+							});
+						} else {
+							control.setErrors({
+								...errors,
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+								},
+							});
+						}
 
+						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+							return {
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+									accordion: 'adr',
+								},
+							};
+						}
 						return {
 							required: {
 								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
@@ -212,14 +241,34 @@ export class AdrValidatorsService {
 					// Set errors on both simulatenously
 					refNo.setErrors({ ...refNoErrors, required: message });
 
-					unNumbers.controls[0].setErrors({
-						...unNumbersErrors,
-						required: {
-							error: message,
-							anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
-						},
-					});
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						unNumbers.controls[0].setErrors({
+							...unNumbersErrors,
+							required: {
+								error: message,
+								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+								accordion: 'adr',
+							},
+						});
+					} else {
+						unNumbers.controls[0].setErrors({
+							...unNumbersErrors,
+							required: {
+								error: message,
+								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+							},
+						});
+					}
 
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						return {
+							required: {
+								error: message,
+								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+								accordion: 'adr',
+							},
+						};
+					}
 					return { required: message };
 				}
 
