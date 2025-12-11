@@ -11,13 +11,18 @@ import { TestCertificateComponent } from '@components/test-certificate/test-cert
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { type TestResultSchema, type TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { ADR_DESK_BASED_TEST_TYPE_IDS, TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
+import {
+	ADR_DESK_BASED_TEST_TYPE_IDS,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_VTP_VTG_12,
+} from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -177,9 +182,28 @@ export class VehicleHeaderComponent {
 		return new Map([['fileName', this.fileName]]);
 	}
 
-	canDownloadMedia(test: TestResultSchema): boolean {
+	viewMediaApplicable(test: TestResultSchema): boolean {
+		if (!test.media) return false;
+		// Only show media for approvals tests
+		const testTypeId = test.testTypes[0].testTypeId;
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId);
+	}
+
+	canDownloadApprovalsMedia(test: TestResultSchema): boolean {
 		if (!test.media) return false;
 		return test.media.some((media) => media.type !== 'failReason');
+	}
+
+	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
+		if (!test.media) return '';
+
+		for (const reason of test.media) {
+			if (reason.type === 'failReason') {
+				return reason.reason;
+			}
+		}
+
+		return 'Reason for failure to capture media not available';
 	}
 
 	async downloadMedia(test: TestResultSchema) {
