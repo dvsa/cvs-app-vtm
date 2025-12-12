@@ -23,6 +23,8 @@ export class UserService implements OnDestroy {
 	userEmail$ = this.store.pipe(select(UserServiceState.userEmail));
 	inProgress$ = this.msalBroadcastService.inProgress$;
 
+	employeeId = this.store.selectSignal(UserServiceState.employeeId);
+
 	constructor() {
 		this.msalBroadcastService.msalSubject$
 			.pipe(
@@ -63,12 +65,13 @@ export class UserService implements OnDestroy {
 	}: { name: string; userEmail: string; oid: string; accessToken: string }): void {
 		window.localStorage.setItem('accessToken', accessToken);
 		const decodedJWT = jwtDecode(accessToken);
-		const { roles } = decodedJWT as { roles?: string[] };
+		const { roles, employeeid } = decodedJWT as { roles?: string[]; employeeid?: string };
 		this.store.dispatch(
 			UserServiceActions.Login({
 				name,
 				userEmail,
 				oid,
+				employeeId: employeeid ?? null,
 				roles,
 			})
 		);
