@@ -1,7 +1,5 @@
-import { DocumentsService } from '@/src/app/services/documents/documents.service';
-import { HttpService } from '@/src/app/services/http/http.service';
+import { TestResultModel } from '@/src/app/models/test-results/test-result.model';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
-import { HttpEventType } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IconComponent } from '@components/icon/icon.component';
@@ -10,19 +8,12 @@ import { TagComponent, TagType, TagTypes } from '@components/tag/tag.component';
 import { TestCertificateComponent } from '@components/test-certificate/test-certificate.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
-import { type TestResultSchema, type TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import {
-	ADR_DESK_BASED_TEST_TYPE_IDS,
-	TEST_TYPES_GROUP1_SPEC_TEST,
-	TEST_TYPES_GROUP5_SPEC_TEST,
-	TEST_TYPES_GROUP7,
-	TEST_TYPES_VTP_VTG_12,
-} from '@models/testTypeId.enum';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { ADR_DESK_BASED_TEST_TYPE_IDS, TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -57,19 +48,17 @@ import { Observable, map } from 'rxjs';
 })
 export class VehicleHeaderComponent {
 	readonly isEditing = input(false);
-	readonly testResult = input<TestResultSchema | null>();
+	readonly testResult = input<TestResultModel | null>();
 	readonly testNumber = input<string | null>();
 	readonly isReview = input(false);
 
 	store = inject(Store);
 	activatedRoute = inject(ActivatedRoute);
 	testRecordsService = inject(TestRecordsService);
-	httpService = inject(HttpService);
-	documentsService = inject(DocumentsService);
 
 	techRecord$ = this.store.select(techRecord);
 
-	get test(): TestResultTestTypeSchema | undefined {
+	get test(): TestType | undefined {
 		return this.testResult()?.testTypes?.find((t) => this.testNumber() === t.testNumber);
 	}
 
@@ -96,8 +85,9 @@ export class VehicleHeaderComponent {
 
 	get resultOfTest(): string | undefined {
 		const testResult = this.testResult();
-		if (testResult?.testStatus === 'cancelled') return 'cancelled';
-		return testResult?.testTypes[0].testResult ?? undefined;
+		return testResult?.testStatus === TestResultStatus.CANCELLED
+			? TestResultStatus.CANCELLED
+			: testResult?.testTypes[0].testResult;
 	}
 
 	get tagType(): TagTypes {
@@ -180,45 +170,5 @@ export class VehicleHeaderComponent {
 
 	get params(): Map<string, string> {
 		return new Map([['fileName', this.fileName]]);
-	}
-
-	viewMediaApplicable(test: TestResultSchema): boolean {
-		if (!test.media) return false;
-		// Only show media for approvals tests
-		const testTypeId = test.testTypes[0].testTypeId;
-		return TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId);
-	}
-
-	canDownloadApprovalsMedia(test: TestResultSchema): boolean {
-		if (!test.media) return false;
-		return test.media.some((media) => media.type !== 'failReason');
-	}
-
-	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
-		if (!test.media) return '';
-
-		for (const reason of test.media) {
-			if (reason.type === 'failReason') {
-				return reason.reason;
-			}
-		}
-
-		return 'Reason for failure to capture media not available';
-	}
-
-	async downloadMedia(test: TestResultSchema) {
-		const fileType = 'zip';
-		const fileName = `${test.testResultId}.zip`;
-		this.httpService.getTestResultMedia(test.testResultId).subscribe((response) => {
-			switch (response.type) {
-				case HttpEventType.DownloadProgress:
-					break;
-				case HttpEventType.Response:
-					this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
-					break;
-				default:
-					break;
-			}
-		});
 	}
 }

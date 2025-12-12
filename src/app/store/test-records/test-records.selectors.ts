@@ -45,6 +45,8 @@ export const selectedTestResultState = createSelector(
 	}
 );
 
+export const selectTestByRouteTestNumber = createSelector(selectedTestResultState, (state) => state);
+
 export const testResultInEdit = createSelector(testResultsFeatureState, (state) => state.editingTestResult);
 
 export const toEditOrNotToEdit = createSelector(

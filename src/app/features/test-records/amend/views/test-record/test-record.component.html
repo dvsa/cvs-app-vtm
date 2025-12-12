@@ -40,7 +40,7 @@
   }
   @case (TestModeEnum.Cancel) {
     @if (testResult$ | async; as testResult) {
-      <app-vehicle-header [isEditing]="true" [testResult]="$any(testResult)" [testNumber]="testNumber$ | async" />
+      <app-vehicle-header [isEditing]="true" [testResult]="testResult" [testNumber]="testNumber$ | async" />
     }
     <h1 class="govuk-heading-l">Are you sure you want to cancel these changes?</h1>
     <p class="govuk-heading-s">You will lose all the changes you made to the technical record in this session.</p>

@@ -122,7 +122,7 @@
       <div class="vehicle_heading govuk-!-margin-bottom-6">
         <h2 class="govuk-heading-l">
           @if (techRecord$ | async; as techRecord) {
-            {{ getVehicleDescription(techRecord, $any(testResult.vehicleType)) }}
+            {{ getVehicleDescription(techRecord, testResult.vehicleType) }}
           }
           <app-icon
             [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"
@@ -191,8 +191,8 @@
             <dd id="test-odomReading" class="govuk-summary-list__value">
               {{
               combinedOdometerReading(
-              $any(testResult.odometerReading) | digitGroupSeparator,
-              $any(testResult.odometerReadingUnits)
+              testResult.odometerReading | digitGroupSeparator,
+              testResult.odometerReadingUnits
               ) | defaultNullOrEmpty
               }}
             </dd>
@@ -228,25 +228,7 @@
             </dd>
           </div>
         }
-
-        @if (viewMediaApplicable(testResult)) {
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Media:</dt>
-            @if (canDownloadApprovalsMedia(testResult)) {
-              <dd id="media-download-link" class="govuk-summary-list__value">
-                <button class="link" (click)="downloadMedia(testResult)">
-                  Download
-                </button>
-              </dd>
-            } @else {
-              <dd id="media-failure-to-capture-reason" class="govuk-summary-list__value">
-                {{ getFailureToCaptureApprovalsMediaReason(testResult) }}
-              </dd>
-            }
-          </div>
-        }
       </dl>
     }
   }
-
 }
