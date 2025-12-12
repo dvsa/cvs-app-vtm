@@ -172,7 +172,6 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			backlink: {
-				url: TechRecordRoutes.CORRECT_ERROR,
 				featureFlags: ['techrecordredesigncreatedetails'],
 			},
 		},
@@ -203,7 +202,6 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			backlink: {
-				url: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED,
 				featureFlags: ['techrecordredesigncreatedetails'],
 			},
 		},
