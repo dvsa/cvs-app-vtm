@@ -16,11 +16,8 @@ export class GlobalErrorComponent {
 	cdr = inject(ChangeDetectorRef);
 
 	goto(error: GlobalError) {
-		console.log(error);
 		if (error.anchorLink) {
-			console.log(error.anchorLink);
 			if (error.accordion) {
-				console.error(error.accordion);
 				this.cdr.markForCheck();
 				this.store.dispatch(addSectionStateFromGlobalError({ section: error.accordion }));
 			}

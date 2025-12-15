@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -35,11 +35,12 @@ describe('GlobalErrorComponent', () => {
 	});
 
 	describe('goto', () => {
-		it('should focus element', () => {
+		it('should focus element', fakeAsync(() => {
 			const input: HTMLInputElement = fixture.debugElement.query(By.css('#test-input')).nativeElement;
 			component.goto({ error: 'navigate', anchorLink: 'test-input' });
 
+			tick(200);
 			expect(document.activeElement).toBe(input);
-		});
+		}));
 	});
 });
