@@ -30,9 +30,7 @@ export class AccordionControlComponent implements OnInit {
 	private destroy$ = new Subject<void>();
 
 	ngOnInit() {
-		console.log('test');
 		this.actions$.pipe(ofType(addSectionStateFromGlobalError), takeUntil(this.destroy$)).subscribe(({ section }) => {
-			console.log('toggleAccordionById', section);
 			this.openAccordionById(section);
 		});
 	}
@@ -89,13 +87,9 @@ export class AccordionControlComponent implements OnInit {
 	}
 
 	private openAccordionById(accordionId: string) {
-		console.log('toggleAccordionById 1');
 		if (this.accordions) {
-			console.log('toggleAccordionById 2');
 			const accordion = this.accordions.find((a) => a.id() === accordionId);
-			console.log('toggleAccordionById 3');
 			if (accordion) {
-				console.log('toggleAccordionById 4');
 				accordion.open(accordion.id());
 			}
 		}
