@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { ManufacturerSectionEditComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section-edit/manufacturer-section-edit.component';
 import { ManufacturerSectionSummaryComponent } from '@forms/custom-sections/manufacturer-section/manufacturer-section-summary/manufacturer-section-summary.component';
@@ -11,8 +12,6 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 	imports: [ManufacturerSectionEditComponent, ManufacturerSectionSummaryComponent, ManufacturerSectionViewComponent],
 })
 export class ManufacturerSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

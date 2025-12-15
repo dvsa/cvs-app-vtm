@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { NotesSectionEditComponent } from './notes-section-edit/notes-section-edit.component';
@@ -11,8 +12,6 @@ import { NotesSectionViewComponent } from './notes-section-view/notes-section-vi
 	imports: [NotesSectionViewComponent, NotesSectionEditComponent, NotesSectionSummaryComponent],
 })
 export class NotesSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

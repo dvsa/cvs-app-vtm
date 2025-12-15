@@ -8,7 +8,7 @@
         [queryParams]="prevPage()"
         queryParamsHandling="merge"
         rel="prev"
-        >
+      >
         <svg
           class="govuk-pagination__icon govuk-pagination__icon--prev"
           xmlns="http://www.w3.org/2000/svg"
@@ -17,57 +17,87 @@
           aria-hidden="true"
           focusable="false"
           viewBox="0 0 15 13"
-          >
+        >
           <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
         </svg>
-        <span class="govuk-pagination__link-title">Previous</span></a
-        >
-      </div>
-    }
+        <span class="govuk-pagination__link-title">Previous</span>
+      </a>
+    </div>
+  }
 
-    <ul class="govuk-pagination__list">
-      @for (page of visiblePages; track i; let i = $index) {
-        <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }">
-          <a
-            [id]="tableName() + '-page-' + page"
-            class="govuk-link govuk-pagination__link"
-            [routerLink]="[]"
-            [queryParams]="pageQuery(page)"
-            routerLinkActive=""
-            #rla="routerLinkActive"
-            queryParamsHandling="merge"
-            aria-label="Page 1"
-            ariaCurrentWhenActive="page"
-            >
-            {{ page }}
-          </a>
-        </li>
-      }
-    </ul>
-
-    @if (currentPage !== pages.length) {
-      <div class="govuk-pagination__next">
+  <ul class="govuk-pagination__list">
+    @if (visiblePages[0] > 1) {
+      <li class="govuk-pagination__item">
         <a
-          [id]="tableName() + '-next-page'"
+          [id]="tableName() + '-page-1'"
           class="govuk-link govuk-pagination__link"
-          rel="next"
           [routerLink]="[]"
-          [queryParams]="nextPage()"
+          [queryParams]="pageQuery(1)"
           queryParamsHandling="merge"
-          >
-          <span class="govuk-pagination__link-title">Next</span>
-          <svg
-            class="govuk-pagination__icon govuk-pagination__icon--next"
-            xmlns="http://www.w3.org/2000/svg"
-            height="13"
-            width="15"
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 15 13"
-            >
-            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
-          </svg>
-        </a>
-      </div>
+        >1</a>
+      </li>
+      @if (visiblePages[0] > 2) {
+        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">&ctdot;</li>
+      }
     }
-  </nav>
+
+    @for (page of visiblePages; track i; let i = $index) {
+      <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }">
+        <a
+          [id]="tableName() + '-page-' + page"
+          class="govuk-link govuk-pagination__link"
+          [routerLink]="[]"
+          [queryParams]="pageQuery(page)"
+          routerLinkActive=""
+          #rla="routerLinkActive"
+          queryParamsHandling="merge"
+          aria-label="Page 1"
+          ariaCurrentWhenActive="page"
+        >
+          {{ page }}
+        </a>
+      </li>
+    }
+
+    @if (visiblePages[visiblePages.length - 1] < pages.length) {
+      @if (visiblePages[visiblePages.length - 1] < pages.length - 1) {
+        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">&ctdot;</li>
+      }
+      <li class="govuk-pagination__item">
+        <a
+          [id]="tableName() + '-page-' + pages.length"
+          class="govuk-link govuk-pagination__link"
+          [routerLink]="[]"
+          [queryParams]="pageQuery(pages.length)"
+          queryParamsHandling="merge"
+        >{{ pages.length }}</a>
+      </li>
+    }
+  </ul>
+
+  @if (currentPage !== pages.length) {
+    <div class="govuk-pagination__next">
+      <a
+        [id]="tableName() + '-next-page'"
+        class="govuk-link govuk-pagination__link"
+        rel="next"
+        [routerLink]="[]"
+        [queryParams]="nextPage()"
+        queryParamsHandling="merge"
+      >
+        <span class="govuk-pagination__link-title">Next</span>
+        <svg
+          class="govuk-pagination__icon govuk-pagination__icon--next"
+          xmlns="http://www.w3.org/2000/svg"
+          height="13"
+          width="15"
+          aria-hidden="true"
+          focusable="false"
+          viewBox="0 0 15 13"
+        >
+          <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+        </svg>
+      </a>
+    </div>
+  }
+</nav>

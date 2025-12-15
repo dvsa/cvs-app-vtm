@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { Component, input } from '@angular/core';
 import { AuthorisationIntoServiceSectionEditComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-edit/authorisation-into-service-section-edit.component';
 import { AuthorisationIntoServiceSectionSummaryComponent } from '@forms/custom-sections/authorisation-into-service-section/authorisation-into-service-summary/authorisation-into-service-section-summary.component';
@@ -15,8 +16,6 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 	],
 })
 export class AuthorisationIntoServiceSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

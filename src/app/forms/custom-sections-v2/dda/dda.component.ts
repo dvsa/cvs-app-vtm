@@ -1,5 +1,7 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_NULL_OPTIONS } from '@/src/app/models/options.model';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -25,7 +27,11 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly YES_NO_NULL_OPTIONS = YES_NO_NULL_OPTIONS;
 
+	tcs = inject(TechnicalRecordChangesService);
+
 	techRecord = input.required<V3TechRecordModel>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group({
 		techRecord_dda_certificateIssued: this.fb.control<boolean | null>(null),
@@ -64,5 +70,10 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
+	}
+
+	shouldDisplayFormControl(formControlName: string) {
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 }

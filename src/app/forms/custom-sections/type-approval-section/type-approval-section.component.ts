@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 
+import { Modes } from '@/src/app/models/modes.enum';
 import { TypeApprovalSectionEditComponent } from './type-approval-section-edit/type-approval-section-edit.component';
 import { TypeApprovalSectionSummaryComponent } from './type-approval-section-summary/type-approval-section-summary.component';
 import { TypeApprovalSectionViewComponent } from './type-approval-section-view/type-approval-section-view.component';
@@ -12,8 +13,6 @@ import { TypeApprovalSectionViewComponent } from './type-approval-section-view/t
 	imports: [TypeApprovalSectionViewComponent, TypeApprovalSectionEditComponent, TypeApprovalSectionSummaryComponent],
 })
 export class TypeApprovalSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

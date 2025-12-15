@@ -38,9 +38,5 @@ export class GovukFormGroupTextareaComponent extends GovukFormGroupBaseComponent
 		this.onChange(obj);
 	}
 
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
-	}
-
 	protected readonly FormNodeWidth = FormNodeWidth;
 }

@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 
+import { Modes } from '@/src/app/models/modes.enum';
 import { TRLPurchasersSectionEditComponent } from './trl-purchasers-section-edit/trl-purchasers-section-edit.component';
 import { TRLPurchasersSectionSummaryComponent } from './trl-purchasers-section-summary/trl-purchasers-section-summary.component';
 import { TRLPurchasersSectionViewComponent } from './trl-purchasers-section-view/trl-purchasers-section-view.component';
@@ -12,8 +13,6 @@ import { TRLPurchasersSectionViewComponent } from './trl-purchasers-section-view
 	imports: [TRLPurchasersSectionViewComponent, TRLPurchasersSectionEditComponent, TRLPurchasersSectionSummaryComponent],
 })
 export class TRLPurchasersSectionComponent {
-	mode = input<Mode>('edit');
+	mode = input<Modes>(Modes.EDIT);
 	techRecord = input.required<V3TechRecordModel>();
 }
-
-type Mode = 'view' | 'edit' | 'summary';

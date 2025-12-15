@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { Modes } from '@/src/app/models/modes.enum';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
@@ -16,8 +18,12 @@ import { ReplaySubject } from 'rxjs';
 export class ManufacturerComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
 
+	tcs = inject(TechnicalRecordChangesService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
+	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	form = this.fb.group({
 		techRecord_manufacturerDetails_name: this.fb.control(null, [
@@ -61,7 +67,8 @@ export class ManufacturerComponent extends EditBaseComponent implements OnInit, 
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnDestroy(): void {

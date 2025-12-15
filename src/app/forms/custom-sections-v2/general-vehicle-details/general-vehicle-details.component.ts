@@ -2,6 +2,8 @@ import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -76,6 +78,7 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 	],
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
+	protected readonly Modes = Modes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FUNCTION_CODE_OPTIONS = FUNCTION_CODE_OPTIONS;
@@ -88,6 +91,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	referenceDataService = inject(ReferenceDataService);
 	cdr = inject(ChangeDetectorRef);
 	axlesService = inject(AxlesService);
+	tcs = inject(TechnicalRecordChangesService);
 
 	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
@@ -103,6 +107,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 	isAxlesDisabled = false;
 
 	form = this.fb.group({});
@@ -501,7 +506,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnDestroy(): void {

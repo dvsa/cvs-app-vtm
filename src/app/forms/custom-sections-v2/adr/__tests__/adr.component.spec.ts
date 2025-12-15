@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { PERMITTED_DANGEROUS_GOODS_OPTIONS } from '@/src/app/models/options.model';
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
@@ -50,6 +51,7 @@ describe('AdrComponent', () => {
 		controlContainer = TestBed.inject(ControlContainer);
 
 		fixture = TestBed.createComponent(AdrComponent);
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.componentRef.setInput('techRecord', createMockHgv(100000));
 		component = fixture.componentInstance;
 		component.form.reset();

@@ -1,11 +1,13 @@
 import { NumberPlateComponent } from '@/src/app/components/number-plate/number-plate.component';
 import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { Roles } from '@/src/app/models/roles.enum';
 import { RootRoutes, TechRecordCreateRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -26,13 +28,15 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 export class TechRecordSummaryCardComponent {
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+	technicalRecordService = inject(TechnicalRecordService);
 
-	mode = input.required<'view' | 'edit' | 'create'>();
+	mode = input.required<Modes>();
 	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
 		transform: (value) => value as TechRecordType<'get'>,
 	});
 
 	readonly Roles = Roles;
+	readonly Modes = Modes;
 	readonly TagType = TagType;
 	readonly StatusCodes = StatusCodes;
 	readonly VehicleTypes = VehicleTypes;

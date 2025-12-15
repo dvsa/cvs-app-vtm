@@ -12,7 +12,7 @@
     </label>
   </h1>
 
-  @if (controlHint()) {
+  @if (controlHint() && !disabled()) {
     <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
   }
 
@@ -26,6 +26,8 @@
     }
   }
 
+  @let max = maxLength();
+
   <textarea
     appNoEmojis
     rows="5"
@@ -38,20 +40,20 @@
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"
     [attr.aria-describedby]="id"
-    [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength() }"
+    [ngClass]="{ 'govuk-!-margin-bottom-2': max && !disabled() }"
     [class]="style"
   ></textarea>
 
-  @if (maxLength(); as maxLength) {
+  @if (max && !disabled()) {
     @let length = value()?.length ?? 0;
-    @if (maxLength - length >= 0) {
+    @if (max - length >= 0) {
       <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint">
-        You have {{ maxLength - length }} character{{ maxLength - length !== 1 ? 's' : '' }} remaining
+        You have {{ max - length }} character{{ max - length !== 1 ? 's' : '' }} remaining
       </div>
     } @else {
-        <div id="{{ id }}-max-length" class="govuk-error-message">
-          You have {{ -(maxLength - length) }} character{{ -(maxLength - length) !== 1 ? 's' : '' }} too many
-        </div>
+      <div id="{{ id }}-max-length" class="govuk-error-message">
+        You have {{ -(max - length) }} character{{ -(max - length) !== 1 ? 's' : '' }} too many
+      </div>
     }
   }
 </div>

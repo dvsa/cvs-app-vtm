@@ -1,7 +1,9 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
+import { Modes } from '@/src/app/models/modes.enum';
 import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -16,11 +18,14 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupInputComponent, FilterByTagsDirective],
 })
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
+	tcs = inject(TechnicalRecordChangesService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
 	form = this.fb.group({});
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
@@ -79,7 +84,8 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnDestroy(): void {
@@ -96,4 +102,5 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
+	protected readonly Modes = Modes;
 }

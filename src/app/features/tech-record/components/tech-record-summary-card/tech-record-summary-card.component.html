@@ -4,7 +4,7 @@
       <h2 class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l">
         Summary
       </h2>
-      @if (mode() === 'create') {
+      @if (mode() === Modes.CREATE) {
         <ul class="govuk-summary-card__actions">
           <li class="govuk-summary-card__action">
             <a id="change-link" class="govuk-link" href="javascript:void(0)" (click)="onChange()">
@@ -26,9 +26,9 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             Vehicle type
 
-            @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a> 
+                <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
               </div>
             }
           </dt>
@@ -43,9 +43,9 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             VIN
 
-            @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a> 
+                <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
               </div>
             }
           </dt>
@@ -76,9 +76,9 @@
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               VRM
 
-              @if (mode() === 'view' && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
+              @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vin']">Change</a> 
+                  <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
                 </div>
               }
             </dt>
@@ -92,7 +92,7 @@
         <!-- Previous VRM not (TRL, Small TRL)-->
         @if (
           techRecord.techRecord_vehicleType !== VehicleTypes.TRL &&
-          $any(techRecord.techRecord_vehicleType) !== VehicleTypes.SMALL_TRL
+          technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) !== VehicleTypes.SMALL_TRL
         ) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
@@ -100,8 +100,8 @@
             </dt>
           </div>
           <div class="govuk-summary-list__row--value">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="previous-vrm">
-              @let otherVrms = techRecord.secondaryVrms || [];
+            @let otherVrms = techRecord.secondaryVrms || [];
+            <dd class="govuk-summary-list__value govuk-summary-list__value--vin" [class.govuk-summary-list__value--vrm]="otherVrms.length" id="previous-vrm">
               @if (otherVrms.length) {
                 <app-number-plate
                   class="govuk-body govuk-!margin-bottom-0"
@@ -109,7 +109,7 @@
                   [isSecondary]="true"
                 ></app-number-plate>
               } @else {
-                <span class="govuk-body govuk-!-margin-bottom-0">None</span>
+                <span class="govuk-body govuk-!-margin-bottom-0">Not applicable</span>
               }
             </dd>
           </div>
@@ -119,83 +119,86 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             Record type
 
-            @if (mode() === 'view') {
+            @if (mode() === Modes.VIEW) {
               <div class="summary-link-wrapper">
                 @switch (techRecord.techRecord_statusCode) {
                   @case (StatusCodes.CURRENT) {
-                    <a 
+                    <a
                       *appRoleRequired="Roles.TechRecordArchive"
-                      class="govuk-link summary-link" 
-                      id="change-status-to-archive-link" 
+                      class="govuk-link summary-link"
+                      id="change-status-to-archive-link"
                       [routerLink]="['change-status']"
                       [queryParams]="{ to: 'archived' }"
                     >
                       <span>Archive</span>
-                    </a> 
+                    </a>
                   }
                   @case (StatusCodes.PROVISIONAL) {
                     <ul class="govuk-summary-list__actions-list">
                       <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
-                        <a 
-                          class="govuk-link summary-link" 
-                          id="change-status-to-archive-link" 
+                        <a
+                          class="govuk-link summary-link"
+                          id="change-status-to-archive-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'archived' }"
                         >
                           <span>Archive</span>
-                        </a> 
+                        </a>
                       </li>
                       <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
-                        <a 
-                          class="govuk-link summary-link" 
+                        <a
+                          class="govuk-link summary-link"
                           id="promote-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'current' }"
                         >
                           <span>Promote</span>
-                        </a> 
+                        </a>
                       </li>
                     </ul>
                   }
                   @case (StatusCodes.ARCHIVED) {
                     <a
-                      *appRoleRequired="Roles.TechRecordUnarchive" 
-                      class="govuk-link summary-link" 
-                      id="unarchive-link" 
+                      *appRoleRequired="Roles.TechRecordUnarchive"
+                      class="govuk-link summary-link"
+                      id="unarchive-link"
                       [routerLink]="['unarchive-record']"
                     >
                       <span>Unarchive</span>
-                    </a> 
+                    </a>
                   }
                 }
               </div>
             }
           </dt>
         </div>
-        <div class="govuk-summary-list__row--value">
+        <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() === Modes.CREATE">
           <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
             <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
               {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
             </app-tag>
           </dd>
         </div>
+
         <!-- Record status -->
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
-            Record status
-          </dt>
-        </div>
-        <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== 'view'">
-          <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
-            <!-- In create mode this is always Incomplete -->
-            @let completeness = techRecord.techRecord_recordCompleteness;
-            <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
-              {{ mode() === 'create' ? 'Incomplete' : techRecord.techRecord_recordCompleteness }}
-            </app-tag>
-          </dd>
-        </div>
+        @if (mode() !== Modes.CREATE) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+              Record status
+            </dt>
+          </div>
+          <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== Modes.VIEW">
+            <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
+              @let completeness = techRecord.techRecord_recordCompleteness;
+              <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
+                {{ completeness }}
+              </app-tag>
+            </dd>
+          </div>
+        }
+
         <!-- Record visibility in VTA -->
-        @if (mode() === 'view') {
+        @if (mode() === Modes.VIEW) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               Visibility in VTA
@@ -204,7 +207,7 @@
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
                   <a class="govuk-link summary-link" id="change-record-visibility-in-vta-link" [routerLink]="['change-vta-visibility']">
                     Change
-                  </a> 
+                  </a>
                 </div>
               }
             </dt>

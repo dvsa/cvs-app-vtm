@@ -1,26 +1,36 @@
 <div class="govuk-!-padding-4" [formGroup]="form">
-  <govuk-form-group-date
-    label="COC issue date"
-    formControlName="techRecord_authIntoService_cocIssueDate"
-  />
+  @if (shouldDisplayFormControl('techRecord_authIntoService_cocIssueDate')) {
+    <govuk-form-group-date
+      label="COC issue date"
+      formControlName="techRecord_authIntoService_cocIssueDate"
+    ></govuk-form-group-date>
+  }
 
-  <govuk-form-group-date
-    label="Date received"
-    formControlName="techRecord_authIntoService_dateReceived"
-  />
+  @if (shouldDisplayFormControl('techRecord_authIntoService_dateReceived')) {
+    <govuk-form-group-date
+      label="Date received"
+      formControlName="techRecord_authIntoService_dateReceived"
+    ></govuk-form-group-date>
+  }
 
-  <govuk-form-group-date
-    label="Date pending"
-    formControlName="techRecord_authIntoService_datePending"
-  />
+  @if (shouldDisplayFormControl('techRecord_authIntoService_datePending')) {
+    <govuk-form-group-date
+      label="Date pending"
+      formControlName="techRecord_authIntoService_datePending"
+    ></govuk-form-group-date>
+  }
 
-  <govuk-form-group-date
-    label="Date authorised"
-    formControlName="techRecord_authIntoService_dateAuthorised"
-  />
+  @if (shouldDisplayFormControl('techRecord_authIntoService_dateAuthorised')) {
+    <govuk-form-group-date
+      label="Date authorised"
+      formControlName="techRecord_authIntoService_dateAuthorised"
+    ></govuk-form-group-date>
+  }
 
-  <govuk-form-group-date
-    label="Date rejected"
-    formControlName="techRecord_authIntoService_dateRejected"
-  />
+  @if (shouldDisplayFormControl('techRecord_authIntoService_dateRejected')) {
+    <govuk-form-group-date
+      label="Date rejected"
+      formControlName="techRecord_authIntoService_dateRejected"
+    ></govuk-form-group-date>
+  }
 </div>

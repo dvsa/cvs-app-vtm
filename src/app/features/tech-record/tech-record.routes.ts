@@ -171,6 +171,9 @@ export const routes: Routes = [
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
+			backlink: {
+				featureFlags: ['techrecordredesigncreatedetails'],
+			},
 		},
 		canActivate: [MsalGuard, RoleGuard],
 	},
@@ -198,6 +201,9 @@ export const routes: Routes = [
 		data: {
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
+			backlink: {
+				featureFlags: ['techrecordredesigncreatedetails'],
+			},
 		},
 		canActivate: [MsalGuard, RoleGuard],
 	},

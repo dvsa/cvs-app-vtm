@@ -6,6 +6,7 @@ import { BrakesComponent } from '@/src/app/forms/custom-sections-v2/brakes/brake
 import { DDAComponent } from '@/src/app/forms/custom-sections-v2/dda/dda.component';
 import { EmissionsAndExemptionsComponent } from '@/src/app/forms/custom-sections-v2/emissions-and-exemptions/emissions-and-exemptions.component';
 import { ManufacturerComponent } from '@/src/app/forms/custom-sections-v2/manufacturer/manufacturer.component';
+import { Modes } from '@/src/app/models/modes.enum';
 import { RootRoutes } from '@/src/app/models/routes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
@@ -93,6 +94,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	sectionStates$ = this.store.selectSignal(selectSectionState);
 	username$ = this.store.selectSignal(name);
 
+	readonly Modes = Modes;
 	readonly VehicleTypes = VehicleTypes;
 
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'put'>, FormControl>>>({});
@@ -174,46 +176,6 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		if (!this.techRecord$()) {
 			this.router.navigate([RootRoutes.CREATE_TECHNICAL_RECORD]);
 		}
-	}
-
-	generateRFCDescription(): string {
-		// TODO: Update this method to return a dynamic description message
-		// based on if user is creating or amending a record.
-		// return "Tell us why you're amending this record.";
-
-		return "Tell us why you're creating this record.";
-	}
-
-	get weightsAccordionDescription(): string {
-		switch (this.techRecord$()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Axle, gross, and train weights.';
-			case VehicleTypes.PSV:
-				return 'Axle weights, unladen weight.';
-			case VehicleTypes.TRL:
-				return 'Axle, gross weights and coupling type.';
-			default:
-				return '';
-		}
-	}
-
-	get configAccordionDescription(): string {
-		switch (this.techRecord$()?.techRecord_vehicleType) {
-			case VehicleTypes.HGV:
-				return 'Off-road, fuel system, road friendly suspension.';
-			case VehicleTypes.TRL:
-				return 'Vehicle markers, road friendly suspension.';
-			case VehicleTypes.PSV:
-				return 'Vehicle markers, fuel system, speed restriction.';
-			default:
-				return '';
-		}
-	}
-
-	get brakesAccordionDescription(): string {
-		return this.techRecord$()?.techRecord_vehicleType === VehicleTypes.PSV
-			? 'Brake codes, retarders, parking brakes.'
-			: 'Axle brake details, parking brakes.';
 	}
 
 	get tags(): string[] {

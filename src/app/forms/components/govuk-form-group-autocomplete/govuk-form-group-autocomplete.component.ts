@@ -87,6 +87,7 @@ export class GovukFormGroupAutocompleteComponent
 				const control = this.document.querySelector(`#${this.id}`);
 				control?.setAttribute('placeholder', this.placeholder());
 				control?.addEventListener('change', (event) => this.handleChange(event));
+				this.setDisabledState(this.disabled());
 			});
 	}
 
@@ -99,6 +100,12 @@ export class GovukFormGroupAutocompleteComponent
 		this.destroy.complete();
 	}
 
+	override setDisabledState(isDisabled: boolean): void {
+		this.disabled.set(isDisabled);
+		const control = this.document.querySelector(`#${this.id}`);
+		isDisabled ? control?.removeAttribute('placeholder') : control?.setAttribute('placeholder', this.placeholder());
+	}
+
 	get style(): string {
 		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
 	}
@@ -106,10 +113,6 @@ export class GovukFormGroupAutocompleteComponent
 		this.value.set(obj);
 		this.valueSub.next(obj);
 		this.onChange(obj);
-	}
-
-	setDisabledState?(isDisabled: boolean): void {
-		this.disabled.set(isDisabled);
 	}
 
 	handleChange(event: Event) {

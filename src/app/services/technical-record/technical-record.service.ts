@@ -412,4 +412,46 @@ export class TechnicalRecordService {
 
 		return techRecord;
 	}
+
+	getApprovalTypeAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
+		return techRecord.techRecord_vehicleType === VehicleTypes.PSV
+			? 'Approval type, COIF number, variant number.'
+			: 'Approval type, national type, variant number.';
+	}
+
+	getBrakesAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
+		return techRecord.techRecord_vehicleType === VehicleTypes.PSV
+			? 'Brake codes, retarders, parking brakes.'
+			: 'Axle brake details, parking brakes.';
+	}
+
+	getConfigAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
+		switch (techRecord.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return 'Off-road, fuel system, road friendly suspension.';
+			case VehicleTypes.TRL:
+				return 'Vehicle markers, road friendly suspension.';
+			case VehicleTypes.PSV:
+				return 'Vehicle markers, fuel system, speed restriction.';
+			default:
+				return '';
+		}
+	}
+
+	getWeightsAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
+		switch (techRecord.techRecord_vehicleType) {
+			case VehicleTypes.HGV:
+				return 'Axle, gross, and train weights.';
+			case VehicleTypes.PSV:
+				return 'Axle weights, unladen weight.';
+			case VehicleTypes.TRL:
+				return 'Axle, gross weights and coupling type.';
+			default:
+				return '';
+		}
+	}
+
+	getTyresAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
+		return techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.';
+	}
 }

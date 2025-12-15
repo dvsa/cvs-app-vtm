@@ -1,5 +1,7 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { Modes } from '@/src/app/models/modes.enum';
+import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FuelPropulsionSystem } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -32,10 +34,13 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 	protected readonly FUEL_PROPULSION_SYSTEM_OPTIONS = FUEL_PROPULSION_SYSTEM_OPTIONS;
 	protected readonly SUSPENSION_TYRE_OPTIONS = SUSPENSION_TYRE_OPTIONS;
 
+	tcs = inject(TechnicalRecordChangesService);
+
 	form: FormGroup = this.fb.group({});
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
+	mode = input.required<Modes>();
 
 	get controlsBasedOffVehicleType() {
 		switch (this.getVehicleType()) {
@@ -85,7 +90,8 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
-		return !!this.form.get(formControlName);
+		if (!this.form.get(formControlName)) return false;
+		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
 	ngOnInit(): void {
