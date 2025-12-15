@@ -3,6 +3,7 @@ import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definiti
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { get, isEqual } from 'lodash';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
@@ -214,8 +215,11 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasBrakesSectionChanged(): boolean {
-		// Edge case 1: Only detect parking brake changes when axles are modified
+		// Edge case 1: Only detect parking brake changes when axles are modified (HGV/TRL/PSV)
 		if (this.hasParkingBrakesSectionChanged()) return true;
+
+		// Edge case 2: Only detect brake changes when axles are modified (TRL)
+		if (this.hasTRLAxleBrakesChanged()) return true;
 
 		return this.hasChanged(
 			'techRecord_brakes_brakeCode',
@@ -290,6 +294,9 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasADRSectionChanged(): boolean {
+		// Edge case 1: Only detect UN numbers as a change when not null -> [null]
+		if (this.hasUNNumbersChanged()) return true;
+
 		return this.hasChanged(
 			'techRecord_adrDetails_dangerousGoods',
 			'techRecord_adrDetails_applicantDetails_name',
@@ -314,7 +321,6 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
-			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
 			'techRecord_adrDetails_tank_tankDetails_specialProvisions',
 			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
@@ -335,6 +341,18 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_additionalExaminerNotes',
 			'techRecord_adrDetails_adrCertificateNotes'
 		);
+	}
+
+	hasUNNumbersChanged(): boolean {
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+
+		const b = get(amended, 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo');
+		if (Array.isArray(b) && b.filter(Boolean).length === 0) return false;
+
+		return this._hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo');
 	}
 
 	hasADRApplicantSectionChanged(): boolean {
@@ -629,6 +647,28 @@ export class TechnicalRecordChangesService {
 
 		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
 			return this.hasTyreChanged(index);
+		});
+	}
+
+	hasTRLAxleBrakeChanged(i: number) {
+		return this.hasChanged(
+			`techRecord_axles.${i}.brakes_brakeActuator`,
+			`techRecord_axles.${i}.brakes_leverLength`,
+			`techRecord_axles.${i}.brakes_springBrakeParking`
+		);
+	}
+
+	hasTRLAxleBrakesChanged() {
+		if (!this.hasChanged('techRecord_axles')) return false;
+
+		const current = this.currentTechRecord();
+		const amended = this.amendedTechRecord();
+
+		if (!current || !amended) return true;
+		if (amended.techRecord_vehicleType !== VehicleTypes.TRL) return false;
+
+		return (amended as TechRecordTypeVehicle<'hgv' | 'psv' | 'trl'>).techRecord_axles!.some((_, index) => {
+			return this.hasTRLAxleBrakeChanged(index);
 		});
 	}
 }

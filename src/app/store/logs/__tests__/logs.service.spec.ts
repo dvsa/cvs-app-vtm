@@ -24,7 +24,7 @@ describe('LogsProvider', () => {
 	let logsProvider: LogsProvider;
 	let httpService: HttpService;
 	let store: MockStore;
-	const additionalInfo = { appVersion: '1.0', employeeId: 'some-id', source: 'VTM' };
+	const additionalInfo = { appVersion: '1.0', oid: 'some-id', employeeId: 'some-emp-id', source: 'VTM' };
 	const mockHttpService: jest.Mocked<Partial<HttpService>> = {
 		sendLogs: jest.fn().mockReturnValue(of({})),
 	};
@@ -43,6 +43,7 @@ describe('LogsProvider', () => {
 		httpService = TestBed.inject(HttpService);
 
 		store.overrideSelector(UserActions.id, 'some-id');
+		store.overrideSelector(UserActions.employeeId, 'some-emp-id');
 	});
 
 	describe('sendLogs', () => {

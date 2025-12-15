@@ -146,7 +146,7 @@ export class AdrValidatorsService {
 			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
 				const unNumbersArray = control as FormArray;
 				const unNumbers = unNumbersArray?.value;
-				if (Array.isArray(unNumbers)) {
+				if (Array.isArray(unNumbers) && unNumbers.length > 1) {
 					const index = unNumbers.findIndex((unNumber) => !unNumber);
 					const control = unNumbersArray?.controls[index];
 					if (control) {
