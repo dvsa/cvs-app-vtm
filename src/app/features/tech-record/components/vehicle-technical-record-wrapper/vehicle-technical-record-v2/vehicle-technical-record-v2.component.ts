@@ -173,6 +173,8 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 	}
 
 	handleSubmit(): void {
+		this.form.markAllAsTouched();
+
 		if (this.form.valid) {
 			this.router.navigate(['change-summary'], { relativeTo: this.route });
 		}
