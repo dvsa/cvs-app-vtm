@@ -4,9 +4,8 @@
       <a
         [id]="tableName() + '-prev-page'"
         class="govuk-link govuk-pagination__link"
-        [routerLink]="[]"
-        [queryParams]="prevPage()"
-        queryParamsHandling="merge"
+        href="javascript:void(0)"
+        (click)="goToPage(prevPage())"
         rel="prev"
       >
         <svg
@@ -31,9 +30,8 @@
         <a
           [id]="tableName() + '-page-1'"
           class="govuk-link govuk-pagination__link"
-          [routerLink]="[]"
-          [queryParams]="pageQuery(1)"
-          queryParamsHandling="merge"
+          href="javascript:void(0)"
+          (click)="goToPage(pageQuery(1))"
         >1</a>
       </li>
       @if (visiblePages[0] > 2) {
@@ -46,11 +44,10 @@
         <a
           [id]="tableName() + '-page-' + page"
           class="govuk-link govuk-pagination__link"
-          [routerLink]="[]"
-          [queryParams]="pageQuery(page)"
+          href="javascript:void(0)"
+          (click)="goToPage(pageQuery(page))"
           routerLinkActive=""
           #rla="routerLinkActive"
-          queryParamsHandling="merge"
           aria-label="Page 1"
           ariaCurrentWhenActive="page"
         >
@@ -67,9 +64,8 @@
         <a
           [id]="tableName() + '-page-' + pages.length"
           class="govuk-link govuk-pagination__link"
-          [routerLink]="[]"
-          [queryParams]="pageQuery(pages.length)"
-          queryParamsHandling="merge"
+          href="javascript:void(0)"
+          (click)="goToPage(pageQuery(pages.length))"
         >{{ pages.length }}</a>
       </li>
     }
@@ -81,9 +77,8 @@
         [id]="tableName() + '-next-page'"
         class="govuk-link govuk-pagination__link"
         rel="next"
-        [routerLink]="[]"
-        [queryParams]="nextPage()"
-        queryParamsHandling="merge"
+        href="javascript:void(0)"
+        (click)="goToPage(nextPage())"
       >
         <span class="govuk-pagination__link-title">Next</span>
         <svg

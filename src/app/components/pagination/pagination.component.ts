@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, ViewportScroller } from '@angular/common';
 import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -9,8 +9,10 @@ import {
 	input,
 	model,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
+import { updateScrollPosition } from '../../store/technical-records';
 
 @Component({
 	selector: 'app-pagination[tableName]',
@@ -20,8 +22,11 @@ import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
 	imports: [RouterLink, NgClass, RouterLinkActive],
 })
 export class PaginationComponent implements OnInit, OnDestroy {
+	store = inject(Store);
 	route = inject(ActivatedRoute);
+	router = inject(Router);
 	cdr = inject(ChangeDetectorRef);
+	viewportScroller = inject(ViewportScroller);
 
 	readonly tableName = input.required<string>();
 	readonly numberOfItems = input(0);
@@ -83,6 +88,11 @@ export class PaginationComponent implements OnInit, OnDestroy {
 	}
 	prevPage() {
 		return this.pageQuery(this.currentPage - 1);
+	}
+
+	goToPage(queryParams: Record<string, unknown>) {
+		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
+		this.router.navigate([], { queryParams, relativeTo: this.route, queryParamsHandling: 'merge' });
 	}
 
 	get pages() {
