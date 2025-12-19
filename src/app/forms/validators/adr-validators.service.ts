@@ -264,7 +264,6 @@ export class AdrValidatorsService {
 						return {
 							required: {
 								error: message,
-								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
 								accordion: 'adr',
 							},
 						};
