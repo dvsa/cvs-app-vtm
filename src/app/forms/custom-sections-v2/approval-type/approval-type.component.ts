@@ -134,8 +134,8 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 				this.commonValidators.maxLength(20, 'COIF certifier name'),
 			]),
 			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
-				this.commonValidators.date('COIF certifier date'),
-				this.commonValidators.pastDate('COIF certifier date'),
+				this.commonValidators.date('COIF certifier date', 'techRecord_coifDate', 'approval-type'),
+				this.commonValidators.pastDate('COIF certifier date', 'approval-type', 'techRecord_coifDate'),
 			]),
 		};
 	}

@@ -126,6 +126,7 @@ describe('AdrGenerateCertificateComponent', () => {
 			expect(addErrorSpy).toHaveBeenCalledWith({
 				error: 'ADR Certificate Type is required',
 				anchorLink: 'certificateType',
+				accordion: 'adr-certs',
 			});
 		});
 

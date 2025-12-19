@@ -51,15 +51,29 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.max(99, 'Wheelchair capacity'),
 		]),
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle class'),
+			this.commonValidators.required(
+				'Vehicle class',
+				'vehicle-class-description',
+				'techRecord_vehicleClass_description'
+			),
 		]),
-		techRecord_vehicleSize: this.fb.control<string | null>(null, [this.commonValidators.required('Vehicle size')]),
+		techRecord_vehicleSize: this.fb.control<string | null>(null, [
+			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
+		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 			this.commonValidators.max(150, 'Number of seatbelts'),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
-			this.commonValidators.date('Seatbelt installation approval date'),
-			this.commonValidators.pastDate('Seatbelt installation approval date'),
+			this.commonValidators.date(
+				'Seatbelt installation approval date',
+				'techRecord_seatbeltInstallationApprovalDate',
+				'seats-and-vehicle-size'
+			),
+			this.commonValidators.pastDate(
+				'Seatbelt installation approval date',
+				'seats-and-vehicle-size',
+				'techRecord_seatbeltInstallationApprovalDate'
+			),
 		]),
 	});
 

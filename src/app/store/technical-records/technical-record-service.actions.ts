@@ -114,6 +114,10 @@ export const removeTC3TankInspection = createAction(`${prefix} removeTC3TankInsp
 export const removeUNNumber = createAction(`${prefix} removeUNNumber`, props<{ index: number }>());
 
 export const addSectionState = createAction(`${prefix} addSectionState`, props<{ section: string | number }>());
+export const addSectionStateFromGlobalError = createAction(
+	`${prefix} addSectionStateFromGlobalError`,
+	props<{ section: string }>()
+);
 export const removeSectionState = createAction(`${prefix} removeSectionState`, props<{ section: string | number }>());
 export const clearAllSectionStates = createAction(`${prefix} clearAllSectionState`);
 

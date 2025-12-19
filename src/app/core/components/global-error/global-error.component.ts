@@ -1,5 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { addSectionStateFromGlobalError } from '@store/technical-records';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
@@ -10,13 +12,21 @@ import { GlobalErrorService } from './global-error.service';
 })
 export class GlobalErrorComponent {
 	globalErrorService = inject(GlobalErrorService);
+	store = inject(Store);
+	cdr = inject(ChangeDetectorRef);
 
 	goto(error: GlobalError) {
 		if (error.anchorLink) {
-			let focusCount = 0;
+			if (error.accordion) {
+				this.cdr.markForCheck();
+				this.store.dispatch(addSectionStateFromGlobalError({ section: error.accordion }));
+			}
 
-			document
-				.querySelectorAll(`
+			setTimeout(() => {
+				let focusCount = 0;
+
+				document
+					.querySelectorAll(`
           #${error.anchorLink},
           #${error.anchorLink} a[href]:not([tabindex='-1']),
           #${error.anchorLink} area[href]:not([tabindex='-1']),
@@ -28,12 +38,13 @@ export class GlobalErrorComponent {
           #${error.anchorLink} [tabindex]:not([tabindex='-1']),
           #${error.anchorLink} [contentEditable=true]:not([tabindex='-1'])
       `)
-				.forEach((el) => {
-					if (el instanceof HTMLElement && focusCount < 2) {
-						focusCount++;
-						el.focus({ preventScroll: false });
-					}
-				});
+					.forEach((el) => {
+						if (el instanceof HTMLElement && focusCount < 2) {
+							focusCount++;
+							el.focus({ preventScroll: false });
+						}
+					});
+			}, 100);
 		}
 	}
 }

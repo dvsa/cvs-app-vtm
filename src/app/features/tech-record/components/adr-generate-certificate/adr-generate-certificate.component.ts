@@ -86,6 +86,7 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
 			return this.globalErrorService.addError({
 				error: 'ADR Certificate Type is required',
 				anchorLink: 'certificateType',
+				accordion: 'adr-certs',
 			});
 		}
 		this.store.dispatch(

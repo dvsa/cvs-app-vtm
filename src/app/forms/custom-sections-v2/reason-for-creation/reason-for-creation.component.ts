@@ -20,8 +20,8 @@ export class ReasonForCreationComponent extends EditBaseComponent implements OnI
 
 	form = this.fb.group({
 		techRecord_reasonForCreation: this.fb.control('', [
-			this.commonValidators.required('Reason for creation'),
-			this.commonValidators.maxLength(100, 'Reason for creation'),
+			this.commonValidators.required('Reason for creation', 'reason-for-creation', 'techRecord_reasonForCreation'),
+			this.commonValidators.maxLength(100, 'Reason for creation', 'reason-for-creation'),
 		]),
 	});
 
