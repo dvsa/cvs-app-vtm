@@ -83,7 +83,10 @@ export class GovukFormGroupAutocompleteComponent
 					enhanceParams.defaultValue = latest.toString();
 				}
 
-				enhanceSelectElement(enhanceParams);
+				if (this.autocompleteOptions.length > 0) {
+					enhanceSelectElement(enhanceParams);
+				}
+
 				const control = this.document.querySelector(`#${this.id}`);
 				control?.setAttribute('placeholder', this.placeholder());
 				control?.addEventListener('change', (event) => this.handleChange(event));
