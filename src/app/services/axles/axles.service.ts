@@ -419,7 +419,8 @@ export class AxlesService {
 	}
 
 	addAxle(parent: FormGroup, type: 'hgv' | 'psv' | 'trl') {
-		const axlesForm = parent.get('techRecord_axles') as FormArray;
+		const axlesForm = parent.get('techRecord_axles');
+		if (!(axlesForm instanceof FormArray)) return;
 
 		if (axlesForm.controls.length < 10) {
 			this.setLockAxles(true);
