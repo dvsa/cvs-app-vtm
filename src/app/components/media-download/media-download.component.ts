@@ -1,8 +1,11 @@
-import { HttpEventType } from '@angular/common/http';
-import { Component, Signal, inject } from '@angular/core';
+import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
+import { Component, OnDestroy, Signal, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
+import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { CustomFormControlComponent } from '../../forms/custom-sections/custom-form-control/custom-form-control.component';
+import { RootRoutes } from '../../models/routes.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '../../models/testTypeId.enum';
 import { DocumentsService } from '../../services/documents/documents.service';
 import { HttpService } from '../../services/http/http.service';
@@ -16,10 +19,12 @@ import { selectedTestResultState } from '../../store/test-records';
 		class: 'govuk-table__row',
 	},
 })
-export class MediaDownloadComponent extends CustomFormControlComponent {
+export class MediaDownloadComponent extends CustomFormControlComponent implements OnDestroy {
 	store = inject(Store);
+	router = inject(Router);
 	httpService = inject(HttpService);
 	documentsService = inject(DocumentsService);
+	globalErrorService = inject(GlobalErrorService);
 
 	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
 
@@ -47,19 +52,41 @@ export class MediaDownloadComponent extends CustomFormControlComponent {
 		return 'Reason for failure to capture media not available';
 	}
 
-	async downloadMedia(test: TestResultSchema) {
+	ngOnDestroy(): void {
+		this.globalErrorService.clearErrors();
+	}
+
+	downloadMedia(test: TestResultSchema) {
 		const fileType = 'zip';
 		const fileName = `${test.testResultId}.zip`;
-		this.httpService.getTestResultMedia(test.testResultId).subscribe((response) => {
-			switch (response.type) {
-				case HttpEventType.DownloadProgress:
-					break;
-				case HttpEventType.Response:
-					this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
-					break;
-				default:
-					break;
-			}
+		this.httpService.getTestResultMedia(test.testResultId).subscribe({
+			next: (response) => {
+				switch (response.type) {
+					case HttpEventType.DownloadProgress:
+						break;
+					case HttpEventType.Response:
+						this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
+						break;
+					default:
+						break;
+				}
+			},
+			error: (error) => {
+				if (error instanceof HttpErrorResponse) {
+					switch (error.status) {
+						case HttpStatusCode.NotFound:
+							this.globalErrorService.setErrors([{ error: 'Media not found', anchorLink: '' }]);
+							break;
+						case HttpStatusCode.InternalServerError:
+							this.router.navigate([RootRoutes.ERROR]);
+							break;
+						default:
+							// for sentry reporting
+							console.error(error);
+							break;
+					}
+				}
+			},
 		});
 	}
 }
