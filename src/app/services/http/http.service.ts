@@ -4,6 +4,7 @@ import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
@@ -19,7 +20,6 @@ import {
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { CompleteTestResults } from '@models/test-results/completeTestResults';
 import { TestResults } from '@models/test-results/testResults';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -103,14 +103,14 @@ export class HttpService {
 	}
 
 	fetchTestStations() {
-		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`, {
+		return this.http.get<Array<TestStationSchema>>(`${environment.VTM_API_URI}/test-stations`, {
 			context: withCache({ key: CacheKeys.TEST_STATIONS }),
 			headers: HttpService.GetGzippedPayloadHeaders,
 		});
 	}
 
 	fetchTestStation(id: string) {
-		return this.http.get<TestStation>(`${environment.VTM_API_URI}/test-stations/${id}`);
+		return this.http.get<TestStationSchema>(`${environment.VTM_API_URI}/test-stations/${id}`);
 	}
 
 	generateADRCertificate(systemNumber: string, createdTimestamp: string, certificateType: string) {

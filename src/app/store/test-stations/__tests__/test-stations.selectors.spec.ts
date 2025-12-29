@@ -1,4 +1,4 @@
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { TestStationsState, initialTestStationsState } from '../test-stations.reducer';
 import {
 	getTestStationFromProperty,
@@ -42,7 +42,7 @@ describe('Test Results Selectors', () => {
 					testStationPNumber: '356728',
 					testStationType: 'atf',
 				},
-			] as TestStation[];
+			] as TestStationSchema[];
 			expect(getTestStationFromProperty('testStationName', 'foo').projector(testStationsArray)).toEqual(
 				testStationsArray[0]
 			);
@@ -59,7 +59,7 @@ describe('Test Results Selectors', () => {
 					testStationPNumber: '356728',
 					testStationType: 'atf',
 				},
-			] as TestStation[];
+			] as TestStationSchema[];
 			expect(getTestStationFromProperty('testStationPNumber', '356728').projector(testStationsArray)).toEqual(
 				testStationsArray[1]
 			);

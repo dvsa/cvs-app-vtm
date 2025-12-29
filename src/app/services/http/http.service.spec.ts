@@ -2,12 +2,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { SEARCH_TYPES } from '@models/search-types-enum';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
@@ -209,7 +209,7 @@ describe('HttpService', () => {
 
 	describe('fetchTestStations', () => {
 		it('should get an array of matching results', () => {
-			const expectedResult = [{ testStationName: 'Some Name' } as TestStation];
+			const expectedResult = [{ testStationName: 'Some Name' } as TestStationSchema];
 			httpService.fetchTestStations().subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL
@@ -243,7 +243,7 @@ describe('HttpService', () => {
 	describe('fetchTestStation', () => {
 		it('should get a matching result', () => {
 			const expectedId = 'some ID';
-			const expectedResult = { testStationName: 'Some Name' } as TestStation;
+			const expectedResult = { testStationName: 'Some Name' } as TestStationSchema;
 			httpService.fetchTestStation(expectedId).subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL

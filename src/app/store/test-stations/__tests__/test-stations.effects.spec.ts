@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -26,7 +26,7 @@ describe('TestStationsEffects', () => {
 	let testScheduler: TestScheduler;
 	let service: HttpService;
 
-	const expectedResult = { testStationId: 'some ID' } as TestStation;
+	const expectedResult = { testStationId: 'some ID' } as TestStationSchema;
 	const testCases = [
 		{
 			id: expectedResult.testStationId,
@@ -96,7 +96,7 @@ describe('TestStationsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				const { id, payload } = value;
 
-				const entity = payload.find((p) => p.testStationId === id) as TestStation;
+				const entity = payload.find((p) => p.testStationId === id) as TestStationSchema;
 
 				// mock action to trigger effect
 				actions$ = hot('-a--', { a: fetchTestStation({ id }) });

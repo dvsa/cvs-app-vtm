@@ -1,6 +1,8 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Data } from '@angular/router';
+// eslint-disable-next-line import/no-cycle
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { Condition, operatorEnum } from '@models/condition.model';
 import {
 	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
@@ -13,11 +15,9 @@ import {
 } from '@models/options.model';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
-// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -143,7 +143,7 @@ export class CustomAsyncValidators {
 		return (control: AbstractControl): Observable<null> => {
 			return store.pipe(
 				select(
-					getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)
+					getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStationSchema, control.value)
 				),
 				take(1),
 				tap((stations) => {
