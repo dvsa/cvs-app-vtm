@@ -1,7 +1,5 @@
 export * from './completeTestResults';
 export * from './completeTestResultsVehicleClass';
-export * from './customDefect';
-export * from './customDefects';
 export * from './defect';
 export * from './defectAdditionalInformation';
 export * from './defectAdditionalInformationLocation';
