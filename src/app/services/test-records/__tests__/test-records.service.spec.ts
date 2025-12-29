@@ -1,8 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
 import { mockTestResult } from '@mocks/mock-test-result';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
 import { State, initialAppState } from '@store/index';
@@ -113,16 +113,16 @@ describe('TestRecordsService', () => {
 	describe('TestRecordsService.prototype.updateTestResult.name', () => {
 		it('should dispatch updateTestResultState action', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			service.updateTestResult({} as TestResultModel);
-			expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultModel }));
+			service.updateTestResult({} as TestResultSchema);
+			expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultSchema }));
 		});
 	});
 
 	describe('TestRecordsService.prototype.createTestResult.name', () => {
 		it('should dispatch createTestResult action', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			service.createTestResult({} as TestResultModel);
-			expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultModel }));
+			service.createTestResult({} as TestResultSchema);
+			expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultSchema }));
 		});
 	});
 
@@ -145,7 +145,7 @@ describe('TestRecordsService', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: 'psv',
 				testTypes: [{ testTypeId: '1' }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			service.isTestTypeGroupEditable$.subscribe((isValid) => {
 				expect(isValid).toBe(true);
 				done();
@@ -156,7 +156,7 @@ describe('TestRecordsService', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: 'psv',
 				testTypes: [{ testTypeId: 'foo' }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			service.isTestTypeGroupEditable$.subscribe((isValid) => {
 				expect(isValid).toBe(false);
 				done();
@@ -167,7 +167,7 @@ describe('TestRecordsService', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: 'psv',
 				testTypes: [{ testTypeId: 'foo' }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			service.isTestTypeGroupEditable$.subscribe((isValid) => {
 				expect(isValid).toBe(false);
 				done();

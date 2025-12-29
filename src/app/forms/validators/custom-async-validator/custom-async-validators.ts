@@ -1,7 +1,8 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Data } from '@angular/router';
-// eslint-disable-next-line import/no-cycle
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { Condition, operatorEnum } from '@models/condition.model';
 import {
@@ -14,8 +15,6 @@ import {
 	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 } from '@models/options.model';
 import { User } from '@models/reference-data.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
@@ -31,27 +30,27 @@ import { Observable, catchError, combineLatestWith, map, of, skipWhile, take, ta
 export class CustomAsyncValidators {
 	static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
 		return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, [
-			resultOfTestEnum.pass,
-			resultOfTestEnum.fail,
-			resultOfTestEnum.prs,
+			TestResults.PASS,
+			TestResults.FAIL,
+			TestResults.PRS,
 		]);
 	}
 
 	static resultDependantOnRequiredStandards(store: Store<State>): AsyncValidatorFn {
 		return CustomAsyncValidators.checkResultDependantOnRequiredStandards(store, [
-			resultOfTestEnum.pass,
-			resultOfTestEnum.fail,
-			resultOfTestEnum.prs,
+			TestResults.PASS,
+			TestResults.FAIL,
+			TestResults.PRS,
 		]);
 	}
 
 	static passResultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
-		return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, resultOfTestEnum.pass);
+		return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, TestResults.PASS);
 	}
 
 	static checkResultDependantOnCustomDefects(
 		store: Store<State>,
-		limitToResult: resultOfTestEnum | resultOfTestEnum[]
+		limitToResult: TestResults | TestResults[]
 	): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> =>
 			store.pipe(
@@ -66,8 +65,8 @@ export class CustomAsyncValidators {
 						control.value === 'pass' &&
 						hasCustomDefects &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.pass)
-							: limitToResult === resultOfTestEnum.pass)
+							? limitToResult.includes(TestResults.PASS)
+							: limitToResult === TestResults.PASS)
 					) {
 						return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
 					}
@@ -75,8 +74,8 @@ export class CustomAsyncValidators {
 						control.value === 'fail' &&
 						!hasCustomDefects &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.fail)
-							: limitToResult === resultOfTestEnum.fail)
+							? limitToResult.includes(TestResults.FAIL)
+							: limitToResult === TestResults.FAIL)
 					) {
 						return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
 					}
@@ -84,8 +83,8 @@ export class CustomAsyncValidators {
 						control.value === 'prs' &&
 						!hasCustomDefects &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.prs)
-							: limitToResult === resultOfTestEnum.prs)
+							? limitToResult.includes(TestResults.PRS)
+							: limitToResult === TestResults.PRS)
 					) {
 						return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
 					}
@@ -96,7 +95,7 @@ export class CustomAsyncValidators {
 
 	static checkResultDependantOnRequiredStandards(
 		store: Store<State>,
-		limitToResult: resultOfTestEnum | resultOfTestEnum[]
+		limitToResult: TestResults | TestResults[]
 	): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> =>
 			store.pipe(
@@ -111,8 +110,8 @@ export class CustomAsyncValidators {
 						control.value === 'pass' &&
 						hasRequiredStandards &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.pass)
-							: limitToResult === resultOfTestEnum.pass)
+							? limitToResult.includes(TestResults.PASS)
+							: limitToResult === TestResults.PASS)
 					) {
 						return { invalidTestResult: { message: 'Cannot pass test when required standards are present' } };
 					}
@@ -120,8 +119,8 @@ export class CustomAsyncValidators {
 						control.value === 'fail' &&
 						!hasRequiredStandards &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.fail)
-							: limitToResult === resultOfTestEnum.fail)
+							? limitToResult.includes(TestResults.FAIL)
+							: limitToResult === TestResults.FAIL)
 					) {
 						return { invalidTestResult: { message: 'Cannot fail test when no required standards are present' } };
 					}
@@ -129,8 +128,8 @@ export class CustomAsyncValidators {
 						control.value === 'prs' &&
 						!hasRequiredStandards &&
 						(!limitToResult || Array.isArray(limitToResult)
-							? limitToResult.includes(resultOfTestEnum.prs)
-							: limitToResult === resultOfTestEnum.prs)
+							? limitToResult.includes(TestResults.PRS)
+							: limitToResult === TestResults.PRS)
 					) {
 						return { invalidTestResult: { message: 'Cannot mark test as PRS when no required standards are present' } };
 					}
@@ -183,7 +182,7 @@ export class CustomAsyncValidators {
 		};
 	}
 
-	static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[]): AsyncValidatorFn {
+	static requiredIfNotResult(store: Store<State>, result: TestResults | TestResults[]): AsyncValidatorFn {
 		return (control: AbstractControl): Observable<ValidationErrors | null> =>
 			store.pipe(
 				take(1),
@@ -266,16 +265,16 @@ export class CustomAsyncValidators {
 	}
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
-		return this.requiredIfNotResult(store, resultOfTestEnum.fail);
+		return this.requiredIfNotResult(store, TestResults.FAIL);
 	}
 
 	static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
-		return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
+		return this.requiredIfNotResult(store, TestResults.ABANDONED);
 	}
 
 	static requiredIfNotResultAndSiblingEquals(
 		store: Store<State>,
-		result: resultOfTestEnum | resultOfTestEnum[],
+		result: TestResults | TestResults[],
 		sibling: string,
 		value: unknown
 	): AsyncValidatorFn {
@@ -351,7 +350,7 @@ export class CustomAsyncValidators {
 		};
 	};
 
-	private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[]) {
+	private static checkConditions(testResult: TestResultSchema, conditions: Condition | Condition[]) {
 		if (!Array.isArray(conditions)) {
 			return CustomAsyncValidators.checkCondition(testResult, conditions);
 		}
@@ -359,14 +358,14 @@ export class CustomAsyncValidators {
 		return conditions.every((condition) => CustomAsyncValidators.checkCondition(testResult, condition));
 	}
 
-	private static checkCondition(testResult: TestResultModel, condition: Condition) {
+	private static checkCondition(testResult: TestResultSchema, condition: Condition) {
 		const { field, operator, value } = condition;
 
 		// eslint-disable-next-line no-prototype-builtins
 		const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
 			? // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
 				(testResult.testTypes[0] as any)[field]
-			: testResult[field as keyof TestResultModel];
+			: testResult[field as keyof TestResultSchema];
 
 		const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 

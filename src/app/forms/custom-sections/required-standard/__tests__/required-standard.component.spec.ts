@@ -3,6 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
+import { SpecialistCustomDefectsSchemaPut } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -139,7 +140,7 @@ describe('RequiredStandardComponent', () => {
 			expect(res).toBeUndefined();
 		});
 		it('should flip bool value of prs', () => {
-			component.requiredStandard = { prs: true } as unknown as TestResultRequiredStandard;
+			component.requiredStandard = { prs: true } as unknown as SpecialistCustomDefectsSchemaPut;
 
 			component.toggleRsPrsField();
 

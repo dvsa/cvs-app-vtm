@@ -4,6 +4,7 @@ import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -18,8 +19,6 @@ import {
 	ResourceKey,
 } from '@models/reference-data/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
-import { CompleteTestResults } from '@models/test-results/completeTestResults';
-import { TestResults } from '@models/test-results/testResults';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -514,7 +513,7 @@ export class HttpService {
 			params = params.set('version', version);
 		}
 
-		return this.http.get<TestResults>(
+		return this.http.get<TestResultSchema[]>(
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
 			{
 				params,
@@ -523,7 +522,7 @@ export class HttpService {
 		);
 	}
 
-	testResultsPost(body: CompleteTestResults) {
+	testResultsPost(body: TestResultSchema) {
 		if (body === null || body === undefined) {
 			throw new Error('Required parameter body was null or undefined when calling testResultsPost.');
 		}
@@ -533,7 +532,7 @@ export class HttpService {
 		});
 	}
 
-	testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string) {
+	testResultsSystemNumberPut(body: TestResultSchema, systemNumber: string) {
 		if (body === null || body === undefined) {
 			throw new Error('Required parameter body was null or undefined when calling testResultsSystemNumberPut.');
 		}
@@ -542,7 +541,7 @@ export class HttpService {
 			throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberPut.');
 		}
 
-		return this.http.put<CompleteTestResults>(
+		return this.http.put<TestResultSchema>(
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
 			body,
 			{

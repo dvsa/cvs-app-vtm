@@ -1,7 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store, select } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records/test-records.selectors';
@@ -14,11 +14,11 @@ import { selectedTestSortedAmendmentHistory } from '@store/test-records/test-rec
 export class TestAmendmentHistoryComponent {
 	store = inject(Store);
 
-	readonly testRecord = input<TestResultModel>();
+	readonly testRecord = input<TestResultSchema>();
 
 	sortedTestHistory$ = this.store.pipe(select(selectedTestSortedAmendmentHistory));
 
-	getCreatedByName(testResult: TestResultModel | undefined) {
+	getCreatedByName(testResult: TestResultSchema | undefined) {
 		return testResult?.createdByName || testResult?.testerName;
 	}
 }

@@ -8,13 +8,13 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import {
 	AbandonDialogComponent,
 	AbandonDialogComponent as AbandonDialogComponent_1,
 } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@models/testTypeId.enum';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -62,7 +62,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 	canCreate$ = new BehaviorSubject(false);
 	testMode = TestModeEnum.Edit;
-	testResult$: Observable<TestResultModel | undefined> = of(undefined);
+	testResult$: Observable<TestResultSchema | undefined> = of(undefined);
 	testTypeId?: string;
 	techRecord: V3TechRecordModel | undefined = undefined;
 
@@ -127,7 +127,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		this.testRecordsService.cleanTestResult();
 
 		const testResult = await firstValueFrom(this.testResult$);
-		const testResultClone = cloneDeep(testResult) as TestResultModel;
+		const testResultClone = cloneDeep(testResult) as TestResultSchema;
 
 		this.testRecordsService.createTestResult(testResultClone);
 	}
@@ -166,7 +166,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		});
 	}
 
-	handleNewTestResult(testResult: TestResultModel) {
+	handleNewTestResult(testResult: TestResultSchema) {
 		this.testRecordsService.updateEditingTestResult(testResult);
 	}
 
@@ -209,7 +209,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 	}
 
 	abandon() {
-		this.resultOfTestService.toggleAbandoned(resultOfTestEnum.abandoned);
+		this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
 
 		if (this.isAnyFormInvalid()) {
 			return;
@@ -225,7 +225,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 				break;
 			case 'no':
 				this.abandonDialog()?.dynamicFormGroup()?.form.reset();
-				this.resultOfTestService.toggleAbandoned(resultOfTestEnum.pass);
+				this.resultOfTestService.toggleAbandoned(TestResults.PASS);
 				this.testMode = TestModeEnum.Edit;
 				break;
 			default:
@@ -244,8 +244,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		return TestModeEnum;
 	}
 
-	validateUpdateStatus = (testResult: string, testTypeId: string): boolean =>
-		(testResult === 'pass' || testResult === 'prs') &&
+	validateUpdateStatus = (testResult: TestResults | null, testTypeId: string): boolean =>
+		(testResult === TestResults.PASS || testResult === TestResults.PRS) &&
 		(this.isTestTypeFirstTest(testTypeId) ||
 			this.isTestTypeNotifiableAlteration(testTypeId) ||
 			this.isTestTypeCOIF(testTypeId) ||

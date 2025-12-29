@@ -7,8 +7,9 @@ import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { SpecialistCustomDefectsSchemaPut } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { RequiredStandardsTpl } from '@forms/templates/general/required-standards.template';
-import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
+import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store, select } from '@ngrx/store';
 import {
 	DefaultNullOrEmpty,
@@ -55,7 +56,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 
 	form!: CustomFormGroup;
 	index!: number;
-	requiredStandard?: TestResultRequiredStandard;
+	requiredStandard?: SpecialistCustomDefectsSchemaPut;
 	onDestroy$ = new Subject();
 	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	amendingRs?: boolean;
@@ -152,13 +153,15 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 		if (this.index || this.index === 0) {
 			this.store.dispatch(
 				updateRequiredStandard({
-					requiredStandard: this.form.getCleanValue(this.form) as TestResultRequiredStandard,
+					requiredStandard: this.form.getCleanValue(this.form) as SpecialistCustomDefectsSchemaPut,
 					index: this.index,
 				})
 			);
 		} else {
 			this.store.dispatch(
-				createRequiredStandard({ requiredStandard: this.form.getCleanValue(this.form) as TestResultRequiredStandard })
+				createRequiredStandard({
+					requiredStandard: this.form.getCleanValue(this.form) as SpecialistCustomDefectsSchemaPut,
+				})
 			);
 		}
 		this.navigateBack();

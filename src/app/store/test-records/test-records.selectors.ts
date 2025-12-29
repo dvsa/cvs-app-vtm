@@ -1,9 +1,11 @@
-import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-types/test-type.model';
+// eslint-disable-next-line import/no-cycle
+import {
+	DefectDetailsSchema,
+	TestResultSchema,
+	TestResultTestTypeSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
-// eslint-disable-next-line import/no-cycle
 import { testResultAdapter, testResultsFeatureState } from './test-records.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testResultAdapter.getSelectors();
@@ -41,7 +43,7 @@ export const selectedTestResultState = createSelector(
 			return undefined;
 		}
 
-		return { ...testResult, testTypes: [testTypeFound] } as TestResultModel;
+		return { ...testResult, testTypes: [testTypeFound] } as TestResultSchema;
 	}
 );
 
@@ -110,7 +112,7 @@ export const resultOfTestSelector = createSelector(
 	(testRecord) => testRecord?.testTypes[0].testResult
 );
 
-export const isTestTypeKeySame = (key: keyof TestType) =>
+export const isTestTypeKeySame = (key: keyof TestResultTestTypeSchema) =>
 	createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
 		return testRecord?.testTypes[0][`${key}`] === amendedTestRecord?.testTypes[0][`${key}`];
 	});
@@ -120,11 +122,11 @@ export const isTestTypeKeySame = (key: keyof TestType) =>
  * Returns the selected test record defects for the first testType (if any).
  * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.
  */
-function getDefectFromTestResult(testResult: TestResultModel | undefined): TestResultDefects {
+function getDefectFromTestResult(testResult: TestResultSchema | undefined): DefectDetailsSchema[] {
 	return (testResult?.testTypes && testResult.testTypes.length > 0 && testResult.testTypes[0].defects) || [];
 }
 
-function byDate(a: TestResultModel, b: TestResultModel): -1 | 0 | 1 {
+function byDate(a: TestResultSchema, b: TestResultSchema): -1 | 0 | 1 {
 	if (a === b) {
 		// equal items sort equally
 		return 0;

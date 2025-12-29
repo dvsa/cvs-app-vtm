@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { resultOfTestSelector } from '@store/test-records';
-
 import { ResultOfTestService } from '../result-of-test.service';
 
 describe('ResultOfTestService', () => {
@@ -29,9 +28,9 @@ describe('ResultOfTestService', () => {
 	});
 
 	it('should get the result from the selector', (done) => {
-		store.overrideSelector(resultOfTestSelector, resultOfTestEnum.pass);
+		store.overrideSelector(resultOfTestSelector, TestResults.PASS);
 		service.resultOfTest.subscribe((result) => {
-			expect(result).toBe(resultOfTestEnum.pass);
+			expect(result).toBe(TestResults.PASS);
 			done();
 		});
 	});

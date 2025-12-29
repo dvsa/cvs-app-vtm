@@ -1,8 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { BannerComponent } from '@components/banner/banner.component';
-import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
+import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, firstValueFrom, of } from 'rxjs';
@@ -16,13 +15,13 @@ import { BaseTestRecordComponent } from '../../../components/base-test-record/ba
 export class AmendedTestRecordComponent implements OnInit {
 	testRecordsService = inject(TestRecordsService);
 
-	testResult$: Observable<TestResultModel | undefined> = of(undefined);
-	defects$: Observable<TestResultDefects | undefined> = of(undefined);
+	testResult$: Observable<TestResultSchema | undefined> = of(undefined);
+	defects$: Observable<DefectDetailsSchema[] | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
 	async ngOnInit() {
 		this.testResult$ = this.testRecordsService.amendedTestResult$;
 		this.defects$ = this.testRecordsService.amendedDefectData$;
-		this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultModel);
+		this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultSchema);
 	}
 }

@@ -5,8 +5,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { Store, select } from '@ngrx/store';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -32,7 +32,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
 
 	readonly isEditing = input(false);
 	readonly template = input.required<FormNode>();
-	readonly testData = input<Partial<TestResultModel>>({});
+	readonly testData = input<Partial<TestResultSchema>>({});
 
 	readonly formChange = output<Record<string, any> | [][]>();
 	readonly validateEuVehicleCategory = output();

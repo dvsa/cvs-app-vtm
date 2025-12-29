@@ -7,9 +7,8 @@ import {
 	DefectDeficiencyReferenceDataSchema,
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { defects, selectByImNumber } from '@store/defects';
@@ -96,7 +95,7 @@ describe('DefectComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
 				imNumber: 1,
 			} as DefectCategoryReferenceDataSchema);
@@ -112,7 +111,7 @@ describe('DefectComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
 				imNumber: 1,
 			} as DefectCategoryReferenceDataSchema);
@@ -141,7 +140,7 @@ describe('DefectComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
 				imNumber: 1,
 			} as DefectCategoryReferenceDataSchema);
@@ -158,7 +157,7 @@ describe('DefectComponent', () => {
 				testTypes: [
 					{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] },
 				],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(defects, [defect]);
 			tick();
 			fixture.detectChanges();
@@ -169,38 +168,38 @@ describe('DefectComponent', () => {
 
 	describe('should get isDangerous', () => {
 		it('should return true when defect is dangerous', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Dangerous };
+			component.defect = { deficiencyCategory: deficiencyCategory.Dangerous } as DefectDetailsSchema;
 			expect(component.isDangerous).toBe(true);
 		});
 		it('should return false when defect is advisory', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Advisory };
+			component.defect = { deficiencyCategory: deficiencyCategory.Advisory } as DefectDetailsSchema;
 			expect(component.isDangerous).toBe(false);
 		});
 		it('should return false when defect is major', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Major };
+			component.defect = { deficiencyCategory: deficiencyCategory.Major } as DefectDetailsSchema;
 			expect(component.isDangerous).toBe(false);
 		});
 		it('should return false when defect is minor', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Minor };
+			component.defect = { deficiencyCategory: deficiencyCategory.Minor } as DefectDetailsSchema;
 			expect(component.isDangerous).toBe(false);
 		});
 	});
 
 	describe('should get isAdvisory', () => {
 		it('should return true when defect is advisory', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Advisory };
+			component.defect = { deficiencyCategory: deficiencyCategory.Advisory } as DefectDetailsSchema;
 			expect(component.isAdvisory).toBe(true);
 		});
 		it('should return false when defect is dangerous', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Dangerous };
+			component.defect = { deficiencyCategory: deficiencyCategory.Dangerous } as DefectDetailsSchema;
 			expect(component.isAdvisory).toBe(false);
 		});
 		it('should return false when defect is major', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Major };
+			component.defect = { deficiencyCategory: deficiencyCategory.Major } as DefectDetailsSchema;
 			expect(component.isAdvisory).toBe(false);
 		});
 		it('should return false when defect is minor', () => {
-			component.defect = { deficiencyCategory: deficiencyCategory.Minor };
+			component.defect = { deficiencyCategory: deficiencyCategory.Minor } as DefectDetailsSchema;
 			expect(component.isAdvisory).toBe(false);
 		});
 	});
@@ -213,7 +212,7 @@ describe('DefectComponent', () => {
 				testTypes: [
 					{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] },
 				],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(defects, [defect]);
 			tick();
 			fixture.detectChanges();
@@ -222,7 +221,7 @@ describe('DefectComponent', () => {
 			component.handleSubmit();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
-				createDefect({ defect: component.form.getCleanValue(component.form) as TestResultDefect })
+				createDefect({ defect: component.form.getCleanValue(component.form) as DefectDetailsSchema })
 			);
 		}));
 
@@ -231,7 +230,7 @@ describe('DefectComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
 				imNumber: 1,
 			} as DefectCategoryReferenceDataSchema);
@@ -243,7 +242,7 @@ describe('DefectComponent', () => {
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
 				updateDefect({
-					defect: component.form.getCleanValue(component.form) as TestResultDefect,
+					defect: component.form.getCleanValue(component.form) as DefectDetailsSchema,
 					index: component.index,
 				})
 			);
@@ -254,7 +253,7 @@ describe('DefectComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
-			} as TestResultModel);
+			} as TestResultSchema);
 			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
 				imNumber: 1,
 			} as DefectCategoryReferenceDataSchema);

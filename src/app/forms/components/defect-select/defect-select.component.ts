@@ -7,7 +7,7 @@ import {
 	DefectDeficiencyReferenceDataSchema,
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
@@ -31,7 +31,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	selectedDefect?: DefectCategoryReferenceDataSchema;
 	selectedItem?: DefectItemReferenceDataSchema;
 	selectedDeficiency?: DefectDeficiencyReferenceDataSchema;
-	vehicleType!: VehicleTypes;
+	vehicleType!: VehicleType;
 
 	onDestroy$ = new Subject();
 

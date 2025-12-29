@@ -1,7 +1,9 @@
+import {
+	DefectDetailsSchema,
+	SpecialistCustomDefectsSchemaPut,
+	TestResultSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { mockTestResultList } from '@mocks/mock-test-result';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { Action } from '@ngrx/store';
 import {
 	cleanTestResult,
@@ -153,7 +155,7 @@ describe('Test Results Reducer', () => {
 	describe('updateTestResult actions', () => {
 		it('should set loading to true', () => {
 			const state: TestResultsState = { ...initialTestResultsState, loading: true };
-			const action = updateTestResult({ value: {} as TestResultModel });
+			const action = updateTestResult({ value: {} as TestResultSchema });
 			const newState = testResultsReducer(initialTestResultsState, action);
 
 			expect(state).toEqual(newState);
@@ -163,7 +165,7 @@ describe('Test Results Reducer', () => {
 		describe('updateTestResultSuccess', () => {
 			it('should set loading to false', () => {
 				const state: TestResultsState = { ...initialTestResultsState, loading: false };
-				const action = updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } });
+				const action = updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultSchema } });
 				const newState = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
 
 				expect(state).toEqual(newState);
@@ -197,7 +199,7 @@ describe('Test Results Reducer', () => {
 						defects: [],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('pass');
 		});
@@ -209,7 +211,7 @@ describe('Test Results Reducer', () => {
 						testResult: 'fail',
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toEqual(testResult.testTypes[0].testResult);
 		});
@@ -225,7 +227,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('pass');
 		});
@@ -241,7 +243,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('pass');
 		});
@@ -260,7 +262,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('pass');
 		});
@@ -279,7 +281,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('fail');
 		});
@@ -298,7 +300,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('fail');
 		});
@@ -318,7 +320,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('prs');
 		});
@@ -338,7 +340,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('fail');
 		});
@@ -376,7 +378,7 @@ describe('Test Results Reducer', () => {
 						],
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 			expect(newState.editingTestResult?.testTypes[0].testResult).toBe('fail');
 			expect(newState.editingTestResult?.testTypes[1].testResult).toBe('prs');
@@ -386,14 +388,14 @@ describe('Test Results Reducer', () => {
 
 	describe('createDefect', () => {
 		it('should create defect', () => {
-			const defect = { imNumber: 2 } as TestResultDefect;
+			const defect = { imNumber: 2 } as DefectDetailsSchema;
 			const testResult = {
 				testTypes: [
 					{
 						defects: [defect],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = createDefect({ defect });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -403,15 +405,15 @@ describe('Test Results Reducer', () => {
 
 	describe('updateDefect', () => {
 		it('should update defect', () => {
-			const defect = { imNumber: 2 } as TestResultDefect;
-			const newDefect = { imNumber: 1 } as TestResultDefect;
+			const defect = { imNumber: 2 } as DefectDetailsSchema;
+			const newDefect = { imNumber: 1 } as DefectDetailsSchema;
 			const testResult = {
 				testTypes: [
 					{
 						defects: [defect],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = updateDefect({ defect: newDefect, index: 0 });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -426,14 +428,14 @@ describe('Test Results Reducer', () => {
 
 	describe('removeDefect', () => {
 		it('should remove defect', () => {
-			const defect = { imNumber: 2 } as TestResultDefect;
+			const defect = { imNumber: 2 } as DefectDetailsSchema;
 			const testResult = {
 				testTypes: [
 					{
 						defects: [defect],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = removeDefect({ index: 0 });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -443,14 +445,14 @@ describe('Test Results Reducer', () => {
 
 	describe('createRequiredStandard', () => {
 		it('should create required standard', () => {
-			const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+			const requiredStandard = { sectionNumber: 2 } as unknown as SpecialistCustomDefectsSchemaPut;
 			const testResult = {
 				testTypes: [
 					{
 						requiredStandards: [requiredStandard],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = createRequiredStandard({ requiredStandard });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -460,15 +462,15 @@ describe('Test Results Reducer', () => {
 
 	describe('updateRequiredStandard', () => {
 		it('should update required standard', () => {
-			const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
-			const newRequiredStandard = { sectionNumber: 1 } as unknown as TestResultRequiredStandard;
+			const requiredStandard = { sectionNumber: 2 } as unknown as SpecialistCustomDefectsSchemaPut;
+			const newRequiredStandard = { sectionNumber: 1 } as unknown as SpecialistCustomDefectsSchemaPut;
 			const testResult = {
 				testTypes: [
 					{
 						requiredStandards: [requiredStandard],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = updateRequiredStandard({ requiredStandard: newRequiredStandard, index: 0 });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -479,14 +481,14 @@ describe('Test Results Reducer', () => {
 
 	describe('removeRequiredStandard', () => {
 		it('should remove required standard', () => {
-			const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+			const requiredStandard = { sectionNumber: 2 } as unknown as SpecialistCustomDefectsSchemaPut;
 			const testResult = {
 				testTypes: [
 					{
 						requiredStandards: [requiredStandard],
 					},
 				],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 			const action = removeRequiredStandard({ index: 0 });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
@@ -505,7 +507,7 @@ describe('Test Results Reducer', () => {
 		it('should return the state unaltered if no test type', () => {
 			const editingTestResult = {
 				foo: 'bar',
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 
 			const action = cleanTestResult();
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
@@ -516,7 +518,7 @@ describe('Test Results Reducer', () => {
 		it('should return the state unaltered if required standards are populated', () => {
 			const editingTestResult = {
 				testTypes: [{ requiredStandards: ['I am a RS'], testTypeId: '125' }],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 
 			const action = cleanTestResult();
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
@@ -527,7 +529,7 @@ describe('Test Results Reducer', () => {
 		it('should return the state unaltered if test type is not spec 1 or spec 5', () => {
 			const editingTestResult = {
 				testTypes: [{ requiredStandards: ['I am a RS'], testTypeId: 'xyz' }],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 
 			const action = cleanTestResult();
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
@@ -538,7 +540,7 @@ describe('Test Results Reducer', () => {
 		it('should delete RS if empty from state', () => {
 			const editingTestResult = {
 				testTypes: [{ requiredStandards: [], testTypeId: '125' }],
-			} as unknown as TestResultModel;
+			} as unknown as TestResultSchema;
 
 			const action = cleanTestResult();
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);

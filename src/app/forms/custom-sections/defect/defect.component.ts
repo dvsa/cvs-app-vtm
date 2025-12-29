@@ -12,11 +12,10 @@ import {
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
+import { DefectDetailsSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
-import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { Store, select } from '@ngrx/store';
 import {
 	DefaultNullOrEmpty,
@@ -66,11 +65,11 @@ export class DefectComponent implements OnInit, OnDestroy {
 	index!: number;
 	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	includeNotes = false;
-	private vehicleType?: VehicleTypes;
+	private vehicleType?: VehicleType;
 
 	private defectsForm?: CustomFormArray;
-	private defects?: TestResultDefects;
-	defect?: TestResultDefect;
+	private defects?: DefectDetailsSchema[];
+	defect?: DefectDetailsSchema;
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
@@ -166,10 +165,10 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		if (this.index || this.index === 0) {
 			this.store.dispatch(
-				updateDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index })
+				updateDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema, index: this.index })
 			);
 		} else {
-			this.store.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect }));
+			this.store.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema }));
 		}
 
 		this.navigateBack();
@@ -185,11 +184,11 @@ export class DefectComponent implements OnInit, OnDestroy {
 		void this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
 	}
 
-	toggleDefectField(field: keyof TestResultDefect) {
+	toggleDefectField(field: keyof DefectDetailsSchema) {
 		if (!this.defect) {
 			return;
 		}
-		this.defect = { ...this.defect, [field]: !this.defect[`${field}`] } as TestResultDefect;
+		this.defect = { ...this.defect, [field]: !this.defect[`${field}`] } as DefectDetailsSchema;
 		this.defectsForm?.controls[this.index ?? this.defectsForm.length - 1]
 			.get(field)
 			?.patchValue(this.defect[`${field}`]);
@@ -221,7 +220,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		item: DefectItemReferenceDataSchema,
 		deficiency: Deficiency
 	) {
-		const testResultDefect: TestResultDefect = {
+		const testResultDefect = {
 			imDescription: defect.imDescription,
 			imNumber: defect.imNumber,
 
@@ -233,7 +232,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			deficiencyRef: `${defect.imNumber}.${item.itemNumber}`,
 			prohibitionIssued: false,
 			stdForProhibition: false,
-		};
+		} as DefectDetailsSchema;
 
 		if (deficiency) {
 			testResultDefect.deficiencyCategory = deficiency.deficiencyCategory;

@@ -3,6 +3,7 @@ import {
 	DefectDeficiencyReferenceDataSchema,
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
@@ -12,7 +13,7 @@ const { selectAll } = defectsAdapter.getSelectors();
 
 export const defects = createSelector(defectsFeatureState, (state) => selectAll(state));
 
-export const filteredDefects = (type: VehicleTypes) =>
+export const filteredDefects = (type: VehicleType) =>
 	createSelector(defects, (defectList) => {
 		const filtered = cloneDeep(defectList)
 			.filter((defect) => defect.forVehicleType.includes(type))
@@ -29,12 +30,12 @@ export const filteredDefects = (type: VehicleTypes) =>
 		return filtered as DefectCategoryReferenceDataSchema[];
 	});
 
-export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
+export const selectByImNumber = (imNumber: number, vehicleType: VehicleType) =>
 	createSelector(filteredDefects(vehicleType), (defectsList) =>
 		defectsList.find((defect) => defect.imNumber === imNumber)
 	);
 
-export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
+export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleType) =>
 	createSelector(filteredDefects(vehicleType), (defectsList) => {
 		const deRef = deficiencyRef.split('.');
 		const isAdvisory: boolean = deRef[2] === 'advisory';

@@ -1,4 +1,5 @@
 import { FuelType } from '@dvsa/cvs-type-definitions/types/v1/enums/fuelType.enum';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import * as Emissions from './emissions.enum';
@@ -20,7 +21,7 @@ export interface TestType {
 	testAnniversaryDate: string | Date;
 	prohibitionIssued: boolean | null;
 
-	testResult: resultOfTestEnum;
+	testResult: TestResults;
 
 	seatbeltInstallationCheckDate: boolean;
 	numberOfSeatbeltsFitted: number;

@@ -2,9 +2,9 @@ import { formatDate } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
 import { createMockTestResult } from '@mocks/test-result.mock';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { State, initialAppState } from '@store/index';
@@ -46,7 +46,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
 		it('should return testerName entry if createdByName is empty', () => {
 			const data = { ...mockTestResultArchived(), createdByName: '' };
-			const name = component.getCreatedByName(data as TestResultModel);
+			const name = component.getCreatedByName(data as TestResultSchema);
 
 			expect(name).toBe(data.testerName);
 		});

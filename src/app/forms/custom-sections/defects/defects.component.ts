@@ -4,8 +4,8 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -22,7 +22,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	readonly isEditing = input(false);
 	readonly defects = input.required<DefectCategoryReferenceDataSchema[] | null>();
 	readonly template = input.required<FormNode>();
-	readonly data = input<Partial<TestResultModel>>({});
+	readonly data = input<Partial<TestResultSchema>>({});
 
 	readonly formChange = output<Record<string, any> | [][]>();
 

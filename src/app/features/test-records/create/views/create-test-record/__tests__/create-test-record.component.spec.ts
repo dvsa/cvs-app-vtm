@@ -9,13 +9,12 @@ import { IconComponent } from '@components/icon/icon.component';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
-
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -28,7 +27,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-
 import { State, initialAppState } from '@store/index';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, ReplaySubject, of } from 'rxjs';
@@ -106,7 +104,7 @@ describe('CreateTestRecordComponent', () => {
 	it('should call createTestResult with value of all forms merged into one', async () => {
 		fixture.detectChanges();
 		const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
-		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 		store.overrideSelector(testResultInEdit, testRecord);
 		store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? {}));
 
@@ -120,7 +118,7 @@ describe('CreateTestRecordComponent', () => {
 
 	it('should not call createTestResult if some forms are invalid', async () => {
 		const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
-		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 		store.overrideSelector(testResultInEdit, testRecord);
 		store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? ''));
 
@@ -134,7 +132,7 @@ describe('CreateTestRecordComponent', () => {
 
 	it('should dispatch the action to update the test result in edit', () => {
 		const updateTestResultSpy = jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation(() => {});
-		component.handleNewTestResult({} as TestResultModel);
+		component.handleNewTestResult({} as TestResultSchema);
 		expect(updateTestResultSpy).toHaveBeenCalled();
 	});
 
@@ -210,7 +208,7 @@ describe('CreateTestRecordComponent', () => {
 		const createTestResultSpy = jest
 			.spyOn(testRecordsService, 'createTestResult')
 			.mockImplementation(() => Promise.resolve(true));
-		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 		store.overrideSelector(testResultInEdit, testRecord);
 		store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? ''));
 

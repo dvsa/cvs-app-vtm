@@ -8,9 +8,9 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -47,7 +47,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
 	private destroy$ = new Subject<void>();
 
-	testResult$: Observable<TestResultModel | undefined> = of(undefined);
+	testResult$: Observable<TestResultSchema | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 	testMode = TestModeEnum.Edit;
 	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
@@ -112,7 +112,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		this.testRecordsService.cleanTestResult();
 
 		const testResult = await firstValueFrom(this.testResult$);
-		const testResultClone = cloneDeep(testResult) as TestResultModel;
+		const testResultClone = cloneDeep(testResult) as TestResultSchema;
 
 		this.testRecordsService.updateTestResult(testResultClone);
 	}
@@ -189,7 +189,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		return this.testRecordsService.isTestTypeGroupEditable$;
 	}
 
-	handleNewTestResult(testResult: TestResultModel) {
+	handleNewTestResult(testResult: TestResultSchema) {
 		this.testRecordsService.updateEditingTestResult(testResult);
 	}
 
