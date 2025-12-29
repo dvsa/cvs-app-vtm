@@ -9,6 +9,7 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -25,7 +26,6 @@ import {
 	RequiredStandardsComponent,
 	RequiredStandardsComponent as RequiredStandardsComponent_1,
 } from '@forms/custom-sections/required-standards/required-standards.component';
-import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -124,7 +124,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		});
 	}
 
-	getDefects$(type: VehicleTypes): Observable<Defect[]> {
+	getDefects$(type: VehicleTypes): Observable<DefectCategoryReferenceDataSchema[]> {
 		return this.defectsStore.select(filteredDefects(type));
 	}
 

@@ -1,12 +1,12 @@
 import { NgClass } from '@angular/common';
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-case-declarations */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TagComponent } from '@components/tag/tag.component';
-import { Defect } from '@models/defects/defect.model';
-import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
+import {
+	DefectCategoryReferenceDataSchema,
+	DefectDeficiencyReferenceDataSchema,
+	DefectItemReferenceDataSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
@@ -26,11 +26,11 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 
-	defects: Defect[] = [];
+	defects: DefectCategoryReferenceDataSchema[] = [];
 	isEditing = false;
-	selectedDefect?: Defect;
-	selectedItem?: Item;
-	selectedDeficiency?: Deficiency;
+	selectedDefect?: DefectCategoryReferenceDataSchema;
+	selectedItem?: DefectItemReferenceDataSchema;
+	selectedDeficiency?: DefectDeficiencyReferenceDataSchema;
 	vehicleType!: VehicleTypes;
 
 	onDestroy$ = new Subject();
@@ -62,12 +62,12 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 		return Types;
 	}
 
-	hasItems(defect: Defect): boolean {
+	hasItems(defect: DefectCategoryReferenceDataSchema): boolean {
 		return defect.items && defect.items.length > 0;
 	}
 
-	hasDeficiencies(item: Item): boolean {
-		return item.deficiencies && item.deficiencies.length > 0;
+	hasDeficiencies(item: DefectItemReferenceDataSchema): boolean {
+		return item.deficiencies ? item.deficiencies.length > 0 : false;
 	}
 
 	categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
@@ -79,31 +79,34 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 		})[`${category}`];
 	}
 
-	getDeficiencyId(deficiency: Deficiency) {
+	getDeficiencyId(deficiency: DefectDeficiencyReferenceDataSchema) {
 		return `${deficiency.deficiencyId}(${deficiency.deficiencySubId ? deficiency.deficiencySubId : ''})`;
 	}
 
-	sortDefectItems(items: Item[]) {
-		return items.sort((a, b) => a.itemNumber - b.itemNumber);
+	sortDefectItems(items: DefectItemReferenceDataSchema[]) {
+		return items.sort((a, b) => (a.itemNumber ?? 0) - (b.itemNumber ?? 0));
 	}
 
-	sortDeficiencyItems(items: Deficiency[]) {
+	sortDeficiencyItems(items: DefectDeficiencyReferenceDataSchema[]) {
 		return items.sort((a, b) => this.getDeficiencyId(a).localeCompare(this.getDeficiencyId(b)));
 	}
 
-	handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
+	handleSelect(
+		selected?: DefectCategoryReferenceDataSchema | DefectItemReferenceDataSchema | DefectDeficiencyReferenceDataSchema,
+		type?: Types
+	): void {
 		switch (type) {
 			case Types.Defect:
-				this.selectedDefect = selected as Defect;
+				this.selectedDefect = selected as DefectCategoryReferenceDataSchema;
 				this.selectedItem = undefined;
 				this.selectedDeficiency = undefined;
 				break;
 			case Types.Item:
-				this.selectedItem = selected as Item;
+				this.selectedItem = selected as DefectItemReferenceDataSchema;
 				this.selectedDeficiency = undefined;
 				break;
 			case Types.Deficiency:
-				this.selectedDeficiency = selected as Deficiency;
+				this.selectedDeficiency = selected as DefectDeficiencyReferenceDataSchema;
 				void this.router.navigate([this.selectedDeficiency.ref], {
 					relativeTo: this.route,
 					queryParamsHandling: 'merge',

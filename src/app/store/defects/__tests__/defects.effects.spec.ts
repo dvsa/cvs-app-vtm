@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Defect } from '@models/defects/defect.model';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -25,7 +25,7 @@ describe('DefectsEffects', () => {
 	let testScheduler: TestScheduler;
 	let service: HttpService;
 
-	const expectedResult = { imNumber: 1 } as Defect;
+	const expectedResult = { imNumber: 1 } as DefectCategoryReferenceDataSchema;
 	const testCases = [
 		{
 			id: expectedResult.imNumber,
@@ -94,7 +94,7 @@ describe('DefectsEffects', () => {
 		it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				const { id, payload } = value;
-				const entity = payload.find((d) => d.imNumber === id) as Defect;
+				const entity = payload.find((d) => d.imNumber === id) as DefectCategoryReferenceDataSchema;
 
 				// mock action to trigger effect
 				actions$ = hot('-a--', { a: fetchDefect({ id }) });

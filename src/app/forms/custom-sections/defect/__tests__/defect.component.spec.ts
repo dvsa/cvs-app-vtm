@@ -2,16 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { Defect } from '@models/defects/defect.model';
+import {
+	DefectCategoryReferenceDataSchema,
+	DefectDeficiencyReferenceDataSchema,
+	DefectItemReferenceDataSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
-import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-
 import { defects, selectByImNumber } from '@store/defects';
 import { State, initialAppState } from '@store/index';
 import { selectRouteParams } from '@store/router/router.selectors';
@@ -24,7 +24,7 @@ describe('DefectComponent', () => {
 	let router: Router;
 	let store: MockStore<State>;
 
-	const deficiency: Deficiency = {
+	const deficiency: DefectDeficiencyReferenceDataSchema = {
 		deficiencyCategory: deficiencyCategory.Major,
 		deficiencyId: 'a',
 		deficiencySubId: '',
@@ -34,14 +34,14 @@ describe('DefectComponent', () => {
 		stdForProhibition: false,
 	};
 
-	const item: Item = {
+	const item: DefectItemReferenceDataSchema = {
 		deficiencies: [deficiency],
 		forVehicleType: [VehicleTypes.PSV],
 		itemDescription: 'A registration plate:',
 		itemNumber: 1,
 	};
 
-	const defect: Defect = {
+	const defect: DefectCategoryReferenceDataSchema = {
 		additionalInfo: {
 			[VehicleTypes.PSV]: {
 				location: {
@@ -49,6 +49,8 @@ describe('DefectComponent', () => {
 				},
 				notes: true,
 			},
+			[VehicleTypes.HGV]: {},
+			[VehicleTypes.TRL]: {},
 		},
 		forVehicleType: [VehicleTypes.PSV],
 		imDescription: 'Registration Plate',
@@ -95,7 +97,9 @@ describe('DefectComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
 			} as TestResultModel);
-			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
+			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
+				imNumber: 1,
+			} as DefectCategoryReferenceDataSchema);
 			tick();
 			fixture.detectChanges();
 
@@ -109,7 +113,9 @@ describe('DefectComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
 			} as TestResultModel);
-			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
+			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
+				imNumber: 1,
+			} as DefectCategoryReferenceDataSchema);
 			tick();
 			fixture.detectChanges();
 
@@ -136,7 +142,9 @@ describe('DefectComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
 			} as TestResultModel);
-			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
+			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
+				imNumber: 1,
+			} as DefectCategoryReferenceDataSchema);
 			tick();
 			fixture.detectChanges();
 
@@ -224,7 +232,9 @@ describe('DefectComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
 			} as TestResultModel);
-			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
+			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
+				imNumber: 1,
+			} as DefectCategoryReferenceDataSchema);
 			tick();
 			fixture.detectChanges();
 
@@ -245,7 +255,9 @@ describe('DefectComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
 			} as TestResultModel);
-			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
+			store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), {
+				imNumber: 1,
+			} as DefectCategoryReferenceDataSchema);
 			tick();
 			fixture.detectChanges();
 

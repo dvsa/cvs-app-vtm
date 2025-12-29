@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { CacheKeys } from '@models/cache-keys.enum';
-import { Defect } from '@models/defects/defect.model';
 import { Log } from '@models/logs/logs.model';
 import {
 	DeleteItem,
@@ -82,14 +82,14 @@ export class HttpService {
 	}
 
 	fetchDefects() {
-		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, {
+		return this.http.get<DefectCategoryReferenceDataSchema[]>(`${environment.VTM_API_URI}/defects`, {
 			headers: HttpService.GetGzippedPayloadHeaders,
 			context: withCache({ key: CacheKeys.DEFECTS }),
 		});
 	}
 
 	fetchDefect(id: number) {
-		return this.http.get<Defect>(`${environment.VTM_API_URI}/defects/${id}`);
+		return this.http.get<DefectCategoryReferenceDataSchema>(`${environment.VTM_API_URI}/defects/${id}`);
 	}
 
 	fetchRequiredStandards(euVehicleCategory: string) {

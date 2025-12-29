@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
-import { Defect } from '@models/defects/defect.model';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
@@ -20,7 +20,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	dfs = inject(DynamicFormService);
 
 	readonly isEditing = input(false);
-	readonly defects = input.required<Defect[] | null>();
+	readonly defects = input.required<DefectCategoryReferenceDataSchema[] | null>();
 	readonly template = input.required<FormNode>();
 	readonly data = input<Partial<TestResultModel>>({});
 

@@ -1,4 +1,4 @@
-import { Defect } from '@models/defects/defect.model';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import {
 	fetchDefect,
 	fetchDefectFailed,
@@ -10,7 +10,7 @@ import {
 import { DefectsState, defectsReducer, initialDefectsState } from '../defects.reducer';
 
 describe('Defects Reducer', () => {
-	const expectedDefects = [{ imNumber: 1, imDescription: 'some description' } as Defect];
+	const expectedDefects = [{ imNumber: 1, imDescription: 'some description' } as DefectCategoryReferenceDataSchema];
 
 	describe('unknown action', () => {
 		it('should return the default state', () => {

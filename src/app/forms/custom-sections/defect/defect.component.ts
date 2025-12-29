@@ -7,11 +7,13 @@ import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import {
+	DefectCategoryReferenceDataSchema,
+	DefectItemReferenceDataSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
-import { AdditionalInfoSection } from '@models/defects/additional-information.model';
-import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -109,7 +111,11 @@ export class DefectComponent implements OnInit, OnDestroy {
 						.select(selectByDeficiencyRef(defectRefValue, this.vehicleType))
 						.pipe(take(1))
 						.subscribe(([defect, item, deficiency]) => {
-							this.initializeDefect(defect as Defect, item as Item, deficiency as Deficiency);
+							this.initializeDefect(
+								defect as DefectCategoryReferenceDataSchema,
+								item as DefectItemReferenceDataSchema,
+								deficiency as Deficiency
+							);
 						});
 				}
 			});
@@ -189,11 +195,11 @@ export class DefectComponent implements OnInit, OnDestroy {
 			?.patchValue(this.defect[`${field}`]);
 	}
 
-	initializeInfoDictionary(defect: Defect | undefined) {
+	initializeInfoDictionary(defect: DefectCategoryReferenceDataSchema | undefined) {
 		const infoShorthand = defect?.additionalInfo;
 
 		const info = defect?.additionalInfo[this.vehicleType as keyof typeof infoShorthand] as
-			| AdditionalInfoSection
+			| DefectAdditionalDetailsMetadataSchema
 			| undefined;
 
 		this.includeNotes = !!info?.notes;
@@ -210,7 +216,11 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	initializeDefect(defect: Defect, item: Item, deficiency: Deficiency) {
+	initializeDefect(
+		defect: DefectCategoryReferenceDataSchema,
+		item: DefectItemReferenceDataSchema,
+		deficiency: Deficiency
+	) {
 		const testResultDefect: TestResultDefect = {
 			imDescription: defect.imDescription,
 			imNumber: defect.imNumber,
@@ -232,7 +242,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			testResultDefect.deficiencyText = deficiency.deficiencyText;
 			testResultDefect.deficiencyRef = deficiency.ref;
 			testResultDefect.stdForProhibition = deficiency.stdForProhibition;
-		} else if (item.itemDescription.endsWith(':')) {
+		} else if (item.itemDescription?.endsWith(':')) {
 			testResultDefect.itemDescription = item.itemDescription.slice(0, -1);
 		}
 
