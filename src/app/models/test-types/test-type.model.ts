@@ -1,3 +1,4 @@
+import { FuelType } from '@dvsa/cvs-type-definitions/types/v1/enums/fuelType.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import * as Emissions from './emissions.enum';
@@ -26,7 +27,7 @@ export interface TestType {
 	lastSeatbeltInstallationCheckDate: string | Date | null;
 	emissionStandard: Emissions.EmissionStandard;
 	smokeTestKLimitApplied: string;
-	fuelType: Emissions.FuelType;
+	fuelType: FuelType;
 	modType: Emissions.ModType;
 	modificationTypeUsed: string;
 	particulateTrapFitted: string;

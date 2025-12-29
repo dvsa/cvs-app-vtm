@@ -1,4 +1,5 @@
-import { EmissionStandard, FuelType, ModTypeCode, ModeTypeDescription } from '@models/test-types/emissions.enum';
+import { FuelType } from '@dvsa/cvs-type-definitions/types/v1/enums/fuelType.enum.js';
+import { EmissionStandard, ModTypeCode, ModeTypeDescription } from '@models/test-types/emissions.enum';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 
 export const createMockTestType = (params: Partial<TestType> = {}): TestType => ({
@@ -20,7 +21,7 @@ export const createMockTestType = (params: Partial<TestType> = {}): TestType => 
 	lastSeatbeltInstallationCheckDate: '',
 	emissionStandard: EmissionStandard.Euro3,
 	smokeTestKLimitApplied: 'smokeTestKLimitApplied',
-	fuelType: FuelType.Diesel,
+	fuelType: FuelType.DIESEL,
 	modificationTypeUsed: 'modificationTypeUsed',
 	particulateTrapFitted: 'particulateTrapFitted',
 	particulateTrapSerialNumber: 'particulateTrapSerialNumber',
