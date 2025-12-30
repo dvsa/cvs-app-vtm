@@ -7,9 +7,8 @@ import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { SpecialistCustomDefectsSchemaPut } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { InspectionType, SpecialistCustomDefectsSchemaPut } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { RequiredStandardsTpl } from '@forms/templates/general/required-standards.template';
-import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store, select } from '@ngrx/store';
 import {
 	DefaultNullOrEmpty,
@@ -92,7 +91,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 					this.store
 						.pipe(
 							select(
-								getRequiredStandardFromTypeAndRef(inspectionTypeValue as INSPECTION_TYPE, rsRefCalculationValue ?? '')
+								getRequiredStandardFromTypeAndRef(inspectionTypeValue as InspectionType, rsRefCalculationValue ?? '')
 							),
 							takeUntil(this.onDestroy$)
 						)

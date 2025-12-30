@@ -5,7 +5,6 @@ import {
 	RequiredStandard,
 	RequiredStandardTaxonomySection,
 } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
-import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { RequiredStandardSelectComponent } from '../required-standard-select.component';
@@ -48,7 +47,7 @@ describe('RequiredStandardSelectComponent', () => {
 				euVehicleCategories: [EUVehicleCategory.M1],
 			};
 
-			component.handleSelectBasicOrNormal(INSPECTION_TYPE.BASIC);
+			component.handleSelectBasicOrNormal('basic');
 
 			expect(component.requiredStandards).toStrictEqual(['basic', 'basic1']);
 		});
@@ -65,7 +64,7 @@ describe('RequiredStandardSelectComponent', () => {
 				euVehicleCategories: [EUVehicleCategory.M1],
 			};
 
-			component.handleSelectBasicOrNormal(INSPECTION_TYPE.NORMAL);
+			component.handleSelectBasicOrNormal('normal');
 
 			expect(component.requiredStandards).toStrictEqual(['normal', 'normal1']);
 		});
@@ -75,10 +74,10 @@ describe('RequiredStandardSelectComponent', () => {
 		it('should handle when I pick an inspection type', () => {
 			const spy = jest.spyOn(component, 'handleSelectBasicOrNormal');
 
-			component.handleSelect(INSPECTION_TYPE.BASIC, Types.InspectionType);
+			component.handleSelect('basic', Types.InspectionType);
 
 			expect(spy).toHaveBeenCalled();
-			expect(component.selectedInspectionType).toBe(INSPECTION_TYPE.BASIC);
+			expect(component.selectedInspectionType).toBe('basic');
 			expect(component.selectedSection).toBeUndefined();
 			expect(component.selectedRequiredStandard).toBeUndefined();
 		});
