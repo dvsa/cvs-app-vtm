@@ -1,5 +1,5 @@
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -12,7 +12,7 @@ describe('selectors', () => {
 		it('test with no data', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				[],
-				{ vehicleType: 'psv' } as TestResultModel,
+				{ vehicleType: 'psv' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -37,7 +37,7 @@ describe('selectors', () => {
 			] as TestTypesTaxonomy;
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleType: 'psv' } as TestResultModel,
+				{ vehicleType: 'psv' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -113,8 +113,7 @@ describe('selectors', () => {
 				testTypes,
 				{
 					vehicleType: VehicleTypes.TRL,
-					statusCode: StatusCodes.PROVISIONAL,
-				} as TestResultModel,
+				} as TestResultSchema,
 				techRecordHistorys,
 				{ ...techRecord, techRecord_statusCode: StatusCodes.PROVISIONAL }
 			);
@@ -124,10 +123,9 @@ describe('selectors', () => {
 				testTypes,
 				{
 					vehicleType: VehicleTypes.TRL,
-					statusCode: StatusCodes.CURRENT,
-				} as TestResultModel,
+				} as TestResultSchema,
 				techRecordHistorys,
-				techRecord
+				{ ...techRecord, techRecord_statusCode: StatusCodes.CURRENT }
 			);
 
 			expect(selectorAdditional).toEqual(additionalExpectedTestTypes);
@@ -154,7 +152,7 @@ describe('selectors', () => {
 			] as TestTypesTaxonomy;
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ euVehicleCategory: 'm1' } as TestResultModel,
+				{ euVehicleCategory: 'm1' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -185,7 +183,7 @@ describe('selectors', () => {
 			] as TestTypesTaxonomy;
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleSize: 'small' } as TestResultModel,
+				{ vehicleSize: 'small' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -217,7 +215,7 @@ describe('selectors', () => {
 
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleConfiguration: 'rigid' } as TestResultModel,
+				{ vehicleConfiguration: 'rigid' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -226,7 +224,7 @@ describe('selectors', () => {
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleConfiguration: 'articulated' } as TestResultModel,
+				{ vehicleConfiguration: 'articulated' } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -257,7 +255,7 @@ describe('selectors', () => {
 
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ noOfAxles: 4 } as TestResultModel,
+				{ noOfAxles: 4 } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -266,7 +264,7 @@ describe('selectors', () => {
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ noOfAxles: 2 } as TestResultModel,
+				{ noOfAxles: 2 } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -297,7 +295,7 @@ describe('selectors', () => {
 
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleClass: { code: 's' } } as TestResultModel,
+				{ vehicleClass: { code: 's' } } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -306,7 +304,7 @@ describe('selectors', () => {
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleClass: { code: 'n' } } as TestResultModel,
+				{ vehicleClass: { code: 'n' } } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -339,7 +337,7 @@ describe('selectors', () => {
 				testTypes,
 				{
 					vehicleClass: { description: 'motorbikes up to 200cc' },
-				} as TestResultModel,
+				} as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -350,7 +348,7 @@ describe('selectors', () => {
 				testTypes,
 				{
 					vehicleClass: { description: '3 wheelers' },
-				} as TestResultModel,
+				} as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -383,7 +381,7 @@ describe('selectors', () => {
 
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleSubclass: [VehicleSubclass.L] } as TestResultModel,
+				{ vehicleSubclass: [VehicleSubclass.L] } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -392,7 +390,7 @@ describe('selectors', () => {
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ vehicleSubclass: [VehicleSubclass.C] } as TestResultModel,
+				{ vehicleSubclass: [VehicleSubclass.C] } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -425,7 +423,7 @@ describe('selectors', () => {
 
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ numberOfWheelsDriven: 4 } as TestResultModel,
+				{ numberOfWheelsDriven: 4 } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -434,7 +432,7 @@ describe('selectors', () => {
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
-				{ numberOfWheelsDriven: 2 } as TestResultModel,
+				{ numberOfWheelsDriven: 2 } as TestResultSchema,
 				[],
 				techRecord
 			);
@@ -482,7 +480,7 @@ describe('selectors', () => {
 					vehicleType: 'psv',
 					euVehicleCategory: 'm1',
 					vehicleSize: 'small',
-				} as TestResultModel,
+				} as TestResultSchema,
 				[],
 				techRecord
 			);

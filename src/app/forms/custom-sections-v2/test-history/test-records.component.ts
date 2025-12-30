@@ -5,24 +5,24 @@ import { ButtonComponent } from '@components/button/button.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Roles } from '@models/roles.enum';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition } from '@store/technical-records';
 import { take } from 'rxjs';
 
 interface TestField {
-	testTypeStartTimestamp: string | Date;
+	testTypeStartTimestamp: string | null;
 	testTypeName: string;
 	testNumber: string;
-	testResult: resultOfTestEnum;
+	testResult: TestResults;
 	testResultId: string;
-	testResultStatus?: TestResultStatus;
+	testResultStatus?: TestStatus;
 }
 
 @Component({
@@ -32,7 +32,7 @@ interface TestField {
 	imports: [ButtonComponent, RoleRequiredDirective, DatePipe, PaginationComponent, RouterLink, TitleCasePipe],
 })
 export class TestResultsComponent extends EditBaseComponent implements OnInit {
-	testResults = input<TestResultModel[]>([]);
+	testResults = input<TestResultSchema[]>([]);
 	techRecord = input.required<V3TechRecordModel>();
 	isEditing = input(false);
 	router = inject(Router);
@@ -102,24 +102,27 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 
 	get sortedTestTypeFields(): TestField[] {
 		const byDate = (a: TestField, b: TestField) =>
-			new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
+			new Date(b.testTypeStartTimestamp || 0).getTime() - new Date(a.testTypeStartTimestamp || 0).getTime();
 
 		return this.testResults()
 			.flatMap((record) =>
-				record.testTypes.map((testType) => ({
-					testTypeStartTimestamp: testType.testTypeStartTimestamp,
-					testTypeName: testType.testTypeName,
-					testNumber: testType.testNumber,
-					testResult: testType.testResult,
-					testResultId: record.testResultId,
-					testResultStatus: record.testStatus,
-				}))
+				record.testTypes.map(
+					(testType) =>
+						({
+							testTypeStartTimestamp: testType.testTypeStartTimestamp,
+							testTypeName: testType.testTypeName,
+							testNumber: testType.testNumber,
+							testResult: testType.testResult,
+							testResultId: record.testResultId,
+							testResultStatus: record.testStatus,
+						}) as TestField
+				)
 			)
 			.sort(byDate);
 	}
 
 	getResult(test: TestField): string {
-		return test.testResultStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : test.testResult;
+		return test.testResultStatus === TestStatus.CANCELLED ? TestStatus.CANCELLED : test.testResult;
 	}
 
 	handlePaginationChange(event?: { start: number; end: number }): void {

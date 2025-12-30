@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { CompleteTestResults } from '@models/test-results/completeTestResults';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import {
 	TEST_TYPES,
 	TEST_TYPES_GROUP1_SPEC_TEST,
@@ -66,7 +65,7 @@ export class TestRecordsService {
 			testResultId?: string;
 			version?: string;
 		} = {}
-	): Observable<Array<TestResultModel>> {
+	): Observable<Array<TestResultSchema>> {
 		if (!systemNumber) {
 			return throwError(() => new Error('systemNumber is required'));
 		}
@@ -79,7 +78,7 @@ export class TestRecordsService {
 			toDateTime,
 			testResultId,
 			version
-		) as Observable<Array<TestResultModel>>;
+		) as Observable<Array<TestResultSchema>>;
 	}
 
 	loadTestResults(): void {
@@ -93,26 +92,27 @@ export class TestRecordsService {
 	saveTestResult(
 		systemNumber: string,
 		user: { name: string; id?: string; userEmail?: string },
-		body: TestResultModel
-	): Observable<TestResultModel> {
+		body: TestResultSchema
+	): Observable<TestResultSchema> {
 		const { name, id, userEmail } = user;
 		const tr = cloneDeep(body);
 		delete tr.testHistory;
 		return this.httpService.testResultsSystemNumberPut(
-			{ msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr } as CompleteTestResults,
+			// @TODO: correctly type
+			{ msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr } as any,
 			systemNumber
-		) as Observable<TestResultModel>;
+		) as Observable<TestResultSchema>;
 	}
 
-	updateTestResult(value: TestResultModel): void {
+	updateTestResult(value: TestResultSchema): void {
 		this.store.dispatch(updateTestResult({ value }));
 	}
 
-	postTestResult(body: TestResultModel) {
-		return this.httpService.testResultsPost(body as CompleteTestResults);
+	postTestResult(body: TestResultSchema) {
+		return this.httpService.testResultsPost(body as TestResultSchema);
 	}
 
-	createTestResult(value: TestResultModel): void {
+	createTestResult(value: TestResultSchema): void {
 		this.store.dispatch(createTestResult({ value }));
 	}
 
@@ -120,7 +120,7 @@ export class TestRecordsService {
 		return this.store.dispatch(cleanTestResult());
 	}
 
-	prepareTestResultForAmendment(testResults: TestResultModel[], testResult: TestResultModel): TestResultModel {
+	prepareTestResultForAmendment(testResults: TestResultSchema[], testResult: TestResultSchema): TestResultSchema {
 		const lastIvaOrMsvaTest = testResults.find((test) => {
 			const testType = test?.testTypes[0];
 			const testTypeId = testType?.testTypeId ?? '';
@@ -159,7 +159,7 @@ export class TestRecordsService {
 		return undefined;
 	}
 
-	editingTestResult(testResult: TestResultModel): void {
+	editingTestResult(testResult: TestResultSchema): void {
 		this.store.dispatch(editingTestResult({ testTypeId: testResult.testTypes[0].testTypeId }));
 	}
 
@@ -167,7 +167,7 @@ export class TestRecordsService {
 		this.store.dispatch(cancelEditingTestResult());
 	}
 
-	updateEditingTestResult(testResult: TestResultModel): void {
+	updateEditingTestResult(testResult: TestResultSchema): void {
 		this.store.dispatch(updateEditingTestResult({ testResult }));
 	}
 
@@ -177,7 +177,7 @@ export class TestRecordsService {
 
 	private canHandleTestType(templateMap: Record<VehicleTypes, Record<string, Record<string, FormNode>>>) {
 		return function handleTestType<T>(source: Observable<T>): Observable<boolean> {
-			const handle = (testResult: TestResultModel | undefined): boolean => {
+			const handle = (testResult: TestResultSchema | undefined): boolean => {
 				if (!testResult) {
 					return false;
 				}
@@ -193,7 +193,7 @@ export class TestRecordsService {
 			return new Observable((subscriber) => {
 				source.subscribe({
 					next: (val) => {
-						subscriber.next(handle(val as unknown as TestResultModel));
+						subscriber.next(handle(val as unknown as TestResultSchema));
 					},
 					error: (e) => subscriber.error(e),
 					complete: () => subscriber.complete(),
@@ -212,7 +212,7 @@ export class TestRecordsService {
 				return this.store.dispatch(updateTestResultFailed({ errors: [{ error: 'No selected test result.' }] }));
 			}
 
-			const cancelledTest = { ...testResult, testStatus: TestResultStatus.CANCELLED, reasonForCancellation: reason };
+			const cancelledTest = { ...testResult, testStatus: TestStatus.CANCELLED, reasonForCancellation: reason };
 
 			this.store.dispatch(updateTestResult({ value: cancelledTest }));
 		});

@@ -1,4 +1,4 @@
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { createSelector } from '@ngrx/store';
 import { testStationsAdapter, testStationsFeatureState } from './test-stations.reducer';
 
@@ -10,5 +10,5 @@ export const testStation = (id: string) => createSelector(testStationsFeatureSta
 
 export const testStationsLoadingState = createSelector(testStationsFeatureState, (state) => state.loading);
 
-export const getTestStationFromProperty = (property: keyof TestStation, value: string) =>
+export const getTestStationFromProperty = (property: keyof TestStationSchema, value: string) =>
 	createSelector(testStations, (stations) => stations.find((station) => station[`${property}`] === value));

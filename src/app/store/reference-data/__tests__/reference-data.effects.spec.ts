@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { DeleteItem, ReferenceDataItem } from '@models/reference-data/reference-data.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { HttpCacheManager } from '@ngneat/cashew';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -417,7 +417,7 @@ describe('ReferenceDataEffects', () => {
 		'should dispatch the action to fetch the reasons for abandoning for the right vehicle',
 		(values) => {
 			const { vehicleType, resourceType } = values;
-			const testResult = { vehicleType } as TestResultModel;
+			const testResult = { vehicleType } as TestResultSchema;
 
 			testScheduler.run(({ hot, expectObservable }) => {
 				store.overrideSelector(testResultInEdit, testResult);

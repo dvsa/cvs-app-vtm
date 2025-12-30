@@ -30,8 +30,6 @@
         <h2 class="govuk-heading-m">Vehicle details</h2>
         <dl class="govuk-summary-list">
           @switch (testResult()?.vehicleType) {
-            @case (vehicleTypes.SMALL_TRL) {
-            }
             @case (vehicleTypes.TRL) {
               <div
                 class="govuk-summary-list__row"
@@ -123,7 +121,7 @@
     <div class="vehicle_heading govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-l">
         @if (techRecord$ | async; as techRecord) {
-          {{ getVehicleDescription(techRecord, testResult()?.vehicleType) }}
+          {{ getVehicleDescription(techRecord, $any(testResult()?.vehicleType)) }}
         }
         <app-icon
           [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"

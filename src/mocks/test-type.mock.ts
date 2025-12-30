@@ -1,7 +1,9 @@
-import { EmissionStandard, FuelType, ModTypeCode, ModeTypeDescription } from '@models/test-types/emissions.enum';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { FuelType } from '@dvsa/cvs-type-definitions/types/v1/enums/fuelType.enum.js';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { EmissionStandards, TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { ModTypeCode, ModeTypeDescription } from '@models/test-types/emissions.enum';
 
-export const createMockTestType = (params: Partial<TestType> = {}): TestType => ({
+export const createMockTestType = (params: Partial<TestResultTestTypeSchema> = {}): TestResultTestTypeSchema => ({
 	testTypeId: 'testTypeId',
 	testNumber: 'testNumber',
 	name: 'testName',
@@ -14,20 +16,23 @@ export const createMockTestType = (params: Partial<TestType> = {}): TestType => 
 	reasonForAbandoning: '',
 	testAnniversaryDate: 'testAnniversaryDate',
 	prohibitionIssued: false,
-	testResult: resultOfTestEnum.fail,
+	testResult: TestResults.FAIL,
 	seatbeltInstallationCheckDate: false,
 	numberOfSeatbeltsFitted: 0,
 	lastSeatbeltInstallationCheckDate: '',
-	emissionStandard: EmissionStandard.Euro3,
+	emissionStandard: 'Euro 3' as EmissionStandards,
 	smokeTestKLimitApplied: 'smokeTestKLimitApplied',
-	fuelType: FuelType.Diesel,
+	fuelType: FuelType.DIESEL,
 	modificationTypeUsed: 'modificationTypeUsed',
 	particulateTrapFitted: 'particulateTrapFitted',
 	particulateTrapSerialNumber: 'particulateTrapSerialNumber',
+	secondaryCertificateNumber: null,
+	additionalCommentsForAbandon: null,
 	modType: {
 		code: ModTypeCode.g,
 		description: ModeTypeDescription.Engine,
 	},
+	defects: [],
 	customDefects: [],
 	additionalNotesRecorded: '',
 	requiredStandards: [

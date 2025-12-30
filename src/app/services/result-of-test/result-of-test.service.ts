@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Store, select } from '@ngrx/store';
 import {
 	resultOfTestSelector,
@@ -24,8 +24,8 @@ export class ResultOfTestService {
 		this.store.dispatch(updateResultOfTestRequiredStandards());
 	}
 
-	toggleAbandoned(result: resultOfTestEnum) {
-		if (result !== resultOfTestEnum.abandoned) {
+	toggleAbandoned(result: TestResults) {
+		if (result !== TestResults.ABANDONED) {
 			this.store.dispatch(setResultOfTest({ result }));
 		} else {
 			this.store.dispatch(setResultOfTest({ result }));

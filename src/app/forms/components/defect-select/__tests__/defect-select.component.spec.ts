@@ -1,20 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Defect } from '@models/defects/defect.model';
+import { provideRouter } from '@angular/router';
+import {
+	DefectCategoryReferenceDataSchema,
+	DefectItemReferenceDataSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
-import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-
-import { provideRouter } from '@angular/router';
 import { DefectSelectComponent } from '../defect-select.component';
 
 describe('DefectSelectComponent', () => {
 	let component: DefectSelectComponent;
 	let fixture: ComponentFixture<DefectSelectComponent>;
 
-	const defect: Defect = {
-		additionalInfo: {},
+	const defect: DefectCategoryReferenceDataSchema = {
+		additionalInfo: {
+			psv: {},
+			trl: {},
+			hgv: {},
+		},
 		forVehicleType: [VehicleTypes.PSV],
 		imDescription: 'some description',
 		imNumber: 1,
@@ -70,7 +75,7 @@ describe('DefectSelectComponent', () => {
 		});
 
 		it('should correctly detect a defect without items', () => {
-			const defectWithNoItems: Defect = { ...defect, items: [] };
+			const defectWithNoItems: DefectCategoryReferenceDataSchema = { ...defect, items: [] };
 			expect(component.hasItems(defectWithNoItems)).toBeFalsy();
 		});
 	});
@@ -81,7 +86,7 @@ describe('DefectSelectComponent', () => {
 		});
 
 		it('should correctly detect an item without deficiencies', () => {
-			const itemWithNoDeficiencies: Item = {
+			const itemWithNoDeficiencies: DefectItemReferenceDataSchema = {
 				...defect.items[0],
 				deficiencies: [],
 			};

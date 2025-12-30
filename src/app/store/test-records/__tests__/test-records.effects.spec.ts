@@ -8,7 +8,6 @@ import { contingencyTestTemplates } from '@forms/templates/test-records/create-m
 import { mockTestResult, mockTestResultList } from '@mocks/mock-test-result';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -142,6 +141,7 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { techRecord } from '../../technical-records';
@@ -264,7 +264,7 @@ describe('TestResultsEffects', () => {
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-					b: fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultModel[] }),
+					b: fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultSchema[] }),
 				});
 			});
 		});
@@ -320,7 +320,7 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('updateTestResult$', () => {
-		const newTestResult = { testResultId: '1', testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+		const newTestResult = { testResultId: '1', testTypes: [{ testTypeId: '1' }] } as TestResultSchema;
 
 		it('should dispatch updateTestResultSuccess with return payload', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
@@ -463,7 +463,7 @@ describe('TestResultsEffects', () => {
 							vehicleType: 'car',
 							vin: '',
 							vrm: '',
-						} as unknown as TestResultModel,
+						} as unknown as TestResultSchema,
 					}),
 				});
 			});
@@ -487,7 +487,7 @@ describe('TestResultsEffects', () => {
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
 					b: templateSectionsChanged({
 						sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel,
+						sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultSchema,
 					}),
 					c: updateResultOfTest(),
 				});
@@ -513,7 +513,7 @@ describe('TestResultsEffects', () => {
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
 					b: templateSectionsChanged({
 						sectionTemplates: Object.values(masterTpl.psv['testTypesSpecialistGroup1'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
+						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultSchema,
 					}),
 					c: updateResultOfTest(),
 				});
@@ -541,7 +541,7 @@ describe('TestResultsEffects', () => {
 						sectionTemplates: Object.values(
 							masterTpl.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
 						),
-						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
+						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultSchema,
 					}),
 					c: updateResultOfTest(),
 				});
@@ -572,7 +572,7 @@ describe('TestResultsEffects', () => {
 
 		it('should return empty section templates if action testResult.vehicleType is not known by masterTpl', () => {
 			const testResult = createMockTestResult({
-				vehicleType: 'car' as VehicleTypes,
+				vehicleType: 'car' as VehicleType,
 				testTypes: [createMockTestType({ testTypeId: '1' })],
 			});
 
@@ -662,7 +662,7 @@ describe('TestResultsEffects', () => {
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
 					b: templateSectionsChanged({
 						sectionTemplates: Object.values(masterTpl.psv['default'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel,
+						sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultSchema,
 					}),
 					c: updateResultOfTest(),
 				});
@@ -757,13 +757,14 @@ describe('TestResultsEffects', () => {
 							testerName: '',
 							testerStaffId: '',
 							typeOfTest: TypeOfTest.CONTINGENCY,
+							recalls: undefined,
 							vehicleClass: null,
 							vehicleConfiguration: undefined,
 							vehicleSize: undefined,
 							vehicleType: 'psv',
 							vin: '',
 							vrm: '',
-						} as unknown as TestResultModel,
+						} as unknown as TestResultSchema,
 					}),
 				});
 			});
@@ -773,7 +774,7 @@ describe('TestResultsEffects', () => {
 	describe('createTestResult$$', () => {
 		it('should return createTestResultSuccess action on successfull API call', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				const testResult: TestResultModel = mockTestResult();
+				const testResult: TestResultSchema = mockTestResult();
 				// mock action to trigger effect
 				actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
 				// mock service call
@@ -792,7 +793,7 @@ describe('TestResultsEffects', () => {
 
 		it('should return createTestResultFailed', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				const testResult: TestResultModel = mockTestResult();
+				const testResult: TestResultSchema = mockTestResult();
 				actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
 
 				const expectedError = new HttpErrorResponse({
@@ -810,7 +811,7 @@ describe('TestResultsEffects', () => {
 
 		it('should return createTestResultFailed and add validation errors', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				const testResult: TestResultModel = mockTestResult();
+				const testResult: TestResultSchema = mockTestResult();
 				actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
 
 				const expectedError = new HttpErrorResponse({
@@ -834,7 +835,7 @@ describe('TestResultsEffects', () => {
 
 		it('should return createTestResultFailed and add a validation error', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				const testResult: TestResultModel = mockTestResult();
+				const testResult: TestResultSchema = mockTestResult();
 				actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
 
 				const expectedError = new HttpErrorResponse({

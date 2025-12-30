@@ -2,12 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { CacheKeys } from '@models/cache-keys.enum';
-import { Defect } from '@models/defects/defect.model';
 import { Log } from '@models/logs/logs.model';
 import {
 	DeleteItem,
@@ -17,9 +19,6 @@ import {
 	ResourceKey,
 } from '@models/reference-data/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
-import { CompleteTestResults } from '@models/test-results/completeTestResults';
-import { TestResults } from '@models/test-results/testResults';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -82,14 +81,14 @@ export class HttpService {
 	}
 
 	fetchDefects() {
-		return this.http.get<Defect[]>(`${environment.VTM_API_URI}/defects`, {
+		return this.http.get<DefectCategoryReferenceDataSchema[]>(`${environment.VTM_API_URI}/defects`, {
 			headers: HttpService.GetGzippedPayloadHeaders,
 			context: withCache({ key: CacheKeys.DEFECTS }),
 		});
 	}
 
 	fetchDefect(id: number) {
-		return this.http.get<Defect>(`${environment.VTM_API_URI}/defects/${id}`);
+		return this.http.get<DefectCategoryReferenceDataSchema>(`${environment.VTM_API_URI}/defects/${id}`);
 	}
 
 	fetchRequiredStandards(euVehicleCategory: string) {
@@ -103,14 +102,14 @@ export class HttpService {
 	}
 
 	fetchTestStations() {
-		return this.http.get<Array<TestStation>>(`${environment.VTM_API_URI}/test-stations`, {
+		return this.http.get<Array<TestStationSchema>>(`${environment.VTM_API_URI}/test-stations`, {
 			context: withCache({ key: CacheKeys.TEST_STATIONS }),
 			headers: HttpService.GetGzippedPayloadHeaders,
 		});
 	}
 
 	fetchTestStation(id: string) {
-		return this.http.get<TestStation>(`${environment.VTM_API_URI}/test-stations/${id}`);
+		return this.http.get<TestStationSchema>(`${environment.VTM_API_URI}/test-stations/${id}`);
 	}
 
 	generateADRCertificate(systemNumber: string, createdTimestamp: string, certificateType: string) {
@@ -514,7 +513,7 @@ export class HttpService {
 			params = params.set('version', version);
 		}
 
-		return this.http.get<TestResults>(
+		return this.http.get<TestResultSchema[]>(
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
 			{
 				params,
@@ -523,7 +522,7 @@ export class HttpService {
 		);
 	}
 
-	testResultsPost(body: CompleteTestResults) {
+	testResultsPost(body: TestResultSchema) {
 		if (body === null || body === undefined) {
 			throw new Error('Required parameter body was null or undefined when calling testResultsPost.');
 		}
@@ -533,7 +532,7 @@ export class HttpService {
 		});
 	}
 
-	testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string) {
+	testResultsSystemNumberPut(body: TestResultSchema, systemNumber: string) {
 		if (body === null || body === undefined) {
 			throw new Error('Required parameter body was null or undefined when calling testResultsSystemNumberPut.');
 		}
@@ -542,7 +541,7 @@ export class HttpService {
 			throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberPut.');
 		}
 
-		return this.http.put<CompleteTestResults>(
+		return this.http.put<TestResultSchema>(
 			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
 			body,
 			{

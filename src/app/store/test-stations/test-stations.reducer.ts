@@ -1,4 +1,4 @@
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
@@ -16,17 +16,17 @@ interface Extras {
 	loading: boolean;
 }
 
-export interface TestStationsState extends EntityState<TestStation>, Extras {}
+export interface TestStationsState extends EntityState<TestStationSchema>, Extras {}
 
 export const STORE_FEATURE_TEST_STATIONS_KEY = 'testStations';
 
 export const testStationsFeatureState = createFeatureSelector<TestStationsState>(STORE_FEATURE_TEST_STATIONS_KEY);
 
-export const testStationsAdapter: EntityAdapter<TestStation> = createEntityAdapter<TestStation>({
+export const testStationsAdapter: EntityAdapter<TestStationSchema> = createEntityAdapter<TestStationSchema>({
 	selectId: (testStation) => testStation.testStationId,
 });
 
-export const initialTestStationsState: EntityState<TestStation> & Extras = testStationsAdapter.getInitialState({
+export const initialTestStationsState: EntityState<TestStationSchema> & Extras = testStationsAdapter.getInitialState({
 	loading: false,
 	error: '',
 });

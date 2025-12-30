@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, of, skipWhile, switchMap, take } from 'rxjs';
@@ -16,7 +16,7 @@ import { TestAmendmentHistoryComponent } from '../../components/test-amendment-h
 export class TestResultSummaryComponent implements OnInit {
 	testRecordsService = inject(TestRecordsService);
 
-	testResult$: Observable<TestResultModel | undefined> = of(undefined);
+	testResult$: Observable<TestResultSchema | undefined> = of(undefined);
 	sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
 	ngOnInit(): void {
@@ -31,7 +31,7 @@ export class TestResultSummaryComponent implements OnInit {
 				skipWhile((testResult) => !testResult),
 				take(1)
 			)
-			.subscribe((testResult) => this.testRecordsService.editingTestResult(testResult as TestResultModel));
+			.subscribe((testResult) => this.testRecordsService.editingTestResult(testResult as TestResultSchema));
 
 		this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 	}
