@@ -210,13 +210,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number'),
+				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
 			]),
 			techRecord_make: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(50, 'Body make'),
+				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
 				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
-			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
+			techRecord_model: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(30, 'Body model', 'general-vehicle-details', 'techRecord_model'),
+			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
 				this.commonValidators.required(
 					'Vehicle configuration',
@@ -230,7 +232,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number'),
+				this.commonValidators.maxLength(
+					10,
+					'Conversion reference number',
+					'general-vehicle-details',
+					'techRecord_conversionRefNo'
+				),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -271,19 +278,26 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_chassisMake: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_chassisModel: this.fb.control<string | null>({ value: null, disabled: true }, []),
 			techRecord_bodyMake: this.fb.control<string | null>({ value: null, disabled: true }),
-			techRecord_bodyModel: this.fb.control<string | null>(null, [this.commonValidators.maxLength(20, 'Body model')]),
+			techRecord_bodyModel: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(20, 'Body model', 'general-vehicle-details', 'techRecord_bodyModel'),
+			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>({ value: null, disabled: true }, [
 				this.commonValidators.required('Body type', 'general-vehicle-details', 'techRecord_bodyType_description'),
 			]),
 			techRecord_modelLiteral: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(30, 'Model literal'),
+				this.commonValidators.maxLength(30, 'Model literal', 'general-vehicle-details', 'techRecord_modelLiteral'),
 			]),
 			techRecord_functionCode: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(1, 'Function code'),
+				this.commonValidators.maxLength(1, 'Function code', 'general-vehicle-details', 'techRecord_functionCode'),
 			]),
 			techRecord_conversionRefNo: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(10, 'Conversion reference number'),
+				this.commonValidators.maxLength(
+					10,
+					'Conversion reference number',
+					'general-vehicle-details',
+					'techRecord_conversionRefNo'
+				),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
 					'Conversion reference number must only include numbers and letters A to Z'
@@ -320,7 +334,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first use', 'techRecord_firstUseDate', 'general-vehicle-details'),
 			]),
 			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number'),
+				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
 				this.commonValidators.required(
@@ -331,10 +345,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_frameDescription: this.fb.control<string | null>(null),
 			techRecord_make: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(50, 'Body make'),
+				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
 				this.bodyMakeRequiredWithDangerousGoods(),
 			]),
-			techRecord_model: this.fb.control<string | null>(null, [this.commonValidators.maxLength(30, 'Body model')]),
+			techRecord_model: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(30, 'Body model', 'general-vehicle-details', 'techRecord_model'),
+			]),
 			techRecord_bodyType_code: this.fb.control<string | null>(null),
 			techRecord_bodyType_description: this.fb.control<string | null>(null, [
 				this.commonValidators.required('Body type', 'general-vehicle-details', 'techRecord_bodyType_description'),

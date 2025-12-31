@@ -27,21 +27,34 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 
 	// TODO properly type this at some point
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'trl'>, FormControl>>>({
-		techRecord_purchaserDetails_name: this.fb.control(null, [this.commonValidators.maxLength(150, 'Name or company')]),
+		techRecord_purchaserDetails_name: this.fb.control(null, [
+			this.commonValidators.maxLength(150, 'Name or company', 'purchasers', 'techRecord_purchaserDetails_name'),
+		]),
 		techRecord_purchaserDetails_address1: this.fb.control(null, [
-			this.commonValidators.maxLength(60, 'Address line 1'),
+			this.commonValidators.maxLength(60, 'Address line 1', 'purchasers', 'techRecord_purchaserDetails_address1'),
 		]),
 		techRecord_purchaserDetails_address2: this.fb.control(null, [
-			this.commonValidators.maxLength(60, 'Address line 2'),
+			this.commonValidators.maxLength(60, 'Address line 2', 'purchasers', 'techRecord_purchaserDetails_address2'),
 		]),
-		techRecord_purchaserDetails_postTown: this.fb.control(null, [this.commonValidators.maxLength(60, 'Town or city')]),
-		techRecord_purchaserDetails_address3: this.fb.control(null, [this.commonValidators.maxLength(60, 'County')]),
-		techRecord_purchaserDetails_postCode: this.fb.control(null, [this.commonValidators.maxLength(12, 'Postcode')]),
+		techRecord_purchaserDetails_postTown: this.fb.control(null, [
+			this.commonValidators.maxLength(60, 'Town or city', 'purchasers', 'techRecord_purchaserDetails_postTown'),
+		]),
+		techRecord_purchaserDetails_address3: this.fb.control(null, [
+			this.commonValidators.maxLength(60, 'County', 'purchasers', 'techRecord_purchaserDetails_address3'),
+		]),
+		techRecord_purchaserDetails_postCode: this.fb.control(null, [
+			this.commonValidators.maxLength(12, 'Postcode', 'purchasers', 'techRecord_purchaserDetails_postCode'),
+		]),
 		techRecord_purchaserDetails_telephoneNumber: this.fb.control(null, [
-			this.commonValidators.maxLength(25, 'Telephone number'),
+			this.commonValidators.maxLength(
+				25,
+				'Telephone number',
+				'purchasers',
+				'techRecord_purchaserDetails_telephoneNumber'
+			),
 		]),
 		techRecord_purchaserDetails_emailAddress: this.fb.control(null, [
-			this.commonValidators.maxLength(255, 'Email address'),
+			this.commonValidators.maxLength(255, 'Email address', 'purchasers', 'techRecord_purchaserDetails_emailAddress'),
 			this.commonValidators.pattern(
 				"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
 				'Enter an email address in the correct format, like name@example.com'
@@ -49,7 +62,12 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 		]),
 		techRecord_purchaserDetails_faxNumber: this.fb.control(null),
 		techRecord_purchaserDetails_purchaserNotes: this.fb.control(null, [
-			this.commonValidators.maxLength(1024, 'Purchaser notes'),
+			this.commonValidators.maxLength(
+				1024,
+				'Purchaser notes',
+				'purchasers',
+				'techRecord_purchaserDetails_purchaserNotes'
+			),
 		]),
 	});
 
