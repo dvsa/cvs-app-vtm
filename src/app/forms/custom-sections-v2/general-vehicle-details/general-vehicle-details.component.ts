@@ -500,9 +500,17 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>({ value: null, disabled: false }),
 			techRecord_numberOfWheelsDriven: this.fb.control<number | null>(null, [
-				this.commonValidators.max(10, 'Number of wheels driven'),
+				this.commonValidators.max(
+					10,
+					'Number of wheels driven',
+					'',
+					'general-vehicle-details',
+					'techRecord_numberOfWheelsDriven'
+				),
 			]),
-			techRecord_noOfAxles: this.fb.control<number | null>(2, [this.commonValidators.max(10, 'Number of axles')]),
+			techRecord_noOfAxles: this.fb.control<number | null>(2, [
+				this.commonValidators.max(10, 'Number of axles', '', 'general-vehicle-details', 'techRecord_noOfAxles'),
+			]),
 		};
 	}
 
