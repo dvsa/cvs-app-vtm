@@ -1,4 +1,4 @@
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import {
 	fetchTestStation,
 	fetchTestStationFailed,
@@ -10,7 +10,7 @@ import {
 import { TestStationsState, initialTestStationsState, testStationsReducer } from '../test-stations.reducer';
 
 describe('Test Stations Reducer', () => {
-	const expectedTestStations = [{ testStationId: 'someId' } as TestStation];
+	const expectedTestStations = [{ testStationId: 'someId' } as TestStationSchema];
 
 	describe('unknown action', () => {
 		it('should return the default state', () => {

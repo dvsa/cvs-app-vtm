@@ -1,7 +1,9 @@
-import { Defect } from '@models/defects/defect.model';
+import {
+	DefectCategoryReferenceDataSchema,
+	DefectDeficiencyReferenceDataSchema,
+	DefectItemReferenceDataSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
-import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsState, initialDefectsState } from '../defects.reducer';
 import { defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber } from '../defects.selectors';
@@ -25,7 +27,7 @@ describe('Defects Selectors', () => {
 	});
 
 	describe('should return correct state', () => {
-		const deficiency: Deficiency = {
+		const deficiency: DefectDeficiencyReferenceDataSchema = {
 			deficiencyCategory: deficiencyCategory.Major,
 			deficiencyId: 'a',
 			deficiencySubId: '',
@@ -35,14 +37,14 @@ describe('Defects Selectors', () => {
 			stdForProhibition: false,
 		};
 
-		const item: Item = {
+		const item: DefectItemReferenceDataSchema = {
 			deficiencies: [deficiency],
 			forVehicleType: [VehicleTypes.PSV],
 			itemDescription: 'A registration plate:',
 			itemNumber: 1,
 		};
 
-		const mockDefect: Defect = {
+		const mockDefect: DefectCategoryReferenceDataSchema = {
 			additionalInfo: {
 				[VehicleTypes.PSV]: {
 					location: {
@@ -50,13 +52,15 @@ describe('Defects Selectors', () => {
 					},
 					notes: false,
 				},
+				[VehicleTypes.HGV]: {},
+				[VehicleTypes.TRL]: {},
 			},
 			forVehicleType: [VehicleTypes.PSV],
 			imDescription: 'Registration Plate',
 			imNumber: 1,
 			items: [item],
 		};
-		const defect2: Defect = {
+		const defect2: DefectCategoryReferenceDataSchema = {
 			additionalInfo: {
 				[VehicleTypes.PSV]: {
 					location: {
@@ -64,6 +68,8 @@ describe('Defects Selectors', () => {
 					},
 					notes: false,
 				},
+				[VehicleTypes.HGV]: {},
+				[VehicleTypes.TRL]: {},
 			},
 			forVehicleType: [VehicleTypes.PSV],
 			imDescription: 'Registration Plate',
@@ -71,7 +77,7 @@ describe('Defects Selectors', () => {
 			items: [item],
 		};
 
-		const defectList: Defect[] = [mockDefect, defect2];
+		const defectList = [mockDefect, defect2];
 
 		it('should return filtered defect by IM number', () => {
 			const selectedState = selectByImNumber(2, VehicleTypes.PSV).projector(defectList);

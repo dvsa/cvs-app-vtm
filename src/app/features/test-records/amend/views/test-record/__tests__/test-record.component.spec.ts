@@ -4,10 +4,9 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Params, provideRouter } from '@angular/router';
-
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,7 +14,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-
 import { State, initialAppState } from '@store/index';
 import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/router.selectors';
 import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit } from '@store/test-records';
@@ -82,7 +80,7 @@ describe('TestRecordComponent', () => {
 
 	describe('button actions', () => {
 		beforeEach(() => {
-			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
+			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultSchema);
 		});
 
 		it('should display review button when edit query param is true', waitForAsync(() => {
@@ -126,8 +124,8 @@ describe('TestRecordComponent', () => {
 				testRecords: {
 					...initialTestResultsState,
 					ids: ['1'],
-					entities: { 1: { testTypes: [{ testNumber: 'foo' }] } as TestResultModel },
-					editingTestResult: { testTypes: [{ testNumber: 'foo' }] } as TestResultModel,
+					entities: { 1: { testTypes: [{ testNumber: 'foo' }] } as TestResultSchema },
+					editingTestResult: { testTypes: [{ testNumber: 'foo' }] } as TestResultSchema,
 				},
 			});
 		});
@@ -152,7 +150,7 @@ describe('TestRecordComponent', () => {
 			const updateTestResultStateSpy = jest
 				.spyOn(testRecordsService, 'updateTestResult')
 				.mockImplementation(() => true);
-			const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+			const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 			store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
 			store.overrideSelector(testResultInEdit, testRecord);
 			store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1'] ?? ''));
@@ -170,7 +168,7 @@ describe('TestRecordComponent', () => {
 
 	describe('Render banner', () => {
 		beforeEach(() => {
-			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
+			testRecordsService.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultSchema);
 		});
 
 		it('should render the banner if the test type id is not supported', waitForAsync(() => {

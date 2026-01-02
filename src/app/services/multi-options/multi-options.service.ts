@@ -9,6 +9,7 @@ import { fetchReasonsForAbandoning } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { TestStationsState, fetchTestStations } from '@store/test-stations';
 import { Observable, switchMap } from 'rxjs';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 
 @Injectable({ providedIn: 'root' })
 export class MultiOptionsService {
@@ -23,7 +24,9 @@ export class MultiOptionsService {
 			case SpecialRefData.ReasonsForAbandoning:
 				return this.store.pipe(
 					select(testResultInEdit),
-					switchMap((testResult) => this.referenceDataService.getReasonsForAbandoning(testResult?.vehicleType))
+					switchMap((testResult) =>
+						this.referenceDataService.getReasonsForAbandoning(testResult?.vehicleType as VehicleTypes)
+					)
 				);
 			default:
 				return this.referenceDataService.getReferenceDataOptions(referenceData);

@@ -1,3 +1,4 @@
+import { FuelType } from '@dvsa/cvs-type-definitions/types/v1/enums/fuelType.enum.js';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
@@ -57,15 +58,7 @@ export const EmissionsSection: FormNode = {
 							label: 'Fuel type',
 							type: FormNodeTypes.CONTROL,
 							editType: FormNodeEditTypes.RADIO,
-							options: [
-								{ value: 'diesel', label: 'Diesel' },
-								{ value: 'gas-cng', label: 'Gas-CNG' },
-								{ value: 'gas-lng', label: 'Gas-LNG' },
-								{ value: 'gas-lpg', label: 'Gas-LPG' },
-								{ value: 'fuel cell', label: 'Fuel cell' },
-								{ value: 'petrol', label: 'Petrol' },
-								{ value: 'full electric', label: 'Full electric' },
-							],
+							options: getOptionsFromEnum(FuelType),
 							asyncValidators: [
 								{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } },
 							],

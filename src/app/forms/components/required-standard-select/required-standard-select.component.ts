@@ -6,7 +6,7 @@ import {
 	RequiredStandard,
 	RequiredStandardTaxonomySection,
 } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
-import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
+import { InspectionType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { RequiredStandardState } from '@store/required-standards/required-standards.reducer';
@@ -27,7 +27,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	requiredStandards?: RequiredStandardTaxonomySection[];
 	normalAndBasic?: boolean;
 	isEditing = false;
-	selectedInspectionType?: INSPECTION_TYPE;
+	selectedInspectionType?: InspectionType;
 	selectedSection?: RequiredStandardTaxonomySection;
 	selectedRequiredStandard?: RequiredStandard;
 	basicAndNormalRequiredStandards?: DefectGETRequiredStandards;
@@ -45,7 +45,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 					this.basicAndNormalRequiredStandards = requiredStandards;
 				} else {
 					this.requiredStandards = requiredStandards.normal;
-					this.selectedInspectionType = INSPECTION_TYPE.NORMAL;
+					this.selectedInspectionType = 'normal';
 				}
 			});
 	}
@@ -55,18 +55,18 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 		this.onDestroy$.complete();
 	}
 
-	handleSelectBasicOrNormal(inspectionType: INSPECTION_TYPE): void {
+	handleSelectBasicOrNormal(inspectionType: InspectionType): void {
 		this.requiredStandards =
-			inspectionType === INSPECTION_TYPE.BASIC
+			inspectionType === 'basic'
 				? this.basicAndNormalRequiredStandards?.basic
 				: this.basicAndNormalRequiredStandards?.normal;
 	}
 
-	handleSelect(selected?: INSPECTION_TYPE | RequiredStandardTaxonomySection | RequiredStandard, type?: Types): void {
+	handleSelect(selected?: InspectionType | RequiredStandardTaxonomySection | RequiredStandard, type?: Types): void {
 		switch (type) {
 			case Types.InspectionType:
-				this.handleSelectBasicOrNormal(selected as INSPECTION_TYPE);
-				this.selectedInspectionType = selected as INSPECTION_TYPE;
+				this.handleSelectBasicOrNormal(selected as InspectionType);
+				this.selectedInspectionType = selected as InspectionType;
 				this.selectedSection = undefined;
 				this.selectedRequiredStandard = undefined;
 				break;
@@ -96,8 +96,8 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 		return Types;
 	}
 
-	get inspectionTypes(): INSPECTION_TYPE[] {
-		return Object.values(INSPECTION_TYPE) as INSPECTION_TYPE[];
+	get inspectionTypes(): InspectionType[] {
+		return ['basic', 'normal'];
 	}
 }
 

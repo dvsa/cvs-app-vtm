@@ -9,6 +9,10 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
+import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
@@ -25,12 +29,7 @@ import {
 	RequiredStandardsComponent,
 	RequiredStandardsComponent as RequiredStandardsComponent_1,
 } from '@forms/custom-sections/required-standards/required-standards.component';
-import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormControl, FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -68,12 +67,12 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly customDefects = viewChild(CustomDefectsComponent);
 	readonly requiredStandards = viewChild(RequiredStandardsComponent);
 
-	readonly testResult = input.required<TestResultModel>();
+	readonly testResult = input.required<TestResultSchema>();
 	readonly isEditing = input(false);
 	readonly expandSections = input(false);
 	readonly isReview = input(false);
 
-	readonly newTestResult = output<TestResultModel>();
+	readonly newTestResult = output<TestResultSchema>();
 
 	private defectsStore = inject(Store<DefectsState>);
 	private routerService = inject(RouterService);
@@ -108,7 +107,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		}
 	}
 
-	shouldUpdateTest(latestTest: unknown): latestTest is TestResultModel {
+	shouldUpdateTest(latestTest: unknown): latestTest is TestResultSchema {
 		return !!latestTest && Object.keys(latestTest).length > 0;
 	}
 
@@ -124,7 +123,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		});
 	}
 
-	getDefects$(type: VehicleTypes): Observable<Defect[]> {
+	getDefects$(type: VehicleType): Observable<DefectCategoryReferenceDataSchema[]> {
 		return this.defectsStore.select(filteredDefects(type));
 	}
 
@@ -136,15 +135,15 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		return Roles;
 	}
 
-	get statuses(): typeof TestResultStatus {
-		return TestResultStatus;
+	get statuses(): typeof TestStatus {
+		return TestStatus;
 	}
 
 	get sectionTemplates$(): Observable<FormNode[] | undefined> {
 		return this.testRecordsService.sectionTemplates$;
 	}
 
-	get resultOfTest(): resultOfTestEnum {
+	get resultOfTest(): TestResults | null {
 		return this.testResult()?.testTypes[0].testResult;
 	}
 }

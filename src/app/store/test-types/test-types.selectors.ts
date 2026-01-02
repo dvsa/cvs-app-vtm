@@ -1,5 +1,5 @@
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-types/testType';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
@@ -110,7 +110,7 @@ function currentRecordInHistoryCheck(techRecordHistorys: TechRecordSearchSchema[
 
 function filterTestTypes(
 	testTypes: TestTypesTaxonomy,
-	testResult: TestResultModel,
+	testResult: TestResultSchema,
 	hasCurrentRecordInHistory: boolean,
 	techRecord: V3TechRecordModel
 ): TestTypesTaxonomy {
@@ -140,7 +140,10 @@ function filterTestTypes(
 					!testType.forEuVehicleCategory ||
 					testType.forEuVehicleCategory.includes(euVehicleCategory)
 			)
-			.filter((testType) => !vehicleSize || !testType.forVehicleSize || testType.forVehicleSize.includes(vehicleSize))
+			// @TODO: fix typing
+			.filter(
+				(testType) => !vehicleSize || !testType.forVehicleSize || testType.forVehicleSize.includes(vehicleSize as any)
+			)
 			.filter(
 				(testType) =>
 					!vehicleConfiguration ||

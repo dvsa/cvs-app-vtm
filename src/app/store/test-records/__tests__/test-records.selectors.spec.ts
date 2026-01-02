@@ -1,10 +1,10 @@
 import { Params } from '@angular/router';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { createMockAdditionalDefect, createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockDefect } from '@mocks/mock-defects';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestResultsState, initialTestResultsState } from '../test-records.reducer';
 import {
 	isTestTypeKeySame,
@@ -67,21 +67,21 @@ describe('Test Results Selectors', () => {
 
 	describe('isTestTypeOldIvaOrMsva', () => {
 		it('should return true if all custom defects have a reference number', () => {
-			const state: TestResultModel = mockTestResult();
+			const state: TestResultSchema = mockTestResult();
 			state.testTypes[0].customDefects = [createMockCustomDefect()];
 			const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
 			expect(isOldIvaOrMsva).toBe(true);
 		});
 
 		it('should return false if all custom defects do not have a reference number', () => {
-			const state: TestResultModel = mockTestResult();
+			const state: TestResultSchema = mockTestResult();
 			state.testTypes[0].customDefects = [createMockAdditionalDefect()];
 			const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
 			expect(isOldIvaOrMsva).toBe(false);
 		});
 
 		it('should return false if no custom defects are present', () => {
-			const state: TestResultModel = mockTestResult();
+			const state: TestResultSchema = mockTestResult();
 			state.testTypes[0].customDefects = [];
 			const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
 			expect(isOldIvaOrMsva).toBe(false);
@@ -89,7 +89,7 @@ describe('Test Results Selectors', () => {
 	});
 
 	describe('selectDefectData', () => {
-		const state: TestResultModel = mockTestResult();
+		const state: TestResultSchema = mockTestResult();
 		state.testTypes[0].defects = [mockDefect()];
 
 		it('should return defect data for the first testType in selected test result', () => {
@@ -99,13 +99,13 @@ describe('Test Results Selectors', () => {
 		});
 
 		it('should return an empty array if there are no defects', () => {
-			const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
+			const noDefectState: TestResultSchema = { ...state, testTypes: [{ ...state.testTypes[0], defects: [] }] };
 			const defectState = selectDefectData.projector(noDefectState);
 			expect(defectState?.length).toBe(0);
 		});
 
 		it('should return an empty array if there are no test types', () => {
-			const noTestTypeState = { ...state, testTypes: undefined } as unknown as TestResultModel;
+			const noTestTypeState = { ...state, testTypes: undefined } as unknown as TestResultSchema;
 			const testTypeState = selectDefectData.projector(noTestTypeState);
 			expect(testTypeState?.length).toBe(0);
 		});
@@ -118,7 +118,7 @@ describe('Test Results Selectors', () => {
 	});
 
 	describe('selectSortedTestAmendmentHistory', () => {
-		let mock: TestResultModel;
+		let mock: TestResultSchema;
 
 		beforeEach(() => {
 			const date = new Date('2022-01-02');
@@ -140,7 +140,7 @@ describe('Test Results Selectors', () => {
 			// Adding entries with null created at at the end if they exist
 			const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
 			let previous = new Date(sortedTestHistory[0].createdAt as string).getTime();
-			const notfound: TestResultModel[] = [];
+			const notfound: TestResultSchema[] = [];
 			sortedTestHistory?.forEach((test) => {
 				if (test.createdAt) {
 					// eslint-disable-next-line jest/no-conditional-expect
@@ -230,7 +230,7 @@ describe('Test Results Selectors', () => {
 		});
 
 		it('should return empty array if testTypes is empty', () => {
-			expect(selectAmendedDefectData.projector({ testTypes: [] } as unknown as TestResultModel)).toEqual([]);
+			expect(selectAmendedDefectData.projector({ testTypes: [] } as unknown as TestResultSchema)).toEqual([]);
 		});
 	});
 
@@ -243,7 +243,7 @@ describe('Test Results Selectors', () => {
 						testTypeId: '1',
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const oldTestResult = {
 				testTypes: [
 					{
@@ -251,7 +251,7 @@ describe('Test Results Selectors', () => {
 						testTypeId: '2',
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
 			expect(state).toBe(false);
 		});
@@ -264,7 +264,7 @@ describe('Test Results Selectors', () => {
 						testTypeId: '1',
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const oldTestResult = {
 				testTypes: [
 					{
@@ -272,7 +272,7 @@ describe('Test Results Selectors', () => {
 						testTypeId: '1',
 					},
 				],
-			} as TestResultModel;
+			} as TestResultSchema;
 			const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
 			expect(state).toBe(true);
 		});

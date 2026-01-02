@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
-
 import { TestRecordSummaryComponent } from '../test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
@@ -64,8 +63,8 @@ describe('TestRecordSummaryComponent', () => {
 		const testTypeResults = component.getTestTypeResults(
 			createMockTestResult({
 				testTypes: [
-					createMockTestType({ testResult: resultOfTestEnum.pass }),
-					createMockTestType({ testResult: resultOfTestEnum.pass }),
+					createMockTestType({ testResult: TestResults.PASS }),
+					createMockTestType({ testResult: TestResults.PASS }),
 				],
 			})
 		);
@@ -80,13 +79,13 @@ describe('TestRecordSummaryComponent', () => {
 					{
 						testTypeStartTimestamp: new Date('12/12/2022').toISOString(),
 						testNumber: '1',
-						testResult: resultOfTestEnum.pass,
+						testResult: TestResults.PASS,
 						testTypeName: 'annual',
 					},
 					{
 						testTypeStartTimestamp: new Date('12/12/2023').toISOString(),
 						testNumber: '2',
-						testResult: resultOfTestEnum.pass,
+						testResult: TestResults.PASS,
 						testTypeName: 'annual',
 					},
 				],
@@ -97,12 +96,12 @@ describe('TestRecordSummaryComponent', () => {
 					{
 						testTypeStartTimestamp: new Date('12/12/2021').toISOString(),
 						testNumber: '1',
-						testResult: resultOfTestEnum.pass,
+						testResult: TestResults.PASS,
 						testTypeName: 'annual',
 					},
 				],
 			},
-		] as TestResultModel[];
+		] as TestResultSchema[];
 		fixture.componentRef.setInput('testResults', mockRecords);
 		const testFieldResults = component.sortedTestTypeFields;
 
