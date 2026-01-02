@@ -2,8 +2,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
@@ -115,14 +115,14 @@ describe('VehicleHeaderComponent', () => {
 
 	describe('shouldShowAbandonCert', () => {
 		it('should return true if the VTG/VTP12 document should show', () => {
-			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
+			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(TestResults.ABANDONED);
 			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '3' } as TestResultTestTypeSchema);
 			jest.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
 			expect(component.shouldShowAbandonCert).toBe(true);
 		});
 
 		it('should return false if the VTG/VTP12 document should show', () => {
-			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
+			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(TestResults.ABANDONED);
 			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '193' } as TestResultTestTypeSchema);
 			jest.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
 			expect(component.shouldShowAbandonCert).toBe(false);

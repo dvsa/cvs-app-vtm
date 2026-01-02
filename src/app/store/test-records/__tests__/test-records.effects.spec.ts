@@ -10,7 +10,6 @@ import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -140,6 +139,7 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -746,7 +746,7 @@ describe('TestResultsEffects', () => {
 									seatbeltInstallationCheckDate: false,
 									secondaryCertificateNumber: null,
 									testExpiryDate: '',
-									testResult: resultOfTestEnum.fail,
+									testResult: TestResults.FAIL,
 									testTypeEndTimestamp: '',
 									testTypeId: '1',
 									testTypeName: '',
