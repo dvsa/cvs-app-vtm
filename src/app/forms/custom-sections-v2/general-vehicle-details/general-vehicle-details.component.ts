@@ -6,7 +6,7 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -17,6 +17,7 @@ import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { getOptionsFromEnum, getSortedOptionsFromEnum } from '@forms/utils/enum-map';
+import { AdrValidatorsService } from '@forms/validators/adr-validators.service';
 import {
 	BodyTypeCode,
 	BodyTypeDescription,
@@ -92,6 +93,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	cdr = inject(ChangeDetectorRef);
 	axlesService = inject(AxlesService);
 	tcs = inject(TechnicalRecordChangesService);
+	adrValidators = inject(AdrValidatorsService);
 
 	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
@@ -214,7 +216,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
-				this.bodyMakeRequiredWithDangerousGoods(),
+				this.adrValidators.requiredWithDangerousGoods('Body make', 'general-vehicle-details'),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model', 'general-vehicle-details', 'techRecord_model'),
@@ -346,7 +348,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			techRecord_frameDescription: this.fb.control<string | null>(null),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
-				this.bodyMakeRequiredWithDangerousGoods(),
+				this.adrValidators.requiredWithDangerousGoods('Body make', 'general-vehicle-details'),
 			]),
 			techRecord_model: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(30, 'Body model', 'general-vehicle-details', 'techRecord_model'),
@@ -732,14 +734,5 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			} as any);
 		}
 		this.axlesService.removeAllAxles(this.parent, vehicleType);
-	}
-
-	bodyMakeRequiredWithDangerousGoods(): ValidatorFn {
-		return (control) => {
-			if (control.parent && control.parent.get('techRecord_adrDetails_dangerousGoods')?.value && !control.value) {
-				return { required: 'You must select a body make if the vehicle is approved to carry dangerous goods' };
-			}
-			return null;
-		};
 	}
 }

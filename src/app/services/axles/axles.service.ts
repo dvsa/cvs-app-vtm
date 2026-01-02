@@ -119,12 +119,20 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size'),
-				this.commonValidators.minLength(0, 'Tyre Size must be greater than or equal to 0'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.maxLength(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
+					: this.commonValidators.maxLength(12, 'Tyre Size'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.minLength(0, 'Tyre Size', 'tyres', 'tyres_tyreSize')
+					: this.commonValidators.minLength(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating'),
-				this.commonValidators.minLength(0, 'Ply Rating must be greater than or equal to 0'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.maxLength(2, 'Ply Rating', 'tyres', 'tyres_plyRating')
+					: this.commonValidators.maxLength(2, 'Ply Rating'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.minLength(0, 'Ply Rating', 'tyres', 'tyres_plyRating')
+					: this.commonValidators.minLength(0, 'Ply Rating'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
@@ -194,13 +202,17 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.commonValidators.maxLength(12, 'Tyre Size'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.maxLength(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
+					: this.commonValidators.maxLength(12, 'Tyre Size'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Tyre Size', 'tyres_tyreSize', 'tyres')
 					: this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.commonValidators.maxLength(2, 'Ply Rating'),
+				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+					? this.commonValidators.maxLength(2, 'Ply Rating', 'tyres', 'tyres_plyRating')
+					: this.commonValidators.maxLength(2, 'Ply Rating'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Ply Rating', 'tyres_plyRating', 'tyres')
 					: this.commonValidators.min(0, 'Ply Rating'),
