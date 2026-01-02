@@ -100,25 +100,55 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	get hgvControls() {
 		return {
 			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length', 'mm'),
+				this.commonValidators.max(99999, 'Length', 'mm', 'dimensions', 'techRecord_dimensions_length'),
 			]),
 			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width', 'mm'),
+				this.commonValidators.max(99999, 'Width', 'mm', 'dimensions', 'techRecord_dimensions_width'),
 			]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Front axle to rear axle',
+					'mm',
+					'dimensions',
+					'techRecord_frontAxleToRearAxle'
+				),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum value for front of vehicle to fifth wheel', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for front of vehicle to fifth wheel',
+					'mm',
+					'dimensions',
+					'techRecord_frontVehicleTo5thWheelCouplingMin'
+				),
 			]),
 			techRecord_frontVehicleTo5thWheelCouplingMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum value for front of vehicle to fifth wheel', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for front of vehicle to fifth wheel',
+					'mm',
+					'dimensions',
+					'techRecord_frontVehicleTo5thWheelCouplingMax'
+				),
 			]),
 			techRecord_frontAxleTo5thWheelMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum value for front of vehicle to coupling device', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for front of vehicle to coupling device',
+					'mm',
+					'dimensions',
+					'techRecord_frontAxleTo5thWheelMin'
+				),
 			]),
 			techRecord_frontAxleTo5thWheelMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum value for front of vehicle to coupling device', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for front of vehicle to coupling device',
+					'mm',
+					'dimensions',
+					'techRecord_frontAxleTo5thWheelMax'
+				),
 			]),
 		};
 	}
@@ -126,16 +156,22 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	get psvControls() {
 		return {
 			techRecord_dimensions_height: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Height', 'mm'),
+				this.commonValidators.max(99999, 'Height', 'mm', 'dimensions', 'techRecord_dimensions_height'),
 			]),
 			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length', 'mm'),
+				this.commonValidators.max(99999, 'Length', 'mm', 'dimensions', 'techRecord_dimensions_length'),
 			]),
 			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width', 'mm'),
+				this.commonValidators.max(99999, 'Width', 'mm', 'dimensions', 'techRecord_dimensions_width'),
 			]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Front axle to rear axle',
+					'mm',
+					'dimensions',
+					'techRecord_frontAxleToRearAxle'
+				),
 			]),
 		};
 	}
@@ -143,31 +179,73 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	get trlControls() {
 		return {
 			techRecord_dimensions_length: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Length', 'mm'),
+				this.commonValidators.max(99999, 'Length', 'mm', 'dimensions', 'techRecord_dimensions_length'),
 			]),
 			techRecord_dimensions_width: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Width', 'mm'),
+				this.commonValidators.max(99999, 'Width', 'mm', 'dimensions', 'techRecord_dimensions_width'),
 			]),
 			techRecord_frontAxleToRearAxle: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Front axle to rear axle', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Front axle to rear axle',
+					'mm',
+					'dimensions',
+					'techRecord_frontAxleToRearAxle'
+				),
 			]),
 			techRecord_rearAxleToRearTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Rear axle to rear of trailer', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Rear axle to rear of trailer',
+					'mm',
+					'dimensions',
+					'techRecord_rearAxleToRearTrl'
+				),
 			]),
 			techRecord_centreOfRearmostAxleToRearOfTrl: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Centre of rear axle to rear of trailer', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Centre of rear axle to rear of trailer',
+					'mm',
+					'dimensions',
+					'techRecord_centreOfRearmostAxleToRearOfTrl'
+				),
 			]),
 			techRecord_couplingCenterToRearAxleMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum value for coupling centre to rear axle', 'mm '),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for coupling centre to rear axle',
+					'mm',
+					'dimensions',
+					'techRecord_couplingCenterToRearAxleMin'
+				),
 			]),
 			techRecord_couplingCenterToRearAxleMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum value for coupling centre to rear axle', 'mm '),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for coupling centre to rear axle',
+					'mm',
+					'dimensions',
+					'techRecord_couplingCenterToRearAxleMax'
+				),
 			]),
 			techRecord_couplingCenterToRearTrlMin: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Minimum value for coupling centre to rear of trailer', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Minimum value for coupling centre to rear of trailer',
+					'mm',
+					'dimensions',
+					'techRecord_couplingCenterToRearTrlMin'
+				),
 			]),
 			techRecord_couplingCenterToRearTrlMax: this.fb.control<string | null>(null, [
-				this.commonValidators.max(99999, 'Maximum value for coupling centre to rear of trailer', 'mm'),
+				this.commonValidators.max(
+					99999,
+					'Maximum value for coupling centre to rear of trailer',
+					'mm',
+					'dimensions',
+					'techRecord_couplingCenterToRearTrlMax'
+				),
 			]),
 		};
 	}
