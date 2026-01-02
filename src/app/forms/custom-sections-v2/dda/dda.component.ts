@@ -57,7 +57,7 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 			),
 		]),
 		techRecord_dda_minEmergencyExits: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Minimum emergency exits required', 'dda', 'techRecord_dda_minEmergencyExits'),
+			this.commonValidators.max(99, 'Minimum emergency exits required', '', 'dda', 'techRecord_dda_minEmergencyExits'),
 		]),
 		techRecord_dda_outswing: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(250, 'Outswing', 'dda', 'techRecord_dda_outswing'),
@@ -66,7 +66,7 @@ export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy
 			this.commonValidators.maxLength(250, 'DDA schedules', 'dda', 'techRecord_dda_ddaSchedules'),
 		]),
 		techRecord_dda_seatbeltsFitted: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Number of seatbelts fitted', 'dda', 'techRecord_dda_seatbeltsFitted'),
+			this.commonValidators.max(999, 'Number of seatbelts fitted', '', 'dda', 'techRecord_dda_seatbeltsFitted'),
 		]),
 		techRecord_dda_ddaNotes: this.fb.control<string | null>(null, [
 			this.commonValidators.maxLength(1024, 'DDA notes', 'dda', 'techRecord_dda_ddaNotes'),

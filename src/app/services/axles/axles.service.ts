@@ -142,7 +142,7 @@ export class AxlesService {
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.max(999, 'Data TR Axles', 'tyres', 'tyres_dataTrAxles')
+					? this.commonValidators.max(999, 'Data TR Axles', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.max(999, 'Data TR Axles'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Data TR Axles', 'tyres', 'tyres_dataTrAxles')
