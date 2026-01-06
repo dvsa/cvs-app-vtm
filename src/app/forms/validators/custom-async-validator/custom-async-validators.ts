@@ -10,6 +10,7 @@ import {
 	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
 	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	MultiOptions,
 	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
 	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
@@ -209,6 +210,15 @@ export class CustomAsyncValidators {
 		};
 	}
 
+	static updateSelectOptions(control: CustomFormControl, options: MultiOptions<string | number | boolean>) {
+		// Only update validity if we're actually changing the options
+		if (control.meta.options !== options) {
+			control.meta.options = options;
+			control.markAsDirty({ onlySelf: true });
+			control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+		}
+	}
+
 	static filterEuCategoryOnVehicleType(
 		technicalRecordService: TechnicalRecordService,
 		routerService: RouterService
@@ -227,36 +237,33 @@ export class CustomAsyncValidators {
 
 					switch (vehicleType) {
 						case VehicleTypes.CAR:
-							control.meta.options = CAR_EU_VEHICLE_CATEGORY_OPTIONS;
 							if (routeData['mode'] === Modes.CREATE) {
 								control.disable();
 							}
+							CustomAsyncValidators.updateSelectOptions(control, CAR_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						case VehicleTypes.TRL:
-							control.meta.options = TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							CustomAsyncValidators.updateSelectOptions(control, TRL_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						case VehicleTypes.LGV:
-							control.meta.options = LGV_EU_VEHICLE_CATEGORY_OPTIONS;
 							if (routeData['mode'] === Modes.CREATE) {
 								control.disable();
 							}
+							CustomAsyncValidators.updateSelectOptions(control, LGV_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						case VehicleTypes.SMALL_TRL:
-							control.meta.options = SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+							CustomAsyncValidators.updateSelectOptions(control, SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						case VehicleTypes.HGV:
-							control.meta.options = HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+							CustomAsyncValidators.updateSelectOptions(control, HGV_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						case VehicleTypes.PSV:
-							control.meta.options = PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+							CustomAsyncValidators.updateSelectOptions(control, PSV_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 						default:
-							control.meta.options = ALL_EU_VEHICLE_CATEGORY_OPTIONS;
+							CustomAsyncValidators.updateSelectOptions(control, ALL_EU_VEHICLE_CATEGORY_OPTIONS);
 							break;
 					}
-
-					control.markAsDirty({ onlySelf: true });
-					control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
 
 					return null;
 				})
