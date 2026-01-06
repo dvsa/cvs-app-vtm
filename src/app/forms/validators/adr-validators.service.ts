@@ -9,7 +9,7 @@ export class AdrValidatorsService {
 	adrService = inject(AdrService);
 	featureToggleService = inject(FeatureToggleService);
 
-	requiredWithDangerousGoods(message: string): ValidatorFn {
+	requiredWithDangerousGoods(message: string, accordion?: string): ValidatorFn {
 		return (control) => {
 			if (
 				control.parent &&
@@ -18,7 +18,10 @@ export class AdrValidatorsService {
 			) {
 				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
 					return {
-						required: { error: `${message} is required with Approved to carry dangerous goods`, accordion: 'adr' },
+						required: {
+							error: `${message} is required with Approved to carry dangerous goods`,
+							accordion: accordion ? accordion : 'adr',
+						},
 					};
 				}
 				return { required: `${message} is required with Able to carry dangerous goods` };

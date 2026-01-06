@@ -71,31 +71,61 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get hgvControls() {
 		return {
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossEecWeight'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossDesignWeight'
+				),
 			]),
 			techRecord_trainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_trainGbWeight'),
 			]),
 			techRecord_trainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_trainEecWeight'),
 			]),
 			techRecord_trainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Train GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_trainDesignWeight'
+				),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Max train GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_maxTrainGbWeight'
+				),
 			]),
 			techRecord_maxTrainEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Max train GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_maxTrainEecWeight'
+				),
 			]),
 			techRecord_maxTrainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max train GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Max train GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_maxTrainDesignWeight'
+				),
 			]),
 		};
 	}
@@ -103,25 +133,55 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get psvControls() {
 		return {
 			techRecord_unladenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Unladen Weight', 'kg'),
+				this.commonValidators.max(99999, 'Gross Unladen Weight', 'kg', 'weights', 'techRecord_unladenWeight'),
 			]),
 			techRecord_grossKerbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Kerb, Laden, GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross Kerb, Laden, GB Max, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossKerbWeight'
+				),
 			]),
 			techRecord_grossLadenWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Kerb, Laden, GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross Kerb, Laden, GB Max, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossLadenWeight'
+				),
 			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Kerb, Laden, GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross Kerb, Laden, GB Max, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossGbWeight'
+				),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross Kerb, Laden, GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross Kerb, Laden, GB Max, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossDesignWeight'
+				),
 			]),
 			techRecord_maxTrainGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Train GB Max, Design Weight', 'kg', 'weights', 'techRecord_maxTrainGbWeight'),
 			]),
 			techRecord_trainDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Train GB Max, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Train GB Max, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_trainDesignWeight'
+				),
 			]),
 		};
 	}
@@ -129,17 +189,23 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	get trlControls() {
 		return {
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
 			techRecord_grossEecWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossEecWeight'),
 			]),
 			techRecord_grossDesignWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg'),
+				this.commonValidators.max(
+					99999,
+					'Gross GB, EEC, Design Weight',
+					'kg',
+					'weights',
+					'techRecord_grossDesignWeight'
+				),
 			]),
 			techRecord_couplingType: this.fb.control<string | null>(null),
 			techRecord_maxLoadOnCoupling: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99999, 'Max load on coupling', 'kg'),
+				this.commonValidators.max(99999, 'Max load on coupling', 'kg', 'weights', 'techRecord_maxLoadOnCoupling'),
 			]),
 		};
 	}

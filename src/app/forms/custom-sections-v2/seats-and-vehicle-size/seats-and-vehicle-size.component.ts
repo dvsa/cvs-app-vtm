@@ -36,19 +36,25 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 
 	form = this.fb.group({
 		techRecord_seatsUpperDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Upper deck seats'),
+			this.commonValidators.max(99, 'Upper deck seats', '', 'seats-and-vehicle-size', 'techRecord_seatsUpperDeck'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_seatsLowerDeck: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Lower deck seats'),
+			this.commonValidators.max(999, 'Lower deck seats', '', 'seats-and-vehicle-size', 'techRecord_seatsLowerDeck'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_standingCapacity: this.fb.control<number | null>(null, [
-			this.commonValidators.max(999, 'Standing capacity'),
+			this.commonValidators.max(999, 'Standing capacity', '', 'seats-and-vehicle-size', 'techRecord_standingCapacity'),
 			this.handlePsvPassengersChange(),
 		]),
 		techRecord_dda_wheelchairCapacity: this.fb.control<number | null>(null, [
-			this.commonValidators.max(99, 'Wheelchair capacity'),
+			this.commonValidators.max(
+				99,
+				'Wheelchair capacity',
+				'',
+				'seats-and-vehicle-size',
+				'techRecord_dda_wheelchairCapacity'
+			),
 		]),
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
 			this.commonValidators.required(
@@ -61,7 +67,13 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
 		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
-			this.commonValidators.max(150, 'Number of seatbelts'),
+			this.commonValidators.max(
+				150,
+				'Number of seatbelts',
+				'',
+				'seats-and-vehicle-size',
+				'techRecord_numberOfSeatbelts'
+			),
 		]),
 		techRecord_seatbeltInstallationApprovalDate: this.fb.control<string | null>(null, [
 			this.commonValidators.date(

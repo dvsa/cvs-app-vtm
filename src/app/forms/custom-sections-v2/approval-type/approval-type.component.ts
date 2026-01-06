@@ -55,13 +55,13 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 			this.requiredWithApprovalType('Approval type number is required with Approval type'),
 		]),
 		techRecord_ntaNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(40, 'National type number'),
+			this.commonValidators.maxLength(40, 'National type number', 'approval-type', 'techRecord_ntaNumber'),
 		]),
 		techRecord_variantNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(35, 'Variant number'),
+			this.commonValidators.maxLength(35, 'Variant number', 'approval-type', 'techRecord_variantNumber'),
 		]),
 		techRecord_variantVersionNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-			this.commonValidators.maxLength(35, 'Variant version number'),
+			this.commonValidators.maxLength(35, 'Variant version number', 'approval-type', 'techRecord_variantVersionNumber'),
 		]),
 	});
 
@@ -128,10 +128,10 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	private get psvOnlyFields(): Partial<Record<keyof TechRecordType<'psv'>, FormControl>> {
 		return {
 			techRecord_coifSerialNumber: this.fb.control<string | null>({ value: null, disabled: false }, [
-				this.commonValidators.maxLength(8, 'COIF serial number'),
+				this.commonValidators.maxLength(8, 'COIF serial number', 'approval-type', 'techRecord_coifSerialNumber'),
 			]),
 			techRecord_coifCertifierName: this.fb.control<string | null>({ value: null, disabled: false }, [
-				this.commonValidators.maxLength(20, 'COIF certifier name'),
+				this.commonValidators.maxLength(20, 'COIF certifier name', 'approval-type', 'techRecord_coifCertifierName'),
 			]),
 			techRecord_coifDate: this.fb.control<string | null>({ value: null, disabled: false }, [
 				this.commonValidators.date('COIF certifier date', 'techRecord_coifDate', 'approval-type'),

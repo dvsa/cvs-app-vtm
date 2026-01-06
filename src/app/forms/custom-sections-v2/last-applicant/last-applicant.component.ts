@@ -25,21 +25,39 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 	mode = input.required<Modes>();
 
 	form = this.fb.group({
-		techRecord_applicantDetails_name: this.fb.control(null, [this.commonValidators.maxLength(150, 'Name or company')]),
+		techRecord_applicantDetails_name: this.fb.control(null, [
+			this.commonValidators.maxLength(150, 'Name or company', 'last-applicant', 'techRecord_applicantDetails_name'),
+		]),
 		techRecord_applicantDetails_address1: this.fb.control(null, [
-			this.commonValidators.maxLength(60, 'Address line 1'),
+			this.commonValidators.maxLength(60, 'Address line 1', 'last-applicant', 'techRecord_applicantDetails_address1'),
 		]),
 		techRecord_applicantDetails_address2: this.fb.control(null, [
-			this.commonValidators.maxLength(60, 'Address line 2'),
+			this.commonValidators.maxLength(60, 'Address line 2', 'last-applicant', 'techRecord_applicantDetails_address2'),
 		]),
-		techRecord_applicantDetails_postTown: this.fb.control(null, [this.commonValidators.maxLength(60, 'Town or city')]),
-		techRecord_applicantDetails_address3: this.fb.control(null, [this.commonValidators.maxLength(60, 'County')]),
-		techRecord_applicantDetails_postCode: this.fb.control(null, [this.commonValidators.maxLength(12, 'Postcode')]),
+		techRecord_applicantDetails_postTown: this.fb.control(null, [
+			this.commonValidators.maxLength(60, 'Town or city', 'last-applicant', 'techRecord_applicantDetails_postTown'),
+		]),
+		techRecord_applicantDetails_address3: this.fb.control(null, [
+			this.commonValidators.maxLength(60, 'County', 'last-applicant', 'techRecord_applicantDetails_address3'),
+		]),
+		techRecord_applicantDetails_postCode: this.fb.control(null, [
+			this.commonValidators.maxLength(12, 'Postcode', 'last-applicant', 'techRecord_applicantDetails_postCode'),
+		]),
 		techRecord_applicantDetails_telephoneNumber: this.fb.control(null, [
-			this.commonValidators.maxLength(25, 'Telephone number'),
+			this.commonValidators.maxLength(
+				25,
+				'Telephone number',
+				'last-applicant',
+				'techRecord_applicantDetails_telephoneNumber'
+			),
 		]),
 		techRecord_applicantDetails_emailAddress: this.fb.control(null, [
-			this.commonValidators.maxLength(255, 'Email address'),
+			this.commonValidators.maxLength(
+				255,
+				'Email address',
+				'last-applicant',
+				'techRecord_applicantDetails_emailAddress'
+			),
 			this.commonValidators.pattern(
 				"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
 				'Enter an email address in the correct format, like name@example.com'

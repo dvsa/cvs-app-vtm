@@ -53,7 +53,13 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Emission limit (smoke absorption coefficient)'),
+				this.commonValidators.max(
+					99,
+					'Emission limit (smoke absorption coefficient)',
+					'',
+					'emissions-and-exemptions',
+					'techRecord_emissionsLimit'
+				),
 				this.commonValidators.pattern(
 					/^\d*(\.\d{0,5})?$/,
 					'Emission limit (smoke absorption coefficient) max 5 decimal places'
@@ -68,7 +74,13 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 		return {
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
-				this.commonValidators.max(99, 'Emission limit (smoke absorption coefficient)'),
+				this.commonValidators.max(
+					99,
+					'Emission limit (smoke absorption coefficient)',
+					'',
+					'emissions-and-exemptions',
+					'techRecord_emissionsLimit'
+				),
 				this.commonValidators.pattern(
 					/^\d*(\.\d{0,5})?$/,
 					'Emission limit (smoke absorption coefficient) max 5 decimal places'
