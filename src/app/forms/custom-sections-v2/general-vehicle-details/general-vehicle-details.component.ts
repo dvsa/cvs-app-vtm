@@ -242,7 +242,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
-					'Conversion reference number must only include numbers and letters A to Z'
+					'Conversion reference number must only include numbers and letters A to Z',
+					'general-vehicle-details',
+					'techRecord_conversionRefNo'
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
@@ -302,7 +304,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
-					'Conversion reference number must only include numbers and letters A to Z'
+					'Conversion reference number must only include numbers and letters A to Z',
+					'general-vehicle-details',
+					'techRecord_conversionRefNo'
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
@@ -362,7 +366,9 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.maxLength(10, 'Conversion reference number'),
 				this.commonValidators.pattern(
 					'^[A-Z0-9 ]{0,10}$',
-					'Conversion reference number must only include numbers and letters A to Z'
+					'Conversion reference number must only include numbers and letters A to Z',
+					'general-vehicle-details',
+					'techRecord_conversionRefNo'
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
