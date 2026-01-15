@@ -43,9 +43,11 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
 		if (!test.media) return '';
 
+		console.log(test.media);
+
 		for (const reason of test.media) {
 			if (reason.type === 'failReason') {
-				return reason.reason;
+				return `No media available - ${reason.reason}`;
 			}
 		}
 
@@ -75,7 +77,13 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 				if (error instanceof HttpErrorResponse) {
 					switch (error.status) {
 						case HttpStatusCode.NotFound:
-							this.globalErrorService.setErrors([{ error: 'Media not found', anchorLink: '' }]);
+							this.globalErrorService.setErrors([
+								{
+									error:
+										'Media could not be found. &#10;&#13;Try again later or contact the service desk if this issue keeps happening.',
+									anchorLink: '',
+								},
+							]);
 							break;
 						case HttpStatusCode.InternalServerError:
 							this.router.navigate([RootRoutes.ERROR]);
