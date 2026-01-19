@@ -230,7 +230,12 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_weight: this.fb.control<number | null>(null, [
 			this.commonValidators.max(99999999, 'Weight (tonnes)', '', 'adr', 'techRecord_adrDetails_weight'),
 			this.adrValidators.requiredWithBrakeEndurance('Weight (tonnes)'),
-			this.commonValidators.pattern('^\\d*(\\.\\d{0,2})?$', 'Weight (tonnes) Max 2 decimal places'),
+			this.commonValidators.pattern(
+				'^\\d*(\\.\\d{0,2})?$',
+				'Weight (tonnes) Max 2 decimal places',
+				'adr',
+				'techRecord_adrDetails_weight'
+			),
 		]),
 		techRecord_adrDetails_newCertificateRequested: this.fb.control<boolean>(false),
 		techRecord_adrDetails_additionalExaminerNotes: this.fb.control<AdditionalExaminerNotes[] | null>(null),

@@ -57,7 +57,9 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 			this.commonValidators.maxLength(255, 'Email address', 'purchasers', 'techRecord_purchaserDetails_emailAddress'),
 			this.commonValidators.pattern(
 				"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
-				'Enter an email address in the correct format, like name@example.com'
+				'Enter an email address in the correct format, like name@example.com',
+				'purchasers',
+				'techRecord_purchaserDetails_emailAddress'
 			),
 		]),
 		techRecord_purchaserDetails_faxNumber: this.fb.control(null),

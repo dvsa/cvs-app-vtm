@@ -96,6 +96,7 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 
 				const error: GlobalError = {
 					error: message,
+					accordion: 'approval-type',
 					anchorLink: `techRecord_approvalTypeNumber1-${approvalTypeId}`,
 				};
 				return { required: error };

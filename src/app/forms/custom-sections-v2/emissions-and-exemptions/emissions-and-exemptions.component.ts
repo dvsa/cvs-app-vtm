@@ -62,7 +62,9 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 				),
 				this.commonValidators.pattern(
 					/^\d*(\.\d{0,5})?$/,
-					'Emission limit (smoke absorption coefficient) max 5 decimal places'
+					'Emission limit (smoke absorption coefficient) max 5 decimal places',
+					'emissions-and-exemptions',
+					'techRecord_emissionsLimit'
 				),
 			]),
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),
@@ -83,7 +85,9 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 				),
 				this.commonValidators.pattern(
 					/^\d*(\.\d{0,5})?$/,
-					'Emission limit (smoke absorption coefficient) max 5 decimal places'
+					'Emission limit (smoke absorption coefficient) max 5 decimal places',
+					'emissions-and-exemptions',
+					'techRecord_emissionsLimit'
 				),
 			]),
 			techRecord_speedLimiterMrk: this.fb.control<boolean | null>(null),

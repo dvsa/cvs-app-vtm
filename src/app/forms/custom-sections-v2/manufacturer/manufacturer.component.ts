@@ -61,7 +61,9 @@ export class ManufacturerComponent extends EditBaseComponent implements OnInit, 
 			),
 			this.commonValidators.pattern(
 				"^[\\w\\-\\.\\+']+@([\\w-]+\\.)+[\\w-]{2,}$",
-				'Enter an email address in the correct format, like name@example.com'
+				'Enter an email address in the correct format, like name@example.com',
+				'manufacturer',
+				'techRecord_manufacturerDetails_emailAddress'
 			),
 		]),
 		techRecord_manufacturerDetails_faxNumber: this.fb.control(null, [
