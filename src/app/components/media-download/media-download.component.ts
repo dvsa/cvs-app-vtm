@@ -58,10 +58,15 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 		this.globalErrorService.clearErrors();
 	}
 
+	get params(): Map<string, string> {
+		return new Map([['category', 'approvals']]);
+	}
+
 	downloadMedia(test: TestResultSchema) {
 		const fileType = 'zip';
 		const fileName = `${test.testResultId}.zip`;
-		this.httpService.getTestResultMedia(test.testResultId).subscribe({
+
+		this.httpService.getTestResultMedia(test.testResultId, this.params).subscribe({
 			next: (response) => {
 				switch (response.type) {
 					case HttpEventType.DownloadProgress:
