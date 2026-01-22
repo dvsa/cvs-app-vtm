@@ -111,7 +111,7 @@ describe('MediaDownloadComponent', () => {
 					{ type: 'failReason', reason: 'bar' },
 				],
 			} as TestResultSchema;
-			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('foo');
+			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('No media available - foo');
 		});
 
 		it('should return a default reason if the testResult media array is empty', () => {
@@ -150,7 +150,13 @@ describe('MediaDownloadComponent', () => {
 
 			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
 			component.downloadMedia({} as TestResultSchema);
-			expect(setErrorsSpy).toHaveBeenCalledWith([{ error: 'Media not found', anchorLink: '' }]);
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{
+					error:
+						'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+					anchorLink: '',
+				},
+			]);
 		});
 
 		it('should redirect to error page upon receiving a 500 response', () => {
