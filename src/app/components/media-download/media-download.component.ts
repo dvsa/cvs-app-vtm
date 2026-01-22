@@ -85,7 +85,7 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 							this.globalErrorService.setErrors([
 								{
 									error:
-										'Media could not be found. &#10;&#13;Try again later or contact the service desk if this issue keeps happening.',
+										'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
 									anchorLink: '',
 								},
 							]);

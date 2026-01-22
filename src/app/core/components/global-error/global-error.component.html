@@ -11,7 +11,7 @@
         <ul class="govuk-list govuk-error-summary__list">
           @for (error of errorMessages; track error) {
             <li>
-              <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)">{{ error.error }}</a>
+              <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)" [innerHTML]="error.error"></a>
             </li>
           }
         </ul>
