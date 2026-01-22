@@ -1,9 +1,9 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
-    @if (from() === 'create') {
+    @if (from() === 'create' || from() === 'amend') {
       <app-banner type="success">
         <ng-container title>Success</ng-container>
-        <ng-container content>You have created a technical record.</ng-container>
+        <ng-container content>You have {{ from() === 'create' ? 'created a' : 'amended the' }} technical record.</ng-container>
       </app-banner>
     }
 

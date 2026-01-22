@@ -27,7 +27,8 @@ export class AnalyticsService {
 			const userEmail = await firstValueFrom(this.userService.userEmail$);
 			return await this.cryptoService.sha256Hash(userEmail);
 		}
-		const userId = await firstValueFrom(this.userService.id$);
+
+		const userId = this.userService.employeeId() ?? (await firstValueFrom(this.userService.id$));
 		if (environment.production && userId) {
 			return await this.cryptoService.sha256Hash(userId);
 		}

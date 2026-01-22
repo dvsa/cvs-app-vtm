@@ -9,6 +9,7 @@ export interface UserServiceState {
 	name: string;
 	userEmail: string;
 	oid: string;
+	employeeId?: string | null;
 	roles: string[] | null;
 }
 
@@ -16,6 +17,7 @@ export const initialState: UserServiceState = {
 	name: '(Not logged in)',
 	userEmail: '',
 	oid: '',
+	employeeId: null,
 	roles: null,
 };
 
@@ -24,29 +26,19 @@ const getUserState = createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_
 export const name = createSelector(getUserState, (state) => state.name);
 export const userEmail = createSelector(getUserState, (state) => state.userEmail);
 export const id = createSelector(getUserState, (state) => state.oid);
+export const employeeId = createSelector(getUserState, (state) => state.employeeId);
 export const roles = createSelector(getUserState, (state) => state.roles);
 export const user = createSelector(getUserState, (state) => state);
 
 export const userServiceReducer = createReducer(
 	initialState,
-	on(
-		UserServiceActions.Login,
-		(
-			state,
-			{
-				// eslint-disable-next-line @typescript-eslint/no-shadow
-				name,
-				userEmail,
-				oid,
-				roles,
-			}
-		) => ({
-			name,
-			userEmail,
-			oid,
-			roles: getRoles(roles),
-		})
-	),
+	on(UserServiceActions.Login, (state, { name, userEmail, oid, roles, employeeId }) => ({
+		name,
+		userEmail,
+		oid,
+		employeeId,
+		roles: getRoles(roles),
+	})),
 	on(UserServiceActions.Logout, () => initialState)
 );
 

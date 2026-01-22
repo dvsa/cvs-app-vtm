@@ -28,10 +28,10 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
 	}
 
 	transform(
-		value: string | number | undefined,
+		value: string | number | null | undefined,
 		resourceType: string | undefined,
 		decodeKey: string | number = 'description'
-	): Observable<string | number | undefined> {
+	): Observable<string | number | null | undefined> {
 		if (!resourceType || !value) {
 			return of(value);
 		}

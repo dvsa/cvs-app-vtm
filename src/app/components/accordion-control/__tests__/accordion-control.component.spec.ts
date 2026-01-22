@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ScannedActionsSubject } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { AccordionComponent } from '../../accordion/accordion.component';
@@ -22,7 +23,7 @@ describe('AccordionControlComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [HostComponent],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			providers: [provideMockStore({ initialState: initialAppState }), ScannedActionsSubject],
 		}).compileComponents();
 	});
 

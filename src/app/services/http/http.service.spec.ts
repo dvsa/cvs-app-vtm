@@ -1,13 +1,13 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { Defect } from '@models/defects/defect.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
@@ -102,7 +102,7 @@ describe('HttpService', () => {
 
 	describe('fetchDefects', () => {
 		it('should get an array of matching results', () => {
-			const expectedResult = [{ imDescription: 'Some Description' } as Defect];
+			const expectedResult = [{ imDescription: 'Some Description' } as DefectCategoryReferenceDataSchema];
 			httpService.fetchDefects().subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL
@@ -136,7 +136,7 @@ describe('HttpService', () => {
 	describe('fetchDefect', () => {
 		it('should get a matching result', () => {
 			const expectedId = 1;
-			const expectedResult = { imDescription: 'Some Description' } as Defect;
+			const expectedResult = { imDescription: 'Some Description' } as DefectCategoryReferenceDataSchema;
 			httpService.fetchDefect(expectedId).subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL
@@ -170,7 +170,7 @@ describe('HttpService', () => {
 
 	describe('fetchRequiredStandards', () => {
 		it('should get an array of matching results', () => {
-			const expectedResult = [{ imDescription: 'Some Description' } as Defect];
+			const expectedResult = [{ imDescription: 'Some Description' } as DefectCategoryReferenceDataSchema];
 			httpService
 				.fetchRequiredStandards(EUVehicleCategory.M1)
 				.subscribe((response) => expect(response).toEqual(expectedResult));
@@ -209,7 +209,7 @@ describe('HttpService', () => {
 
 	describe('fetchTestStations', () => {
 		it('should get an array of matching results', () => {
-			const expectedResult = [{ testStationName: 'Some Name' } as TestStation];
+			const expectedResult = [{ testStationName: 'Some Name' } as TestStationSchema];
 			httpService.fetchTestStations().subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL
@@ -243,7 +243,7 @@ describe('HttpService', () => {
 	describe('fetchTestStation', () => {
 		it('should get a matching result', () => {
 			const expectedId = 'some ID';
-			const expectedResult = { testStationName: 'Some Name' } as TestStation;
+			const expectedResult = { testStationName: 'Some Name' } as TestStationSchema;
 			httpService.fetchTestStation(expectedId).subscribe((response) => expect(response).toEqual(expectedResult));
 
 			// Check for correct requests: should have made one request to search from expected URL

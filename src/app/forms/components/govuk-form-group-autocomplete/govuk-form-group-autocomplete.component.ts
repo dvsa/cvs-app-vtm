@@ -5,7 +5,6 @@ import {
 	Component,
 	DOCUMENT,
 	OnDestroy,
-	effect,
 	forwardRef,
 	inject,
 	input,
@@ -56,18 +55,6 @@ export class GovukFormGroupAutocompleteComponent
 	destroy = new ReplaySubject<boolean>(1);
 	valueSub = new BehaviorSubject<unknown>(null);
 
-	constructor() {
-		super();
-
-		effect(() => {
-			const control = this.document.querySelector(`#${this.id}`);
-
-			this.disabled()
-				? control?.removeAttribute('placeholder')
-				: control?.setAttribute('placeholder', this.placeholder());
-		});
-	}
-
 	ngAfterViewInit(): void {
 		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
 			.pipe(takeUntil(this.destroy))
@@ -96,10 +83,14 @@ export class GovukFormGroupAutocompleteComponent
 					enhanceParams.defaultValue = latest.toString();
 				}
 
-				enhanceSelectElement(enhanceParams);
+				if (this.autocompleteOptions.length > 0) {
+					enhanceSelectElement(enhanceParams);
+				}
+
 				const control = this.document.querySelector(`#${this.id}`);
 				control?.setAttribute('placeholder', this.placeholder());
 				control?.addEventListener('change', (event) => this.handleChange(event));
+				this.setDisabledState(this.disabled());
 			});
 	}
 
@@ -110,6 +101,12 @@ export class GovukFormGroupAutocompleteComponent
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	override setDisabledState(isDisabled: boolean): void {
+		this.disabled.set(isDisabled);
+		const control = this.document.querySelector(`#${this.id}`);
+		isDisabled ? control?.removeAttribute('placeholder') : control?.setAttribute('placeholder', this.placeholder());
 	}
 
 	get style(): string {

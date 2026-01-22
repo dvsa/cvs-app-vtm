@@ -1,4 +1,3 @@
-import { TestResultModel } from '@/src/app/models/test-results/test-result.model';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -7,14 +6,17 @@ import { NumberPlateComponent } from '@components/number-plate/number-plate.comp
 import { TagComponent, TagType, TagTypes } from '@components/tag/tag.component';
 import { TestCertificateComponent } from '@components/test-certificate/test-certificate.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
+import { VehicleType as VehicleTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { TestResultSchema, TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ADR_DESK_BASED_TEST_TYPE_IDS, TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DigitGroupSeparatorPipe } from '@pipes/digit-group-separator/digit-group-separator.pipe';
@@ -48,7 +50,7 @@ import { Observable, map } from 'rxjs';
 })
 export class VehicleHeaderComponent {
 	readonly isEditing = input(false);
-	readonly testResult = input<TestResultModel | null>();
+	readonly testResult = input<TestResultSchema | null>();
 	readonly testNumber = input<string | null>();
 	readonly isReview = input(false);
 
@@ -58,7 +60,7 @@ export class VehicleHeaderComponent {
 
 	techRecord$ = this.store.select(techRecord);
 
-	get test(): TestType | undefined {
+	get test(): TestResultTestTypeSchema | undefined {
 		return this.testResult()?.testTypes?.find((t) => this.testNumber() === t.testNumber);
 	}
 
@@ -71,34 +73,32 @@ export class VehicleHeaderComponent {
 		return !testTypes.includes(this.testResult()?.testTypes[0]?.testTypeId ?? '');
 	}
 
-	combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
+	combinedOdometerReading(reading: string | null | undefined, unit: string | null | undefined) {
 		return `${reading ?? ''} ${(unit && (unit === 'kilometres' ? 'km' : 'mi')) ?? ''}`;
 	}
 
 	get vehicleTypes() {
-		return VehicleTypes;
+		return VehicleType;
 	}
 
 	get referenceDataType() {
 		return ReferenceDataResourceType;
 	}
 
-	get resultOfTest(): string | undefined {
+	get resultOfTest(): string | null | undefined {
 		const testResult = this.testResult();
-		return testResult?.testStatus === TestResultStatus.CANCELLED
-			? TestResultStatus.CANCELLED
-			: testResult?.testTypes[0].testResult;
+		return testResult?.testStatus === TestStatus.CANCELLED ? TestStatus.CANCELLED : testResult?.testTypes[0].testResult;
 	}
 
 	get tagType(): TagTypes {
 		switch (this.resultOfTest) {
-			case resultOfTestEnum.pass:
+			case TestResults.PASS:
 				return TagType.GREEN;
-			case resultOfTestEnum.prs:
+			case TestResults.PRS:
 				return TagType.BLUE;
-			case resultOfTestEnum.fail:
+			case TestResults.FAIL:
 				return TagType.RED;
-			case TestResultStatus.CANCELLED:
+			case TestStatus.CANCELLED:
 				return TagType.YELLOW;
 			default:
 				return TagType.ORANGE;
@@ -119,25 +119,25 @@ export class VehicleHeaderComponent {
 	// eslint-disable-next-line @typescript-eslint/no-shadow
 	getVehicleDescription(techRecord: V3TechRecordModel, vehicleType: VehicleTypes | undefined) {
 		switch (vehicleType) {
-			case VehicleTypes.TRL:
+			case VehicleType.TRL:
 				return (techRecord as TechRecordType<typeof vehicleType>).techRecord_vehicleConfiguration ?? '';
-			case VehicleTypes.PSV:
+			case VehicleType.PSV:
 				return (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake &&
 					(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
 					? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake ?? ''}-${
 							(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel ?? ''
 						}`
 					: '';
-			case VehicleTypes.HGV:
+			case VehicleType.HGV:
 				return (techRecord as TechRecordType<typeof vehicleType>).techRecord_make &&
 					(techRecord as TechRecordType<typeof vehicleType>).techRecord_model
 					? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_make ?? ''}-${
 							(techRecord as TechRecordType<typeof vehicleType>).techRecord_model ?? ''
 						}`
 					: '';
-			case VehicleTypes.MOTORCYCLE:
-			case VehicleTypes.LGV:
-			case VehicleTypes.CAR:
+			case VehicleType.MOTORCYCLE:
+			case VehicleType.LGV:
+			case VehicleType.CAR:
 				return '';
 			default:
 				return 'Unknown Vehicle Type';
@@ -151,7 +151,7 @@ export class VehicleHeaderComponent {
 	get shouldShowAbandonCert() {
 		const testResult = this.testResult();
 		return (
-			this.resultOfTest === resultOfTestEnum.abandoned &&
+			this.resultOfTest === TestResults.ABANDONED &&
 			(testResult?.vehicleType === this.vehicleTypes.HGV ||
 				testResult?.vehicleType === this.vehicleTypes.PSV ||
 				testResult?.vehicleType === this.vehicleTypes.TRL) &&
@@ -171,4 +171,6 @@ export class VehicleHeaderComponent {
 	get params(): Map<string, string> {
 		return new Map([['fileName', this.fileName]]);
 	}
+
+	protected readonly VehicleTypes = VehicleType;
 }

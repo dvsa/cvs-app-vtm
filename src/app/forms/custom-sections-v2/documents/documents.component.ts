@@ -45,10 +45,20 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 		return {
 			techRecord_microfilm_microfilmDocumentType: this.fb.control<string | null>(null, []),
 			techRecord_microfilm_microfilmRollNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(5, 'Microfilm roll number'),
+				this.commonValidators.maxLength(
+					5,
+					'Microfilm roll number',
+					'documents',
+					'techRecord_microfilm_microfilmRollNumber'
+				),
 			]),
 			techRecord_microfilm_microfilmSerialNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(4, 'Microfilm serial number'),
+				this.commonValidators.maxLength(
+					4,
+					'Microfilm serial number',
+					'documents',
+					'techRecord_microfilm_microfilmSerialNumber'
+				),
 			]),
 		};
 	}

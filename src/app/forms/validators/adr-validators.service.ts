@@ -9,7 +9,7 @@ export class AdrValidatorsService {
 	adrService = inject(AdrService);
 	featureToggleService = inject(FeatureToggleService);
 
-	requiredWithDangerousGoods(message: string): ValidatorFn {
+	requiredWithDangerousGoods(message: string, accordion?: string): ValidatorFn {
 		return (control) => {
 			if (
 				control.parent &&
@@ -17,7 +17,12 @@ export class AdrValidatorsService {
 				this.adrService.canDisplayDangerousGoodsSection(control.parent.value)
 			) {
 				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
-					return { required: `${message} is required with Approved to carry dangerous goods` };
+					return {
+						required: {
+							error: `${message} is required with Approved to carry dangerous goods`,
+							accordion: accordion ? accordion : 'adr',
+						},
+					};
 				}
 				return { required: `${message} is required with Able to carry dangerous goods` };
 			}
@@ -33,6 +38,9 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayCompatibilityGroupJSection(control.parent.value)
 			) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required with Permitted dangerous goods`, accordion: 'adr' } };
+				}
 				return { required: `${message} is required with Permitted dangerous goods` };
 			}
 
@@ -48,6 +56,9 @@ export class AdrValidatorsService {
 				}
 
 				if (!control.value) {
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						return { required: { error: `${message} is required with ADR body type`, accordion: 'adr' } };
+					}
 					return { required: `${message} is required with ADR body type` };
 				}
 			}
@@ -59,6 +70,9 @@ export class AdrValidatorsService {
 	requiredWithTankOrBattery(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayTankOrBatterySection(control.parent.value)) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required with ADR body type`, accordion: 'adr' } };
+				}
 				return { required: `${message} is required with ADR body type` };
 			}
 
@@ -73,6 +87,9 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayTankStatementSelectSection(control.parent.value)
 			) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required with Substances permitted`, accordion: 'adr' } };
+				}
 				return { required: `${message} is required with Substances permitted` };
 			}
 
@@ -83,6 +100,9 @@ export class AdrValidatorsService {
 	requiredWithBrakeEndurance(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayWeightSection(control.parent.value)) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required`, accordion: 'adr' } };
+				}
 				return { required: `${message} is required` };
 			}
 
@@ -97,6 +117,9 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayBatteryListNumberSection(control.parent.value)
 			) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required with Battery list applicable`, accordion: 'adr' } };
+				}
 				return { required: `${message} is required with Battery list applicable` };
 			}
 
@@ -118,6 +141,15 @@ export class AdrValidatorsService {
 				const allFieldsEmpty = !tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value;
 
 				if (allFieldsEmpty) {
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						return {
+							required: {
+								error: message,
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3Type`,
+								accordion: 'adr',
+							},
+						};
+					}
 					return {
 						required: {
 							error: message,
@@ -146,19 +178,39 @@ export class AdrValidatorsService {
 			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
 				const unNumbersArray = control as FormArray;
 				const unNumbers = unNumbersArray?.value;
-				if (Array.isArray(unNumbers)) {
+				if (Array.isArray(unNumbers) && unNumbers.length > 1) {
 					const index = unNumbers.findIndex((unNumber) => !unNumber);
 					const control = unNumbersArray?.controls[index];
 					if (control) {
 						const errors = control.errors || {};
-						control.setErrors({
-							...errors,
-							required: {
-								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
-								anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
-							},
-						});
+						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+							control.setErrors({
+								...errors,
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+									accordion: 'adr',
+								},
+							});
+						} else {
+							control.setErrors({
+								...errors,
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+								},
+							});
+						}
 
+						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+							return {
+								required: {
+									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
+									anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
+									accordion: 'adr',
+								},
+							};
+						}
 						return {
 							required: {
 								error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
@@ -192,14 +244,33 @@ export class AdrValidatorsService {
 					// Set errors on both simulatenously
 					refNo.setErrors({ ...refNoErrors, required: message });
 
-					unNumbers.controls[0].setErrors({
-						...unNumbersErrors,
-						required: {
-							error: message,
-							anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
-						},
-					});
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						unNumbers.controls[0].setErrors({
+							...unNumbersErrors,
+							required: {
+								error: message,
+								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+								accordion: 'adr',
+							},
+						});
+					} else {
+						unNumbers.controls[0].setErrors({
+							...unNumbersErrors,
+							required: {
+								error: message,
+								anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',
+							},
+						});
+					}
 
+					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						return {
+							required: {
+								error: message,
+								accordion: 'adr',
+							},
+						};
+					}
 					return { required: message };
 				}
 

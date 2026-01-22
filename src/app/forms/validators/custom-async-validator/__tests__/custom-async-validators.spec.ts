@@ -2,13 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { operatorEnum } from '@models/condition.model';
 import { TRL_EU_VEHICLE_CATEGORY_OPTIONS } from '@models/options.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
@@ -441,7 +441,7 @@ describe('requiredIfNotFail', () => {
 	it('should be required when value is "pass"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -455,7 +455,7 @@ describe('requiredIfNotFail', () => {
 	it('should pass validation if field is not empty when value is "pass"', async () => {
 		form.controls['foo'].patchValue('test');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -469,7 +469,7 @@ describe('requiredIfNotFail', () => {
 	it('should not be required when value is "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.FAIL }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -483,7 +483,7 @@ describe('requiredIfNotFail', () => {
 	it('should be required when value is "prs"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.prs }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PRS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -497,7 +497,7 @@ describe('requiredIfNotFail', () => {
 	it('should be required when value is "abandoned"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.abandoned }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.ABANDONED }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -528,7 +528,7 @@ describe('requiredIfNotAbandoned', () => {
 	it('should be required when value is "pass"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -542,7 +542,7 @@ describe('requiredIfNotAbandoned', () => {
 	it('should pass validation if field is not empty when value is "pass"', async () => {
 		form.controls['foo'].patchValue('test');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -556,7 +556,7 @@ describe('requiredIfNotAbandoned', () => {
 	it('should be required when value is "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.FAIL }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -570,7 +570,7 @@ describe('requiredIfNotAbandoned', () => {
 	it('should be required when value is "prs"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.prs }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PRS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -584,7 +584,7 @@ describe('requiredIfNotAbandoned', () => {
 	it('should not be required when value is "abandoned"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.abandoned }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.ABANDONED }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -615,14 +615,14 @@ describe('requiredIfNotResult', () => {
 	it('should be required when result is "pass" and validator specifies requiredIfNotResult "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResult(
 				store,
-				resultOfTestEnum.fail
+				TestResults.FAIL
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
 		);
 
@@ -632,12 +632,12 @@ describe('requiredIfNotResult', () => {
 	it('should be required when result is "pass" and validator specifies requiredIfNotResult "fail" or "abandoned"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
-			CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.abandoned])(
+			CustomAsyncValidators.requiredIfNotResult(store, [TestResults.FAIL, TestResults.ABANDONED])(
 				form.controls['foo']
 			) as Observable<ValidationErrors | null>
 		);
@@ -648,14 +648,14 @@ describe('requiredIfNotResult', () => {
 	it('should pass validation if field is not empty when value is "pass" and validator specifies requiredIfNotResult "fail"', async () => {
 		form.controls['foo'].patchValue('test');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResult(
 				store,
-				resultOfTestEnum.fail
+				TestResults.FAIL
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
 		);
 
@@ -665,14 +665,14 @@ describe('requiredIfNotResult', () => {
 	it('should not be required when value is "fail" and validator specifies requiredIfNotResult "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.FAIL }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResult(
 				store,
-				resultOfTestEnum.fail
+				TestResults.FAIL
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
 		);
 
@@ -682,14 +682,14 @@ describe('requiredIfNotResult', () => {
 	it('should be required when value is "prs" and validator specifies requiredIfNotResult "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.prs }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PRS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResult(
 				store,
-				resultOfTestEnum.fail
+				TestResults.FAIL
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
 		);
 
@@ -699,14 +699,14 @@ describe('requiredIfNotResult', () => {
 	it('should be required when value is "abandoned" and validator specifies requiredIfNotResult "fail"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.abandoned }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.ABANDONED }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResult(
 				store,
-				resultOfTestEnum.fail
+				TestResults.FAIL
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
 		);
 
@@ -716,12 +716,12 @@ describe('requiredIfNotResult', () => {
 	it('should be required when value is "abandoned" and validator specifies requiredIfNotResult "fail" or "pass"', async () => {
 		form.controls['foo'].patchValue('');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.abandoned }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.ABANDONED }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
-			CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.pass])(
+			CustomAsyncValidators.requiredIfNotResult(store, [TestResults.FAIL, TestResults.PASS])(
 				form.controls['foo']
 			) as Observable<ValidationErrors | null>
 		);
@@ -752,14 +752,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 		form.controls['foo'].patchValue('');
 		form.controls['bar'].patchValue('x');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
 				store,
-				resultOfTestEnum.fail,
+				TestResults.FAIL,
 				'bar',
 				'x'
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
@@ -773,14 +773,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 		form.controls['foo'].patchValue('');
 		form.controls['bar'].patchValue('x');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.FAIL }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
 				store,
-				resultOfTestEnum.fail,
+				TestResults.FAIL,
 				'bar',
 				'x'
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
@@ -794,14 +794,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 		form.controls['foo'].patchValue('');
 		form.controls['bar'].patchValue('y');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
 				store,
-				resultOfTestEnum.fail,
+				TestResults.FAIL,
 				'bar',
 				'x'
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
@@ -815,14 +815,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 		form.controls['foo'].patchValue('');
 		form.controls['bar'].patchValue('x');
 
-		const testResult = { testTypes: [{ testResult: resultOfTestEnum.pass }] } as TestResultModel;
+		const testResult = { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
 		const result = await firstValueFrom(
 			CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
 				store,
-				[resultOfTestEnum.fail, resultOfTestEnum.abandoned],
+				[TestResults.FAIL, TestResults.ABANDONED],
 				'bar',
 				'x'
 			)(form.controls['foo']) as Observable<ValidationErrors | null>
@@ -854,7 +854,7 @@ describe('hide if equals with condition', () => {
 		'"testTypeId" field has a value in "1,2,3,4"', async () => {
 		form.controls['foo'].patchValue('x');
 
-		const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+		const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -874,7 +874,7 @@ describe('hide if equals with condition', () => {
 		'the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
 		form.controls['foo'].patchValue('x');
 
-		const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+		const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -894,7 +894,7 @@ describe('hide if equals with condition', () => {
 		'the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
 		form.controls['foo'].patchValue('x');
 
-		const testResult = { testTypes: [{ testTypeId: '5' }] } as TestResultModel;
+		const testResult = { testTypes: [{ testTypeId: '5' }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -914,7 +914,7 @@ describe('hide if equals with condition', () => {
 		'"testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
 		form.controls['foo'].patchValue('x');
 
-		const testResult = { odometerReading: 100, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+		const testResult = { odometerReading: 100, testTypes: [{ testTypeId: '1' }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 
@@ -933,7 +933,7 @@ describe('hide if equals with condition', () => {
 		'field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
 		form.controls['foo'].patchValue('x');
 
-		const testResult = { odometerReading: 101, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+		const testResult = { odometerReading: 101, testTypes: [{ testTypeId: '1' }] } as TestResultSchema;
 
 		store.overrideSelector(testResultInEdit, testResult);
 

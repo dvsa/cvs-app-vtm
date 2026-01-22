@@ -1,5 +1,5 @@
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store, select } from '@ngrx/store';
 import {
@@ -43,8 +43,8 @@ export const AdrNotesSection: FormNode = {
 											take(1),
 											map((testResult) => {
 												const testType = testResult?.testTypes.at(0);
-												const isPRS = testType?.testResult === resultOfTestEnum.prs;
-												const isPass = testType?.testResult === resultOfTestEnum.pass;
+												const isPRS = testType?.testResult === TestResults.PRS;
+												const isPass = testType?.testResult === TestResults.PASS;
 												return testType?.centralDocs?.issueRequired && (isPRS || isPass);
 											}),
 											tap((issueRequired) => {

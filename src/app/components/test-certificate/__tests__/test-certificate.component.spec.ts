@@ -2,8 +2,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
@@ -50,8 +50,8 @@ describe('TestCertificateComponent', () => {
 		});
 		it('should set certNotNeeded to false if test type is not an iva or msva test', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.pass, testTypeId: '94' }],
-			} as TestResultModel);
+				testTypes: [{ testResult: TestResults.PASS, testTypeId: '94' }],
+			} as TestResultSchema);
 			store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 			component.ngOnInit();
 
@@ -60,8 +60,8 @@ describe('TestCertificateComponent', () => {
 
 		it('should set certNotNeeded to true if test type is an old iva or msva test', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.pass, testTypeId: '125' }],
-			} as TestResultModel);
+				testTypes: [{ testResult: TestResults.PASS, testTypeId: '125' }],
+			} as TestResultSchema);
 			store.overrideSelector(isTestTypeOldIvaOrMsva, true);
 			component.ngOnInit();
 
@@ -70,8 +70,8 @@ describe('TestCertificateComponent', () => {
 
 		it('should set certNotNeeded to true if test type is an new iva or msva test and the test is a pass', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.pass, testTypeId: '125' }],
-			} as TestResultModel);
+				testTypes: [{ testResult: TestResults.PASS, testTypeId: '125' }],
+			} as TestResultSchema);
 			store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 			component.ngOnInit();
 
@@ -80,8 +80,8 @@ describe('TestCertificateComponent', () => {
 
 		it('should set certNotNeeded to true if test type is an new iva or msva test and the test is a prs', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.prs, testTypeId: '125' }],
-			} as TestResultModel);
+				testTypes: [{ testResult: TestResults.PRS, testTypeId: '125' }],
+			} as TestResultSchema);
 			store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 			component.ngOnInit();
 
@@ -90,8 +90,8 @@ describe('TestCertificateComponent', () => {
 
 		it('should set certNotNeeded to false if test type is an new iva or msva test and the test is a fail', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
-				testTypes: [{ testResult: resultOfTestEnum.fail, testTypeId: '125' }],
-			} as TestResultModel);
+				testTypes: [{ testResult: TestResults.FAIL, testTypeId: '125' }],
+			} as TestResultSchema);
 			store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 			component.ngOnInit();
 

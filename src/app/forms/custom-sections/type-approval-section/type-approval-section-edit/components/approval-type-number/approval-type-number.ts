@@ -278,7 +278,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 					: null;
 
 			case ApprovalType.SMALL_SERIES_NKSXX:
-				return approvalTypeNumber1 && approvalTypeNumber2 && approvalTypeNumber3
+				return approvalTypeNumber1 && approvalTypeNumber2 && approvalTypeNumber3 && approvalTypeNumber4
 					? `${approvalTypeNumber1}11*NKS${approvalTypeNumber2}/${approvalTypeNumber3}*${approvalTypeNumber4}`
 					: null;
 

@@ -1,16 +1,19 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestStation } from '@models/test-stations/test-station.model';
+import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { createAction, props } from '@ngrx/store';
 
 export const fetchTestStations = createAction(getTitle(true));
-export const fetchTestStationsSuccess = createAction(getTitle(true, 'Success'), props<{ payload: TestStation[] }>());
+export const fetchTestStationsSuccess = createAction(
+	getTitle(true, 'Success'),
+	props<{ payload: TestStationSchema[] }>()
+);
 export const fetchTestStationsFailed = createAction(getTitle(true, 'Failed'), props<GlobalError>());
 export const fetchTestStationsComplete = createAction(getTitle(true, 'Complete'));
 
 export const fetchTestStation = createAction(getTitle(), props<{ id: string }>());
 export const fetchTestStationSuccess = createAction(
 	getTitle(false, 'Success'),
-	props<{ id: string; payload: TestStation }>()
+	props<{ id: string; payload: TestStationSchema }>()
 );
 export const fetchTestStationFailed = createAction(getTitle(false, 'Failed'), props<GlobalError>());
 

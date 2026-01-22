@@ -1,4 +1,4 @@
-import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
+import { InspectionType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { createSelector } from '@ngrx/store';
 import { requiredStandardsFeatureState } from './required-standards.reducer';
 
@@ -7,7 +7,7 @@ export const getRequiredStandardsState = createSelector(
 	(state) => state.requiredStandards
 );
 
-export const getRequiredStandardFromTypeAndRef = (inspectionType: INSPECTION_TYPE, rsRefCalculation: string) =>
+export const getRequiredStandardFromTypeAndRef = (inspectionType: InspectionType, rsRefCalculation: string) =>
 	createSelector(requiredStandardsFeatureState, (state) => {
 		const deRefRsCalculation = rsRefCalculation.split('.');
 		const sectionNumber = deRefRsCalculation[0];

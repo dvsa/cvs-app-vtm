@@ -158,12 +158,13 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 
 	// TODO: Move this into an effect
 	navigateUponSuccess(): void {
-		this.actions.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy)).subscribe((vehicleTechRecord) => {
+		this.actions.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy)).subscribe(({ vehicleTechRecord }) => {
 			this.store.dispatch(clearAllSectionStates());
 			this.store.dispatch(clearScrollPosition());
-			void this.router.navigate([
-				`/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
-			]);
+			this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`], {
+				queryParams: { from: 'amend' },
+				queryParamsHandling: 'merge',
+			});
 		});
 	}
 

@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TestResultSchema, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
@@ -78,7 +78,7 @@ export class TestResultsEffects {
 					catchError((e) => {
 						switch (e.status) {
 							case 404:
-								return of(fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultModel[] }));
+								return of(fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultSchema[] }));
 							default:
 								return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
 						}
@@ -220,13 +220,13 @@ export class TestResultsEffects {
 				});
 
 				if (testTypeId) {
-					(mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
+					(mergedForms as TestResultSchema).testTypes[0].testTypeId = testTypeId;
 				}
 
 				return of(
 					templateSectionsChanged({
 						sectionTemplates: Object.values(tpl),
-						sectionsValue: mergedForms as TestResultModel,
+						sectionsValue: mergedForms as TestResultSchema,
 					}),
 					updateResultOfTest()
 				);
@@ -264,7 +264,7 @@ export class TestResultsEffects {
 						? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
 						: vehicleTpl['default'];
 
-				const mergedForms = {} as TestResultModel;
+				const mergedForms = {} as TestResultSchema;
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				Object.values(tpl!).forEach((node) => {
 					const form = this.dfs.createForm(node, editedTestResult);
@@ -294,7 +294,8 @@ export class TestResultsEffects {
 					mergedForms.testTypes[0].testTypeEndTimestamp = now;
 					mergedForms.testStationName = testStation?.testStationName ?? '[INVALID_OPTION]';
 					mergedForms.testStationPNumber = testStation?.testStationPNumber ?? '[INVALID_OPTION]';
-					mergedForms.testStationType = TestStationType.ATF;
+					// @TODO: use enum from @dvsa/cvs-type-definitions when added
+					mergedForms.testStationType = 'atf' as TestStationTypes;
 				}
 
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -1,10 +1,12 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
+import {
+	TestResultSchema,
+	TestResultTestTypeSchema,
+	TypeOfTest,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
-import { TestType } from '@models/test-types/test-type.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -77,7 +79,7 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 						createdById: user.oid,
 						lastUpdatedByName: user.name,
 						lastUpdatedById: user.oid,
-						typeOfTest: TypeOfTest.CONTINGENCY,
+						typeOfTest: 'contingency' as TypeOfTest,
 						source: 'vtm',
 						make: getBodyMake(viewableTechRecord),
 						model: getBodyModel(viewableTechRecord),
@@ -87,9 +89,9 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 								testResult: 'pass',
 								prohibitionIssued: null,
 								additionalCommentsForAbandon: null,
-							} as TestType,
+							} as TestResultTestTypeSchema,
 						],
-					} as Partial<TestResultModel>;
+					} as Partial<TestResultSchema>;
 				})
 			);
 		}),

@@ -1,6 +1,5 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/required-standards/defects/enums/euVehicleCategory.enum.js';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
-import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { RequiredStandardState, initialRequiredStandardsState } from '../required-standards.reducer';
 import {
 	getRequiredStandardFromTypeAndRef,
@@ -30,8 +29,9 @@ describe('RequiredStandardsLoadingState', () => {
 				requiredStandard: 'rs',
 				refCalculation: '01.1',
 				additionalInfo: false,
-				inspectionTypes: [INSPECTION_TYPE.NORMAL],
+				inspectionTypes: ['normal'],
 			};
+
 			const requiredStandards: DefectGETRequiredStandards = {
 				normal: [
 					{
@@ -43,7 +43,7 @@ describe('RequiredStandardsLoadingState', () => {
 								requiredStandard: 'rs',
 								refCalculation: '01.1',
 								additionalInfo: false,
-								inspectionTypes: [INSPECTION_TYPE.NORMAL],
+								inspectionTypes: ['normal'],
 							},
 						],
 					},
@@ -53,7 +53,7 @@ describe('RequiredStandardsLoadingState', () => {
 			};
 			initialRequiredStandardsState.requiredStandards = requiredStandards;
 			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
-			const selectedState = getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.NORMAL, '01.1').projector(state);
+			const selectedState = getRequiredStandardFromTypeAndRef('normal', '01.1').projector(state);
 			expect(selectedState).toBeTruthy();
 			expect(selectedState).toStrictEqual({ ...requiredStandard, sectionNumber: '01', sectionDescription: 'desc' });
 		});
@@ -69,7 +69,7 @@ describe('RequiredStandardsLoadingState', () => {
 								requiredStandard: 'rs',
 								refCalculation: '01.1',
 								additionalInfo: false,
-								inspectionTypes: [INSPECTION_TYPE.NORMAL],
+								inspectionTypes: ['normal'],
 							},
 						],
 					},
@@ -79,7 +79,7 @@ describe('RequiredStandardsLoadingState', () => {
 			};
 			initialRequiredStandardsState.requiredStandards = requiredStandards;
 			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
-			const selectedState = getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.NORMAL, 'data').projector(state);
+			const selectedState = getRequiredStandardFromTypeAndRef('normal', 'data').projector(state);
 			expect(selectedState).toBeUndefined();
 		});
 	});

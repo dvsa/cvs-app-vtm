@@ -3,11 +3,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-
 import { Roles } from '@models/roles.enum';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -17,7 +16,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
-
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { VehicleHeaderComponent } from '../../vehicle-header/vehicle-header.component';
@@ -55,8 +53,8 @@ describe('BaseTestRecordComponent', () => {
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('testResult', {
 			vin: 'ABC002',
-			testTypes: [{ testResult: resultOfTestEnum.fail }],
-		} as TestResultModel);
+			testTypes: [{ testResult: TestResults.FAIL }],
+		} as TestResultSchema);
 		jest.clearAllMocks();
 		fixture.detectChanges();
 	});
@@ -67,7 +65,7 @@ describe('BaseTestRecordComponent', () => {
 
 	describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
 		it('should emit the new test result', (done) => {
-			const event = { vin: 'ABC001' } as TestResultModel;
+			const event = { vin: 'ABC001' } as TestResultSchema;
 			const expectedValue = { vin: 'ABC001' };
 
 			component.newTestResult.subscribe((testResult) => {

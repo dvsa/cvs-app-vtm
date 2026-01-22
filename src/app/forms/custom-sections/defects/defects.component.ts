@@ -3,9 +3,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
-import { Defect } from '@models/defects/defect.model';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
+import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -20,9 +19,9 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	dfs = inject(DynamicFormService);
 
 	readonly isEditing = input(false);
-	readonly defects = input.required<Defect[] | null>();
+	readonly defects = input.required<DefectCategoryReferenceDataSchema[] | null>();
 	readonly template = input.required<FormNode>();
-	readonly data = input<Partial<TestResultModel>>({});
+	readonly data = input<Partial<TestResultSchema>>({});
 
 	readonly formChange = output<Record<string, any> | [][]>();
 
@@ -52,15 +51,15 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		return this.defectsForm?.controls.length;
 	}
 
-	get testDefects(): TestResultDefect[] {
+	get testDefects(): DefectDetailsSchema[] {
 		return this.defectsForm.controls.map((control) => {
 			const formGroup = control as CustomFormGroup;
-			return formGroup.getCleanValue(formGroup) as TestResultDefect;
+			return formGroup.getCleanValue(formGroup) as DefectDetailsSchema;
 		});
 	}
 
-	categoryColor(category: CategoryColorKey): CategoryColor {
-		return categoryColors[`${category}`];
+	categoryColor(category: string): string {
+		return categoryColors[category as keyof typeof categoryColors];
 	}
 }
 
@@ -70,7 +69,3 @@ const categoryColors = {
 	dangerous: 'red',
 	advisory: 'blue',
 } as const;
-
-type CategoryColors = typeof categoryColors;
-type CategoryColorKey = keyof CategoryColors;
-type CategoryColor = CategoryColors[CategoryColorKey];

@@ -1,8 +1,11 @@
-import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import {
+	DefectDetailsSchema,
+	SpecialistCustomDefectsSchemaPut,
+	TestResultSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
@@ -63,21 +66,21 @@ export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 interface Extras {
 	error: string;
 	loading: boolean;
-	editingTestResult?: TestResultModel;
+	editingTestResult?: TestResultSchema;
 	sectionTemplates?: FormNode[];
 }
 
-export interface TestResultsState extends EntityState<TestResultModel>, Extras {}
+export interface TestResultsState extends EntityState<TestResultSchema>, Extras {}
 
-const selectTestResultId = (a: TestResultModel): string => {
+const selectTestResultId = (a: TestResultSchema): string => {
 	return a.testResultId;
 };
 
-export const testResultAdapter: EntityAdapter<TestResultModel> = createEntityAdapter<TestResultModel>({
+export const testResultAdapter: EntityAdapter<TestResultSchema> = createEntityAdapter<TestResultSchema>({
 	selectId: selectTestResultId,
 });
 
-export const initialTestResultsState: EntityState<TestResultModel> & Extras = testResultAdapter.getInitialState({
+export const initialTestResultsState: EntityState<TestResultSchema> & Extras = testResultAdapter.getInitialState({
 	error: '',
 	loading: false,
 });
@@ -130,7 +133,7 @@ export const testResultsReducer = createReducer(
 
 	on(initialContingencyTest, (state, action) => ({
 		...state,
-		editingTestResult: { ...action.testResult } as TestResultModel,
+		editingTestResult: { ...action.testResult } as TestResultSchema,
 	})),
 
 	on(templateSectionsChanged, (state, action) => ({
@@ -180,8 +183,8 @@ export const testResultsReducer = createReducer(
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
 
 function createNewRequiredStandard(
-	testResultState: TestResultModel | undefined,
-	requiredStandard: TestResultRequiredStandard
+	testResultState: TestResultSchema | undefined,
+	requiredStandard: SpecialistCustomDefectsSchemaPut
 ) {
 	if (!testResultState) {
 		return;
@@ -196,7 +199,7 @@ function createNewRequiredStandard(
 	return { ...testResult };
 }
 
-function cleanTestResultPayload(testResult: TestResultModel | undefined) {
+function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 	if (!testResult || !testResult.testTypes) {
 		return testResult;
 	}
@@ -228,8 +231,8 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		}
 
 		// If the test type is a fail/cancel/abandon, and issueRequired is true, set it to false
-		const isFail = testType.testResult === resultOfTestEnum.fail;
-		const isAbandon = testType.testResult === resultOfTestEnum.abandoned;
+		const isFail = testType.testResult === TestResults.FAIL;
+		const isAbandon = testType.testResult === TestResults.ABANDONED;
 		if ((isFail || isAbandon) && testType.centralDocs?.issueRequired) {
 			testType.centralDocs.issueRequired = false;
 		}
@@ -277,8 +280,8 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 }
 
 function updateRequiredStandardAtIndex(
-	testResultState: TestResultModel | undefined,
-	requiredStandard: TestResultRequiredStandard,
+	testResultState: TestResultSchema | undefined,
+	requiredStandard: SpecialistCustomDefectsSchemaPut,
 	index: number
 ) {
 	if (!testResultState) {
@@ -293,7 +296,7 @@ function updateRequiredStandardAtIndex(
 	return { ...testResult };
 }
 
-function removeRequiredStandardAtIndex(testResultState: TestResultModel | undefined, index: number) {
+function removeRequiredStandardAtIndex(testResultState: TestResultSchema | undefined, index: number) {
 	if (!testResultState) {
 		return;
 	}
@@ -307,9 +310,9 @@ function removeRequiredStandardAtIndex(testResultState: TestResultModel | undefi
 }
 
 function createNewDefect(
-	testResultState: TestResultModel | undefined,
-	defect: TestResultDefect
-): TestResultModel | undefined {
+	testResultState: TestResultSchema | undefined,
+	defect: DefectDetailsSchema
+): TestResultSchema | undefined {
 	if (!testResultState) {
 		return;
 	}
@@ -324,10 +327,10 @@ function createNewDefect(
 }
 
 function updateDefectAtIndex(
-	testResultState: TestResultModel | undefined,
-	defect: TestResultDefect,
+	testResultState: TestResultSchema | undefined,
+	defect: DefectDetailsSchema,
 	index: number
-): TestResultModel | undefined {
+): TestResultSchema | undefined {
 	if (!testResultState) {
 		return;
 	}
@@ -340,7 +343,10 @@ function updateDefectAtIndex(
 	return { ...testResult };
 }
 
-function removeDefectAtIndex(testResultState: TestResultModel | undefined, index: number): TestResultModel | undefined {
+function removeDefectAtIndex(
+	testResultState: TestResultSchema | undefined,
+	index: number
+): TestResultSchema | undefined {
 	if (!testResultState) {
 		return;
 	}
@@ -353,7 +359,7 @@ function removeDefectAtIndex(testResultState: TestResultModel | undefined, index
 	return { ...testResult };
 }
 
-function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
+function calculateTestResult(testResultState: TestResultSchema | undefined): TestResultSchema | undefined {
 	if (!testResultState) {
 		return;
 	}
@@ -362,7 +368,7 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
 	const newTestTypes = testResult.testTypes.map((testType) => {
 		if (
-			testType.testResult === resultOfTestEnum.abandoned ||
+			testType.testResult === TestResults.ABANDONED ||
 			!testType.defects ||
 			TypeOfTest.DESK_BASED === testResultState?.typeOfTest
 		) {
@@ -370,7 +376,7 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 		}
 
 		if (!testType.defects.length) {
-			testType.testResult = resultOfTestEnum.pass;
+			testType.testResult = TestResults.PASS;
 			return testType;
 		}
 
@@ -380,7 +386,7 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 				defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous
 		);
 		if (!failOrPrs) {
-			testType.testResult = resultOfTestEnum.pass;
+			testType.testResult = TestResults.PASS;
 			return testType;
 		}
 
@@ -391,8 +397,8 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 				(defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous && defect.prs) ||
 				(defect.deficiencyCategory === DeficiencyCategoryEnum.Major && defect.prs)
 		)
-			? resultOfTestEnum.prs
-			: resultOfTestEnum.fail;
+			? TestResults.PRS
+			: TestResults.FAIL;
 
 		return testType;
 	});
@@ -400,8 +406,8 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 }
 
 function calculateTestResultRequiredStandards(
-	testResultState: TestResultModel | undefined
-): TestResultModel | undefined {
+	testResultState: TestResultSchema | undefined
+): TestResultSchema | undefined {
 	if (!testResultState) {
 		return;
 	}
@@ -410,7 +416,7 @@ function calculateTestResultRequiredStandards(
 
 	const newTestTypes = testResult.testTypes.map((testType) => {
 		if (
-			testType.testResult === resultOfTestEnum.abandoned ||
+			testType.testResult === TestResults.ABANDONED ||
 			!testType.requiredStandards ||
 			TypeOfTest.DESK_BASED === testResultState?.typeOfTest
 		) {
@@ -418,20 +424,18 @@ function calculateTestResultRequiredStandards(
 		}
 
 		if (!testType.requiredStandards.length) {
-			testType.testResult = resultOfTestEnum.pass;
+			testType.testResult = TestResults.PASS;
 			return testType;
 		}
 
-		testType.testResult = testType.requiredStandards.every((rs) => rs.prs)
-			? resultOfTestEnum.prs
-			: resultOfTestEnum.fail;
+		testType.testResult = testType.requiredStandards.every((rs) => rs.prs) ? TestResults.PRS : TestResults.FAIL;
 
 		return testType;
 	});
 	return { ...testResult, testTypes: [...newTestTypes] };
 }
 
-function setTestResult(testResult: TestResultModel | undefined, result: resultOfTestEnum): TestResultModel | undefined {
+function setTestResult(testResult: TestResultSchema | undefined, result: TestResults): TestResultSchema | undefined {
 	if (!testResult) {
 		return;
 	}

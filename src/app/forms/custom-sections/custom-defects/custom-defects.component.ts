@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '@components/button/button.component';
-import { CustomDefect } from '@models/test-results/customDefect';
-import { CustomDefects } from '@models/test-results/customDefects';
+import { SpecialistCustomDefectsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { Subscription } from 'rxjs';
@@ -52,9 +51,10 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
 		return this.customDefectsForm?.controls.length;
 	}
 
-	get customDefects(): CustomDefects {
+	get customDefects(): SpecialistCustomDefectsSchema[] {
 		return this.customDefectsForm.controls.map(
-			(control) => (control as CustomFormGroup).getCleanValue(control as CustomFormGroup) as CustomDefect
+			(control) =>
+				(control as CustomFormGroup).getCleanValue(control as CustomFormGroup) as SpecialistCustomDefectsSchema
 		);
 	}
 

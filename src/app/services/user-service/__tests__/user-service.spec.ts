@@ -72,6 +72,7 @@ describe('User-Service', () => {
 				name: 'name',
 				userEmail: 'name@mail.com',
 				oid: '123',
+				employeeId: null,
 				roles: ['12345'],
 			})
 		);

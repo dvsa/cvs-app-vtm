@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
 import { Store, select } from '@ngrx/store';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
@@ -34,7 +34,7 @@ export class TestCertificateComponent implements OnInit, OnDestroy {
 					const isLECWithoutLinkedTest = id === '201';
 					const isIvaOrMsvaTest = TEST_TYPES_GROUP1_SPEC_TEST.includes(id) || TEST_TYPES_GROUP5_SPEC_TEST.includes(id);
 					this.certNotNeeded =
-						isOldIvaOrMsva || isLECWithoutLinkedTest || (isIvaOrMsvaTest && result !== resultOfTestEnum.fail);
+						isOldIvaOrMsva || isLECWithoutLinkedTest || (isIvaOrMsvaTest && result !== TestResults.FAIL);
 				}
 			});
 	}

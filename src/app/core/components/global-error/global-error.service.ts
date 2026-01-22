@@ -92,7 +92,8 @@ export class GlobalErrorService {
 					Object.values(control.errors).forEach((error) => {
 						errors.push({
 							error: typeof error === 'string' ? error : error.error,
-							anchorLink: typeof error === 'string' ? key : error.anchorLink,
+							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
+							accordion: error.accordion ?? undefined,
 						});
 					});
 				}
@@ -106,7 +107,8 @@ export class GlobalErrorService {
 					const error = controlErrors[0];
 					errors.push({
 						error: typeof error === 'string' ? error : error.error,
-						anchorLink: typeof error === 'string' ? key : error.anchorLink,
+						anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
+						accordion: error.accordion ?? undefined,
 					});
 				}
 			}

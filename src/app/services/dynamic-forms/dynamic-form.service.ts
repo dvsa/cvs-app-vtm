@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { AdrValidators } from '@forms/validators/adr/adr.validators';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validator/custom-async-validators';
@@ -12,7 +13,6 @@ import {
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { Condition } from '@models/condition.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { ValidatorNames } from '@models/validators.enum';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
@@ -118,10 +118,10 @@ export class DynamicFormService {
 			CustomAsyncValidators.passResultDependantOnCustomDefects(this.store),
 		[AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
 		[AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store),
-		[AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: resultOfTestEnum | resultOfTestEnum[] }) =>
+		[AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: TestResults | TestResults[] }) =>
 			CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
 		[AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: {
-			testResult: resultOfTestEnum | resultOfTestEnum[];
+			testResult: TestResults | TestResults[];
 			sibling: string;
 			value: unknown;
 		}) =>

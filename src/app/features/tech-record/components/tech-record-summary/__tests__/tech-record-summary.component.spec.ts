@@ -8,6 +8,7 @@ import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-defini
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { FitmentCode, SpeedCategorySymbol, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { ScannedActionsSubject } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
@@ -44,6 +45,7 @@ describe('TechRecordSummaryComponent', () => {
 				},
 				TechnicalRecordService,
 				FeatureToggleService,
+				ScannedActionsSubject,
 			],
 		}).compileComponents();
 	});
