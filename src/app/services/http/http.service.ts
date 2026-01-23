@@ -136,6 +136,23 @@ export class HttpService {
 		});
 	}
 
+	getTestResultMedia(testResultId: string, paramMap: Map<string, string>) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+
+		let params = new HttpParams();
+		paramMap.forEach((value, key) => (params = params.set(key, value)));
+
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
+			headers,
+			observe: 'events',
+			params,
+			reportProgress: true,
+			responseType: 'text',
+		});
+	}
+
 	generateLetter(
 		vehicleRecord: TechRecordType<'get'>,
 		letterType: string,

@@ -1,0 +1,16 @@
+@if (testResult(); as testResult) {
+  @if (viewMediaApplicable(testResult)) {
+    <td class="govuk-table__cell">Media:</td>
+    @if (canDownloadApprovalsMedia(testResult)) {
+      <td id="media-download-link" class="govuk-table__cell">
+        <button class="link" (click)="downloadMedia(testResult)">
+          Download
+        </button>
+      </td>
+    } @else {
+      <td id="media-failure-to-capture-reason" class="govuk-table__cell">
+        {{ getFailureToCaptureApprovalsMediaReason(testResult) }}
+      </td>
+    }
+  }
+}

@@ -15,6 +15,15 @@ export const IvaMsvaVehicleSection: FormNode = {
 	type: FormNodeTypes.GROUP,
 	children: [
 		{
+			name: 'media',
+			label: 'Media',
+			value: '',
+			disabled: true,
+			type: FormNodeTypes.CONTROL,
+			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
+		},
+		{
 			name: 'vin',
 			label: 'VIN/chassis number',
 			value: '',

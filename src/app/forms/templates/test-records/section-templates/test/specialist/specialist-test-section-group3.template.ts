@@ -1,3 +1,4 @@
+import { MediaDownloadComponent } from '@/src/app/components/media-download/media-download.component';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import {
@@ -109,6 +110,13 @@ export const SpecialistTestSectionGroup3: FormNode = {
 							width: FormNodeWidth.L,
 							required: true,
 							value: null,
+						},
+						{
+							name: 'media',
+							type: FormNodeTypes.CONTROL,
+							viewType: FormNodeViewTypes.CUSTOM,
+							editType: FormNodeEditTypes.HIDDEN,
+							viewComponent: MediaDownloadComponent,
 						},
 					],
 				},

@@ -1,3 +1,4 @@
+import { MediaDownloadComponent } from '@/src/app/components/media-download/media-download.component';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
@@ -192,6 +193,13 @@ export const SpecialistTestSectionGroup3And4: FormNode = {
 								{ value: false, label: 'No' },
 							],
 							validators: [{ name: ValidatorNames.Required }],
+						},
+						{
+							name: 'media',
+							type: FormNodeTypes.CONTROL,
+							viewType: FormNodeViewTypes.CUSTOM,
+							editType: FormNodeEditTypes.HIDDEN,
+							viewComponent: MediaDownloadComponent,
 						},
 					],
 				},
