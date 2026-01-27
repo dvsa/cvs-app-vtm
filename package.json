@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@angular/build": "^20.3.14",
-    "@angular/cli": "^20.3.14",
+    "@angular/cli": "^20.3.15",
     "@angular/compiler-cli": "^20.3.16",
     "@babel/core": "^7.23.9",
     "@biomejs/biome": "1.9.0",
