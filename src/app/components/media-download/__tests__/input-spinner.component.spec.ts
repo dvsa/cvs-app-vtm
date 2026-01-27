@@ -49,11 +49,6 @@ describe('MediaDownloadComponent', () => {
 	});
 
 	describe('viewMediaApplicable', () => {
-		it('should return false if the testResult media array is undefined', () => {
-			const testResult = { media: undefined } as TestResultSchema;
-			expect(component.viewMediaApplicable(testResult)).toBe(false);
-		});
-
 		it('should return false if the testResultId is not an approvals test', () => {
 			const testResult = {
 				media: [{ type: 'image', path: '/foo/bar.zip' }],
@@ -101,7 +96,7 @@ describe('MediaDownloadComponent', () => {
 	describe('getFailureToCaptureApprovalsMediaReason', () => {
 		it('should return an empty string if the testResult media array is undefined', () => {
 			const testResult = { media: undefined } as TestResultSchema;
-			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('');
+			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('No media available');
 		});
 
 		it('should return the first failReason if the testResult media array contains only failReasons', () => {

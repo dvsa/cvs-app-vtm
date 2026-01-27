@@ -29,7 +29,6 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
 
 	viewMediaApplicable(test: TestResultSchema): boolean {
-		if (!test.media) return false;
 		// Only show media for approvals tests
 		const testTypeId = test.testTypes[0].testTypeId;
 		return TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId);
@@ -41,9 +40,7 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 	}
 
 	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
-		if (!test.media) return '';
-
-		console.log(test.media);
+		if (!test.media) return 'No media available';
 
 		for (const reason of test.media) {
 			if (reason.type === 'failReason') {
