@@ -4,6 +4,7 @@ import { TestType } from '@models/test-types/testType';
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { getRouterSelectors } from '@ngrx/router-store';
 import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
@@ -72,34 +73,40 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, (tes
 	return sortTestTypes(testTypes);
 });
 
-export const selectTestType = (id: string | undefined) =>
-	createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-		function findUsingId(
-			idToSearch: string | undefined,
-			testTypesList: TestTypesTaxonomy | undefined
-		): TestType | undefined {
-			if (!testTypesList) {
-				return undefined;
-			}
+function findUsingId(
+	idToSearch: string | undefined,
+	testTypesList: TestTypesTaxonomy | undefined
+): TestType | undefined {
+	if (!testTypesList) {
+		return undefined;
+	}
 
-			// eslint-disable-next-line no-restricted-syntax
-			for (const testType of testTypesList) {
-				if (testType.id === idToSearch) {
-					return testType;
-				}
-
-				const found = findUsingId(idToSearch, (testType as TestTypeCategory).nextTestTypesOrCategories);
-
-				if (found) {
-					return found;
-				}
-			}
-
-			return undefined;
+	// eslint-disable-next-line no-restricted-syntax
+	for (const testType of testTypesList) {
+		if (testType.id === idToSearch) {
+			return testType;
 		}
 
+		const found = findUsingId(idToSearch, (testType as TestTypeCategory).nextTestTypesOrCategories);
+
+		if (found) {
+			return found;
+		}
+	}
+
+	return undefined;
+}
+
+export const selectTestType = (id: string | undefined) =>
+	createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
 		return findUsingId(id, testTypes);
 	});
+
+export const selectTestTypeFromRoute = createSelector(
+	selectTestTypesByVehicleType,
+	getRouterSelectors().selectQueryParam('testType'),
+	(testTypes, testType) => findUsingId(testType as string, testTypes)
+);
 
 export const getTypeOfTest = (id: string | undefined) =>
 	createSelector(selectTestType(id), (testTypes) => testTypes?.typeOfTest);

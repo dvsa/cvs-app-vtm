@@ -48,6 +48,7 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
+import { EuVehicleCategory } from '../../models/test-types/eu-vehicle-category.enum';
 import { nullADRDetails } from '../../store/technical-records/technical-record-service.reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -245,6 +246,30 @@ export class TechnicalRecordService {
 		this.store.dispatch(updateEditingTechRecordCancel());
 	}
 
+	getMake(technicalRecord: V3TechRecordModel): string | null | undefined {
+		if (technicalRecord.techRecord_vehicleType === 'psv') {
+			return technicalRecord.techRecord_chassisMake;
+		}
+
+		if (technicalRecord.techRecord_vehicleType === 'car') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'motorcycle') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'lgv') return undefined;
+
+		return technicalRecord.techRecord_make;
+	}
+
+	getModel(technicalRecord: V3TechRecordModel): string | null | undefined {
+		if (technicalRecord.techRecord_vehicleType === 'psv') {
+			return technicalRecord.techRecord_chassisModel;
+		}
+
+		if (technicalRecord.techRecord_vehicleType === 'car') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'motorcycle') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'lgv') return undefined;
+
+		return technicalRecord.techRecord_model;
+	}
+
 	getMakeAndModel(technicalRecord: V3TechRecordModel): string {
 		if (
 			technicalRecord.techRecord_vehicleType === 'car' ||
@@ -269,6 +294,17 @@ export class TechnicalRecordService {
 		}
 
 		return `${make} - ${model}`;
+	}
+
+	getBodyType(technicalRecord: V3TechRecordModel) {
+		if (technicalRecord.techRecord_vehicleType === 'car') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'lgv') return undefined;
+		if (technicalRecord.techRecord_vehicleType === 'motorcycle') return undefined;
+
+		return {
+			code: technicalRecord.techRecord_bodyType_code,
+			description: technicalRecord.techRecord_bodyType_description,
+		};
 	}
 
 	clearSectionTemplateStates() {
@@ -336,6 +372,16 @@ export class TechnicalRecordService {
 		return techRecord.techRecord_vehicleType === 'car' || techRecord.techRecord_vehicleType === 'lgv'
 			? techRecord.techRecord_vehicleSubclass
 			: undefined;
+	}
+
+	getEUVehicleCategory(techRecord: V3TechRecordModel): EuVehicleCategory | undefined {
+		if (techRecord.techRecord_vehicleType === 'car') return EuVehicleCategory.M1;
+		if (techRecord.techRecord_vehicleType === 'lgv') return EuVehicleCategory.N1;
+		return techRecord.techRecord_euVehicleCategory as EuVehicleCategory | undefined;
+	}
+
+	getNumberOfWheelsDriven(techRecord: V3TechRecordModel): number | null | undefined {
+		return techRecord.techRecord_vehicleType === 'motorcycle' ? techRecord.techRecord_numberOfWheelsDriven : undefined;
 	}
 
 	searchBy(type: SEARCH_TYPES | undefined, term: string): void {

@@ -1,3 +1,5 @@
+import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
@@ -50,10 +52,19 @@ export const routes: Routes = [
 				children: [
 					{
 						path: '',
-						loadComponent: () =>
-							import('./views/create-test-record/create-test-record.component').then(
+						loadComponent: () => {
+							const featureToggleService = inject(FeatureToggleService);
+							// @TODO: replace with feature toggle check
+							if (featureToggleService.isFeatureEnabled('betas')) {
+								return import('./views/create-test-record-v2/create-test-record-v2.component').then(
+									(m) => m.CreateTestRecordV2Component
+								);
+							}
+
+							return import('./views/create-test-record/create-test-record.component').then(
 								(m) => m.CreateTestRecordComponent
-							),
+							);
+						},
 					},
 					{
 						path: TestRecordCreateRoutes.DEFECT,

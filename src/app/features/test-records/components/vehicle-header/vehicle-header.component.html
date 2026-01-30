@@ -6,11 +6,7 @@
           <div class="vehicle_heading">
             <h1 class="govuk-heading-l">
               <span>
-                {{
-                test?.testTypeId ?? ''
-                | testTypeName : (selectAllTestTypes$ | async)
-                | defaultNullOrEmpty
-                }}
+                {{ testResult.testTypes[0].testTypeName }}
                 {{ testCode | uppercase }}
               </span>
               <app-icon
