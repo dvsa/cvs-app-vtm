@@ -1,0 +1,10 @@
+@if (form(); as form) {
+  <ng-container [formGroup]="form">
+    <govuk-form-group-textarea
+      formControlName="reasonForCreation"
+      name="reasonForCreation"
+      label="Reason for creation"
+      [maxLength]="100"
+    ></govuk-form-group-textarea>
+  </ng-container>
+}

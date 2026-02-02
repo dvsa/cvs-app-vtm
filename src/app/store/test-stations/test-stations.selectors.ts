@@ -6,6 +6,10 @@ const { selectAll } = testStationsAdapter.getSelectors();
 
 export const testStations = createSelector(testStationsFeatureState, (state) => selectAll(state));
 
+export const selectTestStationNames = createSelector(testStations, (stations) =>
+	stations.map((station) => station.testStationName)
+);
+
 export const testStation = (id: string) => createSelector(testStationsFeatureState, (state) => state.entities[`${id}`]);
 
 export const testStationsLoadingState = createSelector(testStationsFeatureState, (state) => state.loading);

@@ -1,0 +1,17 @@
+@if (form(); as form) {
+  <ng-container [formGroup]="form">
+    <!-- Test Station Details -->
+    <govuk-form-group-autocomplete
+      label="Test Station Details"
+      formControlName="testStationName"
+      [options$]="testStationNamesObservable"
+    ></govuk-form-group-autocomplete>
+
+    <!-- Type of test facility -->
+    <govuk-form-group-input
+      label="Type of test facility"
+      formControlName="testStationType"
+      [width]="formNodeWidth.S"
+    ></govuk-form-group-input>
+  </ng-container>
+}

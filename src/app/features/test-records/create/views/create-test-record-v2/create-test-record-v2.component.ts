@@ -1,11 +1,27 @@
+import { AccordionControlComponent } from '@/src/app/components/accordion-control/accordion-control.component';
+import { AccordionComponent } from '@/src/app/components/accordion/accordion.component';
+import { BannerComponent } from '@/src/app/components/banner/banner.component';
+import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
+import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
+import { FormGroupFrom } from '@/src/app/models/form.model';
+import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectTechRecord } from '@/src/app/store/technical-records';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { selectTestTypeFromRoute } from '@/src/app/store/test-types/test-types.selectors';
 import { user } from '@/src/app/store/user/user-service.reducer';
 import { Component, Signal, effect, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {
+	AbstractControl,
+	FormBuilder,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	ValidationErrors,
+	ValidatorFn,
+} from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
 	DefectDetailsSchema,
 	EUVehicleCategory,
@@ -19,25 +35,52 @@ import {
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { getTestStationFromProperty } from '@store/test-stations/test-stations.selectors';
+import { ReplaySubject } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
-
-type FormGroupFrom<T> = {
-	[K in keyof T]: T[K] extends object
-		? T[K] extends Array<infer U>
-			? FormArray<FormGroup<FormGroupFrom<U>>>
-			: FormGroup<FormGroupFrom<T[K]>>
-		: FormControl<T[K]>;
-};
+import { AdditionalDefectsComponent } from './additional-defects/additional-defects.component';
+import { CustomDefectsComponent } from './custom-defects/custom-defects.component';
+import { DefectsComponent } from './defects/defects.component';
+import { EmissionsComponent } from './emissions/emissions.component';
+import { NotesComponent } from './notes/notes.component';
+import { ReasonForCreationComponent } from './reason-for-creation/reason-for-creation.component';
+import { RequiredStandardsComponent } from './required-standards/required-standards.component';
+import { SeatbeltComponent } from './seatbelt/seatbelt.component';
+import { TestComponent } from './test/test.component';
+import { VehicleDetailsComponent } from './vehicle-details/vehicle-details.component';
+import { VisitComponent } from './visit/visit.component';
 
 @Component({
 	selector: 'app-create-test-record-v2',
 	templateUrl: './create-test-record-v2.component.html',
-	imports: [VehicleHeaderComponent],
+	imports: [
+		VehicleHeaderComponent,
+		BannerComponent,
+		RouterLink,
+		ButtonComponent,
+		AccordionComponent,
+		AccordionControlComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		VehicleDetailsComponent,
+		TestComponent,
+		VisitComponent,
+		EmissionsComponent,
+		SeatbeltComponent,
+		DefectsComponent,
+		NotesComponent,
+		ReasonForCreationComponent,
+		RequiredStandardsComponent,
+		CustomDefectsComponent,
+		AdditionalDefectsComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+	],
 })
 export class CreateTestRecordV2Component {
 	store = inject(Store);
 	fb = inject(FormBuilder);
 	route = inject(ActivatedRoute);
+	globalErrorService = inject(GlobalErrorService);
 	technicalRecordService = inject(TechnicalRecordService);
 
 	user = this.store.selectSignal(user);
@@ -46,7 +89,9 @@ export class CreateTestRecordV2Component {
 	testStation = this.store.selectSignal(getTestStationFromProperty('testStationType', 'hq'));
 	techRecord = this.store.selectSignal(selectTechRecord) as Signal<TechRecordType<'get'>>;
 
-	form = this.fb.group<FormGroupFrom<TestResultSchema>>({
+	destroy = new ReplaySubject<boolean>(1);
+
+	form = this.fb.nonNullable.group<FormGroupFrom<TestResultSchema>>({
 		testResultId: this.fb.nonNullable.control(''),
 		testStationName: this.fb.nonNullable.control(null),
 		testStationPNumber: this.fb.nonNullable.control(null),
@@ -91,7 +136,7 @@ export class CreateTestRecordV2Component {
 				secondaryCertificateNumber: this.fb.nonNullable.control(null),
 				testTypeStartTimestamp: this.fb.nonNullable.control(null),
 				testTypeEndTimestamp: this.fb.nonNullable.control(null),
-				testResult: this.fb.nonNullable.control(null),
+				testResult: this.fb.nonNullable.control(null, [this.testResultValidator()]),
 				prohibitionIssued: this.fb.nonNullable.control(null),
 				reasonForAbandoning: this.fb.nonNullable.control(null),
 				additionalNotesRecorded: this.fb.nonNullable.control(null),
@@ -210,4 +255,86 @@ export class CreateTestRecordV2Component {
 			});
 		}
 	}
+
+	canTestTypeBeCreated(testTypeId: string | undefined): boolean {
+		return false; // @TODO: implement
+	}
+
+	canHaveVehicleDetails(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveTestDetails(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveVisitDetails(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveSeatbeltDetails(): boolean {
+		const techRecord = this.techRecord();
+		if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV) return false;
+		return true; // @TODO: implement
+	}
+
+	canHaveNotes(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveDefects(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveRequiredStandards(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveCustomDefects(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveEmissions(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveAdditionalDefects(): boolean {
+		return true; // @TODO: implement
+	}
+
+	canHaveReasonForCreation(): boolean {
+		return false; // @TODO: implement
+	}
+
+	private testResultValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			// Make required for non-voluntary tests
+			const testTypeId = control.parent?.get('testTypeId')?.value;
+			if (['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'].includes(testTypeId)) {
+				return null;
+			}
+
+			if (control.value !== null) {
+				return null;
+			}
+
+			return { required: { error: 'Test result is required', anchorLink: 'testResult', accordion: 'testSection' } };
+		};
+	}
+
+	review(): void {
+		this.form.markAllAsTouched();
+		this.globalErrorService.clearErrors();
+
+		if (this.form.invalid) {
+			const errors = this.globalErrorService.extractGlobalErrors(this.form);
+			this.globalErrorService.setErrors(errors);
+		}
+
+		if (this.form.valid) {
+			// @TODO: implement
+		}
+	}
+
+	abandon(): void {}
 }

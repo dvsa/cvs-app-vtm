@@ -1,0 +1,14 @@
+@if (form(); as form) {
+  <ng-container [formGroup]="form">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        <govuk-form-group-textarea
+          formControlName="additionalNotesRecorded"
+          name="additionalNotesRecorded"
+          label="Additional Notes"
+          [maxLength]="500"
+        ></govuk-form-group-textarea>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+}

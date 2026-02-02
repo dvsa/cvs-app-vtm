@@ -1,2 +1,101 @@
+@if (canTestTypeBeCreated(test()?.id)) {
+  <app-banner>
+    <ng-container title>Important</ng-container>
+    <ng-container content>
+      <p>Creating this type of test is not currently supported</p>
+      <app-button id="test-back" type="link" design="link" [routerLink]="['..']">Back</app-button>
+    </ng-container>
+  </app-banner>
+}
 
 <app-vehicle-header [testResult]="form.getRawValue()" [isEditing]="true" />
+
+<form [formGroup]="form">
+  <app-accordion-control>
+    <!-- Vehicle Details -->
+    @if (canHaveVehicleDetails()) {
+      <app-accordion id="vehicleDetails" title="Vehicle Details">
+        <app-vehicle-details [form]="form" [techRecord]="techRecord()" />
+      </app-accordion>
+    }
+
+    <!-- Test -->
+    @if (canHaveTestDetails()) {
+      <app-accordion id="testSection" title="Test">
+        <app-test [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Visit -->
+    @if(canHaveVisitDetails()) {
+      <app-accordion id="visitSection" title="Visit">
+        <app-visit [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Seatbelt (select PSV tests only) -->
+    @if (canHaveSeatbeltDetails()) {
+       <app-accordion id="seatbeltSection" title="Seatbelt">
+         <app-seatbelt [form]="form" />
+       </app-accordion>
+    }
+
+    <!-- Notes -->
+    @if (canHaveNotes()) {
+      <app-accordion id="notesSection" title="Notes">
+        <app-notes [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Defects -->
+    @if (canHaveDefects()) {
+      <app-accordion id="defects" title="Defects">
+        <app-defects [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Emissions (select PSV tests only) -->
+    @if (canHaveEmissions()) {
+      <app-accordion id="emissionsSection" title="Emissions">
+        <app-emissions [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Required Standards (IVA/MSVSA tests only) -->
+    @if (canHaveRequiredStandards()) {
+      <app-accordion id="requiredStandards" title="Required Standards">
+        <app-required-standards [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Custom Defects (COIF tests only) -->
+    @if (canHaveCustomDefects()) {
+      <app-accordion id="customDefectsSection" title="Custom Defects">
+        <app-custom-defects [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Additional Defects -->
+    @if (canHaveAdditionalDefects()) {
+      <app-accordion id="additionalDefectsSection" title="Additional Defects">
+        <app-additional-defects [form]="form" />
+      </app-accordion>
+    }
+
+    <!-- Reason for creation -->
+    @if (canHaveReasonForCreation()) {
+      <app-accordion id="reasonForCreationSection" title="Reason for creation">
+        <app-reason-for-creation [form]="form" />
+      </app-accordion>
+    }
+  </app-accordion-control>
+
+  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+
+  <app-button-group>
+    <app-button id="review-test-result" (clicked)="review()">Review</app-button>
+    <app-button id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()">
+      Mark as abandoned
+    </app-button>
+  </app-button-group>
+</form>

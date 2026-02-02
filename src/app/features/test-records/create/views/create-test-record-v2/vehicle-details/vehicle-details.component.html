@@ -1,0 +1,42 @@
+@if (form(); as form) {
+  <ng-container [formGroup]="form">
+    <!-- Country of Registration -->
+    @if (countryOfRegistrationOptions | async; as options) {
+      <govuk-form-group-select
+        formControlName="countryOfRegistration"
+        name="countryOfRegistration"
+        label="Country Of Registration"
+        [options]="options"
+      ></govuk-form-group-select>
+    }
+
+    <!-- EU Vehicle Category -->
+    @if (euVehicleCategoryOptions(); as options) {
+      <govuk-form-group-select
+        formControlName="euVehicleCategory"
+        name="euVehicleCategory"
+        label="EU Vehicle Category"
+        [options]="options"
+        [width]="formNodeWidth.S"
+      ></govuk-form-group-select>
+    }
+    
+    <!-- Odometer reading -->
+    <govuk-form-group-input
+      formControlName="odometerReading"
+      name="odometerReading"
+      label="Odometer Reading"
+      [width]="formNodeWidth.L"
+      type="number"
+    ></govuk-form-group-input>
+
+    <!-- Odometer reading units -->
+    <govuk-form-group-radio
+      formControlName="odometerReadingUnits"
+      name="odometerReadingUnits"
+      label="Odometer Reading Units"
+      [width]="formNodeWidth.S"
+      [options]="odometerReadingUnitsOptions"
+    ></govuk-form-group-radio>
+  </ng-container>
+}
