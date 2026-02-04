@@ -200,7 +200,7 @@ export class CreateTechRecordComponent implements OnChanges {
 	async isVinUnique(): Promise<boolean> {
 		this.techRecord.vin = this.form.value.vin;
 		const isVinUnique = await firstValueFrom(
-			this.technicalRecordService.isUnique(this.techRecord.vin as string, SEARCH_TYPES.VIN)
+			this.technicalRecordService.isUnique(this.form.value.vin, SEARCH_TYPES.VIN)
 		);
 		this.isVinUniqueCheckComplete = true;
 		return isVinUnique;
@@ -224,7 +224,7 @@ export class CreateTechRecordComponent implements OnChanges {
 		if (this.techRecord.techRecord_vehicleType === 'trl') {
 			this.techRecord.trailerId = this.form.value.vrmTrm;
 			const isTrailerIdUnique = await firstValueFrom(
-				this.technicalRecordService.isUnique(this.techRecord.trailerId as string, SEARCH_TYPES.TRAILER_ID)
+				this.technicalRecordService.isUnique(this.form.value.vrmTrm, SEARCH_TYPES.TRAILER_ID)
 			);
 			if (!isTrailerIdUnique) {
 				this.globalErrorService.addError({ error: 'Trailer ID must be unique', anchorLink: 'input-vrm-or-trailer-id' });
