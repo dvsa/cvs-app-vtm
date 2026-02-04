@@ -1,7 +1,9 @@
+import { initialAppState } from '@/src/app/store';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { of } from 'rxjs';
 import { FieldErrorMessageComponent } from '../../field-error-message/field-error-message.component';
@@ -41,6 +43,7 @@ describe('AutocompleteComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [HostComponent],
+			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 
