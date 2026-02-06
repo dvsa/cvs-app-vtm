@@ -3,15 +3,27 @@
     <ng-container formArrayName="testTypes">
       <ng-container formGroupName="0">
         <!-- Test Result -->
-        <govuk-form-group-radio
-          label="Result"
-          formControlName="testResult"
-          [options]="[
-            { label: 'Pass', value: 'pass' },
-            { label: 'Fail', value: 'fail' },
-            { label: 'PRS', value: 'prs' },
-          ]"
-        ></govuk-form-group-radio>
+        @if (testTypesService.canHaveTestResult(form.getRawValue())) {
+          <govuk-form-group-radio
+            label="Result"
+            formControlName="testResult"
+            [options]="[
+              { label: 'Pass', value: 'pass' },
+              { label: 'Fail', value: 'fail' },
+              { label: 'PRS', value: 'prs' },
+            ]"
+          ></govuk-form-group-radio>
+        }
+
+        <!-- Certificate number -->
+        @if (testTypesService.canHaveCertificateNumber(form.getRawValue())) {
+          <govuk-form-group-input
+            type="text"
+            label="Certificate number"
+            formControlName="certificateNumber"
+            [width]="FormNodeWidth.L"
+          ></govuk-form-group-input>
+        }
       </ng-container>
     </ng-container>
   </ng-container>

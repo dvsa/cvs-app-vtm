@@ -1,0 +1,65 @@
+@if (form(); as form) {
+  <ng-container [formGroup]="form">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        <!-- Emissions standard -->
+        @if (testTypesService.canHaveEmissions(form.getRawValue())) {
+          <govuk-form-group-radio
+            label="Emissions standard"
+            formControlName="emissionStandard"
+            [options]="emissionStandardOptions"
+          ></govuk-form-group-radio>
+        }
+
+        <!-- Smoke test K limit applied -->
+        @if (testTypesService.canHaveSmokeTestKLimitApplied(form.getRawValue())) {
+          <govuk-form-group-input
+            label="Smoke test K limit applied"
+            formControlName="smokeTestKLimitApplied"
+          ></govuk-form-group-input>
+        }
+
+        <!-- Fuel type -->
+        @if (testTypesService.canHaveFuelType(form.getRawValue())) {
+          <govuk-form-group-radio
+            label="Fuel type"
+            formControlName="fuelType"
+            items="fuelTypes"
+          ></govuk-form-group-radio>
+        }
+
+        <!-- Modification type -->
+        @if (testTypesService.canHaveModificationType(form.getRawValue())) {
+          <ng-container formGroupName="modType">
+            <!-- Modification code -->
+            <govuk-form-group-radio
+              label="Modification code"
+              formControlName="code"
+              [options]="[ 
+                { value: 'p', label: 'P' },
+                { value: 'm', label: 'M' },
+                { value: 'g', label: 'G' },
+              ]"
+            ></govuk-form-group-radio>
+
+            <!-- Modification description -->
+            <govuk-form-group-radio
+              label="Modification description"
+              formControlName="description"
+              [options]="[
+                { value: 'particulate trap', label: 'Particulate trap' },
+                { value: 'modification or change of engine', label: 'Modification or change of engine' },
+                { value: 'gas engine', label: 'Gas engine' },
+              ]"
+            ></govuk-form-group-radio>
+          </ng-container>
+        }
+
+        <!-- Modification type used -->
+        @if (testTypesService.canHaveModificationTypeUsed(form.getRawValue())) {
+          
+        }
+      </ng-container>
+    </ng-container>
+  </ng-container>
+}

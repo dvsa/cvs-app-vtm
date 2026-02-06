@@ -4,9 +4,10 @@ import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
+import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { FormGroupFrom } from '@/src/app/models/form.model';
-import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { TestTypesService } from '@/src/app/services/test-types/test-types.service';
 import { selectTechRecord } from '@/src/app/store/technical-records';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { selectTestTypeFromRoute } from '@/src/app/store/test-types/test-types.selectors';
@@ -80,6 +81,8 @@ export class CreateTestRecordV2Component {
 	store = inject(Store);
 	fb = inject(FormBuilder);
 	route = inject(ActivatedRoute);
+	validators = inject(CommonValidatorsService);
+	testTypesService = inject(TestTypesService);
 	globalErrorService = inject(GlobalErrorService);
 	technicalRecordService = inject(TechnicalRecordService);
 
@@ -132,32 +135,50 @@ export class CreateTestRecordV2Component {
 				testTypeName: this.fb.nonNullable.control(null),
 				name: this.fb.nonNullable.control(''),
 				testTypeId: this.fb.nonNullable.control(''),
-				certificateNumber: this.fb.nonNullable.control(null),
-				secondaryCertificateNumber: this.fb.nonNullable.control(null),
-				testTypeStartTimestamp: this.fb.nonNullable.control(null),
-				testTypeEndTimestamp: this.fb.nonNullable.control(null),
+				certificateNumber: this.fb.nonNullable.control(null, [this.certifcateNumberValidator()]),
+				secondaryCertificateNumber: this.fb.nonNullable.control(null, [this.secondaryCertificateNumberValidator()]),
+				testTypeStartTimestamp: this.fb.nonNullable.control(null, [this.validators.date('Test start date and time')]),
+				testTypeEndTimestamp: this.fb.nonNullable.control(null, [this.validators.date('Test end date and time')]),
 				testResult: this.fb.nonNullable.control(null, [this.testResultValidator()]),
-				prohibitionIssued: this.fb.nonNullable.control(null),
-				reasonForAbandoning: this.fb.nonNullable.control(null),
-				additionalNotesRecorded: this.fb.nonNullable.control(null),
-				additionalCommentsForAbandon: this.fb.nonNullable.control(null),
-				numberOfSeatbeltsFitted: this.fb.nonNullable.control(undefined),
-				lastSeatbeltInstallationCheckDate: this.fb.nonNullable.control(undefined),
+				prohibitionIssued: this.fb.nonNullable.control(null, [this.prohibitionIssuedValidator()]),
+				reasonForAbandoning: this.fb.nonNullable.control(null, [this.reasonForAbandonValidator()]),
+				additionalNotesRecorded: this.fb.nonNullable.control(null, [
+					this.validators.maxLength(500, 'Additional Notes'),
+				]),
+				additionalCommentsForAbandon: this.fb.nonNullable.control(null, [
+					this.validators.maxLength(500, 'Additional Comments'),
+				]),
+				numberOfSeatbeltsFitted: this.fb.nonNullable.control(undefined, [
+					this.validators.max(150, 'Number of seatbelts fitted'),
+					this.numberOfSeatbeltsFittedValidator(),
+				]),
+				lastSeatbeltInstallationCheckDate: this.fb.nonNullable.control(undefined, [
+					this.validators.date('Last seatbelt installation check date'),
+					this.lastSeatbeltInstallationCheckDateValidator(),
+				]),
 				seatbeltInstallationCheckDate: this.fb.nonNullable.control(undefined),
-				testExpiryDate: this.fb.nonNullable.control(undefined),
+				testExpiryDate: this.fb.nonNullable.control(undefined, [
+					this.validators.date('Test expiry date'),
+					this.testExpiryDateValidator(),
+				]),
 				testAnniversaryDate: this.fb.nonNullable.control(undefined),
 				modType: this.fb.nonNullable.control(undefined),
-				emissionStandard: this.fb.nonNullable.control(undefined),
+				emissionStandard: this.fb.nonNullable.control(undefined, [this.emissionStandardValidator()]),
 				fuelType: this.fb.nonNullable.control(undefined),
 				modificationTypeUsed: this.fb.nonNullable.control(undefined),
-				smokeTestKLimitApplied: this.fb.nonNullable.control(undefined),
-				particulateTrapFitted: this.fb.nonNullable.control(undefined),
-				particulateTrapSerialNumber: this.fb.nonNullable.control(undefined),
+				smokeTestKLimitApplied: this.fb.nonNullable.control(undefined, [
+					this.validators.max(9.999, 'Smoke test K limit applied'),
+					this.smokeTestKLimitAppliedValidator(),
+				]),
+				particulateTrapFitted: this.fb.nonNullable.control(undefined, [this.particulateTrapFittedValidator()]),
+				particulateTrapSerialNumber: this.fb.nonNullable.control(undefined, [
+					this.particulateTrapSerialNumberValidator(),
+				]),
 				defects: this.fb.nonNullable.array<FormGroup<FormGroupFrom<DefectDetailsSchema>>>([]),
 				customDefects: this.fb.nonNullable.control(undefined),
 				requiredStandards: this.fb.nonNullable.control(undefined),
-				testNumber: this.fb.nonNullable.control(undefined),
-				reapplicationDate: this.fb.nonNullable.control(undefined),
+				testNumber: this.fb.nonNullable.control(undefined, [this.testNumberValidator()]),
+				reapplicationDate: this.fb.nonNullable.control(undefined, [this.reapplicationDateValidator()]),
 				testCode: this.fb.nonNullable.control(undefined),
 				lastUpdatedAt: this.fb.nonNullable.control(undefined),
 				createdAt: this.fb.nonNullable.control(undefined),
@@ -256,69 +277,131 @@ export class CreateTestRecordV2Component {
 		}
 	}
 
-	canTestTypeBeCreated(testTypeId: string | undefined): boolean {
-		return false; // @TODO: implement
-	}
-
-	canHaveVehicleDetails(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveTestDetails(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveVisitDetails(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveSeatbeltDetails(): boolean {
-		const techRecord = this.techRecord();
-		if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV) return false;
-		return true; // @TODO: implement
-	}
-
-	canHaveNotes(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveDefects(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveRequiredStandards(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveCustomDefects(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveEmissions(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveAdditionalDefects(): boolean {
-		return true; // @TODO: implement
-	}
-
-	canHaveReasonForCreation(): boolean {
-		return false; // @TODO: implement
-	}
-
 	private testResultValidator(): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
-			// Make required for non-voluntary tests
-			const testTypeId = control.parent?.get('testTypeId')?.value;
-			if (['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'].includes(testTypeId)) {
-				return null;
-			}
-
-			if (control.value !== null) {
-				return null;
-			}
+			if (!this.form) return null;
+			const test = this.form.getRawValue();
+			if (!this.testTypesService.canHaveTestResult(test)) return null;
+			if (!this.testTypesService.testResultRequired(test)) return null;
+			if (control.value !== null) return null;
 
 			return { required: { error: 'Test result is required', anchorLink: 'testResult', accordion: 'testSection' } };
+		};
+	}
+
+	private certifcateNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			const test = this.form.getRawValue();
+			if (!this.testTypesService.canHaveCertificateNumber(test)) return null;
+			if (!this.testTypesService.certifcateNumberRequired(test)) return null;
+			if (control.value !== null) return null;
+
+			return {
+				required: { error: 'Certifcate number is required', anchorLink: 'certifcateNumber', accordion: 'testSection' },
+			};
+		};
+	}
+
+	private secondaryCertificateNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			// @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private emissionStandardValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			const test = this.form.getRawValue();
+			if (!this.testTypesService.canHaveEmissionsStandard(test)) return null;
+			if (!this.testTypesService.emissionStandardRequired(test)) return null;
+			if (control.value !== null) return null;
+
+			return {
+				required: { error: 'Emissions standard is required', anchorLink: 'emissionStandard', accordion: 'testSection' },
+			};
+		};
+	}
+
+	private prohibitionIssuedValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			// @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private reasonForAbandonValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			// @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private numberOfSeatbeltsFittedValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			// @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private lastSeatbeltInstallationCheckDateValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private testExpiryDateValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private smokeTestKLimitAppliedValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private particulateTrapFittedValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private particulateTrapSerialNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private reapplicationDateValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
+		};
+	}
+
+	private testNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!this.form) return null;
+			//  @TODO: make conditionally required
+			return null;
 		};
 	}
 
@@ -333,6 +416,7 @@ export class CreateTestRecordV2Component {
 
 		if (this.form.valid) {
 			// @TODO: implement
+			console.log({ ...this.form.getRawValue() });
 		}
 	}
 
