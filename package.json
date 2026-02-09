@@ -34,8 +34,9 @@
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "e2e:headed": "playwright test --headed",
-    "e2e:report": "playwright show-report"
-
+    "e2e:report": "playwright show-report",
+    "e2e:report-bdd": "bun run e2e/scripts/generate-bdd.ts",
+    "e2e:report-accessibility": "bun run e2e/scripts/generate-accessibility-report.ts"
   },
   "private": true,
   "dependencies": {
@@ -84,6 +85,7 @@
     "@angular/build": "^20.3.14",
     "@angular/cli": "^20.3.14",
     "@angular/compiler-cli": "^20.3.16",
+    "@axe-core/playwright": "^4.11.1",
     "@babel/core": "^7.23.9",
     "@biomejs/biome": "1.9.0",
     "@commitlint/cli": "^18.6.1",
@@ -97,8 +99,9 @@
     "@types/json-server": "^0.14.7",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.19.33",
     "@types/uuid": "^9.0.8",
+    "axe-playwright": "^2.2.2",
     "babel-loader": "^9.1.3",
     "bun": "^1.1.45",
     "commitlint-plugin-function-rules": "^3.1.0",

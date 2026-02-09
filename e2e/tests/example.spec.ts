@@ -16,12 +16,14 @@ test.describe('Accessibility', () => {
 		await page.goto('/');
 		await expect(await page.title()).toBe('Vehicle Testing Management - Home');
 		const homePage = new HomePage(page);
+		await homePage.runAccessibilityScan(testInfo);
 		await homePage.searchTechRecordLink.click();
 
 		// Search for a technical record -> search results page
 		await page.waitForURL(/\/search/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - Technical record search');
 		const searchPage = new SearchPage(page);
+		await searchPage.runAccessibilityScan(testInfo);
 		await searchPage.searchInput.fill('VTM-123456789');
 		await searchPage.searchCriteria.selectOption({ label: 'Vehicle registration mark (VRM)' });
 		await searchPage.searchButton.click();
@@ -30,6 +32,7 @@ test.describe('Accessibility', () => {
 		await page.waitForURL(/\/search\/results/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - Search Results');
 		const searchResultsPage = new SearchResultsPage(page);
+		await searchResultsPage.runAccessibilityScan(testInfo);
 		await expect(await searchResultsPage.errorSummary.textContent()).toContain(
 			'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number'
 		);
@@ -40,6 +43,7 @@ test.describe('Accessibility', () => {
 		await page.waitForURL(/\/create/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - Create new technical record');
 		const createPage = new CreatePage(page);
+		await createPage.runAccessibilityScan(testInfo);
 		await createPage.vin.input.fill('HGVTST5');
 		await createPage.generateCTZNumber.checkbox.check();
 		await createPage.vehicleStatus.selectOption('current');
@@ -50,6 +54,7 @@ test.describe('Accessibility', () => {
 		await page.waitForURL(/\/create\/duplicate-vin/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - Create new technical record');
 		const duplicateVinPage = new DuplicateVinPage(page);
+		await duplicateVinPage.runAccessibilityScan(testInfo);
 		await duplicateVinPage.confirmButton.click();
 	});
 });
