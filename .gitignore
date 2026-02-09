@@ -58,3 +58,7 @@ report.json
 
 # Generated files
 scripts/test-type-groupings.json
+specs
+/e2e/credentials
+/test-results
+/playwright-report
