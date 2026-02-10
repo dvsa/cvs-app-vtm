@@ -1,4 +1,4 @@
-import { BasePage } from '../base.page';
+import { BasePage } from '../../base.page';
 
 export class DuplicateVinPage extends BasePage {
 	readonly confirmButton = this.page.getByRole('button', { name: 'Confirm' });

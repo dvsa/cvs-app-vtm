@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { CreatePage } from '../pages/create/create.page';
-import { DuplicateVinPage } from '../pages/duplicate-vin/duplicate-vin.page';
+import { DuplicateVinPage } from '../pages/create/duplicate-vin/duplicate-vin.page';
+import { NewRecordDetailsPage } from '../pages/create/new-record-details/new-record-details.page';
 import { HomePage } from '../pages/home/home.page';
-import { SearchResultsPage } from '../pages/search-results/search-results.page';
+import { SearchResultsPage } from '../pages/search/search-results/search-results.page';
 import { SearchPage } from '../pages/search/search.page';
 
 test.describe('Accessibility', () => {
@@ -56,5 +57,12 @@ test.describe('Accessibility', () => {
 		const duplicateVinPage = new DuplicateVinPage(page);
 		await duplicateVinPage.runAccessibilityScan(testInfo);
 		await duplicateVinPage.confirmButton.click();
+
+		// New record details -> tyre search
+		await page.waitForURL(/\/create\/new-record-details/);
+		await expect(await page.title()).toBe('Vehicle Testing Management - New record details');
+		const recordDetailsPage = new NewRecordDetailsPage(page);
+		await recordDetailsPage.accordions.open();
+		await recordDetailsPage.runAccessibilityScan(testInfo);
 	});
 });
