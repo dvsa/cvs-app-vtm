@@ -13,7 +13,7 @@ export const mockSkeletonHgvs: TechRecordPUTHGVSkeleton[] = [
 		techRecord_vehicleType: 'hgv',
 		techRecord_vehicleConfiguration: 'rigid' as VehicleConfiguration,
 		techRecord_functionCode: 'R',
-		vin: 'AUTOMATIONHGV1',
+		vin: 'SKELETONHGV1',
 	},
 	{
 		techRecord_bodyType_description: 'articulated',
@@ -24,6 +24,6 @@ export const mockSkeletonHgvs: TechRecordPUTHGVSkeleton[] = [
 		techRecord_vehicleType: 'hgv',
 		techRecord_vehicleConfiguration: 'articulated' as VehicleConfiguration,
 		techRecord_functionCode: 'A',
-		vin: 'AUTOMATIONHGV2',
+		vin: 'SKELETONHGV2',
 	},
 ];

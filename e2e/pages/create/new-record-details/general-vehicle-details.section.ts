@@ -36,6 +36,7 @@ export class GeneralVehicleDetailsSection extends BasePage {
 			await this.conversionReferenceNumberTextInput.fill(data.techRecord_conversionRefNo);
 			await this.euVehicleCategoryRadios.fill(data.techRecord_euVehicleCategory);
 			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
+			await this.confirmNumberOfAxlesButton.click();
 		}
 	}
 }

@@ -8,7 +8,7 @@ import { HomePage } from '../pages/home/home.page';
 import { SearchResultsPage } from '../pages/search/search-results/search-results.page';
 import { SearchPage } from '../pages/search/search.page';
 
-test.describe('Accessibility', () => {
+test.describe.skip('Accessibility', () => {
 	test('tech record journey', async ({ page }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',

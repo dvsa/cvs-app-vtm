@@ -41,7 +41,7 @@ export default defineConfig({
 
 		{
 			name: 'chromium',
-			testMatch: '**/tests/*.spec.ts',
+			testMatch: '**/tests/**/*.spec.ts',
 			use: { ...devices['Desktop Edge'], storageState: 'e2e/credentials/.auth/user.json' },
 			dependencies: ['setup'],
 		},
