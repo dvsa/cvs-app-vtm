@@ -4,7 +4,7 @@ import { type AxeResults } from 'axe-core';
 import { generateAccessibilityReport } from '../utils/accessibility-html-reporter';
 import { generateAccessibilityMarkdownReport } from '../utils/accessibility-markdown-reporter';
 
-export class BasePage {
+export abstract class BasePage {
 	constructor(public page: Page) {}
 
 	async runAccessibilityScan(testInfo: TestInfo): Promise<AxeResults> {

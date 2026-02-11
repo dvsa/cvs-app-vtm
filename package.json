@@ -92,6 +92,7 @@
     "@commitlint/config-conventional": "^18.6.2",
     "@compodoc/compodoc": "^1.1.23",
     "@dvsa/biome-config": "0.2.0",
+    "@faker-js/faker": "^10.3.0",
     "@ngrx/schematics": "^18.0.2",
     "@playwright/test": "^1.58.1",
     "@sentry/cli": "^2.32.2",

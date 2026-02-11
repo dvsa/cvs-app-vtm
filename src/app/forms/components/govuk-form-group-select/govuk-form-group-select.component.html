@@ -38,14 +38,14 @@
     [disabled]="disabled()"
   >
     @if (allowNull()) {
-      <option [ngValue]="null"></option>
+      <option [ngValue]="null" [id]="`${id}-default`"></option>
     }
 
     @if (defaultOption() && !disabled()) {
-      <option [selected]="true" [ngValue]="null">{{ defaultOption() }}</option>
+      <option [selected]="true" [ngValue]="null" [id]="`${id}-default`">{{ defaultOption() }}</option>
     }
     @for (option of options(); track option) {
-      <option [ngValue]="option.value">{{ option.label }}</option>
+      <option [ngValue]="option.value" [id]="`${id}-${option.value}`">{{ option.label }}</option>
     }
   </select>
 </div>

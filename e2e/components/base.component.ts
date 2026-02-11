@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-export class BaseComponent {
+export abstract class BaseComponent {
 	constructor(
 		public page: Page,
 		public id?: string

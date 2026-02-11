@@ -5,11 +5,11 @@ export class AccordionsComponent extends BaseComponent {
 	readonly hideAllSectionsButton = this.page.getByRole('button', { name: 'Hide all sections' });
 
 	async isOpen() {
-		return await this.showAllSectionsButton.isVisible();
+		return await this.hideAllSectionsButton.isVisible();
 	}
 
 	async isClosed() {
-		return await this.hideAllSectionsButton.isVisible();
+		return await this.showAllSectionsButton.isVisible();
 	}
 
 	async open() {

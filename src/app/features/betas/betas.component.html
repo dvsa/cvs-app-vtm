@@ -12,6 +12,7 @@
           <govuk-form-group-checkbox
             label="{{ flag.key }}"
             formControlName="enabled"
+            [id]="`${flag.key}`"
           ></govuk-form-group-checkbox>
         </ng-container>
       }

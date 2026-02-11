@@ -14,4 +14,9 @@ export class RadiosComponent extends BaseComponent {
 	async selectOption(value: string): Promise<void> {
 		await this.getRadio(value.toLowerCase()).radio.click();
 	}
+
+	async fill(data?: string | number | null): Promise<void> {
+		if (!data) return;
+		await this.selectOption(data.toString());
+	}
 }

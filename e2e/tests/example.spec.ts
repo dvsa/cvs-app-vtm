@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { mockSkeletonHgvs } from '../mocks/hgv/skeleton-hgvs.mock';
+import { BetasPage } from '../pages/betas/betas.page';
 import { CreatePage } from '../pages/create/create.page';
 import { DuplicateVinPage } from '../pages/create/duplicate-vin/duplicate-vin.page';
 import { NewRecordDetailsPage } from '../pages/create/new-record-details/new-record-details.page';
@@ -13,11 +15,24 @@ test.describe('Accessibility', () => {
 			description: 'Should go through each step of the tech record journey and scan the page for accessibility issues',
 		});
 
-		// Go to home page -> search for a technical record
 		await page.goto('/');
+		await page.waitForLoadState('networkidle');
+		await page.waitForLoadState('domcontentloaded');
 		await expect(await page.title()).toBe('Vehicle Testing Management - Home');
 		const homePage = new HomePage(page);
 		await homePage.runAccessibilityScan(testInfo);
+
+		// Go to betas page -> enable techrecord
+		await expect(homePage.betasLink).toBeVisible();
+		await homePage.betasLink.click();
+		await page.waitForURL(/\/betas/);
+		await expect(await page.title()).toBe('Vehicle Testing Management - Betas');
+		const betasPage = new BetasPage(page);
+		await betasPage.runAccessibilityScan(testInfo);
+		await betasPage.techRecordRedesignCheckbox.checkbox.check();
+		await betasPage.savePreferencesButton.click();
+
+		// Go to home page -> search for a technical record
 		await homePage.searchTechRecordLink.click();
 
 		// Search for a technical record -> search results page
@@ -58,11 +73,17 @@ test.describe('Accessibility', () => {
 		await duplicateVinPage.runAccessibilityScan(testInfo);
 		await duplicateVinPage.confirmButton.click();
 
-		// New record details -> tyre search
+		// Create new record details
 		await page.waitForURL(/\/create\/new-record-details/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - New record details');
 		const recordDetailsPage = new NewRecordDetailsPage(page);
 		await recordDetailsPage.accordions.open();
 		await recordDetailsPage.runAccessibilityScan(testInfo);
+		await recordDetailsPage.fill(mockSkeletonHgvs[0]);
+		await recordDetailsPage.submit();
+
+		// View record details
+		await page.waitForURL(/\/tech-records/);
+		await expect(await page.title()).toBe('Vehicle Testing Management - View technical record');
 	});
 });
