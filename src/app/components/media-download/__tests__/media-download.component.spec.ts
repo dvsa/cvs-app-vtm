@@ -1,0 +1,303 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
+import { RootRoutes } from '@/src/app/models/routes.enum';
+import { DocumentsService } from '@/src/app/services/documents/documents.service';
+import { HttpService } from '@/src/app/services/http/http.service';
+import { initialAppState } from '@/src/app/store';
+import { HttpErrorResponse, HttpEvent, HttpEventType, HttpStatusCode, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router, provideRouter } from '@angular/router';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
+import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { provideMockStore } from '@ngrx/store/testing';
+import { of, throwError } from 'rxjs';
+import { VehicleSubclass } from '../../../models/vehicle-tech-record.model';
+import { MediaDownloadComponent } from '../media-download.component';
+
+describe('MediaDownloadComponent', () => {
+	let component: MediaDownloadComponent;
+	let fixture: ComponentFixture<MediaDownloadComponent>;
+	let router: Router;
+	let httpService: HttpService;
+	let globalErrorService: GlobalErrorService;
+	let documentsService: DocumentsService;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [MediaDownloadComponent],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideRouter([{ path: RootRoutes.ERROR, component: jest.fn() }]),
+				{ provide: HttpService, useValue: { getTestResultMedia: jest.fn() } },
+				{ provide: globalErrorService, useValue: { clearErrors: jest.fn(), setErrors: jest.fn() } },
+				{ provide: DocumentsService, useValue: { openDocumentFromResponse: jest.fn() } },
+			],
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(MediaDownloadComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+
+		router = TestBed.inject(Router);
+		httpService = TestBed.inject(HttpService);
+		globalErrorService = TestBed.inject(GlobalErrorService);
+		documentsService = TestBed.inject(DocumentsService);
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+
+	describe('viewMediaApplicable', () => {
+		it('should return false if the testResultId is not an approvals test', () => {
+			const testResult = {
+				media: [{ type: 'image', path: '/foo/bar.zip' }],
+				testTypes: [{ testTypeId: 'bar' }],
+			} as TestResultSchema;
+
+			expect(component.viewMediaApplicable(testResult)).toBe(false);
+		});
+
+		it('should return true if the testResultId is an approvals test', () => {
+			const testResult = {
+				media: [{ type: 'image', path: '/foo/bar.zip' }],
+				testTypes: [{ testTypeId: '130' }],
+			} as TestResultSchema;
+			expect(component.viewMediaApplicable(testResult)).toBe(true);
+		});
+	});
+
+	describe('canDownloadApprovalsMedia', () => {
+		it('should return false if the testResult media array is undefined', () => {
+			const testResult = { media: undefined } as TestResultSchema;
+			expect(component.canDownloadApprovalsMedia(testResult)).toBe(false);
+		});
+		it('should return false if the testResult media array contains only failReasons', () => {
+			const testResult = {
+				media: [
+					{ type: 'failReason', reason: 'foo' },
+					{ type: 'failReason', reason: 'bar' },
+				],
+			} as TestResultSchema;
+			expect(component.canDownloadApprovalsMedia(testResult)).toBe(false);
+		});
+
+		it('should return true if the testResult media array contains only images or videos', () => {
+			const testResult = {
+				media: [
+					{ type: 'image', path: '/foo/bar1.zip' },
+					{ type: 'video', path: '/foo/bar2.zip' },
+				],
+			} as TestResultSchema;
+			expect(component.canDownloadApprovalsMedia(testResult)).toBe(true);
+		});
+	});
+
+	describe('getFailureToDownloadMediaReason', () => {
+		it('should return an empty string if the testResult media array is undefined', () => {
+			const testResult = { media: undefined } as TestResultSchema;
+			expect(component.getFailureToDownloadMediaReason(testResult)).toBe('No media available');
+		});
+
+		it('should return the first failReason if the testResult media array contains only failReasons', () => {
+			const testResult = {
+				media: [
+					{ type: 'failReason', reason: 'foo' },
+					{ type: 'failReason', reason: 'bar' },
+				],
+			} as TestResultSchema;
+			expect(component.getFailureToDownloadMediaReason(testResult)).toBe('No media available - foo');
+		});
+
+		it('should return a default reason if the testResult media array is empty', () => {
+			const testResult = {
+				media: [] as MediaSchema[],
+			} as TestResultSchema;
+			expect(component.getFailureToDownloadMediaReason(testResult)).toBe(
+				'Reason for failure to capture media not available'
+			);
+		});
+
+		it('should return a custom message if the test media retention period has expired', () => {
+			jest.spyOn(component, 'hasMediaRetentionPeriodExpired').mockReturnValue(true);
+			const testResult = { media: [] as MediaSchema[] } as TestResultSchema;
+			expect(component.getFailureToDownloadMediaReason(testResult)).toBe(
+				'No media available - media was deleted as the retention period had passed'
+			);
+		});
+	});
+
+	describe('ngOnDestroy', () => {
+		it('should call clearErrors', () => {
+			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+			component.ngOnDestroy();
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('downloadMedia', () => {
+		it('should call openDocumentFromResponse upon receiving a 200 response', () => {
+			jest
+				.spyOn(httpService, 'getTestResultMedia')
+				.mockReturnValue(of({ type: HttpEventType.Response } as HttpEvent<string>));
+
+			const openDocumentFromResponseSpy = jest.spyOn(documentsService, 'openDocumentFromResponse');
+			component.downloadMedia({} as TestResultSchema);
+			expect(openDocumentFromResponseSpy).toHaveBeenCalledTimes(1);
+		});
+
+		it('should call setErrors upon receiving a 404 response', () => {
+			jest
+				.spyOn(httpService, 'getTestResultMedia')
+				.mockReturnValue(throwError(() => new HttpErrorResponse({ status: HttpStatusCode.NotFound })));
+
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+			component.downloadMedia({} as TestResultSchema);
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{
+					error:
+						'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+					anchorLink: '',
+				},
+			]);
+		});
+
+		it('should redirect to error page upon receiving a 500 response', () => {
+			jest
+				.spyOn(httpService, 'getTestResultMedia')
+				.mockReturnValue(throwError(() => new HttpErrorResponse({ status: HttpStatusCode.InternalServerError })));
+
+			const navigateSpy = jest.spyOn(router, 'navigate');
+			component.downloadMedia({} as TestResultSchema);
+			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ERROR]);
+		});
+	});
+
+	describe('getMediaRetentionPeriod', () => {
+		it('should return category 7 for any motorcycle', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.vehicleType = VehicleType.MOTORCYCLE;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 6 for any trailer', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.O1;
+			testResult.vehicleType = VehicleType.TRL;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 5 for any vehicle with an EU category of N2', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N2;
+			testResult.vehicleType = VehicleType.HGV;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 5 for any vehicle with an EU category of N3', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N3;
+			testResult.vehicleType = VehicleType.HGV;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 4 for any vehicle with an EU category of M2', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.M2;
+			testResult.vehicleType = VehicleType.PSV;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(10);
+		});
+
+		it('should return category 4 for any vehicle with an EU category of M3', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.M3;
+			testResult.vehicleType = VehicleType.PSV;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(10);
+		});
+
+		it('should return category 3 for any vehicle with an EU category of M1 and no subclasses', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.M1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = undefined;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 3 for any vehicle with an EU category of N1 and no subclasses', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = undefined;
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 3 for any vehicle with an EU category of N1 and subclass of R', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = [VehicleSubclass.R];
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(5);
+		});
+
+		it('should return category 2 for any vehicle with an EU category of N1 and subclass of P,N', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = [VehicleSubclass.P, VehicleSubclass.N];
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(10);
+		});
+
+		it('should return category 2 for any vehicle with an EU category of M1 and subclass of P,M,N', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.M1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = [VehicleSubclass.P, VehicleSubclass.M, VehicleSubclass.N];
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(10);
+		});
+
+		it('should return category 1 for any vehicle with an EU category of M1 and subclass of A,C,S,L', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.M1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = [VehicleSubclass.A, VehicleSubclass.C, VehicleSubclass.S, VehicleSubclass.L];
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(20);
+		});
+
+		it('should return category 1 for any vehicle with an EU category of N1 and subclass of A,C,S,L', () => {
+			const testResult = {} as TestResultSchema;
+			testResult.euVehicleCategory = EUVehicleCategory.N1;
+			testResult.vehicleType = VehicleType.PSV;
+			testResult.vehicleSubclass = [VehicleSubclass.A, VehicleSubclass.C, VehicleSubclass.S, VehicleSubclass.L];
+			expect(component.getMediaRetentionPeriod(testResult)).toEqual(20);
+		});
+	});
+
+	describe('hasMediaRetentionPeriodExpired', () => {
+		beforeAll(() => {
+			jest.useFakeTimers();
+			jest.setSystemTime(new Date('2020-01-01')); // pretend its Jan 1st 2020
+		});
+
+		it('should return false if the date is unprocessable', () => {
+			const testResult = {} as TestResultSchema;
+			expect(component.hasMediaRetentionPeriodExpired(testResult)).toBe(false);
+		});
+
+		it('should return true if the end date is outside the retention period', () => {
+			jest.spyOn(component, 'getMediaRetentionPeriod').mockReturnValue(20);
+			const testResult = {} as TestResultSchema;
+			testResult.testEndTimestamp = new Date('2000-01-01').toISOString();
+			expect(component.hasMediaRetentionPeriodExpired(testResult)).toBe(true);
+		});
+
+		it('should return false if the end date is within the retention period', () => {
+			jest.spyOn(component, 'getMediaRetentionPeriod').mockReturnValue(20);
+			const testResult = {} as TestResultSchema;
+			testResult.testEndTimestamp = new Date('2010-01-01').toISOString();
+			expect(component.hasMediaRetentionPeriodExpired(testResult)).toBe(false);
+		});
+	});
+});
