@@ -13,6 +13,7 @@
               <th scope="col" class="govuk-table__header">Description</th>
               <th scope="col" class="govuk-table__header">Category</th>
               <th scope="col" class="govuk-table__header">PRS?</th>
+              <th scope="col" class="govuk-table__header">Media</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -31,6 +32,9 @@
                   </td>
                   <td class="govuk-table__cell">
                     <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-approval-media-download></app-approval-media-download>
                   </td>
                 </tr>
               }

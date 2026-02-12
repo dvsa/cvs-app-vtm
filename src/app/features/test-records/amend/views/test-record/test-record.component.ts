@@ -62,6 +62,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 				editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$
 			)
 		);
+		console.log(this.testResult$);
 		this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
 		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {

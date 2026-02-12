@@ -10,11 +10,11 @@ import { Router, provideRouter } from '@angular/router';
 import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
-import { MediaDownloadComponent } from '../media-download.component';
+import { ApprovalMediaDownloadComponent } from '../approval-media-download.component';
 
 describe('MediaDownloadComponent', () => {
-	let component: MediaDownloadComponent;
-	let fixture: ComponentFixture<MediaDownloadComponent>;
+	let component: ApprovalMediaDownloadComponent;
+	let fixture: ComponentFixture<ApprovalMediaDownloadComponent>;
 	let router: Router;
 	let httpService: HttpService;
 	let globalErrorService: GlobalErrorService;
@@ -22,7 +22,7 @@ describe('MediaDownloadComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [MediaDownloadComponent],
+			imports: [ApprovalMediaDownloadComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),
@@ -34,7 +34,7 @@ describe('MediaDownloadComponent', () => {
 			],
 		}).compileComponents();
 
-		fixture = TestBed.createComponent(MediaDownloadComponent);
+		fixture = TestBed.createComponent(ApprovalMediaDownloadComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
+import { ApprovalMediaDownloadComponent } from '@components/media-download/approval-media-download.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -13,7 +14,15 @@ import { Subscription, debounceTime } from 'rxjs';
 @Component({
 	selector: 'app-defects[defects][template]',
 	templateUrl: './defects.component.html',
-	imports: [FormsModule, ReactiveFormsModule, RouterLink, TagComponent, ButtonComponent, TruncatePipe],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		RouterLink,
+		TagComponent,
+		ButtonComponent,
+		TruncatePipe,
+		ApprovalMediaDownloadComponent,
+	],
 })
 export class DefectsComponent implements OnInit, OnDestroy {
 	dfs = inject(DynamicFormService);
@@ -34,6 +43,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
 			this.formChange.emit(event);
 		});
+		console.log(JSON.stringify(this.testDefects));
 	}
 
 	ngOnDestroy(): void {

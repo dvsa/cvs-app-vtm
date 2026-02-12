@@ -31,7 +31,11 @@ export class TestResultSummaryComponent implements OnInit {
 				skipWhile((testResult) => !testResult),
 				take(1)
 			)
-			.subscribe((testResult) => this.testRecordsService.editingTestResult(testResult as TestResultSchema));
+			.subscribe((testResult) => {
+				console.log(testResult);
+
+				this.testRecordsService.editingTestResult(testResult as TestResultSchema);
+			});
 
 		this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 	}
