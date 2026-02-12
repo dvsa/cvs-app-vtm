@@ -271,6 +271,18 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		return this.mode() === Modes.SUMMARY ? this.tcs.hasChanged(formControlName) : true;
 	}
 
+	addAxle(): void {
+		const type = this.techRecord().techRecord_vehicleType;
+
+		// For HGV/PSV, if there are 0 axles, initially add 2
+		const needsTwoAxles = type === VehicleTypes.HGV || type === VehicleTypes.PSV;
+		const axlesToAdd = needsTwoAxles && this.techRecordAxles.controls.length === 0 ? 2 : 1;
+
+		for (let i = 0; i < axlesToAdd; i++) {
+			this.axlesService.addAxle(this.parent, type);
+		}
+	}
+
 	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;
 	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
 	protected readonly FormNodeWidth = FormNodeWidth;

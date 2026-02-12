@@ -316,5 +316,17 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		return Math.ceil(totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight);
 	}
 
+	addAxle(): void {
+		const type = this.techRecord().techRecord_vehicleType;
+
+		// For HGV/PSV, if there are 0 axles, initially add 2
+		const needsTwoAxles = type === VehicleTypes.HGV || type === VehicleTypes.PSV;
+		const axlesToAdd = needsTwoAxles && this.techRecordAxles.controls.length === 0 ? 2 : 1;
+
+		for (let i = 0; i < axlesToAdd; i++) {
+			this.axlesService.addAxle(this.parent, type);
+		}
+	}
+
 	protected readonly CouplingTypeOptions = CouplingTypeOptions;
 }

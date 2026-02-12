@@ -326,6 +326,7 @@
           formControlName="techRecord_noOfAxles"
           [width]="FormNodeWidth.XXS"
           [value]="techRecord().techRecord_noOfAxles === 0 ? null : techRecord().techRecord_noOfAxles"
+          (blur)="form.get('techRecord_noOfAxles')?.markAsUntouched()"
           type="number"
         />
 
