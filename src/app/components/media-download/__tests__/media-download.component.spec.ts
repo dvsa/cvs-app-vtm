@@ -8,7 +8,11 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
-import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import {
+	MediaSchema,
+	TestResultSchema,
+	TestResultTestTypeSchema,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
@@ -96,10 +100,10 @@ describe('MediaDownloadComponent', () => {
 		});
 	});
 
-	describe('getFailureToDownloadMediaReason', () => {
+	describe('getFailureToCaptureApprovalsMediaReason', () => {
 		it('should return an empty string if the testResult media array is undefined', () => {
 			const testResult = { media: undefined } as TestResultSchema;
-			expect(component.getFailureToDownloadMediaReason(testResult)).toBe('No media available');
+			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('No media available');
 		});
 
 		it('should return the first failReason if the testResult media array contains only failReasons', () => {
@@ -109,23 +113,15 @@ describe('MediaDownloadComponent', () => {
 					{ type: 'failReason', reason: 'bar' },
 				],
 			} as TestResultSchema;
-			expect(component.getFailureToDownloadMediaReason(testResult)).toBe('No media available - foo');
+			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe('No media available - foo');
 		});
 
 		it('should return a default reason if the testResult media array is empty', () => {
 			const testResult = {
 				media: [] as MediaSchema[],
 			} as TestResultSchema;
-			expect(component.getFailureToDownloadMediaReason(testResult)).toBe(
+			expect(component.getFailureToCaptureApprovalsMediaReason(testResult)).toBe(
 				'Reason for failure to capture media not available'
-			);
-		});
-
-		it('should return a custom message if the test media retention period has expired', () => {
-			jest.spyOn(component, 'hasMediaRetentionPeriodExpired').mockReturnValue(true);
-			const testResult = { media: [] as MediaSchema[] } as TestResultSchema;
-			expect(component.getFailureToDownloadMediaReason(testResult)).toBe(
-				'No media available - media was deleted as the retention period had passed'
 			);
 		});
 	});
@@ -288,15 +284,15 @@ describe('MediaDownloadComponent', () => {
 
 		it('should return true if the end date is outside the retention period', () => {
 			jest.spyOn(component, 'getMediaRetentionPeriod').mockReturnValue(20);
-			const testResult = {} as TestResultSchema;
-			testResult.testEndTimestamp = new Date('2000-01-01').toISOString();
+			const testResult = { testTypes: [{}] as TestResultTestTypeSchema[] } as TestResultSchema;
+			testResult.testTypes[0].testTypeEndTimestamp = new Date('2000-01-01').toISOString();
 			expect(component.hasMediaRetentionPeriodExpired(testResult)).toBe(true);
 		});
 
 		it('should return false if the end date is within the retention period', () => {
 			jest.spyOn(component, 'getMediaRetentionPeriod').mockReturnValue(20);
-			const testResult = {} as TestResultSchema;
-			testResult.testEndTimestamp = new Date('2010-01-01').toISOString();
+			const testResult = { testTypes: [{}] as TestResultTestTypeSchema[] } as TestResultSchema;
+			testResult.testTypes[0].testTypeEndTimestamp = new Date('2010-01-01').toISOString();
 			expect(component.hasMediaRetentionPeriodExpired(testResult)).toBe(false);
 		});
 	});

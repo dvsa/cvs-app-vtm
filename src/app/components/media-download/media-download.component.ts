@@ -100,7 +100,7 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 	}
 
 	hasMediaRetentionPeriodExpired(test: TestResultSchema): boolean {
-		const testEndTimestamp = new Date(test.testEndTimestamp);
+		const testEndTimestamp = new Date(test.testTypes?.[0]?.testTypeEndTimestamp || '');
 		if (Number.isNaN(testEndTimestamp.getTime())) return false;
 		const today = new Date();
 		const target = new Date(testEndTimestamp);
@@ -110,12 +110,8 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 		return today >= target;
 	}
 
-	getFailureToDownloadMediaReason(test: TestResultSchema): string {
+	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
 		if (!test.media) return 'No media available';
-
-		if (this.hasMediaRetentionPeriodExpired(test)) {
-			return 'No media available - media was deleted as the retention period had passed';
-		}
 
 		for (const reason of test.media) {
 			if (reason.type === 'failReason') {
