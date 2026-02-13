@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
-import JSZip, { JSZipObject } from 'jszip';
+import JSZip from 'jszip';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -65,18 +65,20 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		const zip = new JSZip();
 		await zip.loadAsync(blob);
 		const media = this.defect.media;
-		const images: JSZipObject[] = [];
 		const newZip = new JSZip();
 		if (media) {
 			for (const mediaObject of media) {
-				const file = zip.file(mediaObject.path);
+				const file = zip.files[mediaObject.path];
 				if (file) {
-					images.push(file);
-					const fileBlob = this.documentsService.convertToBlob(file);
-					await newZip.loadAsync(fileBlob);
+					console.log('test');
+					console.log(JSON.stringify(newZip));
+					newZip.file(mediaObject.path, await file.async('blob'));
+					console.log('test 2');
+					console.log(JSON.stringify(newZip));
 				}
 			}
 		}
+
 		this.documentsService.openDocumentFromResponse(newZip.name, newZip, 'zip');
 	}
 }
