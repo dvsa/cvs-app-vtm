@@ -316,9 +316,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(
+				{ value: null, disabled: false },
+				{
+					validators: [
+						this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
+					],
+					updateOn: 'blur',
+				}
+			),
 		};
 	}
 
@@ -378,9 +384,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(
+				{ value: null, disabled: false },
+				{
+					validators: [
+						this.commonValidators.range(1, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
+					],
+					updateOn: 'blur',
+				}
+			),
 		};
 	}
 
