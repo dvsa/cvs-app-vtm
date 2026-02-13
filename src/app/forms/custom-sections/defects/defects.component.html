@@ -34,7 +34,7 @@
                     <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
                   </td>
                   <td class="govuk-table__cell">
-                    <app-approval-media-download></app-approval-media-download>
+                    <app-defect-media-download [defect]="defect"></app-defect-media-download>
                   </td>
                 </tr>
               }

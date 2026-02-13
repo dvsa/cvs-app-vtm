@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ButtonComponent } from '@components/button/button.component';
-import { ApprovalMediaDownloadComponent } from '@components/media-download/approval-media-download.component';
+import { DefectMediaDownloadComponent } from '@components/defect-media-download/defect-media-download.component';
 import { TagComponent } from '@components/tag/tag.component';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -22,6 +23,7 @@ import { Subscription, debounceTime } from 'rxjs';
 		ButtonComponent,
 		TruncatePipe,
 		ApprovalMediaDownloadComponent,
+		DefectMediaDownloadComponent,
 	],
 })
 export class DefectsComponent implements OnInit, OnDestroy {

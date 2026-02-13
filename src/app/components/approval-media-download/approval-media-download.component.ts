@@ -12,7 +12,7 @@ import { HttpService } from '../../services/http/http.service';
 import { selectedTestResultState } from '../../store/test-records';
 
 @Component({
-	selector: 'app-approval-media-download',
+	selector: 'app-approval-approval-media-download',
 	templateUrl: './approval-media-download.component.html',
 	styleUrls: ['./approval-media-download.component.scss'],
 	host: {

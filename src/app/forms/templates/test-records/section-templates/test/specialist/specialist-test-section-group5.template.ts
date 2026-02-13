@@ -1,4 +1,4 @@
-import { ApprovalMediaDownloadComponent } from '@components/media-download/approval-media-download.component';
+import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
