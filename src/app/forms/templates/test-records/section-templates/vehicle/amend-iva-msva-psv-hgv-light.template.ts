@@ -17,7 +17,7 @@ export const IvaMsvaVehicleSection: FormNode = {
 		{
 			name: 'media',
 			label: 'Media',
-			value: '',
+			value: [],
 			disabled: true,
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,
