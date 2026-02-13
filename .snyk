@@ -30,4 +30,9 @@ ignore:
       reason: No remediation available
       expires: 2026-06-14T09:01:15.119Z
       created: 2026-02-12T10:13:15.122Z
+  SNYK-JS-AJV-15274295:
+    - '*':
+      reason: No remediation available
+      expires: 2026-06-14T09:01:15.119Z
+      created: 2026-02-12T10:13:15.122Z
 patch: {}
