@@ -25,9 +25,19 @@ ignore:
       reason: Remediation not yet available
       expires: 2026-06-14T09:01:15.119Z
       created: 2025-12-30T10:13:15.122Z
+  SNYK-JS-AJV-15274295:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-03-12T09:01:15.119Z
+      created: 2026-02-12T09:13:15.122Z
+  SNYK-JS-ISAACSBRACEEXPANSION-15208653:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-03-12T09:01:15.119Z
+      created: 2026-02-12T09:13:15.122Z
   SNYK-JS-QS-15268416:
     - '*':
       reason: Remediation not yet available
-      expires: 2026-06-14T09:01:15.119Z
-      created: 2026-02-12T10:13:15.122Z
+      expires: 2026-03-12T09:01:15.119Z
+      created: 2026-02-12T09:13:15.122Z
 patch: {}
