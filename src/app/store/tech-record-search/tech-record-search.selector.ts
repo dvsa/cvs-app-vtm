@@ -11,8 +11,9 @@ export const selectTechRecordSearchLoadingState = createSelector(
 export const selectTechRecordSearchResults = createSelector(techSearchResultFeatureState, (state) => selectAll(state));
 
 export const selectTechRecordSearchResultsBySystemNumber = createSelector(
+	techSearchResultFeatureState,
 	selectTechRecordSearchResults,
-	(searchResults) => {
+	(state, searchResults) => {
 		const records: TechRecordSearchSchema[] = [];
 		const visitedSystemNumbers = new Set<string>();
 		searchResults.forEach((result) => {
@@ -31,6 +32,10 @@ export const selectTechRecordSearchResultsBySystemNumber = createSelector(
 					) ??
 					records[0];
 				records.push(mostCurrentRecord);
+			}
+
+			if (state.includeArchived && result.techRecord_statusCode === 'archived') {
+				records.push(result);
 			}
 		});
 		return records;

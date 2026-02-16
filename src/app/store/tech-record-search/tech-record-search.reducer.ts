@@ -6,6 +6,7 @@ import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } 
 interface Extras {
 	error: string;
 	loading: boolean;
+	includeArchived?: boolean;
 }
 
 export interface SearchResultState extends EntityState<TechRecordSearchSchema>, Extras {}
@@ -26,7 +27,7 @@ export const initialTechSearchResultState: EntityState<TechRecordSearchSchema> &
 
 export const techSearchResultReducer = createReducer(
 	initialTechSearchResultState,
-	on(fetchSearchResult, (state) => ({ ...state, loading: true })),
+	on(fetchSearchResult, (state, { includeArchived }) => ({ ...state, includeArchived, loading: true })),
 	on(fetchSearchResultSuccess, (state, action) => ({
 		...techSearchResultAdapter.setAll(action.payload, state),
 		loading: false,

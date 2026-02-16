@@ -4,7 +4,7 @@
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        @if (backlink.url) {
+        @if (backlink.url != null) {
           <a id="back-button" [routerLink]="backlink.url" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
         } @else {
           <a id="back-button"class="govuk-back-link govuk-breadcrumbs__link" (click)="location.back()">Back</a>

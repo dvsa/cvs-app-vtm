@@ -1,3 +1,4 @@
+import { PaginationComponent } from '@/src/app/components/pagination/pagination.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
 import { Roles } from '@/src/app/models/roles.enum';
@@ -15,7 +16,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	selector: 'app-search-results-v2',
 	templateUrl: './search-results-v2.component.html',
 	styleUrls: ['./search-results-v2.component.scss'],
-	imports: [SearchFormComponent, SearchResultComponent, RoleRequiredDirective, AsyncPipe],
+	imports: [SearchFormComponent, SearchResultComponent, RoleRequiredDirective, AsyncPipe, PaginationComponent],
 })
 export class SearchResultsV2Component implements OnInit, OnDestroy {
 	store = inject(Store);

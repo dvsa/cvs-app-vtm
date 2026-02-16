@@ -13,14 +13,25 @@
         [searchResults]="searchResults.length"
       ></app-search-form>
 
-      @for (
-        searchResult of searchResults;
-        track searchResult.createdTimestamp
-      ) {
-        <app-search-result
-          [searchResult]="searchResult"
-          *appRoleRequired="roles.TechRecordView"
-        ></app-search-result>
+      @if (searchResults.length) {
+        @if (pagination.paginationOptions(); as page) {
+          @for (
+            searchResult of searchResults.slice(page.start, page.end);
+            track searchResult.createdTimestamp
+          ) {
+            <app-search-result
+              [searchResult]="searchResult"
+              *appRoleRequired="roles.TechRecordView"
+            ></app-search-result>
+          }
+        }
+
+        <app-pagination
+          #pagination
+          tableName="search-results"
+          [numberOfItems]="searchResults.length"
+          [itemsPerPage]="4"
+        ></app-pagination>
       }
     }
   </div>

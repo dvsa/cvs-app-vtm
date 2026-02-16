@@ -46,7 +46,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 		searchTerm: this.fb.control('', [
 			this.validators.required(() => ({
 				error: 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.',
-				anchorLink: 'searchTerm',
+				anchorLink: 'search-term',
 			})),
 		]),
 		searchCriteria: this.fb.control('all', [
@@ -69,7 +69,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
 			this.form.patchValue({
 				searchTerm: searchTerm ?? '',
-				searchCriteria: searchCriteria ?? '',
+				searchCriteria: searchCriteria ?? 'all',
 				includeArchived: includeArchived ?? false,
 			});
 		});
@@ -93,7 +93,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			const queryParams = this.form.getRawValue();
-			this.router.navigate(['/search/results'], { queryParams });
+			this.router.navigate(['/search/results'], { queryParams, queryParamsHandling: 'merge' });
 		}
 	}
 }
