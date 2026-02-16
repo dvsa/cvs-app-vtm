@@ -1,14 +1,13 @@
 @if (testResult(); as testResult) {
-    <td class="govuk-table__cell">Media:</td>
     @if (canDownloadMedia()) {
-      <td id="media-download-link" class="govuk-table__cell">
+      <td id="media-download-link">
         <button class="link" (click)="downloadMedia(testResult)">
           Download media
         </button>
       </td>
     } @else {
       <td id="media-failure-to-capture-reason" class="govuk-table__cell">
-<!--        {{ getFailureToCaptureDefectMediaReason(testResult) }}-->
+        Not available
       </td>
     }
 }

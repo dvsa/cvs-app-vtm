@@ -70,15 +70,17 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 			for (const mediaObject of media) {
 				const file = zip.files[mediaObject.path];
 				if (file) {
-					console.log('test');
-					console.log(JSON.stringify(newZip));
-					newZip.file(mediaObject.path, await file.async('blob'));
-					console.log('test 2');
-					console.log(JSON.stringify(newZip));
+					const fileData = await file.async('blob');
+					newZip.file(mediaObject.path, fileData);
 				}
 			}
 		}
+		const base64 = await newZip.generateAsync({ type: 'base64' });
 
-		this.documentsService.openDocumentFromResponse(newZip.name, newZip, 'zip');
+		this.documentsService.openDocumentFromResponse(
+			`${this.defect.imNumber}-${this.defect.imDescription}`,
+			`data:application/zip;base64, ${base64}`,
+			'zip'
+		);
 	}
 }
