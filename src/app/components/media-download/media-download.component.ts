@@ -1,12 +1,15 @@
 import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, Signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { Store } from '@ngrx/store';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { CustomFormControlComponent } from '../../forms/custom-sections/custom-form-control/custom-form-control.component';
 import { RootRoutes } from '../../models/routes.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '../../models/testTypeId.enum';
+import { VehicleSubclass } from '../../models/vehicle-tech-record.model';
 import { DocumentsService } from '../../services/documents/documents.service';
 import { HttpService } from '../../services/http/http.service';
 import { selectedTestResultState } from '../../store/test-records';
@@ -37,6 +40,74 @@ export class MediaDownloadComponent extends CustomFormControlComponent implement
 	canDownloadApprovalsMedia(test: TestResultSchema): boolean {
 		if (!test.media) return false;
 		return test.media.some((media) => media.type !== 'failReason');
+	}
+
+	getMediaRetentionPeriod(test: TestResultSchema): number {
+		// Motorcycles
+		if (test.vehicleType === VehicleType.MOTORCYCLE) {
+			return 5;
+		}
+
+		// O1-O4 (heavy and small TRLs)
+		if (test.vehicleType === VehicleType.TRL) {
+			return 5;
+		}
+
+		// N2/N3 (heavy HGVs)
+		if (test.euVehicleCategory === EUVehicleCategory.N2 || test.euVehicleCategory === EUVehicleCategory.N3) {
+			return 5;
+		}
+
+		// M2/M3 (heavy PSVs)
+		if (test.euVehicleCategory === EUVehicleCategory.M2 || test.euVehicleCategory === EUVehicleCategory.M3) {
+			return 10;
+		}
+
+		const m1 = test.euVehicleCategory === EUVehicleCategory.M1;
+		const n1 = test.euVehicleCategory === EUVehicleCategory.N1;
+		if (m1 || n1) {
+			if (!test.vehicleSubclass || test.vehicleSubclass.length === 0) {
+				return 5;
+			}
+
+			const category1Subclasses: string[] = [
+				VehicleSubclass.A,
+				VehicleSubclass.C,
+				VehicleSubclass.S,
+				VehicleSubclass.L,
+			];
+			if (test.vehicleSubclass.every((subclass) => category1Subclasses.includes(subclass))) {
+				return 20;
+			}
+
+			const n1Category2Subclasses: string[] = [VehicleSubclass.P, VehicleSubclass.N];
+			if (n1 && test.vehicleSubclass.every((subclass) => n1Category2Subclasses.includes(subclass))) {
+				return 10;
+			}
+
+			const m1Category2Subclasses: string[] = [VehicleSubclass.P, VehicleSubclass.M, VehicleSubclass.N];
+			if (m1 && test.vehicleSubclass.every((subclass) => m1Category2Subclasses.includes(subclass))) {
+				return 10;
+			}
+
+			const n1Category3Subclasses: string[] = [VehicleSubclass.R];
+			if (test.vehicleSubclass.every((subclass) => n1Category3Subclasses.includes(subclass))) {
+				return 5;
+			}
+		}
+
+		return Number.POSITIVE_INFINITY;
+	}
+
+	hasMediaRetentionPeriodExpired(test: TestResultSchema): boolean {
+		const testEndTimestamp = new Date(test.testTypes?.[0]?.testTypeEndTimestamp || '');
+		if (Number.isNaN(testEndTimestamp.getTime())) return false;
+		const today = new Date();
+		const target = new Date(testEndTimestamp);
+		const retentionPeriod = this.getMediaRetentionPeriod(test);
+		target.setFullYear(testEndTimestamp.getFullYear() + retentionPeriod);
+
+		return today >= target;
 	}
 
 	getFailureToCaptureApprovalsMediaReason(test: TestResultSchema): string {
