@@ -1,0 +1,27 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-heading-l govuk-!-font-weight-bold">
+      Search for a technical record
+    </p>
+
+    @if (
+      technicalRecordService.searchResultsWithUniqueSystemNumbers$ | async;
+      as searchResults
+    ) {
+      <app-search-form
+        class="search-form"
+        [searchResults]="searchResults.length"
+      ></app-search-form>
+
+      @for (
+        searchResult of searchResults;
+        track searchResult.createdTimestamp
+      ) {
+        <app-search-result
+          [searchResult]="searchResult"
+          *appRoleRequired="roles.TechRecordView"
+        ></app-search-result>
+      }
+    }
+  </div>
+</div>
