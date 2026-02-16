@@ -347,7 +347,7 @@ describe('HttpService', () => {
 			httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/term?searchCriteria=${SEARCH_TYPES.ALL}`
+				`${environment.VTM_API_URI}/v3/technical-records/search/term?searchCriteria=${SEARCH_TYPES.ALL}&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 		});
