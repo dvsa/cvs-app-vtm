@@ -31,6 +31,7 @@ import {
 	DefaultNullOrEmpty,
 	DefaultNullOrEmpty as DefaultNullOrEmpty_1,
 } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
@@ -45,7 +46,6 @@ import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
-import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 
 @Component({
 	selector: 'app-defect',
@@ -78,7 +78,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	http = inject(HttpClient);
 	cdr = inject(ChangeDetectorRef);
-  defectMediaService = inject(DefectMediaService);
+	defectMediaService = inject(DefectMediaService, { optional: true });
 
 	form!: CustomFormGroup;
 	index!: number;
@@ -154,7 +154,12 @@ export class DefectComponent implements OnInit, OnDestroy {
 					this.initializeInfoDictionary(defectsTaxonomy);
 				});
 		}
-		await this.loadImages();
+
+		if (this.defect && this.defect.media && this.testResultId && this.defectMediaService) {
+			await this.defectMediaService.loadImages(this.defect.media, this.testResultId);
+			this.images = this.defectMediaService.getImages();
+			this.cdr.detectChanges();
+		}
 	}
 
 	ngOnDestroy(): void {
@@ -379,39 +384,5 @@ export class DefectComponent implements OnInit, OnDestroy {
 					}
 				},
 			});
-	}
-
-	async loadImages() {
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/zip');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		const fileName = `${this.testResultId}`;
-		const images = this.defect?.media?.filter((media) => media.type === 'image');
-		if (!images) {
-			return;
-		}
-
-		let localParams = new HttpParams();
-		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
-
-		const url = await lastValueFrom(
-			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
-				params: localParams,
-				headers,
-				responseType: 'text',
-			})
-		);
-
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
-
-		for (const image of images) {
-			const file = zip.files[image.path];
-			if (file) {
-				this.images[image.path] = await file.async('base64');
-			}
-		}
-		this.cdr.detectChanges();
 	}
 }

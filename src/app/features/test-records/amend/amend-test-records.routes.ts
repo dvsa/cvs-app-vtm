@@ -1,3 +1,4 @@
+import { DefectMediaService } from '@/src/app/services/defect-media-service/defect-media-service.service';
 import { Routes } from '@angular/router';
 import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
@@ -12,6 +13,7 @@ import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/t
 export const routes: Routes = [
 	{
 		path: '',
+		providers: [DefectMediaService],
 		loadComponent: () =>
 			import('./views/test-router-outlet/test-router-outlet.component').then((m) => m.TestRouterOutletComponent),
 		resolve: { load: testResultResolver, testTypeTaxonomy: testTypeTaxonomyResolver },
