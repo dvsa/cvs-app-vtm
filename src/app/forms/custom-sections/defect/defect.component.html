@@ -70,11 +70,11 @@
       <h2 class="govuk-heading-m">Defect media</h2>
       @if (imagesLoaded && hasMediaAvailable()) {
         <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
-        <div class="govuk-heading-s defect-container">Photos</div>
+        <div class="govuk-heading-s underline">Photos</div>
           @for (media of defect.media; track media) {
             @if (media.type === 'image') {
               @let src = `data:image/jpg;base64,${images[media.path]}`;
-              <div style="justify-content: center">
+              <div style="display: inline-flex" class="defect-container">
                 <img class="media-image" [src]="src" [alt]="media.path" />
                 <button class="link download-image-link">
                   Download photo
