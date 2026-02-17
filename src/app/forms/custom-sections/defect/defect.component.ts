@@ -20,7 +20,7 @@ import {
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
-import { DefectDetailsSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DefectDetailsSchema, MediaSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
@@ -82,7 +82,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 	index!: number;
 	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	includeNotes = false;
-	imagesLoaded = false;
 	private vehicleType?: VehicleType;
 
 	private defectsForm?: CustomFormArray;
@@ -295,6 +294,37 @@ export class DefectComponent implements OnInit, OnDestroy {
 		return !isEqual(this.images, {});
 	}
 
+	async downloadPhoto(media: MediaSchema) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+		const fileName = `${this.testResultId}`;
+
+		let localParams = new HttpParams();
+		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+
+		const url = await lastValueFrom(
+			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+				params: localParams,
+				headers,
+				responseType: 'text',
+			})
+		);
+
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+		const zip = new JSZip();
+		await zip.loadAsync(blob, { base64: true });
+		const file = zip.file(media.path);
+		if (!file) {
+			return;
+		}
+		const fileData = await file.async('blob');
+		const newZip = new JSZip();
+		newZip.file(media.path, fileData);
+		const base64 = await newZip.generateAsync({ type: 'base64' });
+		this.documentsService.openDocumentFromResponse(fileName, `data:application/zip;base64, ${base64}`, 'zip');
+	}
+
 	async downloadAllMedia() {
 		let headers = new HttpHeaders();
 		headers = headers.set('Content-Type', 'application/zip');
@@ -380,8 +410,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 				this.images[image.path] = await file.async('base64');
 			}
 		}
-		console.log(1);
-		this.imagesLoaded = true;
 		this.cdr.detectChanges();
 	}
 }
