@@ -1,4 +1,5 @@
 import { DateInputComponent } from '@/e2e/components/date-input.component';
+import { isHeavyTrailer } from '@/e2e/utils/tech-record.util';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BasePage } from '../../base.page';
 
@@ -10,7 +11,7 @@ export class AuthorisationIntoServiceSection extends BasePage {
 	readonly dateRejectedDateInput = new DateInputComponent(this.page, 'techRecord_authIntoService_dateRejected');
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
-		if (data.techRecord_vehicleType !== 'trl') return;
+		if (!isHeavyTrailer(data)) return;
 		await this.cocIssueDateDateInput.fill(data.techRecord_authIntoService_cocIssueDate);
 		await this.dateReceivedDateInput.fill(data.techRecord_authIntoService_dateReceived);
 		await this.datePendingDateInput.fill(data.techRecord_authIntoService_datePending);

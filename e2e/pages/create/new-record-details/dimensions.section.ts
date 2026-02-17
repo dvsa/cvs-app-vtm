@@ -1,4 +1,5 @@
 import { TextInputComponent } from '@/e2e/components/text-input.component';
+import { isHeavyTrailer } from '@/e2e/utils/tech-record.util';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BasePage } from '../../base.page';
 
@@ -67,7 +68,7 @@ export class DimensionsSection extends BasePage {
 			await this.frontOfVehicleToCouplingDeviceMaximumTextInput.fill(data.techRecord_frontAxleTo5thWheelMax);
 		}
 
-		if (data.techRecord_vehicleType === 'trl') {
+		if (isHeavyTrailer(data)) {
 			// Fill axle spacings
 			if (Array.isArray(data.techRecord_dimensions_axleSpacing)) {
 				if (data.techRecord_dimensions_axleSpacing.length > 1) {

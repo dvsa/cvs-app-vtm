@@ -1,5 +1,6 @@
 import { TextInputComponent } from '@/e2e/components/text-input.component';
 import { TextareaComponent } from '@/e2e/components/textarea.component';
+import { isHeavyTrailer } from '@/e2e/utils/tech-record.util';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BasePage } from '../../base.page';
 
@@ -21,7 +22,7 @@ export class ManufacturerSection extends BasePage {
 	);
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
-		if (data.techRecord_vehicleType !== 'trl') return;
+		if (!isHeavyTrailer(data)) return;
 		await this.nameTextInput.fill(data.techRecord_manufacturerDetails_name);
 		await this.address1TextInput.fill(data.techRecord_manufacturerDetails_address1);
 		await this.address2TextInput.fill(data.techRecord_manufacturerDetails_address2);

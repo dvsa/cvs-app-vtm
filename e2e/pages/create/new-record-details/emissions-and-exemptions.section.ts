@@ -11,9 +11,15 @@ export class EmissionsAndExemptionsSection extends BasePage {
 	readonly tachoExemptRadios = new RadiosComponent(this.page, 'techRecord_tachoExemptMrk');
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
-		// @TODO: handle other vehicle types
 		if (data.techRecord_vehicleType === 'hgv') {
 			await this.drawbarCouplingFittedRadios.fill(data.techRecord_drawbarCouplingFitted);
+			await this.euroStandardRadios.fill(data.techRecord_euroStandard);
+			await this.emissionLimitTextInput.fill(data.techRecord_emissionsLimit);
+			await this.speedLimiterExemptRadios.fill(data.techRecord_speedLimiterMrk);
+			await this.tachoExemptRadios.fill(data.techRecord_tachoExemptMrk);
+		}
+
+		if (data.techRecord_vehicleType === 'psv') {
 			await this.euroStandardRadios.fill(data.techRecord_euroStandard);
 			await this.emissionLimitTextInput.fill(data.techRecord_emissionsLimit);
 			await this.speedLimiterExemptRadios.fill(data.techRecord_speedLimiterMrk);

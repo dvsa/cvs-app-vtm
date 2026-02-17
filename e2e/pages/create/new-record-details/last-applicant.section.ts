@@ -13,16 +13,14 @@ export class LastApplicantSection extends BasePage {
 	readonly emailAddressTextInput = new TextInputComponent(this.page, 'techRecord_applicantDetails_emailAddress');
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
-		// @TODO: handle other vehicle types
-		if (data.techRecord_vehicleType === 'hgv') {
-			await this.nameTextInput.fill(data.techRecord_applicantDetails_name);
-			await this.addressLine1TextInput.fill(data.techRecord_applicantDetails_address1);
-			await this.addressLine2TextInput.fill(data.techRecord_applicantDetails_address2);
-			await this.townOrCityTextInput.fill(data.techRecord_applicantDetails_postTown);
-			await this.countyTextInput.fill(data.techRecord_applicantDetails_address3);
-			await this.postcodeTextInput.fill(data.techRecord_applicantDetails_postCode);
-			await this.telephoneNumberTextInput.fill(data.techRecord_applicantDetails_telephoneNumber);
-			await this.emailAddressTextInput.fill(data.techRecord_applicantDetails_emailAddress);
-		}
+		if (data.techRecord_vehicleType !== 'psv') return;
+		await this.nameTextInput.fill(data.techRecord_applicantDetails_name);
+		await this.addressLine1TextInput.fill(data.techRecord_applicantDetails_address1);
+		await this.addressLine2TextInput.fill(data.techRecord_applicantDetails_address2);
+		await this.townOrCityTextInput.fill(data.techRecord_applicantDetails_postTown);
+		await this.countyTextInput.fill(data.techRecord_applicantDetails_address3);
+		await this.postcodeTextInput.fill(data.techRecord_applicantDetails_postCode);
+		await this.telephoneNumberTextInput.fill(data.techRecord_applicantDetails_telephoneNumber);
+		await this.emailAddressTextInput.fill(data.techRecord_applicantDetails_emailAddress);
 	}
 }
