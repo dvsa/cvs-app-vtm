@@ -24,6 +24,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
 import { Subscription, debounceTime } from 'rxjs';
+import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 
 @Component({
 	selector: 'app-defects[defects][template]',
@@ -45,6 +46,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	documentsService = inject(DocumentsService);
 	router = inject(Router);
 	globalErrorService = inject(GlobalErrorService);
+  defectMediaService = inject(DefectMediaService);
 
 	readonly isEditing = input(false);
 	readonly defects = input.required<DefectCategoryReferenceDataSchema[] | null>();

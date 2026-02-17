@@ -45,6 +45,7 @@ import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
+import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 
 @Component({
 	selector: 'app-defect',
@@ -77,6 +78,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	http = inject(HttpClient);
 	cdr = inject(ChangeDetectorRef);
+  defectMediaService = inject(DefectMediaService);
 
 	form!: CustomFormGroup;
 	index!: number;
