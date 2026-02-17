@@ -3,10 +3,13 @@
     @if (form && defectCount) {
       <ng-container [formGroup]="form">
         <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
+        <caption class="govuk-table__caption govuk-table__caption--m">
+          Defects
+        </caption>
+        @if (hasMediaAvailable()) {
+          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+        }
         <table class="govuk-table">
-          <caption class="govuk-table__caption govuk-table__caption--m">
-            Defects
-          </caption>
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
               <th scope="col" class="govuk-table__header">Reference</th>

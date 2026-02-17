@@ -1,5 +1,13 @@
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+	HttpClient,
+	HttpErrorResponse,
+	HttpEventType,
+	HttpHeaders,
+	HttpParams,
+	HttpStatusCode,
+} from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -13,14 +21,17 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
 import { DefectDetailsSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { environment } from '@environments/environment';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
+import { RootRoutes } from '@models/routes.enum';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { Store, select } from '@ngrx/store';
 import {
 	DefaultNullOrEmpty,
 	DefaultNullOrEmpty as DefaultNullOrEmpty_1,
 } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
@@ -28,7 +39,9 @@ import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
-import { Subject, filter, take, takeUntil, withLatestFrom } from 'rxjs';
+import JSZip from 'jszip';
+import { isEqual } from 'lodash';
+import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 'rxjs';
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
@@ -60,27 +73,34 @@ export class DefectComponent implements OnInit, OnDestroy {
 	store = inject(Store<State>);
 	resultService = inject(ResultOfTestService);
 	errorService = inject(GlobalErrorService);
+	documentsService = inject(DocumentsService);
+	globalErrorService = inject(GlobalErrorService);
+	http = inject(HttpClient);
+	cdr = inject(ChangeDetectorRef);
 
 	form!: CustomFormGroup;
 	index!: number;
 	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	includeNotes = false;
+	imagesLoaded = false;
 	private vehicleType?: VehicleType;
 
 	private defectsForm?: CustomFormArray;
 	private defects?: DefectDetailsSchema[];
 	defect?: DefectDetailsSchema;
+	testResultId: string | undefined = undefined;
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
 	onDestroy$ = new Subject();
+	images: Record<string, string> = {};
 
 	booleanOptions: FormNodeOption<string | number | boolean>[] = [
 		{ value: true, label: 'Yes' },
 		{ value: false, label: 'No' },
 	];
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
 		const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));
 		const defectRef = this.store.pipe(select(selectRouteParam('ref')));
 
@@ -94,6 +114,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			.subscribe(([testResult, defectIndexValue, defectRefValue]) => {
 				if (!testResult) this.navigateBack();
 				this.defects = testResult?.testTypes[0].defects;
+				this.testResultId = testResult?.testResultId;
 				this.vehicleType = testResult?.vehicleType;
 				this.defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get([
 					'testTypes',
@@ -132,6 +153,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 					this.initializeInfoDictionary(defectsTaxonomy);
 				});
 		}
+		await this.loadImages();
 	}
 
 	ngOnDestroy(): void {
@@ -263,4 +285,103 @@ export class DefectComponent implements OnInit, OnDestroy {
 		options.map((option) => ({ value: option, label: this.pascalCase(String(option)) }));
 
 	pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
+
+	get params(): Map<string, string> {
+		return new Map([['category', 'defects']]);
+	}
+
+	hasMediaAvailable(): boolean {
+		// return true if one of the defects contains media which are images
+		return !isEqual(this.images, {});
+	}
+
+	async downloadAllMedia() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+		const fileName = `${this.testResultId}`;
+		const fileType = 'zip';
+
+		let localParams = new HttpParams();
+		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+
+		this.http
+			.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+				params: localParams,
+				headers,
+				observe: 'events',
+				responseType: 'text',
+			})
+			.subscribe({
+				next: (response) => {
+					switch (response.type) {
+						case HttpEventType.DownloadProgress:
+							break;
+						case HttpEventType.Response:
+							this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
+							break;
+						default:
+							break;
+					}
+				},
+				error: (error) => {
+					if (error instanceof HttpErrorResponse) {
+						switch (error.status) {
+							case HttpStatusCode.NotFound:
+								this.globalErrorService.setErrors([
+									{
+										error:
+											'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+										anchorLink: '',
+									},
+								]);
+								break;
+							case HttpStatusCode.InternalServerError:
+								this.router.navigate([RootRoutes.ERROR]);
+								break;
+							default:
+								// for sentry reporting
+								console.error(error);
+								break;
+						}
+					}
+				},
+			});
+	}
+
+	async loadImages() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+		const fileName = `${this.testResultId}`;
+		const images = this.defect?.media?.filter((media) => media.type === 'image');
+		if (!images) {
+			return;
+		}
+
+		let localParams = new HttpParams();
+		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+
+		const url = await lastValueFrom(
+			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+				params: localParams,
+				headers,
+				responseType: 'text',
+			})
+		);
+
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+		const zip = new JSZip();
+		await zip.loadAsync(blob, { base64: true });
+
+		for (const image of images) {
+			const file = zip.files[image.path];
+			if (file) {
+				this.images[image.path] = await file.async('base64');
+			}
+		}
+		console.log(1);
+		this.imagesLoaded = true;
+		this.cdr.detectChanges();
+	}
 }

@@ -44,11 +44,11 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		return this.defect.media.some((media) => media.type !== 'failReason');
 	}
 
-	async downloadMedia(test: TestResultSchema) {
+	async downloadMedia() {
 		let headers = new HttpHeaders();
 		headers = headers.set('Content-Type', 'application/zip');
 		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		const fileName = `${test.testResultId}`;
+		const fileName = `${this.testResult()?.testResultId}`;
 
 		let localParams = new HttpParams();
 		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));

@@ -1,15 +1,28 @@
-import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
+import {
+	HttpClient,
+	HttpErrorResponse,
+	HttpEventType,
+	HttpHeaders,
+	HttpParams,
+	HttpStatusCode,
+} from '@angular/common/http';
+import { Component, OnDestroy, OnInit, Signal, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { DefectMediaDownloadComponent } from '@components/defect-media-download/defect-media-download.component';
 import { TagComponent } from '@components/tag/tag.component';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { environment } from '@environments/environment';
+import { RootRoutes } from '@models/routes.enum';
+import { Store } from '@ngrx/store';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
+import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
+import { selectedTestResultState } from '@store/test-records';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -22,17 +35,22 @@ import { Subscription, debounceTime } from 'rxjs';
 		TagComponent,
 		ButtonComponent,
 		TruncatePipe,
-		ApprovalMediaDownloadComponent,
 		DefectMediaDownloadComponent,
 	],
 })
 export class DefectsComponent implements OnInit, OnDestroy {
 	dfs = inject(DynamicFormService);
+	http = inject(HttpClient);
+	store = inject(Store);
+	documentsService = inject(DocumentsService);
+	router = inject(Router);
+	globalErrorService = inject(GlobalErrorService);
 
 	readonly isEditing = input(false);
 	readonly defects = input.required<DefectCategoryReferenceDataSchema[] | null>();
 	readonly template = input.required<FormNode>();
 	readonly data = input<Partial<TestResultSchema>>({});
+	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
 
 	readonly formChange = output<Record<string, any> | [][]>();
 
@@ -45,11 +63,81 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
 			this.formChange.emit(event);
 		});
-		console.log(JSON.stringify(this.testDefects));
 	}
 
 	ngOnDestroy(): void {
 		this.formSubscription.unsubscribe();
+	}
+
+	get params(): Map<string, string> {
+		return new Map([['category', 'defects']]);
+	}
+
+	hasMediaAvailable(): boolean {
+		// return true if one of the defects contains media which are images
+		for (const defect of this.testDefects) {
+			if (defect.media) {
+				const hasImages = defect.media.some((media) => media.type !== 'failReason');
+				if (hasImages) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	async downloadAllMedia() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+		const fileName = `${this.testResult()?.testResultId}`;
+		const fileType = 'zip';
+
+		let localParams = new HttpParams();
+		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+
+		this.http
+			.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+				params: localParams,
+				headers,
+				observe: 'events',
+				responseType: 'text',
+			})
+			.subscribe({
+				next: (response) => {
+					switch (response.type) {
+						case HttpEventType.DownloadProgress:
+							break;
+						case HttpEventType.Response:
+							this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
+							break;
+						default:
+							break;
+					}
+				},
+				error: (error) => {
+					if (error instanceof HttpErrorResponse) {
+						switch (error.status) {
+							case HttpStatusCode.NotFound:
+								this.globalErrorService.setErrors([
+									{
+										error:
+											'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+										anchorLink: '',
+									},
+								]);
+								break;
+							case HttpStatusCode.InternalServerError:
+								this.router.navigate([RootRoutes.ERROR]);
+								break;
+							default:
+								// for sentry reporting
+								console.error(error);
+								break;
+						}
+					}
+				},
+			});
 	}
 
 	get defectsForm(): CustomFormArray {
