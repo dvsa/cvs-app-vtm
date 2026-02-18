@@ -33,7 +33,6 @@ import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import JSZip from 'jszip';
-import { isEqual } from 'lodash';
 import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 'rxjs';
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
@@ -86,7 +85,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
 	onDestroy$ = new Subject();
-	images: Record<string, string> = {};
 
 	booleanOptions: FormNodeOption<string | number | boolean>[] = [
 		{ value: true, label: 'Yes' },
@@ -147,9 +145,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 				});
 		}
 
-		if (this.defect && this.defect.media && this.testResultId && this.defectMediaService) {
-			await this.defectMediaService.loadImages(this.defect.media, this.testResultId);
-			this.images = this.defectMediaService.getImages();
+		if (this.defect && this.testResultId && this.defectMediaService) {
+			await this.defectMediaService.loadImages(this.defect, this.testResultId);
 			this.cdr.detectChanges();
 		}
 	}
@@ -158,6 +155,15 @@ export class DefectComponent implements OnInit, OnDestroy {
 		this.onDestroy$.next(true);
 		this.onDestroy$.complete();
 	}
+
+  srcValue(mediaSchema: MediaSchema): string {
+    if (!this.defectMediaService) {
+      return '';
+    }
+    const images = this.defectMediaService.getImages();
+    const image = images[mediaSchema.path];
+    return `data:image/jpg;base64,${image}`;
+  }
 
 	get isDangerous(): boolean {
 		return this.defect?.deficiencyCategory === 'dangerous';
@@ -284,33 +290,34 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 	pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
 
-	get params(): Map<string, string> {
-		return new Map([['category', 'defects']]);
-	}
-
-	hasMediaAvailable(): boolean {
-		// return true if one of the defects contains media which are images
-		return !isEqual(this.images, {});
-	}
-
 	async downloadPhoto(media: MediaSchema) {
-		if (!this.testResultId || !this.defectMediaService) {
+		if (!this.testResultId || !this.defectMediaService || !this.defect) {
 			return;
 		}
+    // get presigned url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
+    // get zip file for test result id
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+
+    // load response into zip file
 		const zip = new JSZip();
 		await zip.loadAsync(blob, { base64: true });
+
+    // load image into a file
 		const file = zip.file(media.path);
 		if (!file) {
 			return;
 		}
+    // load image into a blob
 		const fileData = await file.async('blob');
+
+    // create a new zip to load image into it
 		const newZip = new JSZip();
 		newZip.file(media.path, fileData);
-		const base64 = await newZip.generateAsync({ type: 'base64' });
-		this.documentsService.openDocumentFromResponse(this.testResultId, `data:application/zip;base64, ${base64}`, 'zip');
+
+    // download zip
+    await this.defectMediaService.openDocumentFromZip(newZip, this.defect)
 	}
 
 	async downloadAllMedia() {

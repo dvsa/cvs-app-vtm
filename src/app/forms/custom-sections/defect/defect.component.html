@@ -68,14 +68,13 @@
     </div>
     <div>
       <h2 class="govuk-heading-m">Defect media</h2>
-      @if (hasMediaAvailable()) {
+      @if (defectMediaService && defectMediaService.hasCachedImages(defect)) {
         <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
         <div class="govuk-heading-s underline">Photos</div>
           @for (media of defect.media; track media) {
             @if (media.type === 'image') {
-              @let src = `data:image/jpg;base64,${images[media.path]}`;
               <div style="display: inline-flex" class="defect-container">
-                <img class="media-image" [src]="src" [alt]="media.path" />
+                <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
                 <button class="link download-image-link" (click)="downloadPhoto(media)">
                   Download photo
                 </button>
