@@ -6,7 +6,6 @@ import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definition
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 import { Store } from '@ngrx/store';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
-import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
@@ -24,7 +23,6 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	store = inject(Store);
 	router = inject(Router);
 	httpService = inject(HttpService);
-	documentsService = inject(DocumentsService);
 	globalErrorService = inject(GlobalErrorService);
 	http: HttpClient = inject(HttpClient);
 	defectMediaService = inject(DefectMediaService, { optional: true });
@@ -57,15 +55,20 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		if (!this.defectMediaService || !images) {
 			return;
 		}
-		const newZip = new JSZip();
+		// check media exists
 		const media = this.defect.media;
-		if (media) {
+		if (media && this.canDownloadMedia()) {
+			// create new zip file
+			const newZip = new JSZip();
 			for (const mediaObject of media) {
+				// grab image file from cache
 				const file = images[mediaObject.path];
 				if (file) {
+					// add image to new zip file
 					newZip.file(mediaObject.path, file);
 				}
 			}
+			// download zip
 			await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
 		}
 	}
@@ -75,22 +78,33 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		if (!this.defectMediaService || !testResultId) {
 			return;
 		}
+		// get pre signed url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
+		// get media for testresultid
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-		const zip = new JSZip();
-		await zip.loadAsync(blob);
+
+		// check media exists
 		const media = this.defect.media;
-		const newZip = new JSZip();
-		if (media) {
+		if (media && this.canDownloadMedia()) {
+			// load media into zip file
+			const zip = new JSZip();
+			await zip.loadAsync(blob);
+
+			// create zip to hold defect specific images
+			const newZip = new JSZip();
+
+			// loop through media
 			for (const mediaObject of media) {
 				const file = zip.files[mediaObject.path];
 				if (file) {
+					// if file exists add to zip file and add image to cache
 					const fileData = await file.async('blob');
 					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
 					newZip.file(mediaObject.path, fileData);
 				}
 			}
+			// download zip
+			await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
 		}
-		await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
 	}
 }
