@@ -83,7 +83,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	ngAfterViewInit(): void {
 		this.handleFormChange({});
-		// console.log(this.testResult());
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
