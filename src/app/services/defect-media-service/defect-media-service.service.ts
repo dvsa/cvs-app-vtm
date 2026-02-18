@@ -44,6 +44,10 @@ export class DefectMediaService {
 		});
 	}
 
+	hasCachedImages() {
+		return !isEqual(this.images, {});
+	}
+
 	async loadImages(images: MediaSchema[], testResultId: string) {
 		if (!isEqual(this.images, {})) {
 			return;

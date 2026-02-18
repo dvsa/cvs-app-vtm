@@ -10,7 +10,6 @@ import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
-import { isEqual } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -43,21 +42,19 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	async downloadMedia() {
-		const testResultId = this.testResult()?.testResultId;
-		if (!testResultId || !this.defectMediaService) {
+		if (!this.defectMediaService) {
 			return;
 		}
-
-		const images = this.defectMediaService.getImages();
-		if (!isEqual(images, {})) {
-			await this.downloadMediaFromCache(images);
+		if (this.defectMediaService.hasCachedImages()) {
+			await this.downloadMediaFromCache();
 		} else {
-			await this.downloadMediaFromHttp(testResultId);
+			await this.downloadMediaFromHttp();
 		}
 	}
 
-	async downloadMediaFromCache(images: Record<string, string>): Promise<void> {
-		if (!this.defectMediaService) {
+	async downloadMediaFromCache(): Promise<void> {
+		const images = this.defectMediaService?.getImages();
+		if (!this.defectMediaService || !images) {
 			return;
 		}
 		const newZip = new JSZip();
@@ -73,8 +70,9 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		}
 	}
 
-	async downloadMediaFromHttp(testResultId: string) {
-		if (!this.defectMediaService) {
+	async downloadMediaFromHttp() {
+		const testResultId = this.testResult()?.testResultId;
+		if (!this.defectMediaService || !testResultId) {
 			return;
 		}
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
