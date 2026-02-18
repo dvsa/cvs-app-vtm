@@ -10,6 +10,7 @@ import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
+import { isEqual } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -36,10 +37,6 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		this.globalErrorService.clearErrors();
 	}
 
-	get params(): Map<string, string> {
-		return new Map([['category', 'defects']]);
-	}
-
 	canDownloadMedia(): boolean {
 		if (!this.defect.media) return false;
 		return this.defect.media.some((media) => media.type !== 'failReason');
@@ -51,6 +48,38 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 			return;
 		}
 
+		const images = this.defectMediaService.getImages();
+		if (!isEqual(images, {})) {
+			await this.downloadMediaFromCache(images);
+		} else {
+			await this.downloadMediaFromHttp(testResultId);
+		}
+	}
+
+	async downloadMediaFromCache(images: Record<string, string>): Promise<void> {
+		const newZip = new JSZip();
+		const media = this.defect.media;
+		if (media) {
+			for (const mediaObject of media) {
+				const file = images[mediaObject.path];
+				if (file) {
+					newZip.file(mediaObject.path, file);
+				}
+			}
+			const base64 = await newZip.generateAsync({ type: 'base64' });
+
+			this.documentsService.openDocumentFromResponse(
+				`${this.defect.imNumber}-${this.defect.imDescription}`,
+				`data:application/zip;base64, ${base64}`,
+				'zip'
+			);
+		}
+	}
+
+	async downloadMediaFromHttp(testResultId: string) {
+		if (!this.defectMediaService) {
+			return;
+		}
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 		const zip = new JSZip();
@@ -62,6 +91,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 				const file = zip.files[mediaObject.path];
 				if (file) {
 					const fileData = await file.async('blob');
+					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
 					newZip.file(mediaObject.path, fileData);
 				}
 			}
