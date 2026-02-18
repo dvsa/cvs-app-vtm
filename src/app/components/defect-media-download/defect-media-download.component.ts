@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnDestroy, Signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { environment } from '@environments/environment';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 import { Store } from '@ngrx/store';
+import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
@@ -27,6 +27,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	documentsService = inject(DocumentsService);
 	globalErrorService = inject(GlobalErrorService);
 	http: HttpClient = inject(HttpClient);
+	defectMediaService = inject(DefectMediaService, { optional: true });
 
 	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
 	@Input() defect!: DefectDetailsSchema;
@@ -45,22 +46,12 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	async downloadMedia() {
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/zip');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		const fileName = `${this.testResult()?.testResultId}`;
+		const testResultId = this.testResult()?.testResultId;
+		if (!testResultId || !this.defectMediaService) {
+			return;
+		}
 
-		let localParams = new HttpParams();
-		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
-
-		const url = await lastValueFrom(
-			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
-				params: localParams,
-				headers,
-				responseType: 'text',
-			})
-		);
-
+		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 		const zip = new JSZip();
 		await zip.loadAsync(blob);

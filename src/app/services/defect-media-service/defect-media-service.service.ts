@@ -1,21 +1,17 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class DefectMediaService {
 	http = inject(HttpClient);
 	images: Record<string, string> = {};
 
-	constructor() {
-		console.log('created');
-	}
-
-	async getPresignedUrlValue(testResultId: string) {
+	getPresignedUrlValue(testResultId: string): Observable<string> {
 		let headers = new HttpHeaders();
 		headers = headers.set('Content-Type', 'application/zip');
 		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
@@ -23,16 +19,27 @@ export class DefectMediaService {
 
 		let localParams = new HttpParams();
 		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+			params: localParams,
+			headers,
+			responseType: 'text',
+		});
+	}
 
-		const url = await lastValueFrom(
-			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
-				params: localParams,
-				headers,
-				responseType: 'text',
-			})
-		);
+	getPresignedUrlObserveValue(testResultId: string, observe?: boolean) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/zip');
+		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
+		const fileName = `${testResultId}`;
 
-		return url;
+		let localParams = new HttpParams();
+		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
+		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
+			params: localParams,
+			headers,
+			responseType: 'text',
+			observe: 'events',
+		});
 	}
 
 	async loadImages(images: MediaSchema[], testResultId: string) {
@@ -40,7 +47,7 @@ export class DefectMediaService {
 			return;
 		}
 
-		const url = await this.getPresignedUrlValue(testResultId);
+		const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 		const zip = new JSZip();
 		await zip.loadAsync(blob, { base64: true });

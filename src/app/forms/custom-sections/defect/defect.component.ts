@@ -1,12 +1,5 @@
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
-import {
-	HttpClient,
-	HttpErrorResponse,
-	HttpEventType,
-	HttpHeaders,
-	HttpParams,
-	HttpStatusCode,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +14,6 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
 import { DefectDetailsSchema, MediaSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { environment } from '@environments/environment';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { RootRoutes } from '@models/routes.enum';
@@ -302,21 +294,10 @@ export class DefectComponent implements OnInit, OnDestroy {
 	}
 
 	async downloadPhoto(media: MediaSchema) {
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/zip');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		const fileName = `${this.testResultId}`;
-
-		let localParams = new HttpParams();
-		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
-
-		const url = await lastValueFrom(
-			this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
-				params: localParams,
-				headers,
-				responseType: 'text',
-			})
-		);
+		if (!this.testResultId || !this.defectMediaService) {
+			return;
+		}
+		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 		const zip = new JSZip();
@@ -329,60 +310,48 @@ export class DefectComponent implements OnInit, OnDestroy {
 		const newZip = new JSZip();
 		newZip.file(media.path, fileData);
 		const base64 = await newZip.generateAsync({ type: 'base64' });
-		this.documentsService.openDocumentFromResponse(fileName, `data:application/zip;base64, ${base64}`, 'zip');
+		this.documentsService.openDocumentFromResponse(this.testResultId, `data:application/zip;base64, ${base64}`, 'zip');
 	}
 
 	async downloadAllMedia() {
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/zip');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		const fileName = `${this.testResultId}`;
-		const fileType = 'zip';
-
-		let localParams = new HttpParams();
-		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
-
-		this.http
-			.get(`${environment.VTM_API_URI}/v1/document-retrieval/${fileName}`, {
-				params: localParams,
-				headers,
-				observe: 'events',
-				responseType: 'text',
-			})
-			.subscribe({
-				next: (response) => {
-					switch (response.type) {
-						case HttpEventType.DownloadProgress:
+		const testResultId = this.testResultId;
+		if (!this.defectMediaService || !testResultId) {
+			return;
+		}
+		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
+			next: (response) => {
+				switch (response.type) {
+					case HttpEventType.DownloadProgress:
+						break;
+					case HttpEventType.Response:
+						this.documentsService.openDocumentFromResponse(testResultId, response.body, 'zip');
+						break;
+					default:
+						break;
+				}
+			},
+			error: (error) => {
+				if (error instanceof HttpErrorResponse) {
+					switch (error.status) {
+						case HttpStatusCode.NotFound:
+							this.globalErrorService.setErrors([
+								{
+									error:
+										'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+									anchorLink: '',
+								},
+							]);
 							break;
-						case HttpEventType.Response:
-							this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
+						case HttpStatusCode.InternalServerError:
+							this.router.navigate([RootRoutes.ERROR]);
 							break;
 						default:
+							// for sentry reporting
+							console.error(error);
 							break;
 					}
-				},
-				error: (error) => {
-					if (error instanceof HttpErrorResponse) {
-						switch (error.status) {
-							case HttpStatusCode.NotFound:
-								this.globalErrorService.setErrors([
-									{
-										error:
-											'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
-										anchorLink: '',
-									},
-								]);
-								break;
-							case HttpStatusCode.InternalServerError:
-								this.router.navigate([RootRoutes.ERROR]);
-								break;
-							default:
-								// for sentry reporting
-								console.error(error);
-								break;
-						}
-					}
-				},
-			});
+				}
+			},
+		});
 	}
 }
