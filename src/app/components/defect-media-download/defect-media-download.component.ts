@@ -57,6 +57,9 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	async downloadMediaFromCache(images: Record<string, string>): Promise<void> {
+		if (!this.defectMediaService) {
+			return;
+		}
 		const newZip = new JSZip();
 		const media = this.defect.media;
 		if (media) {
@@ -66,13 +69,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 					newZip.file(mediaObject.path, file);
 				}
 			}
-			const base64 = await newZip.generateAsync({ type: 'base64' });
-
-			this.documentsService.openDocumentFromResponse(
-				`${this.defect.imNumber}-${this.defect.imDescription}`,
-				`data:application/zip;base64, ${base64}`,
-				'zip'
-			);
+			await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
 		}
 	}
 
@@ -96,12 +93,6 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 				}
 			}
 		}
-		const base64 = await newZip.generateAsync({ type: 'base64' });
-
-		this.documentsService.openDocumentFromResponse(
-			`${this.defect.imNumber}-${this.defect.imDescription}`,
-			`data:application/zip;base64, ${base64}`,
-			'zip'
-		);
+		await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
 	}
 }

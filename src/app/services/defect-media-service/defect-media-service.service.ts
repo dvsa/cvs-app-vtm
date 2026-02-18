@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DefectDetailsSchema, MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
+import { DocumentsService } from '@services/documents/documents.service';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
 import { Observable, lastValueFrom } from 'rxjs';
@@ -10,6 +11,7 @@ import { Observable, lastValueFrom } from 'rxjs';
 export class DefectMediaService {
 	http = inject(HttpClient);
 	images: Record<string, string> = {};
+	documentsService = inject(DocumentsService);
 
 	getPresignedUrlValue(testResultId: string): Observable<string> {
 		let headers = new HttpHeaders();
@@ -58,6 +60,16 @@ export class DefectMediaService {
 				this.images[image.path] = await file.async('base64');
 			}
 		}
+	}
+
+	async openDocumentFromZip(zip: JSZip, defect: DefectDetailsSchema) {
+		const base64 = await zip.generateAsync({ type: 'base64' });
+
+		this.documentsService.openDocumentFromResponse(
+			`${defect.imNumber}-${defect.imDescription}`,
+			`data:application/zip;base64, ${base64}`,
+			'zip'
+		);
 	}
 
 	get params(): Map<string, string> {
