@@ -85,6 +85,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		const testResultId = testResult.testResultId;
 
 		if (this.defectMediaService.hasCachedTestResultImages(testResult)) {
+			console.log('retrieving from cache');
 			// download images from cache
 			const zip = new JSZip();
 			for (const defect of testResult.testTypes[0].defects) {
@@ -102,6 +103,8 @@ export class DefectsComponent implements OnInit, OnDestroy {
 			await this.defectMediaService.openDocumentFromZip(zip, testResultId);
 			return;
 		}
+
+		console.log('retrieving from http');
 
 		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
 			next: (response) => {

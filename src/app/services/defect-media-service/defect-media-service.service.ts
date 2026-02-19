@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
 import { DocumentsService } from '@services/documents/documents.service';
 import JSZip from 'jszip';
@@ -43,6 +43,10 @@ export class DefectMediaService {
 		});
 	}
 
+	getImage(media: MediaSchema) {
+		return this.images[media.path];
+	}
+
 	hasCachedImages(defect: DefectDetailsSchema) {
 		const defectMedia = defect.media;
 		if (!defectMedia || defectMedia.length === 0) {
@@ -60,13 +64,16 @@ export class DefectMediaService {
 	}
 
 	hasCachedTestResultImages(testResult: TestResultSchema) {
+		console.log('test');
 		const testType = testResult.testTypes[0];
 		if (!testType) {
 			return;
 		}
+		console.log('test 2');
 		let isTestResultCached = true;
 		for (const defect of testType.defects) {
 			if (!this.hasCachedImages(defect)) {
+				console.log('test 3');
 				isTestResultCached = false;
 			}
 		}

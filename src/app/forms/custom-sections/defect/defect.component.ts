@@ -301,6 +301,19 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (!this.testResultId || !this.defectMediaService || !this.defect) {
 			return;
 		}
+
+		const image = this.defectMediaService.getImage(media);
+		if (image) {
+			//cached image exists
+			console.log('retrieving from cache');
+
+			// load response into zip file
+			const zip = new JSZip();
+			zip.file(media.path, image);
+			await this.defectMediaService.openDocumentFromZip(zip, `${this.defect.imNumber}-${this.defect.imDescription}`);
+			return;
+		}
+		console.log('retrieving from http');
 		// get presigned url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
@@ -329,7 +342,23 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 	async downloadAllMedia() {
 		const testResultId = this.testResultId;
-		if (!this.defectMediaService || !testResultId) {
+		if (!this.defectMediaService || !testResultId || !this.defect) {
+			return;
+		}
+		if (this.defectMediaService.hasCachedImages(this.defect)) {
+			// download images from cache
+			const zip = new JSZip();
+			const defectMedia = this.defect.media;
+			if (!defectMedia) {
+				return;
+			}
+			for (const image of defectMedia) {
+				const file = this.defectMediaService.images[image.path];
+				if (file) {
+					zip.file(image.path, file);
+				}
+			}
+			await this.defectMediaService.openDocumentFromZip(zip, testResultId);
 			return;
 		}
 		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({

@@ -53,8 +53,11 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	async downloadMediaFromCache(): Promise<void> {
+		if (!this.defectMediaService) {
+			return;
+		}
 		const images = this.defectMediaService?.getImages();
-		if (!this.defectMediaService || !images) {
+		if (!images) {
 			return;
 		}
 		// check media exists
