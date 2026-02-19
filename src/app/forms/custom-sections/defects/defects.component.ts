@@ -16,6 +16,7 @@ import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
+import JSZip from 'jszip';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -63,10 +64,6 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		this.formSubscription.unsubscribe();
 	}
 
-	get params(): Map<string, string> {
-		return new Map([['category', 'defects']]);
-	}
-
 	hasMediaAvailable(): boolean {
 		// return true if one of the defects contains media which are images
 		for (const defect of this.testDefects) {
@@ -81,11 +78,32 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	}
 
 	async downloadAllMedia() {
-		const testResultId = this.testResult()?.testResultId;
-		if (!testResultId) {
+		const testResult = this.testResult();
+		if (!testResult || !this.defectMediaService) {
 			return;
 		}
-		this.defectMediaService?.getPresignedUrlObserveValue(testResultId).subscribe({
+		const testResultId = testResult.testResultId;
+
+		if (this.defectMediaService.hasCachedTestResultImages(testResult)) {
+			// download images from cache
+			const zip = new JSZip();
+			for (const defect of testResult.testTypes[0].defects) {
+				const defectMedia = defect.media;
+				if (!defectMedia) {
+					return;
+				}
+				for (const image of defectMedia) {
+					const file = this.defectMediaService.images[image.path];
+					if (file) {
+						zip.file(image.path, file);
+					}
+				}
+			}
+			await this.defectMediaService.openDocumentFromZip(zip, testResultId);
+			return;
+		}
+
+		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
 			next: (response) => {
 				switch (response.type) {
 					case HttpEventType.DownloadProgress:

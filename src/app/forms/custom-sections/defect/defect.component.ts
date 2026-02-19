@@ -13,7 +13,12 @@ import {
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectAdditionalDetailsMetadataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
-import { DefectDetailsSchema, MediaSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import {
+	DefectDetailsSchema,
+	MediaSchema,
+	TestResultSchema,
+	VehicleType,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { RootRoutes } from '@models/routes.enum';
@@ -81,6 +86,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 	private defects?: DefectDetailsSchema[];
 	defect?: DefectDetailsSchema;
 	testResultId: string | undefined = undefined;
+	testResult: TestResultSchema | undefined = undefined;
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
@@ -104,6 +110,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			)
 			.subscribe(([testResult, defectIndexValue, defectRefValue]) => {
 				if (!testResult) this.navigateBack();
+				this.testResult = testResult;
 				this.defects = testResult?.testTypes[0].defects;
 				this.testResultId = testResult?.testResultId;
 				this.vehicleType = testResult?.vehicleType;
@@ -145,8 +152,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 				});
 		}
 
-		if (this.defect && this.testResultId && this.defectMediaService) {
-			await this.defectMediaService.loadImages(this.defect, this.testResultId);
+		if (this.testResult && this.defectMediaService) {
+			await this.defectMediaService.loadImages(this.testResult);
 			this.cdr.detectChanges();
 		}
 	}
@@ -156,14 +163,14 @@ export class DefectComponent implements OnInit, OnDestroy {
 		this.onDestroy$.complete();
 	}
 
-  srcValue(mediaSchema: MediaSchema): string {
-    if (!this.defectMediaService) {
-      return '';
-    }
-    const images = this.defectMediaService.getImages();
-    const image = images[mediaSchema.path];
-    return `data:image/jpg;base64,${image}`;
-  }
+	srcValue(mediaSchema: MediaSchema): string {
+		if (!this.defectMediaService) {
+			return '';
+		}
+		const images = this.defectMediaService.getImages();
+		const image = images[mediaSchema.path];
+		return `data:image/jpg;base64,${image}`;
+	}
 
 	get isDangerous(): boolean {
 		return this.defect?.deficiencyCategory === 'dangerous';
@@ -294,30 +301,30 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (!this.testResultId || !this.defectMediaService || !this.defect) {
 			return;
 		}
-    // get presigned url
+		// get presigned url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
-    // get zip file for test result id
+		// get zip file for test result id
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 
-    // load response into zip file
+		// load response into zip file
 		const zip = new JSZip();
 		await zip.loadAsync(blob, { base64: true });
 
-    // load image into a file
+		// load image into a file
 		const file = zip.file(media.path);
 		if (!file) {
 			return;
 		}
-    // load image into a blob
+		// load image into a blob
 		const fileData = await file.async('blob');
 
-    // create a new zip to load image into it
+		// create a new zip to load image into it
 		const newZip = new JSZip();
 		newZip.file(media.path, fileData);
 
-    // download zip
-    await this.defectMediaService.openDocumentFromZip(newZip, this.defect)
+		// download zip
+		await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 
 	async downloadAllMedia() {

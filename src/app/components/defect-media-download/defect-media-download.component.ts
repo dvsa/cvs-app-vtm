@@ -44,10 +44,10 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 			return;
 		}
 		if (this.defectMediaService.hasCachedImages(this.defect)) {
-      console.log('loading from cache');
+			console.log('loading from cache');
 			await this.downloadMediaFromCache();
 		} else {
-      console.log('loading from http');
+			console.log('loading from http');
 			await this.downloadMediaFromHttp();
 		}
 	}
@@ -71,7 +71,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 				}
 			}
 			// download zip
-			await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
+			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 		}
 	}
 
@@ -80,8 +80,10 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 		if (!this.defectMediaService || !testResultId) {
 			return;
 		}
+
 		// get pre signed url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
+
 		// get media for testresultid
 		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 
@@ -106,7 +108,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 				}
 			}
 			// download zip
-			await this.defectMediaService.openDocumentFromZip(newZip, this.defect);
+			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 		}
 	}
 }
