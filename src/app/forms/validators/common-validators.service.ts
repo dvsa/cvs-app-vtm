@@ -200,6 +200,7 @@ export class CommonValidatorsService {
 	): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
+			if (!control.touched) return null;
 			if (typeof control.value !== 'number') return null;
 
 			if (control.value < min || control.value > max) {

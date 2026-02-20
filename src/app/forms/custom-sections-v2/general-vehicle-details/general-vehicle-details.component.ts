@@ -248,9 +248,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(
+				{ value: null, disabled: false },
+				{
+					validators: [
+						this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
+					],
+					updateOn: 'blur',
+				}
+			),
 		};
 	}
 
@@ -310,9 +316,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(
+				{ value: null, disabled: false },
+				{
+					validators: [
+						this.commonValidators.range(2, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
+					],
+					updateOn: 'blur',
+				}
+			),
 		};
 	}
 
@@ -372,9 +384,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				),
 			]),
 			techRecord_euVehicleCategory: this.fb.control<string | null>(null),
-			techRecord_noOfAxles: this.fb.control<number | null>(null, [
-				this.commonValidators.range(1, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
-			]),
+			techRecord_noOfAxles: this.fb.control<number | null>(
+				{ value: null, disabled: false },
+				{
+					validators: [
+						this.commonValidators.range(1, 10, 'Number of axles', 'general-vehicle-details', 'techRecord_noOfAxles'),
+					],
+					updateOn: 'blur',
+				}
+			),
 		};
 	}
 
@@ -713,17 +731,26 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	}
 
 	lockAndUpdateAxles() {
-		const noOfAxles = this.form.get('techRecord_noOfAxles')?.getRawValue() ?? 0;
-		if (noOfAxles <= 10) {
-			this.axlesService.setLockAxles(true);
+		const control = this.form.get('techRecord_noOfAxles');
+		control?.markAsTouched();
+		control?.updateValueAndValidity();
 
-			// logic for populating other sections based on axles amount
-			const vehicleType = (this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>).techRecord_vehicleType;
+		const noOfAxles = control?.getRawValue() ?? 0;
+		if (noOfAxles > 10) return;
 
-			Array.from({ length: noOfAxles }, (_, i) => i + 1).forEach(() => {
-				this.axlesService.addAxle(this.parent, vehicleType);
-			});
+		const techRecord = this.techRecord() as TechRecordType<'hgv' | 'psv' | 'trl'>;
+		const vehicleType = techRecord.techRecord_vehicleType;
+
+		// Prevent axles from being added when there is only one axle
+		if ((vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV) && noOfAxles === 1) {
+			return;
 		}
+
+		this.axlesService.setLockAxles(true);
+
+		Array.from({ length: noOfAxles }, (_, i) => i + 1).forEach(() => {
+			this.axlesService.addAxle(this.parent, vehicleType);
+		});
 	}
 
 	clearAxleInput() {
