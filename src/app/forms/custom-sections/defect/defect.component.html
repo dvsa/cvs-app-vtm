@@ -71,23 +71,25 @@
         <h2 class="govuk-heading-m">Defect media</h2>
         @if (defectMediaService) {
           @if (loading) {
-            <p class="govuk-body">Fetching media</p>
-            <div class="govuk-box spinner-wrapper" aria-busy="true">
-              <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
-                <div class="spinner-container">
-                  <div class="spinner">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            <div class="spinner-group">
+              <p class="govuk-body fetching-label">Fetching media</p>
+              <div class="govuk-box spinner-wrapper" aria-busy="true">
+                <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+                  <div class="spinner-container">
+                    <div class="spinner">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -41,6 +41,10 @@
     }
   }
 
+  .fetching-label {
+    margin-top: 5px;
+  }
+
   .defect-container {
     @extend .underline;
     padding-bottom: 1em;
@@ -51,17 +55,16 @@
     border-bottom-width: 1px;
   }
 
-    & .spinner-wrapper {
+    .spinner-group {
+      display: inline-flex;
+    }
+
+    .spinner-wrapper {
       height: 100%;
       display: flex;
-      align-items: center;
-      justify-content: center;
       position: relative;
       & #loader {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
         top: 60px;
         bottom: 0;
         left: 0;
@@ -165,8 +168,8 @@
     }
 
     .spinner-container {
-      width: 200px;
-      height: 200px;
+      width: 40px;
+      height: 40px;
       display: inline-block;
       overflow: hidden;
     }

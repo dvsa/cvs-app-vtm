@@ -28,7 +28,6 @@ import {
 	DefaultNullOrEmpty as DefaultNullOrEmpty_1,
 } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
-import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
@@ -70,7 +69,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 	store = inject(Store<State>);
 	resultService = inject(ResultOfTestService);
 	errorService = inject(GlobalErrorService);
-	documentsService = inject(DocumentsService);
 	globalErrorService = inject(GlobalErrorService);
 	http = inject(HttpClient);
 	cdr = inject(ChangeDetectorRef);
