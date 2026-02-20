@@ -70,32 +70,55 @@
       <div>
         <h2 class="govuk-heading-m">Defect media</h2>
         @if (defectMediaService) {
-
-          @if (defectMediaService.hasImages(defect)) {
-            <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
-            </app-button>
-          }
-          <div class="govuk-heading-s underline">Photos</div>
-            @for (media of defect.media; track media) {
-              @if (media.type === 'image' && defectMediaService.hasCachedImages(defect)) {
-                <div style="display: inline-flex" class="defect-container">
-                  <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
-                  <button class="link download-image-link" (click)="downloadPhoto(media)">
-                    Download photo
-                  </button>
+          @if (loading) {
+            <p class="govuk-body">Fetching media</p>
+            <div class="govuk-box spinner-wrapper" aria-busy="true">
+              <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+                <div class="spinner-container">
+                  <div class="spinner">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
-              } @else {
-                @if ($first && media.type === 'failReason') {
-                  <p class="govuk-body">
-                    No media available - {{ media.reason }}
-                  </p>
+              </div>
+            </div>
+          } @else {
+            @if (defectMediaService.hasImages(defect)) {
+              <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
+              </app-button>
+            }
+            <div class="govuk-heading-s underline">Photos</div>
+              @for (media of defect.media; track media) {
+                @if (media.type === 'image' && defectMediaService.hasCachedImages(defect)) {
+                  <div style="display: inline-flex" class="defect-container">
+                    <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
+                    <button class="link download-image-link" (click)="downloadPhoto(media)">
+                      Download photo
+                    </button>
+                  </div>
+                } @else {
+                  @if ($first && media.type === 'failReason') {
+                    <p class="govuk-body">
+                      No media available - {{ media.reason }}
+                    </p>
+                  }
                 }
               }
+            @if(!defect.media || isEqual(defect.media, [])) {
+              <p class="govuk-body">
+                No media available
+              </p>
             }
-          @if(!defect.media || isEqual(defect.media, [])) {
-            <p class="govuk-body">
-              No media available
-            </p>
           }
         }
       </div>

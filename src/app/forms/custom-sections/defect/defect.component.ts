@@ -80,6 +80,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 	index!: number;
 	isEditing: boolean = this.activatedRoute.snapshot.data['isEditing'] ?? false;
 	includeNotes = false;
+	loading = false;
 	private vehicleType?: VehicleType;
 
 	private defectsForm?: CustomFormArray;
@@ -153,7 +154,9 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 
 		if (this.testResult && this.defectMediaService) {
+			this.loading = true;
 			await this.defectMediaService.loadImages(this.testResult);
+			this.loading = false;
 			this.cdr.detectChanges();
 		}
 	}
