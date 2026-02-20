@@ -69,16 +69,13 @@ export class DefectMediaService {
 	}
 
 	hasCachedTestResultImages(testResult: TestResultSchema) {
-		console.log('test');
 		const testType = testResult.testTypes[0];
 		if (!testType) {
 			return;
 		}
-		console.log('test 2');
 		let isTestResultCached = true;
 		for (const defect of testType.defects) {
 			if (!this.hasCachedImages(defect)) {
-				console.log('test 3');
 				isTestResultCached = false;
 			}
 		}
