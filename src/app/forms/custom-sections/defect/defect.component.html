@@ -70,7 +70,11 @@
       <div>
         <h2 class="govuk-heading-m">Defect media</h2>
         @if (defectMediaService) {
-          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+
+          @if (defectMediaService.hasImages(defect)) {
+            <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
+            </app-button>
+          }
           <div class="govuk-heading-s underline">Photos</div>
             @for (media of defect.media; track media) {
               @if (media.type === 'image' && defectMediaService.hasCachedImages(defect)) {
@@ -82,14 +86,16 @@
                 </div>
               } @else {
                 @if ($first && media.type === 'failReason') {
-                  <div>
+                  <p class="govuk-body">
                     No media available - {{ media.reason }}
-                  </div>
+                  </p>
                 }
               }
             }
           @if(!defect.media || isEqual(defect.media, [])) {
-            No media available
+            <p class="govuk-body">
+              No media available
+            </p>
           }
         }
       </div>
