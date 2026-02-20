@@ -86,29 +86,34 @@ export class DefectMediaService {
 	}
 
 	async loadImages(testResult: TestResultSchema) {
-		const testType = testResult.testTypes[0];
-		const testResultId = testResult.testResultId;
+		try {
+			const testType = testResult.testTypes[0];
+			const testResultId = testResult.testResultId;
 
-		if (this.hasCachedTestResultImages(testResult) || !testType) {
-			return;
-		}
-
-		const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
-
-		for (const defect of testResult.testTypes[0].defects) {
-			const defectMedia = defect.media;
-			if (!defectMedia) {
+			if (this.hasCachedTestResultImages(testResult) || !testType) {
 				return;
 			}
-			for (const image of defectMedia) {
-				const file = zip.files[image.path];
-				if (file) {
-					this.images[image.path] = await file.async('base64');
+
+			const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
+			const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+			const zip = new JSZip();
+			await zip.loadAsync(blob, { base64: true });
+
+			for (const defect of testResult.testTypes[0].defects) {
+				const defectMedia = defect.media;
+				if (!defectMedia) {
+					return;
+				}
+				for (const image of defectMedia) {
+					const file = zip.files[image.path];
+					if (file) {
+						this.images[image.path] = await file.async('base64');
+					}
 				}
 			}
+		} catch (error) {
+			console.log(error);
+			this.handleError(error);
 		}
 	}
 
