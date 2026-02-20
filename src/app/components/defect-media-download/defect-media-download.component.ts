@@ -35,7 +35,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	canDownloadMedia(): boolean {
-		if (!this.defect.media) return false;
+		if (!this.defect.media || !(this.defect.media.length > 0)) return false;
 		return this.defect.media.some((media) => media.type !== 'failReason');
 	}
 
