@@ -120,4 +120,9 @@ export class DefectMediaService {
 	getImages(): Record<string, string> {
 		return this.images;
 	}
+
+	hasImages(defect: DefectDetailsSchema): boolean {
+		if (!defect.media) return false;
+		return defect.media.some((media) => media.type !== 'failReason');
+	}
 }

@@ -1,5 +1,5 @@
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
-import { HttpClient, HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,6 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { Deficiency } from '@models/defects/deficiency.model';
-import { RootRoutes } from '@models/routes.enum';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { Store, select } from '@ngrx/store';
 import {
@@ -346,6 +345,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			return;
 		}
 		if (this.defectMediaService.hasCachedImages(this.defect)) {
+			console.log('retrieving from cache');
 			// download images from cache
 			const zip = new JSZip();
 			const defectMedia = this.defect.media;
@@ -361,40 +361,64 @@ export class DefectComponent implements OnInit, OnDestroy {
 			await this.defectMediaService.openDocumentFromZip(zip, testResultId);
 			return;
 		}
-		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
-			next: (response) => {
-				switch (response.type) {
-					case HttpEventType.DownloadProgress:
-						break;
-					case HttpEventType.Response:
-						this.documentsService.openDocumentFromResponse(testResultId, response.body, 'zip');
-						break;
-					default:
-						break;
+
+		console.log('retrieving from http');
+		// get presigned url
+		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
+
+		// get zip file for test result id
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+
+		// load response into zip file
+		const zip = new JSZip();
+		await zip.loadAsync(blob, { base64: true });
+
+		// check media exists
+		const media = this.defect.media;
+		if (media && this.defectMediaService.hasImages(this.defect)) {
+			// load media into zip file
+			const zip = new JSZip();
+			await zip.loadAsync(blob);
+
+			// create zip to hold defect specific images
+			const newZip = new JSZip();
+
+			// loop through media
+			for (const mediaObject of media) {
+				const file = zip.files[mediaObject.path];
+				if (file) {
+					// if file exists add to zip file and add image to cache
+					const fileData = await file.async('blob');
+					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
+					newZip.file(mediaObject.path, fileData);
 				}
-			},
-			error: (error) => {
-				if (error instanceof HttpErrorResponse) {
-					switch (error.status) {
-						case HttpStatusCode.NotFound:
-							this.globalErrorService.setErrors([
-								{
-									error:
-										'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
-									anchorLink: '',
-								},
-							]);
-							break;
-						case HttpStatusCode.InternalServerError:
-							this.router.navigate([RootRoutes.ERROR]);
-							break;
-						default:
-							// for sentry reporting
-							console.error(error);
-							break;
-					}
-				}
-			},
-		});
+			}
+			// download zip
+			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
+			// this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
+			// 	error: (error) => {
+			// 		if (error instanceof HttpErrorResponse) {
+			// 			switch (error.status) {
+			// 				case HttpStatusCode.NotFound:
+			// 					this.globalErrorService.setErrors([
+			// 						{
+			// 							error:
+			// 								'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+			// 							anchorLink: '',
+			// 						},
+			// 					]);
+			// 					break;
+			// 				case HttpStatusCode.InternalServerError:
+			// 					this.router.navigate([RootRoutes.ERROR]);
+			// 					break;
+			// 				default:
+			// 					// for sentry reporting
+			// 					console.error(error);
+			// 					break;
+			// 			}
+			// 		}
+			// 	},
+			// });
+		}
 	}
 }

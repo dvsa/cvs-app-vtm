@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, Signal, inject, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -8,7 +8,6 @@ import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { RootRoutes } from '@models/routes.enum';
 import { Store } from '@ngrx/store';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
@@ -17,7 +16,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, lastValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-defects[defects][template]',
@@ -105,42 +104,55 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		}
 
 		console.log('retrieving from http');
+		// get presigned url
+		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 
-		this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
-			next: (response) => {
-				switch (response.type) {
-					case HttpEventType.DownloadProgress:
-						break;
-					case HttpEventType.Response:
-						this.documentsService.openDocumentFromResponse(testResultId, response.body, 'zip');
-						break;
-					default:
-						break;
+		// get zip file for test result id
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+
+		// load response into zip file
+		const zip = new JSZip();
+		await zip.loadAsync(blob, { base64: true });
+
+		for (const defect of testResult.testTypes[0].defects) {
+			const defectMedia = defect.media;
+			if (!defectMedia) {
+				return;
+			}
+			for (const image of defectMedia) {
+				const file = zip.files[image.path];
+				if (file) {
+					// if file exists add image to cache
+					this.defectMediaService.images[image.path] = await file.async('base64');
 				}
-			},
-			error: (error) => {
-				if (error instanceof HttpErrorResponse) {
-					switch (error.status) {
-						case HttpStatusCode.NotFound:
-							this.globalErrorService.setErrors([
-								{
-									error:
-										'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
-									anchorLink: '',
-								},
-							]);
-							break;
-						case HttpStatusCode.InternalServerError:
-							this.router.navigate([RootRoutes.ERROR]);
-							break;
-						default:
-							// for sentry reporting
-							console.error(error);
-							break;
-					}
-				}
-			},
-		});
+			}
+		}
+		await this.defectMediaService.openDocumentFromZip(zip, `${testResultId}`);
+
+		// this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
+		// 	error: (error) => {
+		// 		if (error instanceof HttpErrorResponse) {
+		// 			switch (error.status) {
+		// 				case HttpStatusCode.NotFound:
+		// 					this.globalErrorService.setErrors([
+		// 						{
+		// 							error:
+		// 								'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+		// 							anchorLink: '',
+		// 						},
+		// 					]);
+		// 					break;
+		// 				case HttpStatusCode.InternalServerError:
+		// 					this.router.navigate([RootRoutes.ERROR]);
+		// 					break;
+		// 				default:
+		// 					// for sentry reporting
+		// 					console.error(error);
+		// 					break;
+		// 			}
+		// 		}
+		// 	},
+		// });
 	}
 
 	get defectsForm(): CustomFormArray {
