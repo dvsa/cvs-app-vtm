@@ -40,15 +40,20 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	async downloadMedia() {
-		if (!this.defectMediaService) {
-			return;
-		}
-		if (this.defectMediaService.hasCachedImages(this.defect)) {
-			console.log('loading from cache');
-			await this.downloadMediaFromCache();
-		} else {
-			console.log('loading from http');
-			await this.downloadMediaFromHttp();
+		try {
+			if (!this.defectMediaService) {
+				return;
+			}
+			if (this.defectMediaService.hasCachedImages(this.defect)) {
+				console.log('loading from cache');
+				await this.downloadMediaFromCache();
+			} else {
+				console.log('loading from http');
+				await this.downloadMediaFromHttp();
+			}
+		} catch (error) {
+			console.error(error);
+			this.defectMediaService?.handleError(error);
 		}
 	}
 

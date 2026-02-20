@@ -68,19 +68,28 @@
     </div>
     <div>
       <h2 class="govuk-heading-m">Defect media</h2>
-      @if (defectMediaService && defectMediaService.hasCachedImages(defect)) {
+      @if (defectMediaService) {
         <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
         <div class="govuk-heading-s underline">Photos</div>
           @for (media of defect.media; track media) {
-            @if (media.type === 'image') {
+            @if (media.type === 'image' && defectMediaService.hasCachedImages(defect)) {
               <div style="display: inline-flex" class="defect-container">
                 <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
                 <button class="link download-image-link" (click)="downloadPhoto(media)">
                   Download photo
                 </button>
               </div>
+            } @else {
+              @if ($first && media.type === 'failReason') {
+                <div>
+                  No media available - {{ media.reason }}
+                </div>
+              }
             }
           }
+        @if(!defect.media || isEqual(defect.media, [])) {
+          No media available
+        }
       }
     </div>
   }

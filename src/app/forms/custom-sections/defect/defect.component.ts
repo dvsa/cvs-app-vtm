@@ -37,6 +37,7 @@ import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import JSZip from 'jszip';
+import { isEqual } from 'lodash';
 import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 'rxjs';
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
@@ -297,128 +298,119 @@ export class DefectComponent implements OnInit, OnDestroy {
 	pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
 
 	async downloadPhoto(media: MediaSchema) {
-		if (!this.testResultId || !this.defectMediaService || !this.defect) {
-			return;
-		}
+		try {
+			if (!this.testResultId || !this.defectMediaService || !this.defect) {
+				return;
+			}
 
-		const image = this.defectMediaService.getImage(media);
-		if (image) {
-			//cached image exists
-			console.log('retrieving from cache');
+			const image = this.defectMediaService.getImage(media);
+			if (image) {
+				//cached image exists
+				console.log('retrieving from cache');
+
+				// load response into zip file
+				const zip = new JSZip();
+				zip.file(media.path, image);
+				await this.defectMediaService.openDocumentFromZip(zip, `${this.defect.imNumber}-${this.defect.imDescription}`);
+				return;
+			}
+			console.log('retrieving from http');
+			// get presigned url
+			const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
+
+			// get zip file for test result id
+			const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 
 			// load response into zip file
 			const zip = new JSZip();
-			zip.file(media.path, image);
-			await this.defectMediaService.openDocumentFromZip(zip, `${this.defect.imNumber}-${this.defect.imDescription}`);
-			return;
+			await zip.loadAsync(blob, { base64: true });
+
+			// load image into a file
+			const file = zip.file(media.path);
+			if (!file) {
+				return;
+			}
+			// load image into a blob
+			const fileData = await file.async('blob');
+
+			// create a new zip to load image into it
+			const newZip = new JSZip();
+			newZip.file(media.path, fileData);
+
+			// download zip
+			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
+		} catch (error) {
+			this.defectMediaService?.handleError(error);
+			console.log(error);
 		}
-		console.log('retrieving from http');
-		// get presigned url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
-
-		// get zip file for test result id
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-
-		// load response into zip file
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
-
-		// load image into a file
-		const file = zip.file(media.path);
-		if (!file) {
-			return;
-		}
-		// load image into a blob
-		const fileData = await file.async('blob');
-
-		// create a new zip to load image into it
-		const newZip = new JSZip();
-		newZip.file(media.path, fileData);
-
-		// download zip
-		await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 
 	async downloadAllMedia() {
-		const testResultId = this.testResultId;
-		if (!this.defectMediaService || !testResultId || !this.defect) {
-			return;
-		}
-		if (this.defectMediaService.hasCachedImages(this.defect)) {
-			console.log('retrieving from cache');
-			// download images from cache
-			const zip = new JSZip();
-			const defectMedia = this.defect.media;
-			if (!defectMedia) {
+		try {
+			const testResultId = this.testResultId;
+			if (!this.defectMediaService || !testResultId || !this.defect) {
 				return;
 			}
-			for (const image of defectMedia) {
-				const file = this.defectMediaService.images[image.path];
-				if (file) {
-					zip.file(image.path, file);
+			if (this.defectMediaService.hasCachedImages(this.defect)) {
+				console.log('retrieving from cache');
+				// download images from cache
+				const zip = new JSZip();
+				const defectMedia = this.defect.media;
+				if (!defectMedia) {
+					return;
 				}
+				for (const image of defectMedia) {
+					const file = this.defectMediaService.images[image.path];
+					if (file) {
+						zip.file(image.path, file);
+					}
+				}
+				await this.defectMediaService.openDocumentFromZip(zip, testResultId);
+				return;
 			}
-			await this.defectMediaService.openDocumentFromZip(zip, testResultId);
-			return;
-		}
 
-		console.log('retrieving from http');
-		// get presigned url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
+			console.log('retrieving from http');
+			// get presigned url
+			const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 
-		// get zip file for test result id
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+			// get zip file for test result id
+			const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 
-		// load response into zip file
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
-
-		// check media exists
-		const media = this.defect.media;
-		if (media && this.defectMediaService.hasImages(this.defect)) {
-			// load media into zip file
+			// load response into zip file
 			const zip = new JSZip();
-			await zip.loadAsync(blob);
+			await zip.loadAsync(blob, { base64: true });
 
-			// create zip to hold defect specific images
-			const newZip = new JSZip();
+			// check media exists
+			const media = this.defect.media;
+			if (media && this.defectMediaService.hasImages(this.defect)) {
+				// load media into zip file
+				const zip = new JSZip();
+				await zip.loadAsync(blob);
 
-			// loop through media
-			for (const mediaObject of media) {
-				const file = zip.files[mediaObject.path];
-				if (file) {
-					// if file exists add to zip file and add image to cache
-					const fileData = await file.async('blob');
-					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
-					newZip.file(mediaObject.path, fileData);
+				// create zip to hold defect specific images
+				const newZip = new JSZip();
+
+				// loop through media
+				for (const mediaObject of media) {
+					const file = zip.files[mediaObject.path];
+					if (file) {
+						// if file exists add to zip file and add image to cache
+						const fileData = await file.async('blob');
+						this.defectMediaService.images[mediaObject.path] = await file.async('base64');
+						newZip.file(mediaObject.path, fileData);
+					}
 				}
+				// download zip
+				await this.defectMediaService.openDocumentFromZip(
+					newZip,
+					`${this.defect.imNumber}-${this.defect.imDescription}`
+				);
 			}
-			// download zip
-			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
-			// this.defectMediaService.getPresignedUrlObserveValue(testResultId).subscribe({
-			// 	error: (error) => {
-			// 		if (error instanceof HttpErrorResponse) {
-			// 			switch (error.status) {
-			// 				case HttpStatusCode.NotFound:
-			// 					this.globalErrorService.setErrors([
-			// 						{
-			// 							error:
-			// 								'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
-			// 							anchorLink: '',
-			// 						},
-			// 					]);
-			// 					break;
-			// 				case HttpStatusCode.InternalServerError:
-			// 					this.router.navigate([RootRoutes.ERROR]);
-			// 					break;
-			// 				default:
-			// 					// for sentry reporting
-			// 					console.error(error);
-			// 					break;
-			// 			}
-			// 		}
-			// 	},
-			// });
+		} catch (error) {
+			this.defectMediaService?.handleError(error);
+			console.log(error);
 		}
 	}
+
+	protected readonly isEqual = isEqual;
 }

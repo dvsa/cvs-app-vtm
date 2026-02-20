@@ -1,7 +1,10 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
+import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
@@ -12,6 +15,8 @@ export class DefectMediaService {
 	http = inject(HttpClient);
 	images: Record<string, string> = {};
 	documentsService = inject(DocumentsService);
+	globalErrorService = inject(GlobalErrorService);
+	router = inject(Router);
 
 	getHeaders(): HttpHeaders {
 		let headers = new HttpHeaders();
@@ -124,5 +129,28 @@ export class DefectMediaService {
 	hasImages(defect: DefectDetailsSchema): boolean {
 		if (!defect.media) return false;
 		return defect.media.some((media) => media.type !== 'failReason');
+	}
+
+	handleError(error: unknown) {
+		if (error instanceof HttpErrorResponse) {
+			switch (error.status) {
+				case HttpStatusCode.NotFound:
+					this.globalErrorService.setErrors([
+						{
+							error:
+								'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+							anchorLink: '',
+						},
+					]);
+					break;
+				case HttpStatusCode.InternalServerError:
+					this.router.navigate([RootRoutes.ERROR]);
+					break;
+				default:
+					// for sentry reporting
+					console.error(error);
+					break;
+			}
+		}
 	}
 }
