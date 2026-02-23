@@ -1,3 +1,186 @@
-a {
-  cursor: pointer;
+@import 'node_modules/govuk-frontend/govuk/all';
+
+:host {
+  a {
+    cursor: pointer;
+  }
+
+  .media-image {
+    width: 40%;
+    height: 40%;
+  }
+
+  .download-image-link {
+    margin-left: 10em;
+  }
+
+
+  .text {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    font-family: GDS Transport, arial, sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    padding: 0;
+  }
+
+  .link {
+    @extend .text;
+    color: $govuk-brand-colour;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, 0.0625rem);
+    text-underline-offset: 0.1em;
+    cursor: pointer;
+
+    &:hover {
+      background-color: transparent;
+      color: govuk-colour('dark-blue', $legacy: 'light-blue');
+      text-decoration: underline;
+      text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+    }
+  }
+
+  .fetching-label {
+    margin-top: 5px;
+  }
+
+  .defect-container {
+    @extend .underline;
+    padding-bottom: 1em;
+  }
+
+  .underline {
+    border: 0 solid grey;
+    border-bottom-width: 1px;
+  }
+
+    .spinner-group {
+      display: inline-flex;
+    }
+
+    .spinner-wrapper {
+      height: 100%;
+      display: flex;
+      position: relative;
+      & #loader {
+        display: flex;
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: govuk-colour('white');
+      }
+    }
+
+    @keyframes spinner {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .spinner div {
+      box-sizing: content-box;
+      left: 94px;
+      top: 45px;
+      position: absolute;
+      animation: spinner linear 1s infinite;
+      background: govuk-colour('black');
+      width: 12px;
+      height: 34px;
+      border-radius: 6px / 7.82px;
+      transform-origin: 6px 55px;
+    }
+
+    .spinner div:nth-child(1) {
+      transform: rotate(0deg);
+      animation-delay: -0.9166666666666666s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(2) {
+      transform: rotate(30deg);
+      animation-delay: -0.8333333333333334s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(3) {
+      transform: rotate(60deg);
+      animation-delay: -0.75s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(4) {
+      transform: rotate(90deg);
+      animation-delay: -0.6666666666666666s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(5) {
+      transform: rotate(120deg);
+      animation-delay: -0.5833333333333334s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(6) {
+      transform: rotate(150deg);
+      animation-delay: -0.5s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(7) {
+      transform: rotate(180deg);
+      animation-delay: -0.4166666666666667s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(8) {
+      transform: rotate(210deg);
+      animation-delay: -0.3333333333333333s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(9) {
+      transform: rotate(240deg);
+      animation-delay: -0.25s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(10) {
+      transform: rotate(270deg);
+      animation-delay: -0.16666666666666666s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(11) {
+      transform: rotate(300deg);
+      animation-delay: -0.08333333333333333s;
+      background: govuk-colour('black');
+    }
+
+    .spinner div:nth-child(12) {
+      transform: rotate(330deg);
+      animation-delay: 0s;
+      background: govuk-colour('black');
+    }
+
+    .spinner-container {
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .spinner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform: translateZ(0) scale(0.2);
+      backface-visibility: hidden;
+      transform-origin: 0 0; /* see note above */
+    }
+
 }

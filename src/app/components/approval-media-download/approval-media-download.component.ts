@@ -15,14 +15,14 @@ import { HttpService } from '../../services/http/http.service';
 import { selectedTestResultState } from '../../store/test-records';
 
 @Component({
-	selector: 'app-media-download',
-	templateUrl: './media-download.component.html',
-	styleUrls: ['./media-download.component.scss'],
+	selector: 'app-approval-approval-media-download',
+	templateUrl: './approval-media-download.component.html',
+	styleUrls: ['./approval-media-download.component.scss'],
 	host: {
 		class: 'govuk-table__row',
 	},
 })
-export class MediaDownloadComponent extends CustomFormControlComponent implements OnDestroy {
+export class ApprovalMediaDownloadComponent extends CustomFormControlComponent implements OnDestroy {
 	store = inject(Store);
 	router = inject(Router);
 	httpService = inject(HttpService);
