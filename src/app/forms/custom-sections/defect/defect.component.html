@@ -95,30 +95,28 @@
               </div>
             </div>
           } @else {
-            @if (defectMediaService.hasImages(defect)) {
+            @if (defectMediaService.hasImages(defect) && defectMediaService.hasCachedImages(defect)) {
               <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
               </app-button>
             }
             <div class="govuk-heading-s underline">Photos</div>
               @for (media of defect.media; track media) {
-                @if (media.type === 'image' && defectMediaService.hasCachedImages(defect)) {
+                @if (media.type === 'image' && hasCachedImage(media)) {
                   <div style="display: inline-flex" class="defect-container">
                     <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
                     <button class="link download-image-link" (click)="downloadPhoto(media)">
                       Download photo
                     </button>
                   </div>
-                } @else {
-                  @if ($first && media.type === 'failReason') {
-                    <p class="govuk-body">
-                      No media available - {{ media.reason }}
-                    </p>
-                  }
                 }
               }
-            @if(!defect.media || isEqual(defect.media, [])) {
+            @if(shouldShowMissingMediaMessage()) {
               <p class="govuk-body">
                 No media available
+              </p>
+            } @else if (!defectMediaService.hasImages(defect)) {
+              <p class="govuk-body">
+                {{ getFailureToCaptureDefectMediaReason() }}
               </p>
             }
           }
