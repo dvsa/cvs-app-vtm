@@ -6,6 +6,7 @@ import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-ty
 import { environment } from '@environments/environment';
 import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
+import dayjs from 'dayjs';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
 import { Observable, lastValueFrom } from 'rxjs';
@@ -72,6 +73,13 @@ export class DefectMediaService {
 			}
 		}
 		return false;
+	}
+
+	hasRententionPeriodExpired(testResult: TestResultSchema): boolean {
+		const now = new Date();
+		const testType = testResult.testTypes[0];
+		const daysSinceTest = dayjs(now).diff(testType.testTypeEndTimestamp, 'months');
+		return daysSinceTest >= 15;
 	}
 
 	hasCachedTestResultImages(testResult: TestResultSchema) {
