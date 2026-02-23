@@ -34,7 +34,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 
 	getFailureToCaptureDefectMediaReason(): string {
 		if (!this.defect.media) return 'No media available';
-    if (this.defect.deficiencyCategory !== 'dangerous') return 'Not media available';
+    if (this.defect.deficiencyCategory !== 'dangerous') return 'No media available';
 
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
