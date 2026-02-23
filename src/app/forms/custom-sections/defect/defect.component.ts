@@ -156,7 +156,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			!this.defectMediaService.hasRententionPeriodExpired(this.testResult) &&
 			this.defect &&
 			this.defectMediaService.hasImages(this.defect)
-    ) {
+		) {
 			this.loading = true;
 			await this.defectMediaService.loadImages(this.testResult);
 			this.loading = false;
