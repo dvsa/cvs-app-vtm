@@ -236,6 +236,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
 						},
 						{
 							name: 'media',
+							value: [],
 							type: FormNodeTypes.CONTROL,
 							viewType: FormNodeViewTypes.CUSTOM,
 							editType: FormNodeEditTypes.HIDDEN,

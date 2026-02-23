@@ -1,3 +1,5 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
@@ -10,6 +12,13 @@ export const routes: Routes = [
 		path: '',
 		resolve: { data: techRecordDataResolver },
 		canActivate: [MsalGuard, RoleGuard],
+		canDeactivate: [
+			() => {
+				// Reset upon leaving the route
+				const axleService = inject(AxlesService);
+				axleService.reset();
+			},
+		],
 		children: [
 			{
 				path: '',

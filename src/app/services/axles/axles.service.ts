@@ -25,6 +25,13 @@ export class AxlesService {
 	axleDistancesWithValues = false;
 	allInvalidAxles: Array<number> = [];
 
+	reset(): void {
+		this.lockAxlesSignal.set(false);
+		this.showDimensionsWarning = false;
+		this.axleDistancesWithValues = false;
+		this.allInvalidAxles = [];
+	}
+
 	setLockAxles(lock: boolean) {
 		this.lockAxlesSignal.set(lock);
 	}
@@ -434,29 +441,29 @@ export class AxlesService {
 		const axlesForm = parent.get('techRecord_axles');
 		if (!(axlesForm instanceof FormArray)) return;
 
-		if (axlesForm.controls.length < 10) {
-			this.setLockAxles(true);
-			const axleNumber = axlesForm.controls.length + 1;
-			axlesForm.setErrors(null);
-			axlesForm.push(this.generateAxleForm(type, { axleNumber }));
-
-			if ((type === VehicleTypes.TRL || type === VehicleTypes.HGV) && axlesForm.controls.length > 1) {
-				const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
-				axleSpacingsForm.push(
-					this.generateAxleSpacingForm(
-						{
-							axles: `${axleNumber - 1}-${axleNumber}`,
-							value: null,
-						},
-						axleNumber
-					)
-				);
-			}
-
-			return;
+		if (axlesForm.controls.length >= 10) {
+			return axlesForm.setErrors({ length: 'Cannot have more than 10 axles' });
 		}
 
-		axlesForm.setErrors({ length: 'Cannot have more than 10 axles' });
+		this.setLockAxles(true);
+
+		const axleNumber = axlesForm.controls.length + 1;
+		axlesForm.setErrors(null);
+		axlesForm.push(this.generateAxleForm(type, { axleNumber }));
+
+		// For HGV/TRL, generate axle spacings
+		if ((type === VehicleTypes.TRL || type === VehicleTypes.HGV) && axlesForm.controls.length > 1) {
+			const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
+			axleSpacingsForm.push(
+				this.generateAxleSpacingForm(
+					{
+						axles: `${axleNumber - 1}-${axleNumber}`,
+						value: null,
+					},
+					axleNumber
+				)
+			);
+		}
 	}
 
 	removeAllAxles(parent: FormGroup, type: 'hgv' | 'psv' | 'trl') {
@@ -469,58 +476,65 @@ export class AxlesService {
 		}
 	}
 
-	removeAxle(parent: FormGroup, type: 'hgv' | 'psv' | 'trl', index: number) {
+	canRemoveAxle(parent: FormGroup, type: 'hgv' | 'psv' | 'trl') {
 		const axlesForm = parent.get('techRecord_axles') as FormArray;
 		const minLength = type === VehicleTypes.TRL ? 1 : 2;
 		const axles = axlesForm.value;
-		if (Array.isArray(axles) && axles.length > minLength) {
-			axlesForm.setErrors(null);
-			axlesForm.removeAt(index);
 
-			// Relabel axle numbers
-			for (let i = 0; i < axlesForm.controls.length; i++) {
-				axlesForm.at(i).patchValue({ axleNumber: i + 1 });
-			}
+		return Array.isArray(axles) && axles.length > minLength;
+	}
 
-			if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
-				parent.get('techRecord_frontAxleToRearAxle')?.patchValue(null);
-			}
-			if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
-				const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
-				axleSpacingsForm.removeAt(index - 1 >= 0 ? index - 1 : 0);
+	removeAxle(parent: FormGroup, type: 'hgv' | 'psv' | 'trl', index: number) {
+		const axlesForm = parent.get('techRecord_axles') as FormArray;
+		const minLength = type === VehicleTypes.TRL ? 1 : 2;
 
-				// Relabel axle spacings
-				for (let i = 0; i < axleSpacingsForm.controls.length; i++) {
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
-						if (type === VehicleTypes.TRL) {
-							parent.patchValue({
-								techRecord_rearAxleToRearTrl: null,
-								techRecord_centreOfRearmostAxleToRearOfTrl: null,
-								techRecord_couplingCenterToRearTrlMin: null,
-								techRecord_couplingCenterToRearTrlMax: null,
-								techRecord_couplingCenterToRearAxleMin: null,
-								techRecord_couplingCenterToRearAxleMax: null,
-							});
-						}
-						if (type === VehicleTypes.HGV) {
-							parent.patchValue({
-								techRecord_frontVehicleTo5thWheelCouplingMin: null,
-								techRecord_frontVehicleTo5thWheelCouplingMax: null,
-								techRecord_frontAxleTo5thWheelMin: null,
-								techRecord_frontAxleTo5thWheelMax: null,
-							});
-						}
-						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}`, value: null });
-					} else {
-						axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}` });
-					}
-				}
-			}
-			this.showDimensionsWarning = true;
-			this.axleDistancesWithValues = false;
-			return;
+		if (!this.canRemoveAxle(parent, type)) {
+			return axlesForm.setErrors({ length: `Cannot have less than ${minLength} axles` });
 		}
 
-		axlesForm.setErrors({ length: `Cannot have less than ${minLength} axles` });
+		axlesForm.setErrors(null);
+		axlesForm.removeAt(index);
+
+		// Relabel axle numbers
+		for (let i = 0; i < axlesForm.controls.length; i++) {
+			axlesForm.at(i).patchValue({ axleNumber: i + 1 });
+		}
+
+		if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+			parent.get('techRecord_frontAxleToRearAxle')?.patchValue(null);
+		}
+		if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
+			const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
+			axleSpacingsForm.removeAt(index - 1 >= 0 ? index - 1 : 0);
+
+			// Relabel axle spacings
+			for (let i = 0; i < axleSpacingsForm.controls.length; i++) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (type === VehicleTypes.TRL) {
+						parent.patchValue({
+							techRecord_rearAxleToRearTrl: null,
+							techRecord_centreOfRearmostAxleToRearOfTrl: null,
+							techRecord_couplingCenterToRearTrlMin: null,
+							techRecord_couplingCenterToRearTrlMax: null,
+							techRecord_couplingCenterToRearAxleMin: null,
+							techRecord_couplingCenterToRearAxleMax: null,
+						});
+					}
+					if (type === VehicleTypes.HGV) {
+						parent.patchValue({
+							techRecord_frontVehicleTo5thWheelCouplingMin: null,
+							techRecord_frontVehicleTo5thWheelCouplingMax: null,
+							techRecord_frontAxleTo5thWheelMin: null,
+							techRecord_frontAxleTo5thWheelMax: null,
+						});
+					}
+					axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}`, value: null });
+				} else {
+					axleSpacingsForm.at(i).patchValue({ axles: `${i + 1}-${i + 2}` });
+				}
+			}
+		}
+		this.showDimensionsWarning = true;
+		this.axleDistancesWithValues = false;
 	}
 }
