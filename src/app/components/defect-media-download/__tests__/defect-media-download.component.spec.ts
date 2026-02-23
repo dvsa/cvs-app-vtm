@@ -112,6 +112,8 @@ describe('DefectMediaDownloadComponent', () => {
 				expect(openZipSpy).toHaveBeenCalled();
 			}
 		});
+	});
+	describe('downloadMediaFromHttp', () => {
 		it('should download media from http if cached media does not exist', async () => {
 			if (component.defectMediaService) {
 				const openZipSpy = jest

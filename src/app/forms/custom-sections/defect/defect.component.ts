@@ -342,18 +342,17 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		// load image into a file
 		const file = zip.file(media.path);
-		if (!file) {
-			return;
+		if (file) {
+			// load image into a blob
+			const fileData = await file.async('blob');
+
+			// create a new zip to load image into it
+			const newZip = new JSZip();
+			newZip.file(media.path, fileData);
+
+			// download zip
+			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 		}
-		// load image into a blob
-		const fileData = await file.async('blob');
-
-		// create a new zip to load image into it
-		const newZip = new JSZip();
-		newZip.file(media.path, fileData);
-
-		// download zip
-		await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 
 	async downloadAllMedia() {

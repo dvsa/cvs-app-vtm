@@ -16,7 +16,30 @@ import { defects, selectByImNumber } from '@store/defects';
 import { State, initialAppState } from '@store/index';
 import { selectRouteParams } from '@store/router/router.selectors';
 import { createDefect, removeDefect, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import { of } from 'rxjs';
 import { DefectComponent } from '../defect.component';
+
+jest.mock('jszip', () => {
+	const fileMock = jest.fn();
+	const folderMock = jest.fn();
+	const generateAsyncMock = jest.fn();
+	const loadAsyncMock = jest.fn();
+	const filesMock = jest.fn();
+
+	// The constructor function returns an "instance" with methods you need.
+	const JSZipMock = jest.fn().mockImplementation(() => ({
+		file: fileMock,
+		folder: folderMock,
+		generateAsync: generateAsyncMock,
+		loadAsync: loadAsyncMock,
+		files: filesMock,
+	}));
+
+	// If you also call static helpers on the default export, attach them here:
+	(JSZipMock as any).loadAsync = jest.fn();
+
+	return JSZipMock;
+});
 
 describe('DefectComponent', () => {
 	let component: DefectComponent;
@@ -327,6 +350,49 @@ describe('DefectComponent', () => {
 				const cacheSpy = jest.spyOn(component, 'downloadPhotoFromCache').mockImplementation(() => Promise.resolve());
 				await component.downloadPhoto({ path: 'test', type: 'image' });
 				expect(cacheSpy).not.toHaveBeenCalled();
+				expect(httpSpy).toHaveBeenCalled();
+			}
+		});
+	});
+
+	describe('downloadPhotoFromCache', () => {
+		it('should download media from cache if cached media does exist', async () => {
+			if (component.defectMediaService) {
+				const downloadZipSpy = jest
+					.spyOn(component.defectMediaService, 'openDocumentFromZip')
+					.mockImplementation(() => Promise.resolve());
+				component.defect = {
+					imNumber: 1,
+				} as DefectDetailsSchema;
+
+				await component.downloadPhotoFromCache('image', { type: 'image', path: 'test' });
+
+				expect(downloadZipSpy).toHaveBeenCalled();
+			}
+		});
+	});
+
+	describe('downloadPhotoFromHttp', () => {
+		it('should download media from http if cached media does not exist', async () => {
+			if (component.defectMediaService) {
+				const openZipSpy = jest
+					.spyOn(component.defectMediaService, 'openDocumentFromZip')
+					.mockImplementation(() => Promise.resolve());
+				const presignedUrlSpy = jest
+					.spyOn(component.defectMediaService, 'getPresignedUrlValue')
+					.mockReturnValue(of(''));
+				const httpSpy = jest.spyOn(component.http, 'get').mockReturnValue(of(new Blob(['data'])));
+				component.testResultId = 'testResultId';
+				const defect = {
+					imNumber: 1,
+				} as DefectDetailsSchema;
+				defect.media = [{ type: 'image', path: 'image1' }];
+				component.defect = defect;
+
+				await component.downloadPhotoFromHttp({ type: 'image', path: '' });
+
+				expect(openZipSpy).toHaveBeenCalled();
+				expect(presignedUrlSpy).toHaveBeenCalled();
 				expect(httpSpy).toHaveBeenCalled();
 			}
 		});
