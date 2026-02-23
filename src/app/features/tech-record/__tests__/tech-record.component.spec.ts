@@ -53,11 +53,11 @@ describe('TechRecordComponent', () => {
 		expect(expectedResult).toBe(expectedError);
 	});
 
-	// it('reuse strategy should be set to false', () => {
-	// 	const snapshot = {} as ActivatedRouteSnapshot;
-	//
-	// 	const expectedResult = component['router'].routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
-	//
-	// 	expect(expectedResult).toBeFalsy();
-	// });
+	it('reuse strategy should be set to false', () => {
+		const snapshot = {} as ActivatedRouteSnapshot;
+
+		const expectedResult = component['router'].routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
+
+		expect(expectedResult).toBeFalsy();
+	});
 });
