@@ -14,7 +14,7 @@ export class ButtonComponent extends RouterLinkWithHref {
 	readonly id = input<string>();
 	readonly disabled = input(false);
 	readonly type = input<'link' | 'button' | 'submit'>('button');
-	readonly design = input<'' | 'secondary' | 'warning' | 'link'>('');
+	readonly design = input<'' | 'secondary' | 'tertiary' | 'warning' | 'link'>('');
 
 	readonly clicked = output();
 }

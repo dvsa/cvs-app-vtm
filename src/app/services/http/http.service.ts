@@ -431,9 +431,13 @@ export class HttpService {
 	}
 
 	searchTechRecords(type: SEARCH_TYPES, term: string) {
-		return this.http.get<TechRecordSearchSchema[]>(
-			`${environment.VTM_API_URI}/v3/technical-records/search/${term}?searchCriteria=${type}`
-		);
+		let params = new HttpParams();
+		params = params.set('searchCriteria', type);
+		params = params.set('additionalInfo', true);
+
+		return this.http.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
+			params,
+		});
 	}
 
 	searchTechRecordBySystemNumber(systemNumber: string) {

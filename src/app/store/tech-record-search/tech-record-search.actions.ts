@@ -3,7 +3,10 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { createAction, props } from '@ngrx/store';
 
-export const fetchSearchResult = createAction(getTitle(), props<{ searchBy?: SEARCH_TYPES; term: string }>());
+export const fetchSearchResult = createAction(
+	getTitle(),
+	props<{ searchBy?: SEARCH_TYPES; term: string; includeArchived?: boolean }>()
+);
 export const fetchSearchResultSuccess = createAction(
 	getTitle('Success'),
 	props<{ payload: TechRecordSearchSchema[] }>()

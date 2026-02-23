@@ -1,0 +1,77 @@
+<form [formGroup]="form">
+  <div class="search-container">
+    <govuk-form-group-input
+      appNoEmojis
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      class="search-input"
+      formControlName="searchTerm"
+      label="Enter a VIN, VRM or Trailer ID"
+      [id]="'search-term'"
+    ></govuk-form-group-input>
+
+    <app-button
+      class="search-button"
+      [id]="'search-button'"
+      [type]="'submit'"
+      [design]="'tertiary'"
+      (clicked)="search()"
+    >
+      Search
+    </app-button>
+  </div>
+
+  <div class="app-c-filter-panel__header">
+    <button
+      class="app-c-filter-panel__button govuk-link"
+      id="filterToggleButton"
+      [class.is-open]="showFilterPanel"
+      [attr.aria-expanded]="showFilterPanel"
+      aria-controls="filterPanel"
+      (click)="showFilterPanel = !showFilterPanel"
+    >
+      <span class="app-c-filter-panel__button-inner">Filter results</span>
+    </button>
+
+    @if (searchResults(); as searchResults) {
+      <div id="changedName-hint" class="govuk-hint govuk-search-results-count">
+        @if (searchResults > 4) {
+          Showing 4 results of {{ searchResults }}
+        } @else {
+          Showing {{ searchResults }} result{{ searchResults === 1 ? '' : 's' }}
+        }
+      </div>
+    }
+  </div>
+
+  @if (showFilterPanel) {
+    <div id="filterPanel" class="govuk-form-group app-c-filter-panel__content">
+      <govuk-form-group-radio
+        size="small"
+        formControlName="searchCriteria"
+        [options]="[
+          { value: 'all', label: 'Search by all critera' },
+          { value: 'vin', label: 'VIN' },
+          { value: 'VRM', label: 'VRM' },
+          { value: 'trailerId', label: 'Trailer ID' },
+          { value: 'partialVin', label: 'Partial VIN' },
+        ]"
+      ></govuk-form-group-radio>
+
+      <hr
+        class="govuk-section-break govuk-section-break--m govuk-section-break--visible"
+      />
+
+      <govuk-form-group-checkbox
+        size="small"
+        label="Include archived records"
+        formControlName="includeArchived"
+      ></govuk-form-group-checkbox>
+
+      <div class="app-c-filter-panel__actions">
+        <app-button [id]="'apply-button'" class="apply-button" (clicked)="search()">Apply</app-button>
+      </div>
+    </div>
+  }
+</form>

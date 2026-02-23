@@ -1,0 +1,152 @@
+@if (searchResult(); as searchResult) {
+  <div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+      <h2 class="govuk-summary-card__title">Technical record summary</h2>
+      <ul class="govuk-summary-card__actions">
+        <li class="govuk-summary-card__action">
+          @let link =
+            `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
+          <a
+            class="govuk-link"
+            href="javascript:void(0)"
+            [id]="`select-${link}-link`"
+            [routerLink]="link"
+            >Select<span class="govuk-visually-hidden"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="govuk-summary-card__content">
+      <dl class="govuk-summary-list">
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">Vehicle type</dt>
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            id="test-vehicleType"
+          >
+            {{
+              searchResult.techRecord_vehicleType
+                | defaultNullOrEmpty
+                | formatVehicleType
+            }}
+          </dd>
+        </div>
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">VIN</dt>
+          <dd class="govuk-summary-list__value govuk-summary-list__value--vin" id="test-vin">
+            {{ searchResult.vin | defaultNullOrEmpty }}
+          </dd>
+        </div>
+
+        @if (searchResult.techRecord_vehicleType === 'trl') {
+          <div
+            class="govuk-summary-list__row govuk-summary-list__row govuk-summary-list__row--no-actions"
+          >
+            <dt class="govuk-summary-list__key">Trailer ID</dt>
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--vrm"
+              id="test-trailerId"
+            >
+              <app-number-plate
+                [vrm]="searchResult.trailerId | defaultNullOrEmpty"
+              ></app-number-plate>
+            </dd>
+          </div>
+        } @else {
+          <div
+            class="govuk-summary-list__row govuk-summary-list__row govuk-summary-list__row--no-actions"
+          >
+            <dt class="govuk-summary-list__key">VRM</dt>
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--vrm"
+              id="test-vrm"
+            >
+              <app-number-plate
+                [vrm]="searchResult.primaryVrm | defaultNullOrEmpty"
+              ></app-number-plate>
+            </dd>
+          </div>
+        }
+
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">Make</dt>
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            id="test-make"
+          >
+            @if (searchResult.techRecord_vehicleType === 'psv') {
+              {{ searchResult.techRecord_chassisMake | defaultNullOrEmpty }}
+            } @else {
+              {{ searchResult.techRecord_make | defaultNullOrEmpty }}
+            }
+          </dd>
+        </div>
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">Model</dt>
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            id="test-model"
+          >
+            @if (searchResult.techRecord_vehicleType === 'psv') {
+              {{ searchResult.techRecord_chassisModel | defaultNullOrEmpty }}
+            } @else {
+              {{ searchResult.techRecord_model | defaultNullOrEmpty }}
+            }
+          </dd>
+        </div>
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">Year of manufacture</dt>
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            id="test-manufactureYear"
+          >
+            {{ searchResult.techRecord_manufactureYear | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div
+          class="govuk-summary-list__row govuk-summary-list__row--no-actions"
+        >
+          <dt class="govuk-summary-list__key">Record type</dt>
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+          >
+            <app-tag [type]="getTagType(searchResult)">
+              {{
+                searchResult.techRecord_statusCode
+                  | defaultNullOrEmpty
+                  | uppercase
+              }}
+            </app-tag>
+          </dd>
+        </div>
+        <!-- TODO: uncomment after RDS migration 
+        @if (searchResult.techRecord_vehicleType !== 'psv') {
+          <div
+            class="govuk-summary-list__row govuk-summary-list__row govuk-summary-list__row--no-actions"
+          >
+            <dt class="govuk-summary-list__key">Email address</dt>
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            >
+              {{
+                searchResult.techRecord_applicantDetails_emailAddress
+                  | defaultNullOrEmpty
+              }}
+            </dd>
+          </div>
+        }
+        -->
+      </dl>
+    </div>
+  </div>
+}
