@@ -319,8 +319,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (!this.defectMediaService || !this.defect) {
 			return;
 		}
-		//cached image exists
-		console.log('retrieving from cache');
 
 		// load response into zip file
 		const zip = new JSZip();
@@ -332,7 +330,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (!this.testResultId || !this.defectMediaService || !this.defect) {
 			return;
 		}
-		console.log('retrieving from http');
 		// get presigned url
 		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
