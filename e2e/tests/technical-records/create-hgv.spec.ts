@@ -1,19 +1,18 @@
+import { expect, test } from '@/e2e/fixtures/global.fixture';
 import { mockTestableHgvs } from '@/e2e/mocks/hgv/testable-hgvs.mock';
 import { BetasPage } from '@/e2e/pages/betas/betas.page';
 import { CreatePage } from '@/e2e/pages/create/create.page';
-import { NewRecordDetailsPage } from '@/e2e/pages/create/new-record-details/new-record-details.page';
-import { HomePage } from '@/e2e/pages/home/home.page';
-import { expect, test } from '@playwright/test';
+import { NewRecordDetailsPage } from '@/e2e/pages/create/new-record-details.page';
 
-test.describe('Create HGV records', () => {
-	test.skip('should create a skeleton HGV record', async ({ page }, testInfo) => {
+test.describe.skip('Create HGV records', () => {
+	test('should create a skeleton HGV record', async ({ page }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',
 			description: 'Should create a skeleton HGV record',
 		});
 	});
 
-	test('should create a testable HGV record', async ({ page }, testInfo) => {
+	test('should create a testable HGV record', async ({ page, homePage }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',
 			description: 'Should create a testable HGV record',
@@ -21,13 +20,6 @@ test.describe('Create HGV records', () => {
 
 		// Record details
 		const techRecord = mockTestableHgvs[0];
-
-		// Go to home page
-		await page.goto('/');
-		await page.waitForLoadState('networkidle');
-		await page.waitForLoadState('domcontentloaded');
-		await expect(await page.title()).toBe('Vehicle Testing Management - Home');
-		const homePage = new HomePage(page);
 
 		// Go to betas page -> enable techrecord
 		await expect(homePage.betasLink).toBeVisible();
