@@ -1,15 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnDestroy, Signal, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 import { Store } from '@ngrx/store';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
-import { HttpService } from '@services/http/http.service';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-defect-media-download',
@@ -21,10 +17,7 @@ import { lastValueFrom } from 'rxjs';
 })
 export class DefectMediaDownloadComponent extends CustomFormControlComponent implements OnDestroy {
 	store = inject(Store);
-	router = inject(Router);
-	httpService = inject(HttpService);
 	globalErrorService = inject(GlobalErrorService);
-	http: HttpClient = inject(HttpClient);
 	defectMediaService = inject(DefectMediaService, { optional: true });
 
 	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
@@ -35,86 +28,88 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 	}
 
 	canDownloadMedia(): boolean {
-		if (!this.defect.media || !(this.defect.media.length > 0)) return false;
+		if (!this.defect.media) return false;
 		return this.defect.media.some((media) => media.type !== 'failReason');
 	}
 
-	async downloadMedia() {
-		try {
-			if (!this.defectMediaService) {
-				return;
+	getFailureToCaptureDefectMediaReason(): string {
+		if (!this.defect.media) return 'No media available';
+    if (this.defect.deficiencyCategory !== 'dangerous') return 'Not media available';
+
+		for (const reason of this.defect.media) {
+			if (reason.type === 'failReason') {
+				return `No media available - ${reason.reason}`;
 			}
+		}
+
+		return 'Reason for failure to capture media not available';
+	}
+
+	async downloadMedia() {
+		const testResultId = this.testResult()?.testResultId;
+		if (!testResultId || !this.defectMediaService) {
+			return;
+		}
+
+		try {
 			if (this.defectMediaService.hasCachedImages(this.defect)) {
-				await this.downloadMediaFromCache();
+				await this.downloadDefectMediaFromCache();
 			} else {
-				await this.downloadMediaFromHttp();
+				await this.downloadDefectMediaFromHttp(testResultId);
 			}
 		} catch (error) {
+			this.defectMediaService.handleError(error);
 			console.error(error);
-			this.defectMediaService?.handleError(error);
 		}
 	}
 
-	async downloadMediaFromCache(): Promise<void> {
+	private async downloadDefectMediaFromHttp(testResultId: string) {
 		if (!this.defectMediaService) {
 			return;
 		}
-		const images = this.defectMediaService?.getImages();
-		if (!images) {
+
+		const zip = await this.defectMediaService.getDefectZip(testResultId);
+		const testResult = this.testResult();
+		const defects = testResult?.testTypes?.[0]?.defects;
+		if (!defects) {
 			return;
 		}
-		// check media exists
-		const media = this.defect.media;
-		if (media && this.canDownloadMedia()) {
-			// create new zip file
-			const newZip = new JSZip();
-			for (const mediaObject of media) {
-				// grab image file from cache
-				const file = images[mediaObject.path];
+
+		for (const defect of defects) {
+			if (!defect.media) {
+				continue;
+			}
+			for (const media of defect.media) {
+				if (media.type === 'failReason') {
+					continue;
+				}
+				const file = zip.files[media.path];
 				if (file) {
-					// add image to new zip file
-					newZip.file(mediaObject.path, file);
+					this.defectMediaService.images[media.path] = await file.async('base64');
 				}
 			}
-			// download zip
-			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 		}
+
+		await this.downloadDefectMediaFromCache();
 	}
 
-	async downloadMediaFromHttp() {
-		const testResultId = this.testResult()?.testResultId;
-		if (!this.defectMediaService || !testResultId) {
+	private async downloadDefectMediaFromCache() {
+		if (!this.defectMediaService || !this.defect.media) {
 			return;
 		}
 
-		// get pre signed url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
-
-		// get media for testresultid
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-
-		// check media exists
-		const media = this.defect.media;
-		if (media && this.canDownloadMedia()) {
-			// load media into zip file
-			const zip = new JSZip();
-			await zip.loadAsync(blob);
-
-			// create zip to hold defect specific images
-			const newZip = new JSZip();
-
-			// loop through media
-			for (const mediaObject of media) {
-				const file = zip.files[mediaObject.path];
-				if (file) {
-					// if file exists add to zip file and add image to cache
-					const fileData = await file.async('blob');
-					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
-					newZip.file(mediaObject.path, fileData);
-				}
+		const newZip = new JSZip();
+		for (const media of this.defect.media) {
+			if (media.type === 'failReason') {
+				continue;
 			}
-			// download zip
-			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
+
+			const file = this.defectMediaService.images[media.path];
+			if (file) {
+				newZip.file(media.path, file, { base64: true });
+			}
 		}
+
+		await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 }

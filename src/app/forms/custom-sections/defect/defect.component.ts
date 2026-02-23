@@ -36,7 +36,6 @@ import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import JSZip from 'jszip';
-import { isEqual } from 'lodash';
 import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 'rxjs';
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { SelectComponent } from '../../components/select/select.component';
@@ -151,7 +150,12 @@ export class DefectComponent implements OnInit, OnDestroy {
 				});
 		}
 
-		if (this.testResult && this.defectMediaService) {
+		if (
+			this.testResult &&
+			this.defectMediaService &&
+			this.defect &&
+			this.defectMediaService.hasImages(this.defect)
+		) {
 			this.loading = true;
 			await this.defectMediaService.loadImages(this.testResult);
 			this.loading = false;
@@ -170,7 +174,44 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 		const images = this.defectMediaService.getImages();
 		const image = images[mediaSchema.path];
+		if (!image) {
+			return '';
+		}
 		return `data:image/jpg;base64,${image}`;
+	}
+
+	hasCachedImage(media: MediaSchema): boolean {
+		if (!this.defectMediaService) {
+			return false;
+		}
+		return !!this.defectMediaService.getImage(media);
+	}
+
+	shouldShowMissingMediaMessage(): boolean {
+		if (!this.defect || !this.defectMediaService) {
+			return false;
+		}
+
+		// if media paths exist but none are retrievable from cache/zip, treat as unavailable.
+		if (this.defectMediaService.hasImages(this.defect)) {
+			return !this.defectMediaService.hasCachedImages(this.defect);
+		}
+
+		return !this.defect.media || this.defect.media.length === 0;
+	}
+
+	getFailureToCaptureDefectMediaReason(): string {
+		if (!this.defect?.media) {
+			return 'No media available';
+		}
+
+		for (const reason of this.defect.media) {
+			if (reason.type === 'failReason') {
+				return `No media available - ${reason.reason}`;
+			}
+		}
+
+		return 'No media available';
 	}
 
 	get isDangerous(): boolean {
@@ -330,15 +371,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (!this.testResultId || !this.defectMediaService || !this.defect) {
 			return;
 		}
-		// get presigned url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(this.testResultId));
 
-		// get zip file for test result id
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-
-		// load response into zip file
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
+		const zip = await this.defectMediaService.getDefectZip(this.testResultId);
 
 		// load image into a file
 		const file = zip.file(media.path);
@@ -430,5 +464,4 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	protected readonly isEqual = isEqual;
 }

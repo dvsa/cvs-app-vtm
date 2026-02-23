@@ -31,20 +31,26 @@ export class DefectMediaService {
 		return localParams;
 	}
 
+  async getDefectZip(testResultId: string) {
+    // get presigned url
+    const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
+
+    // get zip file for test result id
+    const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+
+    // load response into zip file
+    const zip = new JSZip();
+
+    await zip.loadAsync(blob, { base64: true });
+
+    return zip;
+  }
+
 	getPresignedUrlValue(testResultId: string): Observable<string> {
 		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
 			params: this.getParams(),
 			headers: this.getHeaders(),
 			responseType: 'text',
-		});
-	}
-
-	getPresignedUrlObserveValue(testResultId: string) {
-		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
-			params: this.getParams(),
-			headers: this.getHeaders(),
-			responseType: 'text',
-			observe: 'events',
 		});
 	}
 
@@ -73,8 +79,14 @@ export class DefectMediaService {
 		if (!testType) {
 			return;
 		}
+
+		const defectsWithImages = testType.defects.filter((defect) => this.hasImages(defect));
+		if (defectsWithImages.length === 0) {
+			return true;
+		}
+
 		let isTestResultCached = true;
-		for (const defect of testType.defects) {
+		for (const defect of defectsWithImages) {
 			if (!this.hasCachedImages(defect)) {
 				isTestResultCached = false;
 			}
@@ -91,12 +103,14 @@ export class DefectMediaService {
 				return;
 			}
 
-			const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
-			const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-			const zip = new JSZip();
-			await zip.loadAsync(blob, { base64: true });
+			const defectsWithImages = testType.defects.filter((defect) => this.hasImages(defect));
+			if (defectsWithImages.length === 0) {
+				return;
+			}
 
-			for (const defect of testResult.testTypes[0].defects) {
+      const zip = await this.getDefectZip(testResultId);
+
+			for (const defect of defectsWithImages) {
 				const defectMedia = defect.media;
 				if (!defectMedia) {
 					return;
