@@ -129,9 +129,9 @@ export class DefectMediaService {
 	}
 
 	async openDocumentFromZip(zip: JSZip, fileName: string) {
-		const base64 = await zip.generateAsync({ type: 'base64' });
-
-		this.documentsService.openDocumentFromResponse(fileName, `data:application/zip;base64, ${base64}`, 'zip');
+		const blob = await zip.generateAsync({ type: 'blob' });
+		const link = this.documentsService.createFileLink(fileName, blob, 'zip');
+		this.documentsService.simulateClick(link);
 	}
 
 	get params(): Map<string, string> {
