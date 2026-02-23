@@ -43,6 +43,6 @@ ignore:
   SNYK-JS-MINIMATCH-15309438:
     - '*':
       reason: Remediation not yet available
-      expires: 2026-03-12T09:01:15.119Z
-      created: 2026-02-12T09:13:15.122Z
+      expires: 2026-06-14T09:01:15.119Z
+      created: 2025-11-14T09:01:15.122Z
 patch: {}
