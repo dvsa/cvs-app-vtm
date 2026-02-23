@@ -1,5 +1,5 @@
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { initialTechSearchResultState } from '../tech-record-search.reducer';
+import { SearchResultState, initialTechSearchResultState } from '../tech-record-search.reducer';
 import {
 	selectTechRecordSearchResults,
 	selectTechRecordSearchResultsBySystemNumber,
@@ -20,6 +20,7 @@ describe('Tech Record Search Selectors', () => {
 	describe('selectTechRecordsSearchResultsBySystemNumber', () => {
 		const testCases = [
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -36,6 +37,7 @@ describe('Tech Record Search Selectors', () => {
 				],
 			},
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -52,6 +54,7 @@ describe('Tech Record Search Selectors', () => {
 				],
 			},
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '4444',
@@ -67,10 +70,10 @@ describe('Tech Record Search Selectors', () => {
 					},
 				],
 			},
-		] as { results: TechRecordSearchSchema[] }[];
+		] as { state: SearchResultState; results: TechRecordSearchSchema[] }[];
 
-		it.each(testCases)('should group the search results by systemNumber', ({ results }) => {
-			const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(results);
+		it.each(testCases)('should group the search results by systemNumber', ({ state, results }) => {
+			const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(state, results);
 			const expectedLength = new Set(results.map((r) => r.systemNumber)).size;
 			expect(selectedState).toHaveLength(expectedLength);
 		});
@@ -81,6 +84,7 @@ describe('Tech Record Search Selectors', () => {
 		twoDaysAgo.setDate(new Date().getDate() - 2);
 		const statusCases = [
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -99,6 +103,7 @@ describe('Tech Record Search Selectors', () => {
 				status: 'current',
 			},
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -118,6 +123,7 @@ describe('Tech Record Search Selectors', () => {
 				status: 'provisional',
 			},
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -137,6 +143,7 @@ describe('Tech Record Search Selectors', () => {
 				status: 'current',
 			},
 			{
+				state: {},
 				results: [
 					{
 						systemNumber: '123456',
@@ -154,9 +161,9 @@ describe('Tech Record Search Selectors', () => {
 				],
 				status: 'this is the right record',
 			},
-		] as { results: TechRecordSearchSchema[]; status: string }[];
-		it.each(statusCases)('should group the search results by systemNumber', ({ results, status }) => {
-			const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(results);
+		] as { state: SearchResultState; results: TechRecordSearchSchema[]; status: string }[];
+		it.each(statusCases)('should group the search results by systemNumber', ({ state, results, status }) => {
+			const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(state, results);
 			expect(selectedState[0].techRecord_statusCode).toBe(status);
 		});
 	});

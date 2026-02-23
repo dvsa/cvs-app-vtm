@@ -10,19 +10,19 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-JSYAML-13961110:
+  SNYK-JS-AJV-15274295:
     - '*':
       reason: Remediation not yet available
-      expires: 2026-06-14T09:01:15.119Z
-      created: 2025-11-14T09:01:15.122Z
-  SNYK-JS-GLOB-14040952:
+      expires: 2026-03-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-MINIMATCH-15309438:
     - '*':
       reason: Remediation not yet available
-      expires: 2025-12-14T09:01:15.119Z
-      created: 2025-11-14T09:01:15.122Z
-  SNYK-JS-QS-14724253:
+      expires: 2026-03-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-QS-15268416:
     - '*':
       reason: Remediation not yet available
-      expires: 2026-06-14T09:01:15.119Z
-      created: 2025-12-30T10:13:15.122Z
+      expires: 2026-03-12T09:01:15.119Z
+      created: 2026-02-12T09:13:15.122Z
 patch: {}

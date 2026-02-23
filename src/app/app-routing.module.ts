@@ -79,6 +79,14 @@ const routes: Routes = [
 				loadComponent: () => import('./features/betas/betas.component').then((m) => m.BetasComponent),
 			},
 			{
+				path: RootRoutes.ACCESSIBILITY_STATEMENT,
+				data: { title: 'Accessibility statement' },
+				loadComponent: () =>
+					import('./features/accessibility-statement/accessibility-statement.component').then(
+						(m) => m.AccessibilityStatementComponent
+					),
+			},
+			{
 				path: RootRoutes.ERROR,
 				pathMatch: 'full',
 				loadComponent: () =>

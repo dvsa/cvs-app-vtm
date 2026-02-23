@@ -19,3 +19,11 @@
     color: govuk-colour('dark-blue', $legacy: 'light-blue');
   }
 }
+
+.govuk-button--tertiary {
+  background-color:#1d70b8;
+
+  &:hover {
+    background-color:#1d70b8;
+  }
+}

@@ -6,7 +6,7 @@ import { SearchV2Component } from './search-v2/search-v2.component';
 @Component({
 	selector: 'app-search-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('techrecordredesign')) {
+    @if (featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
       <app-search-v2 />
     } @else {
       <app-search />

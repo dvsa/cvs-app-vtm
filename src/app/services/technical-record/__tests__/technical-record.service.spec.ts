@@ -57,7 +57,7 @@ describe('TechnicalRecordService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`
+				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 
@@ -75,7 +75,7 @@ describe('TechnicalRecordService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`
+				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 
@@ -93,7 +93,7 @@ describe('TechnicalRecordService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`
+				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 
@@ -111,7 +111,7 @@ describe('TechnicalRecordService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`
+				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 
@@ -129,7 +129,7 @@ describe('TechnicalRecordService', () => {
 
 			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`
+				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 

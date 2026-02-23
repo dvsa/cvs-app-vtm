@@ -77,4 +77,27 @@ describe('DefectsComponent', () => {
 			expect(text.innerHTML).toBe(expectedText);
 		}));
 	});
+
+	describe('downloadAllMedia', () => {
+		it('should download media from cache if cached media exists', async () => {
+			if (component.defectMediaService) {
+				const cacheSpy = jest.spyOn(component, 'downloadMediaFromCache').mockImplementation(() => Promise.resolve());
+				const httpSpy = jest.spyOn(component, 'downloadMediaFromHttp').mockImplementation(() => Promise.resolve());
+				jest.spyOn(component.defectMediaService, 'hasCachedTestResultImages').mockReturnValue(true);
+				await component.downloadAllMedia();
+				expect(cacheSpy).toHaveBeenCalled();
+				expect(httpSpy).not.toHaveBeenCalled();
+			}
+		});
+		it('should download media via http if cached media does not exist', async () => {
+			if (component.defectMediaService) {
+				const cacheSpy = jest.spyOn(component, 'downloadMediaFromCache').mockImplementation(() => Promise.resolve());
+				const httpSpy = jest.spyOn(component, 'downloadMediaFromHttp').mockImplementation(() => Promise.resolve());
+				jest.spyOn(component.defectMediaService, 'hasCachedImages').mockReturnValue(false);
+				await component.downloadAllMedia();
+				expect(cacheSpy).not.toHaveBeenCalled();
+				expect(httpSpy).toHaveBeenCalled();
+			}
+		});
+	});
 });

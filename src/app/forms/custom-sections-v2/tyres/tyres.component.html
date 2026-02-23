@@ -69,8 +69,9 @@
                     class="govuk-button govuk-button--warning remove-axle-button-psv"
                     data-module="govuk-button"
                     role="button"
-                    [id]="'tyres_remove-{{ i + 1}}'"
+                    id="tyres_remove-{{ i + 1}}"
                     (click)="removeAxle(i)"
+                    [disabled]="!axlesService.canRemoveAxle(parent, techRecord().techRecord_vehicleType)"
                   >
                     Remove axle
                   </button>
@@ -99,7 +100,7 @@
                     [showErrors]="!showTyreCodeNotFoundError"
                   ></govuk-form-group-input>
                 }
-                
+
                 @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.tyres_tyreSize`)) {
                   <govuk-form-group-input
                     label="Size"
@@ -178,7 +179,7 @@
           [options]="HGV_TYRE_USE_CODE_OPTIONS"
         ></govuk-form-group-select>
       }
-  
+
       @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
         <govuk-form-group-select
           label="Tyre use code"
@@ -198,7 +199,7 @@
         data-module="govuk-button"
         role="button"
         id="tyresAddAxle"
-        (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
+        (click)="addAxle()"
       >
         Add axle
       </button>

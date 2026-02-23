@@ -66,6 +66,63 @@
         </dl>
       </div>
     </div>
+    @if (isDangerous) {
+      <div>
+        <h2 class="govuk-heading-m">Defect media</h2>
+        @if (defectMediaService) {
+          @if (loading) {
+            <div class="spinner-group">
+              <p class="govuk-body fetching-label">Fetching media</p>
+              <div class="govuk-box spinner-wrapper" aria-busy="true">
+                <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+                  <div class="spinner-container">
+                    <div class="spinner">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            @if (defectMediaService.hasImages(defect) && defectMediaService.hasCachedImages(defect)) {
+              <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
+              </app-button>
+            }
+            <div class="govuk-heading-s underline">Photos</div>
+              @for (media of defect.media; track media) {
+                @if (media.type === 'image' && hasCachedImage(media)) {
+                  <div style="display: inline-flex" class="defect-container">
+                    <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
+                    <button class="link download-image-link" (click)="downloadPhoto(media)">
+                      Download photo
+                    </button>
+                  </div>
+                }
+              }
+            @if(shouldShowMissingMediaMessage()) {
+              <p class="govuk-body">
+                No media available
+              </p>
+            } @else if (!defectMediaService.hasImages(defect)) {
+              <p class="govuk-body">
+                {{ getFailureToCaptureDefectMediaReason() }}
+              </p>
+            }
+          }
+        }
+      </div>
+    }
   }
 </ng-template>
 

@@ -431,69 +431,17 @@ export class HttpService {
 	}
 
 	searchTechRecords(type: SEARCH_TYPES, term: string) {
-		return this.http.get<TechRecordSearchSchema[]>(
-			`${environment.VTM_API_URI}/v3/technical-records/search/${term}?searchCriteria=${type}`
-		);
+		let params = new HttpParams();
+		params = params.set('searchCriteria', type);
+		params = params.set('additionalInfo', true);
+
+		return this.http.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
+			params,
+		});
 	}
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
-	}
-
-	testCertificateGet(testNumber?: string, vin?: string) {
-		if (!vin) {
-			throw new Error('Required parameter vin was null or undefined when calling testCertificateGet.');
-		}
-
-		if (!testNumber) {
-			throw new Error('Required parameter testNumber was null or undefined when calling testCertificateGet.');
-		}
-
-		let params = new HttpParams();
-
-		if (testNumber) {
-			params = params.set('testNumber', testNumber);
-		}
-
-		if (vin) {
-			params = params.set('vinNumber', vin);
-		}
-
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/pdf; charset=utf-8');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-
-		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval`, {
-			headers,
-			params,
-			reportProgress: false,
-			observe: 'body',
-			responseType: 'text',
-		});
-	}
-
-	testPlateGet(serialNumber?: string) {
-		if (!serialNumber) {
-			throw new Error('Required parameter serialNumber was null or undefined when calling testCertificateGet.');
-		}
-
-		let params = new HttpParams();
-
-		if (serialNumber) {
-			params = params.set('plateSerialNumber', <any>serialNumber);
-		}
-
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/pdf; charset=utf-8');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-
-		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval`, {
-			headers,
-			params,
-			reportProgress: false,
-			observe: 'body',
-			responseType: 'text',
-		});
 	}
 
 	testResultsSystemNumberGet(

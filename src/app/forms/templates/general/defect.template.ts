@@ -181,6 +181,13 @@ export const DefectsTpl: FormNode = {
 											type: FormNodeTypes.CONTROL,
 											disabled: true,
 										},
+										{
+											name: 'media',
+											label: 'media',
+											value: null,
+											type: FormNodeTypes.CONTROL,
+											disabled: true,
+										},
 									],
 								},
 							],

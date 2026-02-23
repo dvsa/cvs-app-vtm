@@ -59,6 +59,7 @@
                   appFilterByTags
                   [tagNames]="[]"
                   [filters]="filters()"
+                  [disabled]="!axlesService.canRemoveAxle(parent, techRecord().techRecord_vehicleType)"
                 >
                   Remove axle
                 </button>
@@ -190,6 +191,7 @@
                   appFilterByTags
                   [tagNames]="['Plates']"
                   [filters]="filters()"
+                  [disabled]="!axlesService.canRemoveAxle(parent, techRecord().techRecord_vehicleType)"
                 >
                   Remove axle
                 </button>
@@ -522,7 +524,7 @@
       data-module="govuk-button"
       role="button"
       id="weightsAddAxle"
-      (click)="axlesService.addAxle(parent, techRecord().techRecord_vehicleType)"
+      (click)="addAxle()"
       appFilterByTags
       [tagNames]="['Plates']"
       [filters]="filters()"

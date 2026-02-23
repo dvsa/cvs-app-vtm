@@ -1,4 +1,4 @@
-import { MediaDownloadComponent } from '@/src/app/components/media-download/media-download.component';
+import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
@@ -236,10 +236,11 @@ export const SpecialistTestSectionGroup1: FormNode = {
 						},
 						{
 							name: 'media',
+							value: [],
 							type: FormNodeTypes.CONTROL,
 							viewType: FormNodeViewTypes.CUSTOM,
 							editType: FormNodeEditTypes.HIDDEN,
-							viewComponent: MediaDownloadComponent,
+							viewComponent: ApprovalMediaDownloadComponent,
 						},
 						{
 							name: 'reapplicationDate',

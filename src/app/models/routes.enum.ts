@@ -10,6 +10,7 @@ export enum RootRoutes {
 	BETAS = 'betas',
 	ERROR = 'error',
 	WILDCARD = '**',
+	ACCESSIBILITY_STATEMENT = 'accessibility',
 }
 
 export enum SearchRoutes {

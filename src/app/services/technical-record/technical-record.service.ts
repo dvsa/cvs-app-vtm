@@ -338,8 +338,8 @@ export class TechnicalRecordService {
 			: undefined;
 	}
 
-	searchBy(type: SEARCH_TYPES | undefined, term: string): void {
-		this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
+	searchBy(type: SEARCH_TYPES | undefined, term: string, includeArchived?: boolean): void {
+		this.store.dispatch(fetchSearchResult({ searchBy: type, term, includeArchived }));
 	}
 
 	getBrakeCode(techRecord: TechRecordTypeVehicle<'psv', 'get' | 'put'>) {
