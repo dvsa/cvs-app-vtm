@@ -35,3 +35,18 @@ export function isLightVehicle(
 		isSmallTrailer(data)
 	);
 }
+
+export function getVrmOrTrailerId(data: Partial<TechRecordType<'put'>>): string | null | undefined {
+	switch (data.techRecord_vehicleType) {
+		case 'trl':
+			return data.trailerId;
+		case 'hgv':
+		case 'psv':
+		case 'lgv':
+		case 'car':
+		case 'motorcycle':
+			return data.primaryVrm;
+		default:
+			return undefined;
+	}
+}

@@ -6,7 +6,12 @@ import { HomePage } from '@/e2e/pages/home/home.page';
 import { expect, test } from '@playwright/test';
 
 test.describe('Create HGV records', () => {
-	test.skip('should create a skeleton HGV record', async ({ page }) => {});
+	test.skip('should create a skeleton HGV record', async ({ page }, testInfo) => {
+		testInfo.annotations.push({
+			type: 'BDD',
+			description: 'Should create a skeleton HGV record',
+		});
+	});
 
 	test('should create a testable HGV record', async ({ page }, testInfo) => {
 		testInfo.annotations.push({
@@ -40,11 +45,8 @@ test.describe('Create HGV records', () => {
 		await page.waitForURL(/\/create/);
 		await expect(await page.title()).toBe('Vehicle Testing Management - Create new technical record');
 		const createPage = new CreatePage(page);
-		await createPage.vin.input.fill(techRecord.vin);
-		await createPage.generateCTZNumber.checkbox.check();
-		await createPage.vehicleStatus.selectOption(techRecord.techRecord_statusCode);
-		await createPage.vehicleType.selectOption(techRecord.techRecord_vehicleType);
-		await createPage.continueButton.click();
+		await createPage.fill(techRecord);
+		await createPage.submit();
 
 		// Create new record details
 		await page.waitForURL(/\/create\/new-record-details/);
@@ -61,5 +63,10 @@ test.describe('Create HGV records', () => {
 		// Assert view fields are expected
 	});
 
-	test.skip('should create a complete HGV record', async ({ page }) => {});
+	test.skip('should create a complete HGV record', async ({ page }, testInfo) => {
+		testInfo.annotations.push({
+			type: 'BDD',
+			description: 'Should create a complete HGV record',
+		});
+	});
 });

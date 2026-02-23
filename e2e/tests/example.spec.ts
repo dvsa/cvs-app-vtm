@@ -41,7 +41,9 @@ test.describe.skip('Accessibility', () => {
 		const searchPage = new SearchPage(page);
 		await searchPage.runAccessibilityScan(testInfo);
 		await searchPage.searchInput.fill('VTM-123456789');
-		await searchPage.searchCriteria.selectOption({ label: 'Vehicle registration mark (VRM)' });
+		await searchPage.searchCriteria.selectOption({
+			label: 'Vehicle registration mark (VRM)',
+		});
 		await searchPage.searchButton.click();
 
 		// Search results (with non-existant VRM) -> check error summary
