@@ -208,7 +208,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
-				return `No media available - ${reason.reason}`;
+				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
+				return `No media available - ${formattedReason}`;
 			}
 		}
 

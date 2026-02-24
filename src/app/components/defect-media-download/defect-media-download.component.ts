@@ -29,7 +29,10 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 
 	canDownloadMedia(): boolean {
 		if (!this.defect.media) return false;
-		return this.defect.media.some((media) => media.type !== 'failReason');
+		if (!this.defectMediaService) {
+			return false;
+		}
+		return this.defectMediaService.hasImages(this.defect);
 	}
 
 	getFailureToCaptureDefectMediaReason(): string {
@@ -38,7 +41,8 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
-				return `No media available - ${reason.reason}`;
+				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
+				return `No media available - ${formattedReason}`;
 			}
 		}
 

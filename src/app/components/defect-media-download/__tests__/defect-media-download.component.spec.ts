@@ -14,21 +14,29 @@ describe('DefectMediaDownloadComponent', () => {
 	let globalErrorService: GlobalErrorService;
 	let defectMediaService: {
 		images: Record<string, string>;
+		hasImages: jest.Mock;
 		hasCachedImages: jest.Mock;
 		getDefectZip: jest.Mock;
 		openDocumentFromZip: jest.Mock;
 		handleError: jest.Mock;
 		hasRententionPeriodExpired: jest.Mock;
+		formatMediaFailureReason: jest.Mock;
 	};
 
 	beforeEach(async () => {
 		defectMediaService = {
 			images: {},
+			hasImages: jest.fn(
+				(defect: DefectDetailsSchema) => !!defect.media?.some((media) => media.type !== 'failReason' && !!media.path)
+			),
 			hasCachedImages: jest.fn(),
 			getDefectZip: jest.fn(),
 			openDocumentFromZip: jest.fn(),
 			handleError: jest.fn(),
 			hasRententionPeriodExpired: jest.fn(),
+			formatMediaFailureReason: jest.fn(
+				(reason?: string) => reason ?? 'Reason for failure to capture media not available'
+			),
 		};
 
 		await TestBed.configureTestingModule({

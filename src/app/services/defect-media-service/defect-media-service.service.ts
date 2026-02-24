@@ -65,7 +65,7 @@ export class DefectMediaService {
 			return false;
 		}
 		if (!isEqual(this.images, {})) {
-			const images = defectMedia.filter((media) => media.type !== 'failReason');
+			const images = defectMedia.filter((media) => media.type !== 'failReason' && !!media.path);
 			for (const image of images) {
 				if (this.images[image.path]) {
 					return true;
@@ -150,9 +150,22 @@ export class DefectMediaService {
 		return this.images;
 	}
 
+	formatMediaFailureReason(reason?: string): string {
+		if (!reason) {
+			return 'Reason for failure to capture media not available';
+		}
+
+		const cleanedReason = reason.trim().replace(/\.$/, '');
+		if (cleanedReason.toLowerCase() === 'failed to upload') {
+			return 'Media failed to upload';
+		}
+
+		return reason;
+	}
+
 	hasImages(defect: DefectDetailsSchema): boolean {
 		if (!defect.media) return false;
-		return defect.media.some((media) => media.type !== 'failReason');
+		return defect.media.some((media) => media.type !== 'failReason' && !!media.path);
 	}
 
 	handleError(error: unknown) {
