@@ -52,10 +52,9 @@
 
       </div>
     </div>
-
-  @if (isEditing()) {
-    <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
-      Add defect
-    </app-button>
-  }
+}
+@if (isEditing()) {
+  <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
+    Add defect
+  </app-button>
 }

@@ -41,8 +41,7 @@ export class DefectMediaDownloadComponent extends CustomFormControlComponent imp
 
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
-				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
-				return `No media available - ${formattedReason}`;
+				return 'No media available';
 			}
 		}
 
