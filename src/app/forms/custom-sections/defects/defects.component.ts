@@ -64,13 +64,14 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	}
 
 	hasMediaAvailable(): boolean {
+		if (!this.defectMediaService) {
+			return false;
+		}
+
 		// return true if one of the defects contains media which are images
 		for (const defect of this.testDefects) {
-			if (defect.media) {
-				const hasImages = defect.media.some((media) => media.type !== 'failReason');
-				if (hasImages) {
-					return true;
-				}
+			if (this.defectMediaService.hasImages(defect)) {
+				return true;
 			}
 		}
 		return false;
