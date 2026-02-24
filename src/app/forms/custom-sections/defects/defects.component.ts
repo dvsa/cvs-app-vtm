@@ -16,7 +16,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
-import { Subscription, debounceTime, lastValueFrom } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
 	selector: 'app-defects[defects][template]',
@@ -111,7 +111,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 			for (const image of defectMedia) {
 				const file = this.defectMediaService.images[image.path];
 				if (file) {
-					zip.file(image.path, file);
+					zip.file(image.path, file, { base64: true });
 				}
 			}
 		}
@@ -124,15 +124,8 @@ export class DefectsComponent implements OnInit, OnDestroy {
 			return;
 		}
 		const testResultId = testResult.testResultId;
-		// get presigned url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 
-		// get zip file for test result id
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-
-		// load response into zip file
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
+		const zip = await this.defectMediaService.getDefectZip(testResultId);
 
 		for (const defect of testResult.testTypes[0].defects) {
 			const defectMedia = defect.media;
