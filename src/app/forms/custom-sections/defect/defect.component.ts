@@ -365,7 +365,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		// load response into zip file
 		const zip = new JSZip();
-		zip.file(media.path, image);
+		zip.file(media.path, image, { base64: true });
 		await this.defectMediaService.openDocumentFromZip(zip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 
@@ -420,7 +420,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		for (const image of defectMedia) {
 			const file = this.defectMediaService.images[image.path];
 			if (file) {
-				zip.file(image.path, file);
+				zip.file(image.path, file, { base64: true });
 			}
 		}
 		await this.defectMediaService.openDocumentFromZip(zip, testResultId);
