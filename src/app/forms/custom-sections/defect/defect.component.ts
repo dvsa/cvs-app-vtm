@@ -153,6 +153,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (
 			this.testResult &&
 			this.defectMediaService &&
+			!this.defectMediaService.hasRententionPeriodExpired(this.testResult) &&
 			this.defect &&
 			this.defectMediaService.hasImages(this.defect)
 		) {
@@ -463,5 +464,4 @@ export class DefectComponent implements OnInit, OnDestroy {
 			await this.defectMediaService.openDocumentFromZip(newZip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 		}
 	}
-
 }

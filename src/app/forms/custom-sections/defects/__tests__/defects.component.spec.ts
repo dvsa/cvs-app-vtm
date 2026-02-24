@@ -1,3 +1,4 @@
+import { selectedTestResultState } from '@/src/app/store/test-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
@@ -7,7 +8,8 @@ import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
-import { provideMockStore } from '@ngrx/store/testing';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { initialAppState } from '@store/index';
@@ -19,6 +21,7 @@ describe('DefectsComponent', () => {
 	let component: DefectsComponent;
 	let fixture: ComponentFixture<DefectsComponent>;
 	let el: DebugElement;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -43,6 +46,8 @@ describe('DefectsComponent', () => {
 	});
 
 	beforeEach(() => {
+		store = TestBed.inject(MockStore);
+		store.overrideSelector(selectedTestResultState, {} as TestResultSchema);
 		fixture = TestBed.createComponent(DefectsComponent);
 		fixture.componentRef.setInput('defects', null);
 		fixture.componentRef.setInput('template', {});

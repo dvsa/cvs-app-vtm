@@ -18,6 +18,7 @@ describe('DefectMediaDownloadComponent', () => {
 		getDefectZip: jest.Mock;
 		openDocumentFromZip: jest.Mock;
 		handleError: jest.Mock;
+		hasRententionPeriodExpired: jest.Mock;
 	};
 
 	beforeEach(async () => {
@@ -27,6 +28,7 @@ describe('DefectMediaDownloadComponent', () => {
 			getDefectZip: jest.fn(),
 			openDocumentFromZip: jest.fn(),
 			handleError: jest.fn(),
+			hasRententionPeriodExpired: jest.fn(),
 		};
 
 		await TestBed.configureTestingModule({
@@ -105,12 +107,26 @@ describe('DefectMediaDownloadComponent', () => {
 			component.defect = {
 				imNumber: 1,
 				imDescription: 'x',
+				deficiencyCategory: 'dangerous',
 				media: [
 					{ type: 'failReason', reason: 'foo' },
 					{ type: 'failReason', reason: 'bar' },
 				],
 			} as DefectDetailsSchema;
 			expect(component.getFailureToCaptureDefectMediaReason()).toBe('No media available - foo');
+		});
+
+		it('should return No media available when the deficiencyCategory is not dangerous', () => {
+			component.defect = {
+				imNumber: 1,
+				imDescription: 'x',
+				deficiencyCategory: 'minor',
+				media: [
+					{ type: 'failReason', reason: 'foo' },
+					{ type: 'failReason', reason: 'bar' },
+				],
+			} as DefectDetailsSchema;
+			expect(component.getFailureToCaptureDefectMediaReason()).toBe('No media available');
 		});
 	});
 

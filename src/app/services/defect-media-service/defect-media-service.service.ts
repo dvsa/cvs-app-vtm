@@ -6,6 +6,7 @@ import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-ty
 import { environment } from '@environments/environment';
 import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
+import dayjs from 'dayjs';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
 import { Observable, lastValueFrom } from 'rxjs';
@@ -31,20 +32,20 @@ export class DefectMediaService {
 		return localParams;
 	}
 
-  async getDefectZip(testResultId: string) {
-    // get presigned url
-    const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
+	async getDefectZip(testResultId: string) {
+		// get presigned url
+		const url = await lastValueFrom(this.getPresignedUrlValue(testResultId));
 
-    // get zip file for test result id
-    const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+		// get zip file for test result id
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
 
-    // load response into zip file
-    const zip = new JSZip();
+		// load response into zip file
+		const zip = new JSZip();
 
-    await zip.loadAsync(blob, { base64: true });
+		await zip.loadAsync(blob, { base64: true });
 
-    return zip;
-  }
+		return zip;
+	}
 
 	getPresignedUrlValue(testResultId: string): Observable<string> {
 		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
@@ -72,6 +73,13 @@ export class DefectMediaService {
 			}
 		}
 		return false;
+	}
+
+	hasRententionPeriodExpired(testResult: TestResultSchema): boolean {
+		const now = new Date();
+		const testType = testResult.testTypes[0];
+		const daysSinceTest = dayjs(now).diff(testType.testTypeEndTimestamp, 'months');
+		return daysSinceTest >= 15;
 	}
 
 	hasCachedTestResultImages(testResult: TestResultSchema) {
@@ -108,7 +116,7 @@ export class DefectMediaService {
 				return;
 			}
 
-      const zip = await this.getDefectZip(testResultId);
+			const zip = await this.getDefectZip(testResultId);
 
 			for (const defect of defectsWithImages) {
 				const defectMedia = defect.media;
