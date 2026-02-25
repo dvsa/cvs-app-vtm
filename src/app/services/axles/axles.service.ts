@@ -11,9 +11,7 @@ import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class AxlesService {
 	fb = inject(FormBuilder);
 	featureToggleService = inject(FeatureToggleService);
