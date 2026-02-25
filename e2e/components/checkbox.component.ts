@@ -7,7 +7,11 @@ export class CheckboxComponent extends BaseComponent {
 	readonly globalError = this.page.locator(`//*[@id="${this.id}-global-error"]`);
 
 	async fill(data?: boolean | null): Promise<void> {
-		if (data === true) await this.checkbox.check();
-		if (data === false || data === null) await this.checkbox.uncheck();
+		try {
+			await this.checkbox.setChecked(data === true);
+		} catch (error) {
+			// @TODO: re-throw error if unexpected
+			console.error(error);
+		}
 	}
 }

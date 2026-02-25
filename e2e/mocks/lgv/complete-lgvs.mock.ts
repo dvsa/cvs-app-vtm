@@ -1,3 +1,4 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	EUVehicleCategory,
 	TechRecordPUTLGVComplete,
@@ -77,7 +78,7 @@ export const COMPLETE_LGV_2: TechRecordPUTLGVComplete = {
  *   - IVA17 Appeal for IVA (desk based) (ye7)
  */
 export const COMPLETE_LGV_3: TechRecordPUTLGVComplete = {
-	vin: 'COMPLETELGV3',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'lgv',
 	techRecord_statusCode: 'current',

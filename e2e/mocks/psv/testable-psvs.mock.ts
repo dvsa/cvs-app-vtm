@@ -1,3 +1,4 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	TechRecordPUTPSVTestable,
 	VehicleClassDescription,
@@ -5,7 +6,7 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/psv/testable';
 
 export const TESTABLE_PSV_1: TechRecordPUTPSVTestable = {
-	vin: 'TESTABLEPSV1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'psv',
 	techRecord_statusCode: 'current',

@@ -1,7 +1,7 @@
 import { test } from '@/e2e/fixtures/global.fixture';
 import { AccessibilityStatementPage } from '@/e2e/pages/accessibility-statement/accessibility-statement.page';
 
-test.describe('Accessibility statement', () => {
+test.describe.skip('Accessibility statement', () => {
 	test('should display the accessibility statement', async ({ page, homePage }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',

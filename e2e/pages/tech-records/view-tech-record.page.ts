@@ -23,6 +23,7 @@ import { TechnicalRecordsHistorySection } from '@/e2e/components/sections/techni
 import { TestRecordsSection } from '@/e2e/components/sections/test-records.section';
 import { TyresSection } from '@/e2e/components/sections/tyres.section';
 import { WeightsSection } from '@/e2e/components/sections/weights.section';
+import { expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 
 export class ViewTechRecordPage extends BasePage {
@@ -54,4 +55,9 @@ export class ViewTechRecordPage extends BasePage {
 	readonly amendRecordButton = this.page.getByRole('button', {
 		name: 'Amend record',
 	});
+
+	async loaded(): Promise<void> {
+		await this.page.waitForURL(/\/tech-records/);
+		await expect(await this.page.title()).toBe('Vehicle Testing Management - View technical record');
+	}
 }

@@ -50,3 +50,15 @@ export function getVrmOrTrailerId(data: Partial<TechRecordType<'put'>>): string 
 			return undefined;
 	}
 }
+
+export function getRandomVin() {
+	return String(Math.floor(1000000 + Math.random() * 9000000000));
+}
+
+export function getRandomVrm() {
+	return String(Math.floor(1000000 + Math.random() * 9000000));
+}
+
+export function getRandomTrailerId() {
+	return String(Math.floor(1000000 + Math.random() * 9000000));
+}

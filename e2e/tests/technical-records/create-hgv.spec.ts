@@ -1,64 +1,74 @@
-import { expect, test } from '@/e2e/fixtures/global.fixture';
-import { mockTestableHgvs } from '@/e2e/mocks/hgv/testable-hgvs.mock';
-import { BetasPage } from '@/e2e/pages/betas/betas.page';
-import { CreatePage } from '@/e2e/pages/create/create.page';
+import { test } from '@/e2e/fixtures/global.fixture';
+import { COMPLETE_HGV_1 } from '@/e2e/mocks/hgv/complete-hgvs.mock';
+import { SKELETON_HGV_1 } from '@/e2e/mocks/hgv/skeleton-hgvs.mock';
+import { TESTABLE_HGV_1 } from '@/e2e/mocks/hgv/testable-hgvs.mock';
 import { NewRecordDetailsPage } from '@/e2e/pages/create/new-record-details.page';
+import { ViewTechRecordPage } from '@/e2e/pages/tech-records/view-tech-record.page';
 
-test.describe.skip('Create HGV records', () => {
-	test('should create a skeleton HGV record', async ({ page }, testInfo) => {
+test.describe('Create HGV records', () => {
+	test('should create a skeleton HGV record', async ({ page, createPage }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',
 			description: 'Should create a skeleton HGV record',
 		});
+
+		// Record details
+		await createPage.fill(SKELETON_HGV_1);
+		await createPage.submit();
+
+		// Create new record details
+		const recordDetailsPage = new NewRecordDetailsPage(page);
+		await recordDetailsPage.loaded();
+		await recordDetailsPage.accordions.open();
+		await recordDetailsPage.fill(SKELETON_HGV_1);
+		await recordDetailsPage.submit();
+
+		// Assert view fields are expected
+		const viewTechRecordPage = new ViewTechRecordPage(page);
+		await viewTechRecordPage.loaded();
 	});
 
-	test('should create a testable HGV record', async ({ page, homePage }, testInfo) => {
+	test('should create a testable HGV record', async ({ page, createPage }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',
 			description: 'Should create a testable HGV record',
 		});
 
 		// Record details
-		const techRecord = mockTestableHgvs[0];
-
-		// Go to betas page -> enable techrecord
-		await expect(homePage.betasLink).toBeVisible();
-		await homePage.betasLink.click();
-		await page.waitForURL(/\/betas/);
-		await expect(await page.title()).toBe('Vehicle Testing Management - Betas');
-		const betasPage = new BetasPage(page);
-		await betasPage.techRecordRedesignCheckbox.checkbox.check();
-		await betasPage.savePreferencesButton.click();
-
-		// Go to home page -> create new record
-		await homePage.createNewTechRecordLink.click();
-
-		// Create new technical record
-		await page.waitForURL(/\/create/);
-		await expect(await page.title()).toBe('Vehicle Testing Management - Create new technical record');
-		const createPage = new CreatePage(page);
-		await createPage.fill(techRecord);
+		await createPage.fill(TESTABLE_HGV_1);
 		await createPage.submit();
 
 		// Create new record details
-		await page.waitForURL(/\/create\/new-record-details/);
-		await expect(await page.title()).toBe('Vehicle Testing Management - New record details');
 		const recordDetailsPage = new NewRecordDetailsPage(page);
+		await recordDetailsPage.loaded();
 		await recordDetailsPage.accordions.open();
-		await recordDetailsPage.fill(techRecord);
+		await recordDetailsPage.fill(TESTABLE_HGV_1);
 		await recordDetailsPage.submit();
 
-		// View record details
-		await page.waitForURL(/\/tech-records/);
-		await expect(await page.title()).toBe('Vehicle Testing Management - View technical record');
-
 		// Assert view fields are expected
+		const viewTechRecordPage = new ViewTechRecordPage(page);
+		await viewTechRecordPage.loaded();
 	});
 
-	test.skip('should create a complete HGV record', async ({ page }, testInfo) => {
+	test('should create a complete HGV record', async ({ page, createPage }, testInfo) => {
 		testInfo.annotations.push({
 			type: 'BDD',
 			description: 'Should create a complete HGV record',
 		});
+
+		// Record details
+		await createPage.fill(COMPLETE_HGV_1);
+		await createPage.submit();
+
+		// Create new record details
+		const recordDetailsPage = new NewRecordDetailsPage(page);
+		await recordDetailsPage.loaded();
+		await recordDetailsPage.accordions.open();
+		await recordDetailsPage.fill(COMPLETE_HGV_1);
+		await recordDetailsPage.submit();
+
+		// Assert view fields are expected
+		const viewTechRecordPage = new ViewTechRecordPage(page);
+		await viewTechRecordPage.loaded();
 	});
 });

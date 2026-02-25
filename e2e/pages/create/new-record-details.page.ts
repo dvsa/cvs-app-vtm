@@ -18,6 +18,7 @@ import { SeatsAndVehicleSizeSection } from '@/e2e/components/sections/seats-and-
 import { TyresSection } from '@/e2e/components/sections/tyres.section';
 import { WeightsSection } from '@/e2e/components/sections/weights.section';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 
 export class NewRecordDetailsPage extends BasePage {
@@ -43,6 +44,11 @@ export class NewRecordDetailsPage extends BasePage {
 	readonly createNewTechRecordButton = this.page.getByRole('button', {
 		name: 'Create new record',
 	});
+
+	async loaded(): Promise<void> {
+		await this.page.waitForURL(/\/create\/new-record-details/);
+		await expect(await this.page.title()).toBe('Vehicle Testing Management - New record details');
+	}
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
 		await this.accordions.open();

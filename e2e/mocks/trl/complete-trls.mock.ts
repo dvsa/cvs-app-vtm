@@ -1,3 +1,4 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	EUVehicleCategory,
 	TechRecordPUTTRLComplete,
@@ -6,7 +7,7 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/trl/complete';
 
 export const COMPLETE_TRL_1: TechRecordPUTTRLComplete = {
-	vin: 'COMPLETETRL1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'trl',
 	techRecord_statusCode: 'current',

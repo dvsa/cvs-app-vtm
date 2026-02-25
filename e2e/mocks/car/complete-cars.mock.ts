@@ -1,3 +1,4 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	EUVehicleCategory,
 	TechRecordPUTCarComplete,
@@ -48,7 +49,7 @@ export const COMPLETE_CAR_1: TechRecordPUTCarComplete = {
  *   - IVA17 Appeal for IVA (desk based) (yq4)
  */
 export const COMPLETE_CAR_2: TechRecordPUTCarComplete = {
-	vin: 'COMPLETECAR2',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'car',
 	techRecord_statusCode: 'current',

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { mockSkeletonHgvs } from '../mocks/hgv/skeleton-hgvs.mock';
+import { TESTABLE_HGV_1 } from '../mocks/hgv/testable-hgvs.mock';
 import { BetasPage } from '../pages/betas/betas.page';
 import { CreatePage } from '../pages/create/create.page';
 import { DuplicateVinPage } from '../pages/create/duplicate-vin.page';
@@ -81,7 +81,7 @@ test.describe.skip('Accessibility', () => {
 		const recordDetailsPage = new NewRecordDetailsPage(page);
 		await recordDetailsPage.accordions.open();
 		await recordDetailsPage.runAccessibilityScan(testInfo);
-		await recordDetailsPage.fill(mockSkeletonHgvs[0]);
+		await recordDetailsPage.fill(TESTABLE_HGV_1);
 		await recordDetailsPage.submit();
 
 		// View record details

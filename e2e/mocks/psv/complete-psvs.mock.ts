@@ -1,3 +1,4 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	TechRecordPUTPSVComplete,
 	VehicleClassDescription,
@@ -5,7 +6,7 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/psv/complete';
 
 export const COMPLETE_PSV_1: TechRecordPUTPSVComplete = {
-	vin: 'COMPLETEPSV1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'psv',
 	techRecord_statusCode: 'current',

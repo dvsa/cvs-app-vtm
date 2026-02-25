@@ -1,10 +1,11 @@
+import { getRandomVin } from '@/e2e/utils/tech-record.util';
 import {
 	TechRecordPUTTRLSkeleton,
 	VehicleConfiguration,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/trl/skeleton';
 
 export const SKELETON_TRL_1: TechRecordPUTTRLSkeleton = {
-	vin: 'SKELETONTRL1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'trl',
 	techRecord_statusCode: 'current',
