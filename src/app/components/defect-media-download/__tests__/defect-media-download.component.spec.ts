@@ -121,7 +121,7 @@ describe('DefectMediaDownloadComponent', () => {
 					{ type: 'failReason', reason: 'bar' },
 				],
 			} as DefectDetailsSchema;
-			expect(component.getFailureToCaptureDefectMediaReason()).toBe('No media available - foo');
+			expect(component.getFailureToCaptureDefectMediaReason()).toBe('No media available');
 		});
 
 		it('should return No media available when the deficiencyCategory is not dangerous', () => {
