@@ -241,11 +241,17 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 
 		if (this.index || this.index === 0) {
-			this.store.dispatch(
-				updateDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema, index: this.index })
-			);
+			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
+			if (this.isDangerous) {
+				defect.media = [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
+			}
+			this.store.dispatch(updateDefect({ defect: defect, index: this.index }));
 		} else {
-			this.store.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema }));
+			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
+			if (this.isDangerous) {
+				defect.media = [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
+			}
+			this.store.dispatch(createDefect({ defect: defect }));
 		}
 
 		this.navigateBack();
