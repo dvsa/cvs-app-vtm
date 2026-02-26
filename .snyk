@@ -25,4 +25,14 @@ ignore:
       reason: Remediation not yet available
       expires: 2026-03-12T09:01:15.119Z
       created: 2026-02-12T09:13:15.122Z
+  SNYK-JS-MINIMATCH-15353387:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-03-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-MINIMATCH-15353389:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2025-03-20T08:30:00.000Z
+      created: 2025-02-20T08:30:00.000Z
 patch: {}
