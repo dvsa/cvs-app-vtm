@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { TESTABLE_HGV_1 } from '../mocks/hgv/testable-hgvs.mock';
+import { TESTABLE_HGV_1 } from '../mocks/tech-records/hgv/testable-hgvs.mock';
 import { BetasPage } from '../pages/betas/betas.page';
 import { CreatePage } from '../pages/create/create.page';
 import { DuplicateVinPage } from '../pages/create/duplicate-vin.page';
