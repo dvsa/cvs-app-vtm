@@ -3,7 +3,7 @@
   <fieldset class="govuk-fieldset">
     @if (controlTitle()) {
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading tags" id="{{ labelId }}">
+        <div class="govuk-fieldset__heading tags" id="{{ labelId }}">
           {{ controlTitle() }}
           @if (tags().length) {
             <div class="tags">
@@ -12,7 +12,7 @@
               }
             </div>
           }
-        </h1>
+        </div>
       </legend>
     }
 

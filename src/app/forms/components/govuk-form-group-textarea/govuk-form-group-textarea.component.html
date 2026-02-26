@@ -1,5 +1,5 @@
 <div class="govuk-form-group">
-  <h1 class="govuk-label-wrapper">
+  <div class="govuk-label-wrapper">
     <label class="govuk-label govuk-label--m tags" id="{{ labelId}}" for="{{ id }}">
       {{ controlLabel() }}
       @if (tags().length) {
@@ -10,7 +10,7 @@
         </div>
       }
     </label>
-  </h1>
+  </div>
 
   @if (controlHint() && !disabled()) {
     <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
