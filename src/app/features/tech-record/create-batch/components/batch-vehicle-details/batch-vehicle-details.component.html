@@ -24,6 +24,8 @@
           label="VIN"
           [width]="width.L"
           [warning]="getVinControl(group)?.meta?.warning"
+          role='status'
+          aria-live="polite"
           >
           @if (
             getVinControl(group)?.dirty &&

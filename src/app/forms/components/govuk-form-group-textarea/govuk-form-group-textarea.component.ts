@@ -27,12 +27,6 @@ export class GovukFormGroupTextareaComponent extends GovukFormGroupBaseComponent
 
 	readonly maxLength = input<number | null>(null);
 
-	get style(): string {
-		const width = this.width();
-		const errorClass = this.hasError ? 'govuk-textarea--error' : '';
-		return `govuk-textarea ${width ? `govuk-textarea--width-${width}` : ''} ${errorClass}`.trim();
-	}
-
 	writeValue(obj: any): void {
 		this.value.set(obj);
 		this.onChange(obj);

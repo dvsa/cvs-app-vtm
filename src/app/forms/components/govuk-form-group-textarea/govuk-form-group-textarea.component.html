@@ -35,24 +35,41 @@
     name="{{ id }}"
     [attr.aria-labelledby]="labelId"
     [attr.data-testid]="id"
+    [attr.data-module]="'govuk-character-count'" 
+    [attr.data-maxlength]="max"
     [(ngModel)]="value"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"
-    [attr.aria-describedby]="id"
+    [attr.aria-describedby]="`${ id }-max-length-error ${ id }-max-length-sr`"
     [ngClass]="{ 'govuk-!-margin-bottom-2': max && !disabled() }"
-    [class]="style"
+    [class]="`govuk-textarea govuk-js-character-count govuk-textarea--width-${width()}`"
+    [class.govuk-textarea--error]="hasError"
   ></textarea>
 
   @if (max && !disabled()) {
     @let length = value()?.length ?? 0;
-    @if (max - length >= 0) {
-      <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint">
-        You have {{ max - length }} character{{ max - length !== 1 ? 's' : '' }} remaining
+    @let diff = max - length;
+
+    @if (diff >= 0) {
+      @let message = `You have ${diff} character${diff !== 1 ? 's' : ''} remaining`;
+      <div [id]="`${ id }-max-length`" class="govuk-character-count__message govuk-hint" aria-hidden="true">
+        {{ message }}
+      </div>
+
+      <!-- Screen reader only -->
+      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+        {{ message }}
       </div>
     } @else {
-      <div id="{{ id }}-max-length" class="govuk-error-message">
-        You have {{ -(max - length) }} character{{ -(max - length) !== 1 ? 's' : '' }} too many
+      @let message = `You have ${ -(diff) } character${ -(diff) !== 1 ? 's' : '' } too many`;
+      <div [id]="`${ id }-max-length-error`" class="govuk-character-count__message govuk-error-message" aria-hidden="true">
+        {{ message }}
+      </div>
+
+      <!-- Screen reader only -->
+      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+        {{ message }}
       </div>
     }
   }
