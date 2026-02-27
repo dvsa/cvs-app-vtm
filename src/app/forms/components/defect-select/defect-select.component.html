@@ -4,15 +4,19 @@
     <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
       <ol class="list">
         @for (defect of defects; track defect; let i = $index) {
+          @let selected = defect === selectedDefect;
+          @let hasChildren = hasItems(defect);
           <li>
             <a
+              href="javascript:void(0)"
               [id]="'defect-list-item-' + i"
               class="browse__link browse__link--inactive"
-              [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
+              [ngClass]="{ 'browse__link--active': selected }"
+              [attr.aria-expanded]="hasChildren ? selected : ''"
               (click)="handleSelect(defect, types.Defect)"
               [attr.data-testid]="defect.imDescription"
               >
-              {{ defect.imNumber }}. {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
+              {{ defect.imNumber }}. {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasChildren }"></span>
             </a>
           </li>
         }
@@ -22,15 +26,19 @@
       <div class="list_container">
         <ol class="list">
           @for (item of sortDefectItems(selectedDefect.items); track i; let i = $index) {
+            @let selected = item === selectedItem;
+            @let hasChildren = hasDeficiencies(item);
             <li>
               <a
+                href="javascript:void(0)"
                 [id]="'defect-sub-list-item-' + i"
                 class="browse__link browse__link--inactive"
-                [ngClass]="{ 'browse__link--active': item === selectedItem }"
+                [ngClass]="{ 'browse__link--active': selected }"
+                [attr.aria-expanded]="hasChildren ? selected : ''"
                 (click)="handleSelect(item, types.Item)"
                 [attr.data-testid]="item.itemDescription"
                 >
-                {{ selectedDefect.imNumber }}.{{ item.itemNumber }}. {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
+                {{ selectedDefect.imNumber }}.{{ item.itemNumber }}. {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasChildren }"></span>
               </a>
             </li>
           }
@@ -43,6 +51,7 @@
           @for (deficiency of sortDeficiencyItems(selectedItem.deficiencies || []); track $index) {
             <li>
               <a
+                href="javascript:void(0)"
                 class="browse__normal-link govuk-link--no-visited-state"
                 [id]="'selectedDefect-' + getDeficiencyId(deficiency)"
                 [attr.data-testid]=" getDeficiencyId(deficiency)"
@@ -57,7 +66,8 @@
               </li>
             }
             <li>
-              <a 
+              <a
+                href="javascript:void(0)"
                 class="browse__normal-link govuk-link--no-visited-state"
                 id="selected-defect-advisory" 
                 (click)="handleSelect()"
