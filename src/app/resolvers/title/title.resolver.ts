@@ -12,7 +12,7 @@ export const titleResolver: ResolveFn<boolean> = () => {
 		store.pipe(select(selectRouteData)).subscribe((navigationData) => {
 			const { title } = navigationData;
 			if (title) {
-				titleService.setTitle(`Vehicle Testing Management - ${title as string}`);
+				titleService.setTitle(`${title as string} - Vehicle Testing Management}`);
 			}
 		});
 		resolve(true);
