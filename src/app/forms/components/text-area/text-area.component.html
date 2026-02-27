@@ -15,32 +15,51 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
+  @let id = customId() ?? name();
+
   <textarea
     appNoEmojis
-    class="govuk-textarea"
     rows="5"
-    [id]="customId() ?? name()"
-    name="{{ name() }}"
+    id="{{ id }}"
+    [name]="name()"
+    [attr.data-testid]="id"
+    [attr.data-module]="'govuk-character-count'" 
+    [attr.data-maxlength]="maxLength"
     [(ngModel)]="value"
     [disabled]="disabled"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
-    attr.aria-describedby="{{ name() }}"
+    [attr.aria-describedby]="`${ id }-max-length-error ${ id }-max-length-sr`"
     [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength }"
+    [class]="`govuk-textarea govuk-js-character-count govuk-textarea--width-${width()}`"
+    [class.govuk-textarea--error]="errorMessage"
   ></textarea>
 
   @if (maxLength) {
-    @if (maxLength - value?.length >= 0) {
-      <div id="{{ name() }}-max-length" class="govuk-character-count__message govuk-hint">
-        You have {{ maxLength - value?.length }} character{{ maxLength - value?.length !== 1 ? 's' : '' }} remaining
+    @let length = value?.length ?? 0;
+    @let diff = maxLength - length;
+
+    @if (diff >= 0) {
+      @let message = `You have ${diff} character${diff !== 1 ? 's' : ''} remaining`;
+      <div [id]="`${ id }-max-length`" class="govuk-character-count__message govuk-hint" aria-hidden="true">
+        {{ message }}
+      </div>
+
+      <!-- Screen reader only -->
+      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+        {{ message }}
       </div>
     } @else {
-      @if (maxLength) {
-        <div id="{{ name() }}-max-length" class="govuk-error-message">
-          You have {{ -(maxLength - value?.length) }} character{{ -(maxLength - value?.length) !== 1 ? 's' : '' }} too many
-        </div>
-      }
+      @let message = `You have ${ -(diff) } character${ -(diff) !== 1 ? 's' : '' } too many`;
+      <div [id]="`${ id }-max-length-error`" class="govuk-character-count__message govuk-error-message" aria-hidden="true">
+        {{ message }}
+      </div>
+
+      <!-- Screen reader only -->
+      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+        {{ message }}
+      </div>
     }
   }
 </div>
