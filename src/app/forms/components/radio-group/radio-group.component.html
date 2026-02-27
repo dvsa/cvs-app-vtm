@@ -1,12 +1,12 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }" [id]="control?.meta?.name">
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      <h1 class="govuk-fieldset__heading">
+      <div class="govuk-fieldset__heading">
         {{ label() }}
         @for (tag of control?.meta?.customTags; track tag) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
-      </h1>
+      </div>
 
       @if (hint()) {
         <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
