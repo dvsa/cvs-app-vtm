@@ -35,4 +35,10 @@ ignore:
       reason: Remediation not yet available
       expires: 2025-03-20T08:30:00.000Z
       created: 2025-02-20T08:30:00.000Z
+  SNYK-JS-KOA-15353398:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-04-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+
 patch: {}
