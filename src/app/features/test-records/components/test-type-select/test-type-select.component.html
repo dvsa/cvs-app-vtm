@@ -4,12 +4,15 @@
     <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
       <ol class="list">
         @for (type of selectAllTestTypes$ | async; track tackByFn($index, type)) {
+          @let selected = isSelected(type.id!!);
+          @let hasChildren = hasNext(type);
           <li>
             <button
               [id]="'test-list-item-' + [type.id]"
               [attr.data-testid]="type.id"
               class="list__item"
-              [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
+              [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
+              [attr.aria-expanded]="hasChildren ? selected : ''"
               (click)="handleCategory(type, 0)"
               >
               {{ type.name }}
@@ -27,12 +30,15 @@
         <ol class="list">
           @if (hasNext(category)) {
             @for (type of category.nextTestTypesOrCategories; track tackByFn($index, type)) {
+              @let selected = isSelected(type.id!!);
+              @let hasChildren = hasNext(type);
               <li>
                 <button
                   [id]="'browse-list-item-' + [type.id]"
                   [attr.data-testid]="type.id"
                   class="list__item"
-                  [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
+                  [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
+                  [attr.aria-expanded]="hasChildren ? selected : ''"
                   (click)="handleCategory(type, i + 1)"
                   >
                   {{ type.name }}
