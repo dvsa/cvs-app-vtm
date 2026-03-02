@@ -12,7 +12,7 @@ export const SKELETON_TRL_1: TechRecordPUTTRLSkeleton = {
 	techRecord_statusCode: 'current',
 	techRecord_noOfAxles: 2,
 	techRecord_bodyType_code: 'r',
-	techRecord_bodyType_description: 'rigid',
+	techRecord_bodyType_description: 'box',
 	techRecord_vehicleClass_description: 'trailer',
 	techRecord_vehicleConfiguration: 'semi-trailer' as VehicleConfiguration,
 	techRecord_euVehicleCategory: 'o4' as EUVehicleCategory,

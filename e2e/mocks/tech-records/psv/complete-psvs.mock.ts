@@ -63,7 +63,7 @@ export const COMPLETE_PSV_1: TechRecordPUTPSVComplete = {
 			tyres_speedCategorySymbol: 'a7',
 		},
 	],
-	techRecord_brakes_brakeCode: '1000',
+	techRecord_brakes_brakeCode: '111',
 	techRecord_brakes_dataTrBrakeOne: '1000',
 	techRecord_brakes_dataTrBrakeTwo: '1000',
 	techRecord_brakes_dataTrBrakeThree: '1000',

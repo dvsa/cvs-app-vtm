@@ -1,3 +1,4 @@
+import { formatHtmlId } from '../utils/formatters';
 import { BaseComponent } from './base.component';
 
 export class SelectComponent extends BaseComponent {
@@ -10,7 +11,8 @@ export class SelectComponent extends BaseComponent {
 	async fill(data?: string | boolean | number | null): Promise<void> {
 		if (!data) return;
 		// Find the actual option value (as angular prefixes the value with the index)
-		const value = await this.page.locator(`//*[@id="${this.id}-${data.toString()}"]`).getAttribute('value');
+		const optionId = formatHtmlId(`${this.id}-${data.toString()}`);
+		const value = await this.page.locator(`//*[@id="${optionId}"]`).getAttribute('value');
 		await this.select.selectOption(value);
 	}
 }

@@ -1,6 +1,4 @@
 import { test } from '@/e2e/fixtures/global.fixture';
-import { SKELETON_HGV_1 } from '@/e2e/mocks/tech-records/hgv/skeleton-hgvs.mock';
-import { SKELETON_LGV_1 } from '@/e2e/mocks/tech-records/lgv/skeleton-lgvs.mock';
 import { COMPLETE_MOTORCYCLE_1 } from '@/e2e/mocks/tech-records/motorcycle/complete-motorcycles.mock';
 import { SKELETON_MOTORCYCLE_1 } from '@/e2e/mocks/tech-records/motorcycle/skeleton-motorcycles.mock';
 import { NewRecordDetailsPage } from '@/e2e/pages/create/new-record-details.page';
@@ -22,7 +20,7 @@ test.describe('Create MOTORCYCLE records', { tag: ['@tech-record', '@create-tech
 		const recordDetailsPage = new NewRecordDetailsPage(page);
 		await recordDetailsPage.loaded();
 		await recordDetailsPage.accordions.open();
-		await recordDetailsPage.fill(SKELETON_HGV_1);
+		await recordDetailsPage.fill(SKELETON_MOTORCYCLE_1 as TechRecordType<'put'>);
 		await recordDetailsPage.submit();
 
 		// Assert view fields are expected
@@ -37,7 +35,7 @@ test.describe('Create MOTORCYCLE records', { tag: ['@tech-record', '@create-tech
 		});
 
 		// Record details
-		await createPage.fill(SKELETON_LGV_1);
+		await createPage.fill(COMPLETE_MOTORCYCLE_1);
 		await createPage.submit();
 
 		// Create new record details

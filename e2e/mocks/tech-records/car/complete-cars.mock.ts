@@ -18,7 +18,7 @@ import {
  *   - IVA17 Appeal for IVA (desk based) (yk4)
  */
 export const COMPLETE_CAR_1: TechRecordPUTCarComplete = {
-	vin: 'COMPLETECAR1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'car',
 	techRecord_statusCode: 'current',
@@ -80,7 +80,7 @@ export const COMPLETE_CAR_2: TechRecordPUTCarComplete = {
  *   - IVA17 Appeal for IVA (desk based) (ye4)
  */
 export const COMPLETE_CAR_3: TechRecordPUTCarComplete = {
-	vin: 'COMPLETECAR3',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'car',
 	techRecord_statusCode: 'current',

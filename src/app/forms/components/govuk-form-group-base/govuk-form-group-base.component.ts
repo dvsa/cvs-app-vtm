@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, input, model } from '@angular/cor
 import { ControlContainer } from '@angular/forms';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-
+import slugify from 'slugify';
 @Component({
 	selector: 'govuk-form-group-base-component',
 	template: '',
@@ -38,6 +38,10 @@ export class GovukFormGroupBaseComponent {
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
+
+	formatHtmlId(id: string): string {
+		return slugify(id, { lower: true, trim: true });
+	}
 
 	registerOnChange(fn: any): void {
 		this.onChange = fn;

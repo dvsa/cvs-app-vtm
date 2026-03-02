@@ -3,17 +3,20 @@ import { DateInputComponent } from '@/e2e/components/date-input.component';
 import { RadiosComponent } from '@/e2e/components/radios.component';
 import { SelectComponent } from '@/e2e/components/select.component';
 import { TextInputComponent } from '@/e2e/components/text-input.component';
-import { isHeavyTrailer } from '@/e2e/utils/tech-record.util';
+import { isHeavyTrailer, isSmallTrailer } from '@/e2e/utils/tech-record.util';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BasePage } from '../../pages/base.page';
+import { CheckboxesComponent } from '../checkboxes.component';
 
 export class GeneralVehicleDetailsSection extends BasePage {
 	readonly dateOfFirstRegistrationDateInput = new DateInputComponent(this.page, 'techRecord_regnDate');
 	readonly monthOfManufactureSelect = new SelectComponent(this.page, 'techRecord_manufactureMonth');
 	readonly yearOfManufactureTextInput = new TextInputComponent(this.page, 'techRecord_manufactureYear');
+	readonly vehicleClassSelect = new SelectComponent(this.page, 'techRecord_vehicleClass_description');
+	readonly vehicleSubclassCheckboxes = new CheckboxesComponent(this.page, 'techRecord_vehicleSubclass');
 	readonly dateOfFirstUseDateInput = new DateInputComponent(this.page, 'techRecord_firstUseDate');
 	readonly dtpNumberTextInput = new TextInputComponent(this.page, 'techRecord_brakes_dtpNumber');
-	readonly dtpNumberAutocomplete = new AutoCompleteComponent(this.page, 'techRecord_dtpNumber');
+	readonly dtpNumberAutocomplete = new AutoCompleteComponent(this.page, 'techRecord_brakes_dtpNumber');
 	readonly vehicleConfigurationSelect = new SelectComponent(this.page, 'techRecord_vehicleConfiguration');
 	readonly frameDescriptionSelect = new SelectComponent(this.page, 'techRecord_frameDescription');
 	readonly makeSelect = new SelectComponent(this.page, 'techRecord_make');
@@ -24,6 +27,7 @@ export class GeneralVehicleDetailsSection extends BasePage {
 	readonly functionCodeSelect = new SelectComponent(this.page, 'techRecord_functionCode');
 	readonly conversionReferenceNumberTextInput = new TextInputComponent(this.page, 'techRecord_conversionRefNo');
 	readonly euVehicleCategoryRadios = new RadiosComponent(this.page, 'techRecord_euVehicleCategory');
+	readonly numberOfWheelsTextInput = new TextInputComponent(this.page, 'techRecord_numberOfWheelsDriven');
 	readonly numberOfAxlesTextInput = new TextInputComponent(this.page, 'techRecord_noOfAxles');
 	readonly confirmNumberOfAxlesButton = this.page.getByRole('button', {
 		name: 'Confirm number of axles',
@@ -78,6 +82,42 @@ export class GeneralVehicleDetailsSection extends BasePage {
 			await this.functionCodeSelect.fill(data.techRecord_functionCode);
 			await this.conversionReferenceNumberTextInput.fill(data.techRecord_conversionRefNo);
 			await this.euVehicleCategoryRadios.fill(data.techRecord_euVehicleCategory);
+			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
+			await this.confirmNumberOfAxlesButton.click();
+		}
+
+		if (data.techRecord_vehicleType === 'lgv') {
+			await this.dateOfFirstRegistrationDateInput.fill(data.techRecord_regnDate);
+			await this.yearOfManufactureTextInput.fill(data.techRecord_manufactureYear);
+			await this.vehicleSubclassCheckboxes.fill(data.techRecord_vehicleSubclass);
+			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
+			await this.confirmNumberOfAxlesButton.click();
+		}
+
+		if (isSmallTrailer(data)) {
+			await this.dateOfFirstRegistrationDateInput.fill(data.techRecord_regnDate);
+			await this.monthOfManufactureSelect.fill(data.techRecord_manufactureMonth);
+			await this.yearOfManufactureTextInput.fill(data.techRecord_manufactureYear);
+			await this.vehicleConfigurationSelect.fill(data.techRecord_vehicleConfiguration);
+			await this.euVehicleCategoryRadios.fill(data.techRecord_euVehicleCategory);
+			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
+			await this.confirmNumberOfAxlesButton.click();
+		}
+
+		if (data.techRecord_vehicleType === 'car') {
+			await this.dateOfFirstRegistrationDateInput.fill(data.techRecord_regnDate);
+			await this.yearOfManufactureTextInput.fill(data.techRecord_manufactureYear);
+			await this.vehicleSubclassCheckboxes.fill(data.techRecord_vehicleSubclass);
+			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
+			await this.confirmNumberOfAxlesButton.click();
+		}
+
+		if (data.techRecord_vehicleType === 'motorcycle') {
+			await this.dateOfFirstRegistrationDateInput.fill(data.techRecord_regnDate);
+			await this.yearOfManufactureTextInput.fill(data.techRecord_manufactureYear);
+			await this.vehicleClassSelect.fill(data.techRecord_vehicleClass_description);
+			await this.euVehicleCategoryRadios.fill(data.techRecord_euVehicleCategory);
+			await this.numberOfWheelsTextInput.fill(data.techRecord_numberOfWheelsDriven);
 			await this.numberOfAxlesTextInput.fill(data.techRecord_noOfAxles);
 			await this.confirmNumberOfAxlesButton.click();
 		}

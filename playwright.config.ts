@@ -12,11 +12,11 @@ export default defineConfig({
 
 	// Fail the build on CI if you accidentally left test.only in the code.
 	forbidOnly: !!process.env['CI'],
-	retries: process.env['CI'] ? 2 : 0,
-	workers: process.env['CI'] ? 2 : undefined,
+	retries: process.env['CI'] ? 1 : 0,
+	workers: process.env['CI'] ? 22 : 18,
 
-	// Use HTML reporter locally, dot on CI
-	reporter: process.env['CI'] ? 'dot' : 'html',
+	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
+	reporter: process.env['CI'] ? [['html'], ['github']] : [['html'], ['line', { printSteps: true }]],
 
 	// Base URL for `page.goto('/')`
 	use: {

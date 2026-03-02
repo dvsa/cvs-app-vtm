@@ -52,57 +52,24 @@ export class NewRecordDetailsPage extends BasePage {
 
 	async fill(data: Partial<TechRecordType<'put'>>): Promise<void> {
 		await this.accordions.open();
-
-		// @TODO: handle other vehicle types
-
-		if (data.techRecord_vehicleType === 'hgv') {
-			await this.generalVehicleDetailsSection.fill(data);
-			await this.approvalTypeSection.fill(data);
-			await this.dimensionsSection.fill(data);
-			await this.weightsSection.fill(data);
-			await this.tyresSection.fill(data);
-			await this.configurationSection.fill(data);
-			await this.emissionsAndExemptionsSection.fill(data);
-			await this.adrSection.fill(data);
-			await this.lastApplicantSection.fill(data);
-			await this.documentsSection.fill(data);
-			await this.notesSection.fill(data);
-			await this.reasonForCreationSection.fill(data);
-		}
-
-		if (data.techRecord_vehicleType === 'trl') {
-			await this.generalVehicleDetailsSection.fill(data);
-			await this.approvalTypeSection.fill(data);
-			await this.dimensionsSection.fill(data);
-			await this.weightsSection.fill(data);
-			await this.tyresSection.fill(data);
-			await this.configurationSection.fill(data);
-			await this.brakesSection.fill(data);
-			await this.adrSection.fill(data);
-			await this.authorisationIntoServiceSection.fill(data);
-			await this.purchasersSection.fill(data);
-			await this.manufacturerSection.fill(data);
-			await this.lastApplicantSection.fill(data);
-			await this.documentsSection.fill(data);
-			await this.notesSection.fill(data);
-			await this.reasonForCreationSection.fill(data);
-		}
-
-		if (data.techRecord_vehicleType === 'psv') {
-			await this.generalVehicleDetailsSection.fill(data);
-			await this.approvalTypeSection.fill(data);
-			await this.dimensionsSection.fill(data);
-			await this.weightsSection.fill(data);
-			await this.tyresSection.fill(data);
-			await this.configurationSection.fill(data);
-			await this.emissionsAndExemptionsSection.fill(data);
-			await this.seatsAndVehicleSizeSection.fill(data);
-			await this.brakesSection.fill(data);
-			await this.disabilityDiscriminationActSection.fill(data);
-			await this.documentsSection.fill(data);
-			await this.notesSection.fill(data);
-			await this.reasonForCreationSection.fill(data);
-		}
+		await this.generalVehicleDetailsSection.fill(data);
+		await this.approvalTypeSection.fill(data);
+		await this.dimensionsSection.fill(data);
+		await this.weightsSection.fill(data);
+		await this.tyresSection.fill(data);
+		await this.configurationSection.fill(data);
+		await this.brakesSection.fill(data);
+		await this.disabilityDiscriminationActSection.fill(data);
+		await this.emissionsAndExemptionsSection.fill(data);
+		await this.seatsAndVehicleSizeSection.fill(data);
+		await this.adrSection.fill(data);
+		await this.authorisationIntoServiceSection.fill(data);
+		await this.purchasersSection.fill(data);
+		await this.manufacturerSection.fill(data);
+		await this.lastApplicantSection.fill(data);
+		await this.documentsSection.fill(data);
+		await this.notesSection.fill(data);
+		await this.reasonForCreationSection.fill(data);
 	}
 
 	async submit(): Promise<void> {

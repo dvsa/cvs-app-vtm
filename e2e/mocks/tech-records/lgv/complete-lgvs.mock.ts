@@ -17,7 +17,7 @@ import {
  *   - IVA17 Appeal for IVA (desk based) (yk7)
  */
 export const COMPLETE_LGV_1: TechRecordPUTLGVComplete = {
-	vin: 'COMPLETELGV1',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'lgv',
 	techRecord_statusCode: 'current',
@@ -47,7 +47,7 @@ export const COMPLETE_LGV_1: TechRecordPUTLGVComplete = {
  *   - IVA17 Appeal for IVA (desk based) (yq7)
  */
 export const COMPLETE_LGV_2: TechRecordPUTLGVComplete = {
-	vin: 'COMPLETELGV2',
+	vin: getRandomVin(),
 	techRecord_reasonForCreation: 'Automation',
 	techRecord_vehicleType: 'lgv',
 	techRecord_statusCode: 'current',

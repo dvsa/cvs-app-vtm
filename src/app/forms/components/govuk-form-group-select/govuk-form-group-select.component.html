@@ -45,7 +45,7 @@
       <option [selected]="true" [ngValue]="null" [id]="`${id}-default`">{{ defaultOption() }}</option>
     }
     @for (option of options(); track option) {
-      <option [ngValue]="option.value" [id]="`${id}-${option.value}`">{{ option.label }}</option>
+      <option [ngValue]="option.value" [id]="formatHtmlId(`${id}-${option.value}`)">{{ option.label }}</option>
     }
   </select>
 </div>

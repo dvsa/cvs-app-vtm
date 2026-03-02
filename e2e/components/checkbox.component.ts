@@ -11,7 +11,6 @@ export class CheckboxComponent extends BaseComponent {
 			await this.checkbox.setChecked(data === true);
 		} catch (error) {
 			// @TODO: re-throw error if unexpected
-			console.error(error);
 		}
 	}
 }
