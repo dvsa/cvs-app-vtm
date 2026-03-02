@@ -95,6 +95,10 @@ export class PaginationComponent implements OnInit, OnDestroy {
 		return Math.ceil(this.numberOfItems() / this.itemsPerPage());
 	}
 
+	get readableTableName() {
+		return this.tableName().replaceAll('-', ' ');
+	}
+
 	/**
 	 * Returns array of visible page buttons.
 	 * Allways returns an odd number of pages while keeping current page in the middle.

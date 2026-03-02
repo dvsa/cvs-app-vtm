@@ -1,6 +1,8 @@
 <nav class="govuk-pagination" role="navigation" aria-label="results">
   @if (currentPage > 1) {
-    <div class="govuk-pagination__prev">
+    <div
+      class="govuk-pagination__prev"
+    >
       <a
         [id]="tableName() + '-prev-page'"
         class="govuk-link govuk-pagination__link"
@@ -8,6 +10,7 @@
         [queryParams]="prevPage()"
         queryParamsHandling="merge"
         rel="prev"
+        [attr.aria-label]='readableTableName + " previous link"'
       >
         <svg
           class="govuk-pagination__icon govuk-pagination__icon--prev"
@@ -51,7 +54,7 @@
           routerLinkActive=""
           #rla="routerLinkActive"
           queryParamsHandling="merge"
-          aria-label="Page 1"
+          [attr.aria-label]='readableTableName + " Page " + page'
           ariaCurrentWhenActive="page"
         >
           {{ page }}
@@ -66,6 +69,7 @@
       <li class="govuk-pagination__item">
         <a
           [id]="tableName() + '-page-' + pages.length"
+          [attr.aria-label]='readableTableName + " Page " + pages.length'
           class="govuk-link govuk-pagination__link"
           [routerLink]="[]"
           [queryParams]="pageQuery(pages.length)"
@@ -79,6 +83,7 @@
     <div class="govuk-pagination__next">
       <a
         [id]="tableName() + '-next-page'"
+        [attr.aria-label]='readableTableName + " next page"'
         class="govuk-link govuk-pagination__link"
         rel="next"
         [routerLink]="[]"
