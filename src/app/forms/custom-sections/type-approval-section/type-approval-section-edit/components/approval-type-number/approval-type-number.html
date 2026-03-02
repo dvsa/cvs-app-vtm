@@ -28,45 +28,61 @@
         <!-- ECTA Template -->
         @case (ApprovalType.ECTA) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-ECTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-ECTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-ECTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-ECTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECTA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-ECTA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-ECTA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECTA'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-ECTA"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-ECTA"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECTA'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- IVA Template -->
         @case (ApprovalType.IVA) {
@@ -81,108 +97,148 @@
         <!-- NSSTA Template -->
         @case (ApprovalType.NSSTA) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-NSSTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-NSSTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-NSSTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-NSSTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*NKS*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-NSSTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-NSSTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              aria-label="approval type part 2"
+              />
+          </div>
         }
         <!-- ECSSTA Template -->
         @case (ApprovalType.ECSSTA) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-ECSSTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECSSTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-ECSSTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ECSSTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*KS</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-ECSSTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECSSTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-ECSSTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ECSSTA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-ECSSTA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-ECSSTA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-ECSSTA"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-ECSSTA"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ECSSTA'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- GB_WVTA Template -->
         @case (ApprovalType.GB_WVTA) {
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-GB_WVTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-3"
-            [maxlength]="3"
-            [characterLimit]="3"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-GB_WVTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-3"
+              [maxlength]="3"
+              [characterLimit]="3"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-GB_WVTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-GB_WVTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-GB_WVTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-GB_WVTA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-GB_WVTA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-GB_WVTA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB_WVTA'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-GB_WVTA"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-7"
-            [maxlength]="7"
-            [characterLimit]="7"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-GB_WVTA"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-7"
+              [maxlength]="7"
+              [characterLimit]="7"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-GB_WVTA'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- UKNI_WVTA Template -->
         @case (ApprovalType.UKNI_WVTA) {
@@ -194,6 +250,7 @@
             [maxlength]="1"
             [characterLimit]="1"
             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-UKNI_WVTA'"
+            aria-label="approval type part 1"
             />
           <span>11*</span>
           <input
@@ -204,6 +261,7 @@
             [maxlength]="4"
             [characterLimit]="4"
             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-UKNI_WVTA'"
+            aria-label="approval type part 2"
             />
           <span>/</span>
           <input
@@ -214,6 +272,7 @@
             [maxlength]="4"
             [characterLimit]="4"
             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
+            aria-label="approval type part 3"
             />
           <span>*</span>
           <input
@@ -224,274 +283,375 @@
             [maxlength]="6"
             [characterLimit]="6"
             [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
+            aria-label="approval type part 4"
             />
         }
         <!-- EU_WVTA_Pre_23 Template -->
         @case (ApprovalType.EU_WVTA_PRE_23) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-EU_WVTA_Pre_23"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU_WVTA_Pre_23'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-EU_WVTA_Pre_23"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU_WVTA_Pre_23'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-EU_WVTA_Pre_23"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU_WVTA_Pre_23'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-EU_WVTA_Pre_23"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU_WVTA_Pre_23'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-EU_WVTA_Pre_23"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_Pre_23'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-EU_WVTA_Pre_23"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_Pre_23'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-EU_WVTA_Pre_23"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_Pre_23'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-EU_WVTA_Pre_23"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_Pre_23'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- EU_WVTA_23_on Template -->
         @case (ApprovalType.EU_WVTA_23_ON) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-EU_WVTA_23_on"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU_WVTA_23_on'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-EU_WVTA_23_on"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-EU_WVTA_23_on'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-EU_WVTA_23_on"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU_WVTA_23_on'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-EU_WVTA_23_on"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-EU_WVTA_23_on'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-EU_WVTA_23_on"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_23_on'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-EU_WVTA_23_on"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_23_on'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-EU_WVTA_23_on"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_23_on'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-EU_WVTA_23_on"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-EU_WVTA_23_on'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- QNIG Template -->
         @case (ApprovalType.QNIG) {
           <span>e</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-QNIG"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-QNIG'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-QNIG"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-QNIG'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-QNIG"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-QNIG'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-QNIG"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-QNIG'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-QNIG"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-QNIG"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-QNIG"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-QNIG"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-QNIG'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- Prov_GB_WVTA Template -->
         @case (ApprovalType.PROV_GB_WVTA) {
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-Prov_GB_WVTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-3"
-            [maxlength]="3"
-            [characterLimit]="3"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Prov_GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-Prov_GB_WVTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-3"
+              [maxlength]="3"
+              [characterLimit]="3"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Prov_GB_WVTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-Prov_GB_WVTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Prov_GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-Prov_GB_WVTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Prov_GB_WVTA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-Prov_GB_WVTA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov_GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-Prov_GB_WVTA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov_GB_WVTA'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-Prov_GB_WVTA"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov_GB_WVTA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-Prov_GB_WVTA"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Prov_GB_WVTA'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- Small_series_NKSXX Template -->
         @case (ApprovalType.SMALL_SERIES_NKSXX) {
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-Small_series_NKSXX"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="1"
-            [characterLimit]="1"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKSXX'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-Small_series_NKSXX"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="1"
+              [characterLimit]="1"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKSXX'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>11*NKS</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-Small_series_NKSXX"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Small_series_NKSXX'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-Small_series_NKSXX"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-Small_series_NKSXX'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-Small_series_NKSXX"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small_series_NKSXX'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-Small_series_NKSXX"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small_series_NKSXX'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-Small_series_NKSXX"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small_series_NKSXX'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-Small_series_NKSXX"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-Small_series_NKSXX'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         @case (ApprovalType.SMALL_SERIES_NKS) {
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-Small_series_NKS"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="1"
-            [characterLimit]="1"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKS'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-Small_series_NKS"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="1"
+              [characterLimit]="1"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKS'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>11*NKS*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-Small_series_NKS"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKS'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-Small_series_NKS"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-Small_series_NKS'"
+              aria-label="approval type part 2"
+              />
+          </div>
         }
         <!-- IVA – VCA Template -->
         @case (ApprovalType.IVA_VCA) {
           <span>n11*NIV</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-IVA_VCA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="2"
-            [characterLimit]="2"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA_VCA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-IVA_VCA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="2"
+              [characterLimit]="2"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-IVA_VCA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-IVA_VCA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA_VCA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-IVA_VCA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA_VCA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-IVA_VCA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA_VCA'"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-IVA_VCA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-IVA_VCA'"
+              aria-label="approval type part 3"
+              />
+          </div>
         }
         <!-- IVA – DVSA/NI Template -->
         @case (ApprovalType.IVA_DVSA_NI) {
