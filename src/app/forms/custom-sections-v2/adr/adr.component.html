@@ -1,7 +1,6 @@
-<div class="govuk-!-padding-4" [formGroup]="form">
+<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (form.get('techRecord_adrDetails_dangerousGoods')) {
     <govuk-form-group-radio
-      class="govuk-label--s"
       label="Approved to carry dangerous goods"
       formControlName="techRecord_adrDetails_dangerousGoods"
       [warning]="canDisplayDangerousGoodsWarning"
@@ -16,6 +15,7 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_name')) {
           <govuk-form-group-input
             label="Name"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_applicantDetails_name"
             appFilterByTags
             [filters]="filters()"
@@ -27,6 +27,7 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_street')) {
           <govuk-form-group-input
             label="Address line 1"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_applicantDetails_street"
             appFilterByTags
             [filters]="filters()"
@@ -38,6 +39,7 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_applicantDetails_town')) {
           <govuk-form-group-input
             label="Address line 2 (optional)"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_applicantDetails_town"
             appFilterByTags
             [filters]="filters()"
@@ -50,6 +52,7 @@
           <govuk-form-group-input
             label="Town or city"
             [width]="FormNodeWidth.XL"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_applicantDetails_city"
             appFilterByTags
             [filters]="filters()"
@@ -62,6 +65,7 @@
           <govuk-form-group-input
             label="Postcode"
             [width]="FormNodeWidth.L"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_applicantDetails_postcode"
             appFilterByTags
             [filters]="filters()"
@@ -72,9 +76,9 @@
         <!-- ADR details -->
         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_type')) {
           <govuk-form-group-select
-            class="govuk-label--s"
             label="ADR body type"
             [defaultOption]="'Select body type'"
+            class="govuk-label"
             formControlName="techRecord_adrDetails_vehicleDetails_type"
             [options]="adrBodyTypesOptions"
             appFilterByTags
@@ -85,7 +89,6 @@
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
           <govuk-form-group-radio
-            class="govuk-label--s"
             size="small"
             label="Is the vehicle used on international journeys?"
             formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
@@ -98,7 +101,6 @@
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_approvalDate')) {
           <govuk-form-group-date
-            class="govuk-label--s"
             label="Date processed"
             formControlName="techRecord_adrDetails_vehicleDetails_approvalDate"
             appFilterByTags
@@ -109,7 +111,6 @@
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_permittedDangerousGoods')) {
           <govuk-checkbox-group
-            class="govuk-label--s"
             size="small"
             label="Permitted dangerous goods"
             formControlName="techRecord_adrDetails_permittedDangerousGoods"
@@ -123,7 +124,6 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_bodyDeclaration_type')) {
           @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
             <govuk-form-group-radio
-              class="govuk-label--s"
               size="small"
               label="Body declaration"
               formControlName="techRecord_adrDetails_bodyDeclaration_type"
@@ -138,7 +138,6 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_compatibilityGroupJ')) {
           @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
             <govuk-form-group-radio
-              class="govuk-label--s"
               size="small"
               label="Compatibility group J"
               formControlName="techRecord_adrDetails_compatibilityGroupJ"
@@ -152,7 +151,6 @@
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_additionalNotes_number')) {
           <govuk-checkbox-group
-            class="govuk-label--s"
             size="small"
             label="Guidance notes"
             formControlName="techRecord_adrDetails_additionalNotes_number"
@@ -165,7 +163,6 @@
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_adrTypeApprovalNo')) {
           <govuk-form-group-input
-            class="govuk-label--s"
             label="ADR type approval number"
             [width]="FormNodeWidth.L"
             formControlName="techRecord_adrDetails_adrTypeApprovalNo"
@@ -186,8 +183,7 @@
             <!-- Tank Make -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
               <govuk-form-group-input
-                label="Tank make"
-                class="govuk-label--s"
+                label="Tank make"  
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturer"
                 appFilterByTags
                 [filters]="filters()"
@@ -199,7 +195,6 @@
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
               <govuk-form-group-input
                 label="Tank year of manufacture"
-                class="govuk-label--s"
                 [width]="FormNodeWidth.S"
                 type="number"
                 formControlName="techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
@@ -212,8 +207,7 @@
             <!-- Tank manufacturer serial number -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
               <govuk-form-group-input
-                label="Manufacturer serial number"
-                class="govuk-label--s"
+                label="Manufacturer serial number"  
                 [width]="FormNodeWidth.L"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
                 appFilterByTags
@@ -225,8 +219,7 @@
             <!-- Tank type approval number -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
               <govuk-form-group-input
-                label="Tank type approval number"
-                class="govuk-label--s"
+                label="Tank type approval number"  
                 [width]="FormNodeWidth.L"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
                 appFilterByTags
@@ -238,8 +231,7 @@
             <!-- Tank code -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankCode')) {
               <govuk-form-group-input
-                label="Code"
-                class="govuk-label--s"
+                label="Code"  
                 [width]="FormNodeWidth.L"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankCode"
                 appFilterByTags
@@ -251,8 +243,7 @@
             <!-- Substances permitted -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
               <govuk-form-group-radio
-                label="Substances permitted"
-                class="govuk-label--s"
+                label="Substances permitted"  
                 formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
                 [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
                 size="small"
@@ -268,7 +259,6 @@
               @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
                 <govuk-form-group-radio
                   label="Select"
-                  class="govuk-label--s"
                   formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
                   [options]="tankStatementSelectOptions"
                   size="small"
@@ -284,7 +274,6 @@
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
                   <govuk-form-group-input
                     label="Reference number"
-                    class="govuk-label--s"
                     formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
                     appFilterByTags
                     [filters]="filters()"
@@ -299,7 +288,6 @@
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
                   <govuk-form-group-input
                     label="Reference number"
-                    class="govuk-label--s"
                     formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
                     appFilterByTags
                     [filters]="filters()"
@@ -388,7 +376,6 @@
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
                   <govuk-form-group-textarea
                     label="Additional details"
-                    class="govuk-label--s"
                     formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
                     [maxLength]="1500"
                     appFilterByTags
@@ -404,7 +391,6 @@
           @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
             <govuk-form-group-textarea
               label="Special provisions"
-              class="govuk-label--s"
               formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
               [maxLength]="1024"
               appFilterByTags
@@ -422,7 +408,6 @@
             <!-- TC2: Certificate Number -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
               <govuk-form-group-input
-                class="govuk-label govuk-label--s"
                 label="TC2: Certificate number"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
                 appFilterByTags
@@ -434,7 +419,6 @@
             <!-- TC2: Expiry Date -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
               <govuk-form-group-date
-                class="govuk-label govuk-label--s"
                 label="TC2: Expiry date"
                 formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
                 appFilterByTags
@@ -457,7 +441,6 @@
                       <!-- TC3 Inspection Type -->
                       <govuk-form-group-select
                         [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3Type`"
-                        class="govuk-label govuk-label--s"
                         label="TC3: Inspection type"
                         formControlName="tc3Type"
                         [options]="tc3InspectionOptions"
@@ -469,7 +452,6 @@
                       <!-- TC3 Certificate Number -->
                       <govuk-form-group-input
                         [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicNumber`"
-                        class="govuk-label govuk-label--s"
                         label="TC3: Certificate number"
                         formControlName="tc3PeriodicNumber"
                         appFilterByTags
@@ -479,7 +461,6 @@
                       <!-- TC3 Expiry Date -->
                       <govuk-form-group-date
                         [id]="`techRecord_adrDetails_tank_tankDetails_tc3Details_${i}_tc3PeriodicExpiryDate`"
-                        class="govuk-label govuk-label--s"
                         label="TC3: Expiry date"
                         formControlName="tc3PeriodicExpiryDate"
                         appFilterByTags
@@ -544,7 +525,7 @@
             <label class="govuk-label govuk-label--s" for="techRecord_adrDetails_m145Statement">M145</label>
 
             <govuk-form-group-checkbox
-              class="govuk-label govuk-label--s"
+              class="govuk-label"
               label="Yes"
               formControlName="techRecord_adrDetails_m145Statement"
               [value]="true"
@@ -561,7 +542,7 @@
           <!-- Battery list applicable -->
           @if (shouldDisplayFormControl('techRecord_adrDetails_listStatementApplicable')) {
             <govuk-form-group-radio
-              class="govuk-label govuk-label--s"
+              class="govuk-label"
               label="Battery list applicable"
               formControlName="techRecord_adrDetails_listStatementApplicable"
               [options]="YES_NO_OPTIONS"
@@ -576,8 +557,7 @@
           @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
             <!-- Battery list reference number -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_batteryListNumber')) {
-              <govuk-form-group-input
-                class="govuk-label govuk-label--s"
+              <govuk-form-group-input           
                 label="Reference number"
                 [width]="FormNodeWidth.L"
                 formControlName="techRecord_adrDetails_batteryListNumber"
@@ -611,7 +591,7 @@
             <govuk-form-group-textarea
               label="Issuer"
               formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
-              class="govuk-label--s govuk-!-margin-top-4"
+              class="govuk-!-margin-top-4"
               [maxLength]="500"
               appFilterByTags
               [filters]="filters()"
@@ -638,7 +618,7 @@
             @if (shouldDisplayFormControl('techRecord_adrDetails_weight')) {
               <govuk-form-group-input
                 label="Weight"
-                class="govuk-label--s govuk-!-margin-top-4"
+                class="govuk-!-margin-top-4"
                 formControlName="techRecord_adrDetails_weight"
                 type="decimal"
                 suffix="tonnes"
@@ -683,7 +663,6 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_additionalExaminerNotes_note')) {
           <govuk-form-group-textarea
             label="Additional examiner notes"
-            class="govuk-label--s"
             formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
             [maxLength]="1024"
             [hint]="'These will not be shown on the ADR certificate'"
@@ -747,7 +726,6 @@
         @if (shouldDisplayFormControl('techRecord_adrDetails_adrCertificateNotes')) {
           <govuk-form-group-textarea
             label="ADR certificate notes"
-            class="govuk-label--s"
             formControlName="techRecord_adrDetails_adrCertificateNotes"
             [hint]="'These will be shown on the ADR certificate'"
             [maxLength]="1500"

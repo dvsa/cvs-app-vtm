@@ -2,7 +2,7 @@
 <div class="govuk-form-group" id="{{ id }}">
   <fieldset class="govuk-fieldset">
     @if (controlLabel()) {
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <legend class="govuk-fieldset__legend">
         <div class="govuk-fieldset__heading tags" [id]="labelId">
           {{ controlLabel() }}
           @if (tags().length) {
