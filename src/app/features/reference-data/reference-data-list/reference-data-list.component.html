@@ -1,6 +1,6 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async)?.label }}</p>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async)?.label }}</h1>
 
     <div id="buttonsAndSearch">
       @if ((refDataAdminType$ | async)?.searchOptions; as searchOptions) {

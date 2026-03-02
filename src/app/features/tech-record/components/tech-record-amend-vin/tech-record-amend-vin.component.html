@@ -28,6 +28,8 @@
         name="vin"
         label="VIN"
         hint="VIN should usually be 17 characters long."
+        role='status'
+        aria-live="polite"
         [width]="width"
         (focusout)="isFormValid()"
         >
