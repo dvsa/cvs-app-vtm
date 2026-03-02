@@ -40,5 +40,14 @@ ignore:
       reason: Remediation not yet available
       expires: 2026-04-20T08:30:00.000Z
       created: 2026-02-20T08:30:00.000Z
-
+  SNYK-JS-MULTER-15365916:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-04-01T08:30:00.000Z
+      created: 2026-03-01T08:30:00.000Z
+  SNYK-JS-MULTER-15365918:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-04-01T08:30:00.000Z
+      created: 2026-03-01T08:30:00.000Z
 patch: {}
