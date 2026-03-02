@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
@@ -54,6 +55,7 @@ describe('TyresSectionEditComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				{ provide: ReferenceDataService, useValue: mockReferenceDataService },
+				AxlesService,
 			],
 		}).compileComponents();
 

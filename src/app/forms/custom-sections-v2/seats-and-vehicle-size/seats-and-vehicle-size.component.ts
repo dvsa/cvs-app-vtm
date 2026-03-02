@@ -57,11 +57,7 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			),
 		]),
 		techRecord_vehicleClass_description: this.fb.control<string | null>(null, [
-			this.commonValidators.required(
-				'Vehicle class',
-				'vehicle-class-description',
-				'techRecord_vehicleClass_description'
-			),
+			this.commonValidators.required('Vehicle class', 'seats-and-vehicle-size', 'techRecord_vehicleClass_description'),
 		]),
 		techRecord_vehicleSize: this.fb.control<string | null>(null, [
 			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
