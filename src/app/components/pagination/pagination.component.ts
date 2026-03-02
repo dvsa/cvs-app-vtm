@@ -96,7 +96,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
 	}
 
 	get readableTableName() {
-		return this.tableName().replace('-', ' ');
+		return this.tableName().replaceAll('-', ' ');
 	}
 
 	/**
