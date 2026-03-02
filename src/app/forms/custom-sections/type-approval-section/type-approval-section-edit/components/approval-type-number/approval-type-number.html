@@ -242,49 +242,61 @@
         }
         <!-- UKNI_WVTA Template -->
         @case (ApprovalType.UKNI_WVTA) {
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber1-UKNI_WVTA"
-            formControlName="approvalTypeNumber1"
-            class="govuk-input govuk-input--width-2"
-            [maxlength]="1"
-            [characterLimit]="1"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-UKNI_WVTA'"
-            aria-label="approval type part 1"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 1</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber1-UKNI_WVTA"
+              formControlName="approvalTypeNumber1"
+              class="govuk-input govuk-input--width-2"
+              [maxlength]="1"
+              [characterLimit]="1"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-UKNI_WVTA'"
+              aria-label="approval type part 1"
+              />
+          </div>
           <span>11*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber2-UKNI_WVTA"
-            formControlName="approvalTypeNumber2"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-UKNI_WVTA'"
-            aria-label="approval type part 2"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 2</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber2-UKNI_WVTA"
+              formControlName="approvalTypeNumber2"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-UKNI_WVTA'"
+              aria-label="approval type part 2"
+              />
+          </div>
           <span>/</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber3-UKNI_WVTA"
-            formControlName="approvalTypeNumber3"
-            class="govuk-input govuk-input--width-4"
-            [maxlength]="4"
-            [characterLimit]="4"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
-            aria-label="approval type part 3"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 3</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber3-UKNI_WVTA"
+              formControlName="approvalTypeNumber3"
+              class="govuk-input govuk-input--width-4"
+              [maxlength]="4"
+              [characterLimit]="4"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
+              aria-label="approval type part 3"
+              />
+          </div>
           <span>*</span>
-          <input
-            appNoEmojis
-            id="techRecord_approvalTypeNumber4-UKNI_WVTA"
-            formControlName="approvalTypeNumber4"
-            class="govuk-input govuk-input--width-6"
-            [maxlength]="6"
-            [characterLimit]="6"
-            [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
-            aria-label="approval type part 4"
-            />
+          <div>
+            <label class="govuk-label govuk-label--s">Part 4</label>
+            <input
+              appNoEmojis
+              id="techRecord_approvalTypeNumber4-UKNI_WVTA"
+              formControlName="approvalTypeNumber4"
+              class="govuk-input govuk-input--width-6"
+              [maxlength]="6"
+              [characterLimit]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-UKNI_WVTA'"
+              aria-label="approval type part 4"
+              />
+          </div>
         }
         <!-- EU_WVTA_Pre_23 Template -->
         @case (ApprovalType.EU_WVTA_PRE_23) {
