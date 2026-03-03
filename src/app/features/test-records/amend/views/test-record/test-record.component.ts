@@ -114,6 +114,12 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		const testResult = await firstValueFrom(this.testResult$);
 		const testResultClone = cloneDeep(testResult) as TestResultSchema;
 
+		for (const defect of testResultClone.testTypes[0].defects) {
+			if (!defect.media) {
+				defect.media = [{ type: 'failReason', path: ' ', reason: 'Contingency test' }];
+			}
+		}
+
 		this.testRecordsService.updateTestResult(testResultClone);
 	}
 
