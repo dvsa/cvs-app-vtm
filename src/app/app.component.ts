@@ -78,19 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
 					pageName: event.urlAfterRedirects,
 				};
 				void this.gtmService.pushTag(gtmTag);
-				Promise.resolve().then(() => {
-					const skip = document.querySelector('.govuk-skip-link') as HTMLElement | null;
-					if (skip) {
-						skip.focus();
-						return;
-					}
-					const main = document.getElementById('main-content') as HTMLElement | null;
-					if (main) {
-						main.focus();
-					} else if (document && document.body) {
-						(document.body as HTMLElement).focus();
-					}
-				});
 			}
 		});
 
