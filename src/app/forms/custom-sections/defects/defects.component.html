@@ -25,7 +25,7 @@
             @for (defect of testDefects; track defect; let i = $index) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
-                  <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
+                  <a data-action="retain-data" routerLink="defect/{{ i }}" href="javascript:void(0)" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
                   >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a>
                   </td>
                   <td class="govuk-table__cell">
