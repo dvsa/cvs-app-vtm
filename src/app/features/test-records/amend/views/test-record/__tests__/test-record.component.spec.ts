@@ -151,6 +151,7 @@ describe('TestRecordComponent', () => {
 				.spyOn(testRecordsService, 'updateTestResult')
 				.mockImplementation(() => true);
 			const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
+			testRecord.testTypes[0].defects = [];
 			store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
 			store.overrideSelector(testResultInEdit, testRecord);
 			store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1'] ?? ''));

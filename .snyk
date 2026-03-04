@@ -35,4 +35,24 @@ ignore:
       reason: Remediation not yet available
       expires: 2025-03-20T08:30:00.000Z
       created: 2025-02-20T08:30:00.000Z
+  SNYK-JS-ANGULARCORE-15353393:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-04-01T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-KOA-15353398:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-03-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-MULTER-15365916:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2026-03-20T08:30:00.000Z
+      created: 2026-02-20T08:30:00.000Z
+  SNYK-JS-MULTER-15365918:
+    - '*':
+      reason: Remediation not yet available
+      expires: 2024-03-20T08:30:00.000Z
+      created: 2024-02-20T08:30:00.000Z
 patch: {}
