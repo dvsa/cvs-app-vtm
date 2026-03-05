@@ -27,10 +27,9 @@
     [attr.data-maxlength]="maxLength"
     [(ngModel)]="value"
     [disabled]="disabled"
-    (ngModelChange)="onChange($event)"
+    (ngModelChange)="onChange($event); valueSub.next($event)"
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
-    [attr.aria-describedby]="`${ id }-max-length-error ${ id }-max-length-sr`"
     [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength }"
     [class]="`govuk-textarea govuk-js-character-count govuk-textarea--width-${width()}`"
     [class.govuk-textarea--error]="errorMessage"
@@ -41,26 +40,19 @@
     @let diff = maxLength - length;
 
     @if (diff >= 0) {
-      @let message = `You have ${diff} character${diff !== 1 ? 's' : ''} remaining`;
       <div [id]="`${ id }-max-length`" class="govuk-character-count__message govuk-hint" aria-hidden="true">
-        {{ message }}
-      </div>
-
-      <!-- Screen reader only -->
-      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
-        {{ message }}
+        {{ getCharacterCountMessage() }}
       </div>
     } @else {
-      @let message = `You have ${ -(diff) } character${ -(diff) !== 1 ? 's' : '' } too many`;
       <div [id]="`${ id }-max-length-error`" class="govuk-character-count__message govuk-error-message" aria-hidden="true">
-        {{ message }}
-      </div>
-
-      <!-- Screen reader only -->
-      <div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
-        {{ message }}
+        {{ getCharacterCountMessage() }}
       </div>
     }
   }
+</div>
+
+<!-- Screen reader only -->
+<div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+  {{ screenReaderCharacterCountMessage | async }}
 </div>
 
