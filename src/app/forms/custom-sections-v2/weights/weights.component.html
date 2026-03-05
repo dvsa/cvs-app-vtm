@@ -4,6 +4,7 @@
   showDimensionsWarning;
 
 <div
+  class="govuk-label--s"
   [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning"
   [class.govuk-!-padding-right-4]="showNoAxlesWarning || dimensionsWarning"
   [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning"
@@ -96,7 +97,7 @@
                   id="weights_gbWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_gbWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -111,7 +112,7 @@
                   id="weights_eecWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_eecWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -126,7 +127,7 @@
                   id="weights_kerbWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_kerbWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -141,7 +142,7 @@
                   id="weights_ladenWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_ladenWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -156,7 +157,7 @@
                   id="weights_gbWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_gbWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -171,7 +172,7 @@
                   id="weights_designWeight-{{ i + 1 }}"
                   type="number"
                   formControlName="weights_designWeight"
-                  class="govuk-label--s"
+                  class="govuk-label"
                   [suffix]="'kg'"
                   [showErrors]="false"
                   appFilterByTags
@@ -237,7 +238,7 @@
             [label]="'GB'"
             type="number"
             formControlName="techRecord_grossGbWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -251,7 +252,7 @@
             [label]="'EEC'"
             type="number"
             formControlName="techRecord_grossEecWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -267,7 +268,7 @@
             [label]="'Kerb'"
             type="number"
             formControlName="techRecord_grossKerbWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -281,7 +282,7 @@
             [label]="'Laden'"
             type="number"
             formControlName="techRecord_grossLadenWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -295,7 +296,7 @@
             [label]="'GB max'"
             type="number"
             formControlName="techRecord_grossGbWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -310,7 +311,7 @@
           [label]="'Design'"
           type="number"
           formControlName="techRecord_grossDesignWeight"
-          class="govuk-label--s"
+          class="govuk-label"
           [showErrors]="false"
           [suffix]="'kg'"
           appFilterByTags
@@ -357,7 +358,7 @@
               [label]="'GB'"
               type="number"
               formControlName="techRecord_trainGbWeight"
-              class="govuk-label--s"
+              class="govuk-label"
               [showErrors]="false"
               [suffix]="'kg'"
               appFilterByTags
@@ -371,7 +372,7 @@
               [label]="'EEC'"
               type="number"
               formControlName="techRecord_trainEecWeight"
-              class="govuk-label--s"
+              class="govuk-label"
               [showErrors]="false"
               [suffix]="'kg'"
               appFilterByTags
@@ -387,7 +388,7 @@
               [label]="'GB max'"
               type="number"
               formControlName="techRecord_maxTrainGbWeight"
-              class="govuk-label--s"
+              class="govuk-label"
               [showErrors]="false"
               [suffix]="'kg'"
               appFilterByTags
@@ -402,7 +403,7 @@
             [label]="'Design'"
             type="number"
             formControlName="techRecord_trainDesignWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -433,7 +434,7 @@
             [label]="'GB'"
             type="number"
             formControlName="techRecord_maxTrainGbWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -447,7 +448,7 @@
             [label]="'EEC'"
             type="number"
             formControlName="techRecord_maxTrainEecWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -461,7 +462,7 @@
             [label]="'Design'"
             type="number"
             formControlName="techRecord_maxTrainDesignWeight"
-            class="govuk-label--s"
+            class="govuk-label"
             [showErrors]="false"
             [suffix]="'kg'"
             appFilterByTags
@@ -479,7 +480,6 @@
       [label]="'Coupling type'"
       [options]="CouplingTypeOptions"
       formControlName="techRecord_couplingType"
-      class="govuk-label--s"
       defaultOption="Select coupling type"
       appFilterByTags
       [tagNames]="[]"

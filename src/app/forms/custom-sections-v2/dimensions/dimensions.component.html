@@ -1,5 +1,5 @@
 @if (techRecord(); as tr) {
-  <div class="govuk-!-padding-4" [formGroup]="form">
+  <div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
     @if(
       (parent.get('techRecord_axles')?.value.length === 0 ||
       !parent.get('techRecord_axles')?.value) &&
@@ -139,7 +139,7 @@
                 formControlName="techRecord_couplingCenterToRearAxleMin"
                 label="Minimum"
                 [width]="Widths.XS"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
                 suffix="mm"
                 type="number"
               ></govuk-form-group-input>
@@ -151,7 +151,7 @@
                 formControlName="techRecord_couplingCenterToRearAxleMax"
                 label="Maximum"
                 [width]="Widths.XS"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
                 suffix="mm"
                 type="number"
               ></govuk-form-group-input>
@@ -179,7 +179,7 @@
                 formControlName="techRecord_couplingCenterToRearTrlMin"
                 label="Minimum"
                 [width]="Widths.XS"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
                 suffix="mm"
                 type="number"
                 appFilterByTags
@@ -201,7 +201,7 @@
                 formControlName="techRecord_couplingCenterToRearTrlMax"
                 label="Maximum"
                 [width]="Widths.XS"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
                 suffix="mm"
                 type="number"
                 appFilterByTags
@@ -243,7 +243,7 @@
                 [width]="Widths.XS"
                 suffix="mm"
                 type="number"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
               ></govuk-form-group-input>
             }
   
@@ -255,7 +255,7 @@
                 [width]="Widths.XS"
                 suffix="mm"
                 type="number"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
               ></govuk-form-group-input>
             }
           </div>
@@ -276,7 +276,7 @@
                 [width]="Widths.XS"
                 suffix="mm"
                 type="number"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
               ></govuk-form-group-input>
             }
   
@@ -288,7 +288,7 @@
                 [width]="Widths.XS"
                 suffix="mm"
                 type="number"
-                class="govuk-!-font-weight-regular"
+                class="govuk-label"
               ></govuk-form-group-input>
             }
           </div>
