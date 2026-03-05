@@ -1,0 +1,6 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+// @TODO: remove this styling and default approval type number label once redesign is complete
+approval-type-number-input::ng-deep .govuk-form-group > label {
+  @extend .govuk-label--s;
+}
