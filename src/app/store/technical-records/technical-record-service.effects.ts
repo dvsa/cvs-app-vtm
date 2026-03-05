@@ -241,8 +241,24 @@ export class TechnicalRecordServiceEffects {
 				ofType(changeVehicleType),
 				concatLatestFrom(() => [this.store.pipe(select(editingTechRecord)), this.store.pipe(select(techRecord))]),
 				concatMap(([{ techRecord_vehicleType }, editableTechRecord, viewableTechRecord]) => {
-					const techRecord = { ...viewableTechRecord, ...cloneDeep(editableTechRecord) } as TechRecordType<'get'>;
+					const techRecord = { ...cloneDeep(editableTechRecord) } as TechRecordType<'get'>;
 					techRecord.techRecord_vehicleType = techRecord_vehicleType as VehicleType;
+
+					if (viewableTechRecord) {
+						techRecord.vin = viewableTechRecord.vin;
+						techRecord.partialVin = viewableTechRecord.partialVin;
+						techRecord.systemNumber = viewableTechRecord.systemNumber;
+						techRecord.createdTimestamp = viewableTechRecord.createdTimestamp;
+
+						if ('primaryVrm' in viewableTechRecord && techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
+							techRecord.primaryVrm = viewableTechRecord.primaryVrm;
+							techRecord.secondaryVrms = viewableTechRecord.secondaryVrms;
+						}
+
+						if ('trailerId' in viewableTechRecord && techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+							techRecord.trailerId = viewableTechRecord.trailerId;
+						}
+					}
 
 					if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
 						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
