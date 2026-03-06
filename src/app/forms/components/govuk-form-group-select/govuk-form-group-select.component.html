@@ -1,6 +1,6 @@
 <div class="govuk-form-group">
   @if (controlLabel()) {
-    <label class="govuk-label govuk-label--m tags" for="{{ id }}" [id]="labelId">
+    <label class="govuk-label tags" for="{{ id }}" [id]="labelId">
       {{ controlLabel() }}
       @if (tags().length) {
         <div class="tags">
