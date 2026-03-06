@@ -11,6 +11,7 @@
         queryParamsHandling="merge"
         rel="prev"
         [attr.aria-label]='readableTableName + " previous link"'
+        href="javascript:void(0)"
       >
         <svg
           class="govuk-pagination__icon govuk-pagination__icon--prev"
@@ -32,6 +33,7 @@
     @if (visiblePages[0] > 1) {
       <li class="govuk-pagination__item">
         <a
+          href="javascript:void(0)"
           [id]="tableName() + '-page-1'"
           class="govuk-link govuk-pagination__link"
           [routerLink]="[]"
@@ -47,6 +49,7 @@
     @for (page of visiblePages; track i; let i = $index) {
       <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }">
         <a
+          href="javascript:void(0)"
           [id]="tableName() + '-page-' + page"
           class="govuk-link govuk-pagination__link"
           [routerLink]="[]"
@@ -68,6 +71,7 @@
       }
       <li class="govuk-pagination__item">
         <a
+          href="javascript:void(0)"
           [id]="tableName() + '-page-' + pages.length"
           [attr.aria-label]='readableTableName + " Page " + pages.length'
           class="govuk-link govuk-pagination__link"
@@ -82,6 +86,7 @@
   @if (currentPage !== pages.length) {
     <div class="govuk-pagination__next">
       <a
+        href="javascript:void(0)"
         [id]="tableName() + '-next-page'"
         [attr.aria-label]='readableTableName + " next page"'
         class="govuk-link govuk-pagination__link"
