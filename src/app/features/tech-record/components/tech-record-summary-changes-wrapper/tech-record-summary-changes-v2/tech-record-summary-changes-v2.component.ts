@@ -132,7 +132,8 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 			)
 			.subscribe((techRecord) => {
 				if (techRecord && this.technicalRecordService.isHeavyVehicle(techRecord)) {
-					this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
+					const axlesForm = this.axlesService.generateAxlesForm(techRecord);
+					this.form.addControl('techRecord_axles', axlesForm);
 
 					if (
 						techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
