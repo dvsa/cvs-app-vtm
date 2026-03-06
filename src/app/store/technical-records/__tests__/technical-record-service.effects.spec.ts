@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -273,17 +273,22 @@ describe('TechnicalRecordServiceEffects', () => {
 		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should generate new techRecord based on vehicle type', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			const expectedTechRecord = {} as V3TechRecordModel;
-			expectedTechRecord.techRecord_vehicleType = VehicleTypes.CAR;
-			expectedTechRecord.techRecord_euVehicleCategory = EUVehicleCategory.M1;
 
-			store.overrideSelector(editingTechRecord, {
+			const oldTechRecord = {
 				vin: 'foo',
 				primaryVrm: 'bar',
 				systemNumber: 'foobar',
 				createdTimestamp: 'barfoo',
 				techRecord_vehicleType: 'lgv',
-			} as unknown as TechRecordType<'put'>);
+			} as unknown as TechRecordType<'put'>;
+
+			const expectedTechRecord = {
+				...oldTechRecord,
+				techRecord_vehicleType: VehicleTypes.CAR,
+				techRecord_euVehicleCategory: EUVehicleCategory.M1,
+			};
+
+			store.overrideSelector(editingTechRecord, oldTechRecord);
 
 			actions$ = of(
 				changeVehicleType({
@@ -292,13 +297,7 @@ describe('TechnicalRecordServiceEffects', () => {
 			);
 
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(editingTechRecord, {
-					vin: 'foo',
-					primaryVrm: 'bar',
-					systemNumber: 'foobar',
-					createdTimestamp: 'barfoo',
-					techRecord_vehicleType: 'lgv',
-				} as unknown as TechRecordType<'put'>);
+				store.overrideSelector(editingTechRecord, oldTechRecord);
 				// mock action to trigger effect
 				actions$ = hot('-a--', {
 					a: changeVehicleType({
@@ -412,15 +411,25 @@ describe('TechnicalRecordServiceEffects', () => {
 		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should default to heavy goods vehicle class when vehicle type is changed to hgv', fakeAsync(() => {
 			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			const expectedTechRecord = getEmptyHGVRecord();
+
+			const oldTechRecord = {
+				vin: 'foo',
+				primaryVrm: 'bar',
+				systemNumber: 'foobar',
+				createdTimestamp: 'barfoo',
+				techRecord_vehicleType: 'lgv',
+			} as unknown as TechRecordType<'put'>;
+
+			const expectedTechRecord = {
+				...oldTechRecord,
+				techRecord_approvalType: null,
+				techRecord_vehicleConfiguration: null,
+				techRecord_vehicleType: VehicleTypes.HGV,
+				techRecord_vehicleClass_description: 'heavy goods vehicle',
+			};
+
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(editingTechRecord, {
-					vin: 'foo',
-					primaryVrm: 'bar',
-					systemNumber: 'foobar',
-					createdTimestamp: 'barfoo',
-					techRecord_vehicleType: 'lgv',
-				} as unknown as TechRecordType<'put'>);
+				store.overrideSelector(editingTechRecord, oldTechRecord);
 				// mock action to trigger effect
 				actions$ = hot('-a--', {
 					a: changeVehicleType({
@@ -438,16 +447,3 @@ describe('TechnicalRecordServiceEffects', () => {
 		}));
 	});
 });
-
-function getEmptyHGVRecord(): V3TechRecordModel {
-	return {
-		techRecord_approvalType: null,
-		techRecord_approvalTypeNumber: undefined,
-		techRecord_ntaNumber: undefined,
-		techRecord_variantNumber: undefined,
-		techRecord_variantVersionNumber: undefined,
-		techRecord_vehicleClass_description: 'heavy goods vehicle',
-		techRecord_vehicleConfiguration: null,
-		techRecord_vehicleType: 'hgv',
-	} as unknown as V3TechRecordModel;
-}
