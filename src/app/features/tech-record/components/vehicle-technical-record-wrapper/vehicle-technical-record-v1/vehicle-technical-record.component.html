@@ -18,7 +18,7 @@
           ></app-test-record-summary>
           @if (showCreateTestButton()) {
             <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
-              <a id="create-test" class="govuk-button" (click)="createTest(techRecord())">Create a test for this vehicle</a>
+              <a href="javascript:void(0)" id="create-test" class="govuk-button" (click)="createTest(techRecord())">Create a test for this vehicle</a>
             </div>
           }
         </div>

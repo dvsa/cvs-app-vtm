@@ -6,7 +6,7 @@
         <span class="govuk-warning-text__assistive">Warning</span>
         @for (warning of warningMessages; track warning) {
           <div>
-            <a [routerLink]="" queryParamsHandling="preserve" [fragment]="warning.anchorLink" (click)="goto(warning)">{{ warning.warning }}</a>
+            <a href="javascript:void(0)" [routerLink]="" queryParamsHandling="preserve" [fragment]="warning.anchorLink" (click)="goto(warning)">{{ warning.warning }}</a>
           </div>
         }
       </strong>
