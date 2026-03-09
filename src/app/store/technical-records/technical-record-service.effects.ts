@@ -249,6 +249,9 @@ export class TechnicalRecordServiceEffects {
 						techRecord.partialVin = viewableTechRecord.partialVin;
 						techRecord.systemNumber = viewableTechRecord.systemNumber;
 						techRecord.createdTimestamp = viewableTechRecord.createdTimestamp;
+						techRecord.techRecord_statusCode = viewableTechRecord.techRecord_statusCode;
+						techRecord.techRecord_hiddenInVta = viewableTechRecord.techRecord_hiddenInVta;
+						techRecord.techRecord_recordCompleteness = viewableTechRecord.techRecord_recordCompleteness;
 
 						if ('primaryVrm' in viewableTechRecord && techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
 							techRecord.primaryVrm = viewableTechRecord.primaryVrm;
