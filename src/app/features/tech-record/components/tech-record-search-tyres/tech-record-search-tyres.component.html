@@ -102,7 +102,7 @@
             {{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : (loadIndex$ | async) | defaultNullOrEmpty }}
           </td>
           <td class="govuk-table__cell">
-            <a id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
+            <a href="javascript:void(0)" id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
           </td>
         </tr>
       }

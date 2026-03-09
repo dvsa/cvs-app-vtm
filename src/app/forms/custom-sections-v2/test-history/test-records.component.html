@@ -30,6 +30,7 @@
           <tbody class="govuk-table__body">
             @for (test of paginatedTestFields; track i; let i = $index) {
               <a
+                href="javascript:void(0)"
                 [id]="`test-record-link-${i}`"
                 class="govuk-link govuk-table__row"
                 routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}"
