@@ -113,13 +113,13 @@
                   ></govuk-form-group-select>
                 </td>
                 <td class="govuk-table__cell">
-                  <a class="axleButton" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
+                  <a class="axleButton govuk-link" id="tyres_search-{{ i + 1 }}" href="javascript:void(0)" (click)="getTyreSearchPage(axle.value.axleNumber)">
                     Search
                   </a>
                 </td>
                 <td class="govuk-table__cell">
                   <a
-                    class="axleButton"
+                    class="axleButton govuk-link"
                     id="tyres_remove-{{ i + 1 }}"
                     href="javascript:void(0)"
                     (click)="axlesService.removeAxle(parent, techRecord().techRecord_vehicleType, i)">
@@ -136,7 +136,7 @@
         <tr>
           <td colspan="100%">
             <a
-              class="axleButton"
+              class="axleButton govuk-link"
               href="javascript:void(0)"
               role="button"
               id="tyresAddAxle"
