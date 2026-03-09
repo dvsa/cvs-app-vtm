@@ -10,6 +10,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
@@ -716,16 +717,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		const modelBase = refData as PsvMake;
 		if (modelBase?.dtpNumber && modelBase?.dtpNumber.length >= 4 && refData) {
 			const code = modelBase.psvBodyType.toLowerCase() as BodyTypeCode;
-			this.form.patchValue({
+			const changes = {
 				techRecord_bodyType_code: code,
 				techRecord_bodyType_description: vehicleBodyTypeCodeMap.get(VehicleTypes.PSV)?.get(code),
 				techRecord_bodyMake: modelBase.psvBodyMake,
 				techRecord_chassisMake: modelBase.psvChassisMake,
 				techRecord_chassisModel: modelBase.psvChassisModel,
-			});
-			this.technicalRecordService.updateEditingTechRecord({
-				...(this.form.getRawValue() as any),
-			});
+			};
+			this.form.patchValue(changes);
+			this.technicalRecordService.updateEditingTechRecord(changes as TechRecordTypeVerb<'put'>);
 			this.cdr.detectChanges();
 		}
 	}
