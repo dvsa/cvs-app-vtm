@@ -126,6 +126,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 		const testResultId = testResult.testResultId;
 
 		const zip = await this.defectMediaService.getDefectZip(testResultId);
+		const newZip = new JSZip();
 
 		for (const defect of testResult.testTypes[0].defects) {
 			const defectMedia = defect.media;
@@ -137,10 +138,12 @@ export class DefectsComponent implements OnInit, OnDestroy {
 				if (file) {
 					// if file exists add image to cache
 					this.defectMediaService.images[image.path] = await file.async('base64');
+					newZip.file(image.path, this.defectMediaService.images[image.path], { base64: true });
 				}
 			}
 		}
-		await this.defectMediaService.openDocumentFromZip(zip, `${testResultId}`);
+
+		await this.defectMediaService.openDocumentFromZip(newZip, `${testResultId}`);
 	}
 
 	get defectsForm(): CustomFormArray {
