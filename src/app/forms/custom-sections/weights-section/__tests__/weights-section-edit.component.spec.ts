@@ -14,6 +14,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -50,6 +51,7 @@ describe('weightsSectionEditComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
+				AxlesService,
 			],
 		}).compileComponents();
 

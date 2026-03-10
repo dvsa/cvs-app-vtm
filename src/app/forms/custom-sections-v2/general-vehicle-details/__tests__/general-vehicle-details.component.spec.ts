@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
@@ -66,6 +67,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 					useValue: { getOptions: jest.fn(), loadOptions: jest.fn() },
 				},
 				{ provide: ReferenceDataService, useValue: mockRefDataService },
+				AxlesService,
 			],
 		}).compileComponents();
 

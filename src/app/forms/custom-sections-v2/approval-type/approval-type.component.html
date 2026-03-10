@@ -1,9 +1,8 @@
 @if (techRecord(); as tr) {
   @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-    <div [formGroup]="form" class="govuk-!-padding-4">
+    <div [formGroup]="form" class="govuk-!-padding-4 govuk-label--s">
       @if (shouldDisplayFormControl('techRecord_approvalType')) {
         <govuk-form-group-select
-          class="govuk-label govuk-label--s"
           label="Approval type"
           formControlName="techRecord_approvalType"
           [options]="tr.techRecord_vehicleType === VehicleTypes.TRL ? trlApprovalTypes : hgvAndPsvApprovalTypes"
@@ -16,7 +15,6 @@
 
       @if (tr.techRecord_approvalType && shouldDisplayFormControl('techRecord_approvalTypeNumber')) {
         <approval-type-number-input
-          class="govuk-label govuk-label--s"
           label="Approval type number"
           formControlName="techRecord_approvalTypeNumber"
           [width]="FormNodeWidth.XL"
@@ -41,7 +39,6 @@
       @if (vehicleType === VehicleTypes.PSV) {
         @if (shouldDisplayFormControl('techRecord_coifSerialNumber')) {
           <govuk-form-group-input
-            class="govuk-label govuk-label--s"
             label="COIF serial number"
             [width]="FormNodeWidth.XL"
             formControlName="techRecord_coifSerialNumber"
@@ -53,7 +50,6 @@
 
         @if (shouldDisplayFormControl('techRecord_coifCertifierName')) {
           <govuk-form-group-input
-            class="govuk-label govuk-label--s"
             label="COIF certifier name"
             [width]="FormNodeWidth.XL"
             formControlName="techRecord_coifCertifierName"
@@ -65,7 +61,6 @@
 
         @if (shouldDisplayFormControl('techRecord_coifDate')) {
           <govuk-form-group-date
-            class="govuk-label govuk-label--s"
             label="COIF certifier date"
             formControlName="techRecord_coifDate"
             appFilterByTags
@@ -77,7 +72,6 @@
 
       @if (shouldDisplayFormControl('techRecord_variantNumber')) {
         <govuk-form-group-input
-          class="govuk-label govuk-label--s"
           label="Variant number"
           [width]="FormNodeWidth.XL"
           formControlName="techRecord_variantNumber"
@@ -89,7 +83,6 @@
 
       @if (shouldDisplayFormControl('techRecord_variantVersionNumber')) {
         <govuk-form-group-input
-          class="govuk-label govuk-label--s"
           label="Variant version number"
           [width]="FormNodeWidth.XL"
           formControlName="techRecord_variantVersionNumber"

@@ -131,6 +131,7 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 						techRecord.techRecord_vehicleType === VehicleTypes.TRL
 					) {
 						this.form.addControl('techRecord_axles', this.axlesService.generateAxlesForm(techRecord));
+						this.axlesService.setLockAxles(true);
 
 						if (
 							techRecord.techRecord_vehicleType === VehicleTypes.TRL ||

@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-full">
     <dl class="govuk-summary-list">
       <h1 class="govuk-heading-l">Tyre search</h1>
-      <h1 class="govuk-heading-m">Vehicle details</h1>
+      <h2 class="govuk-heading-m">Vehicle details</h2>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
@@ -48,6 +48,7 @@
     data-module="govuk-button"
     enterkeyhint="search"
     data-gem-track-click-module-started="true"
+    aria-label="search button"
     (click)="handleSearch(searchFilter.value, searchTerm.value)"
     >
     <svg
@@ -101,7 +102,7 @@
             {{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : (loadIndex$ | async) | defaultNullOrEmpty }}
           </td>
           <td class="govuk-table__cell">
-            <a id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
+            <a href="javascript:void(0)" id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
           </td>
         </tr>
       }

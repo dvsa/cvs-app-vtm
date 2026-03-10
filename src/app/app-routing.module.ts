@@ -9,6 +9,7 @@ import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
+import { AxlesService } from './services/axles/axles.service';
 
 const routes: Routes = [
 	{
@@ -35,6 +36,7 @@ const routes: Routes = [
 					title: 'Create new technical record',
 					roles: Roles.TechRecordCreate,
 				},
+				providers: [AxlesService],
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () => import('./features/tech-record/create/create-tech-records.routes').then((m) => m.routes),
 			},
@@ -42,6 +44,7 @@ const routes: Routes = [
 				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
 				data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
 				canActivate: [MsalGuard, RoleGuard],
+				providers: [AxlesService],
 				loadChildren: () => import('./features/tech-record/create-batch/create-batch.routes').then((m) => m.routes),
 			},
 			{
@@ -55,6 +58,7 @@ const routes: Routes = [
 				path: RootRoutes.CURRENT_TECH_RECORD,
 				data: { title: 'Tech Record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
+				providers: [AxlesService],
 				loadChildren: () => import('./features/tech-record/tech-record.routes').then((m) => m.routes),
 			},
 			{

@@ -1,7 +1,7 @@
 <div class="govuk-form-group">
   @if (controlLabel()) {
-    <h1 class="govuk-label-wrapper">
-      <label class="govuk-label govuk-label--m tags" [id]="labelId" [htmlFor]="id">
+    <div class="govuk-label-wrapper">
+      <label class="govuk-label tags" [id]="labelId" [htmlFor]="id">
         {{ controlLabel() }}
         @if (tags().length) {
           <div class="tags">
@@ -11,7 +11,7 @@
           </div>
         }
       </label>
-    </h1>
+    </div>
   }
 
   @if (controlHint() && !disabled()) {
@@ -105,9 +105,9 @@
 
     <!-- Provide suffix via string input -->
     @if (suffix()) {
-      <div 
-        class="govuk-input__suffix" 
-        [class.govuk-input__suffix-disabled]="control?.disabled || disabled() || false" 
+      <div
+        class="govuk-input__suffix"
+        [class.govuk-input__suffix-disabled]="control?.disabled || disabled() || false"
         aria-hidden="true">
         {{ suffix() }}
       </div>

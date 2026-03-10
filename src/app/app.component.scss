@@ -3,6 +3,21 @@
 .no-scroll {
   position: fixed;
 }
+
+.main-layout {
+  padding-top: 1.25rem;
+}
+
+@media (min-width: 40.0625em) {
+  .main-layout {
+    padding-top: 2.5rem;
+  }
+}
+
+.govuk-main-wrapper {
+  padding-top: 0;
+}
+
 .gutters {
   @include govuk-responsive-padding(6, 'left');
   @include govuk-responsive-padding(6, 'right');

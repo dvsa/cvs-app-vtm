@@ -1,0 +1,26 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-fieldset__legend {
+  /* Default to .govuk-fieldset__legend--m */
+  @include govuk-font($size: 24, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+}
+
+:host-context(.govuk-label--s) .govuk-fieldset__legend {
+  @include govuk-font($size: 19, $weight: bold);
+}
+
+:host-context(.govuk-label--m) .govuk-fieldset__legend {
+  @include govuk-font($size: 24, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+}
+
+:host-context(.govuk-label--l) .govuk-fieldset__legend {
+  @include govuk-font($size: 36, $weight: bold);
+  margin-bottom: govuk-spacing(3);
+}
+
+:host-context(.govuk-label--xl) .govuk-fieldset__legend {
+  @include govuk-font($size: 48, $weight: bold);
+  margin-bottom: govuk-spacing(3);
+}

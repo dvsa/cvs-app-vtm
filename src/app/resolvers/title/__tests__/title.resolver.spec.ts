@@ -62,6 +62,6 @@ describe('TitleResolver', () => {
 		});
 		const resolved = result;
 		expect(resolved).toBeTruthy();
-		expect(titleServiceSpy).toHaveBeenCalledWith('Vehicle Testing Management - Test Results');
+		expect(titleServiceSpy).toHaveBeenCalledWith('Test Results - Vehicle Testing Management');
 	});
 });

@@ -1,17 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import {
-	TechRecordGETCar,
-	TechRecordGETHGV,
-	TechRecordGETLGV,
-	TechRecordGETPSV,
-	TechRecordGETTRL,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -65,7 +59,7 @@ import {
 	updateTechRecordFailure,
 	updateTechRecordSuccess,
 } from './technical-record-service.actions';
-import { editingTechRecord, selectTechRecord } from './technical-record-service.selectors';
+import { editingTechRecord, selectTechRecord, techRecord } from './technical-record-service.selectors';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -245,57 +239,69 @@ export class TechnicalRecordServiceEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(changeVehicleType),
-				withLatestFrom(this.store.pipe(select(editingTechRecord))),
-				concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
-					const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
+				concatLatestFrom(() => [this.store.pipe(select(editingTechRecord)), this.store.pipe(select(techRecord))]),
+				concatMap(([{ techRecord_vehicleType }, editableTechRecord, viewableTechRecord]) => {
+					const techRecord = { ...cloneDeep(editableTechRecord) } as TechRecordType<'get'>;
+					techRecord.techRecord_vehicleType = techRecord_vehicleType as VehicleType;
 
-					// TODO: once all DFS templates are removed, remove this
-					const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
+					if (viewableTechRecord) {
+						techRecord.vin = viewableTechRecord.vin;
+						techRecord.partialVin = viewableTechRecord.partialVin;
+						techRecord.systemNumber = viewableTechRecord.systemNumber;
+						techRecord.createdTimestamp = viewableTechRecord.createdTimestamp;
+						techRecord.techRecord_statusCode = viewableTechRecord.techRecord_statusCode;
+						techRecord.techRecord_hiddenInVta = viewableTechRecord.techRecord_hiddenInVta;
+						techRecord.techRecord_recordCompleteness = viewableTechRecord.techRecord_recordCompleteness;
 
-					const mergedForms = techRecordTemplate.reduce((mergedNodes, formNode) => {
-						const form = this.dfs.createForm(formNode, techRecord);
-						return merge(mergedNodes, form.getCleanValue(form));
-					}, {}) as TechRecordType<'put'>;
+						if ('primaryVrm' in viewableTechRecord && techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
+							techRecord.primaryVrm = viewableTechRecord.primaryVrm;
+							techRecord.secondaryVrms = viewableTechRecord.secondaryVrms;
+						}
 
-					(mergedForms as any).techRecord_vehicleType = techRecord_vehicleType;
-
-					if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
-						mergedForms.techRecord_vehicleType = VehicleTypes.TRL;
-						mergedForms.techRecord_euVehicleCategory = EUVehicleCategoryTRL.O1;
+						if ('trailerId' in viewableTechRecord && techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+							techRecord.trailerId = viewableTechRecord.trailerId;
+						}
 					}
 
-					if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
-						(mergedForms as TechRecordGETHGV | TechRecordGETPSV).techRecord_approvalType = null;
-						(mergedForms as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
-					}
-
-					if (techRecord_vehicleType === VehicleTypes.HGV) {
-						(mergedForms as TechRecordGETHGV).techRecord_vehicleClass_description =
-							VehicleClassDescription.HeavyGoodsVehicle;
-					}
-
-					if (techRecord_vehicleType === VehicleTypes.TRL) {
-						(mergedForms as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
-						(mergedForms as TechRecordGETTRL).techRecord_euVehicleCategory = null;
+					if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+						techRecord.techRecord_vehicleType = VehicleTypes.TRL;
+						techRecord.techRecord_euVehicleCategory = EUVehicleCategoryTRL.O1;
 					}
 
 					if (
-						techRecord_vehicleType === VehicleTypes.CAR &&
-						(mergedForms as TechRecordGETCar).techRecord_euVehicleCategory !== EUVehicleCategoryCAR.M1
+						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+						techRecord.techRecord_vehicleType === VehicleTypes.PSV
 					) {
-						(mergedForms as TechRecordGETCar).techRecord_euVehicleCategory = EUVehicleCategoryCAR.M1;
+						techRecord.techRecord_approvalType = null;
+						techRecord.techRecord_vehicleConfiguration = null;
+					}
+
+					if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
+						techRecord.techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
+					}
+
+					if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+						techRecord.techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
+						techRecord.techRecord_euVehicleCategory = null;
 					}
 
 					if (
-						techRecord_vehicleType === VehicleTypes.LGV &&
-						(mergedForms as TechRecordGETLGV).techRecord_euVehicleCategory !== EUVehicleCategoryLGV.N1
+						techRecord.techRecord_vehicleType === VehicleTypes.CAR &&
+						techRecord.techRecord_euVehicleCategory !== EUVehicleCategoryCAR.M1
 					) {
-						(mergedForms as TechRecordGETLGV).techRecord_euVehicleCategory = EUVehicleCategoryLGV.N1;
+						techRecord.techRecord_euVehicleCategory = EUVehicleCategoryCAR.M1;
 					}
 
-					return of(mergedForms);
+					if (
+						techRecord.techRecord_vehicleType === VehicleTypes.LGV &&
+						techRecord.techRecord_euVehicleCategory !== EUVehicleCategoryLGV.N1
+					) {
+						techRecord.techRecord_euVehicleCategory = EUVehicleCategoryLGV.N1;
+					}
+
+					return of(techRecord);
 				}),
-				tap((mergedForms) => this.technicalRecordService.updateEditingTechRecord(mergedForms))
+				tap((techRecord) => this.technicalRecordService.updateEditingTechRecord(techRecord as TechRecordType<'put'>))
 			),
 		{ dispatch: false }
 	);

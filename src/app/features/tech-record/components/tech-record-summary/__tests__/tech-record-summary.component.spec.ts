@@ -1,3 +1,4 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -32,6 +33,7 @@ describe('TechRecordSummaryComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [TechRecordSummaryComponent],
 			providers: [
+				AxlesService,
 				MultiOptionsService,
 				provideRouter([]),
 				provideHttpClient(),
