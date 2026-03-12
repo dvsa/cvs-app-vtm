@@ -27,7 +27,12 @@ import { TyresComponent } from '@/src/app/forms/custom-sections-v2/tyres/tyres.c
 import { WeightsComponent } from '@/src/app/forms/custom-sections-v2/weights/weights.component';
 import { Modes } from '@/src/app/models/modes.enum';
 import { Roles } from '@/src/app/models/roles.enum';
-import { V3TechRecordModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
+import {
+	ReasonForEditing,
+	StatusCodes,
+	V3TechRecordModel,
+	VehicleTypes,
+} from '@/src/app/models/vehicle-tech-record.model';
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
@@ -36,7 +41,10 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import {
+	TechRecordType,
+	TechRecordType as TechRecordTypeVerb,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech-record-history/tech-record-history.component';
 import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
@@ -147,6 +155,14 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 					// Fetch technical record history and load into state
 					if ('systemNumber' in techRecord && techRecord['systemNumber']) {
 						this.store.dispatch(getBySystemNumber({ systemNumber: techRecord.systemNumber }));
+					}
+
+					// If the the editing reason is notifiable alteration needed, then create a provisional record
+					if (this.isEditing && this.route.snapshot.data['reason'] === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+						this.technicalRecordService.updateEditingTechRecord({
+							...(techRecord as TechRecordType<'put'>),
+							techRecord_statusCode: StatusCodes.PROVISIONAL,
+						});
 					}
 				}
 			});
