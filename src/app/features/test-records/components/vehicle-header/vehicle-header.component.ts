@@ -188,6 +188,7 @@ export class VehicleHeaderComponent {
 		if (this.isTestTypeOldIvaOrMsva()) return false; // Old IVA or MSVA tests
 		const { testTypeId, testResult } = test.testTypes[0];
 		if (testTypeId === '201') return false; // LEC without linked test
+		if (['30', '85'].includes(testTypeId)) return false; // Voluntary brake tests
 		if (TEST_TYPES_GROUP7.includes(testTypeId)) return false; // ADR tests
 		if (ADR_DESK_BASED_TEST_TYPE_IDS.includes(testTypeId)) return false; // Desk-base ADR tests
 		if (TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) && testResult !== TestResults.FAIL) return false; // IVA tests
