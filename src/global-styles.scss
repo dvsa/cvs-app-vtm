@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'node_modules/accessible-autocomplete';
-@use 'node_modules/govuk-frontend/govuk/all';
 @use './styles';
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .vehicle_heading {
   display: flex;
@@ -66,4 +66,93 @@
 .govuk-input__suffix-disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+// List of lists selector
+
+.list_container--wrapper {
+  display: flex;
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+}
+.list_container {
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+
+  @include govuk-media-query($until: desktop) {
+    min-width: 100px;
+  }
+}
+.list_container:hover {
+  width: max-content;
+}
+.list_container:last-child {
+  flex-basis: 100%;
+}
+.list_container--shrink {
+  flex: 1 1 100px;
+}
+.list_container--shrink:focus-within,
+.list_container--shrink:hover {
+  flex-basis: auto;
+}
+.list_container:not(:first-child) {
+  border-left: 1px solid govuk-colour('mid-grey', $legacy: 'grey-2');
+}
+.list_container > h2 {
+  padding-left: 1rem;
+}
+.list {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: govuk-colour('white');
+  width: fit-content;
+  max-width: 28em;
+}
+.list__item {
+  font-family: 'GDS Transport', arial, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, 0.0625rem);
+  text-underline-offset: 0.1em;
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 250px;
+  padding: 15px 30px 20px 15px;
+  text-align: left;
+  white-space: nowrap;
+  color: $govuk-link-colour;
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.list__item:focus-visible {
+  outline-offset: -1px;
+}
+.list__item--active:not(:focus):hover,
+.list__item:not(:focus):hover {
+  text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+  text-decoration-skip-ink: none;
+  background: govuk-colour('light-grey', $legacy: 'grey-4');
+}
+.list__item.list__item--active:hover,
+.list__item.list__item--active,
+.list__item:focus {
+  background: $govuk-link-colour;
+  color: govuk-colour('white');
+}
+.list__item--more:after {
+  content: '›'; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  margin-top: -8px;
 }

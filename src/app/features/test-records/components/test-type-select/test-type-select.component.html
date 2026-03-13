@@ -1,6 +1,6 @@
 @if ((selectAllTestTypes$ | async)?.length) {
   <h1 class="govuk-heading-l">Select a test type</h1>
-  <div class="categories">
+  <div class="list_container--wrapper">
     <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
       <ol class="list">
         @for (type of selectAllTestTypes$ | async; track tackByFn($index, type)) {
