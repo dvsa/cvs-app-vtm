@@ -68,14 +68,14 @@ export const routes: Routes = [
 			import('./components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component').then(
 				(m) => m.AmendVrmReasonComponent
 			),
-		data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
+		data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
 		path: TechRecordRoutes.REASON_TO_CHANGE_VRM,
 		loadComponent: () =>
 			import('./components/tech-record-amend-vrm/tech-record-amend-vrm.component').then((m) => m.AmendVrmComponent),
-		data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
+		data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
