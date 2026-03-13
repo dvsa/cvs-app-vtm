@@ -1,6 +1,12 @@
-@import 'node_modules/govuk-frontend/govuk/all';
-
+.list_container--wrapper {
+  display: flex;
+}
 .list__item {
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+  white-space: normal;
+}
+.list_container--shrink {
+  flex-basis: min-content;
+}
+.list_container--shrink:hover {
+  flex-basis: auto;
 }

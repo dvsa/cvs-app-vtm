@@ -32,7 +32,7 @@
               <a
                 href="javascript:void(0)"
                 [id]="'defect-sub-list-item-' + i"
-                class="list__item "
+                class="list__item"
                 [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
                 [attr.aria-expanded]="hasChildren ? selected : ''"
                 (click)="handleSelect(item, types.Item)"
