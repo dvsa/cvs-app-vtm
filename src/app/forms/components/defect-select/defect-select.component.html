@@ -1,6 +1,6 @@
 @if (defects.length) {
   <h1 class="govuk-heading-l">Select a defect</h1>
-  <div class="defects">
+  <div class="list_container--wrapper">
     <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
       <ol class="list">
         @for (defect of defects; track defect; let i = $index) {
@@ -10,13 +10,13 @@
             <a
               href="javascript:void(0)"
               [id]="'defect-list-item-' + i"
-              class="browse__link browse__link--inactive"
-              [ngClass]="{ 'browse__link--active': selected }"
+              class="list__item"
+              [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
               [attr.aria-expanded]="hasChildren ? selected : ''"
               (click)="handleSelect(defect, types.Defect)"
               [attr.data-testid]="defect.imDescription"
               >
-              {{ defect.imNumber }}. {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasChildren }"></span>
+              {{ defect.imNumber }}. {{ defect.imDescription }}
             </a>
           </li>
         }
@@ -32,13 +32,13 @@
               <a
                 href="javascript:void(0)"
                 [id]="'defect-sub-list-item-' + i"
-                class="browse__link browse__link--inactive"
-                [ngClass]="{ 'browse__link--active': selected }"
+                class="list__item "
+                [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
                 [attr.aria-expanded]="hasChildren ? selected : ''"
                 (click)="handleSelect(item, types.Item)"
                 [attr.data-testid]="item.itemDescription"
                 >
-                {{ selectedDefect.imNumber }}.{{ item.itemNumber }}. {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasChildren }"></span>
+                {{ selectedDefect.imNumber }}.{{ item.itemNumber }}. {{ item.itemDescription }}
               </a>
             </li>
           }
@@ -47,38 +47,38 @@
     }
     @if (selectedItem) {
       <div class="list_container">
-        <ol class="list">
+        <ol class="list govuk-!-padding-left-3 govuk-!-padding-right-3">
           @for (deficiency of sortDeficiencyItems(selectedItem.deficiencies || []); track $index) {
             <li>
               <a
                 href="javascript:void(0)"
-                class="browse__normal-link govuk-link--no-visited-state"
+                class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold"
                 [id]="'selectedDefect-' + getDeficiencyId(deficiency)"
                 [attr.data-testid]=" getDeficiencyId(deficiency)"
                 (click)="handleSelect(deficiency, types.Deficiency)"
                 >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
                 }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
                 >
-                <span>
-                  <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+                <span class="govuk-!-margin-left-3">
+                  <app-tag [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
                 </span>
-                <span class="browse__description">{{ deficiency.deficiencyText }}</span>
+                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2">{{ deficiency.deficiencyText }}</p>
               </li>
             }
             <li>
               <a
                 href="javascript:void(0)"
-                class="browse__normal-link govuk-link--no-visited-state"
+                class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold"
                 id="selected-defect-advisory" 
                 (click)="handleSelect()"
                 [attr.data-testid]="selectedDefect?.imNumber + '.' + selectedItem.itemNumber"
                 >
                 {{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}
               </a>
-                <span>
-                  <app-tag class="browse__category" [type]="categoryColor('advisory')">advisory</app-tag>
+                <span class="govuk-!-margin-left-3">
+                  <app-tag [type]="categoryColor('advisory')">advisory</app-tag>
                 </span>
-                <span class="browse__description">Advisory defect.</span>
+                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2">Advisory defect.</p>
               </li>
             </ol>
           </div>
