@@ -5,20 +5,20 @@
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
         @if (backlink.url != null) {
-          <a id="back-button" [routerLink]="backlink.url" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
+          <a id="back-button" href="javascript:void(0)" [routerLink]="backlink.url" class="govuk-back-link govuk-breadcrumbs__link">Back</a>
         } @else {
-          <a id="back-button"class="govuk-back-link govuk-breadcrumbs__link" (click)="location.back()">Back</a>
+          <a id="back-button" href="javascript:void(0)" class="govuk-back-link govuk-breadcrumbs__link" (click)="location.back()">Back</a>
         }
       </li>
     </ol>
   </div>
-} 
+}
 @else if (breadcrumbs$ | async; as breadcrumbs) {
   @if (breadcrumbs.length) {
     <div class="govuk-breadcrumbs">
       <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-          <a class="govuk-breadcrumbs__link" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
+          <a class="govuk-breadcrumbs__link" href="javascript:void(0)" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
         </li>
         @for (breadcrumb of breadcrumbs; track indexOfLink; let last = $last; let indexOfLink = $index) {
           <li class="govuk-breadcrumbs__list-item">
@@ -28,10 +28,11 @@
                 class="govuk-breadcrumbs__link"
                 [routerLink]="'/' + breadcrumb.path"
                 [queryParamsHandling]="breadcrumb.preserveQueryParams ? 'preserve' : ''"
-                >{{ breadcrumb.label }}</a
+                href="javascript:void(0)"
+              >{{ breadcrumb.label }}</a
                 >
               } @else {
-                <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current" id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
+                <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current" href="javascript:void(0)" id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
               }
             </li>
           }

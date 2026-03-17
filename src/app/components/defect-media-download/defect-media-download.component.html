@@ -1,13 +1,17 @@
 @if (testResult(); as testResult) {
-    @if (canDownloadMedia()) {
-      <td id="media-download-link">
-        <button class="link" (click)="downloadMedia()">
-          Download media
-        </button>
-      </td>
-    } @else {
-      <td id="media-failure-to-capture-reason">
-        {{ getFailureToCaptureDefectMediaReason() }}
-      </td>
-    }
+  @if (defectMediaService?.hasRententionPeriodExpired(testResult)) {
+    <td id="media-expired">
+      Expired
+    </td>
+  } @else if (canDownloadMedia()) {
+    <td id="media-download-link">
+      <button class="link" (click)="downloadMedia()">
+        Download media
+      </button>
+    </td>
+  } @else {
+    <td id="media-failure-to-capture-reason">
+      {{ getFailureToCaptureDefectMediaReason() }}
+    </td>
+  }
 }

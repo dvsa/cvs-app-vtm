@@ -13,6 +13,7 @@ import { MultiOptionsService } from '@services/multi-options/multi-options.servi
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { initialAppState } from '@store/index';
 import { ReplaySubject, of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../../../edit-tech-record-button/edit-tech-record-button.component';
@@ -47,6 +48,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 				VehicleTechnicalRecordComponent,
 			],
 			providers: [
+				AxlesService,
 				MultiOptionsService,
 				provideRouter([]),
 				provideHttpClient(),

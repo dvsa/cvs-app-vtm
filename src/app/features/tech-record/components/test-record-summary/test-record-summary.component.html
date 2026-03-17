@@ -21,7 +21,14 @@
           <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ getResult(test) }}</td>
           @if (!isEditing()) {
             <td class="govuk-table__cell">
-              <a id="view-test-{{ i + 1 }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
+              <a 
+                class="govuk-link"
+                href="javascript:void(0)" 
+                [id]="`view-test-${ i + 1 }`" 
+                [routerLink]="`test-records/test-result/${ test.testResultId }/${ test.testNumber }`"
+              >
+                View
+              </a>
             </td>
           }
         </tr>

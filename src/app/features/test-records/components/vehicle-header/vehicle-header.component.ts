@@ -1,21 +1,30 @@
+import { isTestTypeOldIvaOrMsva } from '@/src/app/store/test-records';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IconComponent } from '@components/icon/icon.component';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { TagComponent, TagType, TagTypes } from '@components/tag/tag.component';
-import { TestCertificateComponent } from '@components/test-certificate/test-certificate.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
-import { VehicleType as VehicleTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { TestResultSchema, TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import {
+	TestResultSchema,
+	TestResultTestTypeSchema,
+	VehicleType as VehicleTypes,
+} from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { ADR_DESK_BASED_TEST_TYPE_IDS, TEST_TYPES_GROUP7, TEST_TYPES_VTP_VTG_12 } from '@models/testTypeId.enum';
+import {
+	ADR_DESK_BASED_TEST_TYPE_IDS,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_VTP_VTG_12,
+} from '@models/testTypeId.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -37,7 +46,6 @@ import { Observable, map } from 'rxjs';
 		FieldWarningMessageComponent,
 		NumberPlateComponent,
 		TagComponent,
-		TestCertificateComponent,
 		RetrieveDocumentDirective,
 		AsyncPipe,
 		UpperCasePipe,
@@ -59,6 +67,7 @@ export class VehicleHeaderComponent {
 	testRecordsService = inject(TestRecordsService);
 
 	techRecord$ = this.store.select(techRecord);
+	isTestTypeOldIvaOrMsva = this.store.selectSignal(isTestTypeOldIvaOrMsva);
 
 	get test(): TestResultTestTypeSchema | undefined {
 		return this.testResult()?.testTypes?.find((t) => this.testNumber() === t.testNumber);
@@ -66,11 +75,6 @@ export class VehicleHeaderComponent {
 
 	get selectAllTestTypes$() {
 		return this.store.select(selectAllTestTypes);
-	}
-
-	get shouldShowHyperlink(): boolean {
-		const testTypes = [...TEST_TYPES_GROUP7, ...ADR_DESK_BASED_TEST_TYPE_IDS];
-		return !testTypes.includes(this.testResult()?.testTypes[0]?.testTypeId ?? '');
 	}
 
 	combinedOdometerReading(reading: string | null | undefined, unit: string | null | undefined) {
@@ -170,6 +174,26 @@ export class VehicleHeaderComponent {
 
 	get params(): Map<string, string> {
 		return new Map([['fileName', this.fileName]]);
+	}
+
+	get certificateParams(): Map<string, string> {
+		return new Map([
+			['testNumber', this.testNumber() ?? ''],
+			['vinNumber', this.testResult()?.vin ?? ''],
+		]);
+	}
+
+	canDownloadCertificate(test: TestResultSchema): boolean {
+		if (this.isReview()) return false;
+		if (this.isTestTypeOldIvaOrMsva()) return false; // Old IVA or MSVA tests
+		const { testTypeId, testResult } = test.testTypes[0];
+		if (testTypeId === '201') return false; // LEC without linked test
+		if (['30', '85'].includes(testTypeId)) return false; // Voluntary brake tests
+		if (TEST_TYPES_GROUP7.includes(testTypeId)) return false; // ADR tests
+		if (ADR_DESK_BASED_TEST_TYPE_IDS.includes(testTypeId)) return false; // Desk-base ADR tests
+		if (TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) && testResult !== TestResults.FAIL) return false; // IVA tests
+		if (TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId) && testResult !== TestResults.FAIL) return false; // MSVA tests
+		return true;
 	}
 
 	protected readonly VehicleTypes = VehicleType;

@@ -94,27 +94,33 @@
                 </div>
               </div>
             </div>
+          } @else if (testResult && defectMediaService.hasRententionPeriodExpired(testResult)) {
+              <div class="govuk-heading-s underline">Photos</div>
+              <p class="govuk-body">
+                No media available - media was deleted as the retention period had passed
+              </p>
           } @else {
             @if (defectMediaService.hasImages(defect) && defectMediaService.hasCachedImages(defect)) {
-              <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media
+              <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">
+                Download all media for this defect
               </app-button>
             }
             <div class="govuk-heading-s underline">Photos</div>
-              @for (media of defect.media; track media) {
-                @if (media.type === 'image' && hasCachedImage(media)) {
-                  <div style="display: inline-flex" class="defect-container">
-                    <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
-                    <button class="link download-image-link" (click)="downloadPhoto(media)">
-                      Download photo
-                    </button>
-                  </div>
+            @for (media of defect.media; track media) {
+              @if (media.type === 'image' && hasCachedImage(media)) {
+                <div style="display: inline-flex" class="defect-container">
+                  <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
+                  <button class="link download-image-link" (click)="downloadPhoto(media)">
+                    Download photo
+                  </button>
+                </div>
+              } }
+                @if (shouldShowMissingMediaMessage()) {
+                  <p class="govuk-body">
+                    No media available
+                  </p>
                 }
-              }
-            @if(shouldShowMissingMediaMessage()) {
-              <p class="govuk-body">
-                No media available
-              </p>
-            } @else if (!defectMediaService.hasImages(defect)) {
+              @else if (!defectMediaService.hasImages(defect)) {
               <p class="govuk-body">
                 {{ getFailureToCaptureDefectMediaReason() }}
               </p>

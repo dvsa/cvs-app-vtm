@@ -16,7 +16,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
 import JSZip from 'jszip';
-import { Subscription, debounceTime, lastValueFrom } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
 	selector: 'app-defects[defects][template]',
@@ -64,13 +64,14 @@ export class DefectsComponent implements OnInit, OnDestroy {
 	}
 
 	hasMediaAvailable(): boolean {
+		if (!this.defectMediaService) {
+			return false;
+		}
+
 		// return true if one of the defects contains media which are images
 		for (const defect of this.testDefects) {
-			if (defect.media) {
-				const hasImages = defect.media.some((media) => media.type !== 'failReason');
-				if (hasImages) {
-					return true;
-				}
+			if (this.defectMediaService.hasImages(defect)) {
+				return true;
 			}
 		}
 		return false;
@@ -110,7 +111,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 			for (const image of defectMedia) {
 				const file = this.defectMediaService.images[image.path];
 				if (file) {
-					zip.file(image.path, file);
+					zip.file(image.path, file, { base64: true });
 				}
 			}
 		}
@@ -123,15 +124,9 @@ export class DefectsComponent implements OnInit, OnDestroy {
 			return;
 		}
 		const testResultId = testResult.testResultId;
-		// get presigned url
-		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
 
-		// get zip file for test result id
-		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
-
-		// load response into zip file
-		const zip = new JSZip();
-		await zip.loadAsync(blob, { base64: true });
+		const zip = await this.defectMediaService.getDefectZip(testResultId);
+		const newZip = new JSZip();
 
 		for (const defect of testResult.testTypes[0].defects) {
 			const defectMedia = defect.media;
@@ -143,10 +138,12 @@ export class DefectsComponent implements OnInit, OnDestroy {
 				if (file) {
 					// if file exists add image to cache
 					this.defectMediaService.images[image.path] = await file.async('base64');
+					newZip.file(image.path, this.defectMediaService.images[image.path], { base64: true });
 				}
 			}
 		}
-		await this.defectMediaService.openDocumentFromZip(zip, `${testResultId}`);
+
+		await this.defectMediaService.openDocumentFromZip(newZip, `${testResultId}`);
 	}
 
 	get defectsForm(): CustomFormArray {

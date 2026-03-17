@@ -1,7 +1,7 @@
 @if ((searchResults$ | async)?.length) {
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <a class="govuk-back-link" id="multiple-search-results-back-link" (click)="navigateBack()">Back</a>
+      <a href="javascript:void(0)" class="govuk-back-link" id="multiple-search-results-back-link" (click)="navigateBack()">Back</a>
     </div>
     @for (searchResult of searchResults$ | async; track searchResult) {
       <app-single-search-result
@@ -12,6 +12,6 @@
     }
   </div>
 } @else {
-  <a class="govuk-link" routerLink="../../create" *appRoleRequired="Roles.TechRecordCreate">Create new tech record</a>
+  <a href="javascript:void(0)" class="govuk-link" routerLink="../../create" *appRoleRequired="Roles.TechRecordCreate">Create new tech record</a>
 }
 

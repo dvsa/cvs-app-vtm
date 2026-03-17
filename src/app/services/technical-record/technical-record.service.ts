@@ -127,13 +127,8 @@ export class TechnicalRecordService {
 				record.techRecord_euVehicleCategory !== EUVehicleCategory.O1 &&
 				record.techRecord_euVehicleCategory !== EUVehicleCategory.O2)
 		) {
-			if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
-				record.techRecord_noOfAxles =
-					record.techRecord_axles && record.techRecord_axles.length >= 0 ? record.techRecord_axles?.length : null;
-			} else {
-				record.techRecord_noOfAxles =
-					record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
-			}
+			record.techRecord_noOfAxles =
+				record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
 		}
 		this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
 	}

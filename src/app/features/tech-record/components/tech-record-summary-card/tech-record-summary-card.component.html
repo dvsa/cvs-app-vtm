@@ -28,7 +28,7 @@
 
             @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
+                <a href="javascript:void(0)" class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
               </div>
             }
           </dt>
@@ -45,7 +45,7 @@
 
             @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
               <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
+                <a href="javascript:void(0)" class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
               </div>
             }
           </dt>
@@ -78,7 +78,7 @@
 
               @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
+                  <a href="javascript:void(0)" class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
                 </div>
               }
             </dt>
@@ -129,6 +129,7 @@
                       id="change-status-to-archive-link"
                       [routerLink]="['change-status']"
                       [queryParams]="{ to: 'archived' }"
+                      href="javascript:void(0)"
                     >
                       <span>Archive</span>
                     </a>
@@ -141,6 +142,7 @@
                           id="change-status-to-archive-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'archived' }"
+                          href="javascript:void(0)"
                         >
                           <span>Archive</span>
                         </a>
@@ -151,6 +153,7 @@
                           id="promote-link"
                           [routerLink]="['change-status']"
                           [queryParams]="{ to: 'current' }"
+                          href="javascript:void(0)"
                         >
                           <span>Promote</span>
                         </a>
@@ -163,6 +166,7 @@
                       class="govuk-link summary-link"
                       id="unarchive-link"
                       [routerLink]="['unarchive-record']"
+                      href="javascript:void(0)"
                     >
                       <span>Unarchive</span>
                     </a>
@@ -205,7 +209,7 @@
 
               @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
                 <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a class="govuk-link summary-link" id="change-record-visibility-in-vta-link" [routerLink]="['change-vta-visibility']">
+                  <a href="javascript:void(0)" class="govuk-link summary-link" id="change-record-visibility-in-vta-link" [routerLink]="['change-vta-visibility']">
                     Change
                   </a>
                 </div>

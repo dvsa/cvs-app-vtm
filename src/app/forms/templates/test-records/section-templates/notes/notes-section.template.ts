@@ -17,7 +17,7 @@ export const NotesSection: FormNode = {
 					children: [
 						{
 							name: 'additionalNotesRecorded',
-							label: 'Additional Notes',
+							label: 'Additional Notes (optional)',
 							type: FormNodeTypes.CONTROL,
 							value: '',
 							editType: FormNodeEditTypes.TEXTAREA,

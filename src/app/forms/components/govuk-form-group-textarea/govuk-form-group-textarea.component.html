@@ -1,6 +1,6 @@
 <div class="govuk-form-group">
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--m tags" id="{{ labelId}}" for="{{ id }}">
+  <div class="govuk-label-wrapper">
+    <label class="govuk-label tags" id="{{ labelId}}" for="{{ id }}">
       {{ controlLabel() }}
       @if (tags().length) {
         <div class="tags">
@@ -10,7 +10,7 @@
         </div>
       }
     </label>
-  </h1>
+  </div>
 
   @if (controlHint() && !disabled()) {
     <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
@@ -35,26 +35,35 @@
     name="{{ id }}"
     [attr.aria-labelledby]="labelId"
     [attr.data-testid]="id"
+    [attr.data-module]="'govuk-character-count'" 
+    [attr.data-maxlength]="max"
     [(ngModel)]="value"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"
-    [attr.aria-describedby]="id"
     [ngClass]="{ 'govuk-!-margin-bottom-2': max && !disabled() }"
-    [class]="style"
+    [class]="`govuk-textarea govuk-js-character-count govuk-textarea--width-${width()}`"
+    [class.govuk-textarea--error]="hasError"
   ></textarea>
 
   @if (max && !disabled()) {
     @let length = value()?.length ?? 0;
-    @if (max - length >= 0) {
-      <div id="{{ id }}-max-length" class="govuk-character-count__message govuk-hint">
-        You have {{ max - length }} character{{ max - length !== 1 ? 's' : '' }} remaining
+    @let diff = max - length;
+
+    @if (diff >= 0) {
+      <div [id]="`${ id }-max-length`" class="govuk-character-count__message govuk-hint" aria-hidden="true">
+        {{ getCharacterCountMessage() }}
       </div>
     } @else {
-      <div id="{{ id }}-max-length" class="govuk-error-message">
-        You have {{ -(max - length) }} character{{ -(max - length) !== 1 ? 's' : '' }} too many
+      <div [id]="`${ id }-max-length-error`" class="govuk-character-count__message govuk-error-message" aria-hidden="true">
+        {{ getCharacterCountMessage() }}
       </div>
     }
   }
+</div>
+
+<!-- Screen reader only -->
+<div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+  {{ screenReaderCharacterCountMessage | async }}
 </div>
 

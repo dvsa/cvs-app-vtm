@@ -16,6 +16,7 @@ describe('AxlesService', () => {
 				provideMockStore<State>({ initialState: initialAppState }),
 				provideHttpClient(),
 				provideHttpClientTesting(),
+				AxlesService,
 			],
 		});
 		service = TestBed.inject(AxlesService);

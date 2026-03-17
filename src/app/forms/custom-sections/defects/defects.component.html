@@ -6,8 +6,10 @@
         <caption class="govuk-table__caption govuk-table__caption--m">
           Defects
         </caption>
-        @if (hasMediaAvailable()) {
-          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+        @if (testResult(); as testResult) {
+          @if (hasMediaAvailable() && testResult && !defectMediaService?.hasRententionPeriodExpired(testResult)) {
+            <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+          }
         }
         <table class="govuk-table">
           <thead class="govuk-table__head">
@@ -23,9 +25,8 @@
             @for (defect of testDefects; track defect; let i = $index) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
-                  <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
-                    >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a
-                    >
+                  <a data-action="retain-data" routerLink="defect/{{ i }}" href="javascript:void(0)" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
+                  >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a>
                   </td>
                   <td class="govuk-table__cell">
                     {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + (defect.deficiencyText? defect.deficiencyText : '') | truncate : 47 }}
@@ -51,9 +52,8 @@
 
     </div>
   </div>
-
-  @if (isEditing()) {
-    <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge"
-      >Add defect</app-button
-      >
-    }
+@if (isEditing()) {
+  <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
+    Add defect
+  </app-button>
+}

@@ -1,7 +1,7 @@
 <div class="govuk-form-group" [id]="id">
   <fieldset class="govuk-fieldset" role="group">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      <h1 class="govuk-fieldset__heading tags">
+    <legend class="govuk-fieldset__legend">
+      <div class="govuk-fieldset__heading tags">
         {{ controlLabel() }}
         @if (tags().length) {
           <div>
@@ -10,7 +10,7 @@
             }
           </div>
         }
-      </h1>
+      </div>
     </legend>
 
     @if (controlHint() && !disabled()) {

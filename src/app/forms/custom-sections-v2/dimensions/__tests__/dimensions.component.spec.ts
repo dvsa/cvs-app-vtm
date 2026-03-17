@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -38,6 +39,7 @@ describe('DimensionsComponent', () => {
 				provideHttpClientTesting(),
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				AxlesService,
 			],
 		}).compileComponents();
 

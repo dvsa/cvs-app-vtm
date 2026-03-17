@@ -1,3 +1,4 @@
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { RouterService } from '@/src/app/services/router/router.service';
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
@@ -25,6 +26,7 @@ describe('TechRecordSummaryChangesV2Component', () => {
 		await TestBed.configureTestingModule({
 			imports: [TechRecordSummaryChangesV2Component],
 			providers: [
+				AxlesService,
 				provideRouter([]),
 				provideHttpClient(),
 				provideHttpClientTesting(),

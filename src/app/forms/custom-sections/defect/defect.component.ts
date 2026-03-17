@@ -150,7 +150,13 @@ export class DefectComponent implements OnInit, OnDestroy {
 				});
 		}
 
-		if (this.testResult && this.defectMediaService && this.defect && this.defectMediaService.hasImages(this.defect)) {
+		if (
+			this.testResult &&
+			this.defectMediaService &&
+			!this.defectMediaService.hasRententionPeriodExpired(this.testResult) &&
+			this.defect &&
+			this.defectMediaService.hasImages(this.defect)
+		) {
 			this.loading = true;
 			await this.defectMediaService.loadImages(this.testResult);
 			this.loading = false;
@@ -202,7 +208,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
-				return `No media available - ${reason.reason}`;
+				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
+				return `No media available - ${formattedReason}`;
 			}
 		}
 
@@ -234,11 +241,23 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 
 		if (this.index || this.index === 0) {
-			this.store.dispatch(
-				updateDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema, index: this.index })
-			);
+			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
+			if (this.isDangerous) {
+				defect.media =
+					Array.isArray(defect.media) && defect.media.length > 0
+						? defect.media
+						: [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
+			}
+			this.store.dispatch(updateDefect({ defect: defect, index: this.index }));
 		} else {
-			this.store.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as DefectDetailsSchema }));
+			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
+			if (this.isDangerous) {
+				defect.media =
+					Array.isArray(defect.media) && defect.media.length > 0
+						? defect.media
+						: [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
+			}
+			this.store.dispatch(createDefect({ defect: defect }));
 		}
 
 		this.navigateBack();
@@ -358,7 +377,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		// load response into zip file
 		const zip = new JSZip();
-		zip.file(media.path, image);
+		zip.file(media.path, image, { base64: true });
 		await this.defectMediaService.openDocumentFromZip(zip, `${this.defect.imNumber}-${this.defect.imDescription}`);
 	}
 
@@ -413,7 +432,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		for (const image of defectMedia) {
 			const file = this.defectMediaService.images[image.path];
 			if (file) {
-				zip.file(image.path, file);
+				zip.file(image.path, file, { base64: true });
 			}
 		}
 		await this.defectMediaService.openDocumentFromZip(zip, testResultId);

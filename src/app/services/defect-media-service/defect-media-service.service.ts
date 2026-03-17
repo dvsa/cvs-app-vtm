@@ -6,6 +6,7 @@ import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-ty
 import { environment } from '@environments/environment';
 import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
+import dayjs from 'dayjs';
 import JSZip from 'jszip';
 import { isEqual } from 'lodash';
 import { Observable, lastValueFrom } from 'rxjs';
@@ -64,7 +65,7 @@ export class DefectMediaService {
 			return false;
 		}
 		if (!isEqual(this.images, {})) {
-			const images = defectMedia.filter((media) => media.type !== 'failReason');
+			const images = defectMedia.filter((media) => media.type !== 'failReason' && !!media.path);
 			for (const image of images) {
 				if (this.images[image.path]) {
 					return true;
@@ -72,6 +73,13 @@ export class DefectMediaService {
 			}
 		}
 		return false;
+	}
+
+	hasRententionPeriodExpired(testResult: TestResultSchema): boolean {
+		const now = new Date();
+		const testType = testResult.testTypes[0];
+		const daysSinceTest = dayjs(now).diff(testType.testTypeEndTimestamp, 'months');
+		return daysSinceTest >= 15;
 	}
 
 	hasCachedTestResultImages(testResult: TestResultSchema) {
@@ -142,9 +150,22 @@ export class DefectMediaService {
 		return this.images;
 	}
 
+	formatMediaFailureReason(reason?: string): string {
+		if (!reason) {
+			return 'Reason for failure to capture media not available';
+		}
+
+		const cleanedReason = reason.trim().replace(/\.$/, '');
+		if (cleanedReason.toLowerCase() === 'failed to upload') {
+			return 'Media failed to upload';
+		}
+
+		return reason;
+	}
+
 	hasImages(defect: DefectDetailsSchema): boolean {
 		if (!defect.media) return false;
-		return defect.media.some((media) => media.type !== 'failReason');
+		return defect.media.some((media) => media.type !== 'failReason' && !!media.path);
 	}
 
 	handleError(error: unknown) {

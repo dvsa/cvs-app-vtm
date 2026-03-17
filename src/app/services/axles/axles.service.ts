@@ -11,9 +11,7 @@ import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class AxlesService {
 	fb = inject(FormBuilder);
 	featureToggleService = inject(FeatureToggleService);
@@ -450,6 +448,8 @@ export class AxlesService {
 		const axleNumber = axlesForm.controls.length + 1;
 		axlesForm.setErrors(null);
 		axlesForm.push(this.generateAxleForm(type, { axleNumber }));
+		const noOfAxles = axlesForm.controls.length === 0 ? null : axlesForm.controls.length;
+		parent.get('techRecord_noOfAxles')?.patchValue(noOfAxles);
 
 		// For HGV/TRL, generate axle spacings
 		if ((type === VehicleTypes.TRL || type === VehicleTypes.HGV) && axlesForm.controls.length > 1) {
@@ -470,6 +470,7 @@ export class AxlesService {
 		const axlesForm = parent.get('techRecord_axles') as FormArray;
 		const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
 		axlesForm.clear();
+		parent.get('techRecord_noOfAxles')?.patchValue(null);
 
 		if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
 			axleSpacingsForm.clear();
@@ -499,10 +500,13 @@ export class AxlesService {
 		for (let i = 0; i < axlesForm.controls.length; i++) {
 			axlesForm.at(i).patchValue({ axleNumber: i + 1 });
 		}
+		const noOfAxles = axlesForm.controls.length === 0 ? null : axlesForm.controls.length;
+		parent.get('techRecord_noOfAxles')?.patchValue(noOfAxles);
 
 		if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
 			parent.get('techRecord_frontAxleToRearAxle')?.patchValue(null);
 		}
+
 		if (type === VehicleTypes.TRL || type === VehicleTypes.HGV) {
 			const axleSpacingsForm = parent.get('techRecord_dimensions_axleSpacing') as FormArray;
 			axleSpacingsForm.removeAt(index - 1 >= 0 ? index - 1 : 0);
