@@ -7,6 +7,6 @@
 .list_container--shrink:hover {
   flex-basis: auto;
 }
-.list_container:first-of-type .list__item {
+.list_container--small .list__item {
   min-width: 10rem;
 }
