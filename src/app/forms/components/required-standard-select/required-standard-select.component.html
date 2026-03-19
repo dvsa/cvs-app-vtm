@@ -2,7 +2,7 @@
   <h1 class="govuk-heading-l">Select a required standard</h1>
   <div class="list_container--wrapper">
     @if (normalAndBasic) {
-      <div class="list_container list_container--shrink">
+      <div class="list_container list_container--small list_container--shrink">
         <ol class="list">
           @for (type of inspectionTypes; track type; let i = $index) {
             @let selected = type === selectedInspectionType;
@@ -23,7 +23,7 @@
         </ol>
       </div>
     }
-    <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedInspectionType }">
+    <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic ? selectedInspectionType : selectedSection }">
       <ol class="list">
         @for (section of requiredStandards; track section; let i = $index) {
           @let selected = section === selectedSection;

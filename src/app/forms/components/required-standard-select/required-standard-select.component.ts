@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	DefectGETRequiredStandards,
@@ -23,9 +23,10 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	requiredStandardsStore = inject(Store<RequiredStandardState>);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+	cdr = inject(ChangeDetectorRef);
 
 	requiredStandards?: RequiredStandardTaxonomySection[];
-	normalAndBasic?: boolean;
+	normalAndBasic = false;
 	isEditing = false;
 	selectedInspectionType?: InspectionType;
 	selectedSection?: RequiredStandardTaxonomySection;
@@ -44,9 +45,13 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 					this.requiredStandards = [];
 					this.basicAndNormalRequiredStandards = requiredStandards;
 				} else {
+					this.normalAndBasic = false;
 					this.requiredStandards = requiredStandards.normal;
 					this.selectedInspectionType = 'normal';
+					this.basicAndNormalRequiredStandards = undefined;
 				}
+
+				this.cdr.detectChanges();
 			});
 	}
 
