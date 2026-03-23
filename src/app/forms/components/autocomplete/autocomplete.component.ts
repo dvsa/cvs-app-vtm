@@ -55,6 +55,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 
 				const name = this.name();
 				enhanceSelectElement({
+					id: `${name}-autocomplete`,
 					selectElement: this.document.querySelector(`#${name}`),
 					autoselect: false,
 					defaultValue: '',
