@@ -1,5 +1,8 @@
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/required-standards/defects/enums/euVehicleCategory.enum.js';
-import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import {
+	DefectGETRequiredStandards,
+	EUVehicleCategory,
+} from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { RequiredStandardState, initialRequiredStandardsState } from '../required-standards.reducer';
 import {
 	getRequiredStandardFromTypeAndRef,
@@ -8,6 +11,10 @@ import {
 } from '../required-standards.selector';
 
 describe('RequiredStandardsLoadingState', () => {
+	const mockTestResult = {
+		euVehicleCategory: 'm1',
+	} as TestResultSchema;
+
 	it('should return loading state', () => {
 		const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: true };
 		const selectedState = requiredStandardsLoadingState.projector(state);
@@ -17,7 +24,7 @@ describe('RequiredStandardsLoadingState', () => {
 	describe('getRequiredStandardsState', () => {
 		it('should return me the required standards state', () => {
 			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
-			const selectedState = getRequiredStandardsState.projector(state);
+			const selectedState = getRequiredStandardsState.projector(state.entities, mockTestResult);
 			expect(selectedState).toBeTruthy();
 		});
 	});
@@ -49,11 +56,10 @@ describe('RequiredStandardsLoadingState', () => {
 					},
 				],
 				basic: [],
-				euVehicleCategories: [EUVehicleCategory.M1],
+				euVehicleCategories: ['m1'] as EUVehicleCategory[],
 			};
-			initialRequiredStandardsState.requiredStandards = requiredStandards;
-			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
-			const selectedState = getRequiredStandardFromTypeAndRef('normal', '01.1').projector(state);
+
+			const selectedState = getRequiredStandardFromTypeAndRef('normal', '01.1').projector(requiredStandards);
 			expect(selectedState).toBeTruthy();
 			expect(selectedState).toStrictEqual({ ...requiredStandard, sectionNumber: '01', sectionDescription: 'desc' });
 		});
@@ -75,11 +81,9 @@ describe('RequiredStandardsLoadingState', () => {
 					},
 				],
 				basic: [],
-				euVehicleCategories: [EUVehicleCategory.M1],
+				euVehicleCategories: ['m1'] as EUVehicleCategory[],
 			};
-			initialRequiredStandardsState.requiredStandards = requiredStandards;
-			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
-			const selectedState = getRequiredStandardFromTypeAndRef('normal', 'data').projector(state);
+			const selectedState = getRequiredStandardFromTypeAndRef('normal', 'data').projector(requiredStandards);
 			expect(selectedState).toBeUndefined();
 		});
 	});
