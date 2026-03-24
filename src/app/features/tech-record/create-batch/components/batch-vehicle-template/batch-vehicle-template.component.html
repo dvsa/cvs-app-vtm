@@ -15,6 +15,7 @@
               <dt class="govuk-summary-list__key">Vehicle status</dt>
               <dd id="batch-vehicle-status" class="govuk-summary-list__value">
                 <form [formGroup]="form">
+                  <label for="change-vehicle-status-select" hidden>Vehicle status</label>
                   <app-select
                     formControlName="vehicleStatus"
                     name="change-vehicle-status-select"
