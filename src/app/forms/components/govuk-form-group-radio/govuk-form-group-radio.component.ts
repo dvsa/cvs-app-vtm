@@ -31,11 +31,15 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	size = input<'small' | 'regular'>('regular');
 	value = model<string | number | boolean | null>(null);
 
-	readonly options = input<MultiOption<unknown>[]>([]);
+	readonly options = input<MultiOption<any>[]>([]);
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
 		this.onChange(obj);
+	}
+
+	getId(option: MultiOption) {
+		return option.optionalId ? `${option.optionalId} + '-' + ${option.value}` : `${this.id}-${option.value}`;
 	}
 }
 
