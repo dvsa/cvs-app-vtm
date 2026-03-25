@@ -1,7 +1,7 @@
 <div class="govuk-form-group">
   @if (controlLabel()) {
     <div class="govuk-label-wrapper">
-      <label class="govuk-label tags" [id]="labelId" [htmlFor]="id">
+      <label class="govuk-label tags" [id]="labelId" [htmlFor]="id" [for]="id">
         {{ controlLabel() }}
         @if (tags().length) {
           <div class="tags">
