@@ -2,7 +2,7 @@
   <ng-container title>Success</ng-container>
 
   <ng-container content>
-    <h2 class="govuk-heading-m">Technical records created</h2>
+    <h3 class="govuk-heading-m">Technical records created</h3>
     <p class="govuk-body">
       You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }}
       {{ vehicleType$ | async | formatVehicleType }} technical records using application ID {{ applicationId$ | async }}.
