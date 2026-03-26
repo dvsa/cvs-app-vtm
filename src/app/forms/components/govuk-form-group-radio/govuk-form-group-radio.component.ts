@@ -39,7 +39,7 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	}
 
 	getId(option: MultiOption) {
-		return option.optionalId ? `${option.optionalId}-${option.value}` : `${this.id}-${option.value}`;
+		return option.optionalId ? `${this.id}-${option.optionalId}` : `${this.id}-${option.value}`;
 	}
 }
 
