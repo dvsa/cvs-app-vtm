@@ -44,7 +44,7 @@
         @for (option of options(); track option) {
           <div class="govuk-radios__item">
             <input
-              id="{{ id }}-{{ option.value }}-radio"
+              [id]="`${getId(option)}-radio`"
               class="govuk-radios__input"
               type="radio"
               name="{{ id }}"
@@ -61,8 +61,8 @@
             />
             <label
               class="govuk-radios__label govuk-label"
-              id="{{ id }}-{{ option.value }}-label"
-              for="{{ id }}-{{ option.value }}-radio"
+              id="{{getId(option)}}-label"
+              for="{{getId(option)}}-radio"
             >
               {{ option.label }}
             </label>

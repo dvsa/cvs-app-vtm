@@ -1,5 +1,5 @@
 <div [class]="style">
-  <label for="{{ name() }}-autocomplete" class="govuk-label govuk-label--m">
+  <label [for]="name()" class="govuk-label govuk-label--m">
     {{ label() }}
     @for (tag of control?.meta?.customTags; track tag) {
       <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
