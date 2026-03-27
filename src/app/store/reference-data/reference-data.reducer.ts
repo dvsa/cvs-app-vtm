@@ -51,9 +51,22 @@ export type ReferenceDataState = Record<
 	ReferenceDataEntityState | ReferenceDataEntityStateSearch
 >;
 
+function hasSortOrder(obj: ReferenceDataModelBase): obj is ReferenceDataModelBase & { sortOrder: number } {
+	return 'sortOrder' in obj;
+}
+
+function sortComparer(a: ReferenceDataModelBase, b: ReferenceDataModelBase) {
+	if (hasSortOrder(a) && hasSortOrder(b)) {
+		return a.sortOrder - b.sortOrder;
+	}
+
+	// If no sort order, then sort based on how the BE returns the data
+	return 0;
+}
+
 function createAdapter() {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
+	return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any, sortComparer });
 }
 
 function getInitialState(
@@ -72,6 +85,7 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 	[ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
 	[ReferenceDataResourceType.ReferenceDataAdminType]: createAdapter(),
 	[ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+	[ReferenceDataResourceType.MsvaReasonsForAbandoning]: createAdapter(),
 	[ReferenceDataResourceType.TirReasonsForAbandoning]: createAdapter(),
 	[ReferenceDataResourceType.TrlMake]: createAdapter(),
 	[ReferenceDataResourceType.Tyres]: createAdapter(),
@@ -98,6 +112,9 @@ export const initialReferenceDataState = {
 	[ReferenceDataResourceType.ReferenceDataAdminType]: getInitialState(ReferenceDataResourceType.ReferenceDataAdminType),
 	[ReferenceDataResourceType.SpecialistReasonsForAbandoning]: getInitialState(
 		ReferenceDataResourceType.SpecialistReasonsForAbandoning
+	),
+	[ReferenceDataResourceType.MsvaReasonsForAbandoning]: getInitialState(
+		ReferenceDataResourceType.MsvaReasonsForAbandoning
 	),
 	[ReferenceDataResourceType.TirReasonsForAbandoning]: getInitialState(
 		ReferenceDataResourceType.TirReasonsForAbandoning

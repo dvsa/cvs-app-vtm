@@ -71,7 +71,7 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
 			return ABANDON_FORM(ReferenceDataResourceType.TirReasonsForAbandoning);
 		}
 		if (TEST_TYPES_MSVA.includes(testTypeId)) {
-			return ABANDON_FORM(ReferenceDataResourceType.MSVAReasonsForAbandoning);
+			return ABANDON_FORM(ReferenceDataResourceType.MsvaReasonsForAbandoning);
 		}
 		if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
 			return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
