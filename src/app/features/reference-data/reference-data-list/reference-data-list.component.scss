@@ -1,46 +1,61 @@
-#buttons {
+.buttons {
   width: 18%;
 }
 
-#buttonsAndSearch {
+.buttons-and-search {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px 0;
 }
 
-#addDeleteButtons {
-  width: 40%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding-right: 18px;
-  padding-top: 10px !important;
-  padding-bottom: 0px;
+.ref-search {
+  width: 100%;
+  min-width: 200px;
+  max-width: 200px;
 }
 
-#refSearch {
-  width: 200px !important;
+.search-filter::ng-deep .govuk-form-group {
+  margin-bottom: 0;
 }
 
-#searchInput {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-
-#searchForm {
-  width: 60%;
+.search-form {
   margin-bottom: 0px;
-  padding-bottom: 15px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 15px;
 }
 
-#heading {
-  margin-bottom: 10px !important;
+.search-input {
+  display: flex;
 }
 
 .search-btn {
   background-color: #1d70b8;
   color: #fff;
-  border: none;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-left: 0;
+  height: 2.5rem;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.add-delete-buttons {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 2px;
+
+  app-button::ng-deep .govuk-button {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .search-form {
+    flex-direction: row;
+  }
 }
