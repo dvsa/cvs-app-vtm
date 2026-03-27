@@ -12,8 +12,8 @@
               </dd>
             </div>
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Vehicle status</dt>
-              <dd id="batch-vehicle-status" class="govuk-summary-list__value">
+              <label class="govuk-summary-list__key" for="change-vehicle-status-select">Vehicle status</label>
+              <div id="batch-vehicle-status" class="govuk-summary-list__value">
                 <form [formGroup]="form">
                   <app-select
                     formControlName="vehicleStatus"
@@ -22,7 +22,7 @@
                     (ngModelChange)="statusChange()"
                   ></app-select>
                 </form>
-              </dd>
+              </div>
             </div>
             @if (isBatch$ | async) {
               <div class="govuk-summary-list__row">
