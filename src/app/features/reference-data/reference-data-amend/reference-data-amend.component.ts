@@ -1,3 +1,4 @@
+import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,14 +11,13 @@ import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, first } from 'rxjs';
+import { Observable, first, skipWhile, take } from 'rxjs';
 import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
@@ -65,6 +65,16 @@ export class ReferenceDataAmendComponent implements OnInit {
 				this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
 			}
 		});
+
+		// Initially set the amended data to the value of reference data item
+		this.data$
+			.pipe(
+				skipWhile((data) => !data),
+				take(1)
+			)
+			.subscribe((data) => {
+				this.amendedData = data;
+			});
 	}
 
 	get roles(): typeof Roles {
