@@ -10,6 +10,7 @@ export enum ReferenceDataResourceType {
 	ReasonsForAbandoningPsv = 'REASONS_FOR_ABANDONING_PSV',
 	ReferenceDataAdminType = 'REFERENCE_DATA_ADMIN_TYPE',
 	SpecialistReasonsForAbandoning = 'SPECIALIST_REASONS_FOR_ABANDONING',
+	MSVAReasonsForAbandoning = 'MSVA_REASONS_FOR_ABANDONING',
 	TirReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
 	TrlMake = 'TRL_MAKE',
 	Tyres = 'TYRES',

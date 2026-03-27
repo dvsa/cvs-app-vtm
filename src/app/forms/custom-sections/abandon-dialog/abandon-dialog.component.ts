@@ -1,7 +1,7 @@
 import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { TEST_TYPES_GROUP5_13 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP5_13, TEST_TYPES_MSVA } from '@models/testTypeId.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
@@ -69,6 +69,9 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
 
 		if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
 			return ABANDON_FORM(ReferenceDataResourceType.TirReasonsForAbandoning);
+		}
+		if (TEST_TYPES_MSVA.includes(testTypeId)) {
+			return ABANDON_FORM(ReferenceDataResourceType.MSVAReasonsForAbandoning);
 		}
 		if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
 			return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
