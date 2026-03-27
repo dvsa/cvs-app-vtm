@@ -28,6 +28,7 @@ export interface MultiOption<T = string | number | boolean> {
 	label: string;
 	value: T;
 	hint?: string;
+	optionalId?: string;
 }
 export type MultiOptions<T = string | number | boolean> = Array<MultiOption<T>>;
 
