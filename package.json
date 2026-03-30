@@ -54,7 +54,7 @@
     "@ngrx/store-devtools": "^20.0.1",
     "@sentry/angular": "^9.38.0",
     "@sentry/types": "^9.38.0",
-    "accessible-autocomplete": "^2.0.4",
+    "accessible-autocomplete": "^3.0.1",
     "angular-google-tag-manager": "^1.11.0",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
