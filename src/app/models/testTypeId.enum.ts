@@ -115,6 +115,23 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
 	'195',
 ];
 
+export const TEST_TYPES_MSVA: string[] = [
+	'133',
+	'134',
+	'135',
+	'136',
+	'138',
+	'139',
+	'140',
+	'166',
+	'167',
+	'169',
+	'170',
+	'172',
+	'173',
+	'198',
+];
+
 // Test/Retest COIF with annual test, Seatbelt installation check COIF with annual test
 export const TEST_TYPES_GROUP2_SPEC_TEST: string[] = ['142', '146', '175', '177'];
 
