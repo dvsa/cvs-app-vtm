@@ -17,9 +17,13 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VRM</dt>
-        @if (techRecord.primaryVrm) {
-          <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
-        }
+        <dd class="govuk-summary-list__value">
+          @if (techRecord.primaryVrm) {
+            <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
+          } @else {
+            <span>-</span>
+          }
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN/chassis number</dt>

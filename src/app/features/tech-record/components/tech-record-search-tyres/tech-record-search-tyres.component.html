@@ -8,6 +8,8 @@
         <dd id="current-vrm" class="govuk-summary-list__value">
           @if (currentVrm) {
             <app-number-plate [vrm]="currentVrm"></app-number-plate>
+          } @else {
+            <span>-</span>
           }
         </dd>
         <dd class="govuk-summary-list__value"></dd>
