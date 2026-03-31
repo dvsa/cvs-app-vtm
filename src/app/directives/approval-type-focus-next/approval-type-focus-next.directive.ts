@@ -10,7 +10,7 @@ export class ApprovalTypeFocusNextDirective {
 	readonly nextInputId = input('', { alias: 'appFocusNextApprovalType' });
 	readonly characterLimit = input(0);
 
-	@HostListener('input', ['$event'])
+	@HostListener('input')
 	onInput() {
 		const { value } = this.el.nativeElement;
 		if (value.length === this.characterLimit()) {
