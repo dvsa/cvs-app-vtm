@@ -53,7 +53,6 @@
               [id]="'rs-list-item-' + i"
               [attr.data-testid]="rs.refCalculation + ' ' + rs.requiredStandard"
               class="list__item"
-              [attr.aria-expanded]="selected"
               [ngClass]="{ 'browse__normal-link--active': selected }"
               (click)="handleSelect(rs, types.RequiredStandard)"
               >
