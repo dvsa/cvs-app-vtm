@@ -1,3 +1,4 @@
+import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -31,6 +32,7 @@ import { take } from 'rxjs';
 		ButtonComponent,
 		UpperCasePipe,
 		DefaultNullOrEmpty,
+		ButtonGroupComponent,
 	],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
