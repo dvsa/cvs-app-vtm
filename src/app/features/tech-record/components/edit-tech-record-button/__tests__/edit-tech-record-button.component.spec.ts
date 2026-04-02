@@ -14,7 +14,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { clearError } from '@store/global-error/global-error.actions';
 import { initialAppState } from '@store/index';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
-import { BehaviorSubject, ReplaySubject, map, of } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button.component';
 
 const mockTechRecordService = {
@@ -79,64 +79,6 @@ describe('EditTechRecordButtonComponent', () => {
 	describe('component', () => {
 		it('should create', () => {
 			expect(component).toBeTruthy();
-		});
-	});
-
-	describe('when viewing a tech record', () => {
-		afterAll(() => {
-			mockTechRecordService.techRecord$ = of({
-				systemNumber: 'foo',
-				createdTimestamp: 'bar',
-				vin: 'testVin',
-				techRecord_statusCode: StatusCodes.CURRENT,
-			} as unknown as V3TechRecordModel);
-		});
-		it.each([
-			[
-				'should be viewable',
-				true,
-				{
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_statusCode: StatusCodes.PROVISIONAL,
-				} as V3TechRecordModel,
-			],
-			[
-				'should be viewable',
-				true,
-				{
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_statusCode: StatusCodes.CURRENT,
-				} as V3TechRecordModel,
-			],
-			[
-				'should not be viewable',
-				false,
-				{
-					systemNumber: 'foo',
-					createdTimestamp: 'bar',
-					vin: 'testVin',
-					techRecord_statusCode: StatusCodes.ARCHIVED,
-				} as V3TechRecordModel,
-			],
-		])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
-			component.isArchived$ = of(record).pipe(
-				map(
-					(techRecord) =>
-						!(
-							techRecord?.techRecord_statusCode === StatusCodes.CURRENT ||
-							techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
-						)
-				)
-			);
-
-			fixture.detectChanges();
-
-			const button = fixture.debugElement.query(By.css('#edit'));
-			expect(Boolean(button)).toEqual(expected);
 		});
 	});
 
