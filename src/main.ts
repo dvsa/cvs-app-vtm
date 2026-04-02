@@ -1,5 +1,12 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, enableProdMode, importProvidersFrom } from '@angular/core';
+import {
+	APP_INITIALIZER,
+	ErrorHandler,
+	LOCALE_ID,
+	enableProdMode,
+	importProvidersFrom,
+	provideZoneChangeDetection,
+} from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import {
@@ -74,6 +81,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
 	providers: [
+		provideZoneChangeDetection(),
 		importProvidersFrom(
 			BrowserModule,
 			AppRoutingModule,

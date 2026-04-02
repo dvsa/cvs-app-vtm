@@ -9,7 +9,7 @@ export class DateFocusNextDirective {
 
 	readonly displayTime = input(false);
 
-	@HostListener('input', ['$event'])
+	@HostListener('input')
 	onInput() {
 		const {
 			nativeElement: { id, value },
