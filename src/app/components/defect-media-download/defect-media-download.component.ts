@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, Signal, inject } from '@angular/core';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import type { DefectDetailsSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 import { Store } from '@ngrx/store';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';

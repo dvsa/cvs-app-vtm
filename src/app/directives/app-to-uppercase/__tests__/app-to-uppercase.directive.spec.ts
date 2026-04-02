@@ -1,3 +1,5 @@
+import { PlatformLocation } from '@angular/common';
+import { MockPlatformLocation } from '@angular/common/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +24,7 @@ describe('ToUppercaseDirective', () => {
 	beforeEach(() => {
 		fixture = TestBed.configureTestingModule({
 			imports: [TestComponent],
+			providers: [{ provide: PlatformLocation, useClass: MockPlatformLocation }],
 		}).createComponent(TestComponent);
 		fixture.detectChanges();
 
