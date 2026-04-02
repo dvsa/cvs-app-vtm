@@ -1,3 +1,5 @@
+import { PlatformLocation } from '@angular/common';
+import { MockPlatformLocation } from '@angular/common/testing';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,6 +20,7 @@ describe('RoleGuard', () => {
 				RoleGuard,
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: UserService, useValue: { roles$: of(['CVSFullAccess']), inProgress$: of(InteractionStatus.None) } },
+				{ provide: PlatformLocation, useClass: MockPlatformLocation },
 			],
 		});
 

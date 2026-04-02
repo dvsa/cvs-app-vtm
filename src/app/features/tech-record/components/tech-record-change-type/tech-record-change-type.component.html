@@ -18,9 +18,13 @@
   } @else {
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM</dt>
-      @if (currentVrm) {
-        <app-number-plate [vrm]="currentVrm"></app-number-plate>
-      }
+      <dd class="govuk-summary-list__value">
+        @if (currentVrm) {
+          <app-number-plate [vrm]="currentVrm"></app-number-plate>
+        } @else {
+          <span>-</span>
+        }
+      </dd>
     </div>
   }
 
@@ -46,9 +50,8 @@
     </p>
   }
 
-  <div class="buttons-row">
+  <app-button-group>
     <app-button id="confirm-and-continue-button" (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>
-
-    <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-  </div>
+    <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
 </form>
