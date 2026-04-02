@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, input, model, output } from '@angular/core';
+import { Component, computed, forwardRef, input, model, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
@@ -23,16 +23,14 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent implements ControlValueAccessor {
 	readonly blur = output<FocusEvent>();
 	readonly focus = output<FocusEvent>();
-
-	value = model<string | number | boolean | null | undefined>(null);
-
+	readonly value = model<string | number | boolean | null | undefined>(null);
 	readonly maxlength = input<string | number | null>(null);
-
 	readonly suffix = input<string>();
-
 	readonly nullIfEmpty = input<boolean>(false);
-
 	readonly showErrors = input<boolean>(true);
+	readonly customScreenReaderLabelSuffix = input<string | null>(null);
+	readonly screenReaderLabelSuffix = computed(() => this.getScreenReaderLabelSuffix());
+	readonly FormNodeWidth = FormNodeWidth;
 
 	get style(): string {
 		const width = this.width();
@@ -53,5 +51,18 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 		this.onChange(obj);
 	}
 
-	protected readonly FormNodeWidth = FormNodeWidth;
+	getScreenReaderLabelSuffix(): string | null {
+		const customLabelSuffix = this.customScreenReaderLabelSuffix();
+		if (customLabelSuffix) return customLabelSuffix;
+		const suffix = this.suffix();
+		if (!suffix) return null;
+		return COMMON_LABEL_SUFFIXES[suffix.toLowerCase()] || null;
+	}
 }
+
+export const COMMON_LABEL_SUFFIXES: Record<string, string> = {
+	kg: 'in kilograms',
+	mm: 'in millimetres',
+	mph: 'in miles per hour',
+	tonnes: 'in tonnes',
+};

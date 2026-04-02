@@ -3,6 +3,9 @@
     <div class="govuk-label-wrapper">
       <label class="govuk-label tags" [id]="labelId" [htmlFor]="id" [for]="id">
         {{ controlLabel() }}
+        @if (screenReaderLabelSuffix(); as labelSuffix) {
+          <span class="govuk-visually-hidden">{{ labelSuffix }}</span>
+        }
         @if (tags().length) {
           <div class="tags">
             @for (tag of tags(); track tag) {
