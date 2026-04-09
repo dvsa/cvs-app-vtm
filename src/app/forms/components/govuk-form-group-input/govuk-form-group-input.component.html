@@ -64,6 +64,7 @@
         appNumberOnly
         inputmode="numeric"
         (blur)="onTouched(); onBlur($event)"
+        (wheel)="$event.preventDefault()"
         [class]="style"
         [disabled]="control?.disabled || disabled() || false"
         />
