@@ -166,17 +166,29 @@ export class TechnicalRecordChangesService {
 		);
 	}
 
+	hasAxlesSpacingsChanged(): boolean {
+		const a = this.currentTechRecord();
+		const b = this.amendedTechRecord();
+
+		// Edge case 1: If we're going from a n-axle TRL to a 1-axle TRL ignore the spacings
+		if (a && b && a.techRecord_noOfAxles && a.techRecord_noOfAxles > 1 && b.techRecord_noOfAxles === 1) {
+			return false;
+		}
+
+		return this.hasChanged('techRecord_dimensions_axleSpacing', 'techRecord_frontAxleToRearAxle');
+	}
+
 	hasDimensionsSectionChanged(): boolean {
+		if (this.hasAxlesSpacingsChanged()) return true;
+
 		return this.hasChanged(
 			'techRecord_dimensions_length',
 			'techRecord_dimensions_width',
-			'techRecord_dimensions_axleSpacing',
-			'techRecord_frontAxleToRearAxle',
+			'techRecord_dimensions_height',
 			'techRecord_frontVehicleTo5thWheelCouplingMin',
 			'techRecord_frontVehicleTo5thWheelCouplingMax',
 			'techRecord_frontAxleTo5thWheelMin',
 			'techRecord_frontAxleTo5thWheelMax',
-			'techRecord_frontAxleToRearAxle',
 			'techRecord_rearAxleToRearTrl',
 			'techRecord_centreOfRearmostAxleToRearOfTrl',
 			'techRecord_couplingCenterToRearAxleMin',
