@@ -134,9 +134,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	}
 
 	addNew(): void {
-		void this.router.navigate(['create'], { relativeTo: this.route }).then(() => {
-			window.location.reload();
-		});
+		void this.router.navigate(['create'], { relativeTo: this.route });
 	}
 
 	navigateToDeletedItems(): void {
@@ -145,9 +143,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 
 	amend(item: ReferenceDataModelBase): void {
 		const key = encodeURIComponent(String(item.resourceKey));
-		void this.router.navigate([key], { relativeTo: this.route }).then(() => {
-			window.location.reload();
-		});
+		void this.router.navigate([key], { relativeTo: this.route });
 	}
 
 	delete(item: ReferenceDataModelBase): void {

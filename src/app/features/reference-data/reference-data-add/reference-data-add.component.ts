@@ -89,7 +89,7 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	handleSubmit() {
 		this.checkForms();
 
-		if (this.isFormInvalid) return;
+		if (this.isFormInvalid || !this.newRefData) return;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const referenceData: any = {};
