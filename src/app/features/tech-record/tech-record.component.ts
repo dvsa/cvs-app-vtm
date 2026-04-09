@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
@@ -16,16 +16,11 @@ import { VehicleTechnicalRecordWrapperComponent } from './components/vehicle-tec
 })
 export class TechRecordComponent implements OnInit {
 	techRecordService = inject(TechnicalRecordService);
-	router = inject(Router);
 	errorService = inject(GlobalErrorService);
 	route = inject(ActivatedRoute);
 
 	systemNumber?: string;
 	createdTimestamp?: string;
-
-	constructor() {
-		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-	}
 
 	ngOnInit(): void {
 		this.route.params.pipe(take(1)).subscribe((params) => {
