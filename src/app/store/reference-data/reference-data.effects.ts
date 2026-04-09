@@ -10,6 +10,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { HttpCacheManager } from '@ngneat/cashew';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { HttpService } from '@services/http/http.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
 import { testResultInEdit } from '@store/test-records';
@@ -53,6 +54,7 @@ export class ReferenceDataEffects {
 	private referenceDataService = inject(ReferenceDataService);
 	private store = inject<Store<State>>(Store);
 	private cacheManager = inject(HttpCacheManager);
+	private httpService = inject(HttpService);
 	private globalErrorService = inject(GlobalErrorService);
 
 	fetchReferenceDataByType$ = createEffect(() =>
@@ -210,6 +212,7 @@ export class ReferenceDataEffects {
 			switchMap(({ resourceType, resourceKey, payload }) => {
 				payload = { ...payload };
 				return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
+					tap(() => this.cacheManager.delete(this.httpService.getRefDataBucket(resourceType))),
 					map((result) => createReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
 					catchError((error) => of(createReferenceDataItemFailure({ error: error.message })))
 				);
@@ -217,14 +220,13 @@ export class ReferenceDataEffects {
 		)
 	);
 
-	// The amend effect will work when the referenceData.service.ts is amended on line 395 from <EmptyObject> to <any>
-
 	amendReferenceDataItem$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(amendReferenceDataItem),
 			switchMap(({ resourceType, resourceKey, payload }) => {
 				payload = { ...payload };
 				return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
+					tap(() => this.cacheManager.delete(this.httpService.getRefDataBucket(resourceType))),
 					map((result) => amendReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
 					catchError((error) => of(amendReferenceDataItemFailure({ error: error.message })))
 				);
@@ -251,8 +253,8 @@ export class ReferenceDataEffects {
 			this.actions$.pipe(
 				ofType(deleteReferenceDataItemSuccess),
 				tap((action) => {
-					// Clear cache, so we refresh delete items list
-					this.cacheManager.delete(`${CacheKeys.REFERENCE_DATA}${action.resourceType}#AUDIT`);
+					// Clear cache, so we refresh the list and deleted items list
+					this.cacheManager.delete(this.httpService.getRefDataBucket(action.resourceType));
 					this.router.navigate([RootRoutes.REFERENCE_DATA, action.resourceType]);
 					this.globalErrorService.clearErrors();
 				})

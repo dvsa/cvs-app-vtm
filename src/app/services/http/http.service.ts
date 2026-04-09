@@ -22,7 +22,7 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { withCache } from '@ngneat/cashew';
+import { CacheBucket, withCache } from '@ngneat/cashew';
 import { cloneDeep } from 'lodash';
 import { lastValueFrom, timeout } from 'rxjs';
 import { FeatureConfig } from '../feature-toggle-service/feature-toggle-service';
@@ -39,6 +39,14 @@ export class HttpService {
 	private static readonly PostPutGzippedPayloadHeaders = new HttpHeaders({
 		[CompressionHeaders.outbound.request]: CompressionHeaders.compressionValue,
 	});
+	private readonly refDataBuckets = new Map<string, CacheBucket>();
+
+	getRefDataBucket(resourceType: string): CacheBucket {
+		if (!this.refDataBuckets.has(resourceType)) {
+			this.refDataBuckets.set(resourceType, new CacheBucket());
+		}
+		return this.refDataBuckets.get(resourceType)!;
+	}
 
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
 		return this.http.patch<TechRecordType<'get'>>(
@@ -298,7 +306,10 @@ export class HttpService {
 			`${environment.VTM_API_URI}/reference/${encodeURIComponent(String(resourceType))}`,
 			{
 				params,
-				context: withCache({ key: CacheKeys.REFERENCE_DATA + resourceType + (paginationToken ?? '') }),
+				context: withCache({
+					key: CacheKeys.REFERENCE_DATA + resourceType + (paginationToken ?? ''),
+					bucket: this.getRefDataBucket(resourceType),
+				}),
 			}
 		);
 	}
