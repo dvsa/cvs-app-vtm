@@ -1,5 +1,5 @@
 import { Injectable, Signal, inject } from '@angular/core';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
@@ -536,6 +536,20 @@ export class CommonValidatorsService {
 					return globalError;
 				}
 			}
+			return null;
+		};
+	}
+
+	applyWhen(condition: (control: AbstractControl) => boolean, ...validators: ValidatorFn[]): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!control.parent) return null;
+
+			const validator = Validators.compose(validators);
+
+			if (condition(control) && validator) {
+				return validator(control);
+			}
+
 			return null;
 		};
 	}

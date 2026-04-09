@@ -159,4 +159,16 @@ export class GlobalErrorService {
 
 		return errors;
 	}
+
+	markAllAsTouched(control: AbstractControl): void {
+		control.markAsTouched({ onlySelf: true });
+
+		if (control instanceof FormGroup || control instanceof FormArray) {
+			Object.values(control.controls).forEach((c) => {
+				this.markAllAsTouched(c);
+			});
+		}
+
+		control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+	}
 }
