@@ -551,28 +551,34 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 					),
 				]),
 				tc3PeriodicNumber: this.fb.control<string | null>(null, [
-					this.commonValidators.maxLength(75, (control) => {
-						const formArray = control.parent?.parent as FormArray;
-						const index = formArray.controls.indexOf(control.parent as FormGroup);
-						return {
-							error: 'TC3: Certificate Number must be less than or equal to 75 characters',
-							anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicNumber`,
-							accordion: 'adr',
-						};
-					}),
+					this.commonValidators.applyWhen(
+						(control) => this.adrService.canDisplayTankOrBatterySection(control.root.getRawValue()),
+						this.commonValidators.maxLength(75, (control) => {
+							const formArray = control.parent?.parent as FormArray;
+							const index = formArray.controls.indexOf(control.parent as FormGroup);
+							return {
+								error: 'TC3: Certificate Number must be less than or equal to 75 characters',
+								anchorLink: `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicNumber`,
+								accordion: 'adr',
+							};
+						})
+					),
 					this.adrValidators.requiresOnePopulatedTC3Field(
 						'TC3: Subsequent inspection must have at least one populated field'
 					),
 				]),
 				tc3PeriodicExpiryDate: this.fb.control<string | null>(null, [
-					this.commonValidators.date(
-						'TC3: Expiry date',
-						(control) => {
-							const formArray = control.parent?.parent as FormArray;
-							const index = formArray.controls.indexOf(control.parent as FormGroup);
-							return `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`;
-						},
-						'adr'
+					this.commonValidators.applyWhen(
+						(control) => this.adrService.canDisplayTankOrBatterySection(control.root.getRawValue()),
+						this.commonValidators.date(
+							'TC3: Expiry date',
+							(control) => {
+								const formArray = control.parent?.parent as FormArray;
+								const index = formArray.controls.indexOf(control.parent as FormGroup);
+								return `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`;
+							},
+							'adr'
+						)
 					),
 					this.adrValidators.requiresOnePopulatedTC3Field(
 						'TC3: Subsequent inspection must have at least one populated field'

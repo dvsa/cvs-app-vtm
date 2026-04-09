@@ -88,15 +88,17 @@
         }
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
-          <govuk-form-group-radio
-            size="small"
-            label="Is the vehicle used on international journeys?"
-            formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
-            [options]="usedOnInternationJourneysOptions"
-            appFilterByTags
-            [filters]="filters()"
-            [tagNames]="['ADR']"
-          ></govuk-form-group-radio>
+          <div class="govuk-!-margin-bottom-4">
+            <govuk-form-group-radio
+              size="small"
+              label="Is the vehicle used on international journeys?"
+              formControlName="techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
+              [options]="usedOnInternationJourneysOptions"
+              appFilterByTags
+              [filters]="filters()"
+              [tagNames]="['ADR']"
+            ></govuk-form-group-radio>
+          </div>
         }
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_vehicleDetails_approvalDate')) {
@@ -242,30 +244,34 @@
 
             <!-- Substances permitted -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
-              <govuk-form-group-radio
-                label="Substances permitted"  
-                formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
-                [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
-                size="small"
-                appFilterByTags
-                [filters]="filters()"
-                [tagNames]="['ADR']"
-              ></govuk-form-group-radio>
+              <div class="govuk-!-margin-bottom-4">
+                <govuk-form-group-radio
+                  label="Substances permitted"  
+                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
+                  [options]="ADR_TANK_STATEMENT_SUBSTANCES_PERMITTED"
+                  size="small"
+                  appFilterByTags
+                  [filters]="filters()"
+                  [tagNames]="['ADR']"
+                ></govuk-form-group-radio>
+              </div>
             }
 
             <!-- When tank statement (substances permitted) is 'Under UN Number' -->
             @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
               <!-- Tank statement select -->
               @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
-                <govuk-form-group-radio
-                  label="Select"
-                  formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
-                  [options]="tankStatementSelectOptions"
-                  size="small"
-                  appFilterByTags
-                  [filters]="filters()"
-                  [tagNames]="['ADR']"
-                ></govuk-form-group-radio>
+                <div class="govuk-!-margin-bottom-4">
+                  <govuk-form-group-radio
+                    label="Select"
+                    formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+                    [options]="tankStatementSelectOptions"
+                    size="small"
+                    appFilterByTags
+                    [filters]="filters()"
+                    [tagNames]="['ADR']"
+                  ></govuk-form-group-radio>
+                </div>
               }
 
               <!-- When select is 'statement' -->
