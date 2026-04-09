@@ -144,6 +144,11 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 
 		if (this.isFormInvalid) return;
 
+		const sections = this.sections();
+		if (sections.length) {
+			this.amendedData = { ...this.amendedData, ...sections[0].form.value };
+		}
+
 		this.store.dispatch(
 			amendReferenceDataItem({
 				resourceType: this.type,
