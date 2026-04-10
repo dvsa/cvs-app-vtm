@@ -60,7 +60,7 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.required('Vehicle class', 'seats-and-vehicle-size', 'techRecord_vehicleClass_description'),
 		]),
 		techRecord_vehicleSize: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
+			this.commonValidators.required('Vehicle size', 'seats-and-vehicle-size', 'techRecord_vehicleSize'),
 		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 			this.commonValidators.max(
