@@ -61,24 +61,26 @@
             id="cannot-generate-letter-of-authorisation-on-non-current-warning"
             warningMessage="Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters."
           ></app-field-warning-message>
+        } @else {
+          <ng-container [ngTemplateOutlet]="incorrectApprovalType"></ng-container>
         }
-      }
-
-      @if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
+      } @else if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
         <app-field-warning-message
           id="cannot-generate-letter-of-authorisation-on-non-current-warning"
           warningMessage="Generating letters is not applicable to archived technical records."
         ></app-field-warning-message>
+      } @else {
+        <ng-container [ngTemplateOutlet]="incorrectApprovalType"></ng-container>
       }
 
-      @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT) {
+      <ng-template #incorrectApprovalType>
         @if (!correctApprovalType) {
           <app-field-warning-message
             id="cannot-generate-letter-of-authorisation-with-wrong-approval-type-warning"
             warningMessage="This trailer does not have the right approval type to be eligible for a letter of authorisation."
           ></app-field-warning-message>
         }
-      }
+      </ng-template>
     }
   }
 </div>

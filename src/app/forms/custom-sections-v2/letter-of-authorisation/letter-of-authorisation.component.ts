@@ -6,7 +6,7 @@ import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@/src/a
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectNonViewedCurrentTechRecordFromHistory, updateScrollPosition } from '@/src/app/store/technical-records';
-import { DatePipe, ViewportScroller } from '@angular/common';
+import { DatePipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
@@ -25,6 +25,7 @@ import { FieldWarningMessageComponent } from '../../components/field-warning-mes
 		RoleRequiredDirective,
 		ButtonComponent,
 		DatePipe,
+		NgTemplateOutlet,
 	],
 })
 export class LetterOfAuthorisationComponent {
