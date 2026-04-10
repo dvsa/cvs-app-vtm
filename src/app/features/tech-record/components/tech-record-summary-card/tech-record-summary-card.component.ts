@@ -50,4 +50,15 @@ export class TechRecordSummaryCardComponent {
 			relativeTo: this.route,
 		});
 	}
+
+	getVehicleTypeLabel(): VehicleTypes {
+		if (
+			this.techRecord().techRecord_vehicleType === VehicleTypes.TRL &&
+			(this.techRecord().techRecord_euVehicleCategory === 'o1' ||
+				this.techRecord().techRecord_euVehicleCategory === 'o2')
+		) {
+			return VehicleTypes.SMALL_TRL;
+		}
+		return this.techRecord().techRecord_vehicleType as VehicleTypes;
+	}
 }

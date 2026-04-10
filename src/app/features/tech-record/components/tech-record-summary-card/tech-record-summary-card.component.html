@@ -35,7 +35,7 @@
         </div>
         <div class="govuk-summary-list__row--value">
           <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicleType">
-            {{ techRecord.techRecord_vehicleType | defaultNullOrEmpty | formatVehicleType }}
+            {{ getVehicleTypeLabel() | defaultNullOrEmpty | formatVehicleType }}
           </dd>
         </div>
         <!-- VIN -->
