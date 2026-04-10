@@ -142,7 +142,7 @@ export class AxlesService {
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? FitmentCodeEnum.Single
+					? axle?.tyres_fitmentCode || FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
@@ -226,7 +226,7 @@ export class AxlesService {
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? FitmentCodeEnum.Single
+					? axle?.tyres_fitmentCode || FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }),
@@ -351,7 +351,7 @@ export class AxlesService {
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
-				featureEnabled ? FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
+				featureEnabled ? axle?.tyres_fitmentCode || FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
