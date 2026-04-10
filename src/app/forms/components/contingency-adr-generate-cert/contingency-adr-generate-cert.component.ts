@@ -7,6 +7,7 @@ import {
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
+import { DocumentType } from '@models/document-type.enum';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { LoadingService } from '@services/loading/loading.service';
@@ -86,4 +87,6 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
 			})
 		);
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

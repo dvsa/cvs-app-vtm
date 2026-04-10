@@ -1,11 +1,11 @@
 <div class="govuk-!-padding-left-4 govuk-!-padding-right-4">
   @if (techRecord(); as techRecord) {
     @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED && correctApprovalType && !currentTechRecord()) {
-      <app-button 
+      <app-button
         *appRoleRequired="Roles.TechRecordAmend"
-        id="generate-letters-link" 
+        id="generate-letters-link"
         design="secondary"
-        (clicked)="generateLetter()" 
+        (clicked)="generateLetter()"
       >
         Generate and send letter
       </app-button>
@@ -24,13 +24,14 @@
               {{ letter.letterType | defaultNullOrEmpty }}
             </dd>
             <dd id="letter-link" class="govuk-summary-list__value govuk-!-text-align-right">
-              <a 
+              <a
                 id="test-certificate-link"
                 class="govuk-link"
                 href="javascript:void(0)"
-                appRetrieveDocument 
-                [params]="documentParams" 
+                appRetrieveDocument
+                [params]="documentParams"
                 [fileName]="fileName"
+                [documentType]="DocumentType.LETTER"
               >
                 View letter
               </a>

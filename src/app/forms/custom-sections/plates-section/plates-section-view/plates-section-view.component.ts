@@ -9,6 +9,7 @@ import { RetrieveDocumentDirective } from '@directives/retrieve-document/retriev
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 import { hgvRequiredFields, trlRequiredFields, tyreRequiredFields } from '@models/plateRequiredFields.model';
 import { Roles } from '@models/roles.enum';
 import { Axle, StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -145,4 +146,6 @@ export class PlatesSectionViewComponent {
 	get roles(): typeof Roles {
 		return Roles;
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

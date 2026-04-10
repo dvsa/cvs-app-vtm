@@ -17,6 +17,7 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
+import { DocumentType } from '@models/document-type.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import {
 	ADR_DESK_BASED_TEST_TYPE_IDS,
@@ -198,4 +199,5 @@ export class VehicleHeaderComponent {
 	}
 
 	protected readonly VehicleTypes = VehicleType;
+	protected readonly DocumentType = DocumentType;
 }

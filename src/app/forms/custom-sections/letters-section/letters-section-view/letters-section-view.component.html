@@ -11,7 +11,16 @@
           <dt class="govuk-summary-list__key">Letter type</dt>
           <dd id="letter-type" class="govuk-summary-list__value">{{ letter.letterType | defaultNullOrEmpty }}</dd>
           <dd id="letter-link" class="govuk-summary-list__value">
-            <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View letter</button>
+            <button
+              id="test-certificate-link"
+              class="link"
+              appRetrieveDocument
+              [params]="documentParams"
+              [fileName]="fileName"
+              [documentType]="DocumentType.LETTER"
+            >
+                View letter
+            </button>
           </dd>
         </div>
         <div class="govuk-summary-list__row">

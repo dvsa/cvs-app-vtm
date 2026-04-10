@@ -11,6 +11,7 @@ import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 import { Store } from '@ngrx/store';
 import { FieldWarningMessageComponent } from '../../components/field-warning-message/field-warning-message.component';
 
@@ -86,4 +87,6 @@ export class LetterOfAuthorisationComponent {
 		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 		this.router.navigate(['generate-letter'], { relativeTo: this.route });
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

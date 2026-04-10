@@ -211,6 +211,7 @@
                   appRetrieveDocument
                   [params]="certificateParams"
                   [fileName]="`${testNumber()}_${testResult.vin}`"
+                  [documentType]="DocumentType.CERTIFICATE"
                 >
                   {{ test?.certificateNumber | defaultNullOrEmpty }}
                 </a>
@@ -225,13 +226,14 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">{{ abandonCertDocName }} document</dt>
             <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
-              <a 
-                id="test-vtg-vtp-document-link" 
-                class="govuk-link" 
-                href="javascript:void(0)" 
-                appRetrieveDocument 
-                [params]="params" 
+              <a
+                id="test-vtg-vtp-document-link"
+                class="govuk-link"
+                href="javascript:void(0)"
+                appRetrieveDocument
+                [params]="params"
                 [fileName]="fileName"
+                [documentType]="DocumentType.CERTIFICATE"
               >
                 Download
               </a>
