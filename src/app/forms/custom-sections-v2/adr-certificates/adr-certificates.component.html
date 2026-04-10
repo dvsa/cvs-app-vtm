@@ -38,6 +38,7 @@
               appRetrieveDocument
               [params]="documentParams(certificate)"
               [fileName]="getFileName(certificate)"
+              [documentType]="DocumentType.ADR_CERTIFICATE"
             >
               <td class="govuk-table__cell whitespac-pre-line" [id]="`adr-certificate-type-${i}`">
                 {{ certificate.certificateType | titlecase }}

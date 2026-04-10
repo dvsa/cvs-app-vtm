@@ -12,6 +12,7 @@ import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 
 @Component({
 	selector: 'app-adr-certificates',
@@ -90,4 +91,6 @@ export class AdrCertificatesComponent {
 
 		this.router.navigate(['adr-certificate'], { relativeTo: this.route });
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

@@ -7,6 +7,7 @@ import { RetrieveDocumentDirective } from '@directives/retrieve-document/retriev
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -132,4 +133,6 @@ export class LettersSectionViewComponent implements OnInit, OnDestroy {
 				});
 			});
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

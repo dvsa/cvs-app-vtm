@@ -25,11 +25,12 @@
           </td>
           <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-view-certificate-link-' + i">
             <a
-              href="javascript:void(0)" 
+              href="javascript:void(0)"
               class="govuk-link govuk-link--no-visited-state"
-              [params]="documentParams(certificate)" 
-              [fileName]="getFileName(certificate)" 
+              [params]="documentParams(certificate)"
+              [fileName]="getFileName(certificate)"
               appRetrieveDocument
+              [documentType]="DocumentType.ADR_CERTIFICATE"
             >
               View
             </a>
@@ -38,7 +39,7 @@
       }
     </tbody>
   </table>
-  <app-pagination 
+  <app-pagination
     tableName="adr-certificate-history"
     [numberOfItems]="numberOfADRCertificates"
     (paginationOptionsChange)="handlePaginationChange($event)"
