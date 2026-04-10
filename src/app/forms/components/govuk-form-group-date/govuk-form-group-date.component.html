@@ -39,6 +39,7 @@
             type="number"
             inputmode="numeric"
             formControlName="day"
+            (wheel)="$event.preventDefault()"
             appFocusNext
             appNumberOnly
             [disabled]="disabled()"
@@ -56,6 +57,7 @@
             inputmode="numeric"
             formControlName="month"
             appFocusNext
+            (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
@@ -72,6 +74,7 @@
             inputmode="numeric"
             formControlName="year"
             appFocusNext
+            (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
