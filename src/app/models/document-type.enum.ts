@@ -1,6 +1,6 @@
 export enum DocumentType {
 	LETTER = 'Letter',
-	PLATE = 'PLATE',
+	PLATE = 'Plate',
 	CERTIFICATE = 'Certificate',
 	ADR_CERTIFICATE = 'ADR Certificate',
 }
