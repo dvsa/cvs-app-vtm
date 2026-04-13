@@ -8,13 +8,14 @@
       technicalRecordService.searchResultsWithUniqueSystemNumbers$ | async;
       as searchResults
     ) {
-      <app-search-form
-        class="search-form"
-        [searchResults]="searchResults.length"
-      ></app-search-form>
-
       @if (searchResults.length) {
         @if (pagination.paginationOptions(); as page) {
+        <app-search-form
+          class="search-form"
+          [pagination]="page"
+          [searchResults]="searchResults.length"
+        ></app-search-form>
+
           @for (
             searchResult of searchResults.slice(page.start, page.end);
             track searchResult.createdTimestamp

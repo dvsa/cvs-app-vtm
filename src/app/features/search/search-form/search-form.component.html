@@ -36,11 +36,7 @@
 
     @if (searchResults(); as searchResults) {
       <div id="changedName-hint" class="govuk-hint govuk-search-results-count">
-        @if (searchResults > 4) {
-          Showing 4 results of {{ searchResults }}
-        } @else {
-          Showing {{ searchResults }} result{{ searchResults === 1 ? '' : 's' }}
-        }
+        {{ getSearchResultsCountHint() }}
       </div>
     }
   </div>
