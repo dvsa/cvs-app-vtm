@@ -4,7 +4,6 @@ import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -20,7 +19,6 @@ import {
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	changeVehicleType,
-	createVehicle,
 	createVehicleRecord,
 	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
@@ -305,137 +303,6 @@ describe('TechnicalRecordServiceEffects', () => {
 					}),
 				});
 
-				expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
-					b: expectedTechRecord,
-				});
-			});
-
-			flush();
-			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
-			expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
-		}));
-
-		// TODO: move test logic into tech-record-summary component once other section templates are removed
-		it('should default EU vehicle category to M1 if the vehicle type is a car', fakeAsync(() => {
-			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-
-			const carTechRecord: V3TechRecordType<'car', 'put'> = {
-				vin: 'foo',
-				primaryVrm: 'bar',
-				techRecord_vehicleSubclass: undefined,
-				techRecord_euVehicleCategory: undefined,
-				techRecord_notes: '',
-				techRecord_vehicleConfiguration: undefined,
-				techRecord_vehicleType: 'car',
-				techRecord_noOfAxles: 2,
-				techRecord_reasonForCreation: 'test',
-				techRecord_regnDate: null,
-				techRecord_statusCode: 'provisional',
-				techRecord_applicantDetails_address1: null,
-				techRecord_applicantDetails_address2: null,
-				techRecord_applicantDetails_address3: null,
-				techRecord_applicantDetails_emailAddress: null,
-				techRecord_applicantDetails_name: null,
-				techRecord_applicantDetails_postCode: null,
-				techRecord_applicantDetails_postTown: null,
-				techRecord_applicantDetails_telephoneNumber: null,
-				techRecord_manufactureYear: null,
-			};
-			const prepopulatedTechRecord = {};
-			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(editingTechRecord, carTechRecord);
-				// mock action to trigger effect
-				actions$ = hot('-a--', {
-					a: createVehicle({
-						techRecord_vehicleType: VehicleTypes.CAR,
-					}),
-				});
-
-				expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-					b: {},
-				});
-			});
-
-			flush();
-			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
-			expect(techRecordServiceSpy).toHaveBeenCalledWith(prepopulatedTechRecord);
-		}));
-
-		// TODO: move test logic into tech-record-summary component once other section templates are removed
-		it('should default the eu vehicle category to N1 if the vehicle type is an lgv', fakeAsync(() => {
-			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-
-			const carTechRecord: V3TechRecordType<'lgv', 'put'> = {
-				vin: 'foo',
-				primaryVrm: 'bar',
-				techRecord_vehicleSubclass: undefined,
-				techRecord_euVehicleCategory: undefined,
-				techRecord_vehicleConfiguration: undefined,
-				techRecord_vehicleType: 'lgv',
-				techRecord_noOfAxles: 2,
-				techRecord_reasonForCreation: 'test',
-				techRecord_regnDate: null,
-				techRecord_statusCode: 'provisional',
-				techRecord_applicantDetails_address1: null,
-				techRecord_applicantDetails_address2: null,
-				techRecord_applicantDetails_address3: null,
-				techRecord_applicantDetails_emailAddress: null,
-				techRecord_applicantDetails_name: null,
-				techRecord_applicantDetails_postCode: null,
-				techRecord_applicantDetails_postTown: null,
-				techRecord_applicantDetails_telephoneNumber: null,
-				techRecord_manufactureYear: null,
-			};
-			const prepopulatedTechRecord = {
-				techRecord_adrDetails_certificates: undefined,
-			};
-			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(editingTechRecord, carTechRecord);
-				// mock action to trigger effect
-				actions$ = hot('-a--', {
-					a: createVehicle({
-						techRecord_vehicleType: VehicleTypes.LGV,
-					}),
-				});
-
-				expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-					b: prepopulatedTechRecord,
-				});
-			});
-
-			flush();
-			expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
-			expect(techRecordServiceSpy).toHaveBeenCalledWith(prepopulatedTechRecord);
-		}));
-
-		// TODO: move test logic into tech-record-summary component once other section templates are removed
-		it('should default to heavy goods vehicle class when vehicle type is changed to hgv', fakeAsync(() => {
-			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-
-			const oldTechRecord = {
-				vin: 'foo',
-				primaryVrm: 'bar',
-				systemNumber: 'foobar',
-				createdTimestamp: 'barfoo',
-				techRecord_vehicleType: 'lgv',
-			} as unknown as TechRecordType<'put'>;
-
-			const expectedTechRecord = {
-				...oldTechRecord,
-				techRecord_approvalType: null,
-				techRecord_vehicleConfiguration: null,
-				techRecord_vehicleType: VehicleTypes.HGV,
-				techRecord_vehicleClass_description: 'heavy goods vehicle',
-			};
-
-			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(editingTechRecord, oldTechRecord);
-				// mock action to trigger effect
-				actions$ = hot('-a--', {
-					a: changeVehicleType({
-						techRecord_vehicleType: VehicleTypes.HGV,
-					}),
-				});
 				expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
 					b: expectedTechRecord,
 				});
