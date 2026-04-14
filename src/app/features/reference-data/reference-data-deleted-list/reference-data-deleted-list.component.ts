@@ -1,5 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
@@ -20,6 +21,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 	route = inject(ActivatedRoute);
 	store = inject(Store);
 	cdr = inject(ChangeDetectorRef);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
 	pageStart?: number;
@@ -30,6 +32,10 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 			this.type = params['type'];
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 			this.store.dispatch(fetchReferenceDataAudit({ resourceType: `${this.type}#AUDIT` as ReferenceDataResourceType }));
+		});
+
+		this.refDataAdminType$.subscribe((type) => {
+			this.titleService.setTitle(`Delete this ${type?.labelSingular} - Vehicle Testing Management`);
 		});
 	}
 

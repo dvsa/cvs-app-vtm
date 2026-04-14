@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -50,6 +51,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	cdr = inject(ChangeDetectorRef);
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
 	disabled = true;
@@ -116,6 +118,9 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				next: (res) => of(!!res),
 			});
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
+		this.refDataAdminType$.subscribe((type) => {
+			this.titleService.setTitle(`Search for ${type?.label} - Vehicle Testing Management`);
+		});
 	}
 
 	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {

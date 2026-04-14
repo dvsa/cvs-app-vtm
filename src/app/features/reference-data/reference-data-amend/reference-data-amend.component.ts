@@ -1,6 +1,7 @@
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -39,6 +40,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
 	key!: string;
@@ -75,6 +77,10 @@ export class ReferenceDataAmendComponent implements OnInit {
 			.subscribe((data) => {
 				this.amendedData = data;
 			});
+
+		this.refDataAdminType$.subscribe((type) => {
+			this.titleService.setTitle(`Amend this ${type?.labelSingular} - Vehicle Testing Management`);
+		});
 	}
 
 	get roles(): typeof Roles {

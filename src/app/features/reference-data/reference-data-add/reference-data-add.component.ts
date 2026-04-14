@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -31,6 +32,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,6 +48,9 @@ export class ReferenceDataCreateComponent implements OnInit {
 		this.route.parent?.params.pipe(take(1)).subscribe((params) => {
 			this.type = params['type'];
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+		});
+		this.refDataAdminType$.subscribe((type) => {
+			this.titleService.setTitle(`Add a new ${type?.labelSingular} - Vehicle Testing Management`);
 		});
 	}
 

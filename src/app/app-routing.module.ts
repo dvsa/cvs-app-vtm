@@ -64,7 +64,7 @@ const routes: Routes = [
 			{
 				path: RootRoutes.REFERENCE_DATA,
 				data: {
-					title: 'Select Reference Data Type',
+					title: 'Select reference data type',
 					roles: Roles.ReferenceDataView,
 				},
 				canActivate: [MsalGuard, RoleGuard],
