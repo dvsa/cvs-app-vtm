@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -41,6 +42,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
 	key!: string;
@@ -83,6 +85,10 @@ export class ReferenceDataDeleteComponent implements OnInit {
 			if (this.type && this.key) {
 				this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
 			}
+		});
+
+		this.refDataAdminType$.subscribe((type) => {
+			this.titleService.setTitle(`Delete this ${type?.labelSingular} - Vehicle Testing Management`);
 		});
 	}
 
