@@ -1,3 +1,4 @@
+import { DecimalOnlyDirective } from '@/src/app/directives/app-decimal-only/app-decimal-only.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
@@ -15,7 +16,13 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 	selector: 'app-emissions-and-exemptions',
 	templateUrl: './emissions-and-exemptions.component.html',
 	styleUrls: ['./emissions-and-exemptions.component.scss'],
-	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupInputComponent, FilterByTagsDirective],
+	imports: [
+		ReactiveFormsModule,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupInputComponent,
+		FilterByTagsDirective,
+		DecimalOnlyDirective,
+	],
 })
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
