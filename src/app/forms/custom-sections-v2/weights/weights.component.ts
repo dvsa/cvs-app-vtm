@@ -249,7 +249,6 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	handleGrossKerbWeightChange() {
-		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
 		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
@@ -265,7 +264,6 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	handleGrossLadenWeightChange() {
-		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
