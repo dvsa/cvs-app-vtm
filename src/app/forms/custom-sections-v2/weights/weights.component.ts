@@ -249,34 +249,38 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	handleGrossKerbWeightChange() {
+		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
 		grossKerbWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value)
-				this.store.dispatch(
-					updateBrakeForces({
-						grossKerbWeight: value,
-						grossLadenWeight: this.form.get('techRecord_grossLadenWeight')?.value,
-					})
-				);
+			if (!value) return;
+			this.store.dispatch(
+				updateBrakeForces({
+					grossKerbWeight: value,
+					grossLadenWeight: this.form.get('techRecord_grossLadenWeight')?.value,
+				})
+			);
 		});
 	}
 
 	handleGrossLadenWeightChange() {
+		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
 		grossLadenWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value)
-				this.store.dispatch(
-					updateBrakeForces({
-						grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
-						grossLadenWeight: value,
-					})
-				);
+			if (!value) return;
+			this.store.dispatch(
+				updateBrakeForces({
+					grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
+					grossLadenWeight: value,
+				})
+			);
 		});
 	}
 
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {
+		if (this.mode() === Modes.SUMMARY) return;
+
 		const { techRecord } = changes;
 		if (this.form && techRecord) {
 			const { currentValue, previousValue } = techRecord;
