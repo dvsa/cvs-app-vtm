@@ -14,7 +14,7 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, skip, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-weights',
@@ -249,11 +249,11 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	handleGrossKerbWeightChange() {
-		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
-		grossKerbWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
 			if (!value) return;
+			if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
 			this.store.dispatch(
 				updateBrakeForces({
 					grossKerbWeight: value,
@@ -264,11 +264,12 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	handleGrossLadenWeightChange() {
-		if (this.mode() === Modes.SUMMARY) return;
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
+
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
-		grossLadenWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
 			if (!value) return;
+			if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
 			this.store.dispatch(
 				updateBrakeForces({
 					grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
@@ -279,7 +280,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {
-		if (this.mode() === Modes.SUMMARY) return;
+		if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
 
 		const { techRecord } = changes;
 		if (this.form && techRecord) {
@@ -291,7 +292,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 					'techRecord_manufactureYear',
 					'techRecord_grossKerbWeight',
 					'techRecord_standingCapacity',
-				].some((field) => currentValue[`${field}`] !== previousValue?.[`${field}`]);
+				].some((field) => previousValue && currentValue[`${field}`] !== previousValue[`${field}`]);
 
 				if (fieldsChanged) {
 					const grossLadenWeight = this.calculateGrossLadenWeight();
