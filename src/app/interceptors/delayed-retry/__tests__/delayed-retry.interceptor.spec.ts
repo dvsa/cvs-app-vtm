@@ -68,7 +68,7 @@ describe('DelayedRetryInterceptor', () => {
 			flush();
 		}));
 
-		it('should cascade errors not in the retry list', (done) => {
+		it('should cascade errors not in the retry list', () => new Promise<void>((done) => {
 			client.get(DUMMY_ENDPOINT).subscribe({
 				error: (e) => {
 					const { error, status, statusText } = e;
@@ -80,7 +80,7 @@ describe('DelayedRetryInterceptor', () => {
 			});
 			const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
 			req.flush('Deliberate 401 error', { status: 401, statusText: '401 Unauthorized' });
-		});
+		}));
 	});
 
 	describe('backoff', () => {

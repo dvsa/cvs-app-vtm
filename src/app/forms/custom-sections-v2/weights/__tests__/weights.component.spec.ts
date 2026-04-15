@@ -1,4 +1,3 @@
-import { Modes } from '@/src/app/models/modes.enum';
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -15,6 +14,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.component';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { Modes } from '@models/modes.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
@@ -72,15 +72,15 @@ describe('WeightsComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 
 			expect(parentFormSpy).toHaveBeenCalled();
 		});
 
 		it('should listen for changes to the gross kerb weight, and gross laden weight', () => {
-			const handleGrossKerbWeightChangeSpy = jest.spyOn(component, 'handleGrossKerbWeightChange');
-			const handleGrossLadenWeightChangeSpy = jest.spyOn(component, 'handleGrossLadenWeightChange');
+			const handleGrossKerbWeightChangeSpy = vi.spyOn(component, 'handleGrossKerbWeightChange');
+			const handleGrossLadenWeightChangeSpy = vi.spyOn(component, 'handleGrossLadenWeightChange');
 			component.ngOnInit();
 
 			expect(handleGrossKerbWeightChangeSpy).toHaveBeenCalled();
@@ -90,13 +90,13 @@ describe('WeightsComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
+			const spy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -104,14 +104,14 @@ describe('WeightsComponent', () => {
 
 	describe('shouldDisplayFormControl', () => {
 		it('should return true if the form control exists on the form', () => {
-			const formSpy = jest.spyOn(component.form, 'get');
+			const formSpy = vi.spyOn(component.form, 'get');
 			const returnValue = component.shouldDisplayFormControl('techRecord_grossGbWeight');
 			expect(formSpy).toHaveBeenCalled();
 			expect(returnValue).toEqual(true);
 		});
 
 		it('should return false if the form control does not exists on the form', () => {
-			const formSpy = jest.spyOn(component.form, 'get');
+			const formSpy = vi.spyOn(component.form, 'get');
 			const returnValue = component.shouldDisplayFormControl('techRecord_reasonForCreation');
 			expect(formSpy).toHaveBeenCalled();
 			expect(returnValue).toEqual(false);
@@ -138,7 +138,7 @@ describe('WeightsComponent', () => {
 
 	describe('removeAxle', () => {
 		it('should call the removeAxle function from the axlesService', () => {
-			const removeAxleSpy = jest.spyOn(component.axlesService, 'removeAxle').mockImplementation();
+			const removeAxleSpy = vi.spyOn(component.axlesService, 'removeAxle').mockImplementation((() => {}) as any);
 
 			component.removeAxle(2);
 
@@ -149,7 +149,7 @@ describe('WeightsComponent', () => {
 	describe('handleGrossKerbWeightChange', () => {
 		it('should call the updateBrakeForces function from the store', () => {
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
-			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
+			const updateBrakeForcesSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
 			component.form.patchValue({ techRecord_grossKerbWeight: 100 });
 
@@ -160,7 +160,7 @@ describe('WeightsComponent', () => {
 	describe('handleGrossLadenWeightChange', () => {
 		it('should call the updateBrakeForces function from the store', () => {
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
-			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
+			const updateBrakeForcesSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
 			component.form.patchValue({ techRecord_grossLadenWeight: 100 });
 

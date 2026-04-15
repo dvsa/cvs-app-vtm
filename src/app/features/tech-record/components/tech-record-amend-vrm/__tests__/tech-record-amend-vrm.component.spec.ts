@@ -26,15 +26,16 @@ const mockTechRecordService = {
 			primaryVrm: 'TESTVRM',
 		});
 	},
-	updateEditingTechRecord: jest.fn(),
-	validateVrmDoesNotExist: jest.fn(),
-	validateVrmForCherishedTransfer: jest.fn(),
-	checkVrmNotActive: jest.fn(),
-	getVehicleTypeWithSmallTrl: jest.fn(),
+	updateEditingTechRecord: vi.fn(),
+	validateVrmDoesNotExist: vi.fn(),
+	validateVrmForCherishedTransfer: vi.fn(),
+	checkVrmNotActive: vi.fn(),
+	getVehicleTypeWithSmallTrl: vi.fn(),
+	getMakeAndModel: vi.fn().mockReturnValue(''),
 };
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordChangeVrmComponent', () => {
@@ -84,15 +85,19 @@ describe('TechRecordChangeVrmComponent', () => {
 		);
 	});
 
+	afterEach(() => {
+		fixture.destroy();
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -100,7 +105,7 @@ describe('TechRecordChangeVrmComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -108,7 +113,7 @@ describe('TechRecordChangeVrmComponent', () => {
 		});
 
 		it('should navigate to a new record on amendVrmSuccess', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			store.overrideSelector(selectRouteData, { data: { isEditing: true } });
 			component.ngOnInit();
@@ -122,12 +127,12 @@ describe('TechRecordChangeVrmComponent', () => {
 	describe('handleSubmit', () => {
 		beforeEach(() => {
 			component.techRecord = mockVehicleTechnicalRecord('psv') as VehiclesOtherThan<'trl'>;
-			jest.resetAllMocks();
-			jest.resetModules();
+			vi.resetAllMocks();
+			vi.resetModules();
 		});
 
 		it('should add an error when the vrm field is not filled out', () => {
-			const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+			const addErrorSpy = vi.spyOn(errorService, 'setErrors');
 
 			component.handleSubmit();
 
@@ -135,7 +140,7 @@ describe('TechRecordChangeVrmComponent', () => {
 		});
 
 		it('should not dispatch an action if isFormValid returns false', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 
@@ -150,7 +155,7 @@ describe('TechRecordChangeVrmComponent', () => {
 			);
 		});
 		it('should dispatch the amendVrm action', fakeAsync(() => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of(null));
 			component.correctingAnErrorForm.controls['newVrm'].setValue('TESTVRM1');
 
@@ -167,7 +172,7 @@ describe('TechRecordChangeVrmComponent', () => {
 			);
 		}));
 		it('should dispatch the action with the correct information', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of(null));
 			mockTechRecordService.validateVrmForCherishedTransfer.mockReturnValue(of(null));
 			component.cherishedTransferForm.controls['currentVrm'].setValue('TESTVRM1');

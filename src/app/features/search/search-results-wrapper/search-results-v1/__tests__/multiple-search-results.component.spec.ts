@@ -69,7 +69,7 @@ describe('MultipleSearchResultsComponent', () => {
 		});
 
 		it('should navigate back when searchResults not null', fakeAsync(() => {
-			const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+			const navigateBackSpy = vi.spyOn(component, 'navigateBack');
 			const newData: TechRecordSearchSchema[] = [
 				{
 					vin: '1B7GG36N12S678410',

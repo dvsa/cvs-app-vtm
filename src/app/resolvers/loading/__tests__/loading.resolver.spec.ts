@@ -29,7 +29,7 @@ describe('LoadingResolver', () => {
 		expect(resolver).toBeTruthy();
 	});
 
-	it('should resolve to false when the spinner is still showing', (done) => {
+	it('should resolve to false when the spinner is still showing', () => new Promise<void>((done) => {
 		mockLoadingService.showSpinner$ = of(true);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
@@ -39,9 +39,9 @@ describe('LoadingResolver', () => {
 			expect(value).toBe(false);
 			done();
 		});
-	});
+	}));
 
-	it('should resolve to true when the spinner has been dismissed', (done) => {
+	it('should resolve to true when the spinner has been dismissed', () => new Promise<void>((done) => {
 		mockLoadingService.showSpinner$ = of(false);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
@@ -51,5 +51,5 @@ describe('LoadingResolver', () => {
 			expect(value).toBe(true);
 			done();
 		});
-	});
+	}));
 });

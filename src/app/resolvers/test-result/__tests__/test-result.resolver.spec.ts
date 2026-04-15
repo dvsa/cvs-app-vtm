@@ -19,7 +19,7 @@ describe('TestResultResolver', () => {
 	let resolver: ResolveFn<boolean>;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	const mockSnapshot = jest.fn;
+	const mockSnapshot = vi.fn;
 	let store: MockStore<State>;
 
 	beforeEach(() => {
@@ -48,7 +48,7 @@ describe('TestResultResolver', () => {
 
 	describe('fetch test result', () => {
 		it('should resolve to true when all actions are success type', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const result = TestBed.runInInjectionContext(() =>
 				resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 			) as Observable<boolean>;
@@ -64,7 +64,7 @@ describe('TestResultResolver', () => {
 		});
 
 		it('should resolve to false when one or more actions are of failure type', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const result = TestBed.runInInjectionContext(() =>
 				resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 			) as Observable<boolean>;

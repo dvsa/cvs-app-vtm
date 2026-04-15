@@ -15,19 +15,19 @@ import { changeVehicleType } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { ChangeVehicleTypeComponent } from '../tech-record-change-type.component';
 
-const mockGetVehicleType = jest.fn();
+const mockGetVehicleType = vi.fn();
 
 const mockTechRecordService = {
 	get techRecord$() {
 		return of({});
 	},
-	getMakeAndModel: jest.fn(),
-	clearReasonForCreation: jest.fn(),
+	getMakeAndModel: vi.fn(),
+	clearReasonForCreation: vi.fn(),
 	getVehicleTypeWithSmallTrl: mockGetVehicleType,
 };
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordChangeTypeComponent', () => {
@@ -81,7 +81,7 @@ describe('TechRecordChangeTypeComponent', () => {
 			const techRecord = expectedTechRecord as TechRecordType<'psv'>;
 			const expectedMakeModel = `${techRecord.techRecord_chassisMake} - ${techRecord.techRecord_chassisModel}`;
 
-			jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
+			vi.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
 
 			component.techRecord = expectedTechRecord;
 			component.ngOnInit();
@@ -108,9 +108,9 @@ describe('TechRecordChangeTypeComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -118,7 +118,7 @@ describe('TechRecordChangeTypeComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -128,7 +128,7 @@ describe('TechRecordChangeTypeComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should add an error when no vehicle type is selected', () => {
-			const setErrorsSpy = jest.spyOn(errorService, 'setErrors');
+			const setErrorsSpy = vi.spyOn(errorService, 'setErrors');
 
 			component.handleSubmit(null as unknown as VehicleTypes);
 
@@ -138,9 +138,9 @@ describe('TechRecordChangeTypeComponent', () => {
 		});
 
 		it('should dispatch the changeVehicleType action', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit(VehicleTypes.PSV);
 
@@ -148,18 +148,18 @@ describe('TechRecordChangeTypeComponent', () => {
 		});
 
 		it('should call clearReasonForCreation', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearReasonForCreationSpy = jest.spyOn(mockTechRecordService, 'clearReasonForCreation');
+			const clearReasonForCreationSpy = vi.spyOn(mockTechRecordService, 'clearReasonForCreation');
 
-			jest.resetAllMocks();
+			vi.resetAllMocks();
 			component.handleSubmit(VehicleTypes.PSV);
 
 			expect(clearReasonForCreationSpy).toHaveBeenCalledTimes(1);
 		});
 
 		it('navigate to the editing page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.handleSubmit(VehicleTypes.PSV);
 

@@ -55,6 +55,7 @@ describe('ReferenceDataService', () => {
 	});
 
 	afterEach(() => {
+		store.resetSelectors();
 		store.refreshState();
 	});
 
@@ -75,14 +76,14 @@ describe('ReferenceDataService', () => {
 			});
 		});
 
-		it('should thrown an error if resource type is not given', (done) => {
+		it('should thrown an error if resource type is not given', () => new Promise<void>((done) => {
 			service.fetchReferenceData(undefined as unknown as ReferenceDataResourceType).subscribe({
 				error: (e) => {
 					expect(e.message).toBe('Reference data resourceType is required');
 					done();
 				},
 			});
-		});
+		}));
 	});
 
 	describe('fetchReferenceDataByKeySearch', () => {
@@ -143,7 +144,7 @@ describe('ReferenceDataService', () => {
 
 	describe('resourceKeys', () => {
 		it.each(testCases)('should return one result for a given resourceType and resourceKey', (value) => {
-			const getOneFromResourceSpy = jest.spyOn(httpService, 'referenceResourceTypeResourceKeyGet');
+			const getOneFromResourceSpy = vi.spyOn(httpService, 'referenceResourceTypeResourceKeyGet');
 			const { resourceType, resourceKey, payload } = value;
 			const resource = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataItem;
 			expect(resource).toBeDefined();
@@ -165,11 +166,17 @@ describe('ReferenceDataService', () => {
 			const item = { description: 'test Item' };
 			const apiResponse = { resourceType, resourceKey, ...item };
 			service.createReferenceDataItem(resourceType, resourceKey, item).subscribe((data) => {
-				expect(data).toEqual(item);
+				expect(data).toEqual(apiResponse);
 			});
 
 			const req = controller.expectOne(`${environment.VTM_API_URI}/reference/${resourceType}/${resourceKey}`);
 			expect(req.request.method).toBe('POST');
+			expect(req.request.body).toEqual({
+				...item,
+				createdId: 'id',
+				createdName: 'Jack',
+				createdAt: expect.any(Date),
+			});
 
 			req.flush(apiResponse);
 		});
@@ -241,7 +248,7 @@ describe('ReferenceDataService', () => {
 			});
 		});
 
-		it('should get all of the reference data', (done) => {
+		it('should get all of the reference data', () => new Promise<void>((done) => {
 			service.getAll$(ReferenceDataResourceType.CountryOfRegistration).subscribe((response) => {
 				expect(response).toEqual([
 					{
@@ -257,9 +264,9 @@ describe('ReferenceDataService', () => {
 				]);
 				done();
 			});
-		});
+		}));
 
-		it('should get a specific reference data record', (done) => {
+		it('should get a specific reference data record', () => new Promise<void>((done) => {
 			service.getByKey$(ReferenceDataResourceType.CountryOfRegistration, 'gba').subscribe((response) => {
 				expect(response).toEqual({
 					resourceType: ReferenceDataResourceType.CountryOfRegistration,
@@ -268,11 +275,11 @@ describe('ReferenceDataService', () => {
 				});
 				done();
 			});
-		});
+		}));
 
-		it('should get the tyre search results', (done) => {
+		it('should get the tyre search results', () => new Promise<void>((done) => {
 			const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
-			jest.spyOn(service, 'getTyreSearchReturn$').mockReturnValue(of(mockReferenceDataTyre));
+			vi.spyOn(service, 'getTyreSearchReturn$').mockReturnValue(of(mockReferenceDataTyre));
 			service
 				.getTyreSearchReturn$()
 				.pipe(take(1))
@@ -280,8 +287,8 @@ describe('ReferenceDataService', () => {
 					expect(referenceData).toEqual(mockReferenceDataTyre);
 					done();
 				});
-		});
-		it('should get the tyre search criteria', (done) => {
+		}));
+		it('should get the tyre search criteria', () => new Promise<void>((done) => {
 			const mockState = { loading: false } as ReferenceDataEntityStateSearch;
 			store.overrideSelector(selectTyreSearchCriteria, mockState);
 			service
@@ -291,8 +298,8 @@ describe('ReferenceDataService', () => {
 					expect(referenceData).toEqual(mockState);
 					done();
 				});
-		});
-		it('should get the psv make reference data loading', (done) => {
+		}));
+		it('should get the psv make reference data loading', () => new Promise<void>((done) => {
 			store.overrideSelector(referencePsvMakeLoadingState, false);
 			service
 				.getReferencePsvMakeDataLoading$()
@@ -301,9 +308,9 @@ describe('ReferenceDataService', () => {
 					expect(loadingFlag).toBe(false);
 					done();
 				});
-		});
+		}));
 
-		it('should get the data from state and format the response', (done) => {
+		it('should get the data from state and format the response', () => new Promise<void>((done) => {
 			service
 				.getReferenceDataOptions(ReferenceDataResourceType.CountryOfRegistration)
 				.pipe(take(1))
@@ -314,8 +321,8 @@ describe('ReferenceDataService', () => {
 					]);
 					done();
 				});
-		});
-		it('should get the psv data from state and format the response', (done) => {
+		}));
+		it('should get the psv data from state and format the response', () => new Promise<void>((done) => {
 			service
 				.getReasonsForAbandoning(VehicleTypes.PSV)
 				.pipe(take(1))
@@ -323,9 +330,9 @@ describe('ReferenceDataService', () => {
 					expect(data).toEqual([{ label: 'foobar', value: 'foobar' }]);
 					done();
 				});
-		});
+		}));
 
-		it('should return if vehicle Type if undefined', (done) => {
+		it('should return if vehicle Type if undefined', () => new Promise<void>((done) => {
 			service
 				.getReasonsForAbandoning(undefined)
 				.pipe(take(1))
@@ -333,7 +340,7 @@ describe('ReferenceDataService', () => {
 					expect(data).toEqual([]);
 					done();
 				});
-		});
+		}));
 	});
 
 	describe('helper function', () => {
@@ -378,7 +385,7 @@ describe('ReferenceDataService', () => {
 	describe('search methods', () => {
 		describe('fetchReferenceDataByKeySearch', () => {
 			it('should dispatch the action to fetchReferenceDataByKeySearch', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				service.loadReferenceDataByKeySearch(ReferenceDataResourceType.CountryOfRegistration, 'foo');
 				expect(dispatchSpy).toHaveBeenCalledWith(
 					fetchReferenceDataByKeySearch({
@@ -390,7 +397,7 @@ describe('ReferenceDataService', () => {
 		});
 		describe('loadTyreReferenceDataByKeySearch', () => {
 			it('should dispatch the action to loadTyreReferenceDataByKeySearch', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				service.loadTyreReferenceDataByKeySearch('foo', 'bar');
 				expect(dispatchSpy).toHaveBeenCalledWith(
 					fetchTyreReferenceDataByKeySearch({ searchFilter: 'foo', searchTerm: 'bar' })
@@ -401,19 +408,19 @@ describe('ReferenceDataService', () => {
 
 	describe('store methods', () => {
 		it('should dispatch the fetchReferenceData action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.loadReferenceData(ReferenceDataResourceType.CountryOfRegistration);
 			expect(dispatchSpy).toHaveBeenCalledWith(
 				fetchReferenceData({ resourceType: ReferenceDataResourceType.CountryOfRegistration })
 			);
 		});
 		it('should dispatch the addSearchInformation action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.addSearchInformation('foo', 'bar');
 			expect(dispatchSpy).toHaveBeenCalledWith(addSearchInformation({ filter: 'foo', term: 'bar' }));
 		});
 		it('should dispatch the removeTyreSearch action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.removeTyreSearch();
 			expect(dispatchSpy).toHaveBeenCalledWith(removeTyreSearch());
 		});

@@ -15,7 +15,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -25,6 +25,10 @@ import { STORE_FEATURE_REFERENCE_DATA_KEY, selectReferenceDataByResourceKey } fr
 import { updateEditingTechRecord } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { BrakesComponent } from '../brakes.component';
+
+vi.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => ({
+	enhanceSelectElement: vi.fn(),
+}));
 
 describe('BrakesComponent', () => {
 	let controlContainer: ControlContainer;
@@ -56,8 +60,8 @@ describe('BrakesComponent', () => {
 				{
 					provide: MultiOptionsService,
 					useValue: {
-						getOptions: jest.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
-						loadOptions: jest.fn(),
+						getOptions: vi.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
+						loadOptions: vi.fn(),
 					},
 				},
 				{
@@ -99,13 +103,13 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should call loadOptions', () => {
-			const loadOptionsSpy = jest.spyOn(optionsService, 'loadOptions');
+			const loadOptionsSpy = vi.spyOn(optionsService, 'loadOptions');
 			component.ngOnInit();
 			expect(loadOptionsSpy).toHaveBeenCalled();
 		});
 
 		it('should call handleBrakeCodeChange', () => {
-			const handleBrakeCodeChangeSpy = jest.spyOn(component, 'handleBrakeCodeChange');
+			const handleBrakeCodeChangeSpy = vi.spyOn(component, 'handleBrakeCodeChange');
 			component.ngOnInit();
 			expect(handleBrakeCodeChangeSpy).toHaveBeenCalled();
 		});
@@ -119,7 +123,7 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});
@@ -183,8 +187,8 @@ describe('BrakesComponent', () => {
 		it('should early return for vehicles other than PSV', () => {
 			store
 				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
-				.subscribe((value: ReferenceDataModelBase) => {
-					const spy = jest.spyOn(component.form, 'get');
+					.subscribe(() => {
+					const spy = vi.spyOn(component.form, 'get');
 					fixture.componentRef.setInput('techRecord', mockTRL);
 					component.handleBrakeCodeChange();
 					expect(spy).not.toHaveBeenCalled();
@@ -192,7 +196,7 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const brakesData = {
 				resourceKey: '123',
@@ -210,7 +214,7 @@ describe('BrakesComponent', () => {
 				techRecord_brakes_dataTrBrakeThree: brakesData.parking,
 			};
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			store.setState({
 				...initialAppState,
@@ -226,13 +230,13 @@ describe('BrakesComponent', () => {
 			fixture.componentRef.setInput('techRecord', mockPSV);
 			store
 				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
-				.subscribe((value: ReferenceDataModelBase) => {
+				.subscribe(() => {
 					component.handleBrakeCodeChange();
 					component.form.patchValue({
 						techRecord_brakes_brakeCodeOriginal: '123',
 					});
 
-					jest.advanceTimersByTime(401);
+					vi.advanceTimersByTime(401);
 
 					expect(dispatchSpy).toHaveBeenNthCalledWith(
 						1,

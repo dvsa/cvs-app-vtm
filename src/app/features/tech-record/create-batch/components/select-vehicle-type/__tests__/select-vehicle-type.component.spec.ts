@@ -53,9 +53,9 @@ describe('SelectVehicleTypeComponent', () => {
 
 	describe('cancel', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.cancel();
 
@@ -63,7 +63,7 @@ describe('SelectVehicleTypeComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.cancel();
 
@@ -73,15 +73,15 @@ describe('SelectVehicleTypeComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should do nothing if the form is not valid', () => {
-			jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(false);
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			vi.spyOn(component, 'isFormValid', 'get').mockReturnValue(false);
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.handleSubmit(VehicleTypes.TRL);
 			expect(navigateSpy).toHaveBeenCalledTimes(0);
 		});
 
 		it('should navigate to batch records when successful', () => {
-			jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
-			const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
+			const routerSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 			component.handleSubmit(VehicleTypes.HGV);
 
 			fixture.detectChanges();

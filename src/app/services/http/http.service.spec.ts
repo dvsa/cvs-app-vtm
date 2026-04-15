@@ -113,7 +113,7 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
+		it('should handle errors', () => new Promise<void>((done) => {
 			httpService.fetchDefects().subscribe({
 				next: () => {},
 				error: (e) => {
@@ -130,7 +130,7 @@ describe('HttpService', () => {
 
 			// Respond with mock error
 			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-		});
+		}));
 	});
 
 	describe('fetchDefect', () => {
@@ -147,7 +147,7 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
+		it('should handle errors', () => new Promise<void>((done) => {
 			const expectedId = 1;
 			httpService.fetchDefect(expectedId).subscribe({
 				next: () => {},
@@ -165,7 +165,7 @@ describe('HttpService', () => {
 
 			// Respond with mock error
 			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-		});
+		}));
 	});
 
 	describe('fetchRequiredStandards', () => {
@@ -185,7 +185,7 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
+		it('should handle errors', () => new Promise<void>((done) => {
 			httpService.fetchRequiredStandards(EuVehicleCategory.M1).subscribe({
 				next: () => {},
 				error: (e) => {
@@ -204,7 +204,7 @@ describe('HttpService', () => {
 
 			// Respond with mock error
 			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-		});
+		}));
 	});
 
 	describe('fetchTestStations', () => {
@@ -220,7 +220,7 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
+		it('should handle errors', () => new Promise<void>((done) => {
 			httpService.fetchTestStations().subscribe({
 				next: () => {},
 				error: (e) => {
@@ -237,7 +237,7 @@ describe('HttpService', () => {
 
 			// Respond with mock error
 			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-		});
+		}));
 	});
 
 	describe('fetchTestStation', () => {
@@ -254,7 +254,7 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
+		it('should handle errors', () => new Promise<void>((done) => {
 			const expectedId = 'some ID';
 			httpService.fetchTestStation(expectedId).subscribe({
 				next: () => {},
@@ -272,7 +272,7 @@ describe('HttpService', () => {
 
 			// Respond with mock error
 			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-		});
+		}));
 	});
 
 	describe('generateLetter', () => {
@@ -336,7 +336,7 @@ describe('HttpService', () => {
 	describe('searchTechRecordBySystemNumber', () => {
 		it('should call service.searchTechRecords', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of());
+			const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of());
 			httpService.searchTechRecordBySystemNumber(technicalRecord.systemNumber).subscribe();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -410,7 +410,7 @@ describe('HttpService', () => {
 			req.flush({});
 		});
 
-		it('should emit an error if the request fails', (done) => {
+		it('should emit an error if the request fails', () => new Promise<void>((done) => {
 			httpService.getRecalls('VIN789').subscribe({
 				next: () => {},
 				error: (e) => {
@@ -421,6 +421,6 @@ describe('HttpService', () => {
 			});
 			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
 			req.flush('Not found', { status: 404, statusText: 'Not Found' });
-		});
+		}));
 	});
 });

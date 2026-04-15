@@ -26,7 +26,7 @@ describe('RequiredStandardSelectComponent', () => {
 		router = TestBed.inject(Router);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should create', () => {
@@ -72,7 +72,7 @@ describe('RequiredStandardSelectComponent', () => {
 
 	describe('handleSelect', () => {
 		it('should handle when I pick an inspection type', () => {
-			const spy = jest.spyOn(component, 'handleSelectBasicOrNormal');
+			const spy = vi.spyOn(component, 'handleSelectBasicOrNormal');
 
 			component.handleSelect('basic', Types.InspectionType);
 
@@ -88,7 +88,7 @@ describe('RequiredStandardSelectComponent', () => {
 			expect(component.selectedRequiredStandard).toBeUndefined();
 		});
 		it('should handle when I pick a required standard', () => {
-			const spy = jest.spyOn(router, 'navigate');
+			const spy = vi.spyOn(router, 'navigate');
 
 			component.handleSelect({ refCalculation: '1.2' } as unknown as RequiredStandard, Types.RequiredStandard);
 
@@ -97,7 +97,7 @@ describe('RequiredStandardSelectComponent', () => {
 			expect(component.selectedRequiredStandard).toStrictEqual({ refCalculation: '1.2' });
 		});
 		it('should error when I try call it with another type', () => {
-			const spy = jest.spyOn(console, 'error');
+			const spy = vi.spyOn(console, 'error');
 
 			component.handleSelect(undefined, undefined);
 

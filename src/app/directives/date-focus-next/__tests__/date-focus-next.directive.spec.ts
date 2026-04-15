@@ -37,6 +37,10 @@ describe('FocusNextDirective', () => {
 		de = fixture.debugElement;
 	});
 
+	afterEach(() => {
+		fixture?.destroy();
+	});
+
 	it('should create an instance', () => {
 		expect(component).toBeDefined();
 	});
@@ -72,8 +76,7 @@ describe('FocusNextDirective', () => {
 	});
 
 	it('should tab from year to hour after four numbers if displayTime is true', () => {
-		const year: HTMLInputElement = fixture.debugElement.query(By.css('#test-year')).nativeElement;
-		const hour: HTMLInputElement = fixture.debugElement.query(By.css('#test-hour')).nativeElement;
+		let year: HTMLInputElement = fixture.debugElement.query(By.css('#test-year')).nativeElement;
 
 		year.focus();
 		year.value = '2000';
@@ -82,8 +85,18 @@ describe('FocusNextDirective', () => {
 		let focusedElement = de.query(By.css(':focus')).nativeElement;
 		expect(year).toBe(focusedElement);
 
+		fixture.destroy();
+		fixture = TestBed.createComponent(TestComponent);
+		component = fixture.componentInstance;
 		component.displayTime = true;
+		de = fixture.debugElement;
 		fixture.detectChanges();
+
+		year = fixture.debugElement.query(By.css('#test-year')).nativeElement;
+		const hour: HTMLInputElement = fixture.debugElement.query(By.css('#test-hour')).nativeElement;
+		component.displayTime = true;
+		year.focus();
+		year.value = '2000';
 		year.dispatchEvent(new Event('input'));
 		fixture.detectChanges();
 		focusedElement = de.query(By.css(':focus')).nativeElement;

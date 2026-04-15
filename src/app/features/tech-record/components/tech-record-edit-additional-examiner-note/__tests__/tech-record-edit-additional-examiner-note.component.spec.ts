@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { TechRecordEditAdditionalExaminerNoteComponent } from '../tech-record-edit-additional-examiner-note.component';
 
 const mockTechRecordService = {
-	techRecord$: jest.fn(),
+	techRecord$: vi.fn(),
 };
 describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	let fixture: ComponentFixture<TechRecordEditAdditionalExaminerNoteComponent>;
@@ -41,9 +41,9 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	});
 	describe('ngOnInit', () => {
 		it('should call all initialisation functions', () => {
-			const examinerNoteSpy = jest.spyOn(component, 'getExaminerNote').mockReturnValue();
-			const techRecordSpy = jest.spyOn(component, 'getTechRecord').mockReturnValue();
-			const formSpy = jest.spyOn(component, 'setupForm').mockReturnValue();
+			const examinerNoteSpy = vi.spyOn(component, 'getExaminerNote').mockReturnValue();
+			const techRecordSpy = vi.spyOn(component, 'getTechRecord').mockReturnValue();
+			const formSpy = vi.spyOn(component, 'setupForm').mockReturnValue();
 			component.ngOnInit();
 			expect(examinerNoteSpy).toHaveBeenCalled();
 			expect(formSpy).toHaveBeenCalled();
@@ -52,9 +52,9 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	});
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -62,7 +62,7 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -71,8 +71,8 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	});
 	describe('handleSubmit', () => {
 		it('should not dispatch an action if the notes are the same', () => {
-			const storeSpy = jest.spyOn(store, 'dispatch');
-			const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockReturnValue();
+			const storeSpy = vi.spyOn(store, 'dispatch');
+			const navigateBackSpy = vi.spyOn(component, 'navigateBack').mockReturnValue();
 			component.originalExaminerNote = 'foobar';
 			component.editedExaminerNote = 'foobar';
 			component.handleSubmit();
@@ -81,8 +81,8 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 		});
 
 		it('should dispatch an action if the notes are not the same', () => {
-			const storeSpy = jest.spyOn(store, 'dispatch');
-			const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockReturnValue();
+			const storeSpy = vi.spyOn(store, 'dispatch');
+			const navigateBackSpy = vi.spyOn(component, 'navigateBack').mockReturnValue();
 			component.originalExaminerNote = 'foo';
 			component.editedExaminerNote = 'bar';
 			component.handleSubmit();

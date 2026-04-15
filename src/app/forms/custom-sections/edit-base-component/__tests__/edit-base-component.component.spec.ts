@@ -18,7 +18,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/index';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-edit-base-host',
 	template: `<form [formGroup]="form">
     <app-edit-base-component></app-edit-base-component>
   </form> `,
@@ -80,7 +80,7 @@ describe('EditBaseComponent', () => {
 
 	describe('addControls', () => {
 		it('should add controls to the form', () => {
-			jest.spyOn(form, 'addControl');
+			vi.spyOn(form, 'addControl');
 			const vehicleControls: Record<string, AbstractControl> = {
 				control1: fb.control('value1'),
 				control2: fb.control('value2'),

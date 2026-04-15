@@ -38,8 +38,8 @@ describe('SearchResultsV2Component', () => {
 
 	describe('ngOnInit', () => {
 		it('should search for the record using the query params from the url', async () => {
-			const searchSpy = jest.spyOn(techRecordService, 'searchBy');
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+			const searchSpy = vi.spyOn(techRecordService, 'searchBy');
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
 			component.ngOnInit();
 			await router.navigate(['/search/results'], {
 				queryParams: { searchTerm: 'foo', searchCriteria: SEARCH_TYPES.ALL },

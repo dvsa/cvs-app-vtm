@@ -26,12 +26,11 @@ import { MultiOptionsService } from '@services/multi-options/multi-options.servi
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { of } from 'rxjs';
 
 const mockRefDataService = {
-	getAll$: jest.fn(),
-	getReferencePsvMakeDataLoading$: jest.fn(),
+	getAll$: vi.fn(),
+	getReferencePsvMakeDataLoading$: vi.fn(),
 };
 
 describe('GeneralVehicleDetailsComponent', () => {
@@ -64,7 +63,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				TechnicalRecordService,
 				{
 					provide: MultiOptionsService,
-					useValue: { getOptions: jest.fn(), loadOptions: jest.fn() },
+					useValue: { getOptions: vi.fn(), loadOptions: vi.fn() },
 				},
 				{ provide: ReferenceDataService, useValue: mockRefDataService },
 				AxlesService,
@@ -87,9 +86,9 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
-			const loadOptions = jest.spyOn(component, 'loadOptions');
-			const loadBodyMakes = jest.spyOn(component, 'loadBodyMakes');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const loadOptions = vi.spyOn(component, 'loadOptions');
+			const loadBodyMakes = vi.spyOn(component, 'loadBodyMakes');
 			component.ngOnInit();
 			expect(parentFormSpy).toHaveBeenCalled();
 			expect(loadOptions).toHaveBeenCalled();
@@ -97,14 +96,14 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should set bodyTypes to trailer options when vehicle type is TRL', () => {
-			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.TRL);
+			vi.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.TRL);
 			const trailerBodyTypes = [BodyTypeDescription.FLAT, BodyTypeDescription.ARTICULATED];
-			jest.spyOn(trlBodyTypeCodeMap, 'values').mockReturnValue(trailerBodyTypes.values());
+			vi.spyOn(trlBodyTypeCodeMap, 'values').mockReturnValue(trailerBodyTypes.values());
 			const trailerOptions = [
 				{ label: 'Flat', value: 'flat' },
 				{ label: 'Articulated', value: 'articulated' },
 			];
-			jest.spyOn<any, any>(getOptionsFromEnum, 'apply').mockReturnValue(trailerOptions);
+			vi.spyOn<any, any>(getOptionsFromEnum, 'apply').mockReturnValue(trailerOptions);
 
 			const vehicleType = component.getVehicleType();
 			if (vehicleType === VehicleTypes.TRL) {
@@ -117,13 +116,13 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
+			const spy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -134,7 +133,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 			const mockTechRecord = {
 				techRecord_vehicleType: VehicleTypes.HGV,
 			} as V3TechRecordModel;
-			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
 		});
@@ -144,7 +143,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleType: VehicleTypes.TRL,
 				techRecord_euVehicleCategory: EUVehicleCategory.O1,
 			} as V3TechRecordModel;
-			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
 		});
@@ -152,7 +151,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('loadOptions', () => {
 		it('should load the options based off the vehicle type (PSV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('psv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();
@@ -160,7 +159,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (HGV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();
@@ -168,7 +167,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (TRL)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('trl');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();
@@ -178,7 +177,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('loadBodyMakes', () => {
 		it('should load the options based off the vehicle type (PSV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'getOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'getOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('psv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadBodyMakes();
@@ -186,7 +185,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (HGV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'getOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'getOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadBodyMakes();
@@ -194,7 +193,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (TRL)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'getOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'getOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('trl');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadBodyMakes();
@@ -210,7 +209,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleConfiguration: 'articulated',
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleVehicleConfigurationChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -228,7 +227,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_bodyType_code: BodyTypeCode.A,
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleVehicleConfigurationChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -244,7 +243,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleConfiguration: 'rigid',
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleVehicleConfigurationChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -259,7 +258,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleConfiguration: 'articulated',
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleVehicleConfigurationChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -274,7 +273,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleConfiguration: 'semi-trailer',
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleVehicleConfigurationChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -293,7 +292,7 @@ describe('GeneralVehicleDetailsComponent', () => {
 				techRecord_vehicleType: VehicleTypes.HGV,
 			});
 
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			component.handleBodyTypeDescriptionChange();
 
 			expect(formSpy).toHaveBeenCalledWith({
@@ -304,26 +303,31 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('handleDTpNumberChange', () => {
 		it('should patch the form and call cdr.detectChanges', () => {
-			let psvMake: ReferenceDataModelBase;
-			store
-				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, '1234'))
-				.subscribe((value: ReferenceDataModelBase) => {
-					const cdrSpy = jest.spyOn(component.cdr, 'detectChanges');
-					const formSpy = jest.spyOn(component.form, 'patchValue');
-					psvMake = value;
-					component.handleDTpNumberChange(psvMake);
-					expect(cdrSpy).toHaveBeenCalled();
-					expect(formSpy).toHaveBeenCalled();
-				});
+			const cdrSpy = vi.spyOn(component.cdr, 'detectChanges');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
+			const psvMake = {
+				resourceType: ReferenceDataResourceType.PsvMake,
+				resourceKey: '1234',
+				dtpNumber: '1234',
+				psvBodyType: 'COACH',
+				psvBodyMake: 'Body Make',
+				psvChassisMake: 'Chassis Make',
+				psvChassisModel: 'Chassis Model',
+			} as ReferenceDataModelBase;
+
+			component.handleDTpNumberChange(psvMake);
+
+			expect(cdrSpy).toHaveBeenCalled();
+			expect(formSpy).toHaveBeenCalled();
 		});
 	});
 
 	describe('lockAndUpdateAxles', () => {
 		it('should disable the axle input, update tech record, and add axles', () => {
-			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
-			const addAxleSpy = jest.spyOn(component.axlesService, 'addAxle').mockImplementation();
+			const setLockSpy = vi.spyOn(component.axlesService, 'setLockAxles');
+			const addAxleSpy = vi.spyOn(component.axlesService, 'addAxle').mockImplementation((() => {}) as any);
 			component.form.patchValue({ techRecord_noOfAxles: 3 });
-			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
+			vi.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
 
 			component.lockAndUpdateAxles();
 
@@ -334,12 +338,12 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 	describe('clearAxleInput', () => {
 		it('should enable the axle input, reset axles to 0, and update tech record', () => {
-			const setLockSpy = jest.spyOn(component.axlesService, 'setLockAxles');
-			const patchSpy = jest.spyOn(component.form, 'patchValue');
-			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation();
-			const removeAllAxlesSpy = jest.spyOn(component.axlesService, 'removeAllAxles').mockImplementation();
+			const setLockSpy = vi.spyOn(component.axlesService, 'setLockAxles');
+			const patchSpy = vi.spyOn(component.form, 'patchValue');
+			const updateSpy = vi.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation((() => {}) as any);
+			const removeAllAxlesSpy = vi.spyOn(component.axlesService, 'removeAllAxles').mockImplementation((() => {}) as any);
 
-			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
+			vi.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.HGV } as any);
 
 			component.clearAxleInput();
 
@@ -355,9 +359,9 @@ describe('GeneralVehicleDetailsComponent', () => {
 		});
 
 		it('should not update axleSpacing for non-HGV/TRL types', () => {
-			const updateSpy = jest.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation();
-			const removeAllAxlesSpy = jest.spyOn(component.axlesService, 'removeAllAxles').mockImplementation();
-			jest.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.PSV } as any);
+			const updateSpy = vi.spyOn(component.technicalRecordService, 'updateEditingTechRecord').mockImplementation((() => {}) as any);
+			const removeAllAxlesSpy = vi.spyOn(component.axlesService, 'removeAllAxles').mockImplementation((() => {}) as any);
+			vi.spyOn(component, 'techRecord').mockReturnValue({ techRecord_vehicleType: VehicleTypes.PSV } as any);
 
 			component.clearAxleInput();
 

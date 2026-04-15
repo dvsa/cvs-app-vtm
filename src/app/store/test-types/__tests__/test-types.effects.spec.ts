@@ -36,7 +36,7 @@ describe('TestResultsEffects', () => {
 					provide: UserService,
 					useValue: { roles$: of(['TestResult.CreateDeskBased']) },
 				},
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: vi.fn().mockReturnValue(false) } },
 			],
 		});
 
@@ -59,7 +59,7 @@ describe('TestResultsEffects', () => {
 				actions$ = hot('-a--', { a: fetchTestTypes });
 
 				// mock service call
-				(httpService.getTestTypes as () => Observable<TestTypesTaxonomy>) = jest.fn(
+				(httpService.getTestTypes as () => Observable<TestTypesTaxonomy>) = vi.fn(
 					(): Observable<TestTypesTaxonomy> => {
 						return cold('--a|', { a: testTypes });
 					}
@@ -82,7 +82,7 @@ describe('TestResultsEffects', () => {
 				});
 
 				// mock service call
-				(httpService.getTestTypes as () => Observable<unknown>) = jest.fn((): Observable<HttpErrorResponse> => {
+				(httpService.getTestTypes as () => Observable<unknown>) = vi.fn((): Observable<HttpErrorResponse> => {
 					return cold('--#|', {}, expectedError);
 				});
 

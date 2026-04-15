@@ -68,11 +68,12 @@ describe('AdrGenerateCertTestComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(ContingencyAdrGenerateCertComponent);
 		component = fixture.componentInstance;
-		fixture.detectChanges();
 		store = TestBed.inject(Store);
 		techRecordService = TestBed.inject(TechnicalRecordService);
-		fixture = TestBed.createComponent(ContingencyAdrGenerateCertComponent);
-		component = fixture.componentInstance;
+	});
+
+	afterEach(() => {
+		fixture.destroy();
 	});
 
 	it('should create', () => {
@@ -102,7 +103,7 @@ describe('AdrGenerateCertTestComponent', () => {
 			techRecordService.techRecord$ = of(mockRecord);
 		});
 		it('should dispatch the correct action with correct params', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
 			component.handleSubmit();
 

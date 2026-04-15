@@ -1,4 +1,4 @@
 export class LogsProviderMock {
-	sendLogs = jasmine.createSpy('sendLogs');
-	dispatchLog = jasmine.createSpy('dispatchLog');
+	sendLogs = vi.fn();
+	dispatchLog = vi.fn();
 }

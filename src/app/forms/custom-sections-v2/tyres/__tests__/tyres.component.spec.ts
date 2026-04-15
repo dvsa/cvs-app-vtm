@@ -22,9 +22,9 @@ import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 
 const mockReferenceDataService = {
-	fetchReferenceDataByKey: jest.fn(),
-	loadReferenceData: jest.fn(),
-	getAll$: jest.fn().mockReturnValue(of([])),
+	fetchReferenceDataByKey: vi.fn(),
+	loadReferenceData: vi.fn(),
+	getAll$: vi.fn().mockReturnValue(of([])),
 };
 
 describe('TyresSectionEditComponent', () => {
@@ -72,7 +72,7 @@ describe('TyresSectionEditComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 
 			expect(parentFormSpy).toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('TyresSectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});

@@ -9,7 +9,7 @@ import { FieldErrorMessageComponent } from '../../field-error-message/field-erro
 import { SelectComponent } from '../select.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-select-host',
 	template: `<form [formGroup]="form">
     <app-select name="foo" label="Foo" [options]="options" formControlName="foo"></app-select>
   </form> `,

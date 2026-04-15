@@ -52,9 +52,9 @@ describe('AdrCertificates', () => {
 	});
 	describe('generateADRCertificate', () => {
 		it('should navigate when carriesDangerousGoodsSpy returns true', () => {
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
-			const carriesDangerousGoodsSpy = jest.spyOn(adrService, 'carriesDangerousGoods');
-			const routerSpy = jest.spyOn(router, 'navigate');
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
+			const carriesDangerousGoodsSpy = vi.spyOn(adrService, 'carriesDangerousGoods');
+			const routerSpy = vi.spyOn(router, 'navigate');
 
 			const mockTechRecord = createMockHgv(0);
 			mockTechRecord.techRecord_adrDetails_dangerousGoods = true;
@@ -66,11 +66,11 @@ describe('AdrCertificates', () => {
 			expect(routerSpy).toHaveBeenCalled();
 		});
 		it('should not navigate when carriesDangerousGoods returns false', () => {
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
-			const addErrorSpy = jest.spyOn(globalErrorService, 'addError');
-			const carriesDangerousGoodsSpy = jest.spyOn(adrService, 'carriesDangerousGoods');
-			const routerSpy = jest.spyOn(router, 'navigate');
-			const viewportScrollerSpy = jest.spyOn(viewportScroller, 'scrollToPosition').mockImplementation(() => {});
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
+			const addErrorSpy = vi.spyOn(globalErrorService, 'addError');
+			const carriesDangerousGoodsSpy = vi.spyOn(adrService, 'carriesDangerousGoods');
+			const routerSpy = vi.spyOn(router, 'navigate');
+			const viewportScrollerSpy = vi.spyOn(viewportScroller, 'scrollToPosition').mockImplementation((() => {}) as any);
 
 			const mockTechRecord = createMockHgv(0);
 			mockTechRecord.techRecord_adrDetails_dangerousGoods = false;

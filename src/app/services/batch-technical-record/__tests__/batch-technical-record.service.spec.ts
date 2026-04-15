@@ -56,7 +56,7 @@ describe('TechnicalRecordService', () => {
 			});
 		});
 
-		it('return null if vin and trailer id are not provided', (done) => {
+		it('return null if vin and trailer id are not provided', () => new Promise<void>((done) => {
 			expect.assertions(1);
 			testGroup.get('vin')?.setValue(null);
 			testGroup.get('trailerIdOrVrm')?.setValue(null);
@@ -65,9 +65,9 @@ describe('TechnicalRecordService', () => {
 				expect(errors).toBeNull();
 				done();
 			});
-		});
+		}));
 
-		it('return null if the required controls do not exist', (done) => {
+		it('return null if the required controls do not exist', () => new Promise<void>((done) => {
 			expect.assertions(1);
 			testGroup = new FormGroup({ vin: new FormControl({ name: 'vin' }) });
 			const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
@@ -75,9 +75,9 @@ describe('TechnicalRecordService', () => {
 				expect(errors).toBeNull();
 				done();
 			});
-		});
+		}));
 
-		it('throws an error if trailer id is provided but vin is not', (done) => {
+		it('throws an error if trailer id is provided but vin is not', () => new Promise<void>((done) => {
 			expect.assertions(1);
 			testGroup.get('trailerIdOrVrm')?.setValue('test');
 
@@ -86,14 +86,14 @@ describe('TechnicalRecordService', () => {
 				expect(errors).toEqual({ validateForBatch: { message: 'VIN is required' } });
 				done();
 			});
-		});
+		}));
 
 		describe('when only vin is provided', () => {
 			it('should return null when it is a unique vin', async () => {
 				testGroup.get('trailerIdOrVrm')?.setValue('');
 				testGroup.get('vin')?.setValue('TESTVIN');
 
-				const isUniqueSpy = jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+				const isUniqueSpy = vi.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -107,7 +107,7 @@ describe('TechnicalRecordService', () => {
 				testGroup.get('trailerIdOrVrm')?.setValue('');
 				const vinControl = testGroup.get('vin') as CustomFormControl;
 				vinControl.setValue('TESTVIN');
-				jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
+				vi.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
 				await firstValueFrom(
 					service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>
 				);
@@ -130,7 +130,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -152,7 +152,7 @@ describe('TechnicalRecordService', () => {
 					techRecord_vehicleType: VehicleTypes.TRL,
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -176,7 +176,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -195,7 +195,7 @@ describe('TechnicalRecordService', () => {
 					techRecord_statusCode: StatusCodes.PROVISIONAL,
 				} as TechRecordSearchSchema;
 
-				jest
+				vi
 					.spyOn(httpService, 'searchTechRecords')
 					.mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
 
@@ -219,7 +219,7 @@ describe('TechnicalRecordService', () => {
 				trailerIdOrVrmControl.setValue('TESTTRAILERID');
 			}
 
-			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 
 			const errors = await firstValueFrom(
 				service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>

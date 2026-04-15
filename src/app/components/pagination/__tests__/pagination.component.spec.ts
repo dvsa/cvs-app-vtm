@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -29,36 +29,48 @@ describe('PaginationComponent', () => {
 	let hostComponent: HostComponent;
 	let el: DebugElement;
 	let router: Router;
+	const queryParamsForPage = (page: number) => ({ 'test-pagination-page': page });
 
-	beforeEach(waitForAsync(() => {
-		TestBed.configureTestingModule({
+	const render = async (currentPage = 1) => {
+		if (currentPage !== 1) {
+			await fixture.ngZone?.run(() => router.navigate([], { queryParams: queryParamsForPage(currentPage) }));
+		}
+		fixture.detectChanges();
+		await fixture.whenStable();
+		fixture.detectChanges();
+	};
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
 			imports: [HostComponent],
 			providers: [provideRouter([{ path: '', component: PaginationComponent }])],
 		}).compileComponents();
-	}));
+	});
 
 	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		hostComponent = fixture.componentInstance;
 		component = fixture.debugElement.query(By.directive(PaginationComponent)).componentInstance;
 		el = fixture.debugElement;
-
 		router = TestBed.inject(Router);
-
-		fixture.detectChanges();
 	});
 
-	it('should create', () => {
+	afterEach(() => {
+		fixture?.destroy();
+	});
+
+	it('should create', async () => {
+		await render();
 		expect(component).toBeTruthy();
 	});
 
 	it.each([
 		[10, 5],
 		[5, 10],
-	])('should return an array length of %d when items per page is %d', (arrayLength: number, itemsPerPage: number) => {
+	])('should return an array length of %d when items per page is %d', async (arrayLength: number, itemsPerPage: number) => {
 		hostComponent.numberOfItems = 50;
-		jest.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
-		fixture.detectChanges();
+		vi.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
+		await render();
 		expect(component.pages).toHaveLength(arrayLength);
 	});
 
@@ -70,21 +82,14 @@ describe('PaginationComponent', () => {
 		[[1, 2, 3, 4], 1, 17, 5],
 	])(
 		'should show pages %s on page %d when number of items is %d and items per page is %d',
-		fakeAsync((visiblePages: Array<number>, currentPage: number, numberOfItems: number, itemsPerPage: number) => {
+		async (visiblePages: Array<number>, currentPage: number, numberOfItems: number, itemsPerPage: number) => {
 			hostComponent.itemsPerPage = itemsPerPage;
 			hostComponent.numberOfItems = numberOfItems;
-
-			fixture.ngZone?.run(() => {
-				router.initialNavigation();
-				router.navigate([], { queryParams: component.pageQuery(currentPage) }).catch((error) => error);
-				tick();
-				fixture.detectChanges();
-			});
-
-			tick();
+			vi.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
+			await render(currentPage);
 
 			expect(component.visiblePages).toEqual(visiblePages);
-		})
+		}
 	);
 
 	it.each([
@@ -108,94 +113,75 @@ describe('PaginationComponent', () => {
 		},
 	])(
 		'should emit %p',
-		(
-			{
-				currentPage,
-				itemsPerPage,
-				start,
-				end,
-			}: { currentPage: number; itemsPerPage: number; start: number; end: number },
-			done
-		) => {
-			component.paginationOptions.subscribe((opts) => {
-				expect(opts?.currentPage).toBe(currentPage);
-				expect(opts?.start).toBe(start);
-				expect(opts?.end).toBe(end);
-				done();
-			});
+		async ({
+			currentPage,
+			itemsPerPage,
+			start,
+			end,
+		}: { currentPage: number; itemsPerPage: number; start: number; end: number }) => {
+			vi.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
+			await render();
 
-			jest.spyOn(component, 'itemsPerPage').mockReturnValue(itemsPerPage);
-			component.currentPageSubject.next(currentPage);
+			await new Promise<void>((done) => {
+				const subscription = component.paginationOptions.subscribe((opts) => {
+					if (opts?.currentPage !== currentPage) return;
+					expect(opts?.currentPage).toBe(currentPage);
+					expect(opts?.start).toBe(start);
+					expect(opts?.end).toBe(end);
+					subscription.unsubscribe();
+					done();
+				});
+
+				component.currentPageSubject.next(currentPage);
+			});
 		}
 	);
 
 	describe('nextPage', () => {
-		it('should go page 1 to 2', fakeAsync(() => {
+		 it('should go page 1 to 2', async () => {
 			hostComponent.numberOfItems = 50;
-			fixture.detectChanges();
-
-			fixture.ngZone?.run(() => {
-				router.initialNavigation();
-			});
+			await render();
 
 			const next: HTMLLinkElement = el.query(By.css(`#${component.tableName()}-next-page`)).nativeElement;
 			next.click();
 
-			tick();
+			await fixture.whenStable();
 			fixture.detectChanges();
 
 			expect(router.url).toBe(`/?${component.tableName()}-page=2`);
-		}));
+		});
 
-		it('should not render "next" link when already on last page', fakeAsync(() => {
+		it('should not render "next" link when already on last page', async () => {
 			hostComponent.numberOfItems = 50;
-			fixture.detectChanges();
-
-			fixture.ngZone?.run(() => {
-				router.initialNavigation();
-				router.navigate([], { queryParams: component.pageQuery(10) }).catch((error) => error);
-				tick();
-				fixture.detectChanges();
-			});
+			await render(10);
 
 			const next = el.query(By.css(`#${component.tableName()}-next-page`));
 
 			expect(next).toBeNull();
-		}));
+		});
 	});
 
 	describe('prevPage', () => {
-		it('should go from page 4 to 3', fakeAsync(() => {
+		it('should go from page 4 to 3', async () => {
 			hostComponent.numberOfItems = 50;
-			fixture.detectChanges();
-
-			fixture.ngZone?.run(() => {
-				router.initialNavigation();
-				router.navigate([], { queryParams: component.pageQuery(4) }).catch((error) => error);
-				tick();
-				fixture.detectChanges();
-			});
+			await render(4);
 
 			const prev: HTMLLinkElement = el.query(By.css(`#${component.tableName()}-prev-page`)).nativeElement;
 			prev.click();
 
-			tick();
+			await fixture.whenStable();
 			fixture.detectChanges();
 
 			expect(router.url).toBe(`/?${component.tableName()}-page=3`);
-		}));
+		});
 
-		it('should not render "prev" link when already on first page', fakeAsync(() => {
+		it('should not render "prev" link when already on first page', async () => {
 			hostComponent.numberOfItems = 50;
-			fixture.detectChanges();
-
-			fixture.ngZone?.run(() => {
-				router.initialNavigation();
-			});
+			await render();
 
 			const prev = el.query(By.css(`#${component.tableName()}-prev-page`));
 
 			expect(prev).toBeNull();
-		}));
+		});
 	});
 });

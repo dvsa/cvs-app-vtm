@@ -23,12 +23,12 @@ const mockTechRecordService = {
 	get techRecord$() {
 		return of(mockVehicleTechnicalRecord('trl'));
 	},
-	updateEditingTechRecord: jest.fn(),
-	isUnique: jest.fn(),
+	updateEditingTechRecord: vi.fn(),
+	isUnique: vi.fn(),
 };
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordGenerateLetterComponent', () => {
@@ -77,9 +77,9 @@ describe('TechRecordGenerateLetterComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -87,7 +87,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -95,7 +95,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 		});
 
 		it('should navigate back on generateLetterSuccess', () => {
-			const navigateBackSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateBackSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.ngOnInit();
 
@@ -111,7 +111,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 		});
 
 		it('should add an error when the field is not filled out', () => {
-			const addErrorSpy = jest.spyOn(errorService, 'addError');
+			const addErrorSpy = vi.spyOn(errorService, 'addError');
 
 			component.handleSubmit();
 
@@ -120,7 +120,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 
 		describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
 			it('should dispatch with id 3 on acceptance', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				component.techRecord = expectedVehicle;
 				component.techRecord.techRecord_approvalType = ApprovalType.UKNI_WVTA;
 
@@ -131,7 +131,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 			});
 
 			it('should dispatch with id 4 on rejection', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				component.techRecord = expectedVehicle;
 				component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
@@ -142,7 +142,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 			});
 
 			it('should dispatch with id 6 on acceptance', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				component.techRecord = expectedVehicle;
 				component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 

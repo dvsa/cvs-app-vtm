@@ -48,7 +48,7 @@ describe('CreateTestRecordComponent', () => {
 		},
 	};
 	const MockUserService = {
-		getUserName$: jest.fn().mockReturnValue(new Observable()),
+		getUserName$: vi.fn().mockReturnValue(new Observable()),
 		roles$: of([Roles.TestResultAmend, Roles.TestResultView]),
 	};
 
@@ -96,19 +96,19 @@ describe('CreateTestRecordComponent', () => {
 	});
 
 	it('should navigate back to the tech record', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 		component.backToTechRecord();
 		expect(navigateSpy).toHaveBeenCalled();
 	});
 
 	it('should call createTestResult with value of all forms merged into one', async () => {
 		fixture.detectChanges();
-		const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
+		const createTestResultSpy = vi.spyOn(testRecordsService, 'createTestResult').mockImplementation((() => {}) as any);
 		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 		store.overrideSelector(testResultInEdit, testRecord);
 		store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? {}));
 
-		component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+		component.isAnyFormInvalid = vi.fn().mockReturnValue(false);
 
 		await component.handleSave();
 		fixture.detectChanges();
@@ -117,13 +117,13 @@ describe('CreateTestRecordComponent', () => {
 	});
 
 	it('should not call createTestResult if some forms are invalid', async () => {
-		const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
+		const createTestResultSpy = vi.spyOn(testRecordsService, 'createTestResult').mockImplementation((() => {}) as any);
 		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
 		store.overrideSelector(testResultInEdit, testRecord);
 		store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? ''));
 
 		fixture.detectChanges();
-		component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
+		component.isAnyFormInvalid = vi.fn().mockReturnValue(true);
 
 		await component.handleSave();
 
@@ -131,7 +131,7 @@ describe('CreateTestRecordComponent', () => {
 	});
 
 	it('should dispatch the action to update the test result in edit', () => {
-		const updateTestResultSpy = jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation(() => {});
+		const updateTestResultSpy = vi.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation((() => {}) as any);
 		component.handleNewTestResult({} as TestResultSchema);
 		expect(updateTestResultSpy).toHaveBeenCalled();
 	});
@@ -147,19 +147,19 @@ describe('CreateTestRecordComponent', () => {
 		});
 
 		it('should return true if some forms are invalid', () => {
-			jest.spyOn(component, 'abandonDialog').mockReturnValue({
+			vi.spyOn(component, 'abandonDialog').mockReturnValue({
 				dynamicFormGroup: signal({ form: { controls: { errors: 'foo' }, invalid: true } }),
 			} as unknown as AbandonDialogComponent);
 			component.testMode = TestModeEnum.Abandon;
-			DynamicFormService.validate = jest.fn();
+			DynamicFormService.validate = vi.fn();
 			expect(component.isAnyFormInvalid()).toBe(true);
 		});
 
 		it('should return false if no forms are invalid', fakeAsync(() => {
-			jest.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
-				sections: jest.fn().mockReturnValue({ forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }),
-				defects: jest.fn(),
-				customDefects: jest.fn(),
+			vi.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
+				sections: vi.fn().mockReturnValue({ forEach: vi.fn().mockReturnValue([{ foo: 'foo' }]) }),
+				defects: vi.fn(),
+				customDefects: vi.fn(),
 			} as unknown as BaseTestRecordComponent);
 			tick();
 			fixture.detectChanges();
@@ -170,7 +170,7 @@ describe('CreateTestRecordComponent', () => {
 
 	describe('CreateTestRecordComponent.prototype.abandon.name', () => {
 		it('should set testMode to be abandon', () => {
-			jest.spyOn(component, 'isAnyFormInvalid').mockReturnValue(false);
+			vi.spyOn(component, 'isAnyFormInvalid').mockReturnValue(false);
 			component.abandon();
 			expect(component.testMode).toEqual(TestModeEnum.Abandon);
 		});
@@ -178,7 +178,7 @@ describe('CreateTestRecordComponent', () => {
 
 	describe('CreateTestRecordComponent.prototype.handleAbandonAction.name', () => {
 		it('should call handle save', async () => {
-			const handleSaveSpy = jest.spyOn(component, 'handleSave');
+			const handleSaveSpy = vi.spyOn(component, 'handleSave');
 
 			await component.handleAbandonAction('yes');
 
@@ -195,17 +195,17 @@ describe('CreateTestRecordComponent', () => {
 	});
 
 	it('should combine forms', async () => {
-		jest.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
-			sections: jest.fn().mockReturnValue({ forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }),
-			defects: jest.fn(),
-			customDefects: jest.fn(),
+		vi.spyOn(component, 'baseTestRecordComponent').mockReturnValue({
+			sections: vi.fn().mockReturnValue({ forEach: vi.fn().mockReturnValue([{ foo: 'foo' }]) }),
+			defects: vi.fn(),
+			customDefects: vi.fn(),
 		} as unknown as BaseTestRecordComponent);
 		// component['baseTestRecordComponent'] = {
-		// 	sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },
+		// 	sections: { forEach: vi.fn().mockReturnValue([{ foo: 'foo' }]) },
 		// } as unknown as BaseTestRecordComponent;
 
 		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		const createTestResultSpy = jest
+		const createTestResultSpy = vi
 			.spyOn(testRecordsService, 'createTestResult')
 			.mockImplementation(() => Promise.resolve(true));
 		const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
@@ -223,14 +223,14 @@ describe('CreateTestRecordComponent', () => {
 
 	it('should set testMode to be view', async () => {
 		component.techRecord = {} as V3TechRecordModel;
-		component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+		component.isAnyFormInvalid = vi.fn().mockReturnValue(false);
 		await component.handleReview();
 
 		expect(component.testMode).toEqual(TestModeEnum.View);
 	});
 
 	it('should set testMode back to edit', async () => {
-		component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+		component.isAnyFormInvalid = vi.fn().mockReturnValue(false);
 		await component.handleReview();
 		component.handleCancel();
 

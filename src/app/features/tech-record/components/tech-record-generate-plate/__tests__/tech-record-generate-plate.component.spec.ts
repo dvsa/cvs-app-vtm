@@ -19,7 +19,7 @@ import { ReplaySubject, of } from 'rxjs';
 import { GeneratePlateComponent } from '../tech-record-generate-plate.component';
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordGeneratePlateComponent', () => {
@@ -78,9 +78,9 @@ describe('TechRecordGeneratePlateComponent', () => {
 			} as V3TechRecordModel);
 		});
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -88,7 +88,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -100,7 +100,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 				component.ngOnInit();
 				component.form.get('reason')?.setValue('Provisional');
 
-				const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+				const navigateBackSpy = vi.spyOn(component, 'navigateBack').mockImplementation((() => {}) as any);
 
 				component.handleSubmit();
 
@@ -121,7 +121,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 			} as V3TechRecordModel);
 		});
 		it('should add an error when the field is not filled out', () => {
-			const addErrorSpy = jest.spyOn(errorService, 'addError');
+			const addErrorSpy = vi.spyOn(errorService, 'addError');
 
 			component.handleSubmit();
 
@@ -132,7 +132,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 		});
 
 		it('should dispatch the generatePlate action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.form.get('reason')?.setValue('Provisional');
 

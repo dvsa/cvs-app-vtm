@@ -12,7 +12,7 @@ import { techRecordValidateResolver } from '../tech-record-validate.resolver';
 describe('TechRecordViewResolver', () => {
 	let resolver: ResolveFn<boolean>;
 	const actions$ = new Observable<Action>();
-	const mockSnapshot = jest.fn;
+	const mockSnapshot = vi.fn;
 	let store: MockStore<State>;
 	let router: Router;
 
@@ -37,8 +37,8 @@ describe('TechRecordViewResolver', () => {
 
 	describe('fetch tech record result', () => {
 		it('should dispatch a tech record with null if hgv vehicle configuration invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'hgv',
 					techRecord_vehicleConfiguration: 'semi-trailer',
@@ -64,8 +64,8 @@ describe('TechRecordViewResolver', () => {
 			);
 		});
 		it('should dispatch a tech record with null if psv vehicle configuration invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'psv',
 					techRecord_vehicleConfiguration: 'semi-trailer',
@@ -90,8 +90,8 @@ describe('TechRecordViewResolver', () => {
 			);
 		});
 		it('should dispatch a tech record with null if psv vehicle class is invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi
 				.spyOn(store, 'select')
 				.mockReturnValue(of({ techRecord_vehicleType: 'psv', techRecord_vehicleClass_description: 'trailer' }));
 			const result = TestBed.runInInjectionContext(() =>
@@ -108,8 +108,8 @@ describe('TechRecordViewResolver', () => {
 			);
 		});
 		it('should dispatch a tech record with null if trl vehicle configuration invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'trl',
 					techRecord_vehicleConfiguration: 'rigid',
@@ -133,8 +133,8 @@ describe('TechRecordViewResolver', () => {
 			);
 		});
 		it('should not dispatch a tech record with trl vehicle configuration is valid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'trl',
 					techRecord_vehicleConfiguration: 'semi-trailer',
@@ -151,8 +151,8 @@ describe('TechRecordViewResolver', () => {
 			expect(dispatchSpy).toHaveBeenCalledTimes(0);
 		});
 		it('should dispatch a tech record with hgv if hgv vehicle class is invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi
 				.spyOn(store, 'select')
 				.mockReturnValue(of({ techRecord_vehicleType: 'hgv', techRecord_vehicleClass_description: 'trailer' }));
 			const result = TestBed.runInInjectionContext(() =>
@@ -172,8 +172,8 @@ describe('TechRecordViewResolver', () => {
 			);
 		});
 		it('should navigate if there is no tech record', async () => {
-			jest.spyOn(store, 'select').mockReturnValue(of(undefined));
-			const routerSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(store, 'select').mockReturnValue(of(undefined));
+			const routerSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 			const result = TestBed.runInInjectionContext(() =>
 				resolver(
 					{

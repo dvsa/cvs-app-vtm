@@ -7,6 +7,9 @@ import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { CustomValidators } from '../custom-validators';
 
+// Save a reference to Date before any fake timers can corrupt it via zone.js
+const OriginalDate = globalThis.Date;
+
 interface CustomPatternMessage {
 	customPattern: {
 		message: string;
@@ -366,10 +369,10 @@ describe('customPattern', () => {
 			const {
 				customPattern: { message },
 			} = validation;
-			// eslint-disable-next-line jest/no-conditional-expect
+			
 			expect(message).toEqual(msg);
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
+			
 			expect(validation).toBeNull();
 		}
 	});
@@ -390,11 +393,13 @@ describe('invalidOption', () => {
 
 describe('pastDate', () => {
 	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+		vi.useFakeTimers();
+		vi.setSystemTime(1640995200000); // 2022-01-01T00:00:00.000Z
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
+		globalThis.Date = OriginalDate;
 	});
 
 	it.each([
@@ -409,11 +414,13 @@ describe('pastDate', () => {
 
 describe('futureDate', () => {
 	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+		vi.useFakeTimers();
+		vi.setSystemTime(1640995200000); // 2022-01-01T00:00:00.000Z
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
+		globalThis.Date = OriginalDate;
 	});
 
 	it.each([
@@ -428,11 +435,13 @@ describe('futureDate', () => {
 
 describe('pastYear', () => {
 	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+		vi.useFakeTimers();
+		vi.setSystemTime(1640995200000); // 2022-01-01T00:00:00.000Z
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
+		globalThis.Date = OriginalDate;
 	});
 
 	it.each([
@@ -2152,7 +2161,8 @@ describe('xYearsAfterCurrent', () => {
 
 	beforeEach(() => {
 		// Set current year to 2024
-		jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
+		vi.useFakeTimers();
+		vi.setSystemTime(1704067200000); // 2024-01-01T00:00:00.000Z
 
 		control = new CustomFormControl({
 			type: FormNodeTypes.CONTROL,
@@ -2163,7 +2173,8 @@ describe('xYearsAfterCurrent', () => {
 	});
 
 	afterEach(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
+		globalThis.Date = OriginalDate;
 	});
 
 	it('should allow the current year', () => {

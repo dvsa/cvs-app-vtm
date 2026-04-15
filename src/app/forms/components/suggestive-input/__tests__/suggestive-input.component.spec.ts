@@ -9,7 +9,7 @@ import { FieldErrorMessageComponent } from '../../field-error-message/field-erro
 import { SuggestiveInputComponent } from '../suggestive-input.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-suggestive-input-host',
 	template: `<form [formGroup]="form">
     <app-suggestive-input name="foo" formControlName="foo" [options$]="options$"></app-suggestive-input>
   </form> `,
@@ -49,9 +49,9 @@ describe('SuggestiveInputComponent', () => {
 
 	describe('getters', () => {
 		it('should retutn the correct class', () => {
-			jest.spyOn(suggestiveInput, 'width').mockReturnValue(FormNodeWidth.L);
+			vi.spyOn(suggestiveInput, 'width').mockReturnValue(FormNodeWidth.L);
 			expect(suggestiveInput.style).toBe('govuk-input govuk-input--width-10');
-			jest.spyOn(suggestiveInput, 'width').mockReturnValue(undefined);
+			vi.spyOn(suggestiveInput, 'width').mockReturnValue(undefined);
 			expect(suggestiveInput.style).toBe('govuk-input');
 		});
 	});

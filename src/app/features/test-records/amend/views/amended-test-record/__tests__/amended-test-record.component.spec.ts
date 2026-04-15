@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { mockDefectList } from '@mocks/mock-defects';
@@ -45,6 +45,7 @@ describe('AmendedTestRecordComponent', () => {
 		store = TestBed.inject(MockStore);
 		store.overrideSelector(selectedAmendedTestResultState, mockTestResult());
 		store.overrideSelector(selectAmendedDefectData, mockDefectList());
+		store.refreshState();
 
 		fixture = TestBed.createComponent(AmendedTestRecordComponent);
 		component = fixture.componentInstance;
@@ -54,13 +55,13 @@ describe('AmendedTestRecordComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('sets class properties on component init', inject(
-		[TestRecordsService],
-		(testRecordsService: TestRecordsService) => {
-			fixture.detectChanges();
+	it('sets class properties on component init', async () => {
+		const testRecordsService = TestBed.inject(TestRecordsService);
 
-			expect(component.testResult$).toEqual(testRecordsService.amendedTestResult$);
-			expect(component.defects$).toEqual(testRecordsService.amendedDefectData$);
-		}
-	));
+		fixture.detectChanges();
+		await fixture.whenStable();
+
+		expect(component.testResult$).toEqual(testRecordsService.amendedTestResult$);
+		expect(component.defects$).toEqual(testRecordsService.amendedDefectData$);
+	});
 });

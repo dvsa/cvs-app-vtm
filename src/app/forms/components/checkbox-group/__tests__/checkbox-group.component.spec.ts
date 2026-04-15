@@ -9,7 +9,7 @@ import { FieldErrorMessageComponent } from '../../field-error-message/field-erro
 import { CheckboxGroupComponent } from '../checkbox-group.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-checkbox-group-host',
 	template: `<form [formGroup]="form">
     <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo" [delimited]="delimited"></app-checkbox-group>
   </form> `,

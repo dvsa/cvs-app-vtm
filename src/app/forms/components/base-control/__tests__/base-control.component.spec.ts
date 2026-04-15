@@ -47,7 +47,7 @@ describe('BaseControlComponent', () => {
 		});
 
 		it('should call onChange successfully', () => {
-			const onChangepy = jest.spyOn(component, 'onChange');
+			const onChangepy = vi.spyOn(component, 'onChange');
 
 			component.onChange(null);
 
@@ -55,7 +55,7 @@ describe('BaseControlComponent', () => {
 		});
 
 		it('should call onTouched successfully', () => {
-			const onTouchedpy = jest.spyOn(component, 'onTouched');
+			const onTouchedpy = vi.spyOn(component, 'onTouched');
 
 			component.onTouched();
 
@@ -77,7 +77,7 @@ describe('BaseControlComponent', () => {
 			component.handleEvent(new Event('blur'));
 			expect(component.focused).toBeFalsy();
 
-			const handleEventSpy = jest.spyOn(component, 'handleEvent');
+			const handleEventSpy = vi.spyOn(component, 'handleEvent');
 			const state = component.handleEvent(new Event('submit'));
 			expect(handleEventSpy).toHaveBeenCalled();
 			expect(state).toBeNull();

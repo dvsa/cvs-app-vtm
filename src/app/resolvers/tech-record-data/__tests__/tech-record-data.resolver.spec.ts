@@ -16,7 +16,7 @@ describe('techRecordDataResolver', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [{ provide: ReferenceDataService, useValue: { loadReferenceData: jest.fn() } }],
+			providers: [{ provide: ReferenceDataService, useValue: { loadReferenceData: vi.fn() } }],
 		});
 		referenceDataService = TestBed.inject(ReferenceDataService);
 	});
@@ -26,13 +26,13 @@ describe('techRecordDataResolver', () => {
 	});
 
 	it('should attempt to load the tyres ref data', () => {
-		const spy = jest.spyOn(referenceDataService, 'loadReferenceData');
+		const spy = vi.spyOn(referenceDataService, 'loadReferenceData');
 		void executeResolver(routeSnapshot, routerStateSnapshot);
 		expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.Tyres);
 	});
 
 	it('should attempt to load the tyres load index ref data', () => {
-		const spy = jest.spyOn(referenceDataService, 'loadReferenceData');
+		const spy = vi.spyOn(referenceDataService, 'loadReferenceData');
 		void executeResolver(routeSnapshot, routerStateSnapshot);
 		expect(spy).toHaveBeenCalledWith(ReferenceDataResourceType.TyreLoadIndex);
 	});

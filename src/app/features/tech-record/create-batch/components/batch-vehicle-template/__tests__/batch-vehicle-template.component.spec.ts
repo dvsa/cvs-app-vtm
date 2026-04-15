@@ -21,9 +21,9 @@ let batchOfVehicles: BatchRecord[] = [];
 
 const mockTechRecordService = (<unknown>{
 	editableVehicleTechRecord$: of({ techRecord: [] }),
-	updateEditingTechRecord: jest.fn(),
-	createVehicleRecord: jest.fn(),
-	clearSectionTemplateStates: jest.fn(),
+	updateEditingTechRecord: vi.fn(),
+	createVehicleRecord: vi.fn(),
+	clearSectionTemplateStates: vi.fn(),
 }) as TechnicalRecordService;
 
 const mockBatchTechRecordService = (<unknown>{
@@ -39,7 +39,7 @@ const mockBatchTechRecordService = (<unknown>{
 	},
 }) as BatchTechnicalRecordService;
 
-@Component({})
+@Component({ template: '' })
 class TechRecordSummaryStubComponent {
 	checkForms() {}
 }
@@ -102,7 +102,7 @@ describe('BatchVehicleTemplateComponent', () => {
 
 	describe('should dispatch the createVehicleTechRecord action for every vin and trailerId given', () => {
 		beforeEach(() => {
-			jest
+			vi
 				.spyOn(component, 'summary')
 				.mockReturnValue(
 					TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent
@@ -110,8 +110,8 @@ describe('BatchVehicleTemplateComponent', () => {
 		});
 
 		it('given a batch of 0', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
-			jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
+			const dispatchSpy = vi.spyOn(store, 'dispatch').mockImplementation((() => {}) as any);
+			vi.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 			component.handleSubmit();
 			expect(dispatchSpy).toHaveBeenCalledTimes(0);
 		});
@@ -119,14 +119,14 @@ describe('BatchVehicleTemplateComponent', () => {
 		it('given a batch of 2 vehicles to create', () => {
 			batchOfVehicles = [{ vin: 'EXAMPLEVIN000001' }, { vin: 'EXAMPLEVIN000002' }];
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
-			jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
+			const dispatchSpy = vi.spyOn(store, 'dispatch').mockImplementation((() => {}) as any);
+			vi.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 			component.handleSubmit();
 			expect(dispatchSpy).toHaveBeenCalledTimes(2);
 		});
 
 		it('given a batch of 2 vehicles to update', fakeAsync(() => {
-			jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			batchOfVehicles = [
 				{
@@ -142,11 +142,11 @@ describe('BatchVehicleTemplateComponent', () => {
 					createdTimestamp: '2022',
 				},
 			];
-			jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+			vi.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
-			jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
+			vi.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+			const dispatchSpy = vi.spyOn(store, 'dispatch').mockImplementation((() => {}) as any);
 			component.handleSubmit();
 
 			tick();
@@ -170,7 +170,7 @@ describe('BatchVehicleTemplateComponent', () => {
 		}));
 
 		it('given a batch of 5 vehicles to create and update', fakeAsync(() => {
-			jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			batchOfVehicles = [
 				{
@@ -190,9 +190,9 @@ describe('BatchVehicleTemplateComponent', () => {
 				{ vin: 'EXAMPLEVIN000005' },
 			];
 
-			jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
-			jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
-			const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+			vi.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+			vi.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
+			const dispatchSpy = vi.spyOn(store, 'dispatch').mockImplementation((() => {}) as any);
 			component.handleSubmit();
 
 			tick();
@@ -218,16 +218,16 @@ describe('BatchVehicleTemplateComponent', () => {
 		}));
 
 		it('given a batch of 40', fakeAsync(() => {
-			jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 			batchOfVehicles = [];
 			for (let i = 1; i <= 40; i++) {
 				batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerIdOrVrm: `100000${i}` });
 			}
 
-			jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
-			jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
+			vi.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+			vi.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+			const dispatchSpy = vi.spyOn(store, 'dispatch').mockImplementation((() => {}) as any);
 			component.handleSubmit();
 			tick();
 			expect(dispatchSpy).toHaveBeenCalledTimes(40);

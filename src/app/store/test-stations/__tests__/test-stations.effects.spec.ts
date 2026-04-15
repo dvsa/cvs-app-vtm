@@ -44,7 +44,7 @@ describe('TestStationsEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: vi.fn().mockReturnValue(false) } },
 			],
 		});
 
@@ -67,7 +67,7 @@ describe('TestStationsEffects', () => {
 				actions$ = hot('-a--', { a: fetchTestStations() });
 
 				// mock service call
-				jest.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--a|', { a: payload }));
+				vi.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--a|', { a: payload }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchTestStations$).toBe('---b', {
@@ -82,7 +82,7 @@ describe('TestStationsEffects', () => {
 
 				const expectedError = new Error('Reference data resourceType is required');
 
-				jest.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchTestStations$).toBe('---b', {
 					b: fetchTestStationsFailed({ error: 'Reference data resourceType is required' }),
@@ -102,7 +102,7 @@ describe('TestStationsEffects', () => {
 				actions$ = hot('-a--', { a: fetchTestStation({ id }) });
 
 				// mock service call
-				jest.spyOn(service, 'fetchTestStation').mockReturnValue(cold('--a|', { a: entity }));
+				vi.spyOn(service, 'fetchTestStation').mockReturnValue(cold('--a|', { a: entity }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchTestStation$).toBe('---b', {
@@ -118,7 +118,7 @@ describe('TestStationsEffects', () => {
 
 				const expectedError = new Error('Reference data resourceKey is required');
 
-				jest.spyOn(service, 'fetchTestStation').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'fetchTestStation').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchTestStation$).toBe('---b', {
 					b: fetchTestStationFailed({ error: 'Reference data resourceKey is required' }),

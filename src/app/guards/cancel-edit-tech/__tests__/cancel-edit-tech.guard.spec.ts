@@ -14,7 +14,7 @@ describe('CancelEditTechGuard', () => {
 			providers: [
 				CancelEditTechGuard,
 				provideMockStore({}),
-				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+				{ provide: RouterStateSnapshot, useValue: vi.fn().mockReturnValue({ url: '', toString: vi.fn() }) },
 			],
 		});
 		guard = TestBed.inject(CancelEditTechGuard);

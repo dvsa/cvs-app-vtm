@@ -58,7 +58,7 @@ describe('DefectsEffects', () => {
 				actions$ = hot('-a--', { a: fetchSearchResult });
 
 				// mock service call
-				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--a|', { a: payload }));
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--a|', { a: payload }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
@@ -73,7 +73,7 @@ describe('DefectsEffects', () => {
 
 				const expectedError = new Error('Oopsi');
 
-				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
 					b: fetchSearchResultFailed({

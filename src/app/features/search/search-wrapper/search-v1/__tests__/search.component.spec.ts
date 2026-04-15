@@ -46,7 +46,7 @@ describe('SearchComponent', () => {
 		globalErrorService = TestBed.inject(GlobalErrorService);
 		router = TestBed.inject(Router);
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should create', () => expect(component).toBeTruthy());
@@ -54,7 +54,7 @@ describe('SearchComponent', () => {
 	describe('searching', () => {
 		describe('navigateSearch', () => {
 			it('should navigate to vin search result', () => {
-				const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+				const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 				const expectedVin = 'someVin';
 				component.navigateSearch(expectedVin, SEARCH_TYPES.VIN);
@@ -63,7 +63,7 @@ describe('SearchComponent', () => {
 			});
 
 			it('should navigate to partialVin search result', () => {
-				const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+				const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 				const expectedPartialVin = 'somePartialVin';
 				component.navigateSearch(expectedPartialVin, SEARCH_TYPES.PARTIAL_VIN);
@@ -74,7 +74,7 @@ describe('SearchComponent', () => {
 			});
 
 			it('should navigate to vrm search result', () => {
-				const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+				const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 				const expectedVrm = 'someVrm';
 				component.navigateSearch(expectedVrm, SEARCH_TYPES.VRM);
@@ -83,7 +83,7 @@ describe('SearchComponent', () => {
 			});
 
 			it('should navigate to trailerId search result', () => {
-				const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+				const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 				const expectedTrailerId = 'someTrailerId';
 				component.navigateSearch(expectedTrailerId, SEARCH_TYPES.TRAILER_ID);
@@ -96,7 +96,7 @@ describe('SearchComponent', () => {
 
 		describe('invalid input', () => {
 			it('should add search-term error', () => {
-				const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
+				const addErrorSpy = vi.spyOn(globalErrorService, 'addError').mockImplementation((() => {}) as any);
 
 				component.navigateSearch('', '');
 
@@ -107,7 +107,7 @@ describe('SearchComponent', () => {
 			});
 
 			it('should add search-type error', () => {
-				const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
+				const addErrorSpy = vi.spyOn(globalErrorService, 'addError').mockImplementation((() => {}) as any);
 
 				component.navigateSearch('some term', '');
 
@@ -119,14 +119,14 @@ describe('SearchComponent', () => {
 		});
 
 		describe('helper methods', () => {
-			it('should get inline error message', (done) => {
+			it('should get inline error message', () => new Promise<void>((done) => {
 				globalErrorService.errors$ = of(expectedErrors);
 
 				component.getInlineErrorMessage(expectedError.anchorLink ?? '').subscribe((response) => {
 					expect(response).toBeTruthy();
 					done();
 				}); // subscribe to activate the map inside 'getInlineErrorMessage()'
-			});
+			}));
 
 			it('should get error by name', () => {
 				const error = component.getErrorByName(expectedErrors, expectedError.anchorLink ?? '');

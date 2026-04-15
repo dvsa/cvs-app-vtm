@@ -23,7 +23,7 @@ import { TechRecordTitleComponent } from '../../../tech-record-title/tech-record
 import { TestRecordSummaryComponent } from '../../../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from '../vehicle-technical-record.component';
 
-global.scrollTo = jest.fn();
+global.scrollTo = vi.fn();
 
 describe('VehicleTechnicalRecordComponent', () => {
 	let component: VehicleTechnicalRecordComponent;
@@ -31,7 +31,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 
 	const actions$ = new ReplaySubject<Action>();
 
-	@Component({})
+	@Component({ template: '' })
 	class TechRecordSummaryStubComponent {
 		checkForms() {}
 	}
@@ -80,6 +80,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 						get sectionStates$() {
 							return of(['TEST_SECTION']);
 						},
+						getMakeAndModel: () => 'test make and model',
 						getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
 							return techRecord.vehicleType;
 						},

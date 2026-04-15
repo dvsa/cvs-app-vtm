@@ -29,6 +29,8 @@ class TestComponent {
 	public get Roles() {
 		return Roles;
 	}
+
+	ThisIsNotFromTheRolesEnum = 'ThisIsNotFromTheRolesEnum' as any;
 }
 
 describe('RoleRequiredDirective', () => {

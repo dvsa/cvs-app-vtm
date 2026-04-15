@@ -54,7 +54,7 @@ describe('AuthorisationIntoServiceSectionEditComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should call addControls', () => {
-			const addControlsBasedOffVehicleTypeSpy = jest.spyOn(component, 'addControls');
+			const addControlsBasedOffVehicleTypeSpy = vi.spyOn(component, 'addControls');
 			component.ngOnInit();
 			expect(addControlsBasedOffVehicleTypeSpy).toHaveBeenCalled();
 		});
@@ -74,7 +74,7 @@ describe('AuthorisationIntoServiceSectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});
@@ -89,8 +89,8 @@ describe('AuthorisationIntoServiceSectionEditComponent', () => {
 
 	describe('addControls', () => {
 		it('should add vehicle specific controls to the form', () => {
-			const addControlSpy = jest.spyOn(component.form, 'addControl');
-			const vehicleControlsSpy = jest.spyOn(component, 'trailerFields', 'get').mockReturnValue(component.trailerFields);
+			const addControlSpy = vi.spyOn(component.form, 'addControl');
+			const vehicleControlsSpy = vi.spyOn(component, 'trailerFields', 'get').mockReturnValue(component.trailerFields);
 			component.addControls();
 			expect(vehicleControlsSpy).toHaveBeenCalled();
 			expect(addControlSpy).toHaveBeenCalled();

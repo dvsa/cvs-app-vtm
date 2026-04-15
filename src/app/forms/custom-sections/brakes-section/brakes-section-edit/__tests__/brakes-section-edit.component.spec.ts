@@ -56,8 +56,8 @@ describe('BrakesSectionEditComponent', () => {
 				{
 					provide: MultiOptionsService,
 					useValue: {
-						getOptions: jest.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
-						loadOptions: jest.fn(),
+						getOptions: vi.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
+						loadOptions: vi.fn(),
 					},
 				},
 			],
@@ -83,13 +83,13 @@ describe('BrakesSectionEditComponent', () => {
 		});
 
 		it('should call loadOptions', () => {
-			const loadOptionsSpy = jest.spyOn(optionsService, 'loadOptions');
+			const loadOptionsSpy = vi.spyOn(optionsService, 'loadOptions');
 			component.ngOnInit();
 			expect(loadOptionsSpy).toHaveBeenCalled();
 		});
 
 		it('should call handleBrakeCodeChange', () => {
-			const handleBrakeCodeChangeSpy = jest.spyOn(component, 'handleBrakeCodeChange');
+			const handleBrakeCodeChangeSpy = vi.spyOn(component, 'handleBrakeCodeChange');
 			component.ngOnInit();
 			expect(handleBrakeCodeChangeSpy).toHaveBeenCalled();
 		});
@@ -103,7 +103,7 @@ describe('BrakesSectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});
@@ -165,14 +165,14 @@ describe('BrakesSectionEditComponent', () => {
 
 	describe('handleBrakeCodeChange', () => {
 		it('should early return for vehicles other than PSV', () => {
-			const spy = jest.spyOn(component.form, 'get');
+			const spy = vi.spyOn(component.form, 'get');
 			fixture.componentRef.setInput('techRecord', mockTRL);
 			component.handleBrakeCodeChange();
 			expect(spy).not.toHaveBeenCalled();
 		});
 
 		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const brakesData = {
 				resourceKey: '123',
@@ -190,7 +190,7 @@ describe('BrakesSectionEditComponent', () => {
 				techRecord_brakes_dataTrBrakeThree: brakesData.parking,
 			};
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			store.setState({
 				...initialAppState,
@@ -209,7 +209,7 @@ describe('BrakesSectionEditComponent', () => {
 				techRecord_brakes_brakeCodeOriginal: '123',
 			});
 
-			jest.advanceTimersByTime(401);
+			vi.advanceTimersByTime(401);
 
 			expect(dispatchSpy).toHaveBeenNthCalledWith(1, updateEditingTechRecord({ vehicleTechRecord: changes } as any));
 		});

@@ -40,7 +40,7 @@ describe('CreateTestTypeComponent', () => {
 		router = TestBed.inject(Router);
 		route = TestBed.inject(ActivatedRoute);
 
-		jest.spyOn(window, 'alert').mockImplementation();
+		vi.spyOn(window, 'alert').mockImplementation((() => {}) as any);
 
 		fixture.detectChanges();
 	});
@@ -50,7 +50,7 @@ describe('CreateTestTypeComponent', () => {
 	});
 
 	it('should navigate to sibling path "amend-test-details"', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 		component.handleSelectedTestType({ id: '1' } as TestType);
 		expect(navigateSpy).toHaveBeenCalledWith(['..', 'test-details'], {
 			queryParams: { testType: '1' },
@@ -89,10 +89,10 @@ describe('CreateTestTypeComponent', () => {
 		it.each(testCases)(
 			'should get the vehicle record and alert with the appropriate message',
 			({ record, message }) => {
-				jest.resetAllMocks();
+				vi.resetAllMocks();
 				techRecordService.techRecord$ = of(record);
-				const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
-				const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+				const alertSpy = vi.spyOn(window, 'alert').mockImplementation((() => {}) as any);
+				const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 				component.ngAfterContentInit();
 				expect(alertSpy).toHaveBeenCalledTimes(1);
 				expect(alertSpy).toHaveBeenCalledWith(message);

@@ -55,7 +55,7 @@ describe('DynamicFormFieldComponent', () => {
 		expect(options).toBeTruthy();
 	});
 
-	it('should return the metadata options', (done) => {
+	it('should return the metadata options', () => new Promise<void>((done) => {
 		fixture.componentRef.setInput('control', {
 			key: 'birthday',
 			value: new CustomFormControl({
@@ -70,22 +70,22 @@ describe('DynamicFormFieldComponent', () => {
 			expect(value).toEqual([{ value: '1', label: 'test' }]);
 			done();
 		});
-	});
+	}));
 
-	it('should return the reference data options', (done) => {
-		service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
+	it('should return the reference data options', () => new Promise<void>((done) => {
+		service.getAll$ = vi.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
 		fixture.componentRef.setInput('form', new FormGroup({}));
 		component.options$.subscribe((value) => {
 			expect(value).toBeTruthy();
 			expect(value).toEqual([{ value: '1', label: 'test' }]);
 			done();
 		});
-	});
+	}));
 
 	it('should fetch the reference data on init', () => {
-		service.loadReferenceData = jest.fn();
+		service.loadReferenceData = vi.fn();
 		component.ngAfterContentInit();
-		const spy = jest.spyOn(service, 'loadReferenceData');
+		const spy = vi.spyOn(service, 'loadReferenceData');
 		expect(spy).toHaveBeenCalled();
 	});
 });

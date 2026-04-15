@@ -20,7 +20,7 @@ describe('NoEditGuard', () => {
 			providers: [
 				NoEditGuard,
 				provideMockStore({}),
-				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+				{ provide: RouterStateSnapshot, useValue: vi.fn().mockReturnValue({ url: '', toString: vi.fn() }) },
 			],
 		});
 
@@ -36,14 +36,14 @@ describe('NoEditGuard', () => {
 	});
 
 	describe('canActivate', () => {
-		it('should return true when not in edit mode', (done) => {
+		it('should return true when not in edit mode', () => new Promise<void>((done) => {
 			guard.canActivate(route.snapshot, mockRouterStateSnapshot).subscribe((result) => {
 				expect(result).toBeTruthy();
 				done();
 			});
-		});
+		}));
 
-		it('should reject navigation and return UrlTree without edit query param', (done) => {
+		it('should reject navigation and return UrlTree without edit query param', () => new Promise<void>((done) => {
 			mockRouteEditable.setResult(true);
 			store.refreshState();
 
@@ -55,6 +55,6 @@ describe('NoEditGuard', () => {
 				expect((tree as UrlTree).queryParams['sanityCheck']).toBe('bar');
 				done();
 			});
-		});
+		}));
 	});
 });

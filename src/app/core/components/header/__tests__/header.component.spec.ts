@@ -37,12 +37,12 @@ describe('HeaderComponent', () => {
 		expect(userNameText.innerHTML).toBe('Test');
 	});
 
-	it('Clicking logout fires off event', (done) => {
+	it('Clicking logout fires off event', () => new Promise<void>((done) => {
 		component.logOutEvent.subscribe(() => {
 			done();
 			expect(done).toHaveBeenCalled();
 		});
 
 		logOutButton.triggerEventHandler('click', null);
-	});
+	}));
 });

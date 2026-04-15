@@ -89,6 +89,10 @@
               "namedChunks": false,
               "extractLicenses": true
             },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            },
             "deploy": {
               "fileReplacements": [
                 {
@@ -121,6 +125,15 @@
           "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "cvs-app-vtm:build"
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "cvs-app-vtm:build:development",
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest",
+            "runnerConfig": "vitest.config.ts"
           }
         },
         "lint": {

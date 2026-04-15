@@ -56,9 +56,9 @@ describe('ReferenceDataComponent', () => {
 
 	describe('cancel', () => {
 		it('should navigate back relative to the route', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
 			component.cancel();
 
@@ -68,10 +68,10 @@ describe('ReferenceDataComponent', () => {
 
 	describe('navigateTo', () => {
 		it('should navigate to the reference data resource type', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
-			jest.spyOn(component, 'isFormValid', 'get').mockReturnValueOnce(true);
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
+			vi.spyOn(component, 'isFormValid', 'get').mockReturnValueOnce(true);
 
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
 			component.navigateTo(ReferenceDataResourceType.CountryOfRegistration);
 
@@ -81,7 +81,7 @@ describe('ReferenceDataComponent', () => {
 
 	describe('isFormValid', () => {
 		it('checks the form is valid', () => {
-			jest.spyOn(DynamicFormService, 'validate').mockReturnValueOnce();
+			vi.spyOn(DynamicFormService, 'validate').mockReturnValueOnce();
 			component.form.setValue({ referenceType: 'COUNTRY_OF_REGISTRATION' });
 			expect(component.isFormValid).toBe(true);
 		});

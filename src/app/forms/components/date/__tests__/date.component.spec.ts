@@ -1,29 +1,22 @@
-/* eslint-disable jest/no-conditional-expect */
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { initialAppState } from '@store/index';
-import { BaseControlComponent } from '../../base-control/base-control.component';
-import { FieldErrorMessageComponent } from '../../field-error-message/field-error-message.component';
 import { DateComponent } from '../date.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-date-host',
 	template: `<form [formGroup]="form">
     <app-date name="foo" label="Foo" formControlName="foo"></app-date>
   </form> `,
 	imports: [
-		BaseControlComponent,
 		DateComponent,
-		FieldErrorMessageComponent,
 		FormsModule,
 		ReactiveFormsModule,
-		DateFocusNextDirective,
 	],
 })
 class HostComponent {
@@ -50,16 +43,21 @@ describe('DateComponent', () => {
 		dateComponent = fixture.debugElement.query(By.directive(DateComponent)).componentInstance;
 	});
 
+	afterEach(() => {
+		fixture.destroy();
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should add validators', () => {
-		const addValidatorsSpy = jest.spyOn(dateComponent, 'addValidators');
+	it('should add validators', fakeAsync(() => {
+		const addValidatorsSpy = vi.spyOn(dateComponent, 'addValidators');
 		fixture.detectChanges();
+		tick();
 
 		expect(addValidatorsSpy).toHaveBeenCalledTimes(1);
-	});
+	}));
 
 	describe('control values', () => {
 		it.each([
@@ -72,7 +70,7 @@ describe('DateComponent', () => {
 			[undefined, undefined, undefined, undefined, undefined, undefined, true],
 		])(
 			'should be %s for %d, %d, %d, %d, %d',
-			(
+			fakeAsync((
 				expected: string | undefined,
 				year: number | undefined,
 				month: number | undefined,
@@ -82,22 +80,25 @@ describe('DateComponent', () => {
 				displayTime = false
 			) => {
 				dateComponent.originalDate = '2022-01-01T01:06:00.000';
-				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				vi.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				vi.spyOn(dateComponent, 'addValidators').mockImplementation(() => undefined);
 
 				fixture.detectChanges();
+				tick();
 
 				dateComponent.onDayChange(day);
 				dateComponent.onMonthChange(month);
 				dateComponent.onYearChange(year);
 				dateComponent.onHourChange(hour);
 				dateComponent.onMinuteChange(minute);
+				tick();
 
 				if (expected === undefined) {
 					expect(component.form.get('foo')?.value).toBeNull();
 				} else {
 					expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
 				}
-			}
+			})
 		);
 
 		it.each([
@@ -110,7 +111,7 @@ describe('DateComponent', () => {
 			[undefined, undefined, undefined, undefined, undefined, undefined, true],
 		])(
 			'should be %s for %d, %d, %d, %d, %d',
-			(
+			fakeAsync((
 				expected: string | undefined,
 				year: number | undefined,
 				month: number | undefined,
@@ -120,22 +121,26 @@ describe('DateComponent', () => {
 				displayTime = false
 			) => {
 				dateComponent.originalDate = '2022-01-01T01:06:00.000';
-				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
-				jest.spyOn(dateComponent, 'isoDate').mockReturnValue(false);
+				vi.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				vi.spyOn(dateComponent, 'isoDate').mockReturnValue(false);
+				vi.spyOn(dateComponent, 'addValidators').mockImplementation(() => undefined);
 
 				fixture.detectChanges();
+				tick();
 
 				dateComponent.onDayChange(day);
 				dateComponent.onMonthChange(month);
 				dateComponent.onYearChange(year);
 				dateComponent.onHourChange(hour);
 				dateComponent.onMinuteChange(minute);
+				tick();
+
 				if (expected === undefined) {
 					expect(component.form.get('foo')?.value).toBeNull();
 				} else {
 					expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
 				}
-			}
+			})
 		);
 
 		it('should propagate control value to subjects', fakeAsync(() => {

@@ -88,7 +88,7 @@ describe('DefectComponent', () => {
 	});
 
 	it('should navigate back to test record', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 		component.navigateBack();
 		expect(navigateSpy).toHaveBeenCalled();
 	});
@@ -221,7 +221,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleSubmit();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
@@ -241,7 +241,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleSubmit();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
@@ -264,7 +264,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleRemove();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(removeDefect({ index: component.index }));
@@ -274,9 +274,9 @@ describe('DefectComponent', () => {
 	describe('downloadAllMedia', () => {
 		it('should download media from cache if cached media exists', async () => {
 			if (component.defectMediaService) {
-				const cacheSpy = jest.spyOn(component, 'downloadAllMediaFromCache').mockImplementation(() => Promise.resolve());
-				const httpSpy = jest.spyOn(component, 'downloadAllMediaFromHttp').mockImplementation(() => Promise.resolve());
-				jest.spyOn(component.defectMediaService, 'hasCachedImages').mockReturnValue(true);
+				const cacheSpy = vi.spyOn(component, 'downloadAllMediaFromCache').mockImplementation(() => Promise.resolve());
+				const httpSpy = vi.spyOn(component, 'downloadAllMediaFromHttp').mockImplementation(() => Promise.resolve());
+				vi.spyOn(component.defectMediaService, 'hasCachedImages').mockReturnValue(true);
 				component.defect = {
 					imNumber: 1,
 				} as DefectDetailsSchema;
@@ -288,9 +288,9 @@ describe('DefectComponent', () => {
 		});
 		it('should download media via http if cached media does not exist', async () => {
 			if (component.defectMediaService) {
-				const cacheSpy = jest.spyOn(component, 'downloadAllMediaFromCache').mockImplementation(() => Promise.resolve());
-				const httpSpy = jest.spyOn(component, 'downloadAllMediaFromHttp').mockImplementation(() => Promise.resolve());
-				jest.spyOn(component.defectMediaService, 'hasCachedImages').mockReturnValue(false);
+				const cacheSpy = vi.spyOn(component, 'downloadAllMediaFromCache').mockImplementation(() => Promise.resolve());
+				const httpSpy = vi.spyOn(component, 'downloadAllMediaFromHttp').mockImplementation(() => Promise.resolve());
+				vi.spyOn(component.defectMediaService, 'hasCachedImages').mockReturnValue(false);
 				component.defect = {
 					imNumber: 1,
 				} as DefectDetailsSchema;
@@ -308,9 +308,9 @@ describe('DefectComponent', () => {
 					imNumber: 1,
 				} as DefectDetailsSchema;
 				component.testResultId = 'testResultId';
-				jest.spyOn(component.defectMediaService, 'getImage').mockReturnValue('image');
-				const httpSpy = jest.spyOn(component, 'downloadPhotoFromHttp').mockImplementation(() => Promise.resolve());
-				const cacheSpy = jest.spyOn(component, 'downloadPhotoFromCache').mockImplementation(() => Promise.resolve());
+				vi.spyOn(component.defectMediaService, 'getImage').mockReturnValue('image');
+				const httpSpy = vi.spyOn(component, 'downloadPhotoFromHttp').mockImplementation(() => Promise.resolve());
+				const cacheSpy = vi.spyOn(component, 'downloadPhotoFromCache').mockImplementation(() => Promise.resolve());
 				await component.downloadPhoto({ path: 'test', type: 'image' });
 				expect(cacheSpy).toHaveBeenCalled();
 				expect(httpSpy).not.toHaveBeenCalled();
@@ -322,9 +322,9 @@ describe('DefectComponent', () => {
 					imNumber: 1,
 				} as DefectDetailsSchema;
 				component.testResultId = 'testResultId';
-				jest.spyOn(component.defectMediaService, 'getImage').mockReturnValue('');
-				const httpSpy = jest.spyOn(component, 'downloadPhotoFromHttp').mockImplementation(() => Promise.resolve());
-				const cacheSpy = jest.spyOn(component, 'downloadPhotoFromCache').mockImplementation(() => Promise.resolve());
+				vi.spyOn(component.defectMediaService, 'getImage').mockReturnValue('');
+				const httpSpy = vi.spyOn(component, 'downloadPhotoFromHttp').mockImplementation(() => Promise.resolve());
+				const cacheSpy = vi.spyOn(component, 'downloadPhotoFromCache').mockImplementation(() => Promise.resolve());
 				await component.downloadPhoto({ path: 'test', type: 'image' });
 				expect(cacheSpy).not.toHaveBeenCalled();
 				expect(httpSpy).toHaveBeenCalled();

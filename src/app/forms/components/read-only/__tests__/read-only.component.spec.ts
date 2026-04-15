@@ -7,7 +7,7 @@ import { BaseControlComponent } from '../../base-control/base-control.component'
 import { ReadOnlyComponent } from '../read-only.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-read-only-host',
 	template: `<form [formGroup]="form">
     <app-read-only name="foo" label="Foo" formControlName="foo"></app-read-only>
   </form> `,

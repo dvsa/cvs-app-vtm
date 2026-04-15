@@ -85,7 +85,7 @@ describe('TestRecordComponent', () => {
 
 		it('should display review button when edit query param is true', waitForAsync(() => {
 			store.overrideSelector(routeEditable, true);
-			jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+			vi.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
 			fixture.detectChanges();
 			expect(el.query(By.css('button#review-test-result'))).toBeTruthy();
@@ -95,11 +95,11 @@ describe('TestRecordComponent', () => {
 			store.overrideSelector(routeEditable, true);
 			component.testMode = TestModeEnum.View;
 
-			jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+			vi.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
 			fixture.detectChanges();
 
-			const saveSpy = jest.spyOn(component, 'handleSave');
+			const saveSpy = vi.spyOn(component, 'handleSave');
 			el.query(By.css('button#save-test-result')).nativeElement.click();
 			expect(saveSpy).toHaveBeenCalledTimes(1);
 		}));
@@ -107,11 +107,11 @@ describe('TestRecordComponent', () => {
 		it('should run handleReview when review button is clicked', waitForAsync(() => {
 			store.overrideSelector(routeEditable, true);
 
-			jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+			vi.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
 			fixture.detectChanges();
 
-			const reviewSpy = jest.spyOn(component, 'handleReview');
+			const reviewSpy = vi.spyOn(component, 'handleReview');
 			el.query(By.css('button#review-test-result')).nativeElement.click();
 			expect(reviewSpy).toHaveBeenCalledTimes(1);
 		}));
@@ -132,22 +132,22 @@ describe('TestRecordComponent', () => {
 
 		it('should return without calling updateTestResultState if forms are clean', fakeAsync(async () => {
 			store.overrideSelector(isTestTypeKeySame('testTypeId'), true);
-			const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
+			const updateTestResultStateSpy = vi.spyOn(testRecordsService, 'updateTestResult');
 			await component.handleSave();
 			expect(updateTestResultStateSpy).not.toHaveBeenCalled();
 		}));
 
 		it('should return without calling updateTestResultState if any forms are invalid', fakeAsync(async () => {
-			const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
-			component.isAnyFormDirty = jest.fn().mockReturnValue(true);
-			component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
+			const updateTestResultStateSpy = vi.spyOn(testRecordsService, 'updateTestResult');
+			component.isAnyFormDirty = vi.fn().mockReturnValue(true);
+			component.isAnyFormInvalid = vi.fn().mockReturnValue(true);
 			await component.handleSave();
 			expect(updateTestResultStateSpy).not.toHaveBeenCalled();
 		}));
 
 		it('should call updateTestResult with value of all forms merged into one', async () => {
 			fixture.detectChanges();
-			const updateTestResultStateSpy = jest
+			const updateTestResultStateSpy = vi
 				.spyOn(testRecordsService, 'updateTestResult')
 				.mockImplementation(() => true);
 			const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultSchema;
@@ -156,8 +156,8 @@ describe('TestRecordComponent', () => {
 			store.overrideSelector(testResultInEdit, testRecord);
 			store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1'] ?? ''));
 
-			component.isAnyFormDirty = jest.fn().mockReturnValue(true);
-			component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+			component.isAnyFormDirty = vi.fn().mockReturnValue(true);
+			component.isAnyFormInvalid = vi.fn().mockReturnValue(false);
 
 			await component.handleSave();
 
@@ -173,14 +173,14 @@ describe('TestRecordComponent', () => {
 		});
 
 		it('should render the banner if the test type id is not supported', waitForAsync(() => {
-			jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(false));
+			vi.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(false));
 			fixture.detectChanges();
 			const banner = el.query(By.css('div.govuk-notification-banner'));
 			expect(banner).toBeTruthy();
 		}));
 
 		it('should not render the banner if the test type id is supported', fakeAsync(() => {
-			jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+			vi.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 			tick();
 			fixture.detectChanges();
 			const banner = el.query(By.css('div.govuk-notification-banner'));
@@ -191,7 +191,7 @@ describe('TestRecordComponent', () => {
 	it('should set testMode to be view when has errors is false', async () => {
 		expect(component.testMode).toEqual(TestModeEnum.Edit);
 
-		const errorsSpy = jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(false));
+		const errorsSpy = vi.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(false));
 		await component.handleReview();
 
 		expect(errorsSpy).toHaveBeenCalledTimes(1);
@@ -202,7 +202,7 @@ describe('TestRecordComponent', () => {
 	it('should not set testMode to be view when has errors is true', async () => {
 		expect(component.testMode).toEqual(TestModeEnum.Edit);
 
-		const errorsSpy = jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(true));
+		const errorsSpy = vi.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(true));
 		await component.handleReview();
 
 		expect(errorsSpy).toHaveBeenCalledTimes(1);

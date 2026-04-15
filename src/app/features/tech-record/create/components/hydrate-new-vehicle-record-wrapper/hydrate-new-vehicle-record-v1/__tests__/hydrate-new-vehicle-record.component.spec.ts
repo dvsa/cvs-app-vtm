@@ -2,11 +2,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormArray } from '@angular/forms';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AxlesService } from '@services/axles/axles.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { ReplaySubject, of } from 'rxjs';
@@ -29,6 +31,13 @@ describe('HydrateNewVehicleRecordComponent', () => {
 				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
+				{
+					provide: AxlesService,
+					useValue: {
+						generateAxlesForm: () => new FormArray([]),
+						generateAxleSpacingsForm: () => new FormArray([]),
+					},
+				},
 				{
 					provide: UserService,
 					useValue: {
@@ -56,9 +65,9 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 	describe('navigate', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigate();
 
@@ -66,7 +75,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 		});
 		// TODO V3 HGV PSV TRL
 		it('should navigate back to batch results', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigate();
 
@@ -76,7 +85,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should not dispatch createVehicleRecord', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			Object.defineProperty(component, 'summary', { value: signal({ checkForms: () => true }) as any });
 			component.handleSubmit();
 

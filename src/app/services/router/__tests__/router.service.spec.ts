@@ -50,23 +50,23 @@ describe('RouterService', () => {
 	});
 
 	describe('get routeNestedParams$', () => {
-		it('should return an Observable route Params', (done) => {
+		it('should return an Observable route Params', () => new Promise<void>((done) => {
 			store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
 			store.refreshState();
 			service.routeNestedParams$.subscribe((value) => {
 				expect(value).toEqual({ foo: 'bar' });
 				done();
 			});
-		});
+		}));
 	});
 
 	describe('getRouteNestedParam', () => {
-		it('should return the correct value', (done) => {
+		it('should return the correct value', () => new Promise<void>((done) => {
 			service.routeNestedParams$ = of({ foo: 'bar' });
 			service.getRouteNestedParam$('foo').subscribe((value) => {
 				expect(value).toBe('bar');
 				done();
 			});
-		});
+		}));
 	});
 });

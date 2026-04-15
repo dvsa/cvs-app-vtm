@@ -35,8 +35,8 @@ describe('ApprovalTypeFocusNext', () => {
 	describe('onInput', () => {
 		it('should, when the value of the input equals the character limit, focus the next element', () => {
 			const input: HTMLInputElement = fixture.debugElement.query(By.css('#next')).nativeElement;
-			const focusSpy = jest.spyOn(input, 'focus');
-			const getElementSpy = jest.spyOn(document, 'getElementById');
+			const focusSpy = vi.spyOn(input, 'focus');
+			const getElementSpy = vi.spyOn(document, 'getElementById');
 			component.value = 'abcdefghijklmnopqrst'; // 20 characters
 			component.dispatchEvent(new KeyboardEvent('input', { key: '.' }));
 			expect(focusSpy).toHaveBeenCalled();
@@ -45,7 +45,7 @@ describe('ApprovalTypeFocusNext', () => {
 
 		it('should not attempt to focus any element when the input value is less than the character limit', () => {
 			const input: HTMLInputElement = fixture.debugElement.query(By.css('#next')).nativeElement;
-			const focusSpy = jest.spyOn(input, 'focus');
+			const focusSpy = vi.spyOn(input, 'focus');
 			component.value = 'abcdefghijklmnopqrs'; // 19 characters
 			component.dispatchEvent(new KeyboardEvent('input', { key: '.' }));
 			expect(focusSpy).not.toHaveBeenCalled();

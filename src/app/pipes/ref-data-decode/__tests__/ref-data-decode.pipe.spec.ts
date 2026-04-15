@@ -60,63 +60,63 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		store.refreshState();
 	});
 
-	it('should return description', (done) => {
+	it('should return description', () => new Promise<void>((done) => {
 		pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
 			expect(val).toBe('Great Britain');
 			done();
 		});
-	});
+	}));
 
-	it('should return description of deleted item', (done) => {
+	it('should return description of deleted item', () => new Promise<void>((done) => {
 		pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
 			expect(val).toBe('Austria');
 			done();
 		});
-	});
+	}));
 
-	it('should return tyreSize', (done) => {
+	it('should return tyreSize', () => new Promise<void>((done) => {
 		pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('235/75-17.5');
 			done();
 		});
-	});
+	}));
 
-	it('should return untransformed value when description is undefined', (done) => {
+	it('should return untransformed value when description is undefined', () => new Promise<void>((done) => {
 		pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe((val) => {
 			expect(val).toBe('101');
 			done();
 		});
-	});
+	}));
 
-	it('should return untransformed value when value is not a known resourceKey', (done) => {
+	it('should return untransformed value when value is not a known resourceKey', () => new Promise<void>((done) => {
 		pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('foo');
 			done();
 		});
-	});
+	}));
 
-	it('should return untransformed value when value is falsy', (done) => {
+	it('should return untransformed value when value is falsy', () => new Promise<void>((done) => {
 		pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
 			expect(val).toBe('');
 			done();
 		});
-	});
+	}));
 
-	it('should return untransformed value when resourceType is falsy', (done) => {
+	it('should return untransformed value when resourceType is falsy', () => new Promise<void>((done) => {
 		pipe.transform('101', '', 'tyreSize').subscribe((val) => {
 			expect(val).toBe('101');
 			done();
 		});
-	});
+	}));
 
-	it('should return untransformed value when data not in state', (done) => {
+	it('should return untransformed value when data not in state', () => new Promise<void>((done) => {
 		pipe.transform('bar', 'baz').subscribe((val) => {
 			expect(val).toBe('bar');
 			done();
 		});
-	});
+	}));
 });

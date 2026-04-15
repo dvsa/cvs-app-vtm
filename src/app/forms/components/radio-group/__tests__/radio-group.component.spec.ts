@@ -11,7 +11,7 @@ import { FieldErrorMessageComponent } from '../../field-error-message/field-erro
 import { RadioGroupComponent } from '../radio-group.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-radio-group-host',
 	template: `<form [formGroup]="form">
     <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
   </form> `,

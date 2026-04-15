@@ -104,28 +104,28 @@ describe('VehicleHeaderComponent', () => {
 
 	describe('isADRTest', () => {
 		it('should return true if the selected test type is an ADR test', () => {
-			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '50' } as TestResultTestTypeSchema);
+			vi.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '50' } as TestResultTestTypeSchema);
 			expect(component.isADRTest).toBe(true);
 		});
 
 		it('should return false if the selected test type is not an ADR test', () => {
-			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '94' } as TestResultTestTypeSchema);
+			vi.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '94' } as TestResultTestTypeSchema);
 			expect(component.isADRTest).toBe(false);
 		});
 	});
 
 	describe('shouldShowAbandonCert', () => {
 		it('should return true if the VTG/VTP12 document should show', () => {
-			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
-			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '3' } as TestResultTestTypeSchema);
-			jest.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
+			vi.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
+			vi.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '3' } as TestResultTestTypeSchema);
+			vi.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
 			expect(component.shouldShowAbandonCert).toBe(true);
 		});
 
 		it('should return false if the VTG/VTP12 document should show', () => {
-			jest.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
-			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '193' } as TestResultTestTypeSchema);
-			jest.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
+			vi.spyOn(component, 'resultOfTest', 'get').mockReturnValue(resultOfTestEnum.abandoned);
+			vi.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '193' } as TestResultTestTypeSchema);
+			vi.spyOn(component, 'vehicleTypes', 'get').mockReturnValue('psv' as unknown as typeof VehicleTypes);
 			expect(component.shouldShowAbandonCert).toBe(false);
 		});
 	});

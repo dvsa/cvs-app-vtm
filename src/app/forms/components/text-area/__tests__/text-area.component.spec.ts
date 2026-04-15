@@ -5,7 +5,7 @@ import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynami
 import { TextAreaComponent } from '../text-area.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-text-area-host',
 	template: `<form [formGroup]="form">
     <app-text-area name="foo" formControlName="foo"></app-text-area>
   </form> `,

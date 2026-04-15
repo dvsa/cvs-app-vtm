@@ -64,7 +64,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('get isFormValid', () => {
 		it('should call validate with the vehicleForm and an empty array', () => {
-			const validateSpy = jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			const validateSpy = vi.spyOn(DynamicFormService, 'validate').mockImplementation((() => {}) as any);
 			const isValid = component.isFormValid;
 			expect(isValid).toBeDefined();
 			expect(validateSpy).toHaveBeenCalledTimes(1);
@@ -72,8 +72,8 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should call setErrors with an empty array', () => {
-			jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {});
-			const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
+			vi.spyOn(DynamicFormService, 'validate').mockImplementation((() => {}) as any);
+			const setErrorsSpy = vi.spyOn(errorService, 'setErrors').mockImplementation((() => {}) as any);
 			const isValid = component.isFormValid;
 			expect(isValid).toBeDefined();
 			expect(setErrorsSpy).toHaveBeenCalledTimes(1);
@@ -88,9 +88,9 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -98,7 +98,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -108,16 +108,16 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should do nothing if the form is not valid', async () => {
-			const formUniqueSpy = jest.spyOn(component, 'isFormValueUnique').mockImplementation();
+			const formUniqueSpy = vi.spyOn(component, 'isFormValueUnique').mockImplementation((() => {}) as any);
 			await component.handleSubmit();
 			expect(formUniqueSpy).toHaveBeenCalledTimes(0);
 		});
 
 		it('should do nothing if the form value not unique', () => {
-			const isFormValid = jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
-			const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
-			const navigateSpy = jest.spyOn(router, 'navigate');
-			const generateTechREcordSpy = jest.spyOn(
+			const isFormValid = vi.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
+			const updateEditingSpy = vi.spyOn(techRecordService, 'updateEditingTechRecord');
+			const navigateSpy = vi.spyOn(router, 'navigate');
+			const generateTechREcordSpy = vi.spyOn(
 				techRecordService,
 				'generateEditingVehicleTechnicalRecordFromVehicleType'
 			);
@@ -130,10 +130,10 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should navigate to hydrate when successful', async () => {
-			jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
-			jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
-			const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-			jest.spyOn(techRecordService, 'updateEditingTechRecord');
+			vi.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
+			vi.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
+			const routerSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(techRecordService, 'updateEditingTechRecord');
 
 			await component.handleSubmit();
 
@@ -144,7 +144,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('isVinUnique', () => {
 		it('should call isUnique with an emptry string and the type of vin', async () => {
-			const isUniqueSpy = jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			const isUniqueSpy = vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
 			await component.isVinUnique();
 
@@ -152,7 +152,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should return true when the VIN is unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
 			const result = await component.isVinUnique();
 
@@ -162,7 +162,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('isVrmUnique', () => {
 		it('should return true when the VRM is unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
 			const result = await component.isVrmUnique();
 
@@ -170,8 +170,8 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should call addError when the VRM is not unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
-			const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
+			const addErrorSpy = vi.spyOn(errorService, 'addError').mockImplementation((() => {}) as any);
 
 			const result = await component.isVrmUnique();
 
@@ -182,7 +182,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
 	describe('isTrailerIdUnique', () => {
 		it('should return true when the trailer ID is unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 			component.techRecord = { techRecord_vehicleType: 'trl' };
 
 			const result = await component.isTrailerIdUnique();
@@ -191,8 +191,8 @@ describe('CreateNewVehicleRecordComponent', () => {
 		});
 
 		it('should call addError when the trailer ID is not unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
-			const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
+			const addErrorSpy = vi.spyOn(errorService, 'addError').mockImplementation((() => {}) as any);
 			component.techRecord = { techRecord_vehicleType: 'trl' };
 
 			const result = await component.isTrailerIdUnique();

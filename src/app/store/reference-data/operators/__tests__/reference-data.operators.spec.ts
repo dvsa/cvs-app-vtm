@@ -4,7 +4,7 @@ import { handleNotFound, sortReferenceData } from '../reference-data.operators';
 
 describe('Reference data operators', () => {
 	describe('handleNotFound.prototype.name', () => {
-		it('should emit source observable when there is data', (done) => {
+		it('should emit source observable when there is data', () => new Promise<void>((done) => {
 			of({ data: [{ resourceType: 'type', resourceKey: 'key' }] })
 				.pipe(take(1), handleNotFound('test'))
 				.subscribe({
@@ -13,8 +13,8 @@ describe('Reference data operators', () => {
 						done();
 					},
 				});
-		});
-		it('should throw an error if data is empty', (done) => {
+		}));
+		it('should throw an error if data is empty', () => new Promise<void>((done) => {
 			of({ data: [] })
 				.pipe(take(1), handleNotFound('test'))
 				.subscribe({
@@ -23,11 +23,11 @@ describe('Reference data operators', () => {
 						done();
 					},
 				});
-		});
+		}));
 	});
 
 	describe('sortReferenceData.prototype.name', () => {
-		it('should sort strings', (done) => {
+		it('should sort strings', () => new Promise<void>((done) => {
 			of({
 				data: [
 					{ resourceType: ReferenceDataResourceType.User, resourceKey: 2, name: 'last name' },
@@ -48,6 +48,6 @@ describe('Reference data operators', () => {
 						done();
 					},
 				});
-		});
+		}));
 	});
 });

@@ -7,12 +7,14 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { Roles } from '@models/roles.enum';
+import { ScannedActionsSubject } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
@@ -35,9 +37,17 @@ describe('BaseTestRecordComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
+				ScannedActionsSubject,
 				TestTypesService,
 				TechnicalRecordService,
 				HttpService,
+				{
+					provide: TestRecordsService,
+					useValue: {
+						isTestTypeGroupEditable$: of(false),
+						sectionTemplates$: of(undefined),
+					},
+				},
 				{
 					provide: UserService,
 					useValue: {
@@ -55,7 +65,7 @@ describe('BaseTestRecordComponent', () => {
 			vin: 'ABC002',
 			testTypes: [{ testResult: TestResults.FAIL }],
 		} as TestResultSchema);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		fixture.detectChanges();
 	});
 
@@ -64,7 +74,7 @@ describe('BaseTestRecordComponent', () => {
 	});
 
 	describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
-		it('should emit the new test result', (done) => {
+		it('should emit the new test result', () => new Promise<void>((done) => {
 			const event = { vin: 'ABC001' } as TestResultSchema;
 			const expectedValue = { vin: 'ABC001' };
 
@@ -74,12 +84,12 @@ describe('BaseTestRecordComponent', () => {
 			});
 
 			component.handleFormChange(event);
-		});
+		}));
 	});
 
 	describe('validateEuVehicleCategory', () => {
 		it('should call the validate function of eu vehicle category', () => {
-			jest.spyOn(component, 'sections').mockReturnValue([
+			vi.spyOn(component, 'sections').mockReturnValue([
 				{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
 				{
 					form: new CustomFormGroup(
@@ -93,7 +103,7 @@ describe('BaseTestRecordComponent', () => {
 				},
 			] as unknown as DynamicFormGroupComponent[]);
 
-			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			const spy = vi.spyOn(DynamicFormService, 'validateControl');
 			spy.mockImplementation(() => undefined);
 
 			component.validateEuVehicleCategory('test');
@@ -102,7 +112,7 @@ describe('BaseTestRecordComponent', () => {
 		});
 
 		it('should not call the validate function of eu vehicle category', () => {
-			jest.spyOn(component, 'sections').mockReturnValue([
+			vi.spyOn(component, 'sections').mockReturnValue([
 				{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
 				{
 					form: new CustomFormGroup(
@@ -116,7 +126,7 @@ describe('BaseTestRecordComponent', () => {
 				},
 			] as unknown as DynamicFormGroupComponent[]);
 
-			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			const spy = vi.spyOn(DynamicFormService, 'validateControl');
 			spy.mockImplementation(() => undefined);
 
 			component.validateEuVehicleCategory('test');

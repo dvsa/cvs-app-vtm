@@ -32,8 +32,8 @@ describe('feature toggle service', () => {
 			};
 
 			// TODO: remove when we move away from local config
-			jest.spyOn(httpClient, 'get').mockReturnValueOnce(of(expectedConfig));
-			jest.spyOn(httpService, 'getFeatureFlags').mockReturnValueOnce(of(expectedConfig));
+			vi.spyOn(httpClient, 'get').mockReturnValueOnce(of(expectedConfig));
+			vi.spyOn(httpService, 'getFeatureFlags').mockReturnValueOnce(of(expectedConfig));
 
 			await service.loadConfig();
 

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
+import { STORE_FEATURE_GLOBAL_WARNING_KEY, initialGlobalWarningState } from '@store/global-warning/global-warning-service.reducers';
 import { GlobalWarningComponent } from '../global-warning.component';
 import { GlobalWarningService } from '../global-warning.service';
 
@@ -20,7 +21,7 @@ describe('GlobalWarningComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [MockComponent],
-			providers: [GlobalWarningService, provideMockStore({ initialState: initialAppState })],
+			providers: [GlobalWarningService, provideMockStore({ initialState: { ...initialAppState, [STORE_FEATURE_GLOBAL_WARNING_KEY]: initialGlobalWarningState } })],
 		}).compileComponents();
 	});
 
@@ -28,6 +29,10 @@ describe('GlobalWarningComponent', () => {
 		fixture = TestBed.createComponent(MockComponent);
 		component = fixture.debugElement.query(By.directive(GlobalWarningComponent)).componentInstance;
 		fixture.detectChanges();
+	});
+
+	afterEach(() => {
+		fixture.destroy();
 	});
 
 	it('should create', () => {
@@ -43,7 +48,7 @@ describe('GlobalWarningComponent', () => {
 		});
 
 		it('should do nothing if no anchor link is provided', () => {
-			const spy = jest.spyOn(document, 'getElementById');
+			const spy = vi.spyOn(document, 'getElementById');
 			component.goto({ warning: 'navigate', anchorLink: undefined });
 			expect(spy).not.toHaveBeenCalled();
 		});

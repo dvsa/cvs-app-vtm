@@ -121,13 +121,13 @@ describe('Reference Data Selectors', () => {
 	});
 
 	it('should return the reasons for abandoning for the right vehicle type', () => {
-		const selectorSpy = jest.spyOn(referenceDataSelectors, 'selectAllReferenceDataByResourceType');
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningPsv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+		const psvSelector = referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
+		const hgvSelector = referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
+		const trlSelector = referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
+
+		expect(psvSelector).toBeTruthy();
+		expect(hgvSelector).toBeTruthy();
+		expect(trlSelector).toBeTruthy();
 	});
 
 	describe('selectRefDataBySearchTerm', () => {

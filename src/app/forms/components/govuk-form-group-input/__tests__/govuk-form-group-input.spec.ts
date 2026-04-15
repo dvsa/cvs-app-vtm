@@ -28,7 +28,7 @@ describe('GovukFormGroupInputComponent', () => {
 	});
 
 	it('should write value and propagate via onChange', () => {
-		const onChangeSpy = jest.spyOn(component, 'onChange');
+		const onChangeSpy = vi.spyOn(component, 'onChange');
 
 		component.writeValue('hello');
 
@@ -45,8 +45,8 @@ describe('GovukFormGroupInputComponent', () => {
 	});
 
 	it('should emit blur event and call onTouched', () => {
-		const blurSpy = jest.spyOn(component.blur, 'emit');
-		const touchedSpy = jest.spyOn(component, 'onTouched');
+		const blurSpy = vi.spyOn(component.blur, 'emit');
+		const touchedSpy = vi.spyOn(component, 'onTouched');
 
 		const event = new FocusEvent('blur');
 
@@ -74,7 +74,7 @@ describe('GovukFormGroupInputComponent', () => {
 	});
 
 	it('should compute style classes based on width and error state', () => {
-		jest.spyOn(component, 'hasError', 'get').mockReturnValue({});
+		vi.spyOn(component, 'hasError', 'get').mockReturnValue({});
 		fixture.componentRef.setInput('width', FormNodeWidth.L);
 
 		expect(component.style).toContain('govuk-input--width-10');
@@ -127,7 +127,7 @@ describe('GovukFormGroupInputComponent', () => {
 	});
 
 	it('should call writeValue on ngModelChange', () => {
-		const writeSpy = jest.spyOn(component, 'writeValue');
+		const writeSpy = vi.spyOn(component, 'writeValue');
 		fixture.detectChanges();
 
 		const input = fixture.debugElement.query(By.css('input')).nativeElement;

@@ -19,7 +19,7 @@ describe('TechRecordAmendReasonComponent', () => {
 			imports: [TechRecordAmendReasonComponent, ReactiveFormsModule],
 			providers: [
 				GlobalErrorService,
-				provideRouter([{ path: 'test-reason', component: jest.fn() }]),
+				provideRouter([{ path: 'test-reason', component: vi.fn() }]),
 				provideMockStore({ initialState: initialAppState }),
 			],
 		}).compileComponents();
@@ -41,7 +41,7 @@ describe('TechRecordAmendReasonComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should call handleSubmit', () => {
-			const handleSubmitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation();
+			const handleSubmitSpy = vi.spyOn(component, 'handleSubmit').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -51,7 +51,7 @@ describe('TechRecordAmendReasonComponent', () => {
 		it('should clear errors when the form is valid', () => {
 			component.form.get('reason')?.setValue('test-reason');
 
-			const clearErrorsSpy = jest.spyOn(errorsService, 'clearErrors').mockImplementation();
+			const clearErrorsSpy = vi.spyOn(errorsService, 'clearErrors').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -59,7 +59,7 @@ describe('TechRecordAmendReasonComponent', () => {
 		});
 
 		it('should set errors when the form is invalid', () => {
-			const setErrorsSpy = jest.spyOn(errorsService, 'setErrors').mockImplementation();
+			const setErrorsSpy = vi.spyOn(errorsService, 'setErrors').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -72,7 +72,7 @@ describe('TechRecordAmendReasonComponent', () => {
 		it('should navigate when the form is valid and a reason is provided', () => {
 			component.form.get('reason')?.setValue('test-reason');
 
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -81,7 +81,7 @@ describe('TechRecordAmendReasonComponent', () => {
 		});
 
 		it('should not navigate when the form is invalid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -91,7 +91,7 @@ describe('TechRecordAmendReasonComponent', () => {
 		it('should not navigate when a reason is not provided', () => {
 			component.form.removeControl('reason');
 
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
 			fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
@@ -101,9 +101,9 @@ describe('TechRecordAmendReasonComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorsService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorsService, 'clearErrors');
 
 			component.navigateBack();
 

@@ -15,7 +15,7 @@ describe('TechRecordViewResolver', () => {
 	let resolver: ResolveFn<boolean>;
 	let actions$ = new Observable<Action>();
 	let testScheduler: TestScheduler;
-	const mockSnapshot = jest.fn;
+	const mockSnapshot = vi.fn;
 	let store: MockStore<State>;
 
 	beforeEach(() => {
@@ -43,7 +43,7 @@ describe('TechRecordViewResolver', () => {
 
 	describe('fetch tech record result', () => {
 		it('should resolved to true when both success actions are triggered', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const result = TestBed.runInInjectionContext(() =>
 				resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 			) as Observable<boolean>;
@@ -60,7 +60,7 @@ describe('TechRecordViewResolver', () => {
 		});
 
 		it("should resolve to false if 'getTechRecordV3Failure' action if dispatched", () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const result = TestBed.runInInjectionContext(() =>
 				resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 			) as Observable<boolean>;
@@ -77,7 +77,7 @@ describe('TechRecordViewResolver', () => {
 		});
 
 		it("should resolved to false if 'fetchTestResultsBySystemNumberFailed' action is dipatched", () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const result = TestBed.runInInjectionContext(() =>
 				resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 			) as Observable<boolean>;

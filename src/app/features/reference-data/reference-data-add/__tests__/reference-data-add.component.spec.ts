@@ -11,9 +11,9 @@ import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from '../reference-data-add.component';
 
 const mockRefDataService = {
-	loadReferenceData: jest.fn(),
-	loadReferenceDataByKey: jest.fn(),
-	fetchReferenceDataByKey: jest.fn(),
+	loadReferenceData: vi.fn(),
+	loadReferenceDataByKey: vi.fn(),
+	fetchReferenceDataByKey: vi.fn(),
 };
 
 describe('ReferenceDataCreateComponent', () => {
@@ -49,7 +49,7 @@ describe('ReferenceDataCreateComponent', () => {
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);
 		fixture.detectChanges();
-		component.checkForms = jest.fn();
+		component.checkForms = vi.fn();
 	});
 
 	it('should create', () => {
@@ -58,9 +58,9 @@ describe('ReferenceDataCreateComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -68,7 +68,7 @@ describe('ReferenceDataCreateComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -88,10 +88,10 @@ describe('ReferenceDataCreateComponent', () => {
 		it('should dispatch if form is valid', () => {
 			fixture.ngZone?.run(() => {
 				component.newRefData = { description: 'test' };
-				jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+				vi.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 					component.isFormInvalid = false;
 				});
-				const dispatch = jest.spyOn(store, 'dispatch');
+				const dispatch = vi.spyOn(store, 'dispatch');
 
 				component.handleSubmit();
 
@@ -99,19 +99,19 @@ describe('ReferenceDataCreateComponent', () => {
 			});
 		});
 		it('should not dispatch if form is invalid', () => {
-			jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+			vi.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 				component.isFormInvalid = true;
 			});
-			const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 
 			expect(dispatch).not.toHaveBeenCalled();
 		});
 		it('should not dispatch if ref data already exists', () => {
-			jest.spyOn(mockRefDataService, 'fetchReferenceDataByKey').mockReturnValueOnce(of({ foo: 'bar' }));
+			vi.spyOn(mockRefDataService, 'fetchReferenceDataByKey').mockReturnValueOnce(of({ foo: 'bar' }));
 
-			const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 

@@ -19,7 +19,7 @@ import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title.component';
 
 const MockUserService = {
-	getUserName$: jest.fn().mockReturnValue(new Observable()),
+	getUserName$: vi.fn().mockReturnValue(new Observable()),
 	roles$: of([Roles.TestResultAmend, Roles.TestResultView]),
 };
 
@@ -65,7 +65,7 @@ describe('TechRecordTitleComponent', () => {
 				secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
 				techRecord_vehicleType: VehicleTypes.LGV,
 			} as unknown as TechRecordType<'put'>;
-			jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
+			vi.spyOn(store, 'select').mockReturnValue(of(mockRecord));
 			fixture.componentRef.setInput('vehicle', mockRecord);
 			store.overrideSelector(editingTechRecord, mockRecord);
 		});

@@ -49,91 +49,86 @@ describe('TechnicalRecordService', () => {
 	describe('isUnique', () => {
 		it('should validate the search term to be unique when no matching results are returned (Test Case 1)', () => {
 			const searchParams = { searchTerm: '12345', type: 'vin' };
-			const mockData = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+			const mockData = [
+				{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'archived' } as V3TechRecordModel,
+			];
 
 			service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe((response) => {
 				expect(response).toBe(true);
 			});
 
-			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
 				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
-
-			// Provide each request with a mock response
 			req.flush(mockData);
 		});
 
 		it('should validate the search term to be unique when no matching results are returned (Test Case 2)', () => {
 			const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-			const mockData = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+			const mockData = [
+				{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'archived' } as V3TechRecordModel,
+			];
 
 			service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe((response) => {
 				expect(response).toBe(true);
 			});
 
-			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
 				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
-
-			// Provide each request with a mock response
 			req.flush(mockData);
 		});
 
 		it('should validate the search term to be non unique when matching results are returned and are current or provisional', () => {
 			const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-			const mockData = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+			const mockData = [
+				{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'current' } as V3TechRecordModel,
+			];
 
 			service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe((response) => {
 				expect(response).toBe(false);
 			});
 
-			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
 				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
-
-			// Provide each request with a mock response
 			req.flush(mockData);
 		});
 
 		it('should validate the search term to be non unique when vrm is used as a primary', () => {
 			const searchParams = { searchTerm: 'KP01 ABC', type: 'vrm' };
-			const mockData = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+			const mockData = [
+				{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'KP01 ABC', techRecord_statusCode: 'current' } as V3TechRecordModel,
+			];
 
 			service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe((response) => {
 				expect(response).toBe(false);
 			});
 
-			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
 				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
-
-			// Provide each request with a mock response
 			req.flush(mockData);
 		});
 
 		it('should validate the search term to be unique when vrm is not used as a primary', () => {
 			const searchParams = { searchTerm: '12345', type: 'vrm' };
-			const mockData = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+			const mockData = [
+				{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'OTHER', techRecord_statusCode: 'current' } as V3TechRecordModel,
+			];
 
 			service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe((response) => {
 				expect(response).toBe(true);
 			});
 
-			// Check for correct requests: should have made one request to search from expected URL
 			const req = httpClient.expectOne(
 				`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
-
-			// Provide each request with a mock response
 			req.flush(mockData);
 		});
 	});
@@ -176,7 +171,7 @@ describe('TechnicalRecordService', () => {
 			it(`should patch the missing information for the technical
       record and dispatch the action to update the editing vehicle
       record with the full vehicle record`, () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				const mockVehicleRecord = {
 					systemNumber: 'foo',
 					createdTimestamp: 'bar',
@@ -191,7 +186,7 @@ describe('TechnicalRecordService', () => {
 			it(`should patch from the selected record if the editing is
       not defined and dispatch the action to update the editing
       vehicle record with the full vehicle record`, () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				const mockVehicleRecord = {
 					systemNumber: 'foo',
 					createdTimestamp: 'bar',
@@ -204,7 +199,7 @@ describe('TechnicalRecordService', () => {
 			});
 
 			it('should update the number of axles based on the axles array', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				const mockVehicleRecord = mockVehicleTechnicalRecord('trl');
 				mockVehicleRecord.techRecord_noOfAxles = 0;
 				mockVehicleRecord.techRecord_axles = [{}, {}];
@@ -223,7 +218,7 @@ describe('TechnicalRecordService', () => {
 			});
 
 			it('override the editable tech record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				const mockVehicleRecord = {
 					systemNumber: 'foo',
 					createdTimestamp: 'bar',
@@ -245,7 +240,7 @@ describe('TechnicalRecordService', () => {
 			});
 
 			it('should throw an error if there is more than one tech record', () => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				const mockVehicleRecord = {
 					systemNumber: 'foo',
 					createdTimestamp: 'bar',
@@ -329,7 +324,7 @@ describe('TechnicalRecordService', () => {
 
 	describe('generateEditingVehicleTechnicalRecordFromVehicleType', () => {
 		it('should dispatch the createVehicle action with the provided vehicle type', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.generateEditingVehicleTechnicalRecordFromVehicleType(VehicleTypes.CAR);
 			expect(dispatchSpy).toHaveBeenCalledWith({
 				techRecord_vehicleType: 'car',
@@ -342,7 +337,7 @@ describe('TechnicalRecordService', () => {
 		it('should return an async validator which displays an appropriate error message when no new VIN is provided', async () => {
 			const vin = 'vin';
 			const control = new FormControl('vin');
-			const isUniqueSpy = jest.spyOn(service, 'isUnique').mockReturnValue(of(false));
+			const isUniqueSpy = vi.spyOn(service, 'isUnique').mockReturnValue(of(false));
 
 			const validator = service.validateVinForUpdate(vin);
 			await expect(firstValueFrom(from(validator(control)))).resolves.toEqual({
@@ -357,7 +352,7 @@ describe('TechnicalRecordService', () => {
 		it('should return an async validator which returns null when the VIN provided is unique', async () => {
 			const vin = 'vin';
 			const control = new FormControl('new vin');
-			const isUniqueSpy = jest.spyOn(service, 'isUnique').mockReturnValue(of(true));
+			const isUniqueSpy = vi.spyOn(service, 'isUnique').mockReturnValue(of(true));
 
 			const validator = service.validateVinForUpdate(vin);
 			await expect(firstValueFrom(from(validator(control)))).resolves.toBeNull();
@@ -367,7 +362,7 @@ describe('TechnicalRecordService', () => {
 		it('should return an async validator which returns an error message when the VIN is different, but is in use', async () => {
 			const vin = 'vin';
 			const control = new FormControl('new vin');
-			const isUniqueSpy = jest.spyOn(service, 'isUnique').mockReturnValue(of(false));
+			const isUniqueSpy = vi.spyOn(service, 'isUnique').mockReturnValue(of(false));
 
 			const validator = service.validateVinForUpdate(vin);
 			await expect(firstValueFrom(from(validator(control)))).resolves.toEqual({
@@ -380,16 +375,19 @@ describe('TechnicalRecordService', () => {
 
 	describe('validateVrmDoesNotExist', () => {
 		beforeEach(() => {
-			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should emit empty if the control has a falsy value', async () => {
 			const previousVrm = 'previous vrm';
 			const control = new FormControl(null);
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmDoesNotExist(previousVrm);
-			await expect(firstValueFrom(from(validator(control)))).rejects.toEqual(new EmptyError());
+			await expect(firstValueFrom(from(validator(control)))).rejects.toMatchObject({
+				name: new EmptyError().name,
+				message: new EmptyError().message,
+			});
 
 			expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
 		});
@@ -397,7 +395,7 @@ describe('TechnicalRecordService', () => {
 		it('should return the result of checkVrm not active when the value of the provide control is truthy', async () => {
 			const previousVrm = 'previous vrm';
 			const control = new FormControl('truthy value');
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmDoesNotExist(previousVrm);
 			await expect(firstValueFrom(from(validator(control)))).resolves.toBeDefined();
@@ -408,16 +406,19 @@ describe('TechnicalRecordService', () => {
 
 	describe('validateVrmForCherishedTransfer', () => {
 		beforeEach(() => {
-			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should return empty is the value of the control is falsy', async () => {
 			const control = new FormControl(null);
-			const searchSpy = jest.spyOn(httpService, 'searchTechRecords');
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+			const searchSpy = vi.spyOn(httpService, 'searchTechRecords');
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmForCherishedTransfer();
-			await expect(firstValueFrom(from(validator(control)))).rejects.toEqual(new EmptyError());
+			await expect(firstValueFrom(from(validator(control)))).rejects.toMatchObject({
+				name: new EmptyError().name,
+				message: new EmptyError().message,
+			});
 
 			expect(searchSpy).toHaveBeenCalledTimes(0);
 			expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
@@ -430,8 +431,8 @@ describe('TechnicalRecordService', () => {
 				control: new FormControl('current vrm'),
 			});
 
-			const searchSpy = jest.spyOn(httpService, 'searchTechRecords');
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+			const searchSpy = vi.spyOn(httpService, 'searchTechRecords');
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
 
 			const validator = service.validateVrmForCherishedTransfer();
 			await expect(firstValueFrom(from(validator(form.controls.control)))).resolves.toBeDefined();
@@ -447,8 +448,8 @@ describe('TechnicalRecordService', () => {
 				control: new FormControl('current vrm'),
 			});
 
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
-			const searchSpy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
+			const searchSpy = vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'previous vrm',
@@ -471,8 +472,8 @@ describe('TechnicalRecordService', () => {
 				control: new FormControl('current vrm'),
 			});
 
-			const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
-			const searchSpy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+			const checkVrmNotActiveSpy = vi.spyOn(service, 'checkVrmNotActive');
+			const searchSpy = vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'previous vrm',
@@ -495,7 +496,7 @@ describe('TechnicalRecordService', () => {
 
 	describe('clearEditingTechRecord', () => {
 		it('should dispatch the updateEditingTechRecordCancel action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.clearEditingTechRecord();
 			expect(dispatchSpy).toHaveBeenCalledWith({
 				type: '[Technical Record Service] updateEditingTechRecordCancel',
@@ -505,7 +506,7 @@ describe('TechnicalRecordService', () => {
 
 	describe('clearSectionTemplateStates', () => {
 		it('should dispatch the clearAllSectionStates action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.clearSectionTemplateStates();
 			expect(dispatchSpy).toHaveBeenCalledWith({
 				type: '[Technical Record Service] clearAllSectionState',
@@ -515,13 +516,13 @@ describe('TechnicalRecordService', () => {
 
 	describe('checkVrmNotActive', () => {
 		beforeEach(() => {
-			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 		});
 
 		it('should not display an appropriate error message when the provided VRM is the same as the current', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl(vrm);
-			const spy = jest.spyOn(httpService, 'searchTechRecords');
+			const spy = vi.spyOn(httpService, 'searchTechRecords');
 
 			await expect(firstValueFrom(service.checkVrmNotActive(control, vrm))).resolves.toEqual({
 				validateVrm: { message: 'You must provide a new VRM' },
@@ -533,7 +534,7 @@ describe('TechnicalRecordService', () => {
 		it('should determine if the VRM is being used by a current tech record, and display an appropriate message', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+			const spy = vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'new vrm',
@@ -557,7 +558,7 @@ describe('TechnicalRecordService', () => {
 		it('should determine if the VRM is being used by a provisional tech record, and display an appropriate message', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+			const spy = vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
 				of([
 					{
 						primaryVrm: 'new vrm',
@@ -579,7 +580,7 @@ describe('TechnicalRecordService', () => {
 		it('should return null when the VRM is not being used by a current or provisional record', async () => {
 			const vrm = 'vrm';
 			const control = new FormControl('new vrm');
-			const spy = jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			const spy = vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 
 			await expect(firstValueFrom(service.checkVrmNotActive(control, vrm))).resolves.toBeNull();
 

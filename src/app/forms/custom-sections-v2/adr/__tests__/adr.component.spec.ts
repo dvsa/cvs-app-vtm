@@ -60,7 +60,7 @@ describe('AdrComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -68,13 +68,13 @@ describe('AdrComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
+			const spy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -83,14 +83,14 @@ describe('AdrComponent', () => {
 	describe('addUNNumber', () => {
 		it('should not allow the adding of a UN number if the previous one is empty', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addUNNumber();
 			expect(spy).not.toHaveBeenCalled();
 		});
 		it('should add an empty UN number to the form array if the all prior ones are filled in', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
 			arr.patchValue(['123']);
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addUNNumber();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -99,7 +99,7 @@ describe('AdrComponent', () => {
 	describe('removeUNNumber', () => {
 		it('should remove the UN number at the specified index from the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(arr, 'removeAt');
+			const spy = vi.spyOn(arr, 'removeAt');
 			component.removeUNNumber(1);
 			expect(spy).toHaveBeenCalledWith(1);
 		});
@@ -111,9 +111,9 @@ describe('AdrComponent', () => {
 			const reason = 'edit';
 			const expectedRoute = `../${reason}/edit-additional-examiner-note/${examinerNoteIndex}`;
 
-			jest.spyOn(component.viewportScroller, 'getScrollPosition').mockReturnValue([0, 100]);
-			jest.spyOn(component.store, 'dispatch');
-			jest.spyOn(component.router, 'navigate');
+			vi.spyOn(component.viewportScroller, 'getScrollPosition').mockReturnValue([0, 100]);
+			vi.spyOn(component.store, 'dispatch');
+			vi.spyOn(component.router, 'navigate');
 
 			component.getEditAdditionalExaminerNotePage(examinerNoteIndex);
 
@@ -128,7 +128,7 @@ describe('AdrComponent', () => {
 	describe('addTC3TankInspection', () => {
 		it('should add an empty TC3 tank inspection to the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addTC3TankInspection();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -137,7 +137,7 @@ describe('AdrComponent', () => {
 	describe('removeTC3TankInspection', () => {
 		it('should remove the TC3 tank inspection at the specified index from the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
-			const spy = jest.spyOn(arr, 'removeAt');
+			const spy = vi.spyOn(arr, 'removeAt');
 			component.removeTC3TankInspection(1);
 			expect(spy).toHaveBeenCalledWith(1);
 		});
@@ -163,7 +163,7 @@ describe('AdrComponent', () => {
 				},
 			];
 			component.techRecord().techRecord_adrDetails_tank_tankDetails_tc3Details = mockDetails;
-			const spy = jest.spyOn(component, 'addTC3TankInspection');
+			const spy = vi.spyOn(component, 'addTC3TankInspection');
 			component.handleInitialiseSubsequentTankInspections();
 			expect(spy).toHaveBeenCalledTimes(mockDetails.length);
 		});
@@ -172,13 +172,13 @@ describe('AdrComponent', () => {
 	describe('handleInitialiseUNNumbers', () => {
 		it('should push a new UN number into the form if none exist', () => {
 			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(control, 'push');
+			const spy = vi.spyOn(control, 'push');
 			component.handleInitialiseUNNumbers();
 			expect(spy).toHaveBeenCalled();
 		});
 		it('should push multiple un numbers into the form if they exist on the tech record', () => {
 			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(control, 'push');
+			const spy = vi.spyOn(control, 'push');
 			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = ['123', '456'];
 			component.handleInitialiseUNNumbers();
 			expect(spy).toHaveBeenCalledTimes(2);
@@ -187,7 +187,7 @@ describe('AdrComponent', () => {
 
 	describe('handleADRBodyTypeChange', () => {
 		it('should subscribe to ADR body type changes', () => {
-			const spy = jest.spyOn(
+			const spy = vi.spyOn(
 				component.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges,
 				'subscribe'
 			);

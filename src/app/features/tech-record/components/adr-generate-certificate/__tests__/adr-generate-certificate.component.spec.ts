@@ -18,7 +18,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { AdrGenerateCertificateComponent } from '../adr-generate-certificate.component';
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('AdrGenerateCertificateComponent', () => {
@@ -76,9 +76,9 @@ describe('AdrGenerateCertificateComponent', () => {
 			} as V3TechRecordModel);
 		});
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -86,7 +86,7 @@ describe('AdrGenerateCertificateComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -98,7 +98,7 @@ describe('AdrGenerateCertificateComponent', () => {
 				component.ngOnInit();
 				component.form.get('certificateType')?.setValue('PASS');
 
-				const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+				const navigateBackSpy = vi.spyOn(component, 'navigateBack').mockImplementation((() => {}) as any);
 
 				component.handleSubmit();
 
@@ -119,7 +119,7 @@ describe('AdrGenerateCertificateComponent', () => {
 			} as V3TechRecordModel);
 		});
 		it('should add an error when the field is not filled out', () => {
-			const addErrorSpy = jest.spyOn(errorService, 'addError');
+			const addErrorSpy = vi.spyOn(errorService, 'addError');
 
 			component.handleSubmit();
 
@@ -131,7 +131,7 @@ describe('AdrGenerateCertificateComponent', () => {
 		});
 
 		it('should dispatch the generateADRCertificate action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.form.get('certificateType')?.setValue('PASS');
 
@@ -143,7 +143,7 @@ describe('AdrGenerateCertificateComponent', () => {
 		});
 
 		it('should dispatch action with default values when systemNumber and createdTimestamp are null', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.form.get('certificateType')?.setValue('PASS');
 			component.systemNumber = '123';

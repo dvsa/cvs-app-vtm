@@ -44,7 +44,7 @@ describe('ErrorInterceptor', () => {
 		router = TestBed.inject(Router);
 		http = TestBed.inject(HttpClient);
 		httpController = TestBed.inject(HttpTestingController);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should be created', () => {
@@ -54,6 +54,8 @@ describe('ErrorInterceptor', () => {
 	});
 
 	it('should navigate to error page on a 500', fakeAsync(() => {
+		const navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+
 		http.get('http://www.google.com').subscribe({
 			next: () => {},
 			error: (e) => {
@@ -66,10 +68,12 @@ describe('ErrorInterceptor', () => {
 
 		tick();
 
-		expect(router.url).toBe('/error');
+		expect(navigateSpy).toHaveBeenCalledWith('error');
 	}));
 
 	it('should not navigate to error page on a success', fakeAsync(() => {
+		const navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+
 		http.get('http://www.google.com').subscribe({
 			next: (response) => {
 				expect(response).toBe('string');
@@ -80,6 +84,6 @@ describe('ErrorInterceptor', () => {
 		const req = httpController.expectOne('http://www.google.com');
 		req.flush('string');
 		tick();
-		expect(router.url).toBe('/');
+		expect(navigateSpy).not.toHaveBeenCalled();
 	}));
 });

@@ -59,7 +59,7 @@ describe('ReferenceDataEffects', () => {
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataEffects,
 				ReferenceDataService,
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: vi.fn().mockReturnValue(false) } },
 				{ provide: UserService, useValue: {} },
 			],
 		});
@@ -85,7 +85,7 @@ describe('ReferenceDataEffects', () => {
 				actions$ = hot('-a--', { a: fetchReferenceData({ resourceType }) });
 
 				// mock service call
-				jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: apiResponse }));
+				vi.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: apiResponse }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
@@ -105,7 +105,7 @@ describe('ReferenceDataEffects', () => {
 					actions$ = hot('-a--', { a: fetchReferenceData({ resourceType }) });
 
 					// mock service call
-					jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: apiResponse }));
+					vi.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: apiResponse }));
 
 					// expect effect to return success action
 					expectObservable(effects.fetchReferenceDataByType$).toBe('---(bc)', {
@@ -124,7 +124,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Reference data resourceType is required');
 
-				jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
 					b: fetchReferenceDataFailed({
@@ -139,7 +139,7 @@ describe('ReferenceDataEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: ReferenceDataResourceType.HgvMake }) });
 
-				jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: { data: [] } }));
+				vi.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: { data: [] } }));
 
 				expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
 					b: fetchReferenceDataFailed({
@@ -161,7 +161,7 @@ describe('ReferenceDataEffects', () => {
 				actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType }) });
 
 				// mock service call
-				jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
@@ -181,7 +181,7 @@ describe('ReferenceDataEffects', () => {
 					actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType }) });
 
 					// mock service call
-					jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
+					vi.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
 
 					// expect effect to return success action
 					expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---(bc)', {
@@ -200,7 +200,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Reference data resourceType is required');
 
-				jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
 					b: fetchReferenceDataAuditFailed({
@@ -215,7 +215,7 @@ describe('ReferenceDataEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.HgvMake }) });
 
-				jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: { data: [] } }));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: { data: [] } }));
 
 				expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
 					b: fetchReferenceDataAuditFailed({
@@ -238,7 +238,7 @@ describe('ReferenceDataEffects', () => {
 				actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey }) });
 
 				// mock service call
-				jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: entity }));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: entity }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
@@ -256,7 +256,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Reference data resourceKey is required');
 
-				jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
 					b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required', resourceType }),
@@ -269,7 +269,7 @@ describe('ReferenceDataEffects', () => {
 				const { resourceType } = value;
 				actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey: 'xx' }) });
 
-				jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: {} }));
+				vi.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: {} }));
 
 				expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
 					b: fetchReferenceDataByKeyFailed({
@@ -306,7 +306,7 @@ describe('ReferenceDataEffects', () => {
 
 				actions$ = hot('-a--', { a: fetchReferenceDataByKeySearch({ resourceType, resourceKey }) });
 
-				jest
+				vi
 					.spyOn(referenceDataService, 'fetchReferenceDataByKeySearch')
 					.mockReturnValue(cold('--a|', { a: apiResponse }));
 
@@ -329,7 +329,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Reference data resourceKey is required');
 
-				jest
+				vi
 					.spyOn(referenceDataService, 'fetchReferenceDataByKeySearch')
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
@@ -366,7 +366,7 @@ describe('ReferenceDataEffects', () => {
 					a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: '123' }),
 				});
 
-				jest
+				vi
 					.spyOn(referenceDataService, 'fetchTyreReferenceDataByKeySearch')
 					.mockReturnValue(cold('--a|', { a: apiResponse }));
 
@@ -388,7 +388,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Search term is required');
 
-				jest
+				vi
 					.spyOn(referenceDataService, 'fetchTyreReferenceDataByKeySearch')
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
@@ -449,7 +449,7 @@ describe('ReferenceDataEffects', () => {
 					a: createReferenceDataItem({ resourceType, resourceKey, payload: body as ReferenceDataModelBase }),
 				});
 
-				jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a|', { a: apiResponse }));
+				vi.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a|', { a: apiResponse }));
 
 				expectObservable(effects.createReferenceDataItem$).toBe('---b', {
 					b: createReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase }),
@@ -470,7 +470,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Something went wrong');
 
-				jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.createReferenceDataItem$).toBe('---b', {
 					b: createReferenceDataItemFailure({ error: 'Something went wrong' }),
@@ -493,7 +493,7 @@ describe('ReferenceDataEffects', () => {
 					a: amendReferenceDataItem({ resourceType, resourceKey, payload: body as ReferenceDataModelBase }),
 				});
 
-				jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { a: apiResponse }));
+				vi.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { a: apiResponse }));
 
 				expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
 					b: amendReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase }),
@@ -514,7 +514,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Something went wrong');
 
-				jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
 					b: amendReferenceDataItemFailure({ error: 'Something went wrong' }),
@@ -533,7 +533,7 @@ describe('ReferenceDataEffects', () => {
 
 				actions$ = hot('-a--', { a: deleteReferenceDataItem({ resourceType, resourceKey, reason }) });
 
-				jest
+				vi
 					.spyOn(referenceDataService, 'deleteReferenceDataItem')
 					.mockReturnValue(cold('--a-|', { a: apiResponse as DeleteItem }));
 
@@ -552,7 +552,7 @@ describe('ReferenceDataEffects', () => {
 
 				const expectedError = new Error('Something went wrong');
 
-				jest.spyOn(referenceDataService, 'deleteReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(referenceDataService, 'deleteReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.deleteReferenceDataItem$).toBe('---b', {
 					b: deleteReferenceDataItemFailure({ error: 'Something went wrong' }),

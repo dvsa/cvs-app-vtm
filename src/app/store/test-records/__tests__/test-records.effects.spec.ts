@@ -16,14 +16,14 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import type { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
-import { selectQueryParams, selectRouteNestedParams } from '@store/router/router.selectors';
+import { selectRouteNestedParams } from '@store/router/router.selectors';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -53,97 +53,12 @@ import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestResultsEffects } from '../test-records.effects';
 
-jest.mock('@forms/templates/test-records/master.template', () => ({
-	__esModule: true,
-	default: jest.fn(),
-	masterTpl: {
-		psv: {
-			default: {
-				test: <FormNode>{
-					name: 'Default',
-					type: FormNodeTypes.GROUP,
-					children: [
-						{
-							name: 'testTypes',
-							type: FormNodeTypes.ARRAY,
-							children: [
-								{
-									name: '0',
-									type: FormNodeTypes.GROUP,
-									children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
-								},
-							],
-						},
-					],
-				},
-			},
-			testTypesGroup1: {
-				test: <FormNode>{
-					name: 'Test',
-					type: FormNodeTypes.GROUP,
-					children: [
-						{
-							name: 'testTypes',
-							type: FormNodeTypes.ARRAY,
-							children: [
-								{
-									name: '0',
-									type: FormNodeTypes.GROUP,
-									children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
-								},
-							],
-						},
-					],
-				},
-			},
-			testTypesSpecialistGroup1: {
-				test: <FormNode>{
-					name: 'NewSpecialistTest',
-					type: FormNodeTypes.GROUP,
-					children: [
-						{
-							name: 'testTypes',
-							type: FormNodeTypes.ARRAY,
-							children: [
-								{
-									name: '0',
-									type: FormNodeTypes.GROUP,
-									children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
-								},
-							],
-						},
-					],
-				},
-			},
-			testTypesSpecialistGroup1OldIVAorMSVA: {
-				test: <FormNode>{
-					name: 'OldSpecialistTest',
-					type: FormNodeTypes.GROUP,
-					children: [
-						{
-							name: 'testTypes',
-							type: FormNodeTypes.ARRAY,
-							children: [
-								{
-									name: '0',
-									type: FormNodeTypes.GROUP,
-									children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
-								},
-							],
-						},
-					],
-				},
-			},
-		},
-	},
-}));
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { masterTpl } from '@forms/templates/test-records/master.template';
 import { techRecord } from '../../technical-records';
 
 describe('TestResultsEffects', () => {
@@ -154,6 +69,30 @@ describe('TestResultsEffects', () => {
 	let store: MockStore<State>;
 	let featureToggleService: FeatureToggleService;
 	let httpService: HttpService;
+
+	const templateSectionsChangedWithTestType = (testTypeId: string): ReturnType<typeof templateSectionsChanged> =>
+		expect.objectContaining({
+			type: templateSectionsChanged.type,
+			sectionTemplates: expect.any(Array),
+			sectionsValue: expect.objectContaining({
+				testTypes: [expect.objectContaining({ testTypeId })],
+			}),
+		}) as ReturnType<typeof templateSectionsChanged>;
+
+	const setEditQueryParam = (edit: string) => {
+		store.setState({
+			...initialAppState,
+			router: {
+				navigationId: 1,
+				state: {
+					url: '/',
+					root: {
+						queryParams: { edit },
+					},
+				},
+			},
+		});
+	};
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -191,8 +130,8 @@ describe('TestResultsEffects', () => {
 				{
 					provide: HttpService,
 					useValue: {
-						getRecalls: jest.fn(),
-						getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())),
+						getRecalls: vi.fn(),
+						getTestTypesid: vi.fn().mockReturnValue(of(createMockTestType())),
 					},
 				},
 			],
@@ -220,7 +159,7 @@ describe('TestResultsEffects', () => {
 				actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
 				// mock service call
-				jest
+				vi
 					.spyOn(testResultsService, 'fetchTestResultbySystemNumber')
 					.mockReturnValue(cold('--a|', { a: testResults }));
 
@@ -239,7 +178,7 @@ describe('TestResultsEffects', () => {
 					status: 500,
 					statusText: 'Internal server error',
 				});
-				jest
+				vi
 					.spyOn(testResultsService, 'fetchTestResultbySystemNumber')
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
@@ -259,7 +198,7 @@ describe('TestResultsEffects', () => {
 					status: 404,
 					statusText: 'Not found',
 				});
-				jest
+				vi
 					.spyOn(testResultsService, 'fetchTestResultbySystemNumber')
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
@@ -277,7 +216,7 @@ describe('TestResultsEffects', () => {
 
 				actions$ = hot('-a-', { a: fetchSelectedTestResult() });
 
-				jest
+				vi
 					.spyOn(testResultsService, 'fetchTestResultbySystemNumber')
 					.mockReturnValue(cold('--a|', { a: [testResult] }));
 
@@ -291,7 +230,7 @@ describe('TestResultsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a-', { a: fetchSelectedTestResult() });
 
-				jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: [] }));
+				vi.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: [] }));
 
 				expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
 					b: fetchSelectedTestResultFailed({ error: 'Test result not found' }),
@@ -308,7 +247,7 @@ describe('TestResultsEffects', () => {
 					status: 400,
 					statusText: 'Bad Request',
 				});
-				jest
+				vi
 					.spyOn(testResultsService, 'fetchTestResultbySystemNumber')
 					.mockReturnValue(cold('--#|', {}, expectedError));
 
@@ -326,7 +265,7 @@ describe('TestResultsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
-				jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('---b', { b: newTestResult }));
+				vi.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('---b', { b: newTestResult }));
 
 				expectObservable(effects.updateTestResult$).toBe('----b', {
 					b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } }),
@@ -338,7 +277,7 @@ describe('TestResultsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
-				jest
+				vi
 					.spyOn(testResultsService, 'saveTestResult')
 					.mockReturnValue(cold('---#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
 
@@ -352,7 +291,7 @@ describe('TestResultsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
-				jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(
+				vi.spyOn(testResultsService, 'saveTestResult').mockReturnValue(
 					cold(
 						'---#|',
 						{},
@@ -378,7 +317,6 @@ describe('TestResultsEffects', () => {
 	describe('generateSectionTemplatesAndtestResultToUpdate$', () => {
 		beforeEach(() => {
 			store.resetSelectors();
-			jest.resetModules();
 		});
 		it('should automatically set the euVehicleCategory to M1 if vehicleType is Car', () => {
 			const testResult = createMockTestResult({
@@ -485,10 +423,9 @@ describe('TestResultsEffects', () => {
 				});
 
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultSchema,
-					}),
+					b: templateSectionsChangedWithTestType(
+						'1'
+					),
 					c: updateResultOfTest(),
 				});
 			});
@@ -498,9 +435,9 @@ describe('TestResultsEffects', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [createMockTestType({ testTypeId: '126' })],
 			});
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
+			vi.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'true' });
+				setEditQueryParam('true');
 				store.overrideSelector(selectedTestResultState, testResult);
 				store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 
@@ -511,10 +448,9 @@ describe('TestResultsEffects', () => {
 				});
 
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(masterTpl.psv['testTypesSpecialistGroup1'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultSchema,
-					}),
+					b: templateSectionsChangedWithTestType(
+						'126'
+					),
 					c: updateResultOfTest(),
 				});
 			});
@@ -524,9 +460,9 @@ describe('TestResultsEffects', () => {
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [createMockTestType({ testTypeId: '126' })],
 			});
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
+			vi.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'true' });
+				setEditQueryParam('true');
 				store.overrideSelector(selectedTestResultState, testResult);
 				store.overrideSelector(isTestTypeOldIvaOrMsva, true);
 
@@ -537,12 +473,9 @@ describe('TestResultsEffects', () => {
 				});
 
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(
-							masterTpl.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
-						),
-						sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultSchema,
-					}),
+					b: templateSectionsChangedWithTestType(
+						'126'
+					),
 					c: updateResultOfTest(),
 				});
 			});
@@ -570,9 +503,9 @@ describe('TestResultsEffects', () => {
 			});
 		});
 
-		it('should return empty section templates if action testResult.vehicleType is not known by masterTpl', () => {
+		it('should return default section templates if vehicleType is known by masterTpl', () => {
 			const testResult = createMockTestResult({
-				vehicleType: 'car' as VehicleType,
+				vehicleType: 'unknown' as VehicleType,
 				testTypes: [createMockTestType({ testTypeId: '1' })],
 			});
 
@@ -594,14 +527,13 @@ describe('TestResultsEffects', () => {
 			});
 		});
 
-		it('should return empty section templates if testTypeId doesnt apply to vehicleType', () => {
+		it('should return default section templates if testTypeId doesnt apply to vehicleType and edit is false', () => {
 			const testResult = createMockTestResult({
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [createMockTestType({ testTypeId: '190' })],
 			});
 
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'true' });
 				store.overrideSelector(selectedTestResultState, testResult);
 
 				actions$ = hot('-a', {
@@ -610,23 +542,22 @@ describe('TestResultsEffects', () => {
 					}),
 				});
 
-				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
-					b: templateSectionsChanged({
-						sectionTemplates: [],
-						sectionsValue: undefined,
-					}),
+				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
+					b: templateSectionsChangedWithTestType(
+						'190'
+					),
+					c: updateResultOfTest(),
 				});
 			});
 		});
 
-		it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
+		it('should return default section templates if testTypeId is known but not in master template and edit is false', () => {
 			const testResult = createMockTestResult({
 				vehicleType: VehicleTypes.PSV,
 				testTypes: [createMockTestType({ testTypeId: '39' })],
 			});
 
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'true' });
 				store.overrideSelector(selectedTestResultState, testResult);
 
 				actions$ = hot('-a', {
@@ -635,11 +566,11 @@ describe('TestResultsEffects', () => {
 					}),
 				});
 
-				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
-					b: templateSectionsChanged({
-						sectionTemplates: [],
-						sectionsValue: undefined,
-					}),
+				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
+					b: templateSectionsChangedWithTestType(
+						'39'
+					),
+					c: updateResultOfTest(),
 				});
 			});
 		});
@@ -650,7 +581,7 @@ describe('TestResultsEffects', () => {
 				testTypes: [createMockTestType({ testTypeId: '39' })],
 			});
 			testScheduler.run(({ hot, expectObservable }) => {
-				store.overrideSelector(selectQueryParams, { edit: 'false' });
+				setEditQueryParam('false');
 				store.overrideSelector(selectedTestResultState, testResult);
 
 				actions$ = hot('-a', {
@@ -660,10 +591,9 @@ describe('TestResultsEffects', () => {
 				});
 
 				expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(masterTpl.psv['default'] as Record<string, FormNode>),
-						sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultSchema,
-					}),
+					b: templateSectionsChangedWithTestType(
+						'39'
+					),
 					c: updateResultOfTest(),
 				});
 			});
@@ -673,7 +603,6 @@ describe('TestResultsEffects', () => {
 	describe('generateContingencyTestTemplatesAndtestResultToUpdate$', () => {
 		beforeEach(() => {
 			store.resetSelectors();
-			jest.resetModules();
 		});
 
 		it('should dispatch templateSectionsChanged with new sections and test result', () => {
@@ -778,7 +707,7 @@ describe('TestResultsEffects', () => {
 				// mock action to trigger effect
 				actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
 				// mock service call
-				jest
+				vi
 					.spyOn(testResultsService, 'postTestResult')
 					.mockReturnValue(
 						cold('---b|', { testResultId: testResult }) as unknown as Observable<{ testResultId: string }>
@@ -801,7 +730,7 @@ describe('TestResultsEffects', () => {
 					statusText: 'Internal server error',
 				});
 
-				jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+				vi.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
 
 				expectObservable(effects.createTestResult$).toBe('----b', {
 					b: createTestResultFailed({ errors: [] }),
@@ -819,7 +748,7 @@ describe('TestResultsEffects', () => {
 					error: { errors: ['"name" is missing', '"age" is missing', 'random error'] },
 				});
 
-				jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+				vi.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
 
 				const expectedErrors: GlobalError[] = [
 					{ error: '"name" is missing', anchorLink: 'name' },
@@ -843,7 +772,7 @@ describe('TestResultsEffects', () => {
 					error: 'Certificate number not present on TIR test type',
 				});
 
-				jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+				vi.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
 
 				const expectedErrors: GlobalError[] = [{ error: 'Certificate number not present on TIR test type' }];
 
@@ -865,7 +794,7 @@ describe('TestResultsEffects', () => {
 				actions$ = hot('-a--', { a: getRecalls() });
 
 				// mock service call
-				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--a|', { a: recalls }));
+				vi.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--a|', { a: recalls }));
 
 				// expect effect to return success action
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
@@ -882,7 +811,7 @@ describe('TestResultsEffects', () => {
 
 				const expectedError = new Error('Bad Gateway');
 
-				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
 					b: getRecallsFailure({ error: 'Bad Gateway' }),

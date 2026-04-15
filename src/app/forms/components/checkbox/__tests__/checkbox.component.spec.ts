@@ -5,7 +5,7 @@ import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynami
 import { CheckboxComponent } from '../checkbox.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-checkbox-host',
 	template: `<form [formGroup]="form">
     <app-checkbox name="foo" formControlName="foo"></app-checkbox>
   </form> `,

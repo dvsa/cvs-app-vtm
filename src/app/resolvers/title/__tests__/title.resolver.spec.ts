@@ -26,11 +26,8 @@ describe('TitleResolver', () => {
 		expect(resolver).toBeTruthy();
 	});
 
-	it('should set title using Title service', () => {
-		const titleServiceSpy = jest.spyOn(titleService, 'setTitle');
-		const result = TestBed.runInInjectionContext(() =>
-			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
-		) as Promise<boolean>;
+	it('should set title using Title service', async () => {
+		const titleServiceSpy = vi.spyOn(titleService, 'setTitle');
 		store.setState({
 			...initialAppState,
 			router: {
@@ -60,7 +57,11 @@ describe('TitleResolver', () => {
 				navigationId: 1,
 			},
 		});
-		const resolved = result;
+
+		const resolved = await TestBed.runInInjectionContext(() =>
+			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+		);
+
 		expect(resolved).toBeTruthy();
 		expect(titleServiceSpy).toHaveBeenCalledWith('Test Results - Vehicle Testing Management');
 	});

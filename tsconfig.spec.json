@@ -3,24 +3,18 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "outDir": "./out-tsc/spec",
-    "module": "CommonJs",
     "allowJs": true,
-    "types": [
-      "node",
-      "jest"
-    ],
     "esModuleInterop": true,
-    "emitDecoratorMetadata": true
+    "types": [
+      "vitest/globals",
+      "node"
+    ]
   },
-  "files": [
-    "setup-jest.ts",
-    "jest-global-mocks.ts",
-    "src/polyfills.ts"
-  ],
   "include": [
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/polyfills.ts",
+    "vitest-setup.ts"
   ]
 }

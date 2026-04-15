@@ -62,7 +62,7 @@ describe('ManufacturerComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 
 			expect(parentFormSpy).toHaveBeenCalled();
@@ -71,13 +71,13 @@ describe('ManufacturerComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
+			const spy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -85,14 +85,14 @@ describe('ManufacturerComponent', () => {
 
 	describe('shouldDisplayFormControl', () => {
 		it('should return true if the form control exists on the form', () => {
-			const formSpy = jest.spyOn(component.form, 'get');
+			const formSpy = vi.spyOn(component.form, 'get');
 			const returnValue = component.shouldDisplayFormControl('techRecord_manufacturerDetails_name');
 			expect(formSpy).toHaveBeenCalled();
 			expect(returnValue).toEqual(true);
 		});
 
 		it('should return false if the form control does not exists on the form', () => {
-			const formSpy = jest.spyOn(component.form, 'get');
+			const formSpy = vi.spyOn(component.form, 'get');
 			const returnValue = component.shouldDisplayFormControl('techRecord_manufacturerDetails_fakeName');
 			expect(formSpy).toHaveBeenCalled();
 			expect(returnValue).toEqual(false);

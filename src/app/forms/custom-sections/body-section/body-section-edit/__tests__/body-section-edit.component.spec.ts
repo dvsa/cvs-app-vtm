@@ -29,15 +29,15 @@ import { ReplaySubject, of } from 'rxjs';
 import { BodySectionEditComponent } from '../body-section-edit.component';
 
 const mockReferenceDataService = {
-	addSearchInformation: jest.fn(),
-	getTyreSearchReturn$: jest.fn(),
-	getTyreSearchCriteria$: jest.fn(),
-	loadReferenceDataByKeySearch: jest.fn(),
-	loadTyreReferenceDataByKeySearch: jest.fn(),
-	loadReferenceData: jest.fn(),
-	getReferenceDataOptions: jest.fn(),
-	getAll$: jest.fn(),
-	getReferencePsvMakeDataLoading$: jest.fn(),
+	addSearchInformation: vi.fn(),
+	getTyreSearchReturn$: vi.fn(),
+	getTyreSearchCriteria$: vi.fn(),
+	loadReferenceDataByKeySearch: vi.fn(),
+	loadTyreReferenceDataByKeySearch: vi.fn(),
+	loadReferenceData: vi.fn(),
+	getReferenceDataOptions: vi.fn(),
+	getAll$: vi.fn(),
+	getReferencePsvMakeDataLoading$: vi.fn(),
 };
 
 describe('BodySectionEditComponent', () => {
@@ -70,7 +70,7 @@ describe('BodySectionEditComponent', () => {
 				TechnicalRecordService,
 				{ provide: ReferenceDataService, useValue: mockReferenceDataService },
 				ChangeDetectorRef,
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 			],
 		}).compileComponents();
 
@@ -94,7 +94,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should call loadOptions', () => {
-			const loadOptionsSpy = jest.spyOn(component, 'loadOptions');
+			const loadOptionsSpy = vi.spyOn(component, 'loadOptions');
 			component.ngOnInit();
 			expect(loadOptionsSpy).toHaveBeenCalled();
 		});
@@ -112,8 +112,8 @@ describe('BodySectionEditComponent', () => {
 
 			store.overrideSelector(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, '1234'), refData);
 			const control = form.get('techRecord_brakes_dtpNumber');
-			const pipeSpy = jest.spyOn(control!.valueChanges, 'pipe').mockReturnValue(of(refData));
-			const dtpSpy = jest.spyOn(component, 'handleDTpNumberChange');
+			const pipeSpy = vi.spyOn(control!.valueChanges, 'pipe').mockReturnValue(of(refData));
+			const dtpSpy = vi.spyOn(component, 'handleDTpNumberChange');
 
 			component.form = form;
 			component.ngOnInit();
@@ -127,7 +127,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should listen for vehicleConfiguration changes', () => {
-			const handleUpdateVehicleConfigurationSpy = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
+			const handleUpdateVehicleConfigurationSpy = vi.spyOn(component, 'handleUpdateVehicleConfiguration');
 			component.ngOnInit();
 			expect(handleUpdateVehicleConfigurationSpy).toHaveBeenCalled();
 		});
@@ -135,23 +135,28 @@ describe('BodySectionEditComponent', () => {
 
 	describe('handleDTpNumberChange', () => {
 		it('should patch the form and call cdr.detectChanges', () => {
-			let psvMake: ReferenceDataModelBase;
-			store
-				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, '1234'))
-				.subscribe((value: ReferenceDataModelBase) => {
-					const cdrSpy = jest.spyOn(component.cdr, 'detectChanges');
-					const formSpy = jest.spyOn(component.form, 'patchValue');
-					psvMake = value;
-					component.handleDTpNumberChange(psvMake);
-					expect(cdrSpy).toHaveBeenCalled();
-					expect(formSpy).toHaveBeenCalled();
-				});
+			const cdrSpy = vi.spyOn(component.cdr, 'detectChanges');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
+			const psvMake = {
+				resourceType: ReferenceDataResourceType.PsvMake,
+				resourceKey: '1234',
+				dtpNumber: '1234',
+				psvBodyType: 'COACH',
+				psvBodyMake: 'Body Make',
+				psvChassisMake: 'Chassis Make',
+				psvChassisModel: 'Chassis Model',
+			} as ReferenceDataModelBase;
+
+			component.handleDTpNumberChange(psvMake);
+
+			expect(cdrSpy).toHaveBeenCalled();
+			expect(formSpy).toHaveBeenCalled();
 		});
 	});
 
 	describe('handleUpdateVehicleConfiguration', () => {
 		it('should, for HGVs, set the body type description to articulated and code to A if articulated is selected', () => {
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
@@ -163,7 +168,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should, for HGVs, set the body type description to null and code to null if rigid is selected, and articulated was previously selected', () => {
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
@@ -176,7 +181,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should, for HGVs set the function code to R if rigid is selected', () => {
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
@@ -187,7 +192,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should, for HGVs set the function code to A if articulated is selected', () => {
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
@@ -198,7 +203,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should, for TRLs, set the function code to A is semi-trailer is selected', () => {
-			const formSpy = jest.spyOn(component.form, 'patchValue');
+			const formSpy = vi.spyOn(component.form, 'patchValue');
 			const mockTechRecord = mockVehicleTechnicalRecord('trl');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();
@@ -217,7 +222,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});
@@ -232,7 +237,7 @@ describe('BodySectionEditComponent', () => {
 
 	describe('loadOptions', () => {
 		it('should load the options based off the vehicle type (PSV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('psv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();
@@ -240,7 +245,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (HGV)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();
@@ -248,7 +253,7 @@ describe('BodySectionEditComponent', () => {
 		});
 
 		it('should load the options based off the vehicle type (TRL)', () => {
-			const optionServSpy = jest.spyOn(optionsService, 'loadOptions');
+			const optionServSpy = vi.spyOn(optionsService, 'loadOptions');
 			const mockTechRecord = mockVehicleTechnicalRecord('trl');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.loadOptions();

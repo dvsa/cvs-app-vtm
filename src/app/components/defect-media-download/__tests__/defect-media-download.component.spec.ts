@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -14,27 +15,27 @@ describe('DefectMediaDownloadComponent', () => {
 	let globalErrorService: GlobalErrorService;
 	let defectMediaService: {
 		images: Record<string, string>;
-		hasImages: jest.Mock;
-		hasCachedImages: jest.Mock;
-		getDefectZip: jest.Mock;
-		openDocumentFromZip: jest.Mock;
-		handleError: jest.Mock;
-		hasRententionPeriodExpired: jest.Mock;
-		formatMediaFailureReason: jest.Mock;
+		hasImages: Mock;
+		hasCachedImages: Mock;
+		getDefectZip: Mock;
+		openDocumentFromZip: Mock;
+		handleError: Mock;
+		hasRententionPeriodExpired: Mock;
+		formatMediaFailureReason: Mock;
 	};
 
 	beforeEach(async () => {
 		defectMediaService = {
 			images: {},
-			hasImages: jest.fn(
+			hasImages: vi.fn(
 				(defect: DefectDetailsSchema) => !!defect.media?.some((media) => media.type !== 'failReason' && !!media.path)
 			),
-			hasCachedImages: jest.fn(),
-			getDefectZip: jest.fn(),
-			openDocumentFromZip: jest.fn(),
-			handleError: jest.fn(),
-			hasRententionPeriodExpired: jest.fn(),
-			formatMediaFailureReason: jest.fn(
+			hasCachedImages: vi.fn(),
+			getDefectZip: vi.fn(),
+			openDocumentFromZip: vi.fn(),
+			handleError: vi.fn(),
+			hasRententionPeriodExpired: vi.fn(),
+			formatMediaFailureReason: vi.fn(
 				(reason?: string) => reason ?? 'Reason for failure to capture media not available'
 			),
 		};
@@ -62,7 +63,7 @@ describe('DefectMediaDownloadComponent', () => {
 					],
 				}),
 				{ provide: DefectMediaService, useValue: defectMediaService },
-				{ provide: GlobalErrorService, useValue: { clearErrors: jest.fn(), setErrors: jest.fn() } },
+				{ provide: GlobalErrorService, useValue: { clearErrors: vi.fn(), setErrors: vi.fn() } },
 			],
 		}).compileComponents();
 
@@ -140,7 +141,7 @@ describe('DefectMediaDownloadComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should clear global errors', () => {
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
 			component.ngOnDestroy();
 			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
 		});

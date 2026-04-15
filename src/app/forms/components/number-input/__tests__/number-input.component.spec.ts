@@ -8,7 +8,7 @@ import { FieldWarningMessageComponent } from '../../field-warning-message/field-
 import { NumberInputComponent } from '../number-input.component';
 
 @Component({
-	selector: 'app-host-component',
+	selector: 'app-number-input-host',
 	template: `<form [formGroup]="form">
     <app-number-input name="foo" label="Foo" formControlName="foo"></app-number-input>
   </form> `,

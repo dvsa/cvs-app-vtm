@@ -1,4 +1,6 @@
+import type { Mocked } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+import { version } from '@/package.json';
 import { Log, LogType } from '@models/logs/logs.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
@@ -8,10 +10,6 @@ import { initialState } from '@store/logs/logs.reducer';
 import { selectMergedRouteUrl } from '@store/router/router.selectors';
 import * as UserActions from '@store/user/user-service.reducer';
 import { of } from 'rxjs';
-
-jest.mock('@/package.json', () => ({
-	version: '1.0',
-}));
 
 const mockLog = () =>
 	({
@@ -24,9 +22,9 @@ describe('LogsProvider', () => {
 	let logsProvider: LogsProvider;
 	let httpService: HttpService;
 	let store: MockStore;
-	const additionalInfo = { appVersion: '1.0', oid: 'some-id', employeeId: 'some-emp-id', source: 'VTM' };
-	const mockHttpService: jest.Mocked<Partial<HttpService>> = {
-		sendLogs: jest.fn().mockReturnValue(of({})),
+	const additionalInfo = { appVersion: version, oid: 'some-id', employeeId: 'some-emp-id', source: 'VTM' };
+	const mockHttpService: Mocked<Partial<HttpService>> = {
+		sendLogs: vi.fn().mockReturnValue(of({})),
 	};
 
 	beforeEach(() => {
@@ -78,7 +76,7 @@ describe('LogsProvider', () => {
 	describe('dispatchLog', () => {
 		it('should dispatch saveLog action with correct payload containing url and pageName', () => {
 			// ARRANGE
-			jest.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'dispatch');
 
 			const mockUrl = '/test-url';
 

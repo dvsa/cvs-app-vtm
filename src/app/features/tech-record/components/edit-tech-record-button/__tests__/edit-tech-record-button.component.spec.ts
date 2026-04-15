@@ -24,7 +24,7 @@ const mockTechRecordService = {
 		vin: 'testVin',
 		techRecord_statusCode: StatusCodes.CURRENT,
 	} as V3TechRecordModel),
-	clearReasonForCreation: jest.fn(),
+	clearReasonForCreation: vi.fn(),
 };
 
 let component: EditTechRecordButtonComponent;
@@ -47,7 +47,7 @@ describe('EditTechRecordButtonComponent', () => {
 	beforeEach(async () => {
 		actions$ = new ReplaySubject<Action>();
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 
 		await TestBed.configureTestingModule({
 			imports: [EditTechRecordButtonComponent],
@@ -73,7 +73,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 		fixture.detectChanges();
 
-		jest.spyOn(window, 'confirm');
+		vi.spyOn(window, 'confirm');
 	});
 
 	describe('component', () => {
@@ -90,8 +90,8 @@ describe('EditTechRecordButtonComponent', () => {
 				vin: 'testVin',
 				techRecord_statusCode: StatusCodes.PROVISIONAL,
 			} as V3TechRecordModel);
-			const navigateSpy = jest.spyOn(router, 'navigate');
-			jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
+			const navigateSpy = vi.spyOn(router, 'navigate');
+			vi.spyOn(window, 'scrollTo').mockImplementation((() => {}) as any);
 
 			fixture.detectChanges();
 			fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
@@ -105,7 +105,7 @@ describe('EditTechRecordButtonComponent', () => {
 				vin: 'testVin',
 				techRecord_statusCode: StatusCodes.CURRENT,
 			} as V3TechRecordModel);
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 
 			fixture.detectChanges();
 			fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
@@ -120,7 +120,7 @@ describe('EditTechRecordButtonComponent', () => {
 		});
 		describe('and the user submits their changes', () => {
 			it('component should emit event', fakeAsync(() => {
-				const sumbitChangeSpy = jest.spyOn(component.submitChange, 'emit');
+				const sumbitChangeSpy = vi.spyOn(component.submitChange, 'emit');
 
 				fixture.detectChanges();
 				fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
@@ -138,7 +138,7 @@ describe('EditTechRecordButtonComponent', () => {
 		});
 		describe('and the user submits their changes', () => {
 			it('component should emit event', fakeAsync(() => {
-				const sumbitChangeSpy = jest.spyOn(component.submitChange, 'emit');
+				const sumbitChangeSpy = vi.spyOn(component.submitChange, 'emit');
 
 				fixture.detectChanges();
 				fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
@@ -152,12 +152,12 @@ describe('EditTechRecordButtonComponent', () => {
 			describe('and the form is dirty', () => {
 				beforeEach(() => {
 					fixture.componentRef.setInput('isDirty', true);
-					jest.resetAllMocks();
+					vi.resetAllMocks();
 				});
 
 				it('should prompt user if they wish to cancel', () => {
 					fixture.componentRef.setInput('isEditing', true);
-					jest.spyOn(window, 'confirm').mockImplementation(() => true);
+					vi.spyOn(window, 'confirm').mockImplementation(() => true);
 
 					fixture.detectChanges();
 
@@ -169,11 +169,11 @@ describe('EditTechRecordButtonComponent', () => {
 				describe('and the user cancels cancelling an amendment', () => {
 					it('should keep user in edit view', fakeAsync(() => {
 						fixture.componentRef.setInput('isEditing', true);
-						jest.spyOn(window, 'confirm').mockImplementation(() => false);
-						const dispatchSpy = jest.spyOn(store, 'dispatch');
-						const cancelSpy = jest.spyOn(component, 'cancel');
-						const toggleEditModeSpy = jest.spyOn(component, 'toggleEditMode');
-						const navigateSpy = jest.spyOn(router, 'navigate');
+						vi.spyOn(window, 'confirm').mockImplementation(() => false);
+						const dispatchSpy = vi.spyOn(store, 'dispatch');
+						const cancelSpy = vi.spyOn(component, 'cancel');
+						const toggleEditModeSpy = vi.spyOn(component, 'toggleEditMode');
+						const navigateSpy = vi.spyOn(router, 'navigate');
 
 						fixture.detectChanges();
 						fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
@@ -194,11 +194,11 @@ describe('EditTechRecordButtonComponent', () => {
 				describe('and the user confirms cancelling the amendment', () => {
 					it('should return user back to non-edit view', fakeAsync(() => {
 						fixture.componentRef.setInput('isEditing', true);
-						jest.spyOn(window, 'confirm').mockImplementation(() => true);
-						const dispatchSpy = jest.spyOn(store, 'dispatch');
-						const cancelSpy = jest.spyOn(component, 'cancel');
-						const toggleEditModeSpy = jest.spyOn(component, 'toggleEditMode');
-						const navigateSpy = jest.spyOn(router, 'navigate');
+						vi.spyOn(window, 'confirm').mockImplementation(() => true);
+						const dispatchSpy = vi.spyOn(store, 'dispatch');
+						const cancelSpy = vi.spyOn(component, 'cancel');
+						const toggleEditModeSpy = vi.spyOn(component, 'toggleEditMode');
+						const navigateSpy = vi.spyOn(router, 'navigate');
 
 						fixture.detectChanges();
 						fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
@@ -224,7 +224,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 				it('should not prompt user if they wish to cancel', fakeAsync(() => {
 					fixture.componentRef.setInput('isEditing', true);
-					jest.spyOn(window, 'confirm');
+					vi.spyOn(window, 'confirm');
 					fixture.detectChanges();
 
 					fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
@@ -234,10 +234,10 @@ describe('EditTechRecordButtonComponent', () => {
 
 				it('should return user to non-edit view', fakeAsync(() => {
 					fixture.componentRef.setInput('isEditing', true);
-					jest.spyOn(window, 'confirm');
-					const cancelSpy = jest.spyOn(component, 'cancel');
-					const toggleSpy = jest.spyOn(component, 'toggleEditMode');
-					const dispatchSpy = jest.spyOn(store, 'dispatch');
+					vi.spyOn(window, 'confirm');
+					const cancelSpy = vi.spyOn(component, 'cancel');
+					const toggleSpy = vi.spyOn(component, 'toggleEditMode');
+					const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 					fixture.detectChanges();
 

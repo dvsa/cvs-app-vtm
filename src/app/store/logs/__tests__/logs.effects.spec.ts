@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { Log, LogType } from '@models/logs/logs.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -14,11 +15,11 @@ describe('LogsEffects', () => {
 	let actions$: Observable<Action>;
 	let store: MockStore;
 	const logsProviderMock = {
-		sendLogs: jest.fn(),
-	} as unknown as jest.Mocked<LogsProvider>;
+		sendLogs: vi.fn(),
+	} as unknown as Mocked<LogsProvider>;
 
 	beforeEach(() => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		TestBed.configureTestingModule({
 			providers: [
@@ -34,11 +35,11 @@ describe('LogsEffects', () => {
 	});
 
 	afterEach(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	describe('startSendingLogsEffect$', () => {
-		it('should emit sendLogs action every minute when startSendingLogs is dispatched', (done) => {
+		it('should emit sendLogs action every minute when startSendingLogs is dispatched', () => new Promise<void>((done) => {
 			actions$ = of(logsActions.startSendingLogs());
 
 			const emittedActions: Action[] = [];
@@ -52,12 +53,12 @@ describe('LogsEffects', () => {
 			});
 
 			// Fast-forward time by 3 minutes
-			jest.advanceTimersByTime(3 * 60 * 1000);
-		});
+			vi.advanceTimersByTime(3 * 60 * 1000);
+		}));
 	});
 
 	describe('sendLogsEffect$', () => {
-		it('should call logsProvider.sendLogs and dispatch sendLogsSuccess when successful', (done) => {
+		it('should call logsProvider.sendLogs and dispatch sendLogsSuccess when successful', () => new Promise<void>((done) => {
 			const mockLogs: Log[] = [{ type: LogType.DEBUG, message: 'Test log', timestamp: Date.now() }];
 
 			store.overrideSelector(getLogsState, mockLogs);
@@ -70,9 +71,9 @@ describe('LogsEffects', () => {
 				expect(logsProviderMock.sendLogs).toHaveBeenCalledWith(mockLogs);
 				done();
 			});
-		});
+		}));
 
-		it('should dispatch sendLogsFailure when logsProvider.sendLogs fails', (done) => {
+		it('should dispatch sendLogsFailure when logsProvider.sendLogs fails', () => new Promise<void>((done) => {
 			const mockError = new Error('Test error');
 			const mockLogs: Log[] = [{ type: LogType.DEBUG, message: 'Test log', timestamp: Date.now() }];
 
@@ -86,19 +87,19 @@ describe('LogsEffects', () => {
 				expect(logsProviderMock.sendLogs).toHaveBeenCalledWith(mockLogs);
 				done();
 			});
-		});
+		}));
 
 		it('should not send logs when isAutomation is true', () => {
 			// Set the "isAutomation" class prop to true for this test
 			Object.defineProperty(effects, 'isAutomation', { value: true });
 
-			const sendLogsSpy = jest.spyOn(logsProviderMock, 'sendLogs');
+			const sendLogsSpy = vi.spyOn(logsProviderMock, 'sendLogs');
 
 			actions$ = of(logsActions.sendLogs());
 
 			effects.sendLogsEffect$.subscribe({
 				next: () => {
-					fail('Effect should not emit any action due to filter');
+					throw new Error('Effect should not emit any action due to filter');
 				},
 				complete: () => {
 					expect(sendLogsSpy).not.toHaveBeenCalled();

@@ -8,7 +8,8 @@ import { Logout } from '@store/user/user-service.actions';
 import { of } from 'rxjs';
 import { UserService } from '../user-service';
 
-jest.mock('jwt-decode', () => ({
+vi.mock('jwt-decode', async () => ({
+  ...(await vi.importActual('jwt-decode')),
 	jwtDecode: () => ({ roles: ['12345'] }),
 }));
 
@@ -17,9 +18,9 @@ Object.defineProperty(global.self, 'crypto', {
 	value: {
 		// Needed for @azure/msal-browser
 		subtle: {
-			digest: jest.fn(),
+			digest: vi.fn(),
 		},
-		getRandomValues: jest.fn(),
+		getRandomValues: vi.fn(),
 	},
 });
 
@@ -35,7 +36,7 @@ describe('User-Service', () => {
 				{
 					provide: MsalService,
 					useValue: {
-						logout: jest.fn(),
+						logout: vi.fn(),
 					},
 				},
 				{
@@ -58,7 +59,7 @@ describe('User-Service', () => {
 	});
 
 	it('should dispatch the login action upon logging in', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		service.logIn({
 			name: 'name',
@@ -79,8 +80,8 @@ describe('User-Service', () => {
 	});
 
 	it('should logout', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
-		const MsalSpy = jest.spyOn(msalService, 'logout').mockImplementation(() => of());
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
+		const MsalSpy = vi.spyOn(msalService, 'logout').mockImplementation(() => of());
 		service.logOut();
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(Logout());

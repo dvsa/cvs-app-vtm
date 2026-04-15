@@ -20,7 +20,7 @@ import { updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary.component';
 
-global.scrollTo = jest.fn();
+global.scrollTo = vi.fn();
 
 describe('TechRecordSummaryComponent', () => {
 	let component: TechRecordSummaryComponent;
@@ -168,8 +168,8 @@ describe('TechRecordSummaryComponent', () => {
 
 	describe('handleFormState', () => {
 		it('should dispatch updateEditingTechRecord', () => {
-			jest.spyOn(component, 'checkForms').mockImplementation();
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			vi.spyOn(component, 'checkForms').mockImplementation((() => {}) as any);
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const mockTechRecord = {
 				systemNumber: 'foo',
 				createdTimestamp: 'bar',
@@ -177,8 +177,8 @@ describe('TechRecordSummaryComponent', () => {
 				techRecord_vehicleType: VehicleTypes.LGV,
 			} as unknown as TechRecordType<'put'>;
 			component.techRecordCalculated = mockTechRecord;
-			jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
-			jest.spyOn(component, 'sections').mockReturnValue([]);
+			vi.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
+			vi.spyOn(component, 'sections').mockReturnValue([]);
 
 			component.handleFormState({});
 
@@ -205,7 +205,7 @@ describe('TechRecordSummaryComponent', () => {
 					},
 				],
 			} as unknown as TechRecordType<'put'>;
-			jest.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
+			vi.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
 
 			const errors = component.getAxleErrors();
 
@@ -233,7 +233,7 @@ describe('TechRecordSummaryComponent', () => {
 				],
 			} as unknown as TechRecordType<'put'>;
 			component.techRecordCalculated = mockTechRecord;
-			jest.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
+			vi.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
 
 			const errors = component.getAxleErrors();
 
@@ -269,7 +269,7 @@ describe('TechRecordSummaryComponent', () => {
 					},
 				],
 			} as unknown as TechRecordType<'put'>;
-			jest.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
+			vi.spyOn(component.form, 'getRawValue').mockReturnValue(mockTechRecord);
 
 			const errors = component.getAxleErrors();
 

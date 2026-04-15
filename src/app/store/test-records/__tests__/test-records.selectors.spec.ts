@@ -143,7 +143,7 @@ describe('Test Results Selectors', () => {
 			const notfound: TestResultSchema[] = [];
 			sortedTestHistory?.forEach((test) => {
 				if (test.createdAt) {
-					// eslint-disable-next-line jest/no-conditional-expect
+					
 					expect(new Date(test.createdAt).getTime()).toBeLessThanOrEqual(previous);
 					previous = new Date(test.createdAt).getTime();
 				} else {
@@ -151,7 +151,7 @@ describe('Test Results Selectors', () => {
 				}
 			});
 			if (notfound.length > 0) {
-				// eslint-disable-next-line jest/no-conditional-expect
+				
 				expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
 			}
 		});

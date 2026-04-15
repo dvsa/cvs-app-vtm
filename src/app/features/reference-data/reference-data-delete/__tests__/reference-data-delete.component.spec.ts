@@ -48,9 +48,9 @@ describe('ReferenceDataAddComponent', () => {
 	});
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation((() => {}) as any);
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -58,7 +58,7 @@ describe('ReferenceDataAddComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -75,7 +75,7 @@ describe('ReferenceDataAddComponent', () => {
 	describe('handleSubmit', () => {
 		it('will not dispatch there is no reason for deletion', () => {
 			component.type = ReferenceDataResourceType.CountryOfRegistration;
-			const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 
@@ -91,7 +91,7 @@ describe('ReferenceDataAddComponent', () => {
 				component.type = ReferenceDataResourceType.CountryOfRegistration;
 				component.key = 'testkey';
 				component.handleFormChange({ reason: 'test reason' });
-				const dispatch = jest.spyOn(store, 'dispatch');
+				const dispatch = vi.spyOn(store, 'dispatch');
 
 				component.handleSubmit();
 
