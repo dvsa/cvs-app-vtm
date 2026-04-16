@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -18,14 +18,14 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormGroup, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, ReplaySubject, catchError, filter, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-add',
 	templateUrl: './reference-data-add.component.html',
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
-export class ReferenceDataCreateComponent implements OnInit {
+export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
 	referenceDataService = inject(ReferenceDataService);
@@ -33,6 +33,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 	router = inject(Router);
 	store = inject(Store<ReferenceDataState>);
 	titleService = inject(Title);
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,9 +50,15 @@ export class ReferenceDataCreateComponent implements OnInit {
 			this.type = params['type'];
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 		});
-		this.refDataAdminType$.subscribe((type) => {
+		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
 			this.titleService.setTitle(`Add a new ${type?.labelSingular} - Vehicle Testing Management`);
 		});
+	}
+
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,6 +1,6 @@
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -18,7 +18,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, first, skipWhile, take } from 'rxjs';
+import { Observable, ReplaySubject, first, skipWhile, take, takeUntil } from 'rxjs';
 import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
@@ -33,7 +33,7 @@ import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-hist
 		AsyncPipe,
 	],
 })
-export class ReferenceDataAmendComponent implements OnInit {
+export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
 	referenceDataService = inject(ReferenceDataService);
@@ -46,6 +46,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 	key!: string;
 	isFormDirty = false;
 	isFormInvalid = true;
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	amendedData: any;
@@ -78,9 +79,15 @@ export class ReferenceDataAmendComponent implements OnInit {
 				this.amendedData = data;
 			});
 
-		this.refDataAdminType$.subscribe((type) => {
+		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
 			this.titleService.setTitle(`Amend this ${type?.labelSingular} - Vehicle Testing Management`);
 		});
+	}
+
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get roles(): typeof Roles {

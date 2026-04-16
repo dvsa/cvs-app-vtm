@@ -25,7 +25,7 @@ import {
 	selectRefDataBySearchTerm,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
+import { Observable, Subject, catchError, filter, map, of, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-list',
@@ -118,7 +118,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				next: (res) => of(!!res),
 			});
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-		this.refDataAdminType$.subscribe((type) => {
+		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
 			this.titleService.setTitle(`Search for ${type?.label} - Vehicle Testing Management`);
 		});
 	}
