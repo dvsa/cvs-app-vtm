@@ -149,6 +149,8 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 				distinctUntilChanged()
 			)
 			.subscribe(([selectedBrake, value]) => {
+				if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
+
 				// Set the brake details automatically based selection
 				if (selectedBrake && value) {
 					const techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;

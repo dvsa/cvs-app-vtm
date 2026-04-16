@@ -147,7 +147,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	onCreateNewRecord(): void {
-		this.form.markAllAsTouched();
+		this.globalErrorService.markAllAsTouched(this.form);
 
 		if (this.form.invalid) {
 			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
@@ -161,7 +161,6 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			this.store.dispatch(clearADRDetailsBeforeUpdate());
 
 			const vehicle = this.technicalRecordService.fixTechRecord(this.techRecord$() as TechRecordType<'put'>);
-
 			this.store.dispatch(createVehicleRecord({ vehicle }));
 		}
 	}
