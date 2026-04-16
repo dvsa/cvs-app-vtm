@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (techRecord(); as tr) {
     @if(tr.techRecord_vehicleType === VehicleTypes.TRL) {
         @if(parent.get('techRecord_axles') && (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_axles'))) {
@@ -247,4 +247,4 @@
       }
     }
   }
-</div>
+</form>

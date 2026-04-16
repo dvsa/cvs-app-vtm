@@ -36,6 +36,8 @@ export class GovukFormGroupBaseComponent {
 
 	readonly warning = input<string | null>(null);
 
+	readonly autocomplete = input<string | null>(null);
+
 	onChange = (_: any) => {};
 	onTouched = () => {};
 

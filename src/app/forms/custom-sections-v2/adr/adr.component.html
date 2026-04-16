@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (form.get('techRecord_adrDetails_dangerousGoods')) {
     <govuk-form-group-radio
       label="Approved to carry dangerous goods"
@@ -745,4 +745,4 @@
       <govuk-radio label="No" [value]="false"></govuk-radio>
     </govuk-form-group-radio>
   }
-</div>
+</form>

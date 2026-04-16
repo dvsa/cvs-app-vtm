@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!-- Off road vehicle -->
   @if (shouldDisplayFormControl('techRecord_offRoad')) {
     <govuk-form-group-radio
@@ -87,4 +87,4 @@
       [filters]="filters()"
     />
   }
-</div>  
+</form>  

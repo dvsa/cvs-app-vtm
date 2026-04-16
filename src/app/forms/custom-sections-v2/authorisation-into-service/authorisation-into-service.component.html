@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (shouldDisplayFormControl('techRecord_authIntoService_cocIssueDate')) {
     <govuk-form-group-date
       label="COC issue date"
@@ -33,4 +33,4 @@
       formControlName="techRecord_authIntoService_dateRejected"
     ></govuk-form-group-date>
   }
-</div>
+</form>

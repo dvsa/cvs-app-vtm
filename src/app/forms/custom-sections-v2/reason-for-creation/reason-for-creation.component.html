@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!--  Reason for creation -->
   @if (shouldDisplayFormControl('techRecord_reasonForCreation')) {
     <govuk-form-group-textarea
@@ -8,4 +8,4 @@
       formControlName="techRecord_reasonForCreation"
     />
   }
-</div>
+</form>

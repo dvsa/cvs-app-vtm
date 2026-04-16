@@ -1,9 +1,10 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!--  Name or company -->
   @if (shouldDisplayFormControl('techRecord_manufacturerDetails_name')) {
     <govuk-form-group-input
       label="Name or company"
       formControlName="techRecord_manufacturerDetails_name"
+      [autocomplete]="form.touched ? 'section-manufacturer organization' : 'off'"
       [width]="FormNodeWidth.XL"
     ></govuk-form-group-input>
   }
@@ -13,6 +14,7 @@
     <govuk-form-group-input
       label="Address line 1"
       formControlName="techRecord_manufacturerDetails_address1"
+      [autocomplete]="form.touched ? 'section-manufacturer address-line1' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -21,6 +23,7 @@
     <govuk-form-group-input
       label="Address line 2 (optional)"
       formControlName="techRecord_manufacturerDetails_address2"
+      [autocomplete]="form.touched ? 'section-manufacturer address-line2' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -30,6 +33,7 @@
       label="Town or city"
       [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_postTown"
+      [autocomplete]="form.touched ? 'section-manufacturer address-level2' : 'off'"
       [width]="FormNodeWidth.XL"
     ></govuk-form-group-input>
   }
@@ -40,6 +44,7 @@
       label="County"
       [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_address3"
+      [autocomplete]="form.touched ? 'section-manufacturer address-level1' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -49,6 +54,7 @@
       label="Postcode"
       [width]="FormNodeWidth.L"
       formControlName="techRecord_manufacturerDetails_postCode"
+      [autocomplete]="form.touched ? 'section-manufacturer postal-code' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -58,6 +64,7 @@
       label="Telephone number"
       [width]="FormNodeWidth.L"
       formControlName="techRecord_manufacturerDetails_telephoneNumber"
+      [autocomplete]="form.touched ? 'section-manufacturer tel' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -67,6 +74,7 @@
       label="Email address"
       [width]="FormNodeWidth.XL"
       formControlName="techRecord_manufacturerDetails_emailAddress"
+      [autocomplete]="form.touched ? 'section-manufacturer email' : 'off'"
     ></govuk-form-group-input>
   }
 
@@ -78,4 +86,4 @@
       formControlName="techRecord_manufacturerDetails_manufacturerNotes"
     ></govuk-form-group-textarea>
   }
-</div>
+</form>

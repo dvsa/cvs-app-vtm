@@ -1,5 +1,5 @@
 @if (techRecord(); as tr) {
-  <div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+  <form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
     @if(
       (parent.get('techRecord_axles')?.value.length === 0 ||
       !parent.get('techRecord_axles')?.value) &&
@@ -295,5 +295,5 @@
         </div>
       }
     }
-  </div>
+  </form>
 }

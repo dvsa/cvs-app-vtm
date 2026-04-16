@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (techRecord(); as tr) {
     @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
       @if (shouldDisplayFormControl('techRecord_microfilm_microfilmDocumentType')) {
@@ -29,4 +29,4 @@
       }
     }
   }
-</div>
+</form>

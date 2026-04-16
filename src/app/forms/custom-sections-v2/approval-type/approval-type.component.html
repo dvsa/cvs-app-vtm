@@ -1,6 +1,6 @@
 @if (techRecord(); as tr) {
   @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-    <div [formGroup]="form" class="govuk-!-padding-4 govuk-label--s">
+    <form [formGroup]="form" class="govuk-!-padding-4 govuk-label--s">
       @if (shouldDisplayFormControl('techRecord_approvalType')) {
         <govuk-form-group-select
           label="Approval type"
@@ -91,6 +91,6 @@
           [filters]="filters()"
         ></govuk-form-group-input>
       }
-    </div>
+    </form>
   }
 }

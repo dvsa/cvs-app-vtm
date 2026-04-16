@@ -1,9 +1,10 @@
-<div class="govuk-!-padding-4 govuk-label--s"  [formGroup]="form">
+<form class="govuk-!-padding-4 govuk-label--s"  [formGroup]="form">
   <!--  Name or Company -->
   @if (shouldDisplayFormControl('techRecord_applicantDetails_name')) {
     <govuk-form-group-input
       label="Name or company"
       formControlName="techRecord_applicantDetails_name"
+      [autocomplete]="form.touched ? 'section-lastapplicant organization' : 'off'"
       [width]="FormNodeWidth.XL"
     />
   }
@@ -13,6 +14,7 @@
     <govuk-form-group-input
       label="Address line 1"
       formControlName="techRecord_applicantDetails_address1"
+      [autocomplete]="form.touched ? 'section-lastapplicant address-line1' : 'off'"
     />
   }
 
@@ -21,6 +23,7 @@
     <govuk-form-group-input
       label="Address line 2 (optional)"
       formControlName="techRecord_applicantDetails_address2"
+      [autocomplete]="form.touched ? 'section-lastapplicant address-line2' : 'off'"
     />
   }
 
@@ -29,6 +32,7 @@
     <govuk-form-group-input
       label="Town or city"
       formControlName="techRecord_applicantDetails_postTown"
+      [autocomplete]="form.touched ? 'section-lastapplicant address-level2' : 'off'"
       [width]="FormNodeWidth.XL"
     />
   }
@@ -38,6 +42,7 @@
     <govuk-form-group-input
       label="County"
       formControlName="techRecord_applicantDetails_address3"
+      [autocomplete]="form.touched ? 'section-lastapplicant address-level1' : 'off'"
       [width]="FormNodeWidth.XL"
     />
   }
@@ -47,6 +52,7 @@
     <govuk-form-group-input
       label="Postcode"
       formControlName="techRecord_applicantDetails_postCode"
+      [autocomplete]="form.touched ? 'section-lastapplicant postal-code' : 'off'"
       [width]="FormNodeWidth.L"
     />
   }
@@ -56,6 +62,7 @@
     <govuk-form-group-input
       label="Telephone number"
       formControlName="techRecord_applicantDetails_telephoneNumber"
+      [autocomplete]="form.touched ? 'section-lastapplicant tel' : 'off'"
       [width]="FormNodeWidth.L"
     />
   }
@@ -65,8 +72,9 @@
     <govuk-form-group-input
       label="Email address"
       formControlName="techRecord_applicantDetails_emailAddress"
+      [autocomplete]="form.touched ? 'section-lastapplicant email' : 'off'"
       [width]="FormNodeWidth.XL"
       [nullIfEmpty]="true"
     />
   }
-</div>
+</form>

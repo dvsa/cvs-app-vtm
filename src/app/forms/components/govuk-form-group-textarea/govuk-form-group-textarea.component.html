@@ -37,6 +37,7 @@
     [attr.data-testid]="id"
     [attr.data-module]="'govuk-character-count'" 
     [attr.data-maxlength]="max"
+    [attr.autocomplete]="autocomplete()"
     [(ngModel)]="value"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"

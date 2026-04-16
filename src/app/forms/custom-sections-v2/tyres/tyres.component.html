@@ -4,7 +4,7 @@
   showDimensionsWarning;
 
 @if (techRecord(); as tr) {
-  <div
+  <form
     class="govuk-label--s"
     [class.govuk-!-padding-left-4]="showNoAxlesWarning || dimensionsWarning"
     [class.govuk-!-padding-right-4]="showNoAxlesWarning || dimensionsWarning"
@@ -205,5 +205,5 @@
         Add axle
       </button>
     }
-  </div>
+  </form>
 }
