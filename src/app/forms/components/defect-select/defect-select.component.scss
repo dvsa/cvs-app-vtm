@@ -5,8 +5,5 @@
   white-space: normal;
 }
 .list_container--shrink {
-  flex-basis: min-content;
-}
-.list_container--shrink:hover {
-  flex-basis: auto;
+  flex: 1 1 0;
 }
