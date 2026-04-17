@@ -38,7 +38,6 @@ export class GovukFormGroupTextareaComponent extends GovukFormGroupBaseComponent
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
-		this.onChange(obj);
 	}
 
 	getCharacterCountMessage(): string {

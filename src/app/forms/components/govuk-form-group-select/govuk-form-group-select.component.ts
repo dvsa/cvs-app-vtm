@@ -43,6 +43,5 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
-		this.onChange(obj);
 	}
 }

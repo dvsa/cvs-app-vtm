@@ -31,6 +31,5 @@ export class GovukFormGroupCheckboxComponent extends GovukFormGroupBaseComponent
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
-		this.onChange(obj);
 	}
 }

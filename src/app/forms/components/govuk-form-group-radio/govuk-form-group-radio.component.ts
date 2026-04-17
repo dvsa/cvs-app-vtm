@@ -35,7 +35,6 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 
 	writeValue(obj: any): void {
 		this.value.set(obj);
-		this.onChange(obj);
 	}
 
 	getId(option: MultiOption) {

@@ -115,7 +115,6 @@ export class GovukFormGroupAutocompleteComponent
 	writeValue(obj: any): void {
 		this.value.set(obj);
 		this.valueSub.next(obj);
-		this.onChange(obj);
 	}
 
 	handleChange(event: Event) {
