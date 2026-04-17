@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, effect, inject } from '@angular/core';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
@@ -14,6 +14,19 @@ export class TechnicalRecordChangesService {
 	featureToggleService = inject(FeatureToggleService);
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
+
+	// create a change cache which resets when either the current or amend tech record changes
+	changeCache = new Map<string, boolean>();
+
+	constructor() {
+		effect(() => {
+			const a = this.currentTechRecord();
+			const b = this.amendedTechRecord();
+			if (a && b) {
+				this.changeCache = new Map<string, boolean>();
+			}
+		});
+	}
 
 	private _isNotEqual(a: unknown, b: unknown): boolean {
 		// Do not count the following edge cases as changes
@@ -42,6 +55,10 @@ export class TechnicalRecordChangesService {
 	}
 
 	private _hasChanged(property: string) {
+		// Use cached value instead of recomputing if available
+		const cachedValue = this.changeCache.get(property);
+		if (typeof cachedValue === 'boolean') return cachedValue;
+
 		const current = this.currentTechRecord();
 		const amended = this.amendedTechRecord();
 
@@ -50,7 +67,11 @@ export class TechnicalRecordChangesService {
 		const a = get(current, property);
 		const b = get(amended, property);
 
-		return this._isNotEqual(a, b);
+		// Cache result to avoid recomputing in future
+		const result = this._isNotEqual(a, b);
+		this.changeCache.set(property, result);
+
+		return result;
 	}
 
 	hasChanged(...properties: string[]) {
