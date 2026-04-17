@@ -125,7 +125,7 @@ export const routes: Routes = [
 			import('./components/tech-record-unarchive/tech-record-unarchive-component').then(
 				(m) => m.TechRecordUnarchiveComponent
 			),
-		data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
+		data: { title: 'Unarchive technical record', roles: Roles.TechRecordUnarchive },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
