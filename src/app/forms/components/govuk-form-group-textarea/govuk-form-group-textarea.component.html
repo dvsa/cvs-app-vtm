@@ -37,7 +37,7 @@
     [attr.data-testid]="id"
     [attr.data-module]="'govuk-character-count'" 
     [attr.data-maxlength]="max"
-    [(ngModel)]="value"
+    [ngModel]="value()"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"

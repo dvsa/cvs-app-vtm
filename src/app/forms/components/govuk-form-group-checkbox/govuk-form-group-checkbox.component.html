@@ -37,7 +37,7 @@
           name="{{ id }}-{{ value() }}-checkbox"
           type="checkbox"
           class="govuk-checkboxes__input"
-          [(ngModel)]="value"
+          [ngModel]="value()"
           (ngModelChange)="onChange($event)"
           [attr.aria-labelledby]="controlId() + '-' + value() + '-label'"
           [disabled]="disabled()"

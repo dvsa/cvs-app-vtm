@@ -48,6 +48,13 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 			obj = null;
 		}
 		this.value.set(obj);
+	}
+
+	onInputChange(obj: any): void {
+		if (!obj && this.nullIfEmpty()) {
+			obj = null;
+		}
+		this.value.set(obj);
 		this.onChange(obj);
 	}
 
