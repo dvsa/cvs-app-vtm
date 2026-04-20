@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BannerComponent } from '@components/banner/banner.component';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -53,6 +54,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 	cdr = inject(ChangeDetectorRef);
 	resultOfTestService = inject(ResultOfTestService);
 	store = inject<Store<State>>(Store<State>);
+	titleService = inject(Title);
 	warningService = inject(GlobalWarningService);
 
 	baseTestRecordComponent = viewChild(BaseTestRecordComponent);
@@ -138,6 +140,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 		this.errorService.clearErrors();
 		this.testMode = TestModeEnum.View;
+		this.titleService.setTitle('Check test details - Vehicle Testing Management');
 
 		const testResult = await firstValueFrom(this.testResult$);
 		if (
@@ -157,6 +160,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 	handleCancel() {
 		this.testMode = TestModeEnum.Edit;
+		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.warningService.clearWarnings();
 	}
 
@@ -216,6 +220,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 		}
 
 		this.testMode = TestModeEnum.Abandon;
+		this.titleService.setTitle('Test abandoned reason - Vehicle Testing Management');
 	}
 
 	async handleAbandonAction(event: string) {
@@ -227,6 +232,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 				this.abandonDialog()?.dynamicFormGroup()?.form.reset();
 				this.resultOfTestService.toggleAbandoned(TestResults.PASS);
 				this.testMode = TestModeEnum.Edit;
+				this.titleService.setTitle('Test details - Vehicle Testing Management');
 				break;
 			default:
 				console.error('Invalid action');

@@ -60,7 +60,7 @@ export const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						data: { title: 'Test details', roles: Roles.TestResultAmend, mode: 'amend' },
+						data: { title: 'Amend test details', roles: Roles.TestResultAmend, mode: 'amend' },
 						resolve: {
 							load: testResultResolver,
 							testTypeTaxonomy: testTypeTaxonomyResolver,
@@ -79,7 +79,7 @@ export const routes: Routes = [
 								path: TestRecordAmendRoutes.DEFECT,
 								loadComponent: () =>
 									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-								data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+								data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 								canActivate: [RoleGuard],
 							},
 							{
@@ -103,7 +103,7 @@ export const routes: Routes = [
 										path: TestRecordAmendRoutes.SELECT_DEFECT_REFERENCE,
 										loadComponent: () =>
 											import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-										data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+										data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 										canActivate: [RoleGuard],
 									},
 								],
@@ -168,7 +168,7 @@ export const routes: Routes = [
 			{
 				path: TestRecordAmendRoutes.DEFECT,
 				loadComponent: () => import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-				data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
+				data: { title: 'Defect details', roles: Roles.TestResultView, isEditing: false },
 				resolve: { load: testResultResolver },
 				canActivate: [RoleGuard],
 			},
