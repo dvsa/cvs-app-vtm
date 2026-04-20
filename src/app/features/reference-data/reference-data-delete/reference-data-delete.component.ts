@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -28,19 +29,20 @@ import {
 	fetchReferenceDataByKey,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, take } from 'rxjs';
+import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-delete',
 	templateUrl: './reference-data-delete.component.html',
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
-export class ReferenceDataDeleteComponent implements OnInit {
+export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	referenceDataService = inject(ReferenceDataService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
 	key!: string;
@@ -48,6 +50,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 	reasonForDeletion: any;
 	isFormDirty = false;
 	isFormInvalid = true;
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	reasonTemplate = {
 		name: 'reason-for-deletion',
@@ -84,6 +87,16 @@ export class ReferenceDataDeleteComponent implements OnInit {
 				this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
 			}
 		});
+
+		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
+			this.titleService.setTitle(`Delete this ${type?.labelSingular} - Vehicle Testing Management`);
+		});
+	}
+
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get roles(): typeof Roles {
