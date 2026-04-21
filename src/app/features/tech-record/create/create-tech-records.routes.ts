@@ -45,7 +45,7 @@ export const routes: Routes = [
 								'./components/hydrate-new-vehicle-record-wrapper/hydrate-new-vehicle-record-wrapper.component'
 							).then((m) => m.HydrateNewVehicleRecordWrapperComponent),
 						data: {
-							title: 'New record details',
+							title: 'New technical record details',
 							roles: Roles.TechRecordCreate,
 							isCustomLayout: true,
 							isEditing: true,
@@ -64,7 +64,7 @@ export const routes: Routes = [
 						data: {
 							roles: Roles.TechRecordCreate,
 							isEditing: true,
-							title: 'Are you sure you want to cancel creating this record?',
+							title: 'Cancel technical record reason',
 							backlink: {
 								url: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
 								featureFlags: ['techrecordredesigncreatedetails'],
@@ -86,6 +86,7 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('../components/duplicate-vin/duplicate-vin.component').then((m) => m.DuplicateVinComponent),
 				data: {
+					title: 'Duplicate VIN found',
 					roles: Roles.TechRecordCreate,
 					backlink: {
 						url: RootRoutes.CREATE_TECHNICAL_RECORD,

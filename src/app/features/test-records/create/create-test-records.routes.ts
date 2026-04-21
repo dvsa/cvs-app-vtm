@@ -26,6 +26,7 @@ export const routes: Routes = [
 				path: TestRecordCreateRoutes.TYPE,
 				loadComponent: () =>
 					import('./views/create-test-type/create-test-type.component').then((m) => m.CreateTestTypeComponent),
+				data: { title: 'Select a test type' },
 				resolve: { testTypeTaxonomy: testTypeTaxonomyResolver, contingencyTest: contingencyTestResolver },
 			},
 			{
@@ -59,7 +60,7 @@ export const routes: Routes = [
 						path: TestRecordCreateRoutes.DEFECT,
 						loadComponent: () =>
 							import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-						data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
+						data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 						canActivate: [RoleGuard],
 					},
 					{
@@ -82,7 +83,7 @@ export const routes: Routes = [
 								path: TestRecordCreateRoutes.SELECT_DEFECT_REF,
 								loadComponent: () =>
 									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-								data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
+								data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 								canActivate: [RoleGuard],
 							},
 						],

@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BannerComponent } from '@components/banner/banner.component';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -41,6 +42,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	routerService = inject(RouterService);
+	titleService = inject(Title);
 	testRecordsService = inject(TestRecordsService);
 
 	readonly baseTestRecordComponent = viewChild(BaseTestRecordComponent);
@@ -131,6 +133,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 		}
 
 		this.testMode = TestModeEnum.View;
+		this.titleService.setTitle('Check test details - Vehicle Testing Management');
 	}
 
 	async hasErrors(): Promise<boolean> {
@@ -187,6 +190,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			this.testMode === TestModeEnum.Cancel || this.testMode === TestModeEnum.View
 				? TestModeEnum.Edit
 				: TestModeEnum.Cancel;
+		if (this.testMode === TestModeEnum.Edit) {
+			this.titleService.setTitle('Amend test details - Vehicle Testing Management');
+		}
 	}
 
 	handleConfirmCancel() {
