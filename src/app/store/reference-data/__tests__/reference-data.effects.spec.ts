@@ -59,7 +59,7 @@ describe('ReferenceDataEffects', () => {
 				provideMockStore({ initialState: initialAppState }),
 				ReferenceDataEffects,
 				ReferenceDataService,
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false), delete: jest.fn() } },
 				{ provide: UserService, useValue: {} },
 			],
 		});
