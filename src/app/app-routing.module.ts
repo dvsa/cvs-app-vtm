@@ -42,7 +42,7 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
-				data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
+				data: { title: 'Select vehicle type', roles: Roles.TechRecordCreate },
 				canActivate: [MsalGuard, RoleGuard],
 				providers: [AxlesService],
 				loadChildren: () => import('./features/tech-record/create-batch/create-batch.routes').then((m) => m.routes),

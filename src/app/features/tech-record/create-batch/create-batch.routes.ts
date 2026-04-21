@@ -29,7 +29,7 @@ export const routes: Routes = [
 				path: TechRecordCreateBatchRoutes.RECORD,
 				loadComponent: () =>
 					import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),
-				data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true },
+				data: { title: 'New batch record details', roles: Roles.TechRecordCreate, isCustomLayout: true },
 				children: [
 					{
 						path: '',
@@ -38,7 +38,7 @@ export const routes: Routes = [
 								(m) => m.BatchVehicleTemplateComponent
 							),
 						data: {
-							title: 'Batch Record',
+							title: 'New batch record details',
 							roles: Roles.TechRecordCreate,
 							isCustomLayout: true,
 							isEditing: true,
