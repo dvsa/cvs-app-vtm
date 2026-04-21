@@ -9,7 +9,7 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/router.selectors';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { SingleSearchResultComponent } from './single-search-result/single-search-result.component';
 
 @Component({
@@ -28,18 +28,24 @@ export class MultipleSearchResultsComponent implements OnDestroy {
 	ngDestroy$ = new Subject();
 
 	constructor() {
-		this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
-			if (Object.keys(params).length === 1) {
-				const type = Object.keys(params)[0] as SEARCH_TYPES;
-				// eslint-disable-next-line security/detect-object-injection
-				const searchTerm = params[type] as string;
+		this.store
+			.pipe(
+				select(selectQueryParams),
+				distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+				takeUntil(this.ngDestroy$)
+			)
+			.subscribe((params) => {
+				if (Object.keys(params).length === 1) {
+					const type = Object.keys(params)[0] as SEARCH_TYPES;
+					// eslint-disable-next-line security/detect-object-injection
+					const searchTerm = params[type] as string;
 
-				if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {
-					this.globalErrorService.clearErrors();
-					this.technicalRecordService.searchBy(type, searchTerm);
+					if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {
+						this.globalErrorService.clearErrors();
+						this.technicalRecordService.searchBy(type, searchTerm);
+					}
 				}
-			}
-		});
+			});
 
 		this.searchResults$ = this.technicalRecordService.searchResultsWithUniqueSystemNumbers$;
 	}
