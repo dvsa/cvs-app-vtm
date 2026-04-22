@@ -285,4 +285,17 @@ export class AdrValidatorsService {
 			return null;
 		};
 	}
+
+	requiredWithADRApplicationApproved(message: string): ValidatorFn {
+		return (control) => {
+			if (control.parent && !control.value && this.adrService.applicationDetailsRequired(control.parent.value)) {
+				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					return { required: { error: `${message} is required with Ready for inspection`, accordion: 'adr' } };
+				}
+				return { required: `${message} is required with Ready for inspection` };
+			}
+
+			return null;
+		};
+	}
 }

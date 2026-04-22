@@ -7,6 +7,30 @@
     >
       <govuk-radio label="Yes" [value]="true">
         <!-- Add conditionally shown ADR content here -->
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_receivedDate')) {
+          <govuk-form-group-date
+            label="Date application received"
+            formControlName="techRecord_adrDetails_receivedDate"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-date>
+        }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_applicationNumber')) {
+          <govuk-form-group-input
+            label="Application number"
+            [width]="FormNodeWidth.L"
+            formControlName="techRecord_adrDetails_applicationNumber"
+            appFilterByTags
+            appNoSpace
+            appTrimWhitespace
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-input>
+        }
+
         @if (mode() !== Modes.SUMMARY || tcs.hasADRApplicantSectionChanged()) {
           <h3 class="govuk-heading-s">Applicant details</h3>
         }
@@ -740,6 +764,19 @@
             [tagNames]="['ADR']"
           ></govuk-form-group-textarea>
         }
+
+        @if (shouldDisplayFormControl('techRecord_adrDetails_approved')) {
+          <govuk-form-group-checkbox
+            label="Ready for inspection"
+            formControlName="techRecord_adrDetails_approved"
+            labelClass="govuk-label--s"
+            [value]="true"
+            appFilterByTags
+            [filters]="filters()"
+            [tagNames]="['ADR']"
+          ></govuk-form-group-checkbox>
+        }
+
       </govuk-radio>
 
       <govuk-radio label="No" [value]="false"></govuk-radio>

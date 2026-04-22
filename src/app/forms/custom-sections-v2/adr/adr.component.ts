@@ -1,3 +1,5 @@
+import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { AdrService } from '@/src/app/services/adr/adr.service';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
@@ -60,6 +62,8 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		GovukFormGroupTextareaComponent,
 		PaginationComponent,
 		FilterByTagsDirective,
+		TrimWhitespaceDirective,
+		NoSpaceDirective,
 	],
 })
 export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy {
@@ -77,6 +81,30 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	// TODO properly type this at some point
 	form = this.fb.group({
 		techRecord_adrDetails_dangerousGoods: this.fb.control<boolean>(false),
+		techRecord_adrDetails_receivedDate: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithADRApplicationApproved('Date application received'),
+			this.commonValidators.applyWhen(
+				(control) => this.adrService.applicationDetailsRequired(control.root.getRawValue()),
+				this.commonValidators.date('Date application received', 'adr', 'techRecord_adrDetails_receivedDate'),
+				this.commonValidators.pastOrCurrentDate(
+					'Date application received',
+					'adr',
+					'techRecord_adrDetails_receivedDate'
+				)
+			),
+		]),
+		techRecord_adrDetails_applicationNumber: this.fb.control<string | null>(null, [
+			this.adrValidators.requiredWithADRApplicationApproved('ADR application number'),
+			this.commonValidators.applyWhen(
+				(control) => this.adrService.applicationDetailsRequired(control.root.getRawValue()),
+				this.commonValidators.pattern(
+					/^APP-0124958-0426-1$/,
+					'Enter an ADR application number in the correct format, for example APP-0124958-0426-1',
+					'adr',
+					'techRecord_adrDetails_applicationNumber'
+				)
+			),
+		]),
 		// Applicant Details
 		techRecord_adrDetails_applicantDetails_name: this.fb.control<string | null>(null, [
 			this.commonValidators.applyWhen(
@@ -365,6 +393,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 				this.commonValidators.maxLength(8, 'Reference number', 'adr', 'techRecord_adrDetails_batteryListNumber')
 			),
 		]),
+		techRecord_adrDetails_approved: this.fb.control<boolean>(false),
 	});
 
 	adrBodyTypesOptions = getOptionsFromEnum(ADRBodyType);

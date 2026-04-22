@@ -125,4 +125,8 @@ export class AdrService {
 			this.canDisplayDangerousGoodsSection(techRecord) && explosivesApplicableForBodyType && carriesExplosivesType3
 		);
 	}
+
+	applicationDetailsRequired(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
+		return this.canDisplayDangerousGoodsSection(techRecord) && techRecord.techRecord_adrDetails_approved === true;
+	}
 }
