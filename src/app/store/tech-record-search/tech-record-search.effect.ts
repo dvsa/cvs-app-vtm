@@ -2,20 +2,17 @@ import { Injectable, inject } from '@angular/core';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpService } from '@services/http/http.service';
-import { catchError, distinctUntilChanged, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from './tech-record-search.actions';
 
 @Injectable()
 export class TechSearchResultsEffects {
-	private actions$ = inject(Actions);
-	private httpService = inject(HttpService);
+	private readonly actions$ = inject(Actions);
+	private readonly httpService = inject(HttpService);
 
 	fetchSearchResults$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(fetchSearchResult),
-			distinctUntilChanged(
-				(a, b) => a.searchBy === b.searchBy && a.term === b.term && a.includeArchived === b.includeArchived
-			),
 			switchMap(({ searchBy, term }) =>
 				this.httpService.searchTechRecords(searchBy ?? SEARCH_TYPES.ALL, term).pipe(
 					map((results) => fetchSearchResultSuccess({ payload: results })),
