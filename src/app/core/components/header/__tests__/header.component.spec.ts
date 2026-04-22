@@ -37,12 +37,12 @@ describe('HeaderComponent', () => {
 		expect(userNameText.innerHTML).toBe('Test');
 	});
 
-	it('Clicking logout fires off event', (done) => {
-		component.logOutEvent.subscribe(() => {
-			done();
-			expect(done).toHaveBeenCalled();
-		});
+	it('Clicking logout fires off event', () => {
+		const logoutSpy = jest.fn();
+		component.logOutEvent.subscribe(logoutSpy);
 
 		logOutButton.triggerEventHandler('click', null);
+
+		expect(logoutSpy).toHaveBeenCalled();
 	});
 });

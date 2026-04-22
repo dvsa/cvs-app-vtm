@@ -6,6 +6,12 @@ import {
 	globalErrorReducer,
 	initialGlobalErrorState,
 } from '@store/global-error/global-error-service.reducer';
+import {
+	GlobalWarningState,
+	STORE_FEATURE_GLOBAL_WARNING_KEY,
+	globalWarningReducer,
+	initialGlobalWarningState,
+} from '@store/global-warning/global-warning-service.reducers';
 import { STORE_FEATURE_LOGS_KEY } from '@store/logs/logs.feature';
 import { initialState as initialLogState, logsReducer } from '@store/logs/logs.reducer';
 import {
@@ -67,6 +73,7 @@ import {
 export interface State {
 	[STORE_FEATURE_DEFECTS_KEY]: DefectsState;
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: GlobalErrorState;
+	[STORE_FEATURE_GLOBAL_WARNING_KEY]: GlobalWarningState;
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: ReferenceDataState;
 	[STORE_FEATURE_SPINNER_KEY]: SpinnerState;
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: TechnicalRecordServiceState;
@@ -84,6 +91,7 @@ export interface State {
 export const initialAppState = {
 	[STORE_FEATURE_DEFECTS_KEY]: initialDefectsState,
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: initialGlobalErrorState,
+	[STORE_FEATURE_GLOBAL_WARNING_KEY]: initialGlobalWarningState,
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: initialReferenceDataState,
 	[STORE_FEATURE_SPINNER_KEY]: initialSpinnerState,
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState,
@@ -99,6 +107,7 @@ export const initialAppState = {
 export const reducers = {
 	[STORE_FEATURE_DEFECTS_KEY]: defectsReducer,
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: globalErrorReducer,
+	[STORE_FEATURE_GLOBAL_WARNING_KEY]: globalWarningReducer,
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: referenceDataReducer,
 	[STORE_FEATURE_SPINNER_KEY]: spinnerReducer,
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,

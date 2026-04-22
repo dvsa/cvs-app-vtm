@@ -12,7 +12,7 @@ import { FieldErrorMessageComponent } from '@forms/components/field-error-messag
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Retarders, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
 import { FieldWarningMessageComponent } from '../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupAutocompleteComponent } from '../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupCheckboxComponent } from '../../components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
@@ -142,17 +142,17 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 
 		brakeCode.valueChanges
 			.pipe(
-				takeUntil(this.destroy$),
-				switchMap((value) => this.store.select(selectBrakeByCode(value))),
-				withLatestFrom(brakeCode.valueChanges),
 				debounceTime(400),
-				distinctUntilChanged()
+				distinctUntilChanged(),
+				switchMap((value) => this.store.select(selectBrakeByCode(value))),
+				takeUntil(this.destroy$)
 			)
-			.subscribe(([selectedBrake, value]) => {
-				if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
+			.subscribe((selectedBrake) => {
+				const mode = this.mode();
+				if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
 
 				// Set the brake details automatically based selection
-				if (selectedBrake && value) {
+				if (selectedBrake) {
 					const techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
 					const techRecord_brakes_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
 					const techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
@@ -179,7 +179,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 					this.form.patchValue(changes, { emitEvent: false });
 				}
 
-				if (value) {
+				if (selectedBrake) {
 					this.store.dispatch(updateBrakeForces({}));
 				}
 			});

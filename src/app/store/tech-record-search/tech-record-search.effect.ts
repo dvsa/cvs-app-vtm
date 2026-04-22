@@ -7,8 +7,8 @@ import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } 
 
 @Injectable()
 export class TechSearchResultsEffects {
-	private actions$ = inject(Actions);
-	private httpService = inject(HttpService);
+	private readonly actions$ = inject(Actions);
+	private readonly httpService = inject(HttpService);
 
 	fetchSearchResults$ = createEffect(() =>
 		this.actions$.pipe(

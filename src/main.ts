@@ -8,7 +8,7 @@ import {
 	provideZoneChangeDetection,
 } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { RouteReuseStrategy, Router } from '@angular/router';
 import {
 	MSAL_GUARD_CONFIG,
 	MSAL_INSTANCE,
@@ -35,6 +35,7 @@ import { GoogleTagManagerModule } from 'angular-google-tag-manager';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { InterceptorModule } from './app/interceptors/interceptor.module';
+import { CustomRouteReuseStrategy } from './app/services/router/custom-route-reuse-strategy';
 import { UserService } from './app/services/user-service/user-service';
 import { AppStoreModule } from './app/store/app-store.module';
 import { environment } from './environments/environment';
@@ -146,6 +147,7 @@ bootstrapApplication(AppComponent, {
 				showDialog: false,
 			}),
 		},
+		{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
 		MsalService,
 		MsalGuard,
 		MsalBroadcastService,

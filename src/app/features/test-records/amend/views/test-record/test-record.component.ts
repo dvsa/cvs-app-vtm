@@ -54,10 +54,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 	testMode = TestModeEnum.Edit;
 	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 
-	constructor() {
-		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-	}
-
 	ngOnInit(): void {
 		this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
 			switchMap((editingTestResult) =>

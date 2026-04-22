@@ -4,8 +4,9 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalModule } from '@azure/msal-angular';
+import { MsalGuard, MsalModule } from '@azure/msal-angular';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { GoogleAnalyticsServiceMock } from '@mocks/google-analytics-service.mock';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -40,6 +41,8 @@ describe('AppComponent', () => {
 				provideHttpClientTesting(),
 				{ provide: LoadingService, useValue: { showSpinner$: of(false) } },
 				{ provide: UserService, useValue: MockUserService },
+				{ provide: MsalGuard, useValue: { canActivate: () => of(true) } },
+				{ provide: RoleGuard, useValue: { canActivate: () => of(true) } },
 				PageNotFoundComponent,
 				{ provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
 				{ provide: AnalyticsService, useValue: { pushToDataLayer: jest.fn(), setUserId: jest.fn() } },

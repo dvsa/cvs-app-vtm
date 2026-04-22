@@ -91,6 +91,15 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 
 		if (this.isFormInvalid) return;
 
+		if (!this.newRefData) {
+			const sections = this.sections();
+			if (sections.length) {
+				this.newRefData = sections[0].form.value;
+			}
+		}
+
+		if (!this.newRefData) return;
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const referenceData: any = {};
 

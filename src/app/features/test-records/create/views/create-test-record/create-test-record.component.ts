@@ -68,10 +68,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 	testTypeId?: string;
 	techRecord: V3TechRecordModel | undefined = undefined;
 
-	constructor() {
-		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-	}
-
 	ngOnInit(): void {
 		this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
 			tap((editingTestResult) => !editingTestResult && this.backToTechRecord())

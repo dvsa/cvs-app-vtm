@@ -19,6 +19,7 @@ import { State } from '@store/index';
 import { cloneDeep } from 'lodash';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
+import { selectTechRecordSearchResults } from '../tech-record-search/tech-record-search.selector';
 import {
 	amendVin,
 	amendVinSuccess,
@@ -74,13 +75,17 @@ export class TechnicalRecordServiceEffects {
 	getTechnicalRecordHistory$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getBySystemNumber),
-			mergeMap((action) => {
+			withLatestFrom(this.store.select(selectTechRecordSearchResults)),
+			mergeMap(([action, cachedResults]) => {
 				const anchorLink = 'search-term';
+				const cached = cachedResults.filter((r) => r.systemNumber === action.systemNumber);
+
+				if (cached.length) {
+					return of(getBySystemNumberSuccess({ techRecordHistory: cached }));
+				}
 
 				return this.httpService.searchTechRecordBySystemNumber(action.systemNumber).pipe(
-					map((vehicleTechRecords) => {
-						return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
-					}),
+					map((vehicleTechRecords) => getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords })),
 					catchError(() =>
 						of(getBySystemNumberFailure({ error: 'could not find technical record history', anchorLink }))
 					)

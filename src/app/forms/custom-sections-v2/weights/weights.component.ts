@@ -253,7 +253,8 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
 		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
 			if (!value) return;
-			if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
+			const mode = this.mode();
+			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
 			this.store.dispatch(
 				updateBrakeForces({
 					grossKerbWeight: value,
@@ -269,7 +270,8 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
 		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
 			if (!value) return;
-			if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
+			const mode = this.mode();
+			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
 			this.store.dispatch(
 				updateBrakeForces({
 					grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
@@ -280,7 +282,8 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	}
 
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {
-		if (this.mode() === Modes.VIEW || this.mode() === Modes.SUMMARY) return;
+		const mode = this.mode();
+		if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
 
 		const { techRecord } = changes;
 		if (this.form && techRecord) {
