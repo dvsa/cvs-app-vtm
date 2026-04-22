@@ -313,6 +313,27 @@ export class CommonValidatorsService {
 		};
 	}
 
+	pastOrCurrentDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
+		return (control) => {
+			if (!control.value) return null;
+
+			// Normalize the date so it only checks calendar date
+			const input = new Date(control.value);
+			const today = new Date();
+
+			input.setHours(0, 0, 0, 0);
+			today.setHours(0, 0, 0, 0);
+
+			if (input > today) {
+				return {
+					pastOrCurrentDate: { error: `${message} must be today or in the past`, anchorLink, accordion },
+				};
+			}
+
+			return null;
+		};
+	}
+
 	pastOrCurrentYear(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (control.value && +control.value > new Date().getFullYear()) {

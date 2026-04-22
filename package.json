@@ -1,6 +1,6 @@
 {
   "name": "cvs-app-vtm",
-  "version": "1.46",
+  "version": "1.47",
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {

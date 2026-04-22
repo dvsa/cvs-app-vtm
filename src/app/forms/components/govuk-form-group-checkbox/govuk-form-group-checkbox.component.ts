@@ -25,6 +25,8 @@ export class GovukFormGroupCheckboxComponent extends GovukFormGroupBaseComponent
 
 	size = input<'small' | 'regular'>('regular');
 
+	labelClass = input<string>();
+
 	readonly maxlength = input<string | number | null>(null);
 
 	readonly suffix = input<string>();
