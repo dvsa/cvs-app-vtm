@@ -3,6 +3,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@ang
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
+import dayjs from 'dayjs';
 import validateDate from 'validate-govuk-date';
 import { GlobalError } from '../../core/components/global-error/global-error.interface';
 
@@ -318,13 +319,10 @@ export class CommonValidatorsService {
 			if (!control.value) return null;
 
 			// Normalize the date so it only checks calendar date
-			const input = new Date(control.value);
-			const today = new Date();
+			const today = dayjs().startOf('day');
+			const input = dayjs(control.value).startOf('day');
 
-			input.setHours(0, 0, 0, 0);
-			today.setHours(0, 0, 0, 0);
-
-			if (input > today) {
+			if (input.isAfter(today)) {
 				return {
 					pastOrCurrentDate: { error: `${message} must be today or in the past`, anchorLink, accordion },
 				};

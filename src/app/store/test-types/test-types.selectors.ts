@@ -7,6 +7,7 @@ import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@
 import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
+import dayjs from 'dayjs';
 import { testTypesAdapter, testTypesFeatureState } from './test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -184,15 +185,21 @@ function filterTestTypes(
 						? filterHgvFirstTestIds.includes(testType.id)
 						: filterAllFirstTestIds.includes(testType.id))
 			)
-			// only allow ADR tests on ADR vehicles which carry dangerous goods
+			// only allow ADR tests on ADR vehicles which carry dangerous goods and have a non-expired ADR application
 			.filter((testType) => {
 				const isAdrTest = adrTestIds.includes(testType.id);
 				const isHGV = techRecord.techRecord_vehicleType === VehicleTypes.HGV;
 				const isTRL = techRecord.techRecord_vehicleType === VehicleTypes.TRL;
 				const isLGV = techRecord.techRecord_vehicleType === VehicleTypes.LGV;
 				const isADRVehicle = isHGV || isTRL || isLGV;
+				if (!isAdrTest) return true;
+				if (!isADRVehicle) return true;
+				if (!techRecord.techRecord_adrDetails_dangerousGoods) return false;
+				if (!techRecord.techRecord_adrDetails_approved) return false;
+				if (!techRecord.techRecord_adrDetails_receivedDate) return false;
 
-				return isAdrTest && isADRVehicle ? techRecord.techRecord_adrDetails_dangerousGoods : true;
+				// Ensure the application was received less than six months ago
+				return dayjs().diff(dayjs(techRecord.techRecord_adrDetails_receivedDate), 'month') <= 6;
 			})
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;

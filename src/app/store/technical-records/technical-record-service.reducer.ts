@@ -430,6 +430,9 @@ export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
 				techRecord_adrDetails_adrTypeApprovalNo: null,
 				techRecord_adrDetails_adrCertificateNotes: null,
 				techRecord_adrDetails_newCertificateRequested: null,
+				techRecord_adrDetails_approved: null,
+				techRecord_adrDetails_receivedDate: null,
+				techRecord_adrDetails_applicationNumber: null,
 				...nulledTankDetails,
 				...nulledSubstancesPermittedUNNumber,
 			};

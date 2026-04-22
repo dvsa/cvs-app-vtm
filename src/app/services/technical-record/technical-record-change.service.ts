@@ -372,7 +372,10 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_newCertificateRequested',
 			'techRecord_adrDetails_additionalExaminerNotes_note',
 			'techRecord_adrDetails_additionalExaminerNotes',
-			'techRecord_adrDetails_adrCertificateNotes'
+			'techRecord_adrDetails_adrCertificateNotes',
+			'techRecord_adrDetails_approved',
+			'techRecord_adrDetails_receivedDate',
+			'techRecord_adrDetails_applicationNumber'
 		);
 	}
 
