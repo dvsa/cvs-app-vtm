@@ -20,6 +20,7 @@ export const routes: Routes = [
 		children: [
 			{
 				path: '',
+				title: 'View test record - Vehicle Testing Management',
 				loadComponent: () =>
 					import('./views/test-result-summary/test-result-summary.component').then((m) => m.TestResultSummaryComponent),
 			},
@@ -32,6 +33,7 @@ export const routes: Routes = [
 				children: [
 					{
 						path: '',
+						title: 'Amend test record reason - Vehicle Testing Management',
 						loadComponent: () =>
 							import('./views/test-amend-reason/test-amend-reason.component').then((m) => m.TestAmendReasonComponent),
 					},
@@ -88,7 +90,7 @@ export const routes: Routes = [
 									import('./views/test-router-outlet/test-router-outlet.component').then(
 										(m) => m.TestRouterOutletComponent
 									),
-								data: { title: 'Select defect', roles: Roles.TestResultAmend },
+								data: { title: 'Select a defect', roles: Roles.TestResultAmend },
 								canActivate: [RoleGuard],
 								children: [
 									{

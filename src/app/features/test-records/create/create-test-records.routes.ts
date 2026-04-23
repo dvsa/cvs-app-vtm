@@ -69,7 +69,7 @@ export const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						data: { title: 'Select defect', roles: Roles.TestResultCreateContingency },
+						data: { title: 'Select a defect', roles: Roles.TestResultCreateContingency },
 						children: [
 							{
 								path: '',
