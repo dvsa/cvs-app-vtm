@@ -84,7 +84,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_receivedDate: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithADRApplicationApproved('Date application received'),
 			this.commonValidators.applyWhen(
-				(control) => this.adrService.applicationDetailsRequired(control.root.getRawValue()),
+				(control) => this.adrService.canDisplayDangerousGoodsSection(control.root.getRawValue()),
 				this.commonValidators.date('Date application received', 'adr', 'techRecord_adrDetails_receivedDate'),
 				this.commonValidators.pastOrCurrentDate(
 					'Date application received',
@@ -96,9 +96,9 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		techRecord_adrDetails_applicationNumber: this.fb.control<string | null>(null, [
 			this.adrValidators.requiredWithADRApplicationApproved('ADR application number'),
 			this.commonValidators.applyWhen(
-				(control) => this.adrService.applicationDetailsRequired(control.root.getRawValue()),
+				(control) => this.adrService.canDisplayDangerousGoodsSection(control.root.getRawValue()),
 				this.commonValidators.pattern(
-					/^APP-0124958-0426-1$/,
+					/^APP-\d{7}-\d{4}-\d{1,2}$/,
 					'Enter an ADR application number in the correct format, for example APP-0124958-0426-1',
 					'adr',
 					'techRecord_adrDetails_applicationNumber'
