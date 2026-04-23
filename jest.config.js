@@ -16,7 +16,7 @@ module.exports = {
 	testMatch: ['**/+(*.)+(spec).+(ts)'],
 	setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
 	collectCoverage: true,
-	transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+	transformIgnorePatterns: ['node_modules/(?!(uuid|.*\\.mjs$))'],
 	coverageDirectory: 'coverage/cvs-app-vtm',
 	testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/', ...fileListToExclude],
 	coveragePathIgnorePatterns: ['/src/mocks/', '/src/app/api/', ...fileListToExclude],
