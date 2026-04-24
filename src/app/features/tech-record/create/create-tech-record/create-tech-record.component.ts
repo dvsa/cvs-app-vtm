@@ -24,9 +24,9 @@ import { editingTechRecord } from '@store/technical-records';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-	selector: 'app-create-tech-record-v2',
-	templateUrl: './create-tech-record-v2.component.html',
-	styleUrls: ['./create-tech-record-v2.component.scss'],
+	selector: 'app-create-tech-record',
+	templateUrl: './create-tech-record.component.html',
+	styleUrls: ['./create-tech-record.component.scss'],
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
@@ -41,7 +41,7 @@ import { firstValueFrom } from 'rxjs';
 		GovukFormGroupRadioComponent,
 	],
 })
-export class CreateTechRecordV2Component implements OnInit, OnChanges {
+export class CreateTechRecordComponent implements OnInit, OnChanges {
 	globalErrorService = inject(GlobalErrorService);
 	technicalRecordService = inject(TechnicalRecordService);
 	batchTechRecordService = inject(BatchTechnicalRecordService);
