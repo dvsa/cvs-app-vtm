@@ -23,9 +23,7 @@ export const routes: Routes = [
 			{
 				path: '',
 				loadComponent: () =>
-					import('./create-wrapper/create-tech-record-wrapper.component').then(
-						(m) => m.CreateTechRecordWrapperComponent
-					),
+					import('./create-tech-record/create-tech-record.component').then((m) => m.CreateTechRecordComponent),
 				data: {
 					roles: Roles.TechRecordCreate,
 					backlink: {
