@@ -20,8 +20,8 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
-import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
-import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
+import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
+import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 
 @Component({
 	selector: 'app-test-records',

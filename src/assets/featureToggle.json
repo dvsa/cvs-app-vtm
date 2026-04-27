@@ -3,5 +3,7 @@
   "betas": { "enabled": true },
   "techrecordredesign": { "enabled": false },
   "techrecordredesigncreate": { "enabled": true },
-  "techrecordredesigncreatedetails": { "enabled": true }
+  "techrecordredesigncreatedetails": { "enabled": true },
+  "testresultcreate": { "enabled": false },
+  "testresultamend": { "enabled": false }
 }

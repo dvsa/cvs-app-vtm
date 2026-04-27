@@ -30,8 +30,8 @@ import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, ReplaySubject, of } from 'rxjs';
-import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
-import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
+import { BaseTestRecordComponent } from '../../../../../components/base-test-record/base-test-record.component';
+import { VehicleHeaderComponent } from '../../../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from '../create-test-record.component';
 
 describe('CreateTestRecordComponent', () => {

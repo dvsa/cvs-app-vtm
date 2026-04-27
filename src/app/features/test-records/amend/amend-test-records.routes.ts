@@ -75,7 +75,9 @@ export const routes: Routes = [
 							{
 								path: '',
 								loadComponent: () =>
-									import('./views/test-record/test-record.component').then((m) => m.TestRecordComponent),
+									import('@features/test-records/amend/views/test-record-wrapper/test-record-wrapper.component').then(
+										(m) => m.TestRecordWrapperComponent
+									),
 							},
 							{
 								path: TestRecordAmendRoutes.DEFECT,

@@ -52,9 +52,9 @@ export const routes: Routes = [
 					{
 						path: '',
 						loadComponent: () =>
-							import('./views/create-test-record/create-test-record.component').then(
-								(m) => m.CreateTestRecordComponent
-							),
+							import(
+								'@features/test-records/create/views/create-test-record-wrapper/create-test-record-wrapper.component'
+							).then((m) => m.CreateTestRecordWrapperComponent),
 					},
 					{
 						path: TestRecordCreateRoutes.DEFECT,
