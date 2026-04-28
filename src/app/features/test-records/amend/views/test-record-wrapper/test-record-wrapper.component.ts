@@ -3,6 +3,7 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, inject } from '@angular/core';
 import { TestRecordV2Component } from '@features/test-records/amend/views/test-record-wrapper/test-record-v2/test-record-v2.component';
 import { TestRecordComponent } from '@features/test-records/amend/views/test-record-wrapper/test-record/test-record.component';
+import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -21,5 +22,5 @@ export class TestRecordWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
 
 	testType = this.store.selectSignal(toEditOrNotToEdit);
-	testTypeIdAllowList = ['1'];
+	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
 }

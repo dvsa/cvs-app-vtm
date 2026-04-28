@@ -4,6 +4,6 @@
   "techrecordredesign": { "enabled": false },
   "techrecordredesigncreate": { "enabled": true },
   "techrecordredesigncreatedetails": { "enabled": true },
-  "testresultcreate": { "enabled": false },
-  "testresultamend": { "enabled": false }
+  "testresultcreate": { "enabled": true },
+  "testresultamend": { "enabled": true }
 }

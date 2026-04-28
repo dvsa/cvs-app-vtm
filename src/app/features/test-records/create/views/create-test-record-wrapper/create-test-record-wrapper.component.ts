@@ -3,6 +3,7 @@ import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { Component, Signal, inject } from '@angular/core';
 import { CreateTestRecordV2Component } from '@features/test-records/create/views/create-test-record-wrapper/create-test-record-v2/create-test-record-v2.component';
 import { CreateTestRecordComponent } from '@features/test-records/create/views/create-test-record-wrapper/create-test-record/create-test-record.component';
+import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -21,5 +22,5 @@ export class CreateTestRecordWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
 
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
-	testTypeIdAllowList = ['1'];
+	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
 }
