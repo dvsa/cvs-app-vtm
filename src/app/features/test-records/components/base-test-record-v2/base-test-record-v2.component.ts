@@ -1,13 +1,25 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, ControlContainer, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 
 @Component({
   selector: 'app-base-test-record-v2',
   template: '',
+  providers: [FormsModule, ReactiveFormsModule]
 })
 export class BaseTestRecordV2Component {
   controlContainer = inject(ControlContainer);
   fb = inject(FormBuilder);
+  testRecordService = inject(TestRecordsService);
+  commonValidators = inject(CommonValidatorsService);
 
   get parent() {
     return this.controlContainer.control as FormGroup;

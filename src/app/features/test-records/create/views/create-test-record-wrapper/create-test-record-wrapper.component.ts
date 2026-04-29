@@ -10,9 +10,9 @@ import { Store } from '@ngrx/store';
 	selector: 'app-create-test-record-wrapper',
 	template: `
     @if (featureToggleService.isFeatureEnabled('testresultcreate') && testTypeIdAllowList.includes(testTypeId())) {
-      <app-create-test-record-v2 />
+      <app-create-test-record-v2></app-create-test-record-v2>
     } @else {
-      <app-create-test-record />
+      <app-create-test-record></app-create-test-record>
     }
   `,
 	imports: [CreateTestRecordComponent, CreateTestRecordV2Component],
