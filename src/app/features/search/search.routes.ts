@@ -20,7 +20,7 @@ export const routes: Routes = [
 			import('./search-results-wrapper/search-results-wrapper.component').then((m) => m.SearchResultsWrapperComponent),
 		canActivate: [NoQueryParamsGuard],
 		data: {
-			title: 'Search Results',
+			title: 'Search results for technical records',
 			backlink: {
 				url: RootRoutes.SEARCH_TECHNICAL_RECORD,
 				featureFlags: ['techrecordredesigncreatedetails'],
