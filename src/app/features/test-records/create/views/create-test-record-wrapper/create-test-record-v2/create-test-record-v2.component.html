@@ -1,4 +1,58 @@
-New test record.
-<form [formGroup]="form">
-  <app-test-reason-for-creation [mode]="Modes.CREATE"></app-test-reason-for-creation>
-</form>
+<div class="govuk-grid-row search-page">
+  <div class="govuk-grid-column-full">
+    <app-accordion-control>
+      <ng-template #template>
+        <ng-container [formGroup]="form">
+          <app-accordion
+            [id]="'visit'"
+            [title]="'Visit'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test-visit [mode]="Modes.CREATE"></app-test-visit>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'notes'"
+            [title]="'Notes'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test-notes [mode]="Modes.CREATE"></app-test-notes>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'defects'"
+            [title]="'Defects'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test-defects [mode]="Modes.CREATE"></app-test-defects>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'reason-for-creation'"
+            [title]="'Reason for creation'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test-reason-for-creation [mode]="Modes.CREATE"></app-test-reason-for-creation>
+            </form>
+          </app-accordion>
+        </ng-container>
+
+      </ng-template>
+    </app-accordion-control>
+
+    <!-- Accordions appear here -->
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+  </div>
+</div>
