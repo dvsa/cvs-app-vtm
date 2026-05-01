@@ -30,6 +30,7 @@ export const routes: Routes = [
 			isEditing: true,
 			reason: ReasonForEditing.CORRECTING_AN_ERROR,
 			isCustomLayout: true,
+			title: 'Amend technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: {
@@ -46,6 +47,7 @@ export const routes: Routes = [
 			isEditing: true,
 			reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
 			isCustomLayout: true,
+			title: 'Amend technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: {
@@ -104,7 +106,7 @@ export const routes: Routes = [
 			import('./components/tech-record-amend-reason/tech-record-amend-reason.component').then(
 				(m) => m.TechRecordAmendReasonComponent
 			),
-		data: { roles: Roles.TechRecordAmend },
+		data: { title: 'Amend technical record reason', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 	},
 	{
@@ -123,7 +125,7 @@ export const routes: Routes = [
 			import('./components/tech-record-unarchive/tech-record-unarchive-component').then(
 				(m) => m.TechRecordUnarchiveComponent
 			),
-		data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
+		data: { title: 'Unarchive technical record', roles: Roles.TechRecordUnarchive },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { load: techRecordViewResolver },
 	},
@@ -143,7 +145,7 @@ export const routes: Routes = [
 			import('./components/tech-record-change-visibility/tech-record-change-visibility.component').then(
 				(m) => m.TechRecordChangeVisibilityComponent
 			),
-		data: { roles: Roles.TechRecordAmend },
+		data: { title: 'Change technical record visibility in VTA', roles: Roles.TechRecordAmend },
 		canActivate: [MsalGuard, RoleGuard],
 		resolve: { techRecord: techRecordViewResolver },
 	},
@@ -174,6 +176,7 @@ export const routes: Routes = [
 			backlink: {
 				featureFlags: ['techrecordredesigncreatedetails'],
 			},
+			title: 'Review technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
 	},
@@ -204,6 +207,7 @@ export const routes: Routes = [
 			backlink: {
 				featureFlags: ['techrecordredesigncreatedetails'],
 			},
+			title: 'Review technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
 	},
