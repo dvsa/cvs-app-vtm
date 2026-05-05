@@ -8,6 +8,8 @@ import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-resul
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
+import { TestComponent } from '@features/test-records/custom-sections/test/test.component';
+import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -30,6 +32,8 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		DefectsComponent,
 		NotesComponent,
 		VisitComponent,
+		VehicleComponent,
+		TestComponent,
 	],
 })
 export class CreateTestRecordV2Component implements OnDestroy, OnInit {

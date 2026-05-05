@@ -5,35 +5,30 @@ import { Modes } from '@models/modes.enum';
 import { ReplaySubject } from 'rxjs';
 
 @Component({
-	selector: 'app-test-vehicle',
-	templateUrl: './vehicle.component.html',
+	selector: 'app-test-custom-defects',
+	templateUrl: './custom-defects.component.html',
 	imports: [FormsModule, ReactiveFormsModule],
-	styleUrls: ['./vehicle.component.scss'],
+	styleUrls: ['./custom-defects.component.scss'],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
-			useExisting: forwardRef(() => VehicleComponent),
+			useExisting: forwardRef(() => CustomDefectsComponent),
 			multi: true,
 		},
 	],
 })
-export class VehicleComponent extends BaseTestRecordV2Component implements OnInit, OnDestroy {
+export class CustomDefectsComponent extends BaseTestRecordV2Component implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
 	mode = input.required<Modes>();
 
 	testResult$ = this.testRecordService.editingTestResult$;
 
 	form = this.fb.group({
-		vin: this.fb.control('', []),
-		trailerId: this.fb.control('', []),
-		countryOfRegistration: this.fb.control('', []),
-		euVehicleCategory: this.fb.control('', []),
-		preparerCombination: this.fb.control('', []),
-		preparerName: this.fb.control('', []),
-		preparerId: this.fb.control('', []),
-		make: this.fb.control('', []),
-		model: this.fb.control('', []),
-		bodyType: this.fb.control('', []),
+		testTypes: this.fb.group({
+			0: this.fb.record({
+				customDefects: this.fb.control('', []),
+			}),
+		}),
 	});
 
 	ngOnInit(): void {

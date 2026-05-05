@@ -4,6 +4,28 @@
       <ng-template #template>
         <ng-container [formGroup]="form">
           <app-accordion
+            [id]="'vehicle'"
+            [title]="'Vehicle'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test-vehicle [mode]="Modes.CREATE"></app-test-vehicle>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'test'"
+            [title]="'Test'"
+            [description]="''"
+            [type]="'condensed'"
+            [isExpanded]="false"
+          >
+            <form [formGroup]="form" ngNoForm>
+              <app-test [mode]="Modes.CREATE"></app-test>
+            </form>
+          </app-accordion>
+          <app-accordion
             [id]="'visit'"
             [title]="'Visit'"
             [description]="''"
