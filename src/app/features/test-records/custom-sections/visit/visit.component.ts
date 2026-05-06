@@ -4,10 +4,11 @@ import { BaseTestRecordV2Component } from '@features/test-records/components/bas
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { Modes } from '@models/modes.enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { getUserNames } from '@store/reference-data';
+import { getUserNames, selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { testStationNames } from '@store/test-stations';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-test-visit',
@@ -27,7 +28,8 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 	mode = input.required<Modes>();
 	store = inject(Store);
 	testStationNames = this.store.select(testStationNames);
-	users = this.store.select(getUserNames);
+	userNames = this.store.select(getUserNames);
+	users = this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.User));
 
 	testResult$ = this.testRecordService.editingTestResult$;
 
@@ -43,9 +45,18 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 
 	ngOnInit(): void {
 		this.init(this.form);
+		this.handleTesterDetailChanges();
 
 		// Prepopulate form with current test record
 		this.form.patchValue(this.testResult$ as any);
+	}
+
+	private handleTesterDetailChanges(): void {
+		const testerName = this.form.get('testerName');
+		testerName?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			// patch the rest of the tester details into the form
+			console.log('foo');
+		});
 	}
 
 	ngOnDestroy() {
