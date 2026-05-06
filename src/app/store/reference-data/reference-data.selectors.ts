@@ -89,6 +89,11 @@ export const selectUserByResourceKey = (resourceKey: string) =>
 		(state) => state[ReferenceDataResourceType.User].entities[`${resourceKey}`]
 	);
 
+export const getUserNames = createSelector(
+	referenceDataFeatureState,
+	(state) => Object.values(state[ReferenceDataResourceType.User]).map((user) => user.name) as string[]
+);
+
 export const isResourceType = (resourceType: string): resourceType is ReferenceDataResourceType => {
 	return Object.values(ReferenceDataResourceType).includes(resourceType as ReferenceDataResourceType);
 };

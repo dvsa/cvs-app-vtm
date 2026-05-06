@@ -1,8 +1,18 @@
-<div class="govuk-!-padding-4 govuk-label--s">
+<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!--  Test station details -->
   <govuk-form-group-autocomplete
     label="Test station details"
     [options$]="testStationNames"
     formControlName="testStationPNumber"
+  />
+  <govuk-form-group-input
+    label="Type of test facility"
+    formControlName="testStationType"
+    [disabled]="true"
+  />
+  <govuk-form-group-autocomplete
+    label="Tester details"
+    [options$]="users"
+    formControlName="testerName"
   />
 </div>
