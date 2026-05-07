@@ -9,7 +9,6 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
 import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
@@ -27,14 +26,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	selector: 'approval-type-number-input',
 	templateUrl: 'approval-type-number.html',
 	styleUrls: ['./approval-type-number.scss'],
-	imports: [
-		FormsModule,
-		KeyValuePipe,
-		ReactiveFormsModule,
-		ReactiveFormsModule,
-		ApprovalTypeFocusNextDirective,
-		NoEmojisDirective,
-	],
+	imports: [FormsModule, KeyValuePipe, ReactiveFormsModule, ReactiveFormsModule, NoEmojisDirective],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
