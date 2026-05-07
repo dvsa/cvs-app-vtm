@@ -1,6 +1,7 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -41,6 +42,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	technicalRecordService = inject(TechnicalRecordService);
+	titleService = inject(Title);
 
 	techRecord?: VehiclesOtherThan<'trl'>;
 	makeAndModel?: string;
@@ -63,6 +65,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 			this.techRecord = record as VehiclesOtherThan<'trl'>;
 			this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
 		});
+		this.titleService.setTitle('Change VRM reason - Vehicle Testing Management');
 	}
 
 	ngOnDestroy(): void {

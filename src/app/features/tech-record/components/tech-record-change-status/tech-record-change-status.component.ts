@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -31,6 +32,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	router = inject(Router);
 	store = inject(Store<State>);
 	technicalRecordService = inject(TechnicalRecordService);
+	titleService = inject(Title);
 
 	techRecord: TechRecordType<'get'> | undefined;
 
@@ -62,12 +64,19 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 
 		this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
 			this.isPromotion = params.get('to') === 'current';
+			this.titleService.setTitle(
+				`${this.isPromotion ? 'Promote' : 'Archive'} technical record - Vehicle Testing Management`
+			);
 		});
 	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
+	}
+
+	getTitleText(): string {
+		return this.isPromotion ? 'Promote technical record' : 'Archive technical record';
 	}
 
 	get label(): string {
