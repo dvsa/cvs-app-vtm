@@ -7,9 +7,10 @@ import { ButtonComponent } from '@components/button/button.component';
 import { GovukFormGroupCheckboxComponent } from '@forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { RootRoutes } from '@models/routes.enum';
 import { Store } from '@ngrx/store';
-import { FeatureConfig, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { selectFeatureFlags } from '@store/feature-flags/feature-flags.selectors';
 import { updateFeatureFlags } from '../../store/feature-flags/feature-flags.actions';
+import { FeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 
 @Component({
 	selector: 'app-betas',

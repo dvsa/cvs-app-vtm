@@ -3,10 +3,6 @@ import { Store } from '@ngrx/store';
 import { get } from 'lodash';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
 
-export interface FeatureConfig {
-	[key: string]: { enabled: boolean };
-}
-
 @Injectable({
 	providedIn: 'root',
 })

@@ -3,5 +3,5 @@
   "techrecordredesign": { "enabled": false },
   "techrecordredesigncreate": { "enabled": true },
   "techrecordredesigncreatedetails": { "enabled": false },
-  "adrtestrestrictions": { "enabled": false }
+  "hide-test-restriction-functionality": { "enabled": true }
 }
