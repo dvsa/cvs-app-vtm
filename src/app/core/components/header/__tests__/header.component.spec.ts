@@ -1,8 +1,10 @@
+import { initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
 import { HeaderComponent } from '../header.component';
 
 describe('HeaderComponent', () => {
@@ -14,7 +16,7 @@ describe('HeaderComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [HeaderComponent],
-			providers: [provideHttpClient(), provideHttpClientTesting()],
+			providers: [provideHttpClient(), provideHttpClientTesting(), provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
 	});
 

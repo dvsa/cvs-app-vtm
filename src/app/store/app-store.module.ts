@@ -11,10 +11,10 @@ import { LogsModule } from '@store/logs/logs.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { DefectsStateModule } from './defects/defects-state.module';
+import { FeatureFlagsEffects } from './feature-flags/feature-flags.effects';
 import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { RequiredStandardsStateModule } from './required-standards/required-standards.module';
-
 import { RouterStateModule } from './router/router-state.module';
 import { TechRecordSearchStateModule } from './tech-record-search/tech-record-search-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
@@ -31,7 +31,7 @@ function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any
 	imports: [
 		CommonModule,
 		StoreModule.forRoot(reducers, { metaReducers: [localStorageSyncReducer] }),
-		EffectsModule.forRoot([]),
+		EffectsModule.forRoot([FeatureFlagsEffects]),
 		environment.EnableDevTools
 			? StoreDevtoolsModule.instrument({
 					name: 'VTM Web Dev Tools',

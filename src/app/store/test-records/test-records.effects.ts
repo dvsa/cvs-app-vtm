@@ -14,7 +14,6 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -65,7 +64,6 @@ export class TestResultsEffects {
 	private router = inject(Router);
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
-	private featureToggleService = inject(FeatureToggleService);
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
 

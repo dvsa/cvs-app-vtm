@@ -6,7 +6,10 @@ import { ButtonGroupComponent } from '@components/button-group/button-group.comp
 import { ButtonComponent } from '@components/button/button.component';
 import { GovukFormGroupCheckboxComponent } from '@forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { RootRoutes } from '@models/routes.enum';
+import { Store } from '@ngrx/store';
 import { FeatureConfig, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { selectFeatureFlags } from '@store/feature-flags/feature-flags.selectors';
+import { updateFeatureFlags } from '../../store/feature-flags/feature-flags.actions';
 
 @Component({
 	selector: 'app-betas',
@@ -24,15 +27,18 @@ export class BetasComponent implements OnInit {
 	fb = inject(FormBuilder);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
+	store = inject(Store);
 	featureToggleService = inject(FeatureToggleService);
+	featureFlags = this.store.selectSignal(selectFeatureFlags);
 
 	blocklist = ['test-facility', 'test-facility-as-object']; // List of feature toggles to exclude from the UI
 
-	form = this.fb.group<any>({});
+	form = this.fb.nonNullable.group<Partial<FeatureConfig>>({});
 
 	ngOnInit(): void {
-		if (this.featureToggleService.config()) {
-			for (const [key, { enabled }] of Object.entries(this.featureToggleService.config() ?? {})) {
+		const featureFlags = this.featureFlags();
+		if (featureFlags) {
+			for (const [key, { enabled }] of Object.entries(featureFlags ?? {})) {
 				if (this.blocklist.includes(key)) continue;
 				this.form.addControl(
 					key,
@@ -44,7 +50,7 @@ export class BetasComponent implements OnInit {
 	}
 
 	save(): void {
-		this.featureToggleService.setConfig({ ...this.featureToggleService.config(), ...this.form.value } as FeatureConfig);
+		this.store.dispatch(updateFeatureFlags({ changes: this.form.value }));
 		this.router.navigate([RootRoutes.ROOT]);
 	}
 
