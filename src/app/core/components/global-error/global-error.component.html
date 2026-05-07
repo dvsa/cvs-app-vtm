@@ -1,19 +1,23 @@
 @if (globalErrorService.errors$ | async; as errorMessages) {
   @if (errorMessages && errorMessages.length > 0) {
-    <div
-      class="govuk-error-summary"
-      role="alert"
-      data-module="govuk-error-summary"
-      >
-      <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          @for (error of errorMessages; track error) {
-            <li>
-              <a id="{{ error.anchorLink }}-global-error" href="javascript:void(0)" queryParamsHandling="preserve" (click)="goto(error)" [innerHTML]="error.error"></a>
-            </li>
-          }
-        </ul>
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            @for (error of errorMessages; track error) {
+              <li>
+                <a 
+                  #link
+                  [id]="`${error.anchorLink}-global-error`" 
+                  [attr.href]="`#${error.anchorLink}`"
+                  [innerHTML]="error.error"
+                  (click)="goto($event, error)" 
+                ></a>
+              </li>
+            }
+          </ul>
+        </div>
       </div>
     </div>
   }
