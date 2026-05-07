@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { initialAppState } from '@store/index';
@@ -17,14 +16,7 @@ import { DateComponent } from '../date.component';
 	template: `<form [formGroup]="form">
     <app-date name="foo" label="Foo" formControlName="foo"></app-date>
   </form> `,
-	imports: [
-		BaseControlComponent,
-		DateComponent,
-		FieldErrorMessageComponent,
-		FormsModule,
-		ReactiveFormsModule,
-		DateFocusNextDirective,
-	],
+	imports: [BaseControlComponent, DateComponent, FieldErrorMessageComponent, FormsModule, ReactiveFormsModule],
 })
 class HostComponent {
 	form = new FormGroup({

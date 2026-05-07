@@ -1,5 +1,4 @@
 import { NumberOnlyDirective } from '@/src/app/directives/app-number-only/app-number-only.directive';
-import { DateFocusNextDirective } from '@/src/app/directives/date-focus-next/date-focus-next.directive';
 import { CommonModule } from '@angular/common';
 
 import { Component, OnDestroy, OnInit, forwardRef, inject, input, model, output } from '@angular/core';
@@ -10,7 +9,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'govuk-form-group-date',
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, DateFocusNextDirective, NumberOnlyDirective],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, NumberOnlyDirective],
 	templateUrl: './govuk-form-group-date.component.html',
 	styleUrls: ['./govuk-form-group-date.component.scss'],
 	providers: [

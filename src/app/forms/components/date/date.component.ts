@@ -5,7 +5,6 @@ import { AbstractControlDirective, FormsModule, NG_VALUE_ACCESSOR } from '@angul
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { DateFocusNextDirective } from '@directives/date-focus-next/date-focus-next.directive';
 import { ValidatorNames } from '@models/validators.enum';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import validateDate from 'validate-govuk-date';
@@ -30,14 +29,7 @@ type Segments = {
 			multi: true,
 		},
 	],
-	imports: [
-		TagComponent,
-		FieldErrorMessageComponent,
-		FormsModule,
-		NumberOnlyDirective,
-		DateFocusNextDirective,
-		NgClass,
-	],
+	imports: [TagComponent, FieldErrorMessageComponent, FormsModule, NumberOnlyDirective, NgClass],
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
 	globalErrorService = inject(GlobalErrorService);
