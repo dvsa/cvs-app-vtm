@@ -22,8 +22,6 @@
           <input
             #dayEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
             [id]="dayId"
@@ -44,8 +42,6 @@
           <input
             #monthEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             [id]="monthId"
@@ -66,8 +62,6 @@
           <input
             #yearEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             [id]="yearId"
@@ -105,8 +99,6 @@
           <input
             #dayEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
             [id]="dayId"
@@ -127,8 +119,6 @@
           <input
             #monthEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             [id]="monthId"
@@ -149,8 +139,6 @@
           <input
             #yearEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             [id]="yearId"
@@ -172,8 +160,6 @@
           <input
             #hourEl="ngModel"
             appNumberOnly
-            appFocusNext
-            [displayTime]="displayTime()"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{
               'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
