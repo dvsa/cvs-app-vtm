@@ -37,7 +37,14 @@ describe('GlobalErrorComponent', () => {
 	describe('goto', () => {
 		it('should focus element', fakeAsync(() => {
 			const input: HTMLInputElement = fixture.debugElement.query(By.css('#test-input')).nativeElement;
-			component.goto({ error: 'navigate', anchorLink: 'test-input' });
+			const mockEvent = new MouseEvent('click', {
+				bubbles: true,
+				cancelable: true,
+				clientX: 100,
+				clientY: 200,
+			});
+
+			component.goto(mockEvent, { error: 'navigate', anchorLink: 'test-input' });
 
 			tick(200);
 			expect(document.activeElement).toBe(input);
