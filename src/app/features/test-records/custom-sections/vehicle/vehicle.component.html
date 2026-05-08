@@ -1,0 +1,40 @@
+@if (techRecord(); as techRecord) {
+  <div [formGroup]="form">
+    <!-- Country of registration -->
+    <govuk-form-group-autocomplete
+      label="Country of Registration"
+      [options$]="countryNames"
+      [width]="FormNodeWidth.XXXL"
+      formControlName="countryOfRegistration"
+    />
+
+    <!-- EU vehicle category -->
+    <govuk-form-group-select
+      label="EU Vehicle Category"
+      [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord)"
+      [width]="FormNodeWidth.S"
+      formControlName="euVehicleCategory"
+    />
+
+    @if (techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
+      <!-- Odometer reading -->
+      <govuk-form-group-input
+        label="Odometer Reading"
+        formControlName="odometerReading"
+        type="number"
+        [width]="FormNodeWidth.L"
+      />
+
+      <!-- Odometer reading units -->
+      <govuk-form-group-radio
+        label="Odometer Reading Units"
+        formControlName="odometerReadingUnits"
+        [width]="FormNodeWidth.L"
+        [options]="[
+          { value: 'kilometres', label: 'Kilometres' },
+          { value: 'miles', label: 'Miles' },
+        ]"
+      ></govuk-form-group-radio>
+    }
+  </div>
+}
