@@ -1,13 +1,14 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
+    <app-vehicle-header [isEditing]="true" [isReview]="false" [testResult]="testResult()" />
+
     <app-accordion-control>
       <ng-template #template>
         <ng-container [formGroup]="form">
           <app-accordion
             [id]="'vehicle'"
-            [title]="'Vehicle'"
+            [title]="'Vehicle details'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -18,7 +19,6 @@
             [id]="'test'"
             [title]="'Test'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -29,7 +29,6 @@
             [id]="'visit'"
             [title]="'Visit'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -40,7 +39,6 @@
             [id]="'notes'"
             [title]="'Notes'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -51,7 +49,6 @@
             [id]="'defects'"
             [title]="'Defects'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -62,7 +59,6 @@
             [id]="'reason-for-creation'"
             [title]="'Reason for creation'"
             [description]="''"
-            [type]="'condensed'"
             [isExpanded]="false"
           >
             <form ngNoForm>
@@ -76,5 +72,12 @@
 
     <!-- Accordions appear here -->
     <ng-container [ngTemplateOutlet]="template"></ng-container>
+
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+  
+    <app-button-group>
+      <app-button>Review</app-button>
+      <app-button [design]="'secondary'">Mark as abandoned</app-button>
+    </app-button-group>
   </div>
 </div>

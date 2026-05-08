@@ -1,3 +1,6 @@
+import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
+import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { testResultInEdit } from '@/src/app/store/test-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +19,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 
 @Component({
 	selector: 'app-create-test-record-v2',
@@ -34,13 +38,18 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		VisitComponent,
 		VehicleComponent,
 		TestComponent,
+		ButtonGroupComponent,
+		ButtonComponent,
+		VehicleHeaderComponent,
 	],
 })
 export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	store = inject(Store);
 	form = new FormGroup({});
 	testRecordService = inject(TestRecordsService);
+
 	destroy$ = new ReplaySubject<boolean>(1);
+	testResult = this.store.selectSignal(testResultInEdit);
 
 	private handleFormChanges(): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
