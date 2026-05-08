@@ -29,8 +29,8 @@ import {
 } from '@azure/msal-browser';
 import { ResponseLoggerInterceptor } from '@interceptors/response-logger/response-logger.interceptor';
 import { provideHttpCache, withHttpCacheInterceptor } from '@ngneat/cashew';
+import { Store } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
@@ -38,6 +38,7 @@ import { InterceptorModule } from './app/interceptors/interceptor.module';
 import { CustomRouteReuseStrategy } from './app/services/router/custom-route-reuse-strategy';
 import { UserService } from './app/services/user-service/user-service';
 import { AppStoreModule } from './app/store/app-store.module';
+import { fetchFeatureFlags } from './app/store/feature-flags/feature-flags.actions';
 import { environment } from './environments/environment';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -74,7 +75,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 	};
 }
 
-const featureFactory = (featureFlagsService: FeatureToggleService) => () => featureFlagsService.loadConfig();
+const featureFactory = (store: Store) => () => store.dispatch(fetchFeatureFlags({ local: false }));
 
 if (environment.production) {
 	enableProdMode();
@@ -122,7 +123,7 @@ bootstrapApplication(AppComponent, {
 		{
 			provide: APP_INITIALIZER,
 			useFactory: featureFactory,
-			deps: [FeatureToggleService],
+			deps: [Store],
 			multi: true,
 		},
 		{

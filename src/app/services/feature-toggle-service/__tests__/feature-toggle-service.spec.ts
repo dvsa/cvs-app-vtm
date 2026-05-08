@@ -1,23 +1,19 @@
-import { HttpService } from '@/src/app/services/http/http.service';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { initialAppState } from '@/src/app/store';
+import { selectFeatureFlags } from '@/src/app/store/feature-flags/feature-flags.selectors';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '../feature-toggle-service';
 
 describe('feature toggle service', () => {
 	let service: FeatureToggleService;
-	let httpService: HttpService;
-	let httpClient: HttpClient;
+	let store: MockStore;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [FeatureToggleService, provideHttpClient(), provideHttpClientTesting()],
+			providers: [FeatureToggleService, provideMockStore({ initialState: initialAppState })],
 		});
 
-		httpService = TestBed.inject(HttpService);
-		httpClient = TestBed.inject(HttpClient);
-		TestBed.inject(HttpTestingController);
+		store = TestBed.inject(MockStore);
 		service = TestBed.inject(FeatureToggleService);
 	});
 
@@ -25,38 +21,21 @@ describe('feature toggle service', () => {
 		expect(service).toBeTruthy();
 	});
 
-	describe('loadConfig', () => {
-		it('should create the config from a http request', async () => {
-			const expectedConfig = {
-				testToggle: { enabled: true },
-			};
-
-			// TODO: remove when we move away from local config
-			jest.spyOn(httpClient, 'get').mockReturnValueOnce(of(expectedConfig));
-			jest.spyOn(httpService, 'getFeatureFlags').mockReturnValueOnce(of(expectedConfig));
-
-			await service.loadConfig();
-
-			expect(service.config()).toBeTruthy();
-			expect(service.config()).toEqual(expectedConfig);
-		});
-	});
-
 	describe('isFeatureEnabled', () => {
 		it('should return false if there is no config', () => {
-			service.config.set(null);
+			store.overrideSelector(selectFeatureFlags, null);
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeFalsy();
 		});
 		it('should return false if the key is not in the config', () => {
-			service.config.set({
+			store.overrideSelector(selectFeatureFlags, {
 				randomKey: { enabled: false },
 			});
 			const result = service.isFeatureEnabled('testToggle');
 			expect(result).toBeFalsy();
 		});
 		it('should return false if the key is in the config but is set to false', () => {
-			service.config.set({
+			store.overrideSelector(selectFeatureFlags, {
 				randomKey: { enabled: false },
 				testToggle: { enabled: false },
 			});
@@ -64,7 +43,7 @@ describe('feature toggle service', () => {
 			expect(result).toBeFalsy();
 		});
 		it('should return true if the key is in the config but is set to false so should be hidden', () => {
-			service.config.set({
+			store.overrideSelector(selectFeatureFlags, {
 				randomKey: { enabled: false },
 				testToggle: { enabled: true },
 			});

@@ -16,7 +16,6 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { Store, select } from '@ngrx/store';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
@@ -55,7 +54,6 @@ export class TechnicalRecordService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 	private routerService = inject(RouterService);
-	private featureToggleService = inject(FeatureToggleService);
 
 	techRecord$ = combineLatest([
 		this.store.pipe(select(selectTechRecord)),

@@ -1,7 +1,10 @@
+import { initialAppState } from '@/src/app/store';
+import { selectFeatureFlags } from '@/src/app/store/feature-flags/feature-flags.selectors';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { FeatureToggleDirective } from '../feature-toggle.directive';
 
@@ -27,15 +30,20 @@ class TestComponent {}
 describe('FeatureToggleDirective', () => {
 	let fixture: ComponentFixture<TestComponent>;
 	let service: FeatureToggleService;
+	let store: MockStore;
 
 	beforeEach(() => {
 		fixture = TestBed.configureTestingModule({
 			imports: [TestComponent],
-			providers: [FeatureToggleService, HttpClient, HttpHandler],
+			providers: [FeatureToggleService, HttpClient, HttpHandler, provideMockStore({ initialState: initialAppState })],
 		}).createComponent(TestComponent);
 
+		store = TestBed.inject(MockStore);
 		service = TestBed.inject(FeatureToggleService);
-		service.config.set({ testToggleEnabled: { enabled: true }, testToggleDisabled: { enabled: false } });
+		store.overrideSelector(selectFeatureFlags, {
+			testToggleEnabled: { enabled: true },
+			testToggleDisabled: { enabled: false },
+		});
 
 		fixture.detectChanges(); // initial binding
 	});

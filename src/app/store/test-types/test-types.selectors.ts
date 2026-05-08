@@ -8,6 +8,8 @@ import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
 import dayjs from 'dayjs';
+import { FeatureConfig } from '../feature-flags/feature-flags.feature';
+import { selectFeatureFlags } from '../feature-flags/feature-flags.selectors';
 import { testTypesAdapter, testTypesFeatureState } from './test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -31,11 +33,12 @@ export const selectTestTypesByVehicleType = createSelector(
 	toEditOrNotToEdit,
 	selectTechRecordHistory,
 	selectTechRecord,
-	(testTypes, testResult, techRecordHistory, techRecord) => {
+	selectFeatureFlags,
+	(testTypes, testResult, techRecordHistory, techRecord, featureFlags) => {
 		const hasCurrentRecordInHistory = techRecordHistory ? currentRecordInHistoryCheck(techRecordHistory) : false;
 
 		if (testResult && techRecord) {
-			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory, techRecord);
+			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory, techRecord, featureFlags);
 		}
 		return [];
 	}
@@ -113,7 +116,8 @@ function filterTestTypes(
 	testTypes: TestTypesTaxonomy,
 	testResult: TestResultSchema,
 	hasCurrentRecordInHistory: boolean,
-	techRecord: V3TechRecordModel
+	techRecord: V3TechRecordModel,
+	featureFlags: FeatureConfig | null
 ): TestTypesTaxonomy {
 	const {
 		vehicleType,
@@ -195,6 +199,9 @@ function filterTestTypes(
 				if (!isAdrTest) return true;
 				if (!isADRVehicle) return true;
 				if (!techRecord.techRecord_adrDetails_dangerousGoods) return false;
+
+				const hideTestRestrictions = featureFlags?.['hide-test-restriction-functionality']?.enabled ?? true;
+				if (hideTestRestrictions) return true;
 				if (!techRecord.techRecord_adrDetails_approved) return false;
 				if (!techRecord.techRecord_adrDetails_receivedDate) return false;
 
@@ -210,7 +217,8 @@ function filterTestTypes(
 						newTestType.nextTestTypesOrCategories!,
 						testResult,
 						hasCurrentRecordInHistory,
-						techRecord
+						techRecord,
+						featureFlags
 					);
 				}
 

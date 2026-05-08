@@ -1,7 +1,7 @@
 {
-  "testtoggle": { "enabled": false },
   "betas": { "enabled": true },
   "techrecordredesign": { "enabled": false },
   "techrecordredesigncreate": { "enabled": true },
-  "techrecordredesigncreatedetails": { "enabled": true }
+  "techrecordredesigncreatedetails": { "enabled": true },
+  "hide-test-restriction-functionality": { "enabled": false }
 }
