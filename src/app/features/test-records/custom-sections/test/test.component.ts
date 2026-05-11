@@ -30,8 +30,8 @@ export class TestComponent extends BaseTestRecordV2Component implements OnInit, 
 			hasRecall: this.fb.control('', []),
 			manufacturer: this.fb.control('', []),
 		}),
-		testTypes: this.fb.group({
-			0: this.fb.record({
+		testTypes: this.fb.array([
+			this.fb.group({
 				testCode: this.fb.control('', []),
 				testResult: this.fb.control('', []),
 				centralDocs: this.fb.group({
@@ -48,7 +48,7 @@ export class TestComponent extends BaseTestRecordV2Component implements OnInit, 
 				testTypeStartTimestamp: this.fb.control('', []),
 				testTypeEndTimestamp: this.fb.control('', []),
 			}),
-		}),
+		]),
 	});
 
 	ngOnInit(): void {
