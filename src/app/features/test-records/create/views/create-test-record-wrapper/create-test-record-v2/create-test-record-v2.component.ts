@@ -6,7 +6,6 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@components/accordion/accordion.component';
-import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
@@ -31,7 +30,6 @@ import { VehicleHeaderComponent } from '../../../../components/vehicle-header/ve
 		ReactiveFormsModule,
 		AccordionControlComponent,
 		AccordionComponent,
-		FilterByTagsDirective,
 		NgTemplateOutlet,
 		DefectsComponent,
 		NotesComponent,
@@ -67,6 +65,14 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
+	}
+
+	onReview(): void {
+		this.form.markAllAsTouched();
+	}
+
+	onMarkAsAbandoned(): void {
+		this.form.markAllAsTouched();
 	}
 
 	protected readonly Modes = Modes;
