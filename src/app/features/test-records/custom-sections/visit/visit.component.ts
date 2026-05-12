@@ -4,13 +4,12 @@ import { BaseTestRecordV2Component } from '@features/test-records/components/bas
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { Modes } from '@models/modes.enum';
-import { MultiOptions } from '@models/options.model';
 import { ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { Store, select } from '@ngrx/store';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { selectAllReferenceDataByResourceType, selectUserByResourceKey } from '@store/reference-data';
 import { testStationNames } from '@store/test-stations';
-import { Observable, ReplaySubject, catchError, of, take, takeUntil, tap } from 'rxjs';
+import { ReplaySubject, catchError, take, takeUntil, tap } from 'rxjs';
 
 @Component({
 	selector: 'app-test-visit',
@@ -31,7 +30,7 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 	store = inject(Store);
 	optionsService = inject(MultiOptionsService);
 	testStationNames = this.store.select(testStationNames);
-	users$: Observable<MultiOptions | undefined> = of();
+	users$ = this.optionsService.getOptions(ReferenceDataResourceType.User);
 	users = this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.User));
 
 	testResult$ = this.testRecordService.editingTestResult$;
@@ -50,7 +49,6 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 		this.init(this.form);
 		this.handleTesterDetailChanges();
 		this.loadOptions();
-		this.getOptions();
 
 		// Prepopulate form with current test record
 		this.form.patchValue(this.testResult$ as any);
@@ -60,16 +58,11 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 		this.optionsService.loadOptions(ReferenceDataResourceType.User);
 	}
 
-	getOptions(): void {
-		this.users$ = this.optionsService.getOptions(ReferenceDataResourceType.User);
-	}
-
 	private handleTesterDetailChanges(): void {
 		const testerStaffId = this.form.get('testerStaffId');
 		testerStaffId?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
 			// patch the rest of the tester details into the form
 			if (!value) return;
-			console.log(value);
 			this.store.pipe(
 				select(selectUserByResourceKey(value)),
 				take(1),

@@ -24,19 +24,16 @@
     }
   }
 
-  @if (isMultiOptions()) {
-    <select id="{{ id }}">
+  <div class="govuk-input--width-{{ width() }} internal-wrapper" [class.disabled]="disabled()">
+    @if (prefix()) {
+      <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
+    }
+
+    <select [id]="id">
       <option value=""></option>
-      @for (option of multiAutocompleteOptions; track option) {
+      @for (option of multiOptions; track option) {
         <option [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
       }
     </select>
-  } @else {
-    <div class="govuk-input--width-{{ width() }} internal-wrapper" [class.disabled]="disabled()">
-      @if (prefix()) {
-        <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
-      }
-      <select id="{{ id }}"></select>
-    </div>
-  }
+  </div>
 </div>
