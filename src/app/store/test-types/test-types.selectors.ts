@@ -206,7 +206,9 @@ function filterTestTypes(
 				if (!techRecord.techRecord_adrDetails_receivedDate) return false;
 
 				// Ensure the application was received less than six months ago
-				return dayjs().diff(dayjs(techRecord.techRecord_adrDetails_receivedDate), 'month') <= 6;
+				const today = dayjs().endOf('day');
+				const expiryDate = dayjs(techRecord.techRecord_adrDetails_receivedDate).endOf('day').add(6, 'month');
+				return today.isBefore(expiryDate) || today.isSame(expiryDate);
 			})
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;
