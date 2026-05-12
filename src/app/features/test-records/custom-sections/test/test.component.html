@@ -1,0 +1,38 @@
+<div [formGroup]="form">
+  <ng-container formArrayName="testTypes">
+    <ng-container formGroupName="0">
+      <!-- Contingency Test Number -->
+      <govuk-form-group-input
+        label="Contingency Test Number"
+        formControlName="contingencyTestNumber"
+        [width]="FormNodeWidth.L"
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+      ></govuk-form-group-input>
+
+      <!-- Issue Documents Centrally -->
+      <ng-container formGroupName="centralDocs">
+        <govuk-form-group-radio
+          label="Issue documents centrally"
+          formControlName="issueRequired"
+          [options]="YES_NO_OPTIONS"
+        ></govuk-form-group-radio>
+      </ng-container>
+
+      <!-- Test start date and time -->
+      <govuk-form-group-date
+        mode="iso"
+        label="Test start date and time"
+        formControlName="testTypeStartTimestamp"
+      ></govuk-form-group-date>
+
+      <!-- Test end date and time -->
+      <govuk-form-group-date
+        mode="iso"
+        label="Test end date and time"
+        formControlName="testTypeEndTimestamp"
+      ></govuk-form-group-date>
+    </ng-container>
+  </ng-container>
+</div>
