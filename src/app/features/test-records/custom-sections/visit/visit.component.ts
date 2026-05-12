@@ -6,9 +6,10 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { Modes } from '@models/modes.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { getUserNames, selectAllReferenceDataByResourceType } from '@store/reference-data';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { testStationNames } from '@store/test-stations';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, map, of, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-test-visit',
@@ -27,8 +28,9 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 	destroy$ = new ReplaySubject<boolean>(1);
 	mode = input.required<Modes>();
 	store = inject(Store);
+	optionsService = inject(MultiOptionsService);
 	testStationNames = this.store.select(testStationNames);
-	userNames = this.store.select(getUserNames);
+	users$: Observable<(string | boolean | number)[]> = of();
 	users = this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.User));
 
 	testResult$ = this.testRecordService.editingTestResult$;
@@ -46,9 +48,21 @@ export class VisitComponent extends BaseTestRecordV2Component implements OnInit,
 	ngOnInit(): void {
 		this.init(this.form);
 		this.handleTesterDetailChanges();
+		this.loadOptions();
+		this.getOptions();
 
 		// Prepopulate form with current test record
 		this.form.patchValue(this.testResult$ as any);
+	}
+
+	loadOptions(): void {
+		this.optionsService.loadOptions(ReferenceDataResourceType.User);
+	}
+
+	getOptions(): void {
+		this.users$ = this.optionsService
+			.getOptions(ReferenceDataResourceType.User)
+			.pipe(map((options) => options?.map((option) => option.label) ?? []));
 	}
 
 	private handleTesterDetailChanges(): void {

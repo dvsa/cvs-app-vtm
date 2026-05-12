@@ -71,8 +71,8 @@ export class RequiredHiddenComponent extends BaseTestRecordV2Component implement
 			shouldEmailCertificate: this.fb.control('', []),
 			vehicleConfiguration: this.fb.control('', []),
 			reasonForCancellation: this.fb.control('', []),
-			testTypes: this.fb.group({
-				0: this.fb.record({
+			testTypes: this.fb.array([
+				this.fb.group({
 					testTypeId: this.fb.control('', []),
 					name: this.fb.control('', []),
 					secondaryCertificateNumber: this.fb.control('', []),
@@ -82,7 +82,7 @@ export class RequiredHiddenComponent extends BaseTestRecordV2Component implement
 					testTypeClassification: this.fb.control('', []),
 					deletionFlag: this.fb.control('', []),
 				}),
-			}),
+			]),
 		});
 	}
 }
