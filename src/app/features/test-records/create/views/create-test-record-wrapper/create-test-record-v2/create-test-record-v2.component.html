@@ -4,69 +4,66 @@
 
     <app-accordion-control>
       <ng-template #template>
-        <ng-container [formGroup]="form">
-          <app-accordion
-            [id]="'vehicle'"
-            [title]="'Vehicle details'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-vehicle [mode]="Modes.CREATE"></app-test-vehicle>
-            </form>
-          </app-accordion>
-          <app-accordion
-            [id]="'test'"
-            [title]="'Test'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test [mode]="Modes.CREATE"></app-test>
-            </form>
-          </app-accordion>
-          <app-accordion
-            [id]="'visit'"
-            [title]="'Visit'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-visit [mode]="Modes.CREATE"></app-test-visit>
-            </form>
-          </app-accordion>
-          <app-accordion
-            [id]="'notes'"
-            [title]="'Notes'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-notes [mode]="Modes.CREATE"></app-test-notes>
-            </form>
-          </app-accordion>
-          <app-accordion
-            [id]="'defects'"
-            [title]="'Defects'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-defects [mode]="Modes.CREATE"></app-test-defects>
-            </form>
-          </app-accordion>
-          <app-accordion
-            [id]="'reason-for-creation'"
-            [title]="'Reason for creation'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-reason-for-creation [mode]="Modes.CREATE"></app-test-reason-for-creation>
-            </form>
-          </app-accordion>
-        </ng-container>
-
+        <app-accordion
+          [id]="'vehicle'"
+          [title]="'Vehicle details'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test-vehicle [mode]="Modes.CREATE"></app-test-vehicle>
+          </form>
+        </app-accordion>
+        <app-accordion
+          [id]="'test'"
+          [title]="'Test'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test [mode]="Modes.CREATE"></app-test>
+          </form>
+        </app-accordion>
+        <app-accordion
+          [id]="'visit'"
+          [title]="'Visit'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test-visit [mode]="Modes.CREATE"></app-test-visit>
+          </form>
+        </app-accordion>
+        <app-accordion
+          [id]="'notes'"
+          [title]="'Notes'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test-notes [mode]="Modes.CREATE"></app-test-notes>
+          </form>
+        </app-accordion>
+        <app-accordion
+          [id]="'defects'"
+          [title]="'Defects'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test-defects [mode]="Modes.CREATE"></app-test-defects>
+          </form>
+        </app-accordion>
+        <app-accordion
+          [id]="'reason-for-creation'"
+          [title]="'Reason for creation'"
+          [description]="''"
+          [isExpanded]="true"
+        >
+          <form ngNoForm>
+            <app-test-reason-for-creation [mode]="Modes.CREATE"></app-test-reason-for-creation>
+          </form>
+        </app-accordion>
       </ng-template>
     </app-accordion-control>
 

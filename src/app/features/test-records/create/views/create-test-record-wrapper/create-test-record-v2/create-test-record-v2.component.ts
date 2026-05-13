@@ -1,9 +1,10 @@
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { TestService } from '@/src/app/services/test/test.service';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@components/accordion/accordion.component';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -43,8 +44,10 @@ import { VehicleHeaderComponent } from '../../../../components/vehicle-header/ve
 })
 export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	store = inject(Store);
-	form = new FormGroup({});
+	testService = inject(TestService);
 	testRecordService = inject(TestRecordsService);
+
+	form = this.testService.form;
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	testResult = this.store.selectSignal(testResultInEdit);
@@ -60,8 +63,6 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
-		// Detach all form controls from parent
-
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
