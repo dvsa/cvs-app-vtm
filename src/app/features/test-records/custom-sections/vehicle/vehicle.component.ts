@@ -2,6 +2,7 @@ import { GovukFormGroupAutocompleteComponent } from '@/src/app/forms/components/
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
+import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
@@ -34,6 +35,7 @@ export class VehicleComponent implements OnInit {
 	store = inject(Store);
 	testService = inject(TestService);
 	optionsService = inject(MultiOptionsService);
+	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
 
 	mode = input.required<Modes>();
@@ -49,10 +51,27 @@ export class VehicleComponent implements OnInit {
 	readonly FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
+		this.addValidators();
 		this.handlePrepopulateEuVehicleCategory();
 
 		// Load reference data
 		this.optionsService.loadOptions(ReferenceDataResourceType.CountryOfRegistration);
+	}
+
+	addValidators(): void {
+		this.form.controls.countryOfRegistration.setValidators([this.commonValidators.required('Country of Registration')]);
+		this.form.controls.euVehicleCategory.setValidators([this.commonValidators.required('EU Vehicle Category')]);
+
+		if (this.isOdometerReadingRequired()) {
+			this.form.controls.odometerReading.setValidators([
+				this.commonValidators.required('Odometer Reading'),
+				this.commonValidators.max(9999999, 'Odometer Reading'),
+			]);
+		}
+
+		if (this.isOdometerReadingUnitsRequired()) {
+			this.form.controls.odometerReadingUnits.setValidators([this.commonValidators.required('Odometer Reading Units')]);
+		}
 	}
 
 	handlePrepopulateEuVehicleCategory() {
