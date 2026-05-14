@@ -7,11 +7,11 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Modes } from '@models/modes.enum';
 import { ReferenceDataResourceType, User } from '@models/reference-data.model';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { MultiOptionsService, SpecialRefData } from '@services/multi-options/multi-options.service';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testStations } from '@store/test-stations';
-import { ReplaySubject, catchError, take, takeUntil, tap } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-test-visit',
@@ -29,7 +29,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 
 	users$ = this.optionsService.getOptions(ReferenceDataResourceType.User);
 	testStations$ = this.optionsService.getOptions(SpecialRefData.TEST_STATION_P_NUMBER);
-	testStationsState$ = this.store.select(testStations);
+	testStationsState$ = this.store.selectSignal(testStations);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
@@ -55,34 +55,24 @@ export class VisitComponent implements OnInit, OnDestroy {
 		this.form.controls.testerStaffId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
 			// patch the rest of the tester details into the form
 			if (!value) return;
-			this.store.pipe(
-				select(selectUserByResourceKey(value)),
-				take(1),
-				tap((user) => {
-					if (!user) return;
-					const tester = user as User;
-					const testerName = this.form.controls.testerName;
-					const testerEmail = this.form.controls.testerEmailAddress;
-					testerName.setValue(tester.name, { emitEvent: false, onlySelf: true });
-					testerEmail.setValue(tester.email, { emitEvent: false, onlySelf: true });
-				}),
-				catchError(async (error) => console.log(error))
-			);
+			const schema = this.store.selectSignal(selectUserByResourceKey(value))();
+			if (!schema) return;
+			const tester = schema as User;
+			this.form.patchValue({ testerName: tester.name, testerEmailAddress: tester.email });
 		});
 	}
 
 	handleTestStationChanges(): void {
 		this.form.controls.testStationPNumber.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			// patch the rest of the tester details into the form
+			// patch the rest of the test station details into the form
 			if (!value) return;
-			this.testStationsState$.subscribe((stations) => {
-				if (!stations) return;
-				const testStation = stations.find((station) => station.testStationPNumber === value);
-				if (!testStation) return;
-				const testStationType = this.form.controls.testStationType;
-				const testStationName = this.form.controls.testStationName;
-				testStationType.setValue(testStation.testStationType as TestStationTypes, { emitEvent: false, onlySelf: true });
-				testStationName.setValue(testStation.testStationName, { emitEvent: false, onlySelf: true });
+			const stations = this.testStationsState$();
+			if (!stations) return;
+			const testStation = stations.find((station) => station.testStationPNumber === value);
+			if (!testStation) return;
+			this.form.patchValue({
+				testStationType: testStation.testStationType as TestStationTypes,
+				testStationName: testStation.testStationName,
 			});
 		});
 	}
