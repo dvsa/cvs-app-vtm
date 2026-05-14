@@ -4,10 +4,11 @@ import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespac
 import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
+import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
-import { Component, inject, input } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
 
@@ -26,8 +27,9 @@ import { Modes } from '@models/modes.enum';
 	],
 	styleUrls: ['./test.component.scss'],
 })
-export class TestComponent {
+export class TestComponent implements OnInit {
 	testService = inject(TestService);
+	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
 
@@ -36,5 +38,30 @@ export class TestComponent {
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.addValidators();
+	}
+
+	addValidators(): void {
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+
+		this.form.controls.contingencyTestNumber.setValidators([
+			this.commonValidators.required('Contingency Test Number'),
+			this.commonValidators.minLength(6, 'Contingency Test Number'),
+			this.commonValidators.maxLength(8, 'Contingency Test Number'),
+		]);
+
+		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
+			this.commonValidators.required('Test start date and time'),
+			this.commonValidators.date('Test start date and time'),
+			this.commonValidators.pastDate('Test start date and time'),
+		]);
+
+		testTypeGroup.controls.testTypeEndTimestamp.setValidators([
+			this.commonValidators.required('Test end date and time'),
+			this.commonValidators.date('Test end date and time'),
+			this.commonValidators.pastDate('Test end date and time'),
+			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
+		]);
+	}
 }

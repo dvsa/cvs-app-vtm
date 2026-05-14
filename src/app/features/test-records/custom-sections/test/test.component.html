@@ -1,16 +1,16 @@
 <div [formGroup]="form">
+  <!-- Contingency Test Number -->
+  <govuk-form-group-input
+    label="Contingency Test Number"
+    formControlName="contingencyTestNumber"
+    [width]="FormNodeWidth.L"
+    appToUppercase
+    appNoSpace
+    appTrimWhitespace
+  ></govuk-form-group-input>
+
   <ng-container formArrayName="testTypes">
     <ng-container formGroupName="0">
-      <!-- Contingency Test Number -->
-      <govuk-form-group-input
-        label="Contingency Test Number"
-        formControlName="contingencyTestNumber"
-        [width]="FormNodeWidth.L"
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-      ></govuk-form-group-input>
-
       <!-- Issue Documents Centrally -->
       <ng-container formGroupName="centralDocs">
         <govuk-form-group-radio
