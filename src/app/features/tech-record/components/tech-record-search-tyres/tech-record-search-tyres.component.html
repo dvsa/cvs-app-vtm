@@ -92,15 +92,15 @@
     <tbody class="govuk-table__body">
       @for (tyre of paginatedFields; track $index) {
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell">{{ tyre.code }}</td>
-          <td class="govuk-table__cell">{{ tyre.tyreSize }}</td>
-          <td class="govuk-table__cell">{{ tyre.plyRating }}</td>
-          <td class="govuk-table__cell">{{ tyre.loadIndexSingleLoad }}</td>
-          <td class="govuk-table__cell">{{ tyre.loadIndexTwinLoad }}</td>
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell" data-label="Code">{{ tyre.code }}</td>
+          <td class="govuk-table__cell" data-label="Size">{{ tyre.tyreSize }}</td>
+          <td class="govuk-table__cell" data-label="Ply">{{ tyre.plyRating }}</td>
+          <td class="govuk-table__cell" data-label="Single load index">{{ tyre.loadIndexSingleLoad }}</td>
+          <td class="govuk-table__cell" data-label="Double load index">{{ tyre.loadIndexTwinLoad }}</td>
+          <td class="govuk-table__cell" data-label="Axle load single fitting">
             {{ tyre.axleLoadSingle | tyreAxleLoad : tyre.loadIndexSingleLoad : 2 : (loadIndex$ | async) | defaultNullOrEmpty }}
           </td>
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell" data-label="Axle load double fitting">
             {{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : (loadIndex$ | async) | defaultNullOrEmpty }}
           </td>
           <td class="govuk-table__cell">
