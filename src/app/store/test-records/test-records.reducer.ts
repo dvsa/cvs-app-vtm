@@ -199,7 +199,7 @@ function createNewRequiredStandard(
 	return { ...testResult };
 }
 
-function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
+export function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 	if (!testResult || !testResult.testTypes) {
 		return testResult;
 	}

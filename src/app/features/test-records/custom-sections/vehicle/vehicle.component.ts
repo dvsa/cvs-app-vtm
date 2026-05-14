@@ -76,8 +76,7 @@ export class VehicleComponent implements OnInit {
 
 	handlePrepopulateEuVehicleCategory() {
 		const techRecord = this.techRecord();
-		const euVehicleCategory = this.form.get('euVehicleCategory');
-		if (!euVehicleCategory) return;
+		const euVehicleCategory = this.form.controls.euVehicleCategory;
 
 		// Prepopulate CARs with M1
 		if (techRecord?.techRecord_vehicleType === VehicleTypes.CAR) {

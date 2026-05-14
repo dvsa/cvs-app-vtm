@@ -71,7 +71,11 @@ export class VehicleHeaderComponent {
 	isTestTypeOldIvaOrMsva = this.store.selectSignal(isTestTypeOldIvaOrMsva);
 
 	get test(): TestResultTestTypeSchema | undefined {
-		return this.testResult()?.testTypes?.find((t) => this.testNumber() === t.testNumber);
+		const testResult = this.testResult();
+		if (!testResult || !testResult.testTypes) return undefined;
+
+		const test = testResult.testTypes.find((t) => this.testNumber() === t.testNumber) || testResult.testTypes[0];
+		return test;
 	}
 
 	get selectAllTestTypes$() {

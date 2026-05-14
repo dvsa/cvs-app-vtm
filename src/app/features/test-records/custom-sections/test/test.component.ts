@@ -8,9 +8,10 @@ import { CommonValidatorsService } from '@/src/app/forms/validators/common-valid
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-test',
@@ -27,19 +28,27 @@ import { Modes } from '@models/modes.enum';
 	],
 	styleUrls: ['./test.component.scss'],
 })
-export class TestComponent implements OnInit {
+export class TestComponent implements OnInit, OnDestroy {
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
 
 	form = this.testService.form;
+	destroy = new ReplaySubject<boolean>(1);
 
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
 	ngOnInit(): void {
 		this.addValidators();
+		this.handleTestStartTimestampChange();
+		this.handleTestEndTimestampChange();
+	}
+
+	ngOnDestroy(): void {
+		this.destroy.next(true);
+		this.destroy.complete();
 	}
 
 	addValidators(): void {
@@ -63,5 +72,25 @@ export class TestComponent implements OnInit {
 			this.commonValidators.pastDate('Test end date and time'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
 		]);
+	}
+
+	handleTestStartTimestampChange(): void {
+		this.form.controls.testTypes
+			.at(0)
+			.controls.testTypeStartTimestamp.valueChanges.pipe(takeUntil(this.destroy))
+			.subscribe((value) => {
+				// Hoist value to top level of form
+				this.form.patchValue({ testStartTimestamp: value || undefined });
+			});
+	}
+
+	handleTestEndTimestampChange(): void {
+		this.form.controls.testTypes
+			.at(0)
+			.controls.testTypeEndTimestamp.valueChanges.pipe(takeUntil(this.destroy))
+			.subscribe((value) => {
+				// Hoist value to top level of form
+				this.form.patchValue({ testEndTimestamp: value || undefined });
+			});
 	}
 }

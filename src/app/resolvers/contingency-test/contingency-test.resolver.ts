@@ -5,7 +5,6 @@ import {
 	TestResultTestTypeSchema,
 	TypeOfTest,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -59,7 +58,7 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 						vehicleSubclass:
 							viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord
 								? viewableTechRecord.techRecord_vehicleSubclass
-								: null,
+								: undefined,
 						noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
 						numberOfWheelsDriven:
 							viewableTechRecord && 'techRecord_numberOfWheelsDriven' in viewableTechRecord
@@ -68,8 +67,10 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 						testStatus: 'submitted',
 						regnDate: viewableTechRecord?.techRecord_regnDate,
 						numberOfSeats:
-							((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0) +
-							((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
+							viewableTechRecord?.techRecord_vehicleType === 'psv'
+								? (viewableTechRecord?.techRecord_seatsLowerDeck ?? 0) +
+									(viewableTechRecord?.techRecord_seatsUpperDeck ?? 0)
+								: undefined,
 						reasonForCancellation: '',
 						createdAt: now.toISOString(),
 						lastUpdatedAt: now.toISOString(),

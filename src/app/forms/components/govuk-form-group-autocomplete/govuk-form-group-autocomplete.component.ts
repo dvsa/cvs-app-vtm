@@ -141,7 +141,7 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	findOptionValue(label: string) {
-		return label ? this.multiOptions.find((option) => option.label === label) : '';
+		return label ? this.multiOptions.find((option) => option.label === label)?.value : '';
 	}
 
 	addValidators() {

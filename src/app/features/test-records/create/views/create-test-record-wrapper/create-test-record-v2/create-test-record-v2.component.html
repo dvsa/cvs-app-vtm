@@ -1,6 +1,10 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
-    <app-vehicle-header [isEditing]="true" [isReview]="false" [testResult]="testResult()" />
+    <app-vehicle-header 
+      [isEditing]="true" 
+      [isReview]="false" 
+      [testResult]="$any(form.getRawValue())" 
+    ></app-vehicle-header>
 
     <app-accordion-control>
       <ng-template #template>
