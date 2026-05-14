@@ -1,14 +1,15 @@
 import { TestService } from '@/src/app/services/test/test.service';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { Modes } from '@models/modes.enum';
 import { ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { Store, select } from '@ngrx/store';
-import { MultiOptionsService } from '@services/multi-options/multi-options.service';
+import { MultiOptionsService, SpecialRefData } from '@services/multi-options/multi-options.service';
 import { selectUserByResourceKey } from '@store/reference-data';
-import { testStationNames } from '@store/test-stations';
+import { testStations } from '@store/test-stations';
 import { ReplaySubject, catchError, take, takeUntil, tap } from 'rxjs';
 
 @Component({
@@ -24,8 +25,9 @@ export class VisitComponent implements OnInit, OnDestroy {
 
 	mode = input.required<Modes>();
 
-	testStationNames = this.store.select(testStationNames);
 	users$ = this.optionsService.getOptions(ReferenceDataResourceType.User);
+	testStations$ = this.optionsService.getOptions(SpecialRefData.TEST_STATION_P_NUMBER);
+	testStationsState$ = this.store.select(testStations);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 
@@ -33,15 +35,17 @@ export class VisitComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.handleTesterDetailChanges();
+		this.handleTestStationChanges();
 		this.loadOptions();
 	}
 
 	loadOptions(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.User);
+		this.optionsService.loadOptions(SpecialRefData.TEST_STATION_P_NUMBER);
 	}
 
 	handleTesterDetailChanges(): void {
-		this.form.controls.testerStaffId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+		this.testService.form.controls.testerStaffId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
 			// patch the rest of the tester details into the form
 			if (!value) return;
 			this.store.pipe(
@@ -57,6 +61,22 @@ export class VisitComponent implements OnInit, OnDestroy {
 				}),
 				catchError(async (error) => console.log(error))
 			);
+		});
+	}
+
+	handleTestStationChanges(): void {
+		this.testService.form.controls.testStationPNumber.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+			// patch the rest of the tester details into the form
+			if (!value) return;
+			this.testStationsState$.subscribe((stations) => {
+				if (!stations) return;
+				const testStation = stations.find((station) => station.testStationPNumber === value);
+				if (!testStation) return;
+				const testStationType = this.form.controls.testStationType;
+				const testStationName = this.form.controls.testStationName;
+				testStationType.setValue(testStation.testStationType as TestStationTypes, { emitEvent: false, onlySelf: true });
+				testStationName.setValue(testStation.testStationName, { emitEvent: false, onlySelf: true });
+			});
 		});
 	}
 

@@ -2,12 +2,13 @@
   <!--  Test station details -->
   <govuk-form-group-autocomplete
     label="Test station details"
-    [options$]="testStationNames"
+    [options$]="testStations$"
     formControlName="testStationPNumber"
   />
   <govuk-form-group-input
     label="Type of test facility"
-    formControlName="testStationType"
+    [id]="'testStationType'"
+    [value]="form.controls['testStationType'].value"
     [disabled]="true"
   />
   <govuk-form-group-autocomplete
