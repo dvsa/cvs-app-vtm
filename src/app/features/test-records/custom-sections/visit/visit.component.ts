@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
+import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Modes } from '@models/modes.enum';
 import { ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { Store, select } from '@ngrx/store';
@@ -21,6 +22,7 @@ import { ReplaySubject, catchError, take, takeUntil, tap } from 'rxjs';
 export class VisitComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	testService = inject(TestService);
+	commonValidators = inject(CommonValidatorsService);
 	optionsService = inject(MultiOptionsService);
 
 	mode = input.required<Modes>();
@@ -39,13 +41,18 @@ export class VisitComponent implements OnInit, OnDestroy {
 		this.loadOptions();
 	}
 
+	addValidators(): void {
+		this.form.controls.testStationPNumber.setValidators([this.commonValidators.required('Test station details')]);
+		this.form.controls.testerStaffId.setValidators([this.commonValidators.required('Tester details')]);
+	}
+
 	loadOptions(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.User);
 		this.optionsService.loadOptions(SpecialRefData.TEST_STATION_P_NUMBER);
 	}
 
 	handleTesterDetailChanges(): void {
-		this.testService.form.controls.testerStaffId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+		this.form.controls.testerStaffId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
 			// patch the rest of the tester details into the form
 			if (!value) return;
 			this.store.pipe(
@@ -65,7 +72,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 	}
 
 	handleTestStationChanges(): void {
-		this.testService.form.controls.testStationPNumber.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+		this.form.controls.testStationPNumber.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
 			// patch the rest of the tester details into the form
 			if (!value) return;
 			this.testStationsState$.subscribe((stations) => {
