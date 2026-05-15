@@ -118,7 +118,7 @@ export class TestService {
 				smokeTestKLimitApplied: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 				particulateTrapFitted: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 				particulateTrapSerialNumber: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
-				defects: this.fb.control<DefectDetailsSchema[]>([]),
+				defects: this.fb.nonNullable.control<DefectDetailsSchema[]>([]),
 				customDefects: this.fb.control<SpecialistCustomDefectsSchema[] | undefined>([]),
 				requiredStandards: this.fb.control<SpecialistCustomDefectsSchemaPut[] | undefined>({
 					value: undefined,
