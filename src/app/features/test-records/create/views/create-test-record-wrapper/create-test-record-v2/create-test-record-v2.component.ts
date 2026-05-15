@@ -67,7 +67,6 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 
 	private handleFormChanges(): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			console.log(this.form.getRawValue());
 			this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
 		});
 	}
