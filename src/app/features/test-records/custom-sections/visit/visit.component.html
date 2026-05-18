@@ -1,4 +1,5 @@
 <div [formGroup]="form">
+  @if (mode() === Modes.EDIT) {
   <!--  Test station details -->
   <govuk-form-group-autocomplete
     label="Test station details"
@@ -14,4 +15,7 @@
     [options$]="users$"
     formControlName="testerStaffId"
   />
+  } @else {
+
+  }
 </div>

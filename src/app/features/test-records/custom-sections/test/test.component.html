@@ -1,4 +1,5 @@
 <div [formGroup]="form">
+  @if (mode() === Modes.EDIT) {
   <!-- Contingency Test Number -->
   <govuk-form-group-input
     label="Contingency Test Number"
@@ -35,4 +36,7 @@
       ></govuk-form-group-date>
     </ng-container>
   </ng-container>
+  } @else {
+
+  }
 </div>

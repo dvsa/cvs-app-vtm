@@ -16,4 +16,5 @@ export class NotesComponent {
 	mode = input.required<Modes>();
 
 	form = this.testService.form;
+	protected readonly Modes = Modes;
 }

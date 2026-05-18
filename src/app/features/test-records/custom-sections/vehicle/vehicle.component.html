@@ -1,5 +1,6 @@
 @if (techRecord(); as techRecord) {
   <div [formGroup]="form">
+    @if (mode() === Modes.EDIT) {
     <!-- Country of registration -->
     <govuk-form-group-autocomplete
       label="Country of Registration"
@@ -35,6 +36,9 @@
           { value: 'miles', label: 'Miles' },
         ]"
       ></govuk-form-group-radio>
+    }
+    } @else {
+
     }
   </div>
 }

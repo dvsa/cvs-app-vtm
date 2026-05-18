@@ -1,4 +1,5 @@
 <div [formGroup]="form">
+  @if (mode() === Modes.EDIT) {
   <!--  Notes -->
   <ng-container formGroupName="testTypes">
     <ng-container formGroupName="0">
@@ -9,4 +10,7 @@
         />
     </ng-container>
   </ng-container>
+  } @else {
+
+  }
 </div>

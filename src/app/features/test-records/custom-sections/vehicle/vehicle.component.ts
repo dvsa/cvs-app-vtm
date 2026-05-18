@@ -112,4 +112,6 @@ export class VehicleComponent implements OnInit {
 		// Add test specific logic here
 		return true;
 	}
+
+	protected readonly Modes = Modes;
 }

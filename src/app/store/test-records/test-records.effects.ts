@@ -24,7 +24,7 @@ import { updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { techRecord } from '../technical-records';
 import {
@@ -313,8 +313,9 @@ export class TestResultsEffects {
 				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
 				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
 				filter(Boolean),
+				tap(() => console.log('about to navigate')),
 				switchMap((techRecord) =>
-					this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])
+					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
 				)
 			),
 		{ dispatch: false }

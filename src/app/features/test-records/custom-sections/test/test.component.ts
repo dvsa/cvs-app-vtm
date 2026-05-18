@@ -93,4 +93,6 @@ export class TestComponent implements OnInit, OnDestroy {
 				this.form.patchValue({ testEndTimestamp: value || undefined });
 			});
 	}
+
+	protected readonly Modes = Modes;
 }

@@ -81,4 +81,6 @@ export class VisitComponent implements OnInit, OnDestroy {
 		this.destroy$.next(true);
 		this.destroy$.complete();
 	}
+
+	protected readonly Modes = Modes;
 }
