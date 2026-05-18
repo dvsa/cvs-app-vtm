@@ -77,6 +77,11 @@
         <app-button id="confirm-defect" (clicked)="onConfirm()">
           Confirm
         </app-button>
+        @if (isEditingDefect()) {
+          <app-button id="remove-defect" design="warning" (clicked)="onRemove()">
+            Remove defect
+          </app-button>
+        }
         <app-button id="remove-nav-back" design="link" (clicked)="onCancel()">
           Cancel  
         </app-button>

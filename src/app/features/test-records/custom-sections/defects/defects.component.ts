@@ -3,6 +3,7 @@ import { TagComponent } from '@/src/app/components/tag/tag.component';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TruncatePipe } from '@/src/app/pipes/truncate/truncate.pipe';
 import { DefectMediaService } from '@/src/app/services/defect-media-service/defect-media-service.service';
+import { TestService } from '@/src/app/services/test/test.service';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -16,6 +17,7 @@ import { Store } from '@ngrx/store';
 })
 export class DefectsComponent {
 	store = inject(Store);
+	testService = inject(TestService);
 	defectMediaService = inject(DefectMediaService, { optional: true });
 
 	mode = input.required<Modes>();

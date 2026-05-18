@@ -9,7 +9,7 @@ import { DeficiencyCategoryEnum } from '@/src/app/models/test-results/test-resul
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectByDeficiencyRef, selectByImNumber } from '@/src/app/store/defects';
 import { selectRouteDataProperty, selectRouteParam } from '@/src/app/store/router/router.selectors';
-import { updateResultOfTest } from '@/src/app/store/test-records';
+import { createDefect, removeDefect, updateDefect, updateResultOfTest } from '@/src/app/store/test-records';
 import { KeyValuePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -193,6 +193,11 @@ export class DefectV2Component {
 		return 'orange';
 	}
 
+	isEditingDefect(): boolean {
+		const index = Number(this.defectIndex());
+		return !Number.isNaN(index);
+	}
+
 	isDangerous(): boolean {
 		return this.form.getRawValue().deficiencyCategory === 'dangerous';
 	}
@@ -241,16 +246,25 @@ export class DefectV2Component {
 			return;
 		}
 
-		// Upsert the defect into the testType's defects array
-		const defects = this.testService.form.controls.testTypes.at(0).controls.defects.value;
-		const index = Math.min(Number(this.defectIndex()), defects.length);
-		defects[index] = this.form.getRawValue() as DefectDetailsSchema;
-		this.testService.form.controls.testTypes.at(0).controls.defects.patchValue(defects);
+		// Add or update the defect
+		const index = Number(this.defectIndex());
+		const defect = this.form.getRawValue() as DefectDetailsSchema;
+		if (Number.isNaN(index)) {
+			this.store.dispatch(createDefect({ defect }));
+		} else {
+			this.store.dispatch(updateDefect({ defect, index }));
+		}
 
 		this.navigateBack();
 	}
 
 	onCancel(): void {
+		this.navigateBack();
+	}
+
+	onRemove(): void {
+		const index = Number(this.defectIndex());
+		this.store.dispatch(removeDefect({ index }));
 		this.navigateBack();
 	}
 

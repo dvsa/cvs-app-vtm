@@ -1,8 +1,12 @@
 <div [formGroup]="form">
   <!--  Notes -->
-  <govuk-form-group-textarea
-    label="Additional notes (optional)"
-    [maxLength]="100"
-    formControlName="additionalNotesRecorded"
-  />
+  <ng-container formGroupName="testTypes">
+    <ng-container formGroupName="0">
+        <govuk-form-group-textarea
+          label="Additional notes (optional)"
+          [maxLength]="100"
+          formControlName="additionalNotesRecorded"
+        />
+    </ng-container>
+  </ng-container>
 </div>
