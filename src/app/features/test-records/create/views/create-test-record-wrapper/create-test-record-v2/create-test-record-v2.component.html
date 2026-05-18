@@ -7,10 +7,10 @@
       </app-banner>
     }
 
-    <app-vehicle-header 
-      [isEditing]="true" 
-      [isReview]="false" 
-      [testResult]="$any(form.getRawValue())" 
+    <app-vehicle-header
+      [isEditing]="mode() === Modes.EDIT"
+      [isReview]="false"
+      [testResult]="$any(form.getRawValue())"
     ></app-vehicle-header>
 
     <app-accordion-control>
@@ -82,7 +82,7 @@
     <ng-container [ngTemplateOutlet]="template"></ng-container>
 
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
-  
+
     <app-button-group>
       @if (mode() === Modes.EDIT) {
         <app-button (clicked)="onReview()">Review</app-button>
