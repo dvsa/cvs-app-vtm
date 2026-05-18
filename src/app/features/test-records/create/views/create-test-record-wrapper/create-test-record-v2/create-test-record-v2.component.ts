@@ -1,3 +1,4 @@
+import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
@@ -8,7 +9,7 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { cleanTestResultPayload, createTestResult, testResultInEdit } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
@@ -46,6 +47,7 @@ import { VehicleHeaderComponent } from '../../../../components/vehicle-header/ve
 		ButtonGroupComponent,
 		ButtonComponent,
 		VehicleHeaderComponent,
+		BannerComponent,
 	],
 })
 export class CreateTestRecordV2Component implements OnDestroy, OnInit {
@@ -58,6 +60,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	globalErrorService = inject(GlobalErrorService);
 
 	form = this.testService.form;
+	mode = signal(Modes.EDIT);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
@@ -106,6 +109,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 
 	onReview(): void {
 		this.form.markAllAsTouched();
+		this.globalErrorService.clearErrors();
 
 		if (this.form.invalid) {
 			const errors = this.globalErrorService.extractGlobalErrors(this.form);
@@ -113,14 +117,20 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 			return;
 		}
 
-		// @TODO: move this to review page
+		this.mode.set(Modes.SUMMARY);
+	}
 
+	onSubmit(): void {
 		// Spread to remove undefined keys
 		const raw = { ...this.form.getRawValue() } as TestResultSchema;
 		const value = cleanTestResultPayload(raw);
 		if (!value) return;
 
 		this.store.dispatch(createTestResult({ value }));
+	}
+
+	onCancel(): void {
+		this.mode.set(Modes.EDIT);
 	}
 
 	onMarkAsAbandoned(): void {

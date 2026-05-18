@@ -1,5 +1,12 @@
 <div class="govuk-grid-row search-page">
   <div class="govuk-grid-column-full">
+    @if (mode() === Modes.SUMMARY) {
+      <app-banner>
+        <ng-container title>Important</ng-container>
+        <ng-container content>Check your answers before submitting the test</ng-container>
+      </app-banner>
+    }
+
     <app-vehicle-header 
       [isEditing]="true" 
       [isReview]="false" 
@@ -15,7 +22,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test-vehicle [mode]="Modes.CREATE"></app-test-vehicle>
+            <app-test-vehicle [mode]="mode()"></app-test-vehicle>
           </form>
         </app-accordion>
         <app-accordion
@@ -25,7 +32,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test [mode]="Modes.CREATE"></app-test>
+            <app-test [mode]="mode()"></app-test>
           </form>
         </app-accordion>
         <app-accordion
@@ -35,7 +42,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test-visit [mode]="Modes.CREATE"></app-test-visit>
+            <app-test-visit [mode]="mode()"></app-test-visit>
           </form>
         </app-accordion>
         <app-accordion
@@ -45,7 +52,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test-notes [mode]="Modes.CREATE"></app-test-notes>
+            <app-test-notes [mode]="mode()"></app-test-notes>
           </form>
         </app-accordion>
         <app-accordion
@@ -55,7 +62,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test-defects [mode]="Modes.CREATE"></app-test-defects>
+            <app-test-defects [mode]="mode()"></app-test-defects>
           </form>
         </app-accordion>
         <app-accordion
@@ -65,7 +72,7 @@
           [isExpanded]="true"
         >
           <form ngNoForm>
-            <app-test-reason-for-creation [mode]="Modes.CREATE"></app-test-reason-for-creation>
+            <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
           </form>
         </app-accordion>
       </ng-template>
@@ -77,8 +84,15 @@
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
   
     <app-button-group>
-      <app-button (clicked)="onReview()">Review</app-button>
-      <app-button [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+      @if (mode() === Modes.EDIT) {
+        <app-button (clicked)="onReview()">Review</app-button>
+        <app-button [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+      }
+
+      @if (mode() === Modes.VIEW) {
+        <app-button (clicked)="onSubmit()">Accept and send</app-button>
+        <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+      }
     </app-button-group>
   </div>
 </div>
