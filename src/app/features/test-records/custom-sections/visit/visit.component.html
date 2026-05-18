@@ -16,6 +16,21 @@
     formControlName="testerStaffId"
   />
   } @else {
-
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header">Tester station details</td>
+          <td class="govuk-table__cell">{{ form.controls.testStationName.value }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header">Tester details</td>
+          <td class="govuk-table__cell">{{ form.controls.testStationType.value }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header">Tester details</td>
+          <td class="govuk-table__cell">{{ form.controls.testerName.value }}</td>
+        </tr>
+      </tbody>
+    </table>
   }
 </div>
