@@ -15,16 +15,18 @@
 
     <app-accordion-control>
       <ng-template #template>
-        <app-accordion
-          [id]="'vehicle'"
-          [title]="'Vehicle details'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test-vehicle [mode]="mode()"></app-test-vehicle>
-          </form>
-        </app-accordion>
+        @if (mode() === Modes.EDIT) {
+          <app-accordion
+            [id]="'vehicle'"
+            [title]="'Vehicle details'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-vehicle [mode]="mode()"></app-test-vehicle>
+            </form>
+          </app-accordion>
+        }
         <app-accordion
           [id]="'test'"
           [title]="'Test'"

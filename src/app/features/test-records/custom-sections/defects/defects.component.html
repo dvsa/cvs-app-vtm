@@ -43,6 +43,8 @@
   </div>
 </div>
 
-<app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
-  Add defect
-</app-button>
+@if (mode() === Modes.EDIT) {
+  <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
+    Add defect
+  </app-button>
+}

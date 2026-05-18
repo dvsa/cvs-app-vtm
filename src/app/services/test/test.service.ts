@@ -29,10 +29,7 @@ export class TestService {
 		testResultId: this.fb.nonNullable.control<string>(''),
 		testStationName: this.fb.control<string | null>(null),
 		testStationPNumber: this.fb.control<string | null>(null),
-		testStationType: this.fb.nonNullable.control<TestStationTypes>({
-			value: 'atf' as TestStationTypes,
-			disabled: true,
-		}),
+		testStationType: this.fb.nonNullable.control<TestStationTypes | null>({ value: null, disabled: true }),
 		testerName: this.fb.control<string | null>(null),
 		testerStaffId: this.fb.nonNullable.control<string>(''),
 		testerEmailAddress: this.fb.control<string | null>(null),

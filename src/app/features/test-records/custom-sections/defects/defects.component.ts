@@ -24,6 +24,8 @@ export class DefectsComponent {
 
 	testResult = this.store.selectSignal(testResultInEdit);
 
+	readonly Modes = Modes;
+
 	categoryColor(category: string): string {
 		return categoryColors[category as keyof typeof categoryColors];
 	}

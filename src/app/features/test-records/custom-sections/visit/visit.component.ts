@@ -1,3 +1,4 @@
+import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +40,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 		this.handleTesterDetailChanges();
 		this.handleTestStationChanges();
 		this.loadOptions();
+		this.addValidators();
 	}
 
 	addValidators(): void {
@@ -83,4 +85,5 @@ export class VisitComponent implements OnInit, OnDestroy {
 	}
 
 	protected readonly Modes = Modes;
+	protected readonly FormNodeWidth = FormNodeWidth;
 }
