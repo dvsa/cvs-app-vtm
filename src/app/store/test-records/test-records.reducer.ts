@@ -273,6 +273,11 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 			testType.smokeTestKLimitApplied = testType.smokeTestKLimitApplied.toString();
 		}
 
+		// If abandon reasons is an array, convert it to a string
+		if (Array.isArray(testType.reasonForAbandoning)) {
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
+		}
+
 		return testType;
 	});
 

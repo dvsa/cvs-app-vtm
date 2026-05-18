@@ -7,92 +7,105 @@
       </app-banner>
     }
 
-    <app-vehicle-header
-      [isEditing]="mode() === Modes.EDIT"
-      [isReview]="false"
-      [testResult]="$any(form.getRawValue())"
-    ></app-vehicle-header>
+    @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY) {
+      <app-vehicle-header
+        [isEditing]="mode() === Modes.EDIT"
+        [isReview]="false"
+        [testResult]="$any(form.getRawValue())"
+      ></app-vehicle-header>
 
-    <app-accordion-control>
-      <ng-template #template>
-        @if (mode() === Modes.EDIT) {
+      <app-accordion-control>
+        <ng-template #template>
+          @if (mode() === Modes.EDIT) {
+            <app-accordion
+              [id]="'vehicle'"
+              [title]="'Vehicle details'"
+              [description]="''"
+              [isExpanded]="true"
+            >
+              <form ngNoForm>
+                <app-test-vehicle [mode]="mode()"></app-test-vehicle>
+              </form>
+            </app-accordion>
+          }
           <app-accordion
-            [id]="'vehicle'"
-            [title]="'Vehicle details'"
+            [id]="'test'"
+            [title]="'Test'"
             [description]="''"
             [isExpanded]="true"
           >
             <form ngNoForm>
-              <app-test-vehicle [mode]="mode()"></app-test-vehicle>
+              <app-test [mode]="mode()"></app-test>
             </form>
           </app-accordion>
-        }
-        <app-accordion
-          [id]="'test'"
-          [title]="'Test'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test [mode]="mode()"></app-test>
-          </form>
-        </app-accordion>
-        <app-accordion
-          [id]="'visit'"
-          [title]="'Visit'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test-visit [mode]="mode()"></app-test-visit>
-          </form>
-        </app-accordion>
-        <app-accordion
-          [id]="'notes'"
-          [title]="'Notes'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test-notes [mode]="mode()"></app-test-notes>
-          </form>
-        </app-accordion>
-        <app-accordion
-          [id]="'defects'"
-          [title]="'Defects'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test-defects [mode]="mode()"></app-test-defects>
-          </form>
-        </app-accordion>
-        <app-accordion
-          [id]="'reason-for-creation'"
-          [title]="'Reason for creation'"
-          [description]="''"
-          [isExpanded]="true"
-        >
-          <form ngNoForm>
-            <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
-          </form>
-        </app-accordion>
-      </ng-template>
-    </app-accordion-control>
+          <app-accordion
+            [id]="'visit'"
+            [title]="'Visit'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-visit [mode]="mode()"></app-test-visit>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'notes'"
+            [title]="'Notes'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-notes [mode]="mode()"></app-test-notes>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'defects'"
+            [title]="'Defects'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-defects [mode]="mode()"></app-test-defects>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'reason-for-creation'"
+            [title]="'Reason for creation'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
+            </form>
+          </app-accordion>
+        </ng-template>
+      </app-accordion-control>
 
-    <!-- Accordions appear here -->
-    <ng-container [ngTemplateOutlet]="template"></ng-container>
+      <!-- Accordions appear here -->
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
+    }
+
+    @if (mode() === Modes.ABANDON) {
+      <app-abandon />
+    }
 
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
 
     <app-button-group>
       @if (mode() === Modes.EDIT) {
         <app-button (clicked)="onReview()">Review</app-button>
-        <app-button [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+        @if (isTestTypeAbandonable()) {
+          <app-button [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+        }
       }
 
       @if (mode() === Modes.VIEW) {
         <app-button (clicked)="onSubmit()">Accept and send</app-button>
+        <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+      }
+
+      @if (mode() === Modes.ABANDON) {
+        <app-button (clicked)="onAbandon()">Confirm and save</app-button>
         <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
     </app-button-group>

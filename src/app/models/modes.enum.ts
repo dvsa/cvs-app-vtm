@@ -4,4 +4,5 @@ export enum Modes {
 	VIEW = 'view',
 	SUMMARY = 'summary',
 	EDIT = 'edit', // create or amend
+	ABANDON = 'abandon',
 }
