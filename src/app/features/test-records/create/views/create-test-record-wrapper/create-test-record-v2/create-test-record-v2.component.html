@@ -10,7 +10,7 @@
     @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY) {
       <app-vehicle-header
         [isEditing]="mode() === Modes.EDIT"
-        [isReview]="false"
+        [isReview]="mode() === Modes.SUMMARY"
         [testResult]="$any(form.getRawValue())"
       ></app-vehicle-header>
 
