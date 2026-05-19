@@ -1,4 +1,5 @@
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
+import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TestService } from '@/src/app/services/test/test.service';
 import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +9,7 @@ import { Modes } from '@models/modes.enum';
 @Component({
 	selector: 'app-test-notes',
 	templateUrl: './notes.component.html',
-	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupTextareaComponent],
+	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupTextareaComponent, DefaultNullOrEmpty],
 	styleUrls: ['./notes.component.scss'],
 })
 export class NotesComponent implements OnInit {

@@ -28,15 +28,19 @@
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
           <td class="govuk-table__header">Tester station details</td>
-          <td class="govuk-table__cell">{{ form.controls.testStationName.value }}</td>
+          <td class="govuk-table__cell" id="test-testStationName">{{ form.controls.testStationName.value }}</td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__header">Tester details</td>
-          <td class="govuk-table__cell">{{ form.controls.testStationType.value }}</td>
+          <td class="govuk-table__cell" id="test-testStationType">{{ form.controls.testStationType.value }}</td>
         </tr>
         <tr class="govuk-table__row">
           <td class="govuk-table__header">Tester details</td>
-          <td class="govuk-table__cell">{{ form.controls.testerName.value }}</td>
+          <td class="govuk-table__cell" id="test-testerName">{{ form.controls.testerName.value }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header">Tester email address</td>
+          <td class="govuk-table__cell" id="test-testerEmailAddress">{{ form.controls.testerEmailAddress.value }}</td>
         </tr>
       </tbody>
     </table>
