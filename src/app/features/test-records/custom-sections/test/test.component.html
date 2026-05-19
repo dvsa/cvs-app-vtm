@@ -37,6 +37,25 @@
     </ng-container>
   </ng-container>
   } @else {
-
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header">Contingency Test Number</td>
+        <td class="govuk-table__cell">{{ form.controls.contingencyTestNumber.value }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header">Issue documents centrally</td>
+        <td class="govuk-table__cell">{{ form.controls.testTypes.at(0).controls.centralDocs.controls.issueRequired.value ? 'Yes' : 'No' }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header">Test start date and time</td>
+        <td class="govuk-table__cell">{{ form.controls.testTypes.at(0).controls.testTypeStartTimestamp.value | date: 'dd/MM/yyyy HH:mm': 'UTC' }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header">Test end date and time</td>
+        <td class="govuk-table__cell">{{ form.controls.testTypes.at(0).controls.testTypeEndTimestamp.value | date: 'dd/MM/yyyy HH:mm': 'UTC' }}</td>
+      </tr>
+      </tbody>
+    </table>
   }
 </div>

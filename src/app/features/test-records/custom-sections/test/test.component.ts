@@ -8,6 +8,7 @@ import { CommonValidatorsService } from '@/src/app/forms/validators/common-valid
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
@@ -17,6 +18,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	selector: 'app-test',
 	templateUrl: './test.component.html',
 	imports: [
+		DatePipe,
 		FormsModule,
 		ReactiveFormsModule,
 		ToUppercaseDirective,
