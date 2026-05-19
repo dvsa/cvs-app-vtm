@@ -68,16 +68,18 @@
               <app-test-defects [mode]="mode()"></app-test-defects>
             </form>
           </app-accordion>
-          <app-accordion
-            [id]="'reason-for-creation'"
-            [title]="'Reason for creation'"
-            [description]="''"
-            [isExpanded]="true"
-          >
-            <form ngNoForm>
-              <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
-            </form>
-          </app-accordion>
+          @if (mode() === Modes.EDIT) {
+            <app-accordion
+              [id]="'reason-for-creation'"
+              [title]="'Reason for creation'"
+              [description]="''"
+              [isExpanded]="true"
+            >
+              <form ngNoForm>
+                <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
+              </form>
+            </app-accordion>
+          }
         </ng-template>
       </app-accordion-control>
 
