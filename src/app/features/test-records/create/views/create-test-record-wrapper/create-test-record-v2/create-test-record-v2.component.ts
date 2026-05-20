@@ -10,10 +10,15 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
-import { cleanTestResultPayload, createTestResult, testResultInEdit } from '@/src/app/store/test-records';
+import {
+	cleanTestResultPayload,
+	createTestResult,
+	selectedTestResultState,
+	testResultInEdit,
+} from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -64,36 +69,50 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	route = inject(ActivatedRoute);
 	testService = inject(TestService);
 	testRecordService = inject(TestRecordsService);
-	techRecordSerivce = inject(TechnicalRecordService);
+	techRecordService = inject(TechnicalRecordService);
 	globalErrorService = inject(GlobalErrorService);
 	globalWarningService = inject(GlobalWarningService);
 	resultOfTestService = inject(ResultOfTestService);
 	titleService = inject(Title);
 
 	form = this.testService.form;
+	initialMode = input.required<Modes>();
 	mode = signal(Modes.EDIT);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
-	testResult = this.store.selectSignal(testResultInEdit);
+	testResult!: Signal<TestResultSchema | undefined>;
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
-		});
+		if (this.mode() === Modes.EDIT) {
+			this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+			});
+		}
 	}
 
 	private handleMissingTestResult(): void {
-		this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
-			if (!testResult) {
-				this.router.navigate(['../../..'], { relativeTo: this.route.parent });
-			}
-		});
+		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
+			console.log('navigating - mode ', this.mode());
+			this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
+				if (!testResult) {
+					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
+				}
+			});
+		} else {
+			// get test result from elsewhere
+		}
 	}
 
 	ngOnInit(): void {
+		this.mode.set(this.initialMode());
+		if (this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY) {
+			this.testResult = this.store.selectSignal(testResultInEdit);
+		} else {
+			this.testResult = this.store.selectSignal(selectedTestResultState);
+		}
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();

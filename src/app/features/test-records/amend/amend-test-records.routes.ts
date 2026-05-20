@@ -22,7 +22,9 @@ export const routes: Routes = [
 				path: '',
 				title: 'View test record - Vehicle Testing Management',
 				loadComponent: () =>
-					import('./views/test-result-summary/test-result-summary.component').then((m) => m.TestResultSummaryComponent),
+					import('./views/test-result-summary-wrapper/test-result-summary-wrapper.component').then(
+						(m) => m.TestResultSummaryWrapperComponent
+					),
 			},
 			{
 				path: TestRecordAmendRoutes.AMEND_TEST,
