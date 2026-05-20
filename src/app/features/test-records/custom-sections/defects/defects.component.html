@@ -43,7 +43,7 @@
   </div>
 </div>
 
-@if (mode() === Modes.EDIT) {
+@if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
   <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
     Add defect
   </app-button>

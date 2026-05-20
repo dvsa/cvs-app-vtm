@@ -7,16 +7,32 @@
       </app-banner>
     }
 
-    @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY) {
+    @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY || mode() === Modes.AMEND) {
       <app-vehicle-header
-        [isEditing]="mode() === Modes.EDIT"
+        [isEditing]="mode() === Modes.EDIT || mode() === Modes.AMEND"
         [isReview]="mode() === Modes.SUMMARY"
         [testResult]="$any(form.getRawValue())"
-      ></app-vehicle-header>
+      >
+        @if (testResult()?.testStatus !== statuses.CANCELLED) {
+          <app-button-group class="page-actions">
+            <ng-container *appRoleRequired="roles.TestResultAmend">
+              @if (isTestTypeGroupEditable$ | async) {
+                <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
+                <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
+              } @else {
+                <app-banner>
+                  <ng-container title>Important</ng-container>
+                  <ng-container content>Editing this record is not currently supported</ng-container>
+                </app-banner>
+              }
+            </ng-container>
+          </app-button-group>
+        }
+      </app-vehicle-header>
 
       <app-accordion-control>
         <ng-template #template>
-          @if (mode() === Modes.EDIT) {
+          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
               [id]="'vehicle'"
               [title]="'Vehicle details'"
@@ -68,7 +84,7 @@
               <app-test-defects [mode]="mode()"></app-test-defects>
             </form>
           </app-accordion>
-          @if (mode() === Modes.EDIT) {
+          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
               [id]="'reason-for-creation'"
               [title]="'Reason for creation'"

@@ -17,14 +17,16 @@ import {
 	testResultInEdit,
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, Signal, computed, inject, input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccordionControlComponent } from '@components/accordion-control/accordion-control.component';
 import { AccordionComponent } from '@components/accordion/accordion.component';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
@@ -33,10 +35,11 @@ import { TestComponent } from '@features/test-records/custom-sections/test/test.
 import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
+import { Roles } from '@models/roles.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
 
@@ -61,6 +64,8 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		VehicleHeaderComponent,
 		BannerComponent,
 		AbandonComponent,
+		AsyncPipe,
+		RoleRequiredDirective,
 	],
 })
 export class CreateTestRecordV2Component implements OnDestroy, OnInit {
@@ -295,6 +300,18 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 		}
 
 		this.handleFormInvalid();
+	}
+
+	get roles(): typeof Roles {
+		return Roles;
+	}
+
+	get statuses(): typeof TestStatus {
+		return TestStatus;
+	}
+
+	get isTestTypeGroupEditable$(): Observable<boolean> {
+		return this.testRecordService.isTestTypeGroupEditable$;
 	}
 
 	protected readonly Modes = Modes;
