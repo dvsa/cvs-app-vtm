@@ -15,6 +15,7 @@ import {
 	createTestResult,
 	selectedTestResultState,
 	testResultInEdit,
+	updateTestResultSuccess,
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
@@ -37,6 +38,7 @@ import { VisitComponent } from '@features/test-records/custom-sections/visit/vis
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import cloneDeep from 'lodash.clonedeep';
@@ -80,6 +82,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	globalWarningService = inject(GlobalWarningService);
 	resultOfTestService = inject(ResultOfTestService);
 	titleService = inject(Title);
+	actions$ = inject(Actions);
 
 	form = this.testService.form;
 	initialMode = input.required<Modes>();
@@ -93,16 +96,18 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
 
 	private handleFormChanges(): void {
-		if (this.mode() === Modes.EDIT) {
-			this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+			if (this.mode() === Modes.EDIT) {
 				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
-			});
-		}
+			}
+		});
+		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+			void this.router.navigate(['../..'], { relativeTo: this.route.parent });
+		});
 	}
 
 	private handleMissingTestResult(): void {
 		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
-			console.log('navigating - mode ', this.mode());
 			this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
 				if (!testResult) {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
