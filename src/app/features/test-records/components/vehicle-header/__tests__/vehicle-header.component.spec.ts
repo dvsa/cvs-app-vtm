@@ -129,4 +129,22 @@ describe('VehicleHeaderComponent', () => {
 			expect(component.shouldShowAbandonCert).toBe(false);
 		});
 	});
+
+	describe('getCertificateLinkText', () => {
+		it('should return null if test is undefined', () => {
+			expect(component.getCertificateLinkText(undefined)).toBe(null);
+		});
+
+		it('should return testNumber for roadworthiness tests', () => {
+			expect(
+				component.getCertificateLinkText({ testTypeId: '62', testNumber: '12345' } as TestResultTestTypeSchema)
+			).toBe('12345');
+		});
+
+		it('should return certificateNumber for other tests', () => {
+			expect(component.getCertificateLinkText({ certificateNumber: '12345' } as TestResultTestTypeSchema)).toBe(
+				'12345'
+			);
+		});
+	});
 });

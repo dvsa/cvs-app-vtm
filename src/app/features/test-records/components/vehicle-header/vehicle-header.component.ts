@@ -23,6 +23,7 @@ import {
 	ADR_DESK_BASED_TEST_TYPE_IDS,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP6_11,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_VTP_VTG_12,
 } from '@models/testTypeId.enum';
@@ -196,6 +197,13 @@ export class VehicleHeaderComponent {
 		if (TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) && testResult !== TestResults.FAIL) return false; // IVA tests
 		if (TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId) && testResult !== TestResults.FAIL) return false; // MSVA tests
 		return true;
+	}
+
+	getCertificateLinkText(test: TestResultTestTypeSchema | undefined): string | null | undefined {
+		if (!test) return null;
+		const { certificateNumber, testTypeId, testNumber } = test;
+		if (TEST_TYPES_GROUP6_11.includes(testTypeId)) return testNumber; // For roadworthiness tests, use testNumber
+		return certificateNumber;
 	}
 
 	protected readonly VehicleTypes = VehicleType;
