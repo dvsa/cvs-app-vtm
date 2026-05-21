@@ -213,10 +213,10 @@
                   [fileName]="`${testNumber()}_${testResult.vin}`"
                   [documentType]="DocumentType.CERTIFICATE"
                 >
-                  {{ test?.certificateNumber | defaultNullOrEmpty }}
+                  {{ getCertificateLinkText(test) | defaultNullOrEmpty }}
                 </a>
               } @else {
-                {{ test?.certificateNumber | defaultNullOrEmpty }}
+                {{ getCertificateLinkText(test) | defaultNullOrEmpty }}
               }
             </dd>
           </div>
