@@ -11,7 +11,7 @@
       <app-vehicle-header
         [isEditing]="mode() === Modes.EDIT || mode() === Modes.AMEND"
         [isReview]="mode() === Modes.SUMMARY"
-        [testResult]="$any(form.getRawValue())"
+        [testResult]="this.testResult()"
       >
         @if (testResult()?.testStatus !== statuses.CANCELLED) {
           <app-button-group class="page-actions">
