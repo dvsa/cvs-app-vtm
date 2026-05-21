@@ -19,7 +19,7 @@ import {
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, computed, inject, input, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -85,13 +85,14 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	actions$ = inject(Actions);
 
 	form = this.testService.form;
-	initialMode = input.required<Modes>();
-	mode = signal(Modes.EDIT);
+	mode = model.required<Modes>();
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
-	testResult!: Signal<TestResultSchema | undefined>;
-	editingTestResult = false;
+	editingTestResult = computed(() => this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY);
+	testResultInEdit = this.store.selectSignal(testResultInEdit);
+	testResultInView = this.store.selectSignal(selectedTestResultState);
+	testResult = computed(() => (this.editingTestResult() ? this.testResultInEdit() : this.testResultInView()));
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
 
@@ -119,12 +120,9 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.mode.set(this.initialMode());
-		if (this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY) {
-			this.editingTestResult = true;
+		if (this.editingTestResult()) {
 			this.testResult = this.store.selectSignal(testResultInEdit);
 		} else {
-			this.editingTestResult = false;
 			this.testResult = this.store.selectSignal(selectedTestResultState);
 		}
 		this.prepopulateForm();
@@ -277,7 +275,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 
 	onSubmit(): void {
 		// Spread to remove undefined keys
-		if (this.editingTestResult) {
+		if (this.editingTestResult()) {
 			const raw = { ...this.testResult() } as TestResultSchema;
 			const value = cleanTestResultPayload(raw);
 			if (!value) return;

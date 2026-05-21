@@ -9,7 +9,10 @@ import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.typ
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { TestService } from '@/src/app/services/test/test.service';
-import { selectAllReferenceDataByResourceType, selectRefDataAutocompleteOptions } from '@/src/app/store/reference-data';
+import {
+	selectAllReferenceDataByResourceType,
+	selectCountryOfRegistrationOptions,
+} from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { Component, OnInit, inject, input } from '@angular/core';
@@ -43,7 +46,7 @@ export class VehicleComponent implements OnInit {
 	techRecord = this.store.selectSignal(techRecord);
 	testResult = this.store.selectSignal(testResultInEdit);
 	countries = this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.CountryOfRegistration));
-	countryNames = this.store.select(selectRefDataAutocompleteOptions(ReferenceDataResourceType.CountryOfRegistration));
+	countryNames = this.store.select(selectCountryOfRegistrationOptions);
 
 	form = this.testService.form;
 

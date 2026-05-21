@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 	selector: 'app-test-record-wrapper',
 	template: `
     @if (featureToggleService.isFeatureEnabled('testresultamend') && testTypeIdAllowList.includes(testType()?.testTypes?.[0]?.testTypeId || '')) {
-      <app-create-test-record-v2 [initialMode]="Modes.AMEND" />
+      <app-create-test-record-v2 [mode]="Modes.AMEND" />
     } @else {
       <app-test-records />
     }

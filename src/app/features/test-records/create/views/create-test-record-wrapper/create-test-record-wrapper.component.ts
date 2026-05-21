@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 	selector: 'app-create-test-record-wrapper',
 	template: `
     @if (useV2) {
-      <app-create-test-record-v2 [initialMode]="Modes.EDIT"></app-create-test-record-v2>
+      <app-create-test-record-v2 [mode]="Modes.EDIT"></app-create-test-record-v2>
     } @else {
       <app-create-test-record></app-create-test-record>
     }

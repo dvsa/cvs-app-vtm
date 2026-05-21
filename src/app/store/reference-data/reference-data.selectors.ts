@@ -94,17 +94,11 @@ export const getUserNames = createSelector(
 	(state) => Object.values(state[ReferenceDataResourceType.User]).map((user) => user.name) as string[]
 );
 
-export const selectRefDataAutocompleteOptions = (
-	resourceKey: Exclude<
-		ReferenceDataResourceType,
-		ReferenceDataResourceType.User | ReferenceDataResourceType.ReferenceDataAdminType
-	>
-) =>
-	createSelector(referenceDataFeatureState, (state) =>
-		Object.values(state[resourceKey].entities)
-			.filter((option) => !!option)
-			.map((country) => country.description)
-	);
+export const selectCountryOfRegistrationOptions = createSelector(referenceDataFeatureState, (state) =>
+	Object.values(state[ReferenceDataResourceType.CountryOfRegistration].entities)
+		.filter((option) => !!option)
+		.map((country) => ({ label: country.description, value: country.resourceKey }))
+);
 
 export const isResourceType = (resourceType: string): resourceType is ReferenceDataResourceType => {
 	return Object.values(ReferenceDataResourceType).includes(resourceType as ReferenceDataResourceType);
