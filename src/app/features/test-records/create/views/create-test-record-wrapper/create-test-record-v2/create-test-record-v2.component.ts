@@ -39,6 +39,7 @@ import { Roles } from '@models/roles.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import cloneDeep from 'lodash.clonedeep';
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
@@ -87,6 +88,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
 	testResult!: Signal<TestResultSchema | undefined>;
+	editingTestResult = false;
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
 
@@ -114,8 +116,10 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this.mode.set(this.initialMode());
 		if (this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY) {
+			this.editingTestResult = true;
 			this.testResult = this.store.selectSignal(testResultInEdit);
 		} else {
+			this.editingTestResult = false;
 			this.testResult = this.store.selectSignal(selectedTestResultState);
 		}
 		this.prepopulateForm();
@@ -268,11 +272,27 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 
 	onSubmit(): void {
 		// Spread to remove undefined keys
-		const raw = { ...this.testResult() } as TestResultSchema;
-		const value = cleanTestResultPayload(raw);
-		if (!value) return;
+		if (this.editingTestResult) {
+			const raw = { ...this.testResult() } as TestResultSchema;
+			const value = cleanTestResultPayload(raw);
+			if (!value) return;
 
-		this.store.dispatch(createTestResult({ value }));
+			this.store.dispatch(createTestResult({ value }));
+		} else {
+			this.testRecordService.cleanTestResult();
+
+			const testResultClone = cloneDeep(this.testResult()) as TestResultSchema;
+			const defects = testResultClone.testTypes[0].defects;
+			if (Array.isArray(defects) && defects.length > 0) {
+				for (const defect of defects) {
+					if (!defect.media) {
+						defect.media = [{ type: 'failReason', path: ' ', reason: 'Contingency test' }];
+					}
+				}
+			}
+
+			this.testRecordService.updateTestResult(testResultClone);
+		}
 	}
 
 	onMarkAsAbandoned(): void {
