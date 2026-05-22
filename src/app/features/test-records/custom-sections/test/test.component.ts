@@ -6,12 +6,15 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
+import { Store } from '@ngrx/store';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -27,16 +30,19 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupRadioComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
+		DefaultNullOrEmpty,
 	],
 	styleUrls: ['./test.component.scss'],
 })
 export class TestComponent implements OnInit, OnDestroy {
+	store = inject(Store);
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
 
 	form = this.testService.form;
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	destroy = new ReplaySubject<boolean>(1);
 
 	readonly FormNodeWidth = FormNodeWidth;

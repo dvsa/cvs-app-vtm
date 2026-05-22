@@ -103,7 +103,7 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 			}
 		});
 		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-			void this.router.navigate(['../..'], { relativeTo: this.route.parent });
+			void this.router.navigate(['..'], { relativeTo: this.route.parent });
 		});
 	}
 
@@ -120,11 +120,6 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.editingTestResult()) {
-			this.testResult = this.store.selectSignal(testResultInEdit);
-		} else {
-			this.testResult = this.store.selectSignal(selectedTestResultState);
-		}
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
@@ -140,7 +135,10 @@ export class CreateTestRecordV2Component implements OnDestroy, OnInit {
 		const testResult = this.testResult();
 		if (!testResult) return;
 
-		this.form.patchValue(testResult as any);
+		this.form.patchValue({
+			...testResult,
+			reasonForCreation: null, // clear reason for creation when amending
+		} as any);
 
 		this.form.controls.testTypes.at(0).patchValue({
 			testTypeId: this.testType()?.id,

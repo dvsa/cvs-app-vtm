@@ -15,11 +15,15 @@ import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { TestService } from '../../services/test/test.service';
 
 export const contingencyTestResolver: ResolveFn<boolean> = () => {
 	const store: Store<State> = inject(Store<State>);
 	const techRecordService: TechnicalRecordService = inject(TechnicalRecordService);
 	const userService: UserService = inject(UserService);
+	const testService = inject(TestService);
+	testService.form.reset();
+
 	return techRecordService.techRecord$.pipe(
 		switchMap((techRecord) => {
 			const { vin, systemNumber } = techRecord as TechRecordType<'get'>;

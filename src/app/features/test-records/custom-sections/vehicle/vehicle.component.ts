@@ -14,7 +14,7 @@ import {
 	selectCountryOfRegistrationOptions,
 } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
-import { testResultInEdit } from '@/src/app/store/test-records';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
@@ -44,7 +44,7 @@ export class VehicleComponent implements OnInit {
 	mode = input.required<Modes>();
 
 	techRecord = this.store.selectSignal(techRecord);
-	testResult = this.store.selectSignal(testResultInEdit);
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	countries = this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.CountryOfRegistration));
 	countryNames = this.store.select(selectCountryOfRegistrationOptions);
 

@@ -1,5 +1,7 @@
+import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -17,7 +19,13 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 @Component({
 	selector: 'app-test-visit',
 	templateUrl: './visit.component.html',
-	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupAutocompleteComponent, GovukFormGroupInputComponent],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		GovukFormGroupAutocompleteComponent,
+		GovukFormGroupInputComponent,
+		DefaultNullOrEmpty,
+	],
 	styleUrls: ['./visit.component.scss'],
 })
 export class VisitComponent implements OnInit, OnDestroy {
@@ -31,6 +39,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 	users$ = this.optionsService.getOptions(ReferenceDataResourceType.User);
 	testStations$ = this.optionsService.getOptions(SpecialRefData.TEST_STATION_P_NUMBER);
 	testStationsState$ = this.store.selectSignal(testStations);
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 
 	destroy$ = new ReplaySubject<boolean>(1);
 

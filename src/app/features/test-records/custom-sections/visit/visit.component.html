@@ -24,25 +24,35 @@
       formControlName="testerStaffId"
     />
   } @else {
-    <table class="govuk-table">
-      <tbody class="govuk-table__body">
-        <tr class="govuk-table__row">
-          <td class="govuk-table__header">Tester station details:</td>
-          <td class="govuk-table__cell" id="test-testStationName">{{ form.controls.testStationName.value }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__header">Tester details:</td>
-          <td class="govuk-table__cell" id="test-testStationType">{{ form.controls.testStationType.value }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__header">Tester name:</td>
-          <td class="govuk-table__cell" id="test-testerName">{{ form.controls.testerName.value }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__header">Tester email address:</td>
-          <td class="govuk-table__cell" id="test-testerEmailAddress">{{ form.controls.testerEmailAddress.value }}</td>
-        </tr>
-      </tbody>
-    </table>
+    @if (testResult(); as testResult) {
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header">Tester station details:</td>
+            <td class="govuk-table__cell" id="test-testStationName">
+              {{ testResult.testStationName | defaultNullOrEmpty}}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header">Tester details:</td>
+            <td class="govuk-table__cell" id="test-testStationType">
+              {{ testResult.testStationType | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header">Tester name:</td>
+            <td class="govuk-table__cell" id="test-testerName">
+              {{ testResult.testerName | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header">Tester email address:</td>
+            <td class="govuk-table__cell" id="test-testerEmailAddress">
+              {{ testResult.testerEmailAddress | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }
   }
 </div>

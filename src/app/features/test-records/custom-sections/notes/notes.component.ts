@@ -1,10 +1,12 @@
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TestService } from '@/src/app/services/test/test.service';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { Modes } from '@models/modes.enum';
+import { Store } from '@ngrx/store';
 
 @Component({
 	selector: 'app-test-notes',
@@ -13,12 +15,14 @@ import { Modes } from '@models/modes.enum';
 	styleUrls: ['./notes.component.scss'],
 })
 export class NotesComponent implements OnInit {
+	store = inject(Store);
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
 
 	form = this.testService.form;
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 
 	ngOnInit(): void {
 		this.addValidators();
