@@ -85,10 +85,10 @@
       @if (mode() === 'iso') {
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-date-input__label" for="{{ id }}-hours"> Hour </label>
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-hour`"> Hour </label>
             <input
               class="govuk-input--width-2 govuk-input govuk-date-input__input"
-              id="{{ id }}-hours"
+              [id]="`${id}-hour`"
               type="number"
               inputmode="numeric"
               formControlName="hours"
@@ -104,10 +104,10 @@
         </div>
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-date-input__label" for="{{ id }}-minutes"> Minute </label>
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-minute`"> Minute </label>
             <input
               class="govuk-input--width-2 govuk-input govuk-date-input__input"
-              id="{{ id }}-minutes"
+              [id]="`${id}-minute`"
               type="number"
               inputmode="numeric"
               formControlName="minutes"

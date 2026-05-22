@@ -111,25 +111,25 @@
 
     <app-button-group>
       @if (mode() === Modes.EDIT) {
-        <app-button (clicked)="onReview()">Review</app-button>
+        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
         @if (isTestTypeAbandonable()) {
-          <app-button [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+          <app-button id="abandon-test-result" [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
         }
       }
 
       @if (mode() === Modes.AMEND) {
-        <app-button (clicked)="onReview()">Review</app-button>
-        <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
+        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
 
       @if (mode() === Modes.SUMMARY) {
-        <app-button (clicked)="onSubmit()">Accept and send</app-button>
-        <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="save-test-result" (clicked)="onSubmit()">Accept and send</app-button>
+        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
 
       @if (mode() === Modes.ABANDON) {
-        <app-button (clicked)="onAbandon()">Confirm and save</app-button>
-        <app-button type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="abandon-test-result" (clicked)="onAbandon()">Confirm and save</app-button>
+        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
     </app-button-group>
   </div>

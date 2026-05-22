@@ -299,7 +299,8 @@ export class CommonValidatorsService {
 
 	pastDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
-			if (control.value && new Date(control.value) > new Date()) {
+			// Determine past date (ignore seconds)
+			if (control.value && dayjs(control.value).startOf('minute').isAfter(dayjs().endOf('minute'))) {
 				const globalError = { pastDate: { error: `${message} must be in the past`, anchorLink: '', accordion: '' } };
 				if (anchorLink) {
 					globalError.pastDate.anchorLink = anchorLink;
