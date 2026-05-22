@@ -13,7 +13,7 @@
         [isReview]="mode() === Modes.SUMMARY"
         [testResult]="this.testResult()"
       >
-        @if (testResult()?.testStatus !== statuses.CANCELLED) {
+        @if (testResult()?.testStatus !== statuses.CANCELLED && mode() === Modes.VIEW) {
           <app-button-group class="page-actions">
             <ng-container *appRoleRequired="roles.TestResultAmend">
               @if (isTestTypeGroupEditable$ | async) {
