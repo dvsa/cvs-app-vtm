@@ -74,6 +74,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly isEditing = input(false);
 	readonly expandSections = input(false);
 	readonly isReview = input(false);
+	readonly isContingencyTest = input(true);
 
 	readonly newTestResult = output<TestResultSchema>();
 

@@ -8,7 +8,7 @@
       </app-banner>
     }
     @if (testResult$ | async; as testResult) {
-      <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)" />
+      <app-base-test-record [isEditing]="true" [isContingencyTest]="false" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)" />
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
       <ng-container *appRoleRequired="Roles.TestResultAmend">
         @if (isTestTypeGroupEditable$ | async) {
@@ -26,7 +26,7 @@
         <ng-container title>Important</ng-container>
         <ng-container content>Check your answers before submitting the test</ng-container>
       </app-banner>
-      <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true" />
+      <app-base-test-record [testResult]="testResult" [isContingencyTest]="false" [isReview]="true" [expandSections]="true" />
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
       <ng-container *appRoleRequired="Roles.TestResultAmend">
         @if (isTestTypeGroupEditable$ | async) {

@@ -23,6 +23,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	commonValidators = inject(CommonValidatorsService);
 
 	edit = input(false);
+	isContingencyTest = input(true);
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
 
@@ -66,7 +67,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 		const techRecord = this.techRecord();
 		if (!techRecord) return;
 
-		const edit = this.edit();
+		const isContingencyTest = this.isContingencyTest();
 		const designGrossVehicleWeight = this.form.controls.weights.controls.designGrossVehicleWeight;
 		const designGrossTrainWeight = this.form.controls.weights.controls.designGrossTrainWeight;
 		const designGrossAxleWeight = this.form.controls.weights.controls.designGrossAxleWeight;
@@ -80,7 +81,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dgvw != null && dgvw !== 0) {
 				designGrossVehicleWeight.patchValue(dgvw);
 				designGrossVehicleWeight.disable();
-			} else if (edit) {
+			} else if (isContingencyTest) {
 				designGrossVehicleWeight.addValidators(this.commonValidators.required('Design gross vehicle weight'));
 			}
 		}
@@ -91,7 +92,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dgtw != null && dgtw !== 0) {
 				designGrossTrainWeight.patchValue(dgtw);
 				designGrossTrainWeight.disable();
-			} else if (edit) {
+			} else if (isContingencyTest) {
 				designGrossTrainWeight.addValidators(this.commonValidators.required('Design gross train weight'));
 			}
 		}
@@ -102,7 +103,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dtaw != null && dtaw !== 0) {
 				designGrossAxleWeight.patchValue(dtaw);
 				designGrossAxleWeight.disable();
-			} else if (edit) {
+			} else if (isContingencyTest) {
 				designGrossAxleWeight.addValidators(this.commonValidators.required('Design total axle weight'));
 			}
 		}
