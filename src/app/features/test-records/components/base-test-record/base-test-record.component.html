@@ -109,14 +109,13 @@
         }
         @case ('weightsSection') {
           <app-accordion [id]="template.name" [title]="template.label">
-            <app-dynamic-form-group
+            <app-weights 
+              id="weights"
               class="section"
-              [id]="template.name"
-              [template]="template"
-              [data]="testResult()"
               [edit]="isEditing()"
+              [data]="testResult()"
               (formChange)="handleFormChange($event)"
-              />
+            />
           </app-accordion>
         }
         @default {

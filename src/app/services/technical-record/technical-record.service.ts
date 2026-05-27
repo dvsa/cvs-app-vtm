@@ -447,4 +447,10 @@ export class TechnicalRecordService {
 	getTyresAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
 		return techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.';
 	}
+
+	getDesignTotalAxleWeight(techRecord: TechRecordType<'get' | 'put'>): number | null {
+		if (techRecord.techRecord_vehicleType !== VehicleTypes.TRL) return null;
+		if (!Array.isArray(techRecord.techRecord_axles)) return null;
+		return techRecord.techRecord_axles.reduce((acc, axle) => acc + (axle.weights_designWeight || 0), 0);
+	}
 }

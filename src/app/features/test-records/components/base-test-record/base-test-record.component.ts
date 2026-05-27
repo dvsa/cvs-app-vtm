@@ -1,3 +1,4 @@
+import { WeightsComponent } from '@/src/app/forms/custom-sections/weights/weights.component';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -59,6 +60,7 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 		NgStyle,
 		BannerComponent,
 		AsyncPipe,
+		WeightsComponent,
 	],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
@@ -66,6 +68,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly defects = viewChild(DefectsComponent);
 	readonly customDefects = viewChild(CustomDefectsComponent);
 	readonly requiredStandards = viewChild(RequiredStandardsComponent);
+	readonly weights = viewChild(WeightsComponent);
 
 	readonly testResult = input.required<TestResultSchema>();
 	readonly isEditing = input(false);
