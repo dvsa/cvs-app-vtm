@@ -38,8 +38,6 @@ import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist
 import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist/specialist-test-section-group3And4.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist/specialist-test-section-group5.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
-import { TestSectionGroup12And14 } from './section-templates/test/test-section-group12And14.template';
-import { TestSectionGroup15And16 } from './section-templates/test/test-section-group15And16.template';
 import { TestSectionGroup2 } from './section-templates/test/test-section-group2.template';
 import { TestSectionGroup3And4And8 } from './section-templates/test/test-section-group3And4And8.template';
 import { TestSectionGroup5And13 } from './section-templates/test/test-section-group5And13.template';
@@ -48,6 +46,8 @@ import { TestSectionGroup7 } from './section-templates/test/test-section-group7.
 import { TestSectionGroup8Notifiable } from './section-templates/test/test-section-group8Notifiable.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
 import { TestSectionGroup9And10CentralDocs } from './section-templates/test/test-section-group9And10CentralDocs.template';
+import { TestSectionGroup12And14 } from './section-templates/test/test-section-group12And14.template';
+import { TestSectionGroup15And16 } from './section-templates/test/test-section-group15And16.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { IvaMsvaVehicleSection } from './section-templates/vehicle/amend-iva-msva-psv-hgv-light.template';
 import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';

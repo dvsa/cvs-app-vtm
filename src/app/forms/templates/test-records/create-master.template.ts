@@ -25,8 +25,6 @@ import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hid
 import { SpecialistRequiredSectionLgvCarSmallTrl } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency/contingency-test-section-group1.template';
-import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency/contingency-test-section-group12and14.template';
-import { ContingencyTestSectionGroup15and16 } from './section-templates/test/contingency/contingency-test-section-group15and16.template';
 import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/contingency/contingency-test-section-group3And4And8.template';
 import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency/contingency-test-section-group5And13.template';
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency/contingency-test-section-group6And11.template';
@@ -34,6 +32,8 @@ import { ContingencyTestSectionGroup7 } from './section-templates/test/contingen
 import { ContingencyTestSectionGroup8Notifiable } from './section-templates/test/contingency/contingency-test-section-group8Notifiable.template';
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency/contingency-test-section-group9And10.template';
 import { ContingencyTestSectionGroup9And10CentralDocs } from './section-templates/test/contingency/contingency-test-section-group9And10CentralDocs.template';
+import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency/contingency-test-section-group12and14.template';
+import { ContingencyTestSectionGroup15and16 } from './section-templates/test/contingency/contingency-test-section-group15and16.template';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/contingency-test-section-specialist-group1.template';
 import { ContingencyTestSectionSpecialistGroup1HgvAndTrl } from './section-templates/test/contingency/contingency-test-section-specialist-group1HgvAndTrl';
 import { ContingencyTestSectionSpecialistGroup2 } from './section-templates/test/contingency/contingency-test-section-specialist-group2.template';
