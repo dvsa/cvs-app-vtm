@@ -47,9 +47,9 @@ import { VehicleHeaderComponent } from '../../../../components/vehicle-header/ve
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
 
 @Component({
-	selector: 'app-create-test-record-v2',
-	templateUrl: './create-test-record-v2.component.html',
-	styleUrls: ['./create-test-record-v2.component.scss'],
+	selector: 'app-test-record-v2',
+	templateUrl: './test-record-v2.component.html',
+	styleUrls: ['./test-record-v2.component.scss'],
 	imports: [
 		ReasonForCreationComponent,
 		FormsModule,
@@ -71,7 +71,7 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		RoleRequiredDirective,
 	],
 })
-export class CreateTestRecordV2Component implements OnDestroy, OnInit {
+export class TestRecordV2Component implements OnDestroy, OnInit {
 	store = inject(Store);
 	router = inject(Router);
 	route = inject(ActivatedRoute);

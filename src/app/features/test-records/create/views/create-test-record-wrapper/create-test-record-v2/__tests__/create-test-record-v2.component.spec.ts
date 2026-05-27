@@ -7,23 +7,23 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { Modes } from '@models/modes.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { CreateTestRecordV2Component } from '../create-test-record-v2.component';
+import { TestRecordV2Component } from '../test-record-v2.component';
 
 describe('CreateTestRecordV2Component', () => {
-	let fixture: ComponentFixture<CreateTestRecordV2Component>;
-	let component: CreateTestRecordV2Component;
+	let fixture: ComponentFixture<TestRecordV2Component>;
+	let component: TestRecordV2Component;
 	let store: MockStore;
 	let globalWarningService: GlobalWarningService;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [CreateTestRecordV2Component],
+			imports: [TestRecordV2Component],
 			providers: [provideMockStore({ initialState: initialAppState }), provideRouter([])],
 		}).compileComponents();
 
 		store = TestBed.inject(MockStore);
 		globalWarningService = TestBed.inject(GlobalWarningService);
-		fixture = TestBed.createComponent(CreateTestRecordV2Component);
+		fixture = TestBed.createComponent(TestRecordV2Component);
 		component = fixture.componentInstance;
 	});
 

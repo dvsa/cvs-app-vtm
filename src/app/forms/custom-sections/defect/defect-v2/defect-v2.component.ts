@@ -18,11 +18,7 @@ import {
 	DefectCategoryReferenceDataSchema,
 	DefectItemReferenceDataSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
-import {
-	DefectDetailsSchema,
-	DefectMetadataSchema,
-	MediaSchema,
-} from '@dvsa/cvs-type-definitions/types/v1/defect-details';
+import { DefectDetailsSchema, MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
 import { Store } from '@ngrx/store';
 import { GovukFormGroupCheckboxComponent } from '../../../components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupRadioComponent } from '../../../components/govuk-form-group-radio/govuk-form-group-radio.component';
@@ -94,7 +90,7 @@ export class DefectV2Component {
 			),
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
-		metadata: this.fb.control<DefectMetadataSchema>({ category: {} }),
+		// metadata: this.fb.control<DefectMetadataSchema>({ category: {} }),
 		media: this.fb.control<MediaSchema[] | undefined>({ value: undefined, disabled: false }),
 	});
 
@@ -249,6 +245,7 @@ export class DefectV2Component {
 		// Add or update the defect
 		const index = Number(this.defectIndex());
 		const defect = this.form.getRawValue() as DefectDetailsSchema;
+		console.log(defect);
 		if (Number.isNaN(index)) {
 			this.store.dispatch(createDefect({ defect }));
 		} else {
