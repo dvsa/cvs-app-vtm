@@ -200,7 +200,7 @@ describe('CreateTestRecordComponent', () => {
 			sections: jest.fn().mockReturnValue({ forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }),
 			defects: jest.fn(),
 			customDefects: jest.fn(),
-			weight: jest.fn(),
+			weights: jest.fn(),
 		} as unknown as BaseTestRecordComponent);
 		// component['baseTestRecordComponent'] = {
 		// 	sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },
