@@ -109,6 +109,7 @@ export class TestRecordsService {
 	}
 
 	postTestResult(body: TestResultSchema) {
+		console.log('submitting');
 		return this.httpService.testResultsPost(body as TestResultSchema);
 	}
 
