@@ -975,4 +975,35 @@ describe('TechnicalRecordService', () => {
 			});
 		});
 	});
+
+	describe('getDesignTotalAxleWeight', () => {
+		it('should return null if the vehicle type is not a TRL', () => {
+			expect(
+				service.getDesignTotalAxleWeight({
+					techRecord_vehicleType: 'psv',
+					techRecord_axles: [
+						{
+							weights_designWeight: 1000,
+						},
+					],
+				} as TechRecordType<'put'>)
+			).toBe(null);
+		});
+
+		it('should return the sum of the design weights of the axles', () => {
+			expect(
+				service.getDesignTotalAxleWeight({
+					techRecord_vehicleType: 'trl',
+					techRecord_axles: [
+						{
+							weights_designWeight: 1000,
+						},
+						{
+							weights_designWeight: 2000,
+						},
+					],
+				} as TechRecordType<'put'>)
+			).toBe(3000);
+		});
+	});
 });
