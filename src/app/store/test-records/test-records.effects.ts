@@ -8,7 +8,7 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
@@ -24,7 +24,7 @@ import { updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { techRecord } from '../technical-records';
 import {
@@ -309,12 +309,9 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
-				delay(3000),
 				map((action) => action.payload.changes.systemNumber as string),
-				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
-				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
+				switchMap((systemNumber) => this.httpService.waitForCurrentTechRecord(systemNumber)),
 				filter(Boolean),
-				tap(() => console.log('about to navigate')),
 				switchMap((techRecord) =>
 					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
 				)
