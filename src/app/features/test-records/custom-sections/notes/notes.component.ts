@@ -32,7 +32,7 @@ export class NotesComponent implements OnInit {
 		this.form.controls.testTypes
 			.at(0)
 			.controls.additionalNotesRecorded.setValidators([
-				this.commonValidators.maxLength(500, 'Additional notes (optional)'),
+				this.commonValidators.maxLength(500, 'Additional Notes (optional)'),
 			]);
 	}
 

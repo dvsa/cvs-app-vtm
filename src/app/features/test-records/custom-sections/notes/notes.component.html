@@ -4,7 +4,7 @@
     <ng-container formGroupName="testTypes">
       <ng-container formGroupName="0">
           <govuk-form-group-textarea
-            label="Additional notes (optional)"
+            label="Additional Notes (optional)"
             [maxLength]="500"
             formControlName="additionalNotesRecorded"
           />
@@ -15,7 +15,7 @@
       <table class="govuk-table">
         <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <td class="govuk-table__header">Additional notes (optional):</td>
+          <td class="govuk-table__header">Additional Notes (optional):</td>
           <td class="govuk-table__cell" id="test-additionalNotesRecorded">
             {{ testResult.testTypes[0].additionalNotesRecorded | defaultNullOrEmpty }}
           </td>

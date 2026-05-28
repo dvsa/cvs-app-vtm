@@ -6,6 +6,9 @@
         <caption class="govuk-table__caption govuk-table__caption--m">
           Defects
         </caption>
+        @if (hasMediaAvailable() && testResult && !defectMediaService?.hasRententionPeriodExpired(testResult)) {
+          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+        }
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
@@ -13,6 +16,7 @@
               <th scope="col" class="govuk-table__header">Description</th>
               <th scope="col" class="govuk-table__header">Category</th>
               <th scope="col" class="govuk-table__header">PRS?</th>
+               <th scope="col" class="govuk-table__header">Media</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -30,6 +34,9 @@
                   </td>
                   <td class="govuk-table__cell">
                     <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-defect-media-download [defect]="defect"></app-defect-media-download>
                   </td>
                 </tr>
               }
