@@ -2,6 +2,7 @@ import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectTechRecord } from '@/src/app/store/technical-records';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -45,13 +46,15 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	});
 
 	techRecord = this.store.selectSignal(selectTechRecord);
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	destroy = new ReplaySubject<boolean>(1);
 	VehicleTypes = VehicleTypes;
 	FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
 		this.handleFormChange();
-		this.initForm();
+		this.initAmendTestForm();
+		this.initContingencyTestForm();
 	}
 
 	ngOnDestroy(): void {
@@ -64,10 +67,21 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	}
 
 	initForm(): void {
+		const isContingencyTest = this.isContingencyTest();
+		isContingencyTest ? this.initContingencyTestForm() : this.initAmendTestForm();
+	}
+
+	initAmendTestForm(): void {
+		const testResult = this.testResult();
+		if (!testResult) return;
+
+		this.form.patchValue({ weights: testResult.weights });
+	}
+
+	initContingencyTestForm(): void {
 		const techRecord = this.techRecord();
 		if (!techRecord) return;
 
-		const isContingencyTest = this.isContingencyTest();
 		const designGrossVehicleWeight = this.form.controls.weights.controls.designGrossVehicleWeight;
 		const designGrossTrainWeight = this.form.controls.weights.controls.designGrossTrainWeight;
 		const designGrossAxleWeight = this.form.controls.weights.controls.designGrossAxleWeight;
@@ -81,9 +95,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dgvw != null && dgvw !== 0) {
 				designGrossVehicleWeight.patchValue(dgvw);
 				designGrossVehicleWeight.disable();
-			} else if (isContingencyTest) {
-				designGrossVehicleWeight.addValidators(this.commonValidators.required('Design gross vehicle weight'));
 			}
+			designGrossVehicleWeight.addValidators(this.commonValidators.required('Design gross vehicle weight'));
 		}
 
 		// If the tech record has a train design weight, pre-populate the form and disable the field, otherwise require manual input (in create mode)
@@ -92,9 +105,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dgtw != null && dgtw !== 0) {
 				designGrossTrainWeight.patchValue(dgtw);
 				designGrossTrainWeight.disable();
-			} else if (isContingencyTest) {
-				designGrossTrainWeight.addValidators(this.commonValidators.required('Design gross train weight'));
 			}
+			designGrossTrainWeight.addValidators(this.commonValidators.required('Design gross train weight'));
 		}
 
 		// If the tech record has a total axle weight, pre-populate the form and disable the field, otherwise require manual input (in create mode)
@@ -103,9 +115,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 			if (dtaw != null && dtaw !== 0) {
 				designGrossAxleWeight.patchValue(dtaw);
 				designGrossAxleWeight.disable();
-			} else if (isContingencyTest) {
-				designGrossAxleWeight.addValidators(this.commonValidators.required('Design total axle weight'));
 			}
+			designGrossAxleWeight.addValidators(this.commonValidators.required('Design total axle weight'));
 		}
 	}
 }
