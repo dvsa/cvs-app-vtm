@@ -21,7 +21,7 @@ export const ContingencyWeightsHGVTpl: FormNode = {
 					validators: [
 						{ name: ValidatorNames.Required },
 						{ name: ValidatorNames.Min, args: 1 },
-						{ name: ValidatorNames.Max, args: 999999 },
+						{ name: ValidatorNames.Max, args: 99999 },
 					],
 				},
 				{
@@ -35,7 +35,7 @@ export const ContingencyWeightsHGVTpl: FormNode = {
 					validators: [
 						{ name: ValidatorNames.Required },
 						{ name: ValidatorNames.Min, args: 1 },
-						{ name: ValidatorNames.Max, args: 999999 },
+						{ name: ValidatorNames.Max, args: 99999 },
 					],
 				},
 			],

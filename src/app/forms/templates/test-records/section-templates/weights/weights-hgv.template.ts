@@ -19,7 +19,7 @@ export const WeightsHGVTpl: FormNode = {
 					suffix: 'kg',
 					validators: [
 						{ name: ValidatorNames.Min, args: 1 },
-						{ name: ValidatorNames.Max, args: 999999 },
+						{ name: ValidatorNames.Max, args: 99999 },
 					],
 				},
 				{
@@ -31,7 +31,7 @@ export const WeightsHGVTpl: FormNode = {
 					suffix: 'kg',
 					validators: [
 						{ name: ValidatorNames.Min, args: 1 },
-						{ name: ValidatorNames.Max, args: 999999 },
+						{ name: ValidatorNames.Max, args: 99999 },
 					],
 				},
 			],
