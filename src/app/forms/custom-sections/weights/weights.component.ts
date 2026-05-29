@@ -32,15 +32,15 @@ export class WeightsComponent implements OnInit, OnDestroy {
 		weights: this.fb.group({
 			designGrossVehicleWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.min(1, 'Design gross vehicle weight'),
-				this.commonValidators.max(999999, 'Design gross vehicle weight'),
+				this.commonValidators.max(99999, 'Design gross vehicle weight'),
 			]),
 			designGrossTrainWeight: this.fb.control<number | null | undefined>({ value: undefined, disabled: false }, [
 				this.commonValidators.min(1, 'Design gross train weight'),
-				this.commonValidators.max(999999, 'Design gross train weight'),
+				this.commonValidators.max(99999, 'Design gross train weight'),
 			]),
 			designGrossAxleWeight: this.fb.control<number | null | undefined>({ value: undefined, disabled: false }, [
 				this.commonValidators.min(1, 'Design total axle weight'),
-				this.commonValidators.max(999999, 'Design total axle weight'),
+				this.commonValidators.max(99999, 'Design total axle weight'),
 			]),
 		}),
 	});
