@@ -1,17 +1,41 @@
 <div [formGroup]="form">
   @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
   <!-- Contingency Test Number -->
-  <govuk-form-group-input
-    label="Contingency Test Number"
-    formControlName="contingencyTestNumber"
-    [width]="FormNodeWidth.L"
-    appToUppercase
-    appNoSpace
-    appTrimWhitespace
-  ></govuk-form-group-input>
+    @if (mode() === Modes.EDIT) {
+      <govuk-form-group-input
+        label="Contingency Test Number"
+        formControlName="contingencyTestNumber"
+        [width]="FormNodeWidth.L"
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+      ></govuk-form-group-input>
+    }
 
   <ng-container formArrayName="testTypes">
     <ng-container formGroupName="0">
+
+      @if (mode() === Modes.AMEND) {
+        <govuk-form-group-date
+          label="Created"
+          formControlName="createdAt"
+          [disabled]="true"
+        ></govuk-form-group-date>
+        <govuk-form-group-date
+          label="Test Date"
+          formControlName="testTypeStartTimestamp"
+          [disabled]="true"
+        ></govuk-form-group-date>
+        <govuk-form-group-input
+          label="Test Code"
+          formControlName="testCode"
+          [width]="FormNodeWidth.L"
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+        ></govuk-form-group-input>
+      }
+
       <!-- Issue Documents Centrally -->
       <ng-container formGroupName="centralDocs">
         <govuk-form-group-radio
@@ -21,19 +45,47 @@
         ></govuk-form-group-radio>
       </ng-container>
 
-      <!-- Test start date and time -->
-      <govuk-form-group-date
-        mode="iso"
-        label="Test start date and time"
-        formControlName="testTypeStartTimestamp"
-      ></govuk-form-group-date>
+      @if (mode() === Modes.AMEND) {
+        <govuk-form-group-input
+          label="Description"
+          formControlName="testTypeName"
+          [width]="FormNodeWidth.L"
+        ></govuk-form-group-input>
+        <govuk-form-group-input
+          label="Test Number"
+          formControlName="testNumber"
+          [width]="FormNodeWidth.L"
+        ></govuk-form-group-input>
+        <!-- Test start date and time -->
+        <govuk-form-group-input
+          label="Start time"
+          formControlName="testTypeStartTimestamp"
+          [width]="FormNodeWidth.L"
+        ></govuk-form-group-input>
 
-      <!-- Test end date and time -->
-      <govuk-form-group-date
-        mode="iso"
-        label="Test end date and time"
-        formControlName="testTypeEndTimestamp"
-      ></govuk-form-group-date>
+        <!-- Test end date and time -->
+        <govuk-form-group-input
+          label="End time"
+          formControlName="testTypeEndTimestamp"
+          [width]="FormNodeWidth.L"
+        ></govuk-form-group-input>
+      }
+
+      @if (mode() === Modes.CREATE) {
+        <!-- Test start date and time -->
+        <govuk-form-group-date
+          mode="iso"
+          label="Test start date and time"
+          formControlName="testTypeStartTimestamp"
+        ></govuk-form-group-date>
+
+        <!-- Test end date and time -->
+        <govuk-form-group-date
+          mode="iso"
+          label="Test end date and time"
+          formControlName="testTypeEndTimestamp"
+        ></govuk-form-group-date>
+      }
     </ng-container>
   </ng-container>
   } @else {
