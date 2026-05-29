@@ -30,6 +30,7 @@ describe('WeightsComponent', () => {
 
 	describe('initForm', () => {
 		beforeEach(() => {
+			fixture.componentRef.setInput('edit', true);
 			component.form.controls.weights.controls.designGrossVehicleWeight.patchValue(null);
 			component.form.controls.weights.controls.designGrossVehicleWeight.enable();
 			component.form.controls.weights.controls.designGrossAxleWeight.patchValue(undefined);
