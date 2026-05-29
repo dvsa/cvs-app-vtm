@@ -58,6 +58,8 @@ import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvG
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { WeightsHGVTpl } from './section-templates/weights/weights-hgv.template';
+import { WeightsTRLTpl } from './section-templates/weights/weights-trl.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -279,6 +281,7 @@ export const masterTpl: Record<
 			notes: NotesSection,
 			defects: DefectsTpl,
 			customDefects: CustomDefectsHiddenSection,
+			weights: WeightsHGVTpl,
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
@@ -460,6 +463,7 @@ export const masterTpl: Record<
 			defects: DefectsTpl,
 			customDefects: CustomDefectsHiddenSection,
 			reasonForCreation: reasonForCreationSection,
+			weights: WeightsTRLTpl,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup7: {
