@@ -30,6 +30,7 @@ import { RoleRequiredDirective } from '@directives/app-role-required/app-role-re
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { TestAmendmentHistoryComponent } from '@features/test-records/amend/components/test-amendment-history/test-amendment-history.component';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
@@ -70,6 +71,7 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		AbandonComponent,
 		AsyncPipe,
 		RoleRequiredDirective,
+		TestAmendmentHistoryComponent,
 	],
 })
 export class TestRecordV2Component implements OnDestroy, OnInit {

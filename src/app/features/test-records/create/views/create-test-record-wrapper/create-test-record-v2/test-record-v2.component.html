@@ -84,6 +84,9 @@
               <app-test-defects [mode]="mode()"></app-test-defects>
             </form>
           </app-accordion>
+          @if (mode() === Modes.SUMMARY || mode() === Modes.VIEW) {
+            <app-test-amendment-history class="section" [testRecord]="testResult()" />
+          }
           @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
               [id]="'reason-for-creation'"
