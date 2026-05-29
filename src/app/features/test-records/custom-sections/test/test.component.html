@@ -1,6 +1,6 @@
 <div [formGroup]="form">
   @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
-  <!-- Contingency Test Number -->
+    <!-- Contingency Test Number -->
     @if (mode() === Modes.EDIT) {
       <govuk-form-group-input
         label="Contingency Test Number"
@@ -12,103 +12,103 @@
       ></govuk-form-group-input>
     }
 
-  <ng-container formArrayName="testTypes">
-    <ng-container formGroupName="0">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
 
-      @if (mode() === Modes.AMEND) {
-        <!-- Created -->
-        <govuk-form-group-date
-          label="Created"
-          formControlName="createdAt"
-          [disabled]="true"
-        ></govuk-form-group-date>
+        @if (mode() === Modes.AMEND) {
+          <!-- Created -->
+          <govuk-form-group-date
+            label="Created"
+            formControlName="createdAt"
+            [disabled]="true"
+          ></govuk-form-group-date>
 
-        <!-- Test date -->
-        <govuk-form-group-date
-          label="Test Date"
-          formControlName="testTypeStartTimestamp"
-          [disabled]="true"
-        ></govuk-form-group-date>
+          <!-- Test date -->
+          <govuk-form-group-date
+            label="Test Date"
+            formControlName="testTypeStartTimestamp"
+            [disabled]="true"
+          ></govuk-form-group-date>
 
-        <!-- Test code -->
-        <govuk-form-group-input
-          label="Test Code"
-          formControlName="testCode"
-          [width]="FormNodeWidth.L"
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-        ></govuk-form-group-input>
-      }
+          <!-- Test code -->
+          <govuk-form-group-input
+            label="Test Code"
+            formControlName="testCode"
+            [width]="FormNodeWidth.L"
+            appToUppercase
+            appNoSpace
+            appTrimWhitespace
+          ></govuk-form-group-input>
+        }
 
-      <!-- Issue Documents Centrally -->
-      <ng-container formGroupName="centralDocs">
-        <govuk-form-group-radio
-          label="Issue documents centrally"
-          formControlName="issueRequired"
-          [options]="YES_NO_OPTIONS"
-        ></govuk-form-group-radio>
+        <!-- Issue Documents Centrally -->
+        <ng-container formGroupName="centralDocs">
+          <govuk-form-group-radio
+            label="Issue documents centrally"
+            formControlName="issueRequired"
+            [options]="YES_NO_OPTIONS"
+          ></govuk-form-group-radio>
+        </ng-container>
+
+        @if (mode() === Modes.AMEND) {
+          <!-- Test description -->
+          <govuk-form-group-input
+            label="Description"
+            formControlName="testTypeName"
+            [width]="FormNodeWidth.L"
+          ></govuk-form-group-input>
+
+          <!-- Test number -->
+          <govuk-form-group-input
+            label="Test Number"
+            formControlName="testNumber"
+            [width]="FormNodeWidth.L"
+          ></govuk-form-group-input>
+
+          <!-- Expiry date -->
+          <govuk-form-group-date
+            label="Expiry date"
+            formControlName="testExpiryDate"
+          ></govuk-form-group-date>
+
+          <!-- Anniversary date -->
+          <govuk-form-group-date
+            label="Anniversary date"
+            formControlName="testAnniversaryDate"
+          ></govuk-form-group-date>
+
+          <!-- Test start date and time -->
+          <govuk-form-group-input
+            label="Start time"
+            formControlName="testTypeStartTimestamp"
+            [width]="FormNodeWidth.L"
+          ></govuk-form-group-input>
+
+          <!-- Test end date and time -->
+          <govuk-form-group-input
+            label="End time"
+            formControlName="testTypeEndTimestamp"
+            [width]="FormNodeWidth.L"
+          ></govuk-form-group-input>
+        }
+
+        @if (mode() === Modes.EDIT) {
+          <!-- Test start date and time -->
+          <govuk-form-group-date
+            mode="iso"
+            label="Test start date and time"
+            formControlName="testTypeStartTimestamp"
+          ></govuk-form-group-date>
+
+          <!-- Test end date and time -->
+          <govuk-form-group-date
+            mode="iso"
+            label="Test end date and time"
+            formControlName="testTypeEndTimestamp"
+          ></govuk-form-group-date>
+        }
       </ng-container>
-
-      @if (mode() === Modes.AMEND) {
-        <!-- Test description -->
-        <govuk-form-group-input
-          label="Description"
-          formControlName="testTypeName"
-          [width]="FormNodeWidth.L"
-        ></govuk-form-group-input>
-
-        <!-- Test number -->
-        <govuk-form-group-input
-          label="Test Number"
-          formControlName="testNumber"
-          [width]="FormNodeWidth.L"
-        ></govuk-form-group-input>
-
-        <!-- Expiry date -->
-        <govuk-form-group-date
-          label="Expiry date"
-          formControlName="testExpiryDate"
-        ></govuk-form-group-date>
-
-        <!-- Anniversary date -->
-        <govuk-form-group-date
-          label="Anniversary date"
-          formControlName="testAnniversaryDate"
-        ></govuk-form-group-date>
-
-        <!-- Test start date and time -->
-        <govuk-form-group-input
-          label="Start time"
-          formControlName="testTypeStartTimestamp"
-          [width]="FormNodeWidth.L"
-        ></govuk-form-group-input>
-
-        <!-- Test end date and time -->
-        <govuk-form-group-input
-          label="End time"
-          formControlName="testTypeEndTimestamp"
-          [width]="FormNodeWidth.L"
-        ></govuk-form-group-input>
-      }
-
-      @if (mode() === Modes.CREATE) {
-        <!-- Test start date and time -->
-        <govuk-form-group-date
-          mode="iso"
-          label="Test start date and time"
-          formControlName="testTypeStartTimestamp"
-        ></govuk-form-group-date>
-
-        <!-- Test end date and time -->
-        <govuk-form-group-date
-          mode="iso"
-          label="Test end date and time"
-          formControlName="testTypeEndTimestamp"
-        ></govuk-form-group-date>
-      }
     </ng-container>
-  </ng-container>
   } @else {
     @if (testResult(); as testResult) {
       <table class="govuk-table">
@@ -128,7 +128,7 @@
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Code:</td>
-              <td class="govuk-table__cell" id="test-contingencyTestNumber">
+              <td class="govuk-table__cell" id="test-testCode">
                 {{ testResult.testTypes[0].testCode | defaultNullOrEmpty }}
               </td>
             </tr>
@@ -150,25 +150,25 @@
           @if (mode() === Modes.VIEW) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Description:</td>
-              <td class="govuk-table__cell" id="test-issueRequired">
+              <td class="govuk-table__cell" id="test-testTypeName">
                 {{ testResult.testTypes[0].testTypeName | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Number:</td>
-              <td class="govuk-table__cell" id="test-issueRequired">
+              <td class="govuk-table__cell" id="test-testNumber">
                 {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
-              <td class="govuk-table__cell" id="test-issueRequired">
+              <td class="govuk-table__cell" id="test-testExpiryDate">
                 {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
-              <td class="govuk-table__cell" id="test-issueRequired">
+              <td class="govuk-table__cell" id="test-testAnniversaryDate">
                 {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>

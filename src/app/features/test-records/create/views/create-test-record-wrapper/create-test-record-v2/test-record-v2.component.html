@@ -119,17 +119,17 @@
 
       @if (mode() === Modes.AMEND) {
         <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
-        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
 
       @if (mode() === Modes.SUMMARY) {
         <app-button id="save-test-result" (clicked)="onSubmit()">Accept and send</app-button>
-        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
 
       @if (mode() === Modes.ABANDON) {
         <app-button id="abandon-test-result" (clicked)="onAbandon()">Confirm and save</app-button>
-        <app-button id="cancel" type="link" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
       }
     </app-button-group>
   </div>
