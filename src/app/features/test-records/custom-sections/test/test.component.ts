@@ -40,6 +40,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
+	initialMode = input.required<Modes>();
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
