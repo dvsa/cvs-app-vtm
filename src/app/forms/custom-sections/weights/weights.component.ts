@@ -53,8 +53,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.handleFormChange();
-		this.initAmendTestForm();
-		this.initContingencyTestForm();
+		this.initForm();
 	}
 
 	ngOnDestroy(): void {
@@ -67,6 +66,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	}
 
 	initForm(): void {
+		if (!this.edit()) return;
+
 		const isContingencyTest = this.isContingencyTest();
 		isContingencyTest ? this.initContingencyTestForm() : this.initAmendTestForm();
 	}
