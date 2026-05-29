@@ -599,7 +599,7 @@ export class CommonValidatorsService {
 				? null
 				: {
 						aheadOfDate: {
-							error: `${label} must be ahead of ${siblingLabel} ${dayjs(siblingValue).format('DD/MM/YYYY')}`,
+							error: `${label} must be ahead of ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
 							anchorLink,
 							accordion,
 						},
@@ -632,7 +632,7 @@ export class CommonValidatorsService {
 				? null
 				: {
 						beforeDate: {
-							error: `${label} must be before ${siblingLabel} ${dayjs(siblingValue).format('DD/MM/YYYY')}`,
+							error: `${label} must be before ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
 							anchorLink,
 							accordion,
 						},

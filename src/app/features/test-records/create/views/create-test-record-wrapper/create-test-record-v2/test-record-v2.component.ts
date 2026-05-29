@@ -160,11 +160,13 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			reasonForCreation: null, // clear reason for creation when amending
 		} as any);
 
-		this.form.controls.testTypes.at(0).patchValue({
-			testTypeId: this.testType()?.id,
-			testTypeName: this.testType()?.name,
-			name: this.testType()?.name,
-		});
+		if (this.mode() === Modes.CREATE) {
+			this.form.controls.testTypes.at(0).patchValue({
+				testTypeId: this.testType()?.id,
+				testTypeName: this.testType()?.name,
+				name: this.testType()?.name,
+			});
+		}
 	}
 
 	isTestTypeAbandonable(): boolean {
