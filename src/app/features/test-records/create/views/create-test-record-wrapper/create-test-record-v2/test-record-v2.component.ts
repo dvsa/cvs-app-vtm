@@ -20,7 +20,7 @@ import {
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, computed, inject, model } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -88,7 +88,9 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	actions$ = inject(Actions);
 
 	form = this.testService.form;
-	mode = model.required<Modes>();
+
+	initialMode = input.required<Modes>();
+	mode = linkedSignal(() => this.initialMode());
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
@@ -199,7 +201,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	onCancel(): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
-		this.mode.set(Modes.EDIT);
+		this.mode.set(this.initialMode());
 	}
 
 	private setProvisionalWarning(): void {

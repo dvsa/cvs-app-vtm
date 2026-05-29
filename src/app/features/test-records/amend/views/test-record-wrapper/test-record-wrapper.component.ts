@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 	selector: 'app-test-record-wrapper',
 	template: `
     @if (useV2) {
-      <app-test-record-v2 [mode]="Modes.AMEND" />
+      <app-test-record-v2 [initialMode]="Modes.AMEND" />
     } @else {
       <app-test-records />
     }

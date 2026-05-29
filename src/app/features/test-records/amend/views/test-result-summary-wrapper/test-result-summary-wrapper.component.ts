@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 	selector: 'app-test-result-summary-wrapper',
 	template: `
     @if (featureToggleService.isFeatureEnabled('testresultamend') && testTypeIdAllowList.includes(testType()?.testTypes?.[0]?.testTypeId || '')) {
-      <app-test-record-v2 [mode]="Modes.VIEW" />
+      <app-test-record-v2 [initialMode]="Modes.VIEW" />
     } @else {
       <app-test-result-summary />
     }
