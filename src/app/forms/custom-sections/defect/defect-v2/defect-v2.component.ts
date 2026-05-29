@@ -245,7 +245,6 @@ export class DefectV2Component {
 		// Add or update the defect
 		const index = Number(this.defectIndex());
 		const defect = this.form.getRawValue() as DefectDetailsSchema;
-		console.log(defect);
 		if (Number.isNaN(index)) {
 			this.store.dispatch(createDefect({ defect }));
 		} else {

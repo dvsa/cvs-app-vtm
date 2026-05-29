@@ -123,7 +123,6 @@ export class TestResultsEffects {
 					take(1),
 					map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
 					catchError((e) => {
-						console.log('submitFail', e);
 						const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
 						return of(createTestResultFailed({ errors }));
 					})

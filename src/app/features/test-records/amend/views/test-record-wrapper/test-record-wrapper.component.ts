@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 @Component({
 	selector: 'app-test-record-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('testresultamend') && testTypeIdAllowList.includes(testType()?.testTypes?.[0]?.testTypeId || '')) {
+    @if (useV2) {
       <app-test-record-v2 [mode]="Modes.AMEND" />
     } @else {
       <app-test-records />
@@ -22,7 +22,12 @@ export class TestRecordWrapperComponent {
 	store = inject(Store);
 	featureToggleService = inject(FeatureToggleService);
 
-	testType = this.store.selectSignal(toEditOrNotToEdit);
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
+
+	useV2 =
+		this.featureToggleService.isFeatureEnabled('testresultcreate') &&
+		this.testTypeIdAllowList.includes(this.testResult()?.testTypes?.[0]?.testTypeId || '');
+
 	protected readonly Modes = Modes;
 }

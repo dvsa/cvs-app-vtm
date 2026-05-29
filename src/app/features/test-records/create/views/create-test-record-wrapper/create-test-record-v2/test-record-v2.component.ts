@@ -15,6 +15,7 @@ import {
 	createTestResult,
 	selectedTestResultState,
 	testResultInEdit,
+	toEditOrNotToEdit,
 	updateTestResultSuccess,
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
@@ -92,16 +93,17 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	editingTestResult = computed(() => this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
 	testResultInView = this.store.selectSignal(selectedTestResultState);
-	testResult = computed(() => (this.editingTestResult() ? this.testResultInEdit() : this.testResultInView()));
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
 
 	private handleFormChanges(): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-			if (this.mode() === Modes.EDIT) {
+			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
 				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
 			}
 		});
+
 		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
 			void this.router.navigate(['..'], { relativeTo: this.route.parent });
 		});
@@ -119,10 +121,28 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		}
 	}
 
+	private handleEditingTestResult(): void {
+		if (this.mode() !== Modes.AMEND) return;
+
+		const testResult = this.testResult();
+		const testResultInEdit = this.testResultInEdit();
+		const testTypeId = this.testTypeId();
+
+		// Copy viewable test result into editing test result
+		if (!testResultInEdit && testResult) {
+			this.testRecordService.editingTestResult(testResult);
+		}
+
+		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
+			this.testRecordService.testTypeChange(testTypeId);
+		}
+	}
+
 	ngOnInit(): void {
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
+		this.handleEditingTestResult();
 	}
 
 	ngOnDestroy(): void {

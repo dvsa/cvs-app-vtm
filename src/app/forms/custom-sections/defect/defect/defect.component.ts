@@ -248,7 +248,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 						? defect.media
 						: [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
 			}
-			console.log(defect);
 			this.store.dispatch(updateDefect({ defect: defect, index: this.index }));
 		} else {
 			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
@@ -258,7 +257,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 						? defect.media
 						: [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
 			}
-			console.log(defect);
 			this.store.dispatch(createDefect({ defect: defect }));
 		}
 

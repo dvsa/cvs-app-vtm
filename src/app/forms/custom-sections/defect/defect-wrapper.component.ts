@@ -1,7 +1,7 @@
 import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@/src/app/models/testTypeId.enum';
 import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
-import { selectQueryParam } from '@/src/app/store/router/router.selectors';
-import { Component, Signal, inject } from '@angular/core';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DefectV2Component } from './defect-v2/defect-v2.component';
 import { DefectComponent } from './defect/defect.component';
@@ -21,10 +21,10 @@ export class DefectWrapperComponent {
 	store = inject(Store);
 	featureToggleService = inject(FeatureToggleService);
 
-	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
+	testType = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
 
 	useV2 =
 		this.featureToggleService.isFeatureEnabled('testresultcreate') &&
-		this.testTypeIdAllowList.includes(this.testTypeId());
+		this.testTypeIdAllowList.includes(this.testType()?.testTypes?.[0]?.testTypeId || '');
 }
