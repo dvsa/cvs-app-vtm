@@ -2,7 +2,7 @@ import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectTechRecord } from '@/src/app/store/technical-records';
-import { toEditOrNotToEdit } from '@/src/app/store/test-records';
+import { testResultInEdit, toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -47,6 +47,7 @@ export class WeightsComponent implements OnInit, OnDestroy {
 
 	techRecord = this.store.selectSignal(selectTechRecord);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	editingTestResult = this.store.selectSignal(testResultInEdit);
 	destroy = new ReplaySubject<boolean>(1);
 	VehicleTypes = VehicleTypes;
 	FormNodeWidth = FormNodeWidth;
@@ -82,6 +83,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	initContingencyTestForm(): void {
 		const techRecord = this.techRecord();
 		if (!techRecord) return;
+
+		this.form.patchValue({ weights: this.editingTestResult()?.weights });
 
 		const designGrossVehicleWeight = this.form.controls.weights.controls.designGrossVehicleWeight;
 		const designGrossTrainWeight = this.form.controls.weights.controls.designGrossTrainWeight;

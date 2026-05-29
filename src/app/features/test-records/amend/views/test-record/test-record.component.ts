@@ -173,7 +173,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
 		const weightsFormGroup = baseTestRecordComponent?.weights();
 		if (weightsFormGroup) {
-			weightsFormGroup.form.markAsTouched();
+			weightsFormGroup.form.markAllAsTouched();
 			errors.push(...this.errorService.extractGlobalErrors(weightsFormGroup.form));
 		}
 
