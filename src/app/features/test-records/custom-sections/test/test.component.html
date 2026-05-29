@@ -16,16 +16,21 @@
     <ng-container formGroupName="0">
 
       @if (mode() === Modes.AMEND) {
+        <!-- Created -->
         <govuk-form-group-date
           label="Created"
           formControlName="createdAt"
           [disabled]="true"
         ></govuk-form-group-date>
+
+        <!-- Test date -->
         <govuk-form-group-date
           label="Test Date"
           formControlName="testTypeStartTimestamp"
           [disabled]="true"
         ></govuk-form-group-date>
+
+        <!-- Test code -->
         <govuk-form-group-input
           label="Test Code"
           formControlName="testCode"
@@ -46,16 +51,32 @@
       </ng-container>
 
       @if (mode() === Modes.AMEND) {
+        <!-- Test description -->
         <govuk-form-group-input
           label="Description"
           formControlName="testTypeName"
           [width]="FormNodeWidth.L"
         ></govuk-form-group-input>
+
+        <!-- Test number -->
         <govuk-form-group-input
           label="Test Number"
           formControlName="testNumber"
           [width]="FormNodeWidth.L"
         ></govuk-form-group-input>
+
+        <!-- Expiry date -->
+        <govuk-form-group-date
+          label="Expiry date"
+          formControlName="testExpiryDate"
+        ></govuk-form-group-date>
+
+        <!-- Anniversary date -->
+        <govuk-form-group-date
+          label="Anniversary date"
+          formControlName="testAnniversaryDate"
+        ></govuk-form-group-date>
+
         <!-- Test start date and time -->
         <govuk-form-group-input
           label="Start time"
