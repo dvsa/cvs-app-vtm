@@ -2,7 +2,7 @@ import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectTechRecord } from '@/src/app/store/technical-records';
-import { toEditOrNotToEdit } from '@/src/app/store/test-records';
+import { testResultInEdit, toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -31,30 +31,30 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	form = this.fb.group({
 		weights: this.fb.group({
 			designGrossVehicleWeight: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1, 'Design gross vehicle weight'),
-				this.commonValidators.max(99999, 'Design gross vehicle weight'),
+				this.commonValidators.min(1, 'Design gross vehicle weight', 'kg'),
+				this.commonValidators.max(99999, 'Design gross vehicle weight', 'kg'),
 			]),
 			designGrossTrainWeight: this.fb.control<number | null | undefined>({ value: undefined, disabled: false }, [
-				this.commonValidators.min(1, 'Design gross train weight'),
-				this.commonValidators.max(99999, 'Design gross train weight'),
+				this.commonValidators.min(1, 'Design gross train weight', 'kg'),
+				this.commonValidators.max(99999, 'Design gross train weight', 'kg'),
 			]),
 			designGrossAxleWeight: this.fb.control<number | null | undefined>({ value: undefined, disabled: false }, [
-				this.commonValidators.min(1, 'Design total axle weight'),
-				this.commonValidators.max(99999, 'Design total axle weight'),
+				this.commonValidators.min(1, 'Design total axle weight', 'kg'),
+				this.commonValidators.max(99999, 'Design total axle weight', 'kg'),
 			]),
 		}),
 	});
 
 	techRecord = this.store.selectSignal(selectTechRecord);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	editingTestResult = this.store.selectSignal(testResultInEdit);
 	destroy = new ReplaySubject<boolean>(1);
 	VehicleTypes = VehicleTypes;
 	FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
 		this.handleFormChange();
-		this.initAmendTestForm();
-		this.initContingencyTestForm();
+		this.initForm();
 	}
 
 	ngOnDestroy(): void {
@@ -67,6 +67,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	}
 
 	initForm(): void {
+		if (!this.edit()) return;
+
 		const isContingencyTest = this.isContingencyTest();
 		isContingencyTest ? this.initContingencyTestForm() : this.initAmendTestForm();
 	}
@@ -81,6 +83,8 @@ export class WeightsComponent implements OnInit, OnDestroy {
 	initContingencyTestForm(): void {
 		const techRecord = this.techRecord();
 		if (!techRecord) return;
+
+		this.form.patchValue({ weights: this.editingTestResult()?.weights });
 
 		const designGrossVehicleWeight = this.form.controls.weights.controls.designGrossVehicleWeight;
 		const designGrossTrainWeight = this.form.controls.weights.controls.designGrossTrainWeight;
