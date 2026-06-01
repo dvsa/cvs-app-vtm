@@ -203,6 +203,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 				this.commonValidators.min(
 					1000,
 					'Tank year of manufacture',
+					'',
 					'adr',
 					'techRecord_adrDetails_tank_tankDetails_yearOfManufacture'
 				)

@@ -73,13 +73,15 @@ export class CommonValidatorsService {
 	min(
 		size: number,
 		func: (control: AbstractControl) => GlobalError,
+		suffix?: string,
 		accordion?: string,
 		anchorLink?: string
 	): ValidatorFn;
-	min(size: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	min(size: number, message: string, suffix?: string, accordion?: string, anchorLink?: string): ValidatorFn;
 	min(
 		size: number,
 		message: string | ((control: AbstractControl) => GlobalError),
+		suffix?: string,
 		accordion?: string,
 		anchorLink?: string
 	): ValidatorFn {
@@ -90,7 +92,7 @@ export class CommonValidatorsService {
 				}
 				const globalError = {
 					min: {
-						error: `${message} must be greater than or equal to ${size}`,
+						error: `${message} must be greater than or equal to ${size}${suffix}`,
 						anchorLink: '',
 						accordion: '',
 					},

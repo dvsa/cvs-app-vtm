@@ -204,7 +204,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -268,7 +274,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -341,7 +353,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -404,7 +422,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -434,7 +458,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -472,7 +502,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -495,7 +531,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
