@@ -462,8 +462,8 @@ export const masterTpl: Record<
 			notes: NotesSection,
 			defects: DefectsTpl,
 			customDefects: CustomDefectsHiddenSection,
-			reasonForCreation: reasonForCreationSection,
 			weights: WeightsTRLTpl,
+			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
 		testTypesGroup7: {

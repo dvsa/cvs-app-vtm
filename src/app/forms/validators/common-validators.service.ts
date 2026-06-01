@@ -87,6 +87,7 @@ export class CommonValidatorsService {
 	): ValidatorFn {
 		return (control) => {
 			if (control.value != null && control.value < size) {
+				suffix = suffix || '';
 				if (typeof message !== 'string') {
 					return { min: message(control) };
 				}
