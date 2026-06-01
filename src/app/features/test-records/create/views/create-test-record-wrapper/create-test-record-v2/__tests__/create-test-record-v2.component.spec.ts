@@ -185,15 +185,17 @@ describe('CreateTestRecordV2Component', () => {
 
 	describe('onCancel', () => {
 		it('should set mode back to EDIT', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
 			component.mode.set(Modes.SUMMARY);
-			component.onCancel();
+			component.onCancel(component.initialMode());
 
 			expect(component.mode()).toBe(Modes.EDIT);
 		});
 
 		it('should clear warnings', () => {
 			const clearWarningsSpy = jest.spyOn(globalWarningService, 'clearWarnings');
-			component.onCancel();
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.onCancel(component.initialMode());
 
 			expect(clearWarningsSpy).toHaveBeenCalled();
 		});

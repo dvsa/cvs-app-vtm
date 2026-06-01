@@ -84,7 +84,7 @@
               <app-test-defects [mode]="mode()"></app-test-defects>
             </form>
           </app-accordion>
-          @if (mode() === Modes.SUMMARY || mode() === Modes.VIEW) {
+          @if ((mode() === Modes.SUMMARY || mode() === Modes.VIEW) && initialMode() !== Modes.EDIT) {
             <app-test-amendment-history class="section" [testRecord]="testResult()" />
           }
           @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
@@ -110,7 +110,9 @@
       <app-abandon />
     }
 
-    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+    @if (initialMode() === Modes.EDIT) {
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+    }
 
     <app-button-group>
       @if (mode() === Modes.EDIT) {
@@ -122,17 +124,17 @@
 
       @if (mode() === Modes.AMEND) {
         <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(Modes.VIEW)">Cancel</app-button>
       }
 
       @if (mode() === Modes.SUMMARY) {
         <app-button id="save-test-result" (clicked)="onSubmit()">Accept and send</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
       }
 
       @if (mode() === Modes.ABANDON) {
         <app-button id="abandon-test-result" (clicked)="onAbandon()">Confirm and save</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
       }
     </app-button-group>
   </div>

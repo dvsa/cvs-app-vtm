@@ -125,6 +125,7 @@ export class TestService {
 				reapplicationDate: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 				testCode: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 				createdAt: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+				testTypeClassification: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 				centralDocs: this.fb.group({
 					issueRequired: this.fb.control<boolean>(false),
 					notes: this.fb.control<string>(' '),

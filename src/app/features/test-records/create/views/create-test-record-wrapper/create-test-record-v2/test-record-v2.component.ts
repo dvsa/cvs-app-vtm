@@ -43,7 +43,6 @@ import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import cloneDeep from 'lodash.clonedeep';
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
@@ -94,7 +93,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
-	editingTestResult = computed(() => this.mode() === Modes.EDIT || this.mode() === Modes.SUMMARY);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
 	testResultInView = this.store.selectSignal(selectedTestResultState);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -120,8 +118,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
 				}
 			});
-		} else {
-			// get test result from elsewhere
 		}
 	}
 
@@ -159,6 +155,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		const testResult = this.testResult();
 		if (!testResult) return;
 
+		this.form.markAsPristine();
 		this.form.patchValue({
 			...testResult,
 			reasonForCreation: null, // clear reason for creation when amending
@@ -198,10 +195,10 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		this.handleFormInvalid();
 	}
 
-	onCancel(): void {
+	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
-		this.mode.set(this.initialMode());
+		this.mode.set(mode);
 	}
 
 	private setProvisionalWarning(): void {
@@ -299,7 +296,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	onSubmit(): void {
 		// Spread to remove undefined keys
-		if (this.editingTestResult()) {
+		if (this.initialMode() === Modes.EDIT) {
 			const raw = { ...this.testResult() } as TestResultSchema;
 			const value = cleanTestResultPayload(raw);
 			if (!value) return;
@@ -308,7 +305,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		} else {
 			this.testRecordService.cleanTestResult();
 
-			const testResultClone = cloneDeep(this.testResult()) as TestResultSchema;
+			const testResultClone = { ...this.testResult() } as TestResultSchema;
 			const defects = testResultClone.testTypes[0].defects;
 			if (Array.isArray(defects) && defects.length > 0) {
 				for (const defect of defects) {
