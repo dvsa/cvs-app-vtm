@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultSchema, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
@@ -20,7 +21,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.selectors';
-import { updateResultOfTest } from '@store/test-records/index';
+import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
@@ -121,7 +122,18 @@ export class TestResultsEffects {
 				const testResult = action.value;
 				return this.testRecordsService.postTestResult(testResult).pipe(
 					take(1),
-					map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
+					map(() => {
+						// if the test type is a failed first test, submit a different action so it does not wait for a current record since promotion doesnt happen
+						if (
+							(testResult.testTypes[0].testTypeId === '95' || testResult.testTypes[0].testTypeId === '41') &&
+							testResult.testTypes[0].testResult === TestResults.FAIL
+						) {
+							return createFailedFirstTestResultSuccess({
+								payload: { id: testResult.testResultId, changes: testResult },
+							});
+						}
+						return createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } });
+					}),
 					catchError((e) => {
 						const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
 						return of(createTestResultFailed({ errors }));
@@ -308,11 +320,25 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
-				map((action) => action.payload.changes.systemNumber as string),
-				switchMap((systemNumber) => this.httpService.waitForCurrentTechRecord(systemNumber)),
+				map((action) => [action.payload.changes.systemNumber as string]),
+				switchMap(([systemNumber]) => this.httpService.waitForCurrentTechRecord(systemNumber)),
 				filter(Boolean),
 				switchMap((techRecord) =>
 					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
+				)
+			),
+		{ dispatch: false }
+	);
+
+	createFirstTestResultSuccess$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createFailedFirstTestResultSuccess),
+				map((action) => [action.payload.changes.systemNumber as string]),
+				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
+				filter(Boolean),
+				switchMap((techRecord) =>
+					this.router.navigate([`/tech-records/${techRecord[0].systemNumber}/${techRecord[0].createdTimestamp}`])
 				)
 			),
 		{ dispatch: false }

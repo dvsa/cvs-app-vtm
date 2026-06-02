@@ -455,6 +455,24 @@ export class HttpService {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
 	}
 
+	waitForTechRecord(systemNumber: string) {
+		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+			expand((results, attempt) => {
+				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
+
+				if (record) {
+					return EMPTY; // stop retrying
+				}
+
+				const delayMs = Math.min(500 * 2 ** attempt, 5000); // exponential backoff (max 5s)
+
+				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
+			}),
+			takeWhile((record) => !record, true), // include final successful emission
+			last()
+		);
+	}
+
 	waitForCurrentTechRecord(systemNumber: string) {
 		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
 			expand((results, attempt) => {

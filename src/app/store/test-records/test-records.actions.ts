@@ -46,6 +46,10 @@ export const createTestResultSuccess = createAction(
 	'[API/test-results] Create test result Success',
 	props<{ payload: Update<TestResultSchema> }>()
 );
+export const createFailedFirstTestResultSuccess = createAction(
+	'[API/test-results] Create failed first test result Success',
+	props<{ payload: Update<TestResultSchema> }>()
+);
 export const createTestResultFailed = createAction(
 	'[API/test-results] Create test result Failed',
 	props<{ errors: GlobalError[] }>()
