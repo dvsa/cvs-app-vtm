@@ -123,7 +123,7 @@ export class TestResultsEffects {
 					map(() => {
 						// if the test type is a failed first test, submit a different action so it does not wait for a current record since promotion doesnt happen
 						if (
-							(testResult.testTypes[0].testTypeId === '95' || testResult.testTypes[0].testTypeId === '41') &&
+							this.testRecordsService.isTestTypeFirstTest(testResult.testTypes[0].testTypeId) &&
 							testResult.testTypes[0].testResult === TestResults.FAIL
 						) {
 							return createFailedFirstTestResultSuccess({
