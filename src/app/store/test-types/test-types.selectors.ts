@@ -26,8 +26,6 @@ export const selectAllTestTypes = createSelector(testTypesFeatureState, (state) 
 // select the total test types count
 export const selectTestTypesTotal = createSelector(testTypesFeatureState, (state) => selectTotal(state));
 
-export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, (state) => state.loading);
-
 export const selectTestTypesByVehicleType = createSelector(
 	selectAllTestTypes,
 	toEditOrNotToEdit,

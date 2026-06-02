@@ -59,8 +59,6 @@ export const toEditOrNotToEdit = createSelector(
 	}
 );
 
-export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
-
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) =>
 	getDefectFromTestResult(testResult)
 );

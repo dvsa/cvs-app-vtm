@@ -10,7 +10,6 @@ import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-c
 import { DocumentType } from '@models/document-type.enum';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { LoadingService } from '@services/loading/loading.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
@@ -30,7 +29,6 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
 	store = inject(Store<State>);
 	techRecordService = inject(TechnicalRecordService);
 	actions$ = inject(Actions);
-	loading = inject(LoadingService);
 	fileName?: string;
 	errorString?: string | null;
 

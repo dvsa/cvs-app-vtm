@@ -8,7 +8,6 @@ import { GlobalErrorStateModule } from '@store/global-error/global-error-state.m
 import { reducers } from '@store/index';
 import { STORE_FEATURE_LOGS_KEY } from '@store/logs/logs.feature';
 import { LogsModule } from '@store/logs/logs.module';
-import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { DefectsStateModule } from './defects/defects-state.module';
 import { FeatureFlagsEffects } from './feature-flags/feature-flags.effects';
@@ -45,7 +44,6 @@ function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any
 		GlobalWarningStateModule,
 		ReferenceDataStateModule,
 		RouterStateModule,
-		SpinnerStateModule,
 		TechnicalRecordsStateModule,
 		TestRecordsStateModule,
 		TestStationsStateModule,

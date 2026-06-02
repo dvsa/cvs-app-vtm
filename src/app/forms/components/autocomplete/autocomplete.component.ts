@@ -1,4 +1,4 @@
-import { referenceDataLoadingState } from '@/src/app/store/reference-data';
+import { selectIsLoading } from '@/src/app/store/loading/loading.selectors';
 import { NgTemplateOutlet } from '@angular/common';
 import { AfterContentInit, AfterViewInit, Component, DOCUMENT, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -27,7 +27,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 	store = inject(Store);
 	document = inject(DOCUMENT);
 
-	refDataLoading = this.store.select(referenceDataLoadingState);
+	isLoading = this.store.select(selectIsLoading);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly options$ = input.required<Observable<any[]>>();
@@ -46,8 +46,8 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 		lastValueFrom(
 			combineLatest({
 				options: this.options$(),
-				refDataLoading: this.refDataLoading,
-			}).pipe(takeWhile(({ options, refDataLoading }) => !options || options.length === 0 || refDataLoading, true))
+				isLoading: this.isLoading,
+			}).pipe(takeWhile(({ options, isLoading }) => !options || options.length === 0 || isLoading, true))
 		)
 			.then(({ options }) => {
 				this.options = options;

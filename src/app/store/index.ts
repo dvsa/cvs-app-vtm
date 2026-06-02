@@ -14,12 +14,6 @@ import {
 } from '@store/global-warning/global-warning-service.reducers';
 import { STORE_FEATURE_LOGS_KEY } from '@store/logs/logs.feature';
 import { initialState as initialLogState, logsReducer } from '@store/logs/logs.reducer';
-import {
-	STORE_FEATURE_SPINNER_KEY,
-	SpinnerState,
-	initialSpinnerState,
-	spinnerReducer,
-} from '@store/spinner/spinner.reducer';
 import { DefectsState, STORE_FEATURE_DEFECTS_KEY, defectsReducer, initialDefectsState } from './defects';
 import { STORE_FEATURE_FLAGS_KEY } from './feature-flags/feature-flags.feature';
 import {
@@ -83,7 +77,6 @@ export interface State {
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: GlobalErrorState;
 	[STORE_FEATURE_GLOBAL_WARNING_KEY]: GlobalWarningState;
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: ReferenceDataState;
-	[STORE_FEATURE_SPINNER_KEY]: SpinnerState;
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: TechnicalRecordServiceState;
 	[STORE_FEATURE_TEST_RESULTS_KEY]: TestResultsState;
 	[STORE_FEATURE_TEST_STATIONS_KEY]: TestStationsState;
@@ -103,7 +96,6 @@ export const initialAppState = {
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: initialGlobalErrorState,
 	[STORE_FEATURE_GLOBAL_WARNING_KEY]: initialGlobalWarningState,
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: initialReferenceDataState,
-	[STORE_FEATURE_SPINNER_KEY]: initialSpinnerState,
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState,
 	[STORE_FEATURE_TEST_RESULTS_KEY]: initialTestResultsState,
 	[STORE_FEATURE_TEST_STATIONS_KEY]: initialTestStationsState,
@@ -121,7 +113,6 @@ export const reducers = {
 	[STORE_FEATURE_GLOBAL_ERROR_KEY]: globalErrorReducer,
 	[STORE_FEATURE_GLOBAL_WARNING_KEY]: globalWarningReducer,
 	[STORE_FEATURE_REFERENCE_DATA_KEY]: referenceDataReducer,
-	[STORE_FEATURE_SPINNER_KEY]: spinnerReducer,
 	[STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,
 	[STORE_FEATURE_TEST_RESULTS_KEY]: testResultsReducer,
 	[STORE_FEATURE_TEST_STATIONS_KEY]: testStationsReducer,

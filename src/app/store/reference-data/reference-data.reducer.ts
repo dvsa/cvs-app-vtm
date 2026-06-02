@@ -7,18 +7,11 @@ import {
 	amendReferenceDataItemSuccess,
 	createReferenceDataItemSuccess,
 	deleteReferenceDataItemSuccess,
-	fetchReferenceData,
-	fetchReferenceDataAudit,
-	fetchReferenceDataAuditFailed,
 	fetchReferenceDataAuditSuccess,
-	fetchReferenceDataByKey,
-	fetchReferenceDataByKeyFailed,
 	fetchReferenceDataByKeySearch,
 	fetchReferenceDataByKeySearchFailed,
 	fetchReferenceDataByKeySearchSuccess,
 	fetchReferenceDataByKeySuccess,
-	fetchReferenceDataComplete,
-	fetchReferenceDataFailed,
 	fetchReferenceDataSuccess,
 	fetchTyreReferenceDataByKeySearch,
 	fetchTyreReferenceDataByKeySearchFailed,
@@ -32,17 +25,13 @@ const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
 	return a.resourceKey;
 };
 
-interface Loading {
-	loading: boolean;
-}
-
-interface Extras extends Loading {
+interface Extras {
 	searchReturn: ReferenceDataModelBase[] | null;
 	term: string | null;
 	filter: string | null;
 }
 
-interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase>, Loading {}
+interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {}
 
 export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase>, Extras {}
 
@@ -72,7 +61,7 @@ function createAdapter() {
 function getInitialState(
 	resourceType: ReferenceDataResourceType
 ): (EntityState<ReferenceDataModelBase> & ReferenceDataEntityState) | ReferenceDataEntityStateSearch {
-	return resourceTypeAdapters[`${resourceType}`].getInitialState({ loading: false });
+	return resourceTypeAdapters[`${resourceType}`].getInitialState();
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
@@ -127,66 +116,40 @@ export const initialReferenceDataState = {
 
 export const referenceDataReducer = createReducer(
 	initialReferenceDataState,
-	on(fetchReferenceData, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: true },
-	})),
 	on(fetchReferenceDataSuccess, (state, action) => {
-		const { resourceType, payload, paginated } = action;
+		const { resourceType, payload } = action;
 		return {
 			...state,
 			[resourceType]: {
 				...resourceTypeAdapters[`${resourceType}`]?.upsertMany(payload, state[`${resourceType}`]),
-				loading: paginated,
 			},
 		};
 	}),
-	on(fetchReferenceDataFailed, fetchReferenceDataComplete, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: false },
-	})),
-	on(fetchReferenceDataAudit, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: true },
-	})),
 	on(fetchReferenceDataAuditSuccess, (state, action) => {
-		const { resourceType, payload, paginated } = action;
+		const { resourceType, payload } = action;
 		return {
 			...state,
-			[resourceType]: { ...state[action.resourceType], searchReturn: payload, loading: paginated },
+			[resourceType]: { ...state[action.resourceType], searchReturn: payload },
 		};
 	}),
-	on(fetchReferenceDataAuditFailed, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: false },
-	})),
-	on(fetchReferenceDataByKey, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: true },
-	})),
 	on(fetchReferenceDataByKeySuccess, (state, action) => {
 		const { resourceType, payload } = action;
 		return {
 			...state,
 			[resourceType]: {
 				...resourceTypeAdapters[`${resourceType}`].upsertOne(payload, state[`${resourceType}`]),
-				loading: false,
 			},
 		};
 	}),
-	on(fetchReferenceDataByKeyFailed, (state, action) => ({
-		...state,
-		[action.resourceType]: { ...state[action.resourceType], loading: false },
-	})),
 	on(fetchReferenceDataByKeySearch, (state, action) => ({
 		...state,
-		[action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: true },
+		[action.resourceType]: { ...state[action.resourceType], searchReturn: null },
 	})),
 	on(fetchReferenceDataByKeySearchSuccess, (state, action) => {
 		const { resourceType, payload } = action;
 		return {
 			...state,
-			[resourceType]: { ...state[action.resourceType], searchReturn: payload, loading: false },
+			[resourceType]: { ...state[action.resourceType], searchReturn: payload },
 		};
 	}),
 	on(fetchReferenceDataByKeySearchFailed, (state, action) => ({
@@ -194,20 +157,19 @@ export const referenceDataReducer = createReducer(
 		[action.resourceType]: {
 			...state[action.resourceType],
 			searchReturn: null,
-			loading: false,
 			filter: null,
 			term: null,
 		},
 	})),
 	on(fetchTyreReferenceDataByKeySearch, (state) => ({
 		...state,
-		[ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, loading: true },
+		[ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null },
 	})),
 	on(fetchTyreReferenceDataByKeySearchSuccess, (state, action) => {
 		const { resourceType, payload } = action;
 		return {
 			...state,
-			[resourceType]: { ...state[`${resourceType}`], searchReturn: payload, loading: false },
+			[resourceType]: { ...state[`${resourceType}`], searchReturn: payload },
 		};
 	}),
 	on(fetchTyreReferenceDataByKeySearchFailed, (state, action) => ({
@@ -215,7 +177,6 @@ export const referenceDataReducer = createReducer(
 		[action.resourceType]: {
 			...state[action.resourceType],
 			searchReturn: null,
-			loading: false,
 			filter: null,
 			term: null,
 		},
