@@ -18,7 +18,6 @@ import {
 	selectedAmendedTestResultState,
 	selectedTestResultState,
 	selectedTestSortedAmendmentHistory,
-	testResultLoadingState,
 } from '../test-records.selectors';
 
 describe('Test Results Selectors', () => {
@@ -54,14 +53,6 @@ describe('Test Results Selectors', () => {
 				testNumber: '1',
 			} as Params);
 			expect(selectedState).toEqual(state.entities['testResult1']);
-		});
-	});
-
-	describe('testResultLoadingState', () => {
-		it('should return loading state', () => {
-			const state: TestResultsState = { ...initialTestResultsState, loading: true };
-			const selectedState = testResultLoadingState.projector(state);
-			expect(selectedState).toBeTruthy();
 		});
 	});
 

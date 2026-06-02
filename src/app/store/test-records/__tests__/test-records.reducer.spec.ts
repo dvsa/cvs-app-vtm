@@ -9,17 +9,12 @@ import {
 	cleanTestResult,
 	createDefect,
 	createRequiredStandard,
-	fetchSelectedTestResult,
 	fetchSelectedTestResultFailed,
 	fetchSelectedTestResultSuccess,
-	fetchTestResults,
-	fetchTestResultsBySystemNumber,
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
 	getRecalls,
-	getRecallsFailure,
-	getRecallsSuccess,
 	removeDefect,
 	removeRequiredStandard,
 	updateDefect,
@@ -40,17 +35,6 @@ describe('Test Results Reducer', () => {
 			const state = testResultsReducer(initialTestResultsState, action);
 
 			expect(state).toBe(initialTestResultsState);
-		});
-	});
-
-	describe('fetchTestResults', () => {
-		it('should set loading to true', () => {
-			const oldState: TestResultsState = { ...initialTestResultsState, loading: false };
-			const action = fetchTestResults();
-			const state = testResultsReducer(oldState, action);
-
-			expect(state.loading).toBe(true);
-			expect(state).not.toBe(oldState);
 		});
 	});
 
@@ -75,15 +59,6 @@ describe('Test Results Reducer', () => {
 	});
 
 	describe('fetchTestResultsBySystemNumber actions', () => {
-		it('should set loading to true', () => {
-			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
-			const action = fetchTestResultsBySystemNumber({ systemNumber: 'TestResultId0001' });
-			const state = testResultsReducer(initialTestResultsState, action);
-
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-		});
-
 		describe('fetchTestResultsBySystemNumberSuccess', () => {
 			it('should set all test result records', () => {
 				const testResults = mockTestResultList();
@@ -102,9 +77,9 @@ describe('Test Results Reducer', () => {
 
 		describe('fetchTestResultsBySystemNumberFailed', () => {
 			it('should set error state', () => {
-				const newState = { ...initialTestResultsState, loading: false };
+				const newState = { ...initialTestResultsState };
 				const action = fetchTestResultsBySystemNumberFailed({ error: 'unit testing error message' });
-				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+				const state = testResultsReducer({ ...initialTestResultsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
@@ -113,15 +88,6 @@ describe('Test Results Reducer', () => {
 	});
 
 	describe('fetchSelectedTestResult actions', () => {
-		it('should set loading to true', () => {
-			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
-			const action = fetchSelectedTestResult();
-			const state = testResultsReducer(initialTestResultsState, action);
-
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-		});
-
 		describe('fetchSelectedTestResultSuccess', () => {
 			it('should set all test result records', () => {
 				const testResults = mockTestResultList();
@@ -142,9 +108,9 @@ describe('Test Results Reducer', () => {
 
 		describe('fetchSelectedTestResultFailed', () => {
 			it('should set error state', () => {
-				const newState = { ...initialTestResultsState, loading: false };
+				const newState = { ...initialTestResultsState };
 				const action = fetchSelectedTestResultFailed({ error: 'unit testing error message' });
-				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+				const state = testResultsReducer({ ...initialTestResultsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
@@ -154,7 +120,7 @@ describe('Test Results Reducer', () => {
 
 	describe('updateTestResult actions', () => {
 		it('should set loading to true', () => {
-			const state: TestResultsState = { ...initialTestResultsState, loading: true };
+			const state: TestResultsState = { ...initialTestResultsState };
 			const action = updateTestResult({ value: {} as TestResultSchema });
 			const newState = testResultsReducer(initialTestResultsState, action);
 
@@ -164,9 +130,9 @@ describe('Test Results Reducer', () => {
 
 		describe('updateTestResultSuccess', () => {
 			it('should set loading to false', () => {
-				const state: TestResultsState = { ...initialTestResultsState, loading: false };
+				const state: TestResultsState = { ...initialTestResultsState };
 				const action = updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultSchema } });
-				const newState = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+				const newState = testResultsReducer({ ...initialTestResultsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
@@ -175,9 +141,9 @@ describe('Test Results Reducer', () => {
 
 		describe('updateTestResultFailed', () => {
 			it('should set loading to false', () => {
-				const state: TestResultsState = { ...initialTestResultsState, loading: false };
+				const state: TestResultsState = { ...initialTestResultsState };
 				const action = updateTestResultFailed({ errors: [] });
-				const newState = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+				const newState = testResultsReducer({ ...initialTestResultsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
@@ -551,34 +517,12 @@ describe('Test Results Reducer', () => {
 
 	describe('getRecalls actions', () => {
 		it('should set loading to true', () => {
-			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
+			const newState: TestResultsState = { ...initialTestResultsState };
 			const action = getRecalls();
 			const state = testResultsReducer(initialTestResultsState, action);
 
 			expect(state).toEqual(newState);
 			expect(state).not.toBe(newState);
-		});
-
-		describe('getRequiredStandardsSuccess', () => {
-			it('should set loading to false', () => {
-				const newState: TestResultsState = { ...initialTestResultsState, loading: false };
-				const action = getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } });
-				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
-
-				expect(state).toEqual(newState);
-				expect(state).not.toBe(newState);
-			});
-
-			describe('getRequiredStandardsFailure', () => {
-				it('should set loading to false', () => {
-					const newState = { ...initialTestResultsState, loading: false };
-					const action = getRecallsFailure({ error: 'unit testing error message' });
-					const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
-
-					expect(state).toEqual(newState);
-					expect(state).not.toBe(newState);
-				});
-			});
 		});
 	});
 });

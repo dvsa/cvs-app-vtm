@@ -40,12 +40,11 @@ describe('Reference Data Reducer', () => {
 	});
 
 	describe('fetchReferenceData', () => {
-		it('should set loading to true', () => {
+		it('should update state', () => {
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.CountryOfRegistration]: {
 					...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-					loading: true,
 				},
 			};
 			const action = fetchReferenceData({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
@@ -66,7 +65,7 @@ describe('Reference Data Reducer', () => {
 			);
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
-				[resourceType]: { ids, entities, loading: false },
+				[resourceType]: { ids, entities },
 			};
 			const action = fetchReferenceDataSuccess({ resourceType, payload: [...payload], paginated: false });
 			const state = referenceDataReducer(initialReferenceDataState, action);
@@ -91,12 +90,11 @@ describe('Reference Data Reducer', () => {
 	});
 
 	describe('fetchReferenceDataAudit', () => {
-		it('should set loading to true', () => {
+		it('should update state', () => {
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.CountryOfRegistration]: {
 					...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-					loading: true,
 				},
 			};
 			const action = fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
@@ -115,7 +113,6 @@ describe('Reference Data Reducer', () => {
 				[resourceType]: {
 					...initialReferenceDataState[`${resourceType}`],
 					searchReturn: value.payload,
-					loading: false,
 				},
 			};
 
@@ -142,12 +139,11 @@ describe('Reference Data Reducer', () => {
 	});
 
 	describe('fetchReferenceDataByKey actions', () => {
-		it('should set loading to true', () => {
+		it('should update state', () => {
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.CountryOfRegistration]: {
 					...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-					loading: true,
 				},
 			};
 			const action = fetchReferenceDataByKey({
@@ -169,7 +165,7 @@ describe('Reference Data Reducer', () => {
 				const entities: Dictionary<ReferenceDataModelBase> = { [resourceKey]: entity };
 				const newState: ReferenceDataState = {
 					...initialReferenceDataState,
-					[resourceType]: { ids, entities, loading: false },
+					[resourceType]: { ids, entities },
 				};
 
 				const action = fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: entity });
@@ -191,7 +187,6 @@ describe('Reference Data Reducer', () => {
 					...initialReferenceDataState,
 					[ReferenceDataResourceType.CountryOfRegistration]: {
 						...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-						loading: true,
 					},
 				};
 				const state = referenceDataReducer(inputState, action);
@@ -203,13 +198,12 @@ describe('Reference Data Reducer', () => {
 	});
 
 	describe('fetchReferenceDataByKeySearch actions', () => {
-		it('should set loading to true', () => {
+		it('should update state', () => {
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.Tyres]: {
 					...initialReferenceDataState[ReferenceDataResourceType.Tyres],
 					searchReturn: null,
-					loading: true,
 				},
 			};
 			const action = fetchReferenceDataByKeySearch({
@@ -247,7 +241,6 @@ describe('Reference Data Reducer', () => {
 					[resourceType]: {
 						...initialReferenceDataState[`${resourceType}`],
 						searchReturn: value.payload,
-						loading: false,
 					},
 				};
 
@@ -266,7 +259,6 @@ describe('Reference Data Reducer', () => {
 					[ReferenceDataResourceType.Tyres]: {
 						...initialReferenceDataState[ReferenceDataResourceType.Tyres],
 						searchReturn: null,
-						loading: false,
 						filter: null,
 						term: null,
 					},
@@ -279,7 +271,6 @@ describe('Reference Data Reducer', () => {
 					...initialReferenceDataState,
 					[ReferenceDataResourceType.Tyres]: {
 						...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-						loading: true,
 					},
 				};
 				const state = referenceDataReducer(inputState, action);
@@ -291,13 +282,12 @@ describe('Reference Data Reducer', () => {
 	});
 
 	describe('fetchTyreReferenceDataByKeySearch actions', () => {
-		it('should set loading to true', () => {
+		it('should update state', () => {
 			const newState: ReferenceDataState = {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.Tyres]: {
 					...initialReferenceDataState[ReferenceDataResourceType.Tyres],
 					searchReturn: null,
-					loading: true,
 				},
 			};
 			const action = fetchTyreReferenceDataByKeySearch({
@@ -334,7 +324,6 @@ describe('Reference Data Reducer', () => {
 					[resourceType]: {
 						...initialReferenceDataState[`${resourceType}`],
 						searchReturn: value.payload,
-						loading: false,
 					},
 				};
 
@@ -352,7 +341,6 @@ describe('Reference Data Reducer', () => {
 					...initialReferenceDataState,
 					[ReferenceDataResourceType.Tyres]: {
 						...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-						loading: false,
 						filter: 'code',
 						term: '103',
 					},
@@ -375,7 +363,6 @@ describe('Reference Data Reducer', () => {
 				expect(state.TYRES).toStrictEqual({
 					ids: [],
 					entities: {},
-					loading: false,
 					searchReturn: null,
 					filter: null,
 					term: null,
@@ -390,7 +377,6 @@ describe('Reference Data Reducer', () => {
 					[ReferenceDataResourceType.Tyres]: {
 						...initialReferenceDataState[ReferenceDataResourceType.Tyres],
 						searchReturn: null,
-						loading: false,
 						filter: null,
 						term: null,
 					},
@@ -403,7 +389,6 @@ describe('Reference Data Reducer', () => {
 					...initialReferenceDataState,
 					[ReferenceDataResourceType.Tyres]: {
 						...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-						loading: true,
 					},
 				};
 				const state = referenceDataReducer(inputState, action);

@@ -16,15 +16,11 @@ import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
 	addSectionState,
-	archiveTechRecord,
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	clearADRDetailsBeforeUpdate,
 	clearAllSectionStates,
 	clearScrollPosition,
-	createVehicleRecord,
-	createVehicleRecordFailure,
-	createVehicleRecordSuccess,
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
@@ -36,7 +32,6 @@ import {
 	updateEditingTechRecordCancel,
 	updateExistingADRAdditionalExaminerNote,
 	updateScrollPosition,
-	updateTechRecord,
 	updateTechRecordFailure,
 	updateTechRecordSuccess,
 } from '../technical-record-service.actions';
@@ -60,7 +55,7 @@ describe('Vehicle Technical Record Reducer', () => {
 
 	describe('getBySystemNumber', () => {
 		it('should set all vehicle technical records', () => {
-			const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
+			const newState: TechnicalRecordServiceState = { ...initialState };
 			const action = getBySystemNumber({ systemNumber: '001' });
 			const state = vehicleTechRecordReducer(initialState, action);
 
@@ -94,70 +89,6 @@ describe('Vehicle Technical Record Reducer', () => {
 			expect(state).not.toBe(newState);
 		});
 	});
-
-	describe('createVehicleRecord', () => {
-		it('should set loading to true', () => {
-			const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
-
-			const oldState: TechnicalRecordServiceState = {
-				...initialState,
-				vehicleTechRecord: expectedVehicle,
-				loading: false,
-			};
-
-			const newState = vehicleTechRecordReducer(
-				oldState,
-				createVehicleRecord({ vehicle: {} as TechRecordType<'put'> })
-			);
-
-			expect(newState).not.toBe(oldState);
-			expect(newState.vehicleTechRecord).toEqual(expectedVehicle);
-			expect(newState.loading).toBeTruthy();
-		});
-	});
-
-	describe('createVehicleRecordSuccess', () => {
-		it('should update the vehicleTechRecords property of the state with the newly created vehicle and set loading to false', () => {
-			const oldState: TechnicalRecordServiceState = {
-				...initialState,
-				vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
-			};
-
-			const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
-
-			const action = createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle });
-
-			const newState = vehicleTechRecordReducer(oldState, action);
-
-			expect(newState.loading).toBeFalsy();
-		});
-	});
-
-	describe('createVehicleRecordFailure', () => {
-		it('should add an error to the state and set loading to false', () => {
-			const action = createVehicleRecordFailure({ error: 'something bad happened' });
-			const newState = vehicleTechRecordReducer(initialState, action);
-
-			expect(newState.loading).toBeFalsy();
-		});
-	});
-
-	describe('updateTechRecords', () => {
-		it('should set the new vehicle tech records state after update', () => {
-			const state: TechnicalRecordServiceState = {
-				...initialState,
-				vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
-				loading: true,
-			};
-			const action = updateTechRecord({ systemNumber: 'foo', createdTimestamp: 'bar' });
-			const newState = vehicleTechRecordReducer(state, action);
-
-			expect(newState).toEqual(state);
-			expect(newState).not.toBe(state);
-			expect(newState.loading).toBe(true);
-		});
-	});
-
 	describe('updateTechRecordsSuccess', () => {
 		it('should set the new vehicle tech records state after update success', () => {
 			const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
@@ -184,26 +115,6 @@ describe('Vehicle Technical Record Reducer', () => {
 			expect(initialState).not.toEqual(newState);
 			expect(newState.error).toEqual(error);
 			expect(initialState).not.toBe(newState);
-		});
-	});
-
-	describe('archiveTechRecord', () => {
-		it('should set the state to loading', () => {
-			const state: TechnicalRecordServiceState = {
-				...initialState,
-				vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
-				loading: true,
-			};
-			const action = archiveTechRecord({
-				systemNumber: 'foo',
-				createdTimestamp: 'bar',
-				reasonForArchiving: 'some reason',
-			});
-			const newState = vehicleTechRecordReducer(state, action);
-
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-			expect(state.loading).toBe(true);
 		});
 	});
 
@@ -570,7 +481,6 @@ describe('Vehicle Technical Record Reducer', () => {
 					vin: 'testVin',
 					techRecord_adrDetails_additionalExaminerNotes_note: testNote.note,
 				} as unknown as TechRecordType<'put'>,
-				loading: true,
 			};
 			const action = updateADRAdditionalExaminerNotes({ username: testNote.lastUpdatedBy });
 			const newState = vehicleTechRecordReducer(state, action);
@@ -596,7 +506,6 @@ describe('Vehicle Technical Record Reducer', () => {
 						},
 					],
 				} as unknown as TechRecordType<'put'>,
-				loading: true,
 			};
 			const newNote = 'foobar';
 			const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });

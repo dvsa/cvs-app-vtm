@@ -1,6 +1,5 @@
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import {
-	fetchDefect,
 	fetchDefectFailed,
 	fetchDefectSuccess,
 	fetchDefects,
@@ -25,7 +24,7 @@ describe('Defects Reducer', () => {
 
 	describe('fetchDefects actions', () => {
 		it('should set loading to true', () => {
-			const newState: DefectsState = { ...initialDefectsState, loading: true };
+			const newState: DefectsState = { ...initialDefectsState };
 			const action = fetchDefects();
 			const state = defectsReducer(initialDefectsState, action);
 
@@ -49,9 +48,9 @@ describe('Defects Reducer', () => {
 
 			describe('fetchDefectsFailed', () => {
 				it('should set error state', () => {
-					const newState = { ...initialDefectsState, loading: false };
+					const newState = { ...initialDefectsState };
 					const action = fetchDefectsFailed({ error: 'unit testing error message' });
-					const state = defectsReducer({ ...initialDefectsState, loading: true }, action);
+					const state = defectsReducer({ ...initialDefectsState }, action);
 
 					expect(state).toEqual(newState);
 					expect(state).not.toBe(newState);
@@ -61,15 +60,6 @@ describe('Defects Reducer', () => {
 	});
 
 	describe('fetchDefect actions', () => {
-		it('should set loading to true', () => {
-			const newState: DefectsState = { ...initialDefectsState, loading: true };
-			const action = fetchDefect({ id: 1 });
-			const state = defectsReducer(initialDefectsState, action);
-
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-		});
-
 		describe('fetchDefectSuccess', () => {
 			it('should set all test result records', () => {
 				const newState: DefectsState = {
@@ -87,9 +77,9 @@ describe('Defects Reducer', () => {
 
 		describe('fetchDefectFailed', () => {
 			it('should set error state', () => {
-				const newState = { ...initialDefectsState, loading: false };
+				const newState = { ...initialDefectsState };
 				const action = fetchDefectFailed({ error: 'unit testing error message' });
-				const state = defectsReducer({ ...initialDefectsState, loading: true }, action);
+				const state = defectsReducer({ ...initialDefectsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
