@@ -67,7 +67,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
 		this.isLoading,
 	]).pipe(
-		skipWhile(([, loading]) => loading),
+		skipWhile(([data, loading]) => loading || data?.length === 0),
 		take(1),
 		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
 	);

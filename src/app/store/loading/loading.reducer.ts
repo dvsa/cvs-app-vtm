@@ -13,5 +13,5 @@ export const initialLoadingState: LoadingState = {
 export const loadingReducer = createReducer(
 	initialLoadingState,
 	on(startLoading, (state) => ({ ...state, pendingCount: state.pendingCount + 1 })),
-	on(stopLoading, (state) => ({ ...state, pendingCount: state.pendingCount - 1 }))
+	on(stopLoading, (state) => ({ ...state, pendingCount: state.pendingCount > 0 ? state.pendingCount - 1 : 0 }))
 );
