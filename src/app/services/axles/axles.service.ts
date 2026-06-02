@@ -150,7 +150,7 @@ export class AxlesService {
 					? this.commonValidators.max(999, 'Data TR Axles', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.max(999, 'Data TR Axles'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.min(0, 'Data TR Axles', 'tyres', 'tyres_dataTrAxles')
+					? this.commonValidators.min(0, 'Data TR Axles', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.min(0, 'Data TR Axles'),
 			]),
 
@@ -211,7 +211,7 @@ export class AxlesService {
 					? this.commonValidators.maxLength(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.maxLength(12, 'Tyre Size'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.min(0, 'Tyre Size', 'tyres_tyreSize', 'tyres')
+					? this.commonValidators.min(0, 'Tyre Size', '', 'tyres_tyreSize', 'tyres')
 					: this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
@@ -219,7 +219,7 @@ export class AxlesService {
 					? this.commonValidators.maxLength(2, 'Ply Rating', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.maxLength(2, 'Ply Rating'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.min(0, 'Ply Rating', 'tyres_plyRating', 'tyres')
+					? this.commonValidators.min(0, 'Ply Rating', '', 'tyres_plyRating', 'tyres')
 					: this.commonValidators.min(0, 'Ply Rating'),
 			]),
 			tyres_speedCategorySymbol: this.fb.control<string | null>(axle?.tyres_speedCategorySymbol || null),
@@ -334,20 +334,20 @@ export class AxlesService {
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.max(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
+					? this.commonValidators.max(12, 'Tyre Size', '', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.max(12, 'Tyre Size'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Tyre Size')
-					: this.commonValidators.min(0, 'Tyre Size', 'tyres', 'tyres_tyreSize'),
+					: this.commonValidators.min(0, 'Tyre Size', '', 'tyres', 'tyres_tyreSize'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.max(2, 'Ply rating', 'tyres', 'tyres_plyRating')
+					? this.commonValidators.max(2, 'Ply rating', '', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.max(2, 'Ply rating'),
 
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Ply rating')
-					: this.commonValidators.min(0, 'Ply rating', 'tyres', 'tyres_plyRating'),
+					: this.commonValidators.min(0, 'Ply rating', '', 'tyres', 'tyres_plyRating'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
@@ -355,11 +355,11 @@ export class AxlesService {
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-					? this.commonValidators.max(999, 'Load index', 'tyres', 'tyres_dataTrAxles')
+					? this.commonValidators.max(999, 'Load index', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.max(999, 'Load index'),
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 					? this.commonValidators.min(0, 'Load index')
-					: this.commonValidators.min(0, 'Load index', 'tyres', 'tyres_dataTrAxles'),
+					: this.commonValidators.min(0, 'Load index', '', 'tyres', 'tyres_dataTrAxles'),
 			]),
 
 			// Weights fields

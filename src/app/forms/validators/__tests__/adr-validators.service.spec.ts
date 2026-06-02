@@ -1,3 +1,4 @@
+import { initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -6,6 +7,7 @@ import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enu
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AdrValidatorsService } from '../adr-validators.service';
 
 describe('AdrValidatorsService', () => {
@@ -14,7 +16,12 @@ describe('AdrValidatorsService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [AdrValidatorsService, provideHttpClient(), provideHttpClientTesting()],
+			providers: [
+				AdrValidatorsService,
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		});
 
 		service = TestBed.inject(AdrValidatorsService);

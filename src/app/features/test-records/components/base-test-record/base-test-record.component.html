@@ -107,6 +107,18 @@
             (formChange)="handleFormChange($event)"
             />
         }
+        @case ('weightsSection') {
+          <app-accordion [id]="template.name" [title]="template.label">
+            <app-weights 
+              id="weights"
+              class="section"
+              [edit]="isEditing()"
+              [data]="testResult()"
+              [isContingencyTest]="isContingencyTest()"
+              (formChange)="handleFormChange($event)"
+            />
+          </app-accordion>
+        }
         @default {
           <!-- skip `reasonForCreationSection` because its handled further down -->
           @if ('reasonForCreationSection' !== template.name) {

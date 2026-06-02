@@ -61,6 +61,8 @@ import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/de
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { ContingencyWeightsHGVTpl } from './section-templates/weights/contingency/contigency-weights-hgv.template';
+import { ContingencyWeightsTRLTpl } from './section-templates/weights/contingency/contingency-weights-trl.template';
 
 const groups1and2Template: Record<string, FormNode> = {
 	required: CreateRequiredSection,
@@ -292,6 +294,7 @@ export const contingencyTestTemplates: Record<
 			notes: NotesSection,
 			defects: DefectsTpl,
 			customDefects: CustomDefectsHiddenSection,
+			weights: ContingencyWeightsHGVTpl,
 			reasonForCreation: reasonForCreationSection,
 		},
 		testTypesGroup7: {
@@ -481,6 +484,7 @@ export const contingencyTestTemplates: Record<
 			notes: NotesSection,
 			defects: DefectsTpl,
 			customDefects: CustomDefectsHiddenSection,
+			weights: ContingencyWeightsTRLTpl,
 			reasonForCreation: reasonForCreationSection,
 		},
 		testTypesGroup7: {

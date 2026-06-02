@@ -6,8 +6,11 @@ import { provideRouter } from '@angular/router';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { ReplaySubject, of } from 'rxjs';
+import { FeatureToggleDirective } from '../../directives/feature-toggle/feature-toggle.directive';
+import { initialAppState } from '../../store';
 import { HomeButtonComponent } from './components/home-button/home-button.component';
 import { HomeComponent } from './home.component';
 
@@ -18,13 +21,14 @@ describe('HomeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [HomeComponent, HomeButtonComponent, RoleRequiredDirective],
+			imports: [HomeComponent, HomeButtonComponent, RoleRequiredDirective, FeatureToggleDirective],
 			providers: [
 				FormBuilder,
 				provideRouter([]),
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: UserService,
 					useValue: {
@@ -33,9 +37,7 @@ describe('HomeComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HomeComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

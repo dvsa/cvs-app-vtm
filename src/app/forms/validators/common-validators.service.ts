@@ -73,24 +73,27 @@ export class CommonValidatorsService {
 	min(
 		size: number,
 		func: (control: AbstractControl) => GlobalError,
+		suffix?: string,
 		accordion?: string,
 		anchorLink?: string
 	): ValidatorFn;
-	min(size: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	min(size: number, message: string, suffix?: string, accordion?: string, anchorLink?: string): ValidatorFn;
 	min(
 		size: number,
 		message: string | ((control: AbstractControl) => GlobalError),
+		suffix?: string,
 		accordion?: string,
 		anchorLink?: string
 	): ValidatorFn {
 		return (control) => {
-			if (control.value && control.value < size) {
+			if (control.value != null && control.value < size) {
+				suffix = suffix || '';
 				if (typeof message !== 'string') {
 					return { min: message(control) };
 				}
 				const globalError = {
 					min: {
-						error: `${message} must be greater than or equal to ${size}`,
+						error: `${message} must be greater than or equal to ${size}${suffix}`,
 						anchorLink: '',
 						accordion: '',
 					},
@@ -101,6 +104,7 @@ export class CommonValidatorsService {
 				if (accordion) {
 					globalError.min.accordion = accordion;
 				}
+
 				return globalError;
 			}
 
@@ -465,25 +469,29 @@ export class CommonValidatorsService {
 		anchorLink?: string
 	): ValidatorFn {
 		return (control) => {
-			if (control.parent && (!control.value || (Array.isArray(control.value) && control.value.length === 0))) {
-				const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
+			if (!control.parent) return null;
 
-				if (typeof message !== 'string') {
-					return { required: message(control) };
-				}
+			// If array has an element it satisfies the required condition
+			if (Array.isArray(control.value) && control.value.length > 0) return null;
 
-				if (anchorLink) {
-					globalError.anchorLink = anchorLink;
-				}
+			// If the value is truthy or 0 it satisfies the required condition
+			if (typeof control.value === 'number' || !!control.value) return null;
 
-				if (accordion) {
-					globalError.accordion = accordion;
-				}
+			const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
 
-				return { required: globalError };
+			if (typeof message !== 'string') {
+				return { required: message(control) };
 			}
 
-			return null;
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { required: globalError };
 		};
 	}
 

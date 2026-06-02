@@ -21,6 +21,12 @@ import {
 	spinnerReducer,
 } from '@store/spinner/spinner.reducer';
 import { DefectsState, STORE_FEATURE_DEFECTS_KEY, defectsReducer, initialDefectsState } from './defects';
+import { STORE_FEATURE_FLAGS_KEY } from './feature-flags/feature-flags.feature';
+import {
+	FeatureFlagsState,
+	featureFlagsReducer,
+	initialFeatureFlagsState,
+} from './feature-flags/feature-flags.reducer';
 import {
 	ReferenceDataState,
 	STORE_FEATURE_REFERENCE_DATA_KEY,
@@ -84,6 +90,7 @@ export interface State {
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: SearchResultState;
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: RequiredStandardState;
 	[STORE_FEATURE_LOGS_KEY]: LogsModel;
+	[STORE_FEATURE_FLAGS_KEY]: FeatureFlagsState;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	router?: any;
 }
@@ -102,6 +109,7 @@ export const initialAppState = {
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: initialTechSearchResultState,
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: initialRequiredStandardsState,
 	[STORE_FEATURE_LOGS_KEY]: initialLogState,
+	[STORE_FEATURE_FLAGS_KEY]: initialFeatureFlagsState,
 };
 
 export const reducers = {
@@ -118,4 +126,5 @@ export const reducers = {
 	[STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: techSearchResultReducer,
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: requiredStandardsReducer,
 	[STORE_FEATURE_LOGS_KEY]: logsReducer,
+	[STORE_FEATURE_FLAGS_KEY]: featureFlagsReducer,
 };

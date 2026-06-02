@@ -1,6 +1,7 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, output, viewChildren } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -51,6 +52,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	globalErrorService = inject(GlobalErrorService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
+	titleService = inject(Title);
 	store = inject<Store<TechnicalRecordServiceState>>(Store<TechnicalRecordServiceState>);
 
 	techRecord?: VehiclesOtherThan<'trl'>;
@@ -151,6 +153,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 		this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
 			this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
 		);
+		this.titleService.setTitle('Change VRM - Vehicle Testing Management');
 	}
 
 	ngOnDestroy(): void {

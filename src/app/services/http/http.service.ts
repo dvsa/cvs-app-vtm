@@ -25,7 +25,7 @@ import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.mode
 import { CacheBucket, withCache } from '@ngneat/cashew';
 import { cloneDeep } from 'lodash';
 import { EMPTY, defer, expand, last, lastValueFrom, map, switchMap, takeWhile, timeout, timer } from 'rxjs';
-import { FeatureConfig } from '../feature-toggle-service/feature-toggle-service';
+import { FeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {

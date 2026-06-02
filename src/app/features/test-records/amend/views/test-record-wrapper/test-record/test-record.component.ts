@@ -146,6 +146,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			const sections = sectionsInput();
 			const defects = defectsInput();
 			const customDefects = customDefectsInput();
+
 			if (sections) {
 				sections.forEach((section) => {
 					forms.push(section.form);
@@ -170,11 +171,17 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			DynamicFormService.validate(form, errors);
 		});
 
+		const weightsFormGroup = baseTestRecordComponent?.weights();
+		if (weightsFormGroup) {
+			weightsFormGroup.form.markAllAsTouched();
+			errors.push(...this.errorService.extractGlobalErrors(weightsFormGroup.form));
+		}
+
 		if (errors.length > 0) {
 			this.errorService.setErrors(errors);
 		}
 
-		if (this.isAnyFormInvalid(forms)) {
+		if (this.isAnyFormInvalid(forms) || weightsFormGroup?.form.invalid) {
 			return true;
 		}
 

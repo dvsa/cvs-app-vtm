@@ -18,14 +18,14 @@ const routes: Routes = [
 		children: [
 			{
 				path: RootRoutes.ROOT,
-				data: { title: 'Home', roles: Roles.TechRecordView },
+				data: { title: 'Select activity', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				canDeactivate: [CancelEditTechGuard],
 				loadChildren: () => import('./features/home/home.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.SEARCH_TECHNICAL_RECORD,
-				data: { title: 'Technical record search', roles: Roles.TechRecordView },
+				data: { title: 'Search for a technical record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				canDeactivate: [CancelEditTechGuard],
 				loadChildren: () => import('./features/search/search.routes').then((m) => m.routes),
@@ -69,12 +69,6 @@ const routes: Routes = [
 				},
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () => import('./features/reference-data/reference-data.routes').then((m) => m.routes),
-			},
-			{
-				path: RootRoutes.FEATURE_TOGGLE,
-				data: { title: 'Feature Toggle', featureToggleName: 'testtoggle' },
-				canActivate: [MsalGuard, FeatureToggleGuard],
-				loadChildren: () => import('./features/feature-toggle/feature-toggle.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.BETAS,

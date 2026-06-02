@@ -1,9 +1,9 @@
 {
-  "testtoggle": { "enabled": false },
   "betas": { "enabled": false },
   "techrecordredesign": { "enabled": false },
   "techrecordredesigncreate": { "enabled": true },
   "techrecordredesigncreatedetails": { "enabled": false },
   "testresultcreate": { "enabled": false },
-  "testresultamend": { "enabled": false }
+  "testresultamend": { "enabled": false },
+  "hide-test-restriction-functionality": { "enabled": true }
 }

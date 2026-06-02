@@ -1,0 +1,72 @@
+@if (data(); as testResult) {
+  @if (testResult.vehicleType === VehicleTypes.HGV || testResult.vehicleType === VehicleTypes.TRL) {
+    @if (edit()) {
+      <ng-container [formGroup]="form">
+        <ng-container formGroupName="weights">
+          <govuk-form-group-input
+            [suffix]="'kg'"
+            [width]="FormNodeWidth.M"
+            type="number"
+            label="Design gross vehicle weight"
+            formControlName="designGrossVehicleWeight"
+          />
+        </ng-container>
+
+        @if (testResult.vehicleType === VehicleTypes.HGV) {
+          <ng-container formGroupName="weights">
+            <govuk-form-group-input
+              [suffix]="'kg'"
+              [width]="FormNodeWidth.M"
+              type="number"
+              label="Design gross train weight"
+              formControlName="designGrossTrainWeight"
+            />
+          </ng-container>
+        }
+
+        @if (testResult.vehicleType === VehicleTypes.TRL) {
+          <ng-container formGroupName="weights">
+            <govuk-form-group-input
+              [suffix]="'kg'"
+              [width]="FormNodeWidth.M"
+              type="number"
+              label="Design total axle weight"
+              formControlName="designGrossAxleWeight"
+            />
+          </ng-container>
+        }
+      </ng-container>
+    } @else {
+      <table class="govuk-table">
+        <tr class="govuk-table__row">
+          <td scope="row" class="govuk-table__header" style="width: 30%">
+            Design gross vehicle weight
+          </td>
+          <td class="govuk-table__cell" id="test-designGrossVehicleWeight">
+            {{ testResult.weights?.designGrossVehicleWeight ? `${testResult.weights?.designGrossVehicleWeight || 0} kg` : '-' }}
+          </td>
+        </tr>
+        @if (testResult.vehicleType === VehicleTypes.HGV) {
+          <tr class="govuk-table__row">
+            <td scope="row" class="govuk-table__header" style="width: 30%">
+              Design gross train weight
+            </td>
+            <td class="govuk-table__cell" id="test-designGrossTrainWeight">
+              {{ testResult.weights?.designGrossTrainWeight ? `${testResult.weights?.designGrossTrainWeight || 0} kg` : '-' }}
+            </td>
+          </tr>
+        }
+        @if (testResult.vehicleType === VehicleTypes.TRL) {
+          <tr class="govuk-table__row">
+            <td scope="row" class="govuk-table__header" style="width: 30%">
+              Design total axle weight
+            </td>
+            <td class="govuk-table__cell" id="test-designGrossAxleWeight">
+              {{ testResult.weights?.designGrossAxleWeight ? `${testResult.weights?.designGrossAxleWeight || 0} kg` : '-' }}
+            </td>
+          </tr>
+        }
+      </table> 
+    }
+  }
+}
