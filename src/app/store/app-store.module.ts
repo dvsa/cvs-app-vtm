@@ -13,6 +13,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import { DefectsStateModule } from './defects/defects-state.module';
 import { FeatureFlagsEffects } from './feature-flags/feature-flags.effects';
 import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
+import { LoadingEffects } from './loading/loading.effects';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { RequiredStandardsStateModule } from './required-standards/required-standards.module';
 import { RouterStateModule } from './router/router-state.module';
@@ -31,7 +32,7 @@ function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any
 	imports: [
 		CommonModule,
 		StoreModule.forRoot(reducers, { metaReducers: [localStorageSyncReducer] }),
-		EffectsModule.forRoot([FeatureFlagsEffects]),
+		EffectsModule.forRoot([FeatureFlagsEffects, LoadingEffects]),
 		environment.EnableDevTools
 			? StoreDevtoolsModule.instrument({
 					name: 'VTM Web Dev Tools',

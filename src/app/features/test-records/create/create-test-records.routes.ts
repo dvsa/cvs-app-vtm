@@ -1,3 +1,4 @@
+import { usersResolver } from '@/src/app/resolvers/users/users.resolver';
 import { Routes } from '@angular/router';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
@@ -40,6 +41,7 @@ export const routes: Routes = [
 					testCode: testCodeResolver,
 					recalls: recallsResolver,
 					loading: loadingResolver,
+					users: usersResolver,
 				},
 				data: {
 					title: 'Test details',

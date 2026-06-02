@@ -27,6 +27,8 @@ import {
 	featureFlagsReducer,
 	initialFeatureFlagsState,
 } from './feature-flags/feature-flags.reducer';
+import { STORE_LOADING_KEY } from './loading/loading.feature';
+import { LoadingState, initialLoadingState, loadingReducer } from './loading/loading.reducer';
 import {
 	ReferenceDataState,
 	STORE_FEATURE_REFERENCE_DATA_KEY,
@@ -91,6 +93,7 @@ export interface State {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: RequiredStandardState;
 	[STORE_FEATURE_LOGS_KEY]: LogsModel;
 	[STORE_FEATURE_FLAGS_KEY]: FeatureFlagsState;
+	[STORE_LOADING_KEY]: LoadingState;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	router?: any;
 }
@@ -110,6 +113,7 @@ export const initialAppState = {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: initialRequiredStandardsState,
 	[STORE_FEATURE_LOGS_KEY]: initialLogState,
 	[STORE_FEATURE_FLAGS_KEY]: initialFeatureFlagsState,
+	[STORE_LOADING_KEY]: initialLoadingState,
 };
 
 export const reducers = {
@@ -127,4 +131,5 @@ export const reducers = {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: requiredStandardsReducer,
 	[STORE_FEATURE_LOGS_KEY]: logsReducer,
 	[STORE_FEATURE_FLAGS_KEY]: featureFlagsReducer,
+	[STORE_LOADING_KEY]: loadingReducer,
 };

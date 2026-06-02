@@ -7,7 +7,6 @@ import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
-import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { startSendingLogs } from '@store/logs/logs.actions';
 import { selectRouteData } from '@store/router/router.selectors';
@@ -24,6 +23,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { PhaseBannerComponent } from './core/components/phase-banner/phase-banner.component';
 import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { State } from './store';
+import { selectIsLoading } from './store/loading/loading.selectors';
 
 @Component({
 	selector: 'app-root',
@@ -45,7 +45,6 @@ import { State } from './store';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	userService = inject(UserService);
-	loadingService = inject(LoadingService);
 	router = inject(Router);
 	gtmService = inject(GoogleTagManagerService);
 	store = inject(Store<State>);
@@ -64,6 +63,8 @@ export class AppComponent implements OnInit, OnDestroy {
 				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
 		)
 	);
+
+	loading = this.store.selectSignal(selectIsLoading);
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {
