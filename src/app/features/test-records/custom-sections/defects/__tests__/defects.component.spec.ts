@@ -4,6 +4,7 @@ import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms'
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefectsComponent } from '../defects.component';
+import { Modes } from '@/src/app/models/modes.enum';
 
 describe('DefectsComponent', () => {
 	let fixture: ComponentFixture<DefectsComponent>;
@@ -25,6 +26,7 @@ describe('DefectsComponent', () => {
 
 		fixture = TestBed.createComponent(DefectsComponent);
 		component = fixture.componentInstance;
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.detectChanges();
 	});
 

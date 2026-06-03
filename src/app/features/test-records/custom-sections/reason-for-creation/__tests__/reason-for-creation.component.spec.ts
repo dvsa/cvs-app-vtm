@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReasonForCreationComponent } from '../reason-for-creation.component';
+import { Modes } from '@/src/app/models/modes.enum';
 
 describe('ReasonForCreationComponent', () => {
 	let fixture: ComponentFixture<ReasonForCreationComponent>;
@@ -23,6 +24,7 @@ describe('ReasonForCreationComponent', () => {
 
 		fixture = TestBed.createComponent(ReasonForCreationComponent);
 		component = fixture.componentInstance;
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.detectChanges();
 	});
 

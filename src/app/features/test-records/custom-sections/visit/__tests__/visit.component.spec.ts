@@ -1,3 +1,4 @@
+import { Modes } from '@/src/app/models/modes.enum';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { initialAppState } from '@/src/app/store';
 import { testStations } from '@/src/app/store/test-stations';
@@ -32,6 +33,7 @@ describe('VisitComponent', () => {
 		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(VisitComponent);
 		component = fixture.componentInstance;
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.detectChanges();
 	});
 

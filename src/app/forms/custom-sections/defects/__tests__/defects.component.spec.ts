@@ -14,7 +14,7 @@ import { TruncatePipe } from '@pipes/truncate/truncate.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { initialAppState } from '@store/index';
 import { DefectSelectComponent } from '../../../components/defect-select/defect-select.component';
-import { DefectComponent } from '../../defect/defect.component';
+import { DefectComponent } from '../../defect/defect/defect.component';
 import { DefectsComponent } from '../defects.component';
 
 describe('DefectsComponent', () => {

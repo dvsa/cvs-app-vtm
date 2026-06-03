@@ -28,7 +28,7 @@ import { AccordionControlComponent } from '@components/accordion-control/accordi
 import { AccordionComponent } from '@components/accordion/accordion.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
-import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestAmendmentHistoryComponent } from '@features/test-records/amend/components/test-amendment-history/test-amendment-history.component';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
@@ -130,7 +130,9 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 		// Copy viewable test result into editing test result
 		if (!testResultInEdit && testResult) {
+			testResult.reasonForCreation = ''; // clear reason for creation when amending
 			this.testRecordService.editingTestResult(testResult);
+			this.form.patchValue(testResult as any);
 		}
 
 		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
@@ -156,10 +158,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		if (!testResult) return;
 
 		this.form.markAsPristine();
-		this.form.patchValue({
-			...testResult,
-			reasonForCreation: null, // clear reason for creation when amending
-		} as any);
+		this.form.patchValue(testResult as any);
 
 		if (this.mode() === Modes.CREATE) {
 			this.form.controls.testTypes.at(0).patchValue({

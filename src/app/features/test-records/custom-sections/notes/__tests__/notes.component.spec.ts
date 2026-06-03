@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { provideMockStore } from '@ngrx/store/testing';
 import { NotesComponent } from '../notes.component';
+import { Modes } from '@/src/app/models/modes.enum';
 
 describe('NotesComponent', () => {
 	let fixture: ComponentFixture<NotesComponent>;
@@ -23,6 +24,7 @@ describe('NotesComponent', () => {
 
 		fixture = TestBed.createComponent(NotesComponent);
 		component = fixture.componentInstance;
+		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.detectChanges();
 	});
 

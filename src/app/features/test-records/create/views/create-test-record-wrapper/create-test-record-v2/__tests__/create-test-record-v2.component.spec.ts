@@ -6,7 +6,10 @@ import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Modes } from '@models/modes.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { Actions } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
 describe('CreateTestRecordV2Component', () => {
@@ -14,11 +17,18 @@ describe('CreateTestRecordV2Component', () => {
 	let component: TestRecordV2Component;
 	let store: MockStore;
 	let globalWarningService: GlobalWarningService;
+	let actions$: ReplaySubject<Action>;
 
 	beforeEach(async () => {
+		actions$ = new ReplaySubject(1);
+
 		await TestBed.configureTestingModule({
 			imports: [TestRecordV2Component],
-			providers: [provideMockStore({ initialState: initialAppState }), provideRouter([])],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideRouter([]),
+				{ provide: Actions, useValue: actions$ },
+			],
 		}).compileComponents();
 
 		store = TestBed.inject(MockStore);
