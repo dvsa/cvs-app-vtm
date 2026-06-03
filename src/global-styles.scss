@@ -65,7 +65,38 @@
 
 .govuk-input__suffix-disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: text;
+}
+
+input:disabled,
+input[disabled],
+textarea:disabled,
+textarea[disabled] {
+  cursor: text !important;
+}
+
+input:disabled[type='checkbox'],
+input[disabled][type='checkbox'],
+input:disabled[type='radio'],
+input[disabled][type='radio'],
+input:disabled[type='button'],
+input[disabled][type='button'],
+input:disabled[type='submit'],
+input[disabled][type='submit'],
+select:disabled,
+select[disabled],
+button:disabled,
+button[disabled],
+fieldset:disabled,
+fieldset[disabled],
+[aria-disabled='true'] {
+  cursor: default !important;
+}
+
+// Autocomplete component (accessible-autocomplete) when disabled
+.autocomplete__input:disabled,
+.autocomplete__input[disabled] {
+  cursor: text !important;
 }
 
 // List of lists selector
@@ -152,7 +183,7 @@
   color: govuk-colour('white');
 }
 .list__item--more:after {
-  content: '›'; 
+  content: '›';
   position: absolute;
   top: 50%;
   right: 10px;
