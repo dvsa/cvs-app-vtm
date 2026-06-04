@@ -31,20 +31,17 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { UserService } from '@/src/app/services/user-service/user-service';
 import {
 	clearADRDetailsBeforeUpdate,
-	clearAllSectionStates,
-	clearScrollPosition,
 	editingTechRecord,
 	selectSectionState,
 	techRecord,
 	updateADRAdditionalExaminerNotes,
 	updateTechRecord,
-	updateTechRecordSuccess,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, combineLatest, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/tech-record-summary-card.component';
@@ -111,8 +108,6 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	readonly VehicleTypes = VehicleTypes;
 
 	ngOnInit(): void {
-		this.navigateUponSuccess();
-
 		this.userService.name$.pipe(takeUntil(this.destroy)).subscribe((name) => {
 			this.username = name;
 		});
@@ -155,18 +150,6 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
-	}
-
-	// TODO: Move this into an effect
-	navigateUponSuccess(): void {
-		this.actions.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy)).subscribe(({ vehicleTechRecord }) => {
-			this.store.dispatch(clearAllSectionStates());
-			this.store.dispatch(clearScrollPosition());
-			this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`], {
-				queryParams: { from: 'amend' },
-				queryParamsHandling: 'merge',
-			});
-		});
 	}
 
 	submit(): void {

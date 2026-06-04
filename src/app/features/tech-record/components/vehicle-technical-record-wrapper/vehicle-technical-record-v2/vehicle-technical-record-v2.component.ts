@@ -36,7 +36,7 @@ import {
 import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
-import { getBySystemNumber, selectSectionState } from '@/src/app/store/technical-records';
+import { selectSectionState } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, inject, input, model } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -154,11 +154,6 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 								this.axlesService.generateAxleSpacingsForm(techRecord)
 							);
 						}
-					}
-
-					// Fetch technical record history and load into state
-					if ('systemNumber' in techRecord && techRecord['systemNumber']) {
-						this.store.dispatch(getBySystemNumber({ systemNumber: techRecord.systemNumber }));
 					}
 
 					// If the the editing reason is notifiable alteration needed, then create a provisional record
