@@ -53,6 +53,10 @@
 
 .disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: text;
   pointer-events: none;
+
+  input {
+    cursor: text;
+  }
 }
