@@ -1,5 +1,11 @@
 import { ValidatorNames } from '@/src/app/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
+import {
+	FormNode,
+	FormNodeEditTypes,
+	FormNodeTypes,
+	FormNodeViewTypes,
+	FormNodeWidth,
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const ContingencyWeightsHGVTpl: FormNode = {
 	name: 'weightsSection',
@@ -37,6 +43,12 @@ export const ContingencyWeightsHGVTpl: FormNode = {
 						{ name: ValidatorNames.Min, args: 1 },
 						{ name: ValidatorNames.Max, args: 99999 },
 					],
+				},
+				{
+					name: 'designTrainWeightRequired',
+					type: FormNodeTypes.CONTROL,
+					viewType: FormNodeViewTypes.HIDDEN,
+					editType: FormNodeEditTypes.HIDDEN,
 				},
 			],
 		},
