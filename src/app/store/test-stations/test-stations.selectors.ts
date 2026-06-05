@@ -8,7 +8,5 @@ export const testStations = createSelector(testStationsFeatureState, (state) => 
 
 export const testStation = (id: string) => createSelector(testStationsFeatureState, (state) => state.entities[`${id}`]);
 
-export const testStationsLoadingState = createSelector(testStationsFeatureState, (state) => state.loading);
-
 export const getTestStationFromProperty = (property: keyof TestStationSchema, value: string) =>
 	createSelector(testStations, (stations) => stations.find((station) => station[`${property}`] === value));

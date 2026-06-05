@@ -4,13 +4,13 @@
 />
 <app-phase-banner />
 
-@let loading = loadingService.showSpinner$ | async;
+@let isLoading = loading();
 @let isStandardLayout = isStandardLayout$ | async;
 
 <div
   class="main-layout"
   [ngClass]="{
-    'no-scroll': loading,
+    'no-scroll': isLoading,
     gutters: isStandardLayout === false,
     'govuk-width-container': isStandardLayout,
   }"
@@ -23,7 +23,7 @@
   >
     <app-global-error></app-global-error>
     <app-global-warning></app-global-warning>
-    <app-spinner [loading]="loading"></app-spinner>
+    <app-spinner [loading]="isLoading"></app-spinner>
     <router-outlet></router-outlet>
   </main>
 </div>

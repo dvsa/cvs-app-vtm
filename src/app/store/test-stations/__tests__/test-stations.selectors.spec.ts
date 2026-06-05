@@ -1,11 +1,6 @@
 import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { TestStationsState, initialTestStationsState } from '../test-stations.reducer';
-import {
-	getTestStationFromProperty,
-	testStation,
-	testStations,
-	testStationsLoadingState,
-} from '../test-stations.selectors';
+import { getTestStationFromProperty, testStation, testStations } from '../test-stations.selectors';
 
 describe('Test Results Selectors', () => {
 	describe('adapter selectors', () => {
@@ -18,14 +13,6 @@ describe('Test Results Selectors', () => {
 
 			expect(testStations.projector(state)).toEqual([{ preparerId: '2' }]);
 			expect(testStation('1').projector(state)).toEqual({ preparerId: '2' });
-		});
-	});
-
-	describe('testStationsLoadingState', () => {
-		it('should return loading state', () => {
-			const state: TestStationsState = { ...initialTestStationsState, loading: true };
-			const selectedState = testStationsLoadingState.projector(state);
-			expect(selectedState).toBeTruthy();
 		});
 	});
 

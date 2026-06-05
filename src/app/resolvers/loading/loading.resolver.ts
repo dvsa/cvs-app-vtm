@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { LoadingService } from '@services/loading/loading.service';
+import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
+import { selectIsLoading } from '../../store/loading/loading.selectors';
 
 export const loadingResolver: ResolveFn<boolean> = () => {
-	const loadingService = inject(LoadingService);
-	return loadingService.showSpinner$.pipe(map((showSpinner) => !showSpinner));
+	const store = inject(Store);
+	return store.select(selectIsLoading).pipe(map((loading) => !loading));
 };

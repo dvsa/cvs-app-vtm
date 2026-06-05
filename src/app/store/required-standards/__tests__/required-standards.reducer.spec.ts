@@ -1,9 +1,5 @@
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
-import {
-	getRequiredStandards,
-	getRequiredStandardsFailure,
-	getRequiredStandardsSuccess,
-} from '../required-standards.actions';
+import { getRequiredStandardsFailure, getRequiredStandardsSuccess } from '../required-standards.actions';
 import {
 	RequiredStandardState,
 	initialRequiredStandardsState,
@@ -29,15 +25,6 @@ describe('Required Standards Reducer', () => {
 	});
 
 	describe('requiredStandards actions', () => {
-		it('should set loading to true', () => {
-			const newState: RequiredStandardState = { ...initialRequiredStandardsState, loading: true };
-			const action = getRequiredStandards({ euVehicleCategory: 'm1' });
-			const state = requiredStandardsReducer(initialRequiredStandardsState, action);
-
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-		});
-
 		describe('getRequiredStandardsSuccess', () => {
 			it('should set all test result records', () => {
 				const newState: RequiredStandardState = {
@@ -58,9 +45,9 @@ describe('Required Standards Reducer', () => {
 
 			describe('getRequiredStandardsFailure', () => {
 				it('should set error state', () => {
-					const newState = { ...initialRequiredStandardsState, loading: false };
+					const newState = { ...initialRequiredStandardsState };
 					const action = getRequiredStandardsFailure({ error: 'unit testing error message' });
-					const state = requiredStandardsReducer({ ...initialRequiredStandardsState, loading: true }, action);
+					const state = requiredStandardsReducer({ ...initialRequiredStandardsState }, action);
 
 					expect(state).toEqual(newState);
 					expect(state).not.toBe(newState);

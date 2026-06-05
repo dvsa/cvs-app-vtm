@@ -6,7 +6,7 @@ import {
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsState, initialDefectsState } from '../defects.reducer';
-import { defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber } from '../defects.selectors';
+import { defect, defects, selectByDeficiencyRef, selectByImNumber } from '../defects.selectors';
 
 describe('Defects Selectors', () => {
 	describe('adapter selectors', () => {
@@ -15,14 +15,6 @@ describe('Defects Selectors', () => {
 
 			expect(defects.projector(state)).toEqual([{ preparerId: 2 }]);
 			expect(defect('1').projector(state)).toEqual({ preparerId: 2 });
-		});
-	});
-
-	describe('testStationsLoadingState', () => {
-		it('should return loading state', () => {
-			const state: DefectsState = { ...initialDefectsState, loading: true };
-			const selectedState = defectsLoadingState.projector(state);
-			expect(selectedState).toBeTruthy();
 		});
 	});
 

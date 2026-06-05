@@ -25,7 +25,7 @@ describe('Test Stations Reducer', () => {
 
 	describe('fetchTestStations actions', () => {
 		it('should set loading to true', () => {
-			const newState: TestStationsState = { ...initialTestStationsState, loading: true };
+			const newState: TestStationsState = { ...initialTestStationsState };
 			const action = fetchTestStations();
 			const state = testStationsReducer(initialTestStationsState, action);
 
@@ -49,9 +49,9 @@ describe('Test Stations Reducer', () => {
 
 			describe('fetchTestStationsFailed', () => {
 				it('should set error state', () => {
-					const newState = { ...initialTestStationsState, loading: false };
+					const newState = { ...initialTestStationsState };
 					const action = fetchTestStationsFailed({ error: 'unit testing error message' });
-					const state = testStationsReducer({ ...initialTestStationsState, loading: true }, action);
+					const state = testStationsReducer({ ...initialTestStationsState }, action);
 
 					expect(state).toEqual(newState);
 					expect(state).not.toBe(newState);
@@ -62,7 +62,7 @@ describe('Test Stations Reducer', () => {
 
 	describe('fetchTestStationById actions', () => {
 		it('should set loading to true', () => {
-			const newState: TestStationsState = { ...initialTestStationsState, loading: true };
+			const newState: TestStationsState = { ...initialTestStationsState };
 			const action = fetchTestStation({ id: 'TestStationId0001' });
 			const state = testStationsReducer(initialTestStationsState, action);
 
@@ -87,9 +87,9 @@ describe('Test Stations Reducer', () => {
 
 		describe('fetchTestStationsByIdFailed', () => {
 			it('should set error state', () => {
-				const newState = { ...initialTestStationsState, loading: false };
+				const newState = { ...initialTestStationsState };
 				const action = fetchTestStationFailed({ error: 'unit testing error message' });
-				const state = testStationsReducer({ ...initialTestStationsState, loading: true }, action);
+				const state = testStationsReducer({ ...initialTestStationsState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);

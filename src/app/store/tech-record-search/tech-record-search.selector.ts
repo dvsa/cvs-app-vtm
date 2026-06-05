@@ -4,10 +4,6 @@ import { techSearchResultAdapter, techSearchResultFeatureState } from './tech-re
 
 const { selectAll } = techSearchResultAdapter.getSelectors();
 
-export const selectTechRecordSearchLoadingState = createSelector(
-	techSearchResultFeatureState,
-	(state) => state.loading
-);
 export const selectTechRecordSearchResults = createSelector(techSearchResultFeatureState, (state) => selectAll(state));
 
 export const selectTechRecordSearchResultsBySystemNumber = createSelector(

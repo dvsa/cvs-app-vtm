@@ -18,7 +18,6 @@ import {
 	fetchReferenceDataByKey,
 	fetchReferenceDataByKeySearch,
 	fetchTyreReferenceDataByKeySearch,
-	referencePsvMakeLoadingState,
 	removeReferenceDataByKey,
 	removeTyreSearch,
 	selectAllReferenceDataByResourceType,
@@ -199,9 +198,5 @@ export class ReferenceDataService {
 		return this.store.pipe(select(selectReasonsForAbandoning(vehicleType)), (source) =>
 			this.mapReferenceDataOptions(source)
 		);
-	}
-
-	getReferencePsvMakeDataLoading$(): Observable<boolean> {
-		return this.store.pipe(select(referencePsvMakeLoadingState));
 	}
 }

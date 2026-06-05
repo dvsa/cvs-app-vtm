@@ -28,5 +28,3 @@ export const getRequiredStandardFromTypeAndRef = (inspectionType: InspectionType
 
 		return undefined;
 	});
-
-export const requiredStandardsLoadingState = createSelector(requiredStandardsFeatureState, (state) => state.loading);

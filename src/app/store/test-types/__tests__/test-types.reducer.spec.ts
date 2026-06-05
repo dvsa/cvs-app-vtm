@@ -1,6 +1,6 @@
 import { TestTypeCategory } from '@models/test-types/testTypeCategory';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
-import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../test-types.actions';
+import { fetchTestTypesSuccess } from '../test-types.actions';
 import { TestTypeState, initialTestTypeState, testTypesReducer } from '../test-types.reducer';
 
 describe('Test Types Reducer', () => {
@@ -12,15 +12,6 @@ describe('Test Types Reducer', () => {
 			const state = testTypesReducer(initialTestTypeState, action);
 
 			expect(state).toBe(initialTestTypeState);
-		});
-
-		it('should set loading to true', () => {
-			const oldState: TestTypeState = { ...initialTestTypeState, loading: false };
-			const action = fetchTestTypes();
-			const state = testTypesReducer(oldState, action);
-
-			expect(state.loading).toBe(true);
-			expect(state).not.toBe(oldState);
 		});
 
 		it('should set the test types data on success and set loading to false on success action', () => {
@@ -35,21 +26,11 @@ describe('Test Types Reducer', () => {
 					12: { id: '12', name: 'bar' } as TestTypeCategory,
 				},
 				ids: ['1', '12'],
-				loading: false,
 			};
 			const action = fetchTestTypesSuccess({ payload: testTypes });
-			const state = testTypesReducer({ ...initialTestTypeState, loading: true }, action);
+			const state = testTypesReducer({ ...initialTestTypeState }, action);
 
 			expect(state).toEqual(newState);
-		});
-
-		it('should set loading to false on failed action', () => {
-			const oldState: TestTypeState = { ...initialTestTypeState, loading: true };
-			const action = fetchTestTypesFailed({ error: 'error' });
-			const state = testTypesReducer(oldState, action);
-
-			expect(state.loading).toBe(false);
-			expect(state).not.toBe(oldState);
 		});
 	});
 });

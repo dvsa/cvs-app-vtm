@@ -74,5 +74,3 @@ export const hgvDefects = filteredDefects(VehicleTypes.HGV);
 export const trlDefects = filteredDefects(VehicleTypes.TRL);
 
 export const defect = (id: string) => createSelector(defectsFeatureState, (state) => state.entities[`${id}`]);
-
-export const defectsLoadingState = createSelector(defectsFeatureState, (state) => state.loading);

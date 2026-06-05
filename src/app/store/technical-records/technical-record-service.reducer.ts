@@ -22,13 +22,10 @@ import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './ba
 import {
 	addSectionState,
 	addSectionStateFromGlobalError,
-	amendVin,
 	amendVinFailure,
 	amendVinSuccess,
-	amendVrm,
 	amendVrmFailure,
 	amendVrmSuccess,
-	archiveTechRecord,
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	canGeneratePlate,
@@ -36,30 +33,21 @@ import {
 	clearADRDetailsBeforeUpdate,
 	clearAllSectionStates,
 	clearScrollPosition,
-	createVehicleRecord,
-	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
-	generateADRCertificate,
 	generateADRCertificateFailure,
 	generateADRCertificateSuccess,
-	generateContingencyADRCertificate,
-	generateLetter,
 	generateLetterFailure,
 	generateLetterSuccess,
-	generatePlate,
 	generatePlateFailure,
 	generatePlateSuccess,
-	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
 	getTechRecordV3Success,
-	promoteTechRecord,
 	promoteTechRecordFailure,
 	promoteTechRecordSuccess,
 	removeSectionState,
 	removeTC3TankInspection,
 	removeUNNumber,
-	unarchiveTechRecord,
 	unarchiveTechRecordFailure,
 	unarchiveTechRecordSuccess,
 	updateADRAdditionalExaminerNotes,
@@ -69,7 +57,6 @@ import {
 	updateEditingTechRecordCancel,
 	updateExistingADRAdditionalExaminerNote,
 	updateScrollPosition,
-	updateTechRecord,
 	updateTechRecordFailure,
 	updateTechRecordSuccess,
 } from './technical-record-service.actions';
@@ -78,7 +65,6 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
 export interface TechnicalRecordServiceState {
 	vehicleTechRecord: TechRecordType<'get'> | undefined;
-	loading: boolean;
 	editingTechRecord?: TechRecordType<'put'>;
 	error?: unknown;
 	techRecordHistory?: TechRecordSearchSchema[];
@@ -91,7 +77,6 @@ export interface TechnicalRecordServiceState {
 export const initialState: TechnicalRecordServiceState = {
 	vehicleTechRecord: undefined,
 	batchVehicles: initialBatchState,
-	loading: false,
 	sectionState: [],
 	canGeneratePlate: false,
 	scrollPosition: [0, 0],
@@ -103,55 +88,39 @@ export const getTechRecordState = createFeatureSelector<TechnicalRecordServiceSt
 
 export const vehicleTechRecordReducer = createReducer(
 	initialState,
-
-	on(createVehicleRecord, defaultArgs),
 	on(createVehicleRecordSuccess, successArgs),
-	on(createVehicleRecordFailure, (state) => ({ ...state, loading: false })),
-
-	on(getBySystemNumber, (state) => ({ ...state, loading: true })),
 	on(getBySystemNumberSuccess, (state, action) => ({
 		...state,
-		loading: false,
 		techRecordHistory: action.techRecordHistory,
 	})),
-	on(getBySystemNumberFailure, (state) => ({ ...state, loading: false, techRecordHistory: [] })),
+	on(getBySystemNumberFailure, (state) => ({ ...state, techRecordHistory: [] })),
 
-	on(updateTechRecord, defaultArgs),
 	on(updateTechRecordSuccess, successArgs),
 	on(updateTechRecordFailure, updateFailureArgs),
 
-	on(archiveTechRecord, defaultArgs),
 	on(archiveTechRecordSuccess, successArgs),
 	on(archiveTechRecordFailure, updateFailureArgs),
 
-	on(unarchiveTechRecord, defaultArgs),
 	on(unarchiveTechRecordSuccess, successArgs),
 	on(unarchiveTechRecordFailure, updateFailureArgs),
 
-	on(promoteTechRecord, defaultArgs),
 	on(promoteTechRecordSuccess, successArgs),
 	on(promoteTechRecordFailure, updateFailureArgs),
 
-	on(amendVrm, defaultArgs),
 	on(amendVrmSuccess, successArgs),
 	on(amendVrmFailure, updateFailureArgs),
 
-	on(amendVin, defaultArgs),
 	on(amendVinSuccess, successArgs),
 	on(amendVinFailure, updateFailureArgs),
 
-	on(generatePlate, defaultArgs),
 	on(generatePlateSuccess, (state) => ({ ...state, editingTechRecord: undefined, loading: false })),
 	on(generatePlateFailure, failureArgs),
 	on(canGeneratePlate, (state) => ({ ...state, canGeneratePlate: true })),
 	on(cannotGeneratePlate, (state) => ({ ...state, canGeneratePlate: false })),
 
-	on(generateLetter, defaultArgs),
 	on(generateLetterSuccess, (state) => ({ ...state, editingTechRecord: undefined })),
 	on(generateLetterFailure, failureArgs),
 
-	on(generateADRCertificate, defaultArgs),
-	on(generateContingencyADRCertificate, defaultArgs),
 	on(generateADRCertificateSuccess, (state) => ({ ...state, editingTechRecord: undefined, loading: false })),
 	on(generateADRCertificateFailure, failureArgs),
 
@@ -198,16 +167,12 @@ export const vehicleTechRecordReducer = createReducer(
 	on(clearADRDetailsBeforeUpdate, (state) => handleClearADRDetails(state))
 );
 
-function defaultArgs(state: TechnicalRecordServiceState) {
-	return { ...state, loading: true };
-}
-
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecord: TechRecordType<'get'> }) {
-	return { ...state, vehicleTechRecord: data.vehicleTechRecord, loading: false };
+	return { ...state, vehicleTechRecord: data.vehicleTechRecord };
 }
 
 function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: unknown }) {
-	return { ...state, error: data.error, loading: false };
+	return { ...state, error: data.error };
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: unknown }) {
@@ -215,7 +180,6 @@ function failureArgs(state: TechnicalRecordServiceState, data: { error: unknown 
 		...state,
 		vehicleTechRecord: undefined,
 		error: data.error,
-		loading: false,
 	};
 }
 

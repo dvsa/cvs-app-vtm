@@ -3,7 +3,7 @@ import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { TechRecordValidatorsService } from '@/src/app/forms/validators/tech-record-validators.service';
 import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
-import { setSpinnerState } from '@/src/app/store/spinner/spinner.actions';
+import { startLoading, stopLoading } from '@/src/app/store/loading/loading.actions';
 import { Component, OnChanges, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -184,9 +184,9 @@ export class CreateTechRecordComponent implements OnInit, OnChanges {
 
 		this.globalErrorService.clearErrors();
 
-		this.store.dispatch(setSpinnerState({ showSpinner: true }));
+		this.store.dispatch(startLoading());
 		const formValueUnique = await this.isFormValueUnique();
-		this.store.dispatch(setSpinnerState({ showSpinner: false }));
+		this.store.dispatch(stopLoading());
 
 		const techRecord = {
 			vin: this.form.controls.vin.value,

@@ -10,7 +10,6 @@ import {
 	selectTechRecordDeletions,
 	selectTechRecordHistory,
 	techRecord,
-	technicalRecordsLoadingState,
 } from '../technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
@@ -29,13 +28,6 @@ describe('Tech Record Selectors', () => {
 		});
 	});
 
-	describe('technicalRecordsLoadingState', () => {
-		it('should return loading state', () => {
-			const state: TechnicalRecordServiceState = { ...initialState, loading: true };
-			const selectedState = technicalRecordsLoadingState.projector(state);
-			expect(selectedState).toBeTruthy();
-		});
-	});
 	describe('editingTechRecord', () => {
 		it('should return editingTechRecords state', () => {
 			const state: TechnicalRecordServiceState = {

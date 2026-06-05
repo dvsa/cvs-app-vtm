@@ -1,5 +1,6 @@
 import { ReasonForCreationSectionComponent } from '@/src/app/forms/custom-sections/reason-for-creation-section/reason-for-creation-section.component';
 import { Modes } from '@/src/app/models/modes.enum';
+import { selectIsLoading } from '@/src/app/store/loading/loading.selectors';
 import { AsyncPipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import {
 	AfterViewInit,
@@ -51,7 +52,6 @@ import { AxlesService } from '@services/axles/axles.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
-import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -116,7 +116,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 	private activatedRoute = inject(ActivatedRoute);
 	private viewportScroller = inject(ViewportScroller);
 	private store = inject(Store);
-	private loading = inject(LoadingService);
 
 	fb = inject(FormBuilder);
 	featureToggleService = inject(FeatureToggleService);
@@ -182,11 +181,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 				this.scrollPosition = position;
 			});
 
-		this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
-			if (!loading) {
-				this.viewportScroller.scrollToPosition(this.scrollPosition);
-			}
-		});
+		this.store
+			.select(selectIsLoading)
+			.pipe(takeUntil(this.destroy$), debounceTime(10))
+			.subscribe((loading) => {
+				if (!loading) {
+					this.viewportScroller.scrollToPosition(this.scrollPosition);
+				}
+			});
 
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
 			this.techRecordCalculated = { ...this.techRecordCalculated, ...this.form.getRawValue() };

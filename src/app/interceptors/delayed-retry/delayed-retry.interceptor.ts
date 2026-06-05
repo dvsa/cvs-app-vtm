@@ -3,8 +3,8 @@ import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
-import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { Observable, retry, throwError, timer } from 'rxjs';
+import { stopLoading } from '../../store/loading/loading.actions';
 
 export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');
 
@@ -61,7 +61,7 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
 						return this.retryHandler(error, retryCount, this.config, request);
 					} catch (httpError: unknown) {
 						return throwError(() => {
-							this.store.dispatch(setSpinnerState({ showSpinner: false }));
+							this.store.dispatch(stopLoading());
 							this.store.dispatch(retryInterceptorFailure({ error }));
 							return httpError;
 						});

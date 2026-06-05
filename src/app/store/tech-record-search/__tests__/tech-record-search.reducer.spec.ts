@@ -1,5 +1,5 @@
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../tech-record-search.actions';
+import { fetchSearchResultFailed, fetchSearchResultSuccess } from '../tech-record-search.actions';
 import {
 	SearchResultState,
 	initialTechSearchResultState,
@@ -7,15 +7,6 @@ import {
 } from '../tech-record-search.reducer';
 
 describe('fetchSearchResults actions', () => {
-	it('should set loading to true', () => {
-		const newState: SearchResultState = { ...initialTechSearchResultState, loading: true };
-		const action = fetchSearchResult({ term: 'foo' });
-		const state = techSearchResultReducer(initialTechSearchResultState, action);
-
-		expect(state).toEqual(newState);
-		expect(state).not.toBe(newState);
-	});
-
 	describe('fetchSearchResultsSuccess', () => {
 		it('should set all test result records', () => {
 			const mockSearchResult = [
@@ -38,9 +29,9 @@ describe('fetchSearchResults actions', () => {
 
 		describe('fetchSearchResultsFailed', () => {
 			it('should set error state', () => {
-				const newState = { ...initialTechSearchResultState, loading: false, error: ':cry:' };
+				const newState = { ...initialTechSearchResultState, error: ':cry:' };
 				const action = fetchSearchResultFailed({ error: ':cry:' });
-				const state = techSearchResultReducer({ ...initialTechSearchResultState, loading: true }, action);
+				const state = techSearchResultReducer({ ...initialTechSearchResultState }, action);
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);

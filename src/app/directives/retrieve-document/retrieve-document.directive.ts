@@ -5,8 +5,8 @@ import { DocumentType } from '@models/document-type.enum';
 import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
 import { HttpService } from '@services/http/http.service';
-import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { takeWhile } from 'rxjs';
+import { startLoading, stopLoading } from '../../store/loading/loading.actions';
 
 @Directive({ selector: '[appRetrieveDocument][params][fileName]' })
 export class RetrieveDocumentDirective {
@@ -29,7 +29,7 @@ export class RetrieveDocumentDirective {
 		event.stopPropagation();
 
 		if (this.loading()) {
-			this.store.dispatch(setSpinnerState({ showSpinner: true }));
+			this.store.dispatch(startLoading());
 		}
 
 		this.httpService
@@ -43,7 +43,7 @@ export class RetrieveDocumentDirective {
 						case HttpEventType.Response:
 							this.documentsService.openDocumentFromResponse(this.fileName(), response.body, this.fileType());
 							this.markAsVisited();
-							this.store.dispatch(setSpinnerState({ showSpinner: false }));
+							this.store.dispatch(stopLoading());
 							break;
 						default:
 							break;

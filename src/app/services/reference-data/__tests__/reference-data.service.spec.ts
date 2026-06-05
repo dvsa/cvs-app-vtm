@@ -22,7 +22,6 @@ import {
 	fetchReferenceDataByKeySearch,
 	fetchTyreReferenceDataByKeySearch,
 	initialReferenceDataState,
-	referencePsvMakeLoadingState,
 	removeTyreSearch,
 	selectTyreSearchCriteria,
 } from '@store/reference-data';
@@ -282,23 +281,13 @@ describe('ReferenceDataService', () => {
 				});
 		});
 		it('should get the tyre search criteria', (done) => {
-			const mockState = { loading: false } as ReferenceDataEntityStateSearch;
+			const mockState = {} as ReferenceDataEntityStateSearch;
 			store.overrideSelector(selectTyreSearchCriteria, mockState);
 			service
 				.getTyreSearchCriteria$()
 				.pipe(take(1))
 				.subscribe((referenceData) => {
 					expect(referenceData).toEqual(mockState);
-					done();
-				});
-		});
-		it('should get the psv make reference data loading', (done) => {
-			store.overrideSelector(referencePsvMakeLoadingState, false);
-			service
-				.getReferencePsvMakeDataLoading$()
-				.pipe(take(1))
-				.subscribe((loadingFlag) => {
-					expect(loadingFlag).toBe(false);
 					done();
 				});
 		});

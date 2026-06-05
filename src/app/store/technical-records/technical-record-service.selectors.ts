@@ -14,8 +14,6 @@ export const getSingleVehicleType = createSelector(
 
 export const editingTechRecord = createSelector(getTechRecordState, (state) => state.editingTechRecord);
 
-export const technicalRecordsLoadingState = createSelector(getTechRecordState, (state) => state.loading);
-
 export const getCanGeneratePlate = createSelector(getTechRecordState, (state) => state.canGeneratePlate);
 
 export const selectTechRecordHistory = createSelector(getTechRecordState, (state) =>

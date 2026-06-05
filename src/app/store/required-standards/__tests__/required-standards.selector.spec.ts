@@ -4,26 +4,16 @@ import {
 } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { RequiredStandardState, initialRequiredStandardsState } from '../required-standards.reducer';
-import {
-	getRequiredStandardFromTypeAndRef,
-	getRequiredStandardsState,
-	requiredStandardsLoadingState,
-} from '../required-standards.selector';
+import { getRequiredStandardFromTypeAndRef, getRequiredStandardsState } from '../required-standards.selector';
 
 describe('RequiredStandardsLoadingState', () => {
 	const mockTestResult = {
 		euVehicleCategory: 'm1',
 	} as TestResultSchema;
 
-	it('should return loading state', () => {
-		const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: true };
-		const selectedState = requiredStandardsLoadingState.projector(state);
-		expect(selectedState).toBeTruthy();
-	});
-
 	describe('getRequiredStandardsState', () => {
 		it('should return me the required standards state', () => {
-			const state: RequiredStandardState = { ...initialRequiredStandardsState, loading: false };
+			const state: RequiredStandardState = { ...initialRequiredStandardsState };
 			const selectedState = getRequiredStandardsState.projector(state.entities, mockTestResult);
 			expect(selectedState).toBeTruthy();
 		});

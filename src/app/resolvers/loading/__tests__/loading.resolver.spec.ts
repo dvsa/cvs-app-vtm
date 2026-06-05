@@ -1,14 +1,10 @@
-import { LoadingService } from '@/src/app/services/loading/loading.service';
+import { selectIsLoading } from '@/src/app/store/loading/loading.selectors';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { Observable, of, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { loadingResolver } from '../loading.resolver';
-
-const mockLoadingService = {
-	showSpinner$: of(true),
-};
 
 describe('LoadingResolver', () => {
 	let resolver: ResolveFn<boolean>;
@@ -16,10 +12,7 @@ describe('LoadingResolver', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [
-				provideMockStore({ initialState: initialAppState }),
-				{ provide: LoadingService, useValue: mockLoadingService },
-			],
+			providers: [provideMockStore({ initialState: initialAppState })],
 		});
 		resolver = (...resolverParameters) => TestBed.runInInjectionContext(() => loadingResolver(...resolverParameters));
 		store = TestBed.inject(MockStore);
@@ -30,7 +23,7 @@ describe('LoadingResolver', () => {
 	});
 
 	it('should resolve to false when the spinner is still showing', (done) => {
-		mockLoadingService.showSpinner$ = of(true);
+		store.overrideSelector(selectIsLoading, true);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 		) as Observable<boolean>;
@@ -42,7 +35,7 @@ describe('LoadingResolver', () => {
 	});
 
 	it('should resolve to true when the spinner has been dismissed', (done) => {
-		mockLoadingService.showSpinner$ = of(false);
+		store.overrideSelector(selectIsLoading, false);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 		) as Observable<boolean>;

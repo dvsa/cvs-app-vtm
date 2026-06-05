@@ -1,6 +1,7 @@
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { VehicleConfiguration } from '@/src/app/models/vehicle-configuration.enum';
+import { selectIsLoading } from '@/src/app/store/loading/loading.selectors';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
@@ -60,11 +61,13 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 
+	isLoading = this.store.select(selectIsLoading);
+
 	dtpNumbers$ = combineLatest([
 		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
-		this.referenceDataService.getReferencePsvMakeDataLoading$(),
+		this.isLoading,
 	]).pipe(
-		skipWhile(([, loading]) => loading),
+		skipWhile(([data, loading]) => loading || data?.length === 0),
 		take(1),
 		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
 	);

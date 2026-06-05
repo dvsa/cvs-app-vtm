@@ -35,7 +35,7 @@ describe('Reference Data Selectors', () => {
 			);
 			const state: ReferenceDataState = {
 				...initialReferenceDataState,
-				COUNTRY_OF_REGISTRATION: { ids, entities, loading: false },
+				COUNTRY_OF_REGISTRATION: { ids, entities },
 			};
 
 			const key = ids[Math.floor(Math.random() * ids.length)]; // select a random key
@@ -68,7 +68,6 @@ describe('Reference Data Selectors', () => {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.Tyres]: {
 					...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-					loading: false,
 					searchReturn: value.payload,
 				},
 			};
@@ -100,7 +99,6 @@ describe('Reference Data Selectors', () => {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.Tyres]: {
 					...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-					loading: false,
 					searchReturn: value.payload,
 					filter: 'cake',
 					term: 'lies',
@@ -111,13 +109,6 @@ describe('Reference Data Selectors', () => {
 			expect(expectedState.filter).toBe('cake');
 			expect(expectedState.term).toBe('lies');
 		});
-	});
-
-	it('should return true if any feature is loading state', () => {
-		const state: ReferenceDataState = { ...initialReferenceDataState };
-		state.HGV_MAKE.loading = true;
-		const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
-		expect(selectedState).toBe(true);
 	});
 
 	it('should return the reasons for abandoning for the right vehicle type', () => {
@@ -137,7 +128,6 @@ describe('Reference Data Selectors', () => {
 				...initialReferenceDataState,
 				[ReferenceDataResourceType.Tyres]: {
 					...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-					loading: false,
 					ids: [1, 11, 111, 101, 2],
 					entities: {
 						1: {

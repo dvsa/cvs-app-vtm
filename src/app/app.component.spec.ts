@@ -11,7 +11,6 @@ import { GoogleAnalyticsServiceMock } from '@mocks/google-analytics-service.mock
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AnalyticsService } from '@services/analytics/analytics.service';
-import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { Observable, of } from 'rxjs';
@@ -39,7 +38,6 @@ describe('AppComponent', () => {
 				provideMockStore<State>({ initialState: initialAppState }),
 				provideHttpClient(),
 				provideHttpClientTesting(),
-				{ provide: LoadingService, useValue: { showSpinner$: of(false) } },
 				{ provide: UserService, useValue: MockUserService },
 				{ provide: MsalGuard, useValue: { canActivate: () => of(true) } },
 				{ provide: RoleGuard, useValue: { canActivate: () => of(true) } },

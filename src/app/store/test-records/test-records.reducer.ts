@@ -30,34 +30,22 @@ import {
 	cleanTestResult,
 	createDefect,
 	createRequiredStandard,
-	createTestResult,
-	createTestResultFailed,
-	createTestResultSuccess,
-	fetchSelectedTestResult,
-	fetchSelectedTestResultFailed,
 	fetchSelectedTestResultSuccess,
-	fetchTestResults,
-	fetchTestResultsBySystemNumber,
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
 	getRecalls,
-	getRecallsFailure,
-	getRecallsSuccess,
 	initialContingencyTest,
 	patchEditingTestResult,
 	removeDefect,
 	removeRequiredStandard,
 	setResultOfTest,
-	setTestResultLoading,
 	templateSectionsChanged,
 	updateDefect,
 	updateEditingTestResult,
 	updateRequiredStandard,
 	updateResultOfTest,
 	updateResultOfTestRequiredStandards,
-	updateTestResult,
-	updateTestResultFailed,
 	updateTestResultSuccess,
 } from './test-records.actions';
 
@@ -65,7 +53,6 @@ export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 
 interface Extras {
 	error: string;
-	loading: boolean;
 	editingTestResult?: TestResultSchema;
 	sectionTemplates?: FormNode[];
 }
@@ -82,66 +69,43 @@ export const testResultAdapter: EntityAdapter<TestResultSchema> = createEntityAd
 
 export const initialTestResultsState: EntityState<TestResultSchema> & Extras = testResultAdapter.getInitialState({
 	error: '',
-	loading: false,
 });
 
 export const testResultsReducer = createReducer(
 	initialTestResultsState,
-	on(fetchTestResults, (state) => ({ ...state, loading: true })),
 	on(fetchTestResultsSuccess, (state, action) => ({
 		...testResultAdapter.setAll(action.payload, state),
-		loading: false,
 	})),
-
-	on(fetchTestResultsBySystemNumber, (state) => ({ ...state, loading: true })),
 	on(fetchTestResultsBySystemNumberSuccess, (state, action) => ({
 		...testResultAdapter.setAll(action.payload, state),
-		loading: false,
 	})),
-	on(fetchTestResultsBySystemNumberFailed, (state) => ({ ...testResultAdapter.setAll([], state), loading: false })),
-
-	on(fetchSelectedTestResult, (state) => ({ ...state, loading: true })),
+	on(fetchTestResultsBySystemNumberFailed, (state) => ({ ...testResultAdapter.setAll([], state) })),
 	on(fetchSelectedTestResultSuccess, (state, action) => ({
 		...testResultAdapter.upsertOne(action.payload, state),
-		loading: false,
 	})),
-	on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
-
-	on(createTestResult, updateTestResult, (state) => ({ ...state, loading: true })),
 	on(updateTestResultSuccess, (state, action) => ({
 		...testResultAdapter.updateOne(action.payload, state),
-		loading: false,
 	})),
-	on(createTestResultSuccess, createTestResultFailed, updateTestResultFailed, (state) => ({
-		...state,
-		loading: false,
-	})),
-
 	on(updateResultOfTest, (state) => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
 	on(setResultOfTest, (state, action) => ({
 		...state,
 		editingTestResult: setTestResult(state.editingTestResult, action.result),
 	})),
-
 	on(patchEditingTestResult, (state, action) => ({
 		...state,
 		editingTestResult: merge({}, state.editingTestResult, action.testResult),
 	})),
-
 	on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, action.testResult) })),
 	on(cancelEditingTestResult, (state) => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-
 	on(initialContingencyTest, (state, action) => ({
 		...state,
 		editingTestResult: { ...action.testResult } as TestResultSchema,
 	})),
-
 	on(templateSectionsChanged, (state, action) => ({
 		...state,
 		sectionTemplates: action.sectionTemplates,
 		editingTestResult: action.sectionsValue,
 	})),
-
 	on(createDefect, (state, action) => ({
 		...state,
 		editingTestResult: createNewDefect(state.editingTestResult, action.defect),
@@ -167,17 +131,12 @@ export const testResultsReducer = createReducer(
 		...state,
 		editingTestResult: removeRequiredStandardAtIndex(state.editingTestResult, action.index),
 	})),
-
 	on(updateResultOfTestRequiredStandards, (state) => ({
 		...state,
 		editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult),
 	})),
-
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
-
-	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
-	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
+	on(getRecalls, (state) => ({ ...state }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

@@ -4,6 +4,7 @@ import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespac
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
+import { selectIsLoading } from '@/src/app/store/loading/loading.selectors';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -96,13 +97,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	tcs = inject(TechnicalRecordChangesService);
 	adrValidators = inject(AdrValidatorsService);
 
+	isLoading = this.store.select(selectIsLoading);
+
 	bodyTypes: MultiOptions = [];
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 	dtpNumbers$ = combineLatest([
 		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
-		this.referenceDataService.getReferencePsvMakeDataLoading$(),
+		this.isLoading,
 	]).pipe(
-		skipWhile(([, loading]) => loading),
+		skipWhile(([data, loading]) => loading || data?.length === 0),
 		take(1),
 		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
 	);
