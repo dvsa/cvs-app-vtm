@@ -21,10 +21,10 @@ import {
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CacheBucket, withCache } from '@ngneat/cashew';
 import { cloneDeep } from 'lodash';
-import { lastValueFrom, timeout } from 'rxjs';
+import { EMPTY, defer, expand, last, lastValueFrom, map, switchMap, takeWhile, timeout, timer } from 'rxjs';
 import { FeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 
 @Injectable({ providedIn: 'root' })
@@ -453,6 +453,45 @@ export class HttpService {
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
+	}
+
+	waitForTechRecord(systemNumber: string) {
+		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+			expand((results, attempt) => {
+				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
+
+				if (record) {
+					return EMPTY; // stop retrying
+				}
+
+				const delayMs = Math.min(500 * 2 ** attempt, 5000); // exponential backoff (max 5s)
+
+				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
+			}),
+			takeWhile((record) => !record, true), // include final successful emission
+			last()
+		);
+	}
+
+	waitForCurrentTechRecord(systemNumber: string) {
+		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+			expand((results, attempt) => {
+				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
+
+				if (record) {
+					return EMPTY; // stop retrying
+				}
+
+				const delayMs = Math.min(500 * 2 ** attempt, 5000); // exponential backoff (max 5s)
+
+				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
+			}),
+
+			map((results) => results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT)),
+
+			takeWhile((record) => !record, true), // include final successful emission
+			last()
+		);
 	}
 
 	testResultsSystemNumberGet(

@@ -290,7 +290,7 @@
       label="EU vehicle category"
       formControlName="techRecord_euVehicleCategory"
       [width]="FormNodeWidth.S"
-      [options]="EUCategoryOptions"
+      [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord())"
       appFilterByTags
       [filters]="filters()"
       [tagNames]="euVehicleCategoryFilterOptions"

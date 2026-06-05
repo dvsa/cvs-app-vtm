@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
+import { MultiOptions } from '@models/options.model';
 import {
 	AutocompleteEnhanceParams,
 	enhanceSelectElement,
@@ -46,11 +47,11 @@ export class GovukFormGroupAutocompleteComponent
 
 	readonly placeholder = input<string>('');
 
-	readonly options$ = input.required<Observable<any[]>>();
+	readonly options$ = input.required<Observable<any[] | MultiOptions | undefined>>();
 
 	document = inject(DOCUMENT);
 
-	autocompleteOptions: (string | number)[] = [];
+	multiOptions: MultiOptions = [];
 
 	destroy = new ReplaySubject<boolean>(1);
 	valueSub = new BehaviorSubject<unknown>(null);
@@ -59,7 +60,10 @@ export class GovukFormGroupAutocompleteComponent
 		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
 			.pipe(takeUntil(this.destroy))
 			.subscribe(([options, latest]) => {
-				this.autocompleteOptions = options;
+				this.multiOptions = Array.isArray(options)
+					? options.map((option) => (typeof option === 'string' ? { label: option, value: option } : option))
+					: [];
+				this.cdr.detectChanges();
 
 				const enhanceParams: AutocompleteEnhanceParams = {
 					id: this.id,
@@ -68,7 +72,6 @@ export class GovukFormGroupAutocompleteComponent
 					autoselect: false,
 					showAllValues: true,
 					confirmOnBlur: false,
-					source: this.autocompleteOptions,
 					dropdownArrow: () => `
             <svg class="autocomplete__dropdown-arrow-down"style="height: 17px;" viewBox="0 0 512 512">
               <path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9  c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3  z"/>
@@ -83,7 +86,7 @@ export class GovukFormGroupAutocompleteComponent
 					enhanceParams.defaultValue = latest.toString();
 				}
 
-				if (this.autocompleteOptions.length > 0) {
+				if (this.multiOptions.length > 0) {
 					enhanceSelectElement(enhanceParams);
 				}
 
@@ -112,6 +115,7 @@ export class GovukFormGroupAutocompleteComponent
 	get style(): string {
 		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
 	}
+
 	writeValue(obj: any): void {
 		this.value.set(obj);
 		this.valueSub.next(obj);
@@ -137,7 +141,7 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	findOptionValue(label: string) {
-		return label ? this.autocompleteOptions.find((option) => option === label) : '';
+		return label ? this.multiOptions.find((option) => option.label === label)?.value : '';
 	}
 
 	addValidators() {

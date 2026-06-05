@@ -29,7 +29,7 @@ import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, of, take, takeUntil, tap } from 'rxjs';
-import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
 
 @Component({
 	selector: 'app-create-test-record',

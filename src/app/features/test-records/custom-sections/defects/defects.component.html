@@ -1,0 +1,57 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    @if (testResult(); as testResult) {
+      @if (testResult?.testTypes?.[0]?.defects?.length) {
+        <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
+        <caption class="govuk-table__caption govuk-table__caption--m">
+          Defects
+        </caption>
+        @if (hasMediaAvailable() && testResult && !defectMediaService?.hasRententionPeriodExpired(testResult)) {
+          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+        }
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Reference</th>
+              <th scope="col" class="govuk-table__header">Description</th>
+              <th scope="col" class="govuk-table__header">Category</th>
+              <th scope="col" class="govuk-table__header">PRS?</th>
+               <th scope="col" class="govuk-table__header">Media</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            @for (defect of testResult.testTypes[0].defects; track defect; let i = $index) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                  <a data-action="retain-data" routerLink="defect/{{ i }}" href="javascript:void(0)" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
+                  >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a>
+                  </td>
+                  <td class="govuk-table__cell">
+                    {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + (defect.deficiencyText ? defect.deficiencyText : '') | truncate : 47 }}
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <app-defect-media-download [defect]="defect"></app-defect-media-download>
+                  </td>
+                </tr>
+              }
+            </tbody>
+        </table>
+      } @else {
+        <h2 class="govuk-heading-m">Defects</h2>
+        <p class="govuk-body">No defects</p>
+      }
+    }
+  </div>
+</div>
+
+@if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+  <app-button type="link" design="secondary" id="add-defect-button" [routerLink]="['selectDefect']" queryParamsHandling="merge">
+    Add defect
+  </app-button>
+}

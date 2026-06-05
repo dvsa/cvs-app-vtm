@@ -28,6 +28,12 @@
     @if (prefix()) {
       <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
     }
-    <select id="{{ id }}"></select>
+
+    <select [id]="id">
+      <option value=""></option>
+      @for (option of multiOptions; track option) {
+        <option [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
+      }
+    </select>
   </div>
 </div>

@@ -303,7 +303,8 @@ export class CommonValidatorsService {
 
 	pastDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
-			if (control.value && new Date(control.value) > new Date()) {
+			// Determine past date (ignore seconds)
+			if (control.value && dayjs(control.value).startOf('minute').isAfter(dayjs().endOf('minute'))) {
 				const globalError = { pastDate: { error: `${message} must be in the past`, anchorLink: '', accordion: '' } };
 				if (anchorLink) {
 					globalError.pastDate.anchorLink = anchorLink;
@@ -578,6 +579,72 @@ export class CommonValidatorsService {
 			}
 
 			return null;
+		};
+	}
+
+	isAfterDate(
+		sibling: string,
+		label: string,
+		siblingLabel: string,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!control.parent) return null;
+
+			const inputValue = control.value;
+			if (!inputValue) return null;
+
+			// Only perform comparison if both controls contain valid dates
+			const siblingControl = control.parent.get(sibling) as AbstractControl;
+			const siblingValue = siblingControl.value;
+			if (!siblingValue) return null;
+
+			// If dates are the same, return null
+			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;
+
+			return dayjs(inputValue).isAfter(dayjs(siblingValue))
+				? null
+				: {
+						aheadOfDate: {
+							error: `${label} must be ahead of ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
+							anchorLink,
+							accordion,
+						},
+					};
+		};
+	}
+
+	isBeforeDate(
+		sibling: string,
+		label: string,
+		siblingLabel: string,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!control.parent) return null;
+
+			const inputValue = control.value;
+			if (!inputValue) return null;
+
+			// Only perform comparison if both controls contain valid dates
+			const siblingControl = control.parent.get(sibling) as AbstractControl;
+			const siblingValue = siblingControl.value;
+			if (!siblingValue) return null;
+
+			// If dates are the same, return null
+			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;
+
+			return dayjs(inputValue).isBefore(dayjs(siblingValue))
+				? null
+				: {
+						beforeDate: {
+							error: `${label} must be before ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
+							anchorLink,
+							accordion,
+						},
+					};
 		};
 	}
 }

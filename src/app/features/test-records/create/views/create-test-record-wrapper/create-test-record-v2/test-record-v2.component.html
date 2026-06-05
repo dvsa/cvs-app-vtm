@@ -1,0 +1,141 @@
+<div class="govuk-grid-row search-page">
+  <div class="govuk-grid-column-full">
+    @if (mode() === Modes.SUMMARY) {
+      <app-banner>
+        <ng-container title>Important</ng-container>
+        <ng-container content>Check your answers before submitting the test</ng-container>
+      </app-banner>
+    }
+
+    @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY || mode() === Modes.AMEND) {
+      <app-vehicle-header
+        [isEditing]="mode() === Modes.EDIT || mode() === Modes.AMEND"
+        [isReview]="mode() === Modes.SUMMARY"
+        [testResult]="this.testResult()"
+      >
+        @if (testResult()?.testStatus !== statuses.CANCELLED && mode() === Modes.VIEW) {
+          <app-button-group class="page-actions">
+            <ng-container *appRoleRequired="roles.TestResultAmend">
+              @if (isTestTypeGroupEditable$ | async) {
+                <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
+                <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
+              } @else {
+                <app-banner>
+                  <ng-container title>Important</ng-container>
+                  <ng-container content>Editing this record is not currently supported</ng-container>
+                </app-banner>
+              }
+            </ng-container>
+          </app-button-group>
+        }
+      </app-vehicle-header>
+
+      <app-accordion-control>
+        <ng-template #template>
+          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+            <app-accordion
+              [id]="'vehicle'"
+              [title]="'Vehicle Details'"
+              [description]="''"
+              [isExpanded]="true"
+            >
+              <form ngNoForm>
+                <app-test-vehicle [mode]="mode()"></app-test-vehicle>
+              </form>
+            </app-accordion>
+          }
+          <app-accordion
+            [id]="'test'"
+            [title]="'Test'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test [mode]="mode()" [initialMode]="initialMode()"></app-test>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'visit'"
+            [title]="'Visit'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-visit [mode]="mode()"></app-test-visit>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'notes'"
+            [title]="'Notes'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-notes [mode]="mode()"></app-test-notes>
+            </form>
+          </app-accordion>
+          <app-accordion
+            [id]="'defects'"
+            [title]="'Defects'"
+            [description]="''"
+            [isExpanded]="true"
+          >
+            <form ngNoForm>
+              <app-test-defects [mode]="mode()"></app-test-defects>
+            </form>
+          </app-accordion>
+          @if ((mode() === Modes.SUMMARY || mode() === Modes.VIEW) && initialMode() !== Modes.EDIT) {
+            <app-test-amendment-history class="section" [testRecord]="testResult()" />
+          }
+          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+            <app-accordion
+              [id]="'reason-for-creation'"
+              [title]="'Reason for creation'"
+              [description]="''"
+              [isExpanded]="true"
+            >
+              <form ngNoForm>
+                <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
+              </form>
+            </app-accordion>
+          }
+        </ng-template>
+      </app-accordion-control>
+
+      <!-- Accordions appear here -->
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
+    }
+
+    @if (mode() === Modes.ABANDON) {
+      <app-abandon />
+    }
+
+    @if (initialMode() === Modes.EDIT) {
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+    }
+
+    <app-button-group>
+      @if (mode() === Modes.EDIT) {
+        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
+        @if (isTestTypeAbandonable()) {
+          <app-button id="abandon-test-result" [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+        }
+      }
+
+      @if (mode() === Modes.AMEND) {
+        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(Modes.VIEW)">Cancel</app-button>
+      }
+
+      @if (mode() === Modes.SUMMARY) {
+        <app-button id="save-test-result" (clicked)="onSubmit()">Accept and send</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
+      }
+
+      @if (mode() === Modes.ABANDON) {
+        <app-button id="abandon-test-result" (clicked)="onAbandon()">Confirm and save</app-button>
+        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
+      }
+    </app-button-group>
+  </div>
+</div>

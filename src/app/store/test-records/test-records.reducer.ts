@@ -199,7 +199,7 @@ function createNewRequiredStandard(
 	return { ...testResult };
 }
 
-function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
+export function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 	if (!testResult || !testResult.testTypes) {
 		return testResult;
 	}
@@ -260,6 +260,10 @@ function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 			testType.customDefects = [];
 		}
 
+		// if (testType.defects.length > 0) {
+		//   testType.defects.forEach(defect => delete defect.metadata);
+		// }
+
 		// When abandoning a first test ensure certificate number is sent up
 		if (isAbandon && TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(testType.testTypeId)) {
 			testType.certificateNumber = '';
@@ -271,6 +275,11 @@ function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 			testType.smokeTestKLimitApplied
 		) {
 			testType.smokeTestKLimitApplied = testType.smokeTestKLimitApplied.toString();
+		}
+
+		// If abandon reasons is an array, convert it to a string
+		if (Array.isArray(testType.reasonForAbandoning)) {
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
 		}
 
 		return testType;
