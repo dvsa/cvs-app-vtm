@@ -14,13 +14,32 @@
 
         @if (testResult.vehicleType === VehicleTypes.HGV) {
           <ng-container formGroupName="weights">
-            <govuk-form-group-input
-              [suffix]="'kg'"
-              [width]="FormNodeWidth.M"
-              type="number"
-              label="Design gross train weight"
-              formControlName="designGrossTrainWeight"
-            />
+            @if (form.controls.weights.controls.designGrossTrainWeight.disabled) {
+              <govuk-form-group-input
+                [suffix]="'kg'"
+                [width]="FormNodeWidth.M"
+                type="number"
+                label="Design gross train weight"
+                formControlName="designGrossTrainWeight"
+              />
+            } @else {
+              <h2 class="govuk-heading-m">Design train weight</h2>
+
+              <govuk-form-group-checkbox
+                label="Train weight not applicable"
+                [value]="form.controls.weights.controls.designTrainWeightRequired.getRawValue() === NOT_APPLICABLE"
+                (valueChange)="handleTrainWeightNotApplicable($event)"
+              />
+
+              @if (form.controls.weights.controls.designTrainWeightRequired.getRawValue() !== NOT_APPLICABLE) {
+                <govuk-form-group-input
+                  [suffix]="'kg'"
+                  [width]="FormNodeWidth.M"
+                  type="number"
+                  formControlName="designGrossTrainWeight"
+                />
+              }
+            }
           </ng-container>
         }
 
@@ -52,7 +71,11 @@
               Design gross train weight
             </td>
             <td class="govuk-table__cell" id="test-designGrossTrainWeight">
-              {{ testResult.weights?.designGrossTrainWeight ? `${testResult.weights?.designGrossTrainWeight || 0} kg` : '-' }}
+              @if (testResult.weights?.designTrainWeightRequired === NOT_APPLICABLE) {
+                Not applicable
+              } @else {
+                {{ testResult.weights?.designGrossTrainWeight ? `${testResult.weights?.designGrossTrainWeight || 0} kg` : '-' }}
+              } 
             </td>
           </tr>
         }
