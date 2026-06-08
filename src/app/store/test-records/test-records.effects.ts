@@ -9,7 +9,7 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
@@ -24,8 +24,9 @@ import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/t
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
+import { FeatureToggleService } from '../../services/feature-toggle-service/feature-toggle-service';
 import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
@@ -67,6 +68,7 @@ export class TestResultsEffects {
 	private dfs = inject(DynamicFormService);
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
+	private featureToggleService = inject(FeatureToggleService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -110,12 +112,28 @@ export class TestResultsEffects {
 		)
 	);
 
-	/**
-	 * Call POST Test Results API to update test result
-	 */
 	createTestResult$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(createTestResult),
+			filter((action) => !this.featureToggleService.shouldUseV2TestResults(action.value.testTypes[0].testTypeId)),
+			switchMap((action) => {
+				const testResult = action.value;
+				return this.testRecordsService.postTestResult(testResult).pipe(
+					take(1),
+					map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
+					catchError((e) => {
+						const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
+						return of(createTestResultFailed({ errors }));
+					})
+				);
+			})
+		)
+	);
+
+	createTestResultV2$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(createTestResult),
+			filter((action) => this.featureToggleService.shouldUseV2TestResults(action.value.testTypes[0].testTypeId)),
 			switchMap((action) => {
 				const testResult = action.value;
 				return this.testRecordsService.postTestResult(testResult).pipe(
@@ -318,6 +336,29 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
+				filter(
+					(action) =>
+						!this.featureToggleService.shouldUseV2TestResults(action.payload.changes.testTypes?.at(0)?.testTypeId || '')
+				),
+				delay(3000),
+				map((action) => action.payload.changes.systemNumber as string),
+				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
+				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
+				filter(Boolean),
+				switchMap((techRecord) =>
+					this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])
+				)
+			),
+		{ dispatch: false }
+	);
+
+	createTestResultSuccessV2$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createTestResultSuccess),
+				filter((action) =>
+					this.featureToggleService.shouldUseV2TestResults(action.payload.changes.testTypes?.at(0)?.testTypeId || '')
+				),
 				map((action) => [action.payload.changes.systemNumber as string]),
 				switchMap(([systemNumber]) => this.httpService.waitForCurrentTechRecord(systemNumber)),
 				filter(Boolean),
