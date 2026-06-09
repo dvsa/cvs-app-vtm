@@ -4,8 +4,8 @@
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
-    "node": "22.16.*",
-    "npm": "10.9.*"
+    "node": "24.10.*",
+    "npm": "11.6.*"
   },
   "scripts": {
     "ng": "ng",
@@ -92,7 +92,7 @@
     "@types/json-server": "^0.14.7",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^20.14.8",
+    "@types/node": "^24.13.1",
     "@types/uuid": "^9.0.8",
     "babel-loader": "^9.1.3",
     "bun": "^1.1.45",
