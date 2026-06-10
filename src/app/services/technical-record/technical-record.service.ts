@@ -47,6 +47,17 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
+import {
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS,
+	MultiOptions,
+	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+} from '../../models/options.model';
 import { nullADRDetails } from '../../store/technical-records/technical-record-service.reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -446,6 +457,29 @@ export class TechnicalRecordService {
 
 	getTyresAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
 		return techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.';
+	}
+
+	getEUVehicleCategoryOptions(techRecord: TechRecordType<'get' | 'put'>): MultiOptions {
+		const vehicleType = this.getVehicleTypeWithSmallTrl(techRecord);
+
+		switch (vehicleType) {
+			case VehicleTypes.HGV:
+				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.PSV:
+				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.TRL:
+				return TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.SMALL_TRL:
+				return SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.LGV:
+				return LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.CAR:
+				return CAR_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.MOTORCYCLE:
+				return MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS;
+			default:
+				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
+		}
 	}
 
 	getDesignTotalAxleWeight(techRecord: TechRecordType<'get' | 'put'>): number | null {

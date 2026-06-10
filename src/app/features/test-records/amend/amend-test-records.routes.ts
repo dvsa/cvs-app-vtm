@@ -22,7 +22,9 @@ export const routes: Routes = [
 				path: '',
 				title: 'View test record - Vehicle Testing Management',
 				loadComponent: () =>
-					import('./views/test-result-summary/test-result-summary.component').then((m) => m.TestResultSummaryComponent),
+					import('./views/test-result-summary-wrapper/test-result-summary-wrapper.component').then(
+						(m) => m.TestResultSummaryWrapperComponent
+					),
 			},
 			{
 				path: TestRecordAmendRoutes.AMEND_TEST,
@@ -75,12 +77,16 @@ export const routes: Routes = [
 							{
 								path: '',
 								loadComponent: () =>
-									import('./views/test-record/test-record.component').then((m) => m.TestRecordComponent),
+									import('@features/test-records/amend/views/test-record-wrapper/test-record-wrapper.component').then(
+										(m) => m.TestRecordWrapperComponent
+									),
 							},
 							{
 								path: TestRecordAmendRoutes.DEFECT,
 								loadComponent: () =>
-									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
+									import('@forms/custom-sections/defect/defect-wrapper.component').then(
+										(m) => m.DefectWrapperComponent
+									),
 								data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 								canActivate: [RoleGuard],
 							},
@@ -104,7 +110,9 @@ export const routes: Routes = [
 									{
 										path: TestRecordAmendRoutes.SELECT_DEFECT_REFERENCE,
 										loadComponent: () =>
-											import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
+											import('@forms/custom-sections/defect/defect-wrapper.component').then(
+												(m) => m.DefectWrapperComponent
+											),
 										data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 										canActivate: [RoleGuard],
 									},
@@ -169,7 +177,8 @@ export const routes: Routes = [
 			},
 			{
 				path: TestRecordAmendRoutes.DEFECT,
-				loadComponent: () => import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
+				loadComponent: () =>
+					import('@forms/custom-sections/defect/defect-wrapper.component').then((m) => m.DefectWrapperComponent),
 				data: { title: 'Defect details', roles: Roles.TestResultView, isEditing: false },
 				resolve: { load: testResultResolver },
 				canActivate: [RoleGuard],

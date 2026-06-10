@@ -1,0 +1,58 @@
+<div [formGroup]="form">
+  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+    <!--  Test Station Details -->
+    <govuk-form-group-autocomplete
+      label="Test Station Details"
+      [options$]="testStations$"
+      [width]="FormNodeWidth.XXL"
+
+      formControlName="testStationPNumber"
+    />
+
+    <!-- Type of test facility -->
+    <govuk-form-group-input
+      label="Type of test facility"
+      formControlName="testStationType"
+      [width]="FormNodeWidth.S"
+    />
+
+    <!-- Tester details -->
+    <govuk-form-group-autocomplete
+      label="Tester details"
+      [options$]="users$"
+      [width]="FormNodeWidth.XXL"
+      formControlName="testerStaffId"
+    />
+  } @else {
+    @if (testResult(); as testResult) {
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Tester facility name/number:</td>
+            <td class="govuk-table__cell" id="test-testStationName">
+              {{ testResult.testStationName | defaultNullOrEmpty }} / {{ testResult.testStationPNumber | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Type of test facility:</td>
+            <td class="govuk-table__cell" id="test-testStationType">
+              {{ testResult.testStationType | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Tester name:</td>
+            <td class="govuk-table__cell" id="test-testerName">
+              {{ testResult.testerName | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Tester email address:</td>
+            <td class="govuk-table__cell" id="test-testerEmailAddress">
+              {{ testResult.testerEmailAddress | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }
+  }
+</div>

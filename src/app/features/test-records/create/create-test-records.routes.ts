@@ -52,14 +52,14 @@ export const routes: Routes = [
 					{
 						path: '',
 						loadComponent: () =>
-							import('./views/create-test-record/create-test-record.component').then(
-								(m) => m.CreateTestRecordComponent
-							),
+							import(
+								'@features/test-records/create/views/create-test-record-wrapper/create-test-record-wrapper.component'
+							).then((m) => m.CreateTestRecordWrapperComponent),
 					},
 					{
 						path: TestRecordCreateRoutes.DEFECT,
 						loadComponent: () =>
-							import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
+							import('@forms/custom-sections/defect/defect-wrapper.component').then((m) => m.DefectWrapperComponent),
 						data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 						canActivate: [RoleGuard],
 					},
@@ -82,7 +82,9 @@ export const routes: Routes = [
 							{
 								path: TestRecordCreateRoutes.SELECT_DEFECT_REF,
 								loadComponent: () =>
-									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
+									import('@forms/custom-sections/defect/defect-wrapper.component').then(
+										(m) => m.DefectWrapperComponent
+									),
 								data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 								canActivate: [RoleGuard],
 							},

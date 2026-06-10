@@ -71,6 +71,7 @@ describe('BrakesSectionEditComponent', () => {
 		component = fixture.componentInstance;
 		componentRef = fixture.componentRef;
 		componentRef.setInput('techRecord', mockPSV);
+		component.brakeCodeOptions$ = of([]);
 		component.form.reset();
 		fixture.detectChanges();
 	});

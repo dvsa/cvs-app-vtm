@@ -97,7 +97,7 @@ export class GovukFormGroupDateComponent
 
 			switch (this.mode()) {
 				case 'iso':
-					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}`);
+					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}.000`);
 					break;
 				default:
 					this.onChange(`${year}-${monthStr}-${dayStr}`);

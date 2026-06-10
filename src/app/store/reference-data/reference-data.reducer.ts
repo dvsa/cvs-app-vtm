@@ -42,7 +42,7 @@ interface Extras extends Loading {
 	filter: string | null;
 }
 
-interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase>, Loading {}
+export interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase>, Loading {}
 
 export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase>, Extras {}
 

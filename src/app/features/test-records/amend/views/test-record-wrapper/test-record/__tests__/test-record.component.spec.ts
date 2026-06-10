@@ -18,9 +18,9 @@ import { State, initialAppState } from '@store/index';
 import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/router.selectors';
 import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit } from '@store/test-records';
 import { ReplaySubject, of } from 'rxjs';
-import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
-import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
-import { TestAmendmentHistoryComponent } from '../../../components/test-amendment-history/test-amendment-history.component';
+import { BaseTestRecordComponent } from '../../../../../components/base-test-record/base-test-record.component';
+import { VehicleHeaderComponent } from '../../../../../components/vehicle-header/vehicle-header.component';
+import { TestAmendmentHistoryComponent } from '../../../../components/test-amendment-history/test-amendment-history.component';
 import { TestRecordComponent } from '../test-record.component';
 
 describe('TestRecordComponent', () => {

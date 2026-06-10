@@ -160,4 +160,24 @@ describe('WeightsComponent', () => {
 			});
 		});
 	});
+
+	describe('handleTrainWeightNotApplicable', () => {
+		it('should set the designGrossTrainWeight to null when the value is true', () => {
+			component.form.controls.weights.controls.designGrossTrainWeight.patchValue(1000);
+			component.form.controls.weights.controls.designTrainWeightRequired.patchValue(undefined);
+			component.handleTrainWeightNotApplicable(true);
+			expect(component.form.controls.weights.controls.designGrossTrainWeight.getRawValue()).toBe(null);
+			expect(component.form.controls.weights.controls.designTrainWeightRequired.getRawValue()).toBe(
+				component.NOT_APPLICABLE
+			);
+		});
+
+		it('should set the designTrainWeightRequired to undefined when the value is false', () => {
+			component.form.controls.weights.controls.designGrossTrainWeight.patchValue(1000);
+			component.form.controls.weights.controls.designTrainWeightRequired.patchValue(undefined);
+			component.handleTrainWeightNotApplicable(false);
+			expect(component.form.controls.weights.controls.designGrossTrainWeight.getRawValue()).toBe(1000);
+			expect(component.form.controls.weights.controls.designTrainWeightRequired.getRawValue()).toBe(undefined);
+		});
+	});
 });

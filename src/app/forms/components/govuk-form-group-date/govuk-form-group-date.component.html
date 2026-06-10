@@ -78,6 +78,47 @@
             />
         </div>
       </div>
+
+      @if (mode() === 'iso') {
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-hour`"> Hour </label>
+            <input
+              class="govuk-input--width-2 govuk-input govuk-date-input__input"
+              [id]="`${id}-hour`"
+              type="number"
+              inputmode="numeric"
+              formControlName="hours"
+              appFocusNext
+              (wheel)="$event.preventDefault()"
+              appNumberOnly
+              [min]="0"
+              [max]="23"
+              [disabled]="disabled()"
+              [class]="style"
+            />
+          </div>
+        </div>
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-minute`"> Minute </label>
+            <input
+              class="govuk-input--width-2 govuk-input govuk-date-input__input"
+              [id]="`${id}-minute`"
+              type="number"
+              inputmode="numeric"
+              formControlName="minutes"
+              appFocusNext
+              (wheel)="$event.preventDefault()"
+              appNumberOnly
+              [min]="0"
+              [max]="59"
+              [disabled]="disabled()"
+              [class]="style"
+              />
+          </div>
+        </div>
+      }
     </div>
   </fieldset>
 </div>

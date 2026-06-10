@@ -37,9 +37,9 @@ import { selectRouteParam } from '@store/router/router.selectors';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import JSZip from 'jszip';
 import { Subject, filter, lastValueFrom, take, takeUntil, withLatestFrom } from 'rxjs';
-import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
-import { SelectComponent } from '../../components/select/select.component';
-import { TextAreaComponent } from '../../components/text-area/text-area.component';
+import { RadioGroupComponent } from '../../../components/radio-group/radio-group.component';
+import { SelectComponent } from '../../../components/select/select.component';
+import { TextAreaComponent } from '../../../components/text-area/text-area.component';
 
 @Component({
 	selector: 'app-defect',
