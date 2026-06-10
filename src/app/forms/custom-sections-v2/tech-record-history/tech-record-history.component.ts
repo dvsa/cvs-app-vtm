@@ -1,3 +1,4 @@
+import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -22,9 +23,13 @@ export class TechnicalRecordsHistoryComponent extends EditBaseComponent implemen
 
 	pageStart?: number;
 	pageEnd?: number;
+	from = this.store.selectSignal(selectQueryParam('from'));
 	techRecordHistory$ = this.store.select(selectTechRecordHistory);
 
 	ngOnInit(): void {
+		// We prefetch history after amend so the spinner doesn't flicker
+		if (this.from() === 'amend') return;
+
 		const techRecord = this.techRecord();
 		if (techRecord) {
 			this.store.dispatch(getBySystemNumber({ systemNumber: (techRecord as TechRecordType<'get'>)?.systemNumber }));

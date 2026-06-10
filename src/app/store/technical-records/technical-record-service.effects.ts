@@ -11,7 +11,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -19,7 +18,6 @@ import { State } from '@store/index';
 import { cloneDeep } from 'lodash';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
-import { selectTechRecordSearchResults } from '../tech-record-search/tech-record-search.selector';
 import {
 	amendVin,
 	amendVinSuccess,
@@ -30,6 +28,8 @@ import {
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	changeVehicleType,
+	clearAllSectionStates,
+	clearScrollPosition,
 	createVehicle,
 	createVehicleRecord,
 	createVehicleRecordFailure,
@@ -69,21 +69,13 @@ export class TechnicalRecordServiceEffects {
 	private batchTechRecordService = inject(BatchTechnicalRecordService);
 	private userService = inject(UserService);
 	private store = inject<Store<State>>(Store);
-	private dfs = inject(DynamicFormService);
 	private router = inject(Router);
 
 	getTechnicalRecordHistory$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getBySystemNumber),
-			withLatestFrom(this.store.select(selectTechRecordSearchResults)),
-			mergeMap(([action, cachedResults]) => {
+			mergeMap((action) => {
 				const anchorLink = 'search-term';
-				const cached = cachedResults.filter((r) => r.systemNumber === action.systemNumber);
-
-				if (cached.length) {
-					return of(getBySystemNumberSuccess({ techRecordHistory: cached }));
-				}
-
 				return this.httpService.searchTechRecordBySystemNumber(action.systemNumber).pipe(
 					map((vehicleTechRecords) => getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords })),
 					catchError(() =>
@@ -157,6 +149,26 @@ export class TechnicalRecordServiceEffects {
 					)
 				);
 			})
+		)
+	);
+
+	updateTechRecordSuccess = createEffect(() =>
+		this.actions$.pipe(
+			ofType(updateTechRecordSuccess),
+			tap(({ vehicleTechRecord }) => {
+				this.router.navigate(
+					[`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`],
+					{
+						queryParams: { from: 'amend' },
+						queryParamsHandling: 'merge',
+					}
+				);
+			}),
+			switchMap(({ vehicleTechRecord }) => [
+				clearAllSectionStates(),
+				clearScrollPosition(),
+				getBySystemNumber({ systemNumber: vehicleTechRecord.systemNumber }),
+			])
 		)
 	);
 

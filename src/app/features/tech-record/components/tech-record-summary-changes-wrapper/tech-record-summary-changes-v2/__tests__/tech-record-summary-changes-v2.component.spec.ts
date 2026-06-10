@@ -64,11 +64,6 @@ describe('TechRecordSummaryChangesV2Component', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should call navigateOnSuccess', () => {
-			const navigateOnSuccessSpy = jest.spyOn(component, 'navigateUponSuccess');
-			component.ngOnInit();
-			expect(navigateOnSuccessSpy).toHaveBeenCalled();
-		});
 		it('should navigate when updateRecordSuccess dispatched', () => {
 			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
