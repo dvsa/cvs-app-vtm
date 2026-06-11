@@ -25,6 +25,7 @@ describe('TestComponent', () => {
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.EDIT);
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
 		fixture.detectChanges();
 	});
 
