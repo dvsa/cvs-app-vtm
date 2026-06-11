@@ -8,7 +8,7 @@ import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@/src/ap
 import { ResultOfTestService } from '@/src/app/services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { TestService } from '@/src/app/services/test/test.service';
-import { selectQueryParam } from '@/src/app/store/router/router.selectors';
+import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
 import {
 	cleanTestResultPayload,
@@ -96,6 +96,8 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
+	routeParams = this.store.selectSignal(selectRouteNestedParams);
+	testNumber = computed(() => this.routeParams()['testNumber']);
 
 	private handleFormChanges(): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
