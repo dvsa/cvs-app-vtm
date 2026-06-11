@@ -12,7 +12,6 @@ import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
 import {
 	cleanTestResultPayload,
-	createTestResult,
 	selectedTestResultState,
 	testResultInEdit,
 	toEditOrNotToEdit,
@@ -304,27 +303,36 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	onSubmit(): void {
-		// Spread to remove undefined keys
 		if (this.initialMode() === Modes.EDIT) {
-			const raw = { ...this.testResult() } as TestResultSchema;
-			const value = cleanTestResultPayload(raw);
-			if (!value) return;
+			return this.createTestResult();
+		}
 
-			this.store.dispatch(createTestResult({ value }));
-		} else {
-			this.testRecordService.cleanTestResult();
+		this.amendTestResult();
+	}
 
-			const testResultClone = { ...this.testResult() } as TestResultSchema;
-			const defects = testResultClone.testTypes[0].defects;
-			if (Array.isArray(defects) && defects.length > 0) {
-				for (const defect of defects) {
-					if (!defect.media) {
-						defect.media = [{ type: 'failReason', path: ' ', reason: 'Contingency test' }];
-					}
+	createTestResult(): void {
+		const value = cleanTestResultPayload({ ...this.testResult() } as TestResultSchema);
+		if (!value) return;
+
+		this.testRecordService.createTestResult(value);
+	}
+
+	amendTestResult(): void {
+		const value = cleanTestResultPayload({ ...this.testResult() } as TestResultSchema);
+		if (!value) return;
+
+		this.populateDefectMedia(value);
+		this.testRecordService.updateTestResult(value);
+	}
+
+	populateDefectMedia(testResult: TestResultSchema): void {
+		const defects = testResult.testTypes[0].defects;
+		if (Array.isArray(defects) && defects.length > 0) {
+			for (const defect of defects) {
+				if (!defect.media) {
+					defect.media = [{ type: 'failReason', path: ' ', reason: 'Contingency test' }];
 				}
 			}
-
-			this.testRecordService.updateTestResult(testResultClone);
 		}
 	}
 

@@ -1,4 +1,3 @@
-import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@/src/app/models/testTypeId.enum';
 import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, inject } from '@angular/core';
@@ -22,9 +21,5 @@ export class DefectWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
 
 	testType = this.store.selectSignal(toEditOrNotToEdit);
-	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
-
-	useV2 =
-		this.featureToggleService.isFeatureEnabled('testresultcreate') &&
-		this.testTypeIdAllowList.includes(this.testType()?.testTypes?.[0]?.testTypeId || '');
+	useV2 = this.featureToggleService.shouldUseV2TestResults(this.testType()?.testTypes?.[0]?.testTypeId);
 }
