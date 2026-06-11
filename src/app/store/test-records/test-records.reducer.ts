@@ -282,6 +282,11 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
 		}
 
+		// If required standards is an empty array, convert it to undefined
+		if (Array.isArray(testType.requiredStandards) && testType.requiredStandards.length === 0) {
+			testType.requiredStandards = undefined;
+		}
+
 		return testType;
 	});
 
