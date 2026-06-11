@@ -24,7 +24,7 @@ import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/t
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { techRecord } from '../technical-records';
 import {
@@ -178,6 +178,26 @@ export class TestResultsEffects {
 					);
 			})
 		)
+	);
+
+	updateTestResultSuccess = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(updateTestResultSuccess),
+				concatLatestFrom(() => this.store.select(selectRouteNestedParams)),
+				tap(([_, routeParams]) => {
+					this.router.navigate([
+						'tech-records',
+						routeParams['systemNumber'],
+						routeParams['createdTimestamp'],
+						'test-records',
+						'test-result',
+						routeParams['testResultId'],
+						routeParams['testNumber'],
+					]);
+				})
+			),
+		{ dispatch: false }
 	);
 
 	generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>

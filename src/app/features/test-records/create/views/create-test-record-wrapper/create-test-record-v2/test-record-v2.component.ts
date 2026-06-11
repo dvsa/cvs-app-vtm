@@ -15,7 +15,6 @@ import {
 	selectedTestResultState,
 	testResultInEdit,
 	toEditOrNotToEdit,
-	updateTestResultSuccess,
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
@@ -39,7 +38,7 @@ import { VisitComponent } from '@features/test-records/custom-sections/visit/vis
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
@@ -103,10 +102,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
 				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
 			}
-		});
-
-		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-			void this.router.navigate(['..'], { relativeTo: this.route.parent });
 		});
 	}
 

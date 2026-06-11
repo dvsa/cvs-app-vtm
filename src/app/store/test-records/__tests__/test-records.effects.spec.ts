@@ -140,6 +140,7 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
+import { Router } from '@angular/router';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -154,6 +155,7 @@ describe('TestResultsEffects', () => {
 	let store: MockStore<State>;
 	let featureToggleService: FeatureToggleService;
 	let httpService: HttpService;
+	let router: Router;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
@@ -203,6 +205,7 @@ describe('TestResultsEffects', () => {
 		testResultsService = TestBed.inject(TestRecordsService);
 		featureToggleService = TestBed.inject(FeatureToggleService);
 		httpService = TestBed.inject(HttpService);
+		router = TestBed.inject(Router);
 	});
 
 	beforeEach(() => {
@@ -887,6 +890,42 @@ describe('TestResultsEffects', () => {
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
 					b: getRecallsFailure({ error: 'Bad Gateway' }),
 				});
+			});
+		});
+	});
+
+	describe('updateTestRecordSuccess$', () => {
+		it('should navigate to test record page', () => {
+			const spy = jest.spyOn(router, 'navigate');
+			const routeParams = {
+				systemNumber: '123456789',
+				createdTimestamp: '2022-01-01T00:00:00.000Z',
+				testResultId: '123456789',
+				testNumber: '123456789',
+			};
+
+			store.overrideSelector(selectRouteNestedParams, routeParams);
+
+			testScheduler.run(({ hot, flush }) => {
+				actions$ = hot('-a', {
+					a: updateTestResultSuccess({
+						payload: { id: '123456789', changes: {} as Partial<TestResultSchema> },
+					}),
+				});
+
+				effects.updateTestResultSuccess.subscribe();
+
+				flush();
+
+				expect(spy).toHaveBeenCalledWith([
+					'tech-records',
+					routeParams.systemNumber,
+					routeParams.createdTimestamp,
+					'test-records',
+					'test-result',
+					routeParams.testResultId,
+					routeParams.testNumber,
+				]);
 			});
 		});
 	});
