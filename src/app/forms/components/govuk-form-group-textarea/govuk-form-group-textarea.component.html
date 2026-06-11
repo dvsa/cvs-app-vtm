@@ -30,12 +30,13 @@
 
   <textarea
     appNoEmojis
+    appSanitiseUnicode
     rows="5"
     id="{{ id }}"
     name="{{ id }}"
     [attr.aria-labelledby]="labelId"
     [attr.data-testid]="id"
-    [attr.data-module]="'govuk-character-count'" 
+    [attr.data-module]="'govuk-character-count'"
     [attr.data-maxlength]="max"
     [(ngModel)]="value"
     [disabled]="disabled()"
