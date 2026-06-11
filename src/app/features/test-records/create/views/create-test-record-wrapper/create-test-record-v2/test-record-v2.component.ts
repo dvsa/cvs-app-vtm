@@ -106,8 +106,18 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			}
 		});
 
-		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-			void this.router.navigate(['..'], { relativeTo: this.route.parent });
+		this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe((action) => {
+			// Navigate to test record page
+			const testResult = action.payload.changes;
+			this.router.navigate([
+				'tech-records',
+				testResult.systemNumber,
+				testResult.createdAt,
+				'test-records',
+				'test-result',
+				testResult.testResultId,
+				testResult.testTypes?.at(0)?.testNumber,
+			]);
 		});
 	}
 
