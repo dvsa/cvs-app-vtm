@@ -6,12 +6,21 @@ import { deficiencyCategory } from '@/src/app/models/defects/deficiency-category
 import { Deficiency } from '@/src/app/models/defects/deficiency.model';
 import { MultiOptions, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { DeficiencyCategoryEnum } from '@/src/app/models/test-results/test-result-defect.model';
+import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DefectMediaService } from '@/src/app/services/defect-media-service/defect-media-service.service';
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectByDeficiencyRef, selectByImNumber } from '@/src/app/store/defects';
 import { selectRouteDataProperty, selectRouteParam } from '@/src/app/store/router/router.selectors';
-import { createDefect, removeDefect, updateDefect, updateResultOfTest } from '@/src/app/store/test-records';
+import {
+	createDefect,
+	removeDefect,
+	toEditOrNotToEdit,
+	updateDefect,
+	updateResultOfTest,
+} from '@/src/app/store/test-records';
 import { KeyValuePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, computed, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -20,6 +29,8 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { DefectDetailsSchema, MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-details';
 import { Store } from '@ngrx/store';
+import JSZip from 'jszip';
+import { lastValueFrom } from 'rxjs';
 import { GovukFormGroupCheckboxComponent } from '../../../components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupRadioComponent } from '../../../components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { GovukFormGroupSelectComponent } from '../../../components/govuk-form-group-select/govuk-form-group-select.component';
@@ -41,21 +52,28 @@ import { CommonValidatorsService } from '../../../validators/common-validators.s
 		GovukFormGroupTextareaComponent,
 		GovukFormGroupRadioComponent,
 		GovukFormGroupCheckboxComponent,
+		DefaultNullOrEmpty,
 	],
 })
 export class DefectV2Component {
 	fb = inject(FormBuilder);
 	store = inject(Store);
 	router = inject(Router);
+	cdr = inject(ChangeDetectorRef);
 	route = inject(ActivatedRoute);
+	http = inject(HttpClient);
 	testService = inject(TestService);
 	globalErrorService = inject(GlobalErrorService);
 	commonValidators = inject(CommonValidatorsService);
+	defectMediaService = inject(DefectMediaService, { optional: true });
 
 	defectIndex = this.store.selectSignal(selectRouteParam('defectIndex'));
 	deficiencyRef = this.store.selectSignal(selectRouteParam('ref'));
 	isEditing = this.store.selectSignal(selectRouteDataProperty('isEditing'));
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	defect = computed(() => this.getDefect());
 
+	loading = false;
 	additionalInfoMultiOptions: Record<string, MultiOptions> = {};
 
 	form = this.fb.group({
@@ -96,7 +114,7 @@ export class DefectV2Component {
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
 		const vehicleType = this.testService.form.controls.vehicleType.value;
 
 		// If we're amending an existing defect, use the existing values
@@ -116,6 +134,22 @@ export class DefectV2Component {
 		const imNumber = this.form.controls.imNumber.value;
 		const defectCategory = this.store.selectSignal(selectByImNumber(imNumber || Number.NaN, vehicleType))();
 		if (defectCategory) this.populateAdditionalInfoFromTaxonomy(defectCategory);
+
+		// Load images (if applicable)
+		await this.loadImages();
+	}
+
+	async loadImages(): Promise<void> {
+		const defect = this.defect();
+		const testResult = this.testResult();
+		if (!defect || !testResult || !this.defectMediaService) return;
+
+		if (!this.defectMediaService.hasRententionPeriodExpired(testResult) && this.defectMediaService.hasImages(defect)) {
+			this.loading = true;
+			await this.defectMediaService.loadImages(testResult);
+			this.loading = false;
+			this.cdr.detectChanges();
+		}
 	}
 
 	populateDefectFromTaxonomy(
@@ -187,6 +221,11 @@ export class DefectV2Component {
 		if (category === 'advisory') return 'blue';
 
 		return 'orange';
+	}
+
+	getDefect(): DefectDetailsSchema | undefined {
+		const defectIndex = Number(this.defectIndex());
+		return this.testResult()?.testTypes[0].defects[defectIndex];
 	}
 
 	isEditingDefect(): boolean {
@@ -268,5 +307,199 @@ export class DefectV2Component {
 		// Update test result, add return to main form
 		this.store.dispatch(updateResultOfTest());
 		this.router.navigate(['../..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+	}
+
+	hasCachedImage(media: MediaSchema): boolean {
+		if (!this.defectMediaService) {
+			return false;
+		}
+		return !!this.defectMediaService.getImage(media);
+	}
+
+	shouldShowMissingMediaMessage(): boolean {
+		const defect = this.defect();
+
+		if (!defect || !this.defectMediaService) {
+			return false;
+		}
+
+		// if media paths exist but none are retrievable from cache/zip, treat as unavailable.
+		if (this.defectMediaService.hasImages(defect)) {
+			return !this.defectMediaService.hasCachedImages(defect);
+		}
+
+		return !defect.media || defect.media.length === 0;
+	}
+
+	getFailureToCaptureDefectMediaReason(): string {
+		const defect = this.defect();
+
+		if (!defect?.media) {
+			return 'No media available';
+		}
+
+		for (const reason of defect.media) {
+			if (reason.type === 'failReason') {
+				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
+				return `No media available - ${formattedReason}`;
+			}
+		}
+
+		return 'No media available';
+	}
+
+	srcValue(mediaSchema: MediaSchema): string {
+		if (!this.defectMediaService) return '';
+
+		const images = this.defectMediaService.getImages();
+		const image = images[mediaSchema.path];
+		if (!image) return '';
+
+		return `data:image/jpg;base64,${image}`;
+	}
+
+	async downloadPhoto(media: MediaSchema) {
+		const defect = this.defect();
+		const testResultId = this.testResult()?.testResultId;
+
+		try {
+			if (!testResultId || !this.defectMediaService || !defect) {
+				return;
+			}
+
+			const image = this.defectMediaService.getImage(media);
+
+			if (image) {
+				await this.downloadPhotoFromCache(image, media);
+			} else {
+				await this.downloadPhotoFromHttp(media);
+			}
+		} catch (error) {
+			this.defectMediaService?.handleError(error);
+			console.log(error);
+		}
+	}
+
+	async downloadPhotoFromCache(image: string, media: MediaSchema) {
+		const defect = this.defect();
+
+		if (!this.defectMediaService || !defect) {
+			return;
+		}
+
+		// load response into zip file
+		const zip = new JSZip();
+		zip.file(media.path, image, { base64: true });
+
+		await this.defectMediaService.openDocumentFromZip(zip, `${defect.imNumber}-${defect.imDescription}`);
+	}
+
+	async downloadPhotoFromHttp(media: MediaSchema) {
+		const defect = this.defect();
+		const testResultId = this.testResult()?.testResultId;
+
+		if (!testResultId || !this.defectMediaService || !defect) {
+			return;
+		}
+
+		const zip = await this.defectMediaService.getDefectZip(testResultId);
+
+		// load image into a file
+		const file = zip.file(media.path);
+		if (!file) return;
+
+		// load image into a blob
+		const fileData = await file.async('blob');
+
+		// create a new zip to load image into it
+		const newZip = new JSZip();
+		newZip.file(media.path, fileData);
+
+		// download zip
+		await this.defectMediaService.openDocumentFromZip(newZip, `${defect.imNumber}-${defect.imDescription}`);
+	}
+
+	async downloadAllMedia() {
+		const defect = this.defect();
+		if (!defect) return;
+
+		try {
+			const testResultId = this.testResult()?.testResultId;
+			if (!this.defectMediaService || !testResultId || !this.defect) {
+				return;
+			}
+			if (this.defectMediaService.hasCachedImages(defect)) {
+				await this.downloadAllMediaFromCache();
+			} else {
+				await this.downloadAllMediaFromHttp();
+			}
+		} catch (error) {
+			this.defectMediaService?.handleError(error);
+			console.log(error);
+		}
+	}
+
+	async downloadAllMediaFromCache() {
+		const defect = this.defect();
+		const testResultId = this.testResult()?.testResultId;
+
+		if (!this.defectMediaService || !defect || !testResultId || !defect.media) {
+			return;
+		}
+
+		// download images from cache
+		const zip = new JSZip();
+		for (const image of defect.media) {
+			const file = this.defectMediaService.images[image.path];
+			if (file) {
+				zip.file(image.path, file, { base64: true });
+			}
+		}
+
+		await this.defectMediaService.openDocumentFromZip(zip, testResultId);
+	}
+
+	async downloadAllMediaFromHttp() {
+		const defect = this.defect();
+		const testResultId = this.testResult()?.testResultId;
+
+		if (!this.defectMediaService || !defect || !testResultId || !defect.media) {
+			return;
+		}
+
+		// get presigned url
+		const url = await lastValueFrom(this.defectMediaService.getPresignedUrlValue(testResultId));
+
+		// get zip file for test result id
+		const blob = await lastValueFrom(this.http.get(url, { responseType: 'blob' }));
+
+		// load response into zip file
+		const zip = new JSZip();
+		await zip.loadAsync(blob, { base64: true });
+
+		// check media exists
+		const media = defect.media;
+		if (media && this.defectMediaService.hasImages(defect)) {
+			// load media into zip file
+			const zip = new JSZip();
+			await zip.loadAsync(blob);
+
+			// create zip to hold defect specific images
+			const newZip = new JSZip();
+
+			// loop through media
+			for (const mediaObject of media) {
+				const file = zip.files[mediaObject.path];
+				if (file) {
+					// if file exists add to zip file and add image to cache
+					const fileData = await file.async('blob');
+					this.defectMediaService.images[mediaObject.path] = await file.async('base64');
+					newZip.file(mediaObject.path, fileData);
+				}
+			}
+
+			// download zip
+			await this.defectMediaService.openDocumentFromZip(newZip, `${defect.imNumber}-${defect.imDescription}`);
+		}
 	}
 }
