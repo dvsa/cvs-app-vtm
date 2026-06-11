@@ -64,7 +64,10 @@ export class TestComponent implements OnInit, OnDestroy {
 		const testTypeGroup = this.form.controls.testTypes.at(0);
 
 		this.form.controls.contingencyTestNumber.setValidators([
-			this.commonValidators.required('Contingency Test Number'),
+			this.commonValidators.applyWhen(
+				() => this.contingencyTestNumberIsRequired(),
+				this.commonValidators.required('Contingency Test Number')
+			),
 			this.commonValidators.minLength(6, 'Contingency Test Number'),
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
@@ -81,6 +84,10 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.pastDate('Test end date and time'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
 		]);
+	}
+
+	contingencyTestNumberIsRequired(): boolean {
+		return this.initialMode() === Modes.EDIT;
 	}
 
 	handleTestStartTimestampChange(): void {
