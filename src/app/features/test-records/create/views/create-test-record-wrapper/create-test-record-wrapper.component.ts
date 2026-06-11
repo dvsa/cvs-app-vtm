@@ -4,7 +4,6 @@ import { Component, Signal, inject } from '@angular/core';
 import { TestRecordV2Component } from '@features/test-records/create/views/create-test-record-wrapper/create-test-record-v2/test-record-v2.component';
 import { CreateTestRecordComponent } from '@features/test-records/create/views/create-test-record-wrapper/create-test-record/create-test-record.component';
 import { Modes } from '@models/modes.enum';
-import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -23,10 +22,7 @@ export class CreateTestRecordWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
 
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
-	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
+	useV2 = this.featureToggleService.shouldUseV2TestResults(this.testTypeId());
 
-	useV2 =
-		this.featureToggleService.isFeatureEnabled('testresultcreate') &&
-		this.testTypeIdAllowList.includes(this.testTypeId());
 	protected readonly Modes = Modes;
 }
