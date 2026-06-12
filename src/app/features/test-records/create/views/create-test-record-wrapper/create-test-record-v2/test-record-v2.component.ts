@@ -350,6 +350,10 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		this.handleFormInvalid();
 	}
 
+	onConfirmCancel() {
+		this.router.navigate(['../..'], { relativeTo: this.route.parent });
+	}
+
 	get roles(): typeof Roles {
 		return Roles;
 	}
