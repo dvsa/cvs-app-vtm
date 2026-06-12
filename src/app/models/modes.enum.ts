@@ -5,4 +5,5 @@ export enum Modes {
 	SUMMARY = 'summary',
 	EDIT = 'edit', // create or amend
 	ABANDON = 'abandon',
+	CANCEL = 'cancel',
 }
