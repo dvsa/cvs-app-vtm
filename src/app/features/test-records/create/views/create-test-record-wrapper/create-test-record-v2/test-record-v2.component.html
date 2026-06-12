@@ -11,7 +11,8 @@
       <app-vehicle-header
         [isEditing]="mode() === Modes.EDIT || mode() === Modes.AMEND"
         [isReview]="mode() === Modes.SUMMARY"
-        [testResult]="this.testResult()"
+        [testResult]="testResult()"
+        [testNumber]="testNumber()"
       >
         @if (testResult()?.testStatus !== statuses.CANCELLED && mode() === Modes.VIEW) {
           <app-button-group class="page-actions">

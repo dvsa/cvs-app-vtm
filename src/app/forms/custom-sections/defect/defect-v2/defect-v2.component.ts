@@ -267,8 +267,8 @@ export class DefectV2Component {
 		const defect = this.form.getRawValue();
 		const isDangerous = defect.deficiencyCategory === deficiencyCategory.Dangerous;
 
-		// Prohibition issued is required for all dangerous defects
-		return isDangerous;
+		// Prohibition issued is required for all dangerous defects with no standard for prohibition
+		return isDangerous && !defect.stdForProhibition;
 	}
 
 	onConfirm(): void {
