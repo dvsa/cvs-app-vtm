@@ -51,6 +51,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.addValidators();
+		this.disableFields();
 		this.handleTestStartTimestampChange();
 		this.handleTestEndTimestampChange();
 	}
@@ -84,6 +85,20 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.pastDate('Test end date and time'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
 		]);
+	}
+
+	disableFields(): void {
+		// Initially enable all controls
+		this.form.enable();
+
+		if (this.initialMode() === Modes.AMEND) {
+			this.form.controls.testTypes.at(0).controls.createdAt.disable();
+			this.form.controls.testTypes.at(0).controls.testCode.disable();
+			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
+			this.form.controls.testTypes.at(0).controls.testNumber.disable();
+			this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
+			this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
+		}
 	}
 
 	contingencyTestNumberIsRequired(): boolean {
