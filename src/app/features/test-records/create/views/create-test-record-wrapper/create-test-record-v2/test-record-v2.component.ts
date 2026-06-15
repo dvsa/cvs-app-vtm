@@ -44,7 +44,6 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
-
 @Component({
 	selector: 'app-test-record-v2',
 	templateUrl: './test-record-v2.component.html',
@@ -117,8 +116,8 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		}
 	}
 
-	private handleEditingTestResult(): void {
-		if (this.mode() !== Modes.AMEND) return;
+	private loadEditingTestResult(): void {
+		if (!(this.mode() === Modes.AMEND || this.mode() === Modes.VIEW)) return;
 
 		const testResult = this.testResult();
 		const testResultInEdit = this.testResultInEdit();
@@ -126,7 +125,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 		// Copy viewable test result into editing test result
 		if (!testResultInEdit && testResult) {
-			testResult.reasonForCreation = ''; // clear reason for creation when amending
+			if (this.mode() === Modes.AMEND) testResult.reasonForCreation = ''; // clear reason for creation when amending
 			this.testRecordService.editingTestResult(testResult);
 			this.form.patchValue(testResult as any);
 		}
@@ -140,7 +139,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
-		this.handleEditingTestResult();
+		this.loadEditingTestResult();
 	}
 
 	ngOnDestroy(): void {
