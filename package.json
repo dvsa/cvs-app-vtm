@@ -105,7 +105,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "json-server": "^0.17.3",
     "lint-staged": "^15.2.10",
-    "multer": "^2.1.1",
+    "multer": "^2.2.0",
     "sonarqube-scanner": "^3.3.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
@@ -129,7 +129,8 @@
     },
     "qs": "^6.15.2",
     "fast-uri": "^3.1.1",
-    "brace-expansion": "^5.0.6"
+    "brace-expansion": "^5.0.6",
+    "js-yaml": "^4.2.0"
   },
   "lint-staged": {
     "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched"
