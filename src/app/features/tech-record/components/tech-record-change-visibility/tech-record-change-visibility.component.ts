@@ -135,7 +135,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 			)
 			.subscribe(([, systemNumber, createdTimestamp]) => {
 				if (systemNumber && createdTimestamp) {
-					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp, groupType: 'single' }));
 				}
 			});
 	}

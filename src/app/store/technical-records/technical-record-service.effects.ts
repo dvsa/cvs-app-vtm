@@ -138,12 +138,12 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(updateTechRecord),
 			withLatestFrom(this.store.pipe(select(editingTechRecord))),
-			concatMap(([{ systemNumber, createdTimestamp }, techRecord]) => {
+			concatMap(([{ systemNumber, createdTimestamp, groupType }, techRecord]) => {
 				if (!techRecord) {
 					return of(updateTechRecordFailure({ error: 'There is not technical record in edit' }));
 				}
 				return this.httpService.updateTechRecord(systemNumber, createdTimestamp, techRecord).pipe(
-					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord })),
+					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord, groupType })),
 					catchError((error) =>
 						of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
 					)
@@ -152,9 +152,10 @@ export class TechnicalRecordServiceEffects {
 		)
 	);
 
-	updateTechRecordSuccess = createEffect(() =>
+	updateSingleTechRecordSuccess = createEffect(() =>
 		this.actions$.pipe(
 			ofType(updateTechRecordSuccess),
+			filter(({ groupType }) => groupType !== 'batch'),
 			tap(({ vehicleTechRecord }) => {
 				this.router.navigate(
 					[`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`],

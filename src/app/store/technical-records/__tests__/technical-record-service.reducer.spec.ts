@@ -149,7 +149,7 @@ describe('Vehicle Technical Record Reducer', () => {
 				vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
 				loading: true,
 			};
-			const action = updateTechRecord({ systemNumber: 'foo', createdTimestamp: 'bar' });
+			const action = updateTechRecord({ systemNumber: 'foo', createdTimestamp: 'bar', groupType: 'single' });
 			const newState = vehicleTechRecordReducer(state, action);
 
 			expect(newState).toEqual(state);
@@ -167,7 +167,7 @@ describe('Vehicle Technical Record Reducer', () => {
 				...initialState,
 				vehicleTechRecord: oldRecord,
 			};
-			const action = updateTechRecordSuccess({ vehicleTechRecord: newRecord });
+			const action = updateTechRecordSuccess({ vehicleTechRecord: newRecord, groupType: 'single' });
 			const newState = vehicleTechRecordReducer(state, action);
 
 			expect(state).not.toEqual(newState);

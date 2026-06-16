@@ -151,7 +151,11 @@ export class BatchVehicleTemplateComponent {
 						} else {
 							this.technicalRecordService.updateEditingTechRecord(cleansedVehicle);
 							this.store.dispatch(
-								updateTechRecord({ systemNumber: vehicle.systemNumber, createdTimestamp: vehicle.createdTimestamp })
+								updateTechRecord({
+									systemNumber: vehicle.systemNumber,
+									createdTimestamp: vehicle.createdTimestamp,
+									groupType: 'batch',
+								})
 							);
 						}
 					});
