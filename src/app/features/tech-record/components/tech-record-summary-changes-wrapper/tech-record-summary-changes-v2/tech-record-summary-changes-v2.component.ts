@@ -162,7 +162,7 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 				if (systemNumber && createdTimestamp) {
 					this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
 					this.store.dispatch(clearADRDetailsBeforeUpdate());
-					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp, groupType: 'single' }));
 				}
 			});
 	}

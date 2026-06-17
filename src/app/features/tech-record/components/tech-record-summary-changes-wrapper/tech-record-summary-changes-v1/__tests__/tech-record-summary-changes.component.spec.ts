@@ -17,6 +17,7 @@ import {
 	selectTechRecordChanges,
 	selectTechRecordDeletions,
 	techRecord,
+	updateTechRecord,
 } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { TechRecordSummaryChangesComponent } from '../tech-record-summary-changes.component';
@@ -145,11 +146,13 @@ describe('TechRecordSummaryChangesComponent', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
 			component.submit();
 			expect(dispatchSpy).toHaveBeenCalled();
-			expect(dispatchSpy).toHaveBeenCalledWith({
-				systemNumber: '123456',
-				createdTimestamp: '123123123',
-				type: '[Technical Record Service] updateTechRecords',
-			});
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				updateTechRecord({
+					systemNumber: '123456',
+					createdTimestamp: '123123123',
+					groupType: 'single',
+				})
+			);
 		});
 	});
 
