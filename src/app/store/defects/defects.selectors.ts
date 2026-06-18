@@ -61,7 +61,7 @@ export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: Vehicl
 			if (!deficiency && isAdvisory && deRef[3]) {
 				item = items?.[+deRef[3]];
 			} else {
-				item = defect?.items.find((i) => i.itemNumber === +deRef[1]);
+				item ??= defect?.items.find((i) => i.itemNumber === +deRef[1]);
 			}
 		}
 
