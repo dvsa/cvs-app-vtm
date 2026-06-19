@@ -29,13 +29,13 @@ export class DefectMediaService {
 	}
 
 	canDownloadAdasMediaItems(defect: DefectDetailsSchema): boolean {
-		if (!this.featureToggleService.isFeatureEnabled('media-capture-adas')) return false;
+		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
 
 		return defect.imNumber === 29 && this.hasMedia(defect);
 	}
 
 	canDownloadAdasMedia(testResult: TestResultSchema): boolean {
-		if (!this.featureToggleService.isFeatureEnabled('media-capture-adas')) return false;
+		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
 
 		const defects = testResult.testTypes[0].defects;
 		if (!Array.isArray(defects) || defects.length === 0) return false;
@@ -125,7 +125,7 @@ export class DefectMediaService {
 	}
 
 	async getAdasZip(testResultId: string): Promise<JSZip | null> {
-		if (!this.featureToggleService.isFeatureEnabled('media-capture-adas')) return null;
+		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return null;
 
 		return await this.getZip(testResultId, { category: 'adas' });
 	}

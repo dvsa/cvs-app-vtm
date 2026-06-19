@@ -6,5 +6,5 @@
   "testresultcreate": { "enabled": false },
   "testresultamend": { "enabled": false },
   "hide-test-restriction-functionality": { "enabled": true },
-  "media-capture-adas": { "enabled": true }
+  "adas-images-on-defects": { "enabled": true }
 }
