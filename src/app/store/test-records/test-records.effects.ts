@@ -26,6 +26,7 @@ import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
+import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
 import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
@@ -67,6 +68,7 @@ export class TestResultsEffects {
 	private dfs = inject(DynamicFormService);
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
+	private testService = inject(TestService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -332,6 +334,19 @@ export class TestResultsEffects {
 				return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl!), sectionsValue: mergedForms }));
 			})
 		)
+	);
+
+	// @TODO: find a cleaner solution for resetting the test record form before creating/amending a test record
+	onEnterTestCreateOrAmend = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(contingencyTestTypeSelected, editingTestResult, testTypeIdChanged),
+				tap(() => {
+					this.testService.form.reset();
+					this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE);
+				})
+			),
+		{ dispatch: false }
 	);
 
 	createTestResultSuccess$ = createEffect(
