@@ -261,6 +261,7 @@ export class DefectMediaService {
 		if (!defectMedia || defectMedia.length === 0) {
 			return false;
 		}
+
 		if (!isEqual(this.images, {})) {
 			const images = defectMedia.filter((media) => media.type !== 'failReason' && !!media.path);
 			for (const image of images) {

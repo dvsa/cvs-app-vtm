@@ -88,4 +88,150 @@
       </app-button-group>
     </div>
   </div>
+} @else if (defect(); as defect) {
+  <h1 class="govuk-heading-l">Defect details</h1>
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-m">{{ defect.imDescription }}</span>
+        <h2 class="govuk-heading-s">
+        {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? `(${defect.deficiencyId})` : '' }}
+        {{ defect.deficiencySubId ? `${defect.deficiencySubId}` : '' }}{{ isDangerousAsterisk() ? '*' : '' }} - {{ defect.itemDescription }}
+        {{ defect.deficiencyText }}
+        </h2>
+        <app-tag [type]="getCategoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+        @if (defect.prs) {
+          <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
+        }
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-m">Defect location</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vertical</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-vertical">
+            {{ defect.additionalInformation?.location?.vertical | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Horizontal</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-horizontal">
+            {{ defect.additionalInformation?.location?.horizontal | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Lateral</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-lateral">
+            {{ defect.additionalInformation?.location?.lateral | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Longitudinal</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-longitudinal">
+            {{ defect.additionalInformation?.location?.longitudinal | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Row Number</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-row-number">
+            {{ defect.additionalInformation?.location?.rowNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Seat Number</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-seat-number">
+            {{ defect.additionalInformation?.location?.seatNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Axle Number</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-axle-number">
+            {{ defect.additionalInformation?.location?.axleNumber | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Notes</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-notes">
+            {{ defect.additionalInformation?.notes | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">PRS?</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-prs">
+            {{ defect.prs | defaultNullOrEmpty }}
+          </dd> 
+        </div>
+        <div class="govuk-summary-list__row"> 
+          <dt class="govuk-summary-list__key">Prohibition Issued?</dt>
+          <dd class="govuk-summary-list__value" id="defect-additional-information-prohibition-issued">
+            {{ defect.prohibitionIssued | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+  @if (defect.deficiencyCategory === 'dangerous') {
+    <div>
+      <h2 class="govuk-heading-m">Defect media</h2>
+      @if (defectMediaService) {
+        @if (loading) {
+          <div class="spinner-group">
+            <p class="govuk-body fetching-label">Fetching media</p>
+            <div class="govuk-box spinner-wrapper" aria-busy="true">
+              <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+                <div class="spinner-container">
+                  <div class="spinner">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else if (defectMediaService.hasRententionPeriodExpired(testResult())) {
+          <div class="govuk-heading-s underline">Photos</div>
+          <p class="govuk-body">
+            No media available - media was deleted as the retention period had passed
+          </p>
+        } @else {
+          @if (defectMediaService.hasImages(defect) && defectMediaService.hasCachedImages(defect)) {
+            <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">
+              Download all media for this defect
+            </app-button>
+          }
+          <div class="govuk-heading-s underline">Photos</div>
+          @for (media of defect.media; track media) {
+            @if (media.type === 'image' && hasCachedImage(media)) {
+              <div style="display: inline-flex" class="defect-container">
+                <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
+                <button class="link download-image-link" (click)="downloadPhoto(media)">
+                  Download photo
+                </button>
+              </div>
+            } 
+          }
+          @if (shouldShowMissingMediaMessage()) {
+            <p class="govuk-body">
+              No media available
+            </p>
+          } @else if (!defectMediaService.hasImages(defect)) {
+            <p class="govuk-body">
+              {{ getFailureToCaptureDefectMediaReason() }}
+            </p>
+          }
+        }
+      }
+    </div>
+  }
 }

@@ -212,7 +212,7 @@ export class TestRecordsService {
 	}
 
 	cancelTest(reason: string): void {
-		this.store.pipe(select(toEditOrNotToEdit), take(1)).subscribe((testResult) => {
+		this.store.pipe(select(testResultInEdit), take(1)).subscribe((testResult) => {
 			if (!testResult) {
 				return this.store.dispatch(updateTestResultFailed({ errors: [{ error: 'No selected test result.' }] }));
 			}
