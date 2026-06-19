@@ -145,14 +145,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 				});
 		}
 
-		if (this.testResult && this.defect && this.defectMediaService?.canDownloadMediaItems(this.defect)) {
-			this.loading = true;
-			await this.defectMediaService.getAdasZip(this.testResult.testResultId);
-			await this.defectMediaService.getDefectZip(this.testResult.testResultId);
-			await this.loadMediaItems();
-			this.loading = false;
-			this.cdr.detectChanges();
-		}
+		await this.loadMediaItems();
 	}
 
 	ngOnDestroy(): void {
@@ -165,8 +158,13 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		this.loading = true;
 
-		await this.defectMediaService.getAdasZip(this.testResult.testResultId);
-		await this.defectMediaService.getDefectZip(this.testResult.testResultId);
+		if (this.defectMediaService.canDownloadAdasMediaItems(this.defect)) {
+			await this.defectMediaService.getAdasZip(this.testResult.testResultId);
+		}
+
+		if (this.defectMediaService.canDownloadDefectMediaItems(this.defect)) {
+			await this.defectMediaService.getDefectZip(this.testResult.testResultId);
+		}
 
 		if (Array.isArray(this.defect.media)) {
 			for (const media of this.defect.media) {

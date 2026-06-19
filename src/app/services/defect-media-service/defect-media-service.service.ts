@@ -8,8 +8,7 @@ import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
 import dayjs from 'dayjs';
 import JSZip from 'jszip';
-import { isEqual } from 'lodash';
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable()
@@ -20,12 +19,6 @@ export class DefectMediaService {
 	globalErrorService = inject(GlobalErrorService);
 	featureToggleService = inject(FeatureToggleService);
 	router = inject(Router);
-
-	//
-	//
-	// NEW SERVICE METHODS
-	//
-	//
 
 	zipCache: Record<string, JSZip> = {};
 	fileCache: Record<string, string> = {};
@@ -77,11 +70,17 @@ export class DefectMediaService {
 
 	mediaItemsExistInCache(id: string, defect: DefectDetailsSchema): boolean {
 		if (this.canDownloadAdasMediaItems(defect)) {
-			return this.zipContainsMediaItems(this.zipCache[this.getZipCacheKey(id, { category: 'adas' })], defect);
+			const zip = this.zipCache[this.getZipCacheKey(id, { category: 'adas' })];
+			if (!zip) return false;
+
+			return this.zipContainsMediaItems(zip, defect);
 		}
 
 		if (this.canDownloadDefectMediaItems(defect)) {
-			return this.zipContainsMediaItems(this.zipCache[this.getZipCacheKey(id, { category: 'defects' })], defect);
+			const zip = this.zipCache[this.getZipCacheKey(id, { category: 'defects' })];
+			if (!zip) return false;
+
+			return this.zipContainsMediaItems(zip, defect);
 		}
 
 		return false;
@@ -100,7 +99,7 @@ export class DefectMediaService {
 		params = params.set('category', options.category);
 
 		const request = this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${id}`, {
-			params: this.getParams(),
+			params,
 			headers,
 			responseType: 'text',
 		});
@@ -225,124 +224,14 @@ export class DefectMediaService {
 		return await this._downloadMediaItems(testResult, defect, downloadableMedia);
 	}
 
-	//
-	//
-	// OLD SERVICE METHODS
-	//
-	//
-
-	getHeaders(): HttpHeaders {
-		let headers = new HttpHeaders();
-		headers = headers.set('Content-Type', 'application/zip');
-		headers = headers.set('X-Api-Key', environment.DOCUMENT_RETRIEVAL_API_KEY);
-		return headers;
-	}
-
-	getParams(): HttpParams {
-		let localParams = new HttpParams();
-		this.params.forEach((value, key) => (localParams = localParams.set(key, value)));
-		return localParams;
-	}
-
-	getPresignedUrlValue(testResultId: string): Observable<string> {
-		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
-			params: this.getParams(),
-			headers: this.getHeaders(),
-			responseType: 'text',
-		});
-	}
-
-	getImage(media: MediaSchema) {
-		return this.images[media.path];
-	}
-
-	hasCachedImages(defect: DefectDetailsSchema) {
-		const defectMedia = defect.media;
-		if (!defectMedia || defectMedia.length === 0) {
-			return false;
-		}
-
-		if (!isEqual(this.images, {})) {
-			const images = defectMedia.filter((media) => media.type !== 'failReason' && !!media.path);
-			for (const image of images) {
-				if (this.images[image.path]) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	hasRententionPeriodExpired(testResult: TestResultSchema): boolean {
 		return dayjs().diff(testResult.testTypes[0].testTypeEndTimestamp, 'months') >= 15;
-	}
-
-	hasCachedTestResultImages(testResult: TestResultSchema) {
-		const testType = testResult.testTypes[0];
-		if (!testType) {
-			return;
-		}
-
-		const defectsWithImages = testType.defects.filter((defect) => this.hasImages(defect));
-		if (defectsWithImages.length === 0) {
-			return true;
-		}
-
-		let isTestResultCached = true;
-		for (const defect of defectsWithImages) {
-			if (!this.hasCachedImages(defect)) {
-				isTestResultCached = false;
-			}
-		}
-		return isTestResultCached;
-	}
-
-	async loadImages(testResult: TestResultSchema) {
-		try {
-			const testType = testResult.testTypes[0];
-			const testResultId = testResult.testResultId;
-
-			if (this.hasCachedTestResultImages(testResult) || !testType) {
-				return;
-			}
-
-			const defectsWithImages = testType.defects.filter((defect) => this.hasImages(defect));
-			if (defectsWithImages.length === 0) {
-				return;
-			}
-
-			const zip = await this.getDefectZip(testResultId);
-
-			for (const defect of defectsWithImages) {
-				const defectMedia = defect.media;
-				if (!defectMedia) {
-					return;
-				}
-				for (const image of defectMedia) {
-					const file = zip.files[image.path];
-					if (file) {
-						this.images[image.path] = await file.async('base64');
-					}
-				}
-			}
-		} catch (error) {
-			console.log(error);
-			this.handleError(error);
-		}
 	}
 
 	async openDocumentFromZip(zip: JSZip, fileName: string) {
 		const blob = await zip.generateAsync({ type: 'blob' });
 		const link = this.documentsService.createFileLink(fileName, blob, 'zip');
 		this.documentsService.simulateClick(link);
-	}
-
-	get params(): Map<string, string> {
-		return new Map([['category', 'defects']]);
-	}
-
-	getImages(): Record<string, string> {
-		return this.images;
 	}
 
 	formatMediaFailureReason(reason?: string): string {
@@ -358,11 +247,6 @@ export class DefectMediaService {
 		return reason;
 	}
 
-	hasImages(defect: DefectDetailsSchema): boolean {
-		if (!defect.media) return false;
-		return defect.media.some((media) => media.type !== 'failReason' && !!media.path);
-	}
-
 	handleError(error: unknown) {
 		if (error instanceof HttpErrorResponse) {
 			switch (error.status) {
@@ -370,7 +254,8 @@ export class DefectMediaService {
 					this.globalErrorService.setErrors([
 						{
 							error:
-								'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+								'Media could not be found. <br>' +
+								'Try again later or contact the service desk if this issue keeps happening.',
 							anchorLink: '',
 						},
 					]);
@@ -389,8 +274,4 @@ export class DefectMediaService {
 
 export interface GetDocumentOptions {
 	category: 'defects' | 'adas';
-}
-
-export interface DownloadMediaOptions {
-	paths?: string[];
 }
