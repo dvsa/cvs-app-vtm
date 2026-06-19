@@ -64,6 +64,7 @@ export class DefectMediaService {
 		if (!defectMedia || defectMedia.length === 0) {
 			return false;
 		}
+
 		if (!isEqual(this.images, {})) {
 			const images = defectMedia.filter((media) => media.type !== 'failReason' && !!media.path);
 			for (const image of images) {
@@ -75,7 +76,9 @@ export class DefectMediaService {
 		return false;
 	}
 
-	hasRententionPeriodExpired(testResult: TestResultSchema): boolean {
+	hasRententionPeriodExpired(testResult?: TestResultSchema): boolean {
+		if (!testResult) return false;
+
 		const now = new Date();
 		const testType = testResult.testTypes[0];
 		const daysSinceTest = dayjs(now).diff(testType.testTypeEndTimestamp, 'months');
