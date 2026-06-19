@@ -5,7 +5,6 @@ import { DefectDetailsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-re
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefectMediaService } from '@services/defect-media-service/defect-media-service.service';
 import { selectedTestResultState } from '@store/test-records';
-import JSZip from 'jszip';
 import { DefectMediaDownloadComponent } from '../defect-media-download.component';
 
 describe('DefectMediaDownloadComponent', () => {
@@ -13,30 +12,22 @@ describe('DefectMediaDownloadComponent', () => {
 	let fixture: ComponentFixture<DefectMediaDownloadComponent>;
 	let globalErrorService: GlobalErrorService;
 	let defectMediaService: {
-		images: Record<string, string>;
-		hasImages: jest.Mock;
-		hasCachedImages: jest.Mock;
-		getDefectZip: jest.Mock;
 		openDocumentFromZip: jest.Mock;
 		handleError: jest.Mock;
 		hasRententionPeriodExpired: jest.Mock;
 		formatMediaFailureReason: jest.Mock;
+		canDownloadMediaItems: jest.Mock;
 	};
 
 	beforeEach(async () => {
 		defectMediaService = {
-			images: {},
-			hasImages: jest.fn(
-				(defect: DefectDetailsSchema) => !!defect.media?.some((media) => media.type !== 'failReason' && !!media.path)
-			),
-			hasCachedImages: jest.fn(),
-			getDefectZip: jest.fn(),
 			openDocumentFromZip: jest.fn(),
 			handleError: jest.fn(),
 			hasRententionPeriodExpired: jest.fn(),
 			formatMediaFailureReason: jest.fn(
 				(reason?: string) => reason ?? 'Reason for failure to capture media not available'
 			),
+			canDownloadMediaItems: jest.fn(),
 		};
 
 		await TestBed.configureTestingModule({
@@ -82,29 +73,6 @@ describe('DefectMediaDownloadComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	describe('canDownloadMedia', () => {
-		it('should return false if media is undefined', () => {
-			component.defect = { imNumber: 1, imDescription: 'x', media: undefined } as DefectDetailsSchema;
-			expect(component.canDownloadMedia()).toBe(false);
-		});
-
-		it('should return false if media contains only fail reasons', () => {
-			component.defect = {
-				imNumber: 1,
-				imDescription: 'x',
-				media: [
-					{ type: 'failReason', reason: 'foo' },
-					{ type: 'failReason', reason: 'bar' },
-				],
-			} as DefectDetailsSchema;
-			expect(component.canDownloadMedia()).toBe(false);
-		});
-
-		it('should return true if media contains images', () => {
-			expect(component.canDownloadMedia()).toBe(true);
-		});
-	});
-
 	describe('getFailureToCaptureDefectMediaReason', () => {
 		it('should return default reason when media is undefined', () => {
 			component.defect = { imNumber: 1, imDescription: 'x', media: undefined } as DefectDetailsSchema;
@@ -143,43 +111,6 @@ describe('DefectMediaDownloadComponent', () => {
 			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
 			component.ngOnDestroy();
 			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-		});
-	});
-
-	describe('downloadMedia', () => {
-		it('should build and download only the selected defect from cache', async () => {
-			defectMediaService.hasCachedImages.mockReturnValue(true);
-			defectMediaService.images['a.jpg'] = 'cached-a';
-			defectMediaService.images['b.jpg'] = 'cached-b';
-
-			await component.downloadMedia();
-
-			expect(defectMediaService.getDefectZip).not.toHaveBeenCalled();
-			expect(defectMediaService.openDocumentFromZip).toHaveBeenCalledTimes(1);
-
-			const zipArg = defectMediaService.openDocumentFromZip.mock.calls[0][0] as JSZip;
-			expect(Object.keys(zipArg.files)).toContain('a.jpg');
-			expect(Object.keys(zipArg.files)).not.toContain('b.jpg');
-		});
-
-		it('should fetch once, cache all defect images, and download only selected defect', async () => {
-			defectMediaService.hasCachedImages.mockReturnValue(false);
-
-			const zip = new JSZip();
-			zip.file('a.jpg', 'file-a');
-			zip.file('b.jpg', 'file-b');
-			defectMediaService.getDefectZip.mockResolvedValue(zip);
-
-			await component.downloadMedia();
-
-			expect(defectMediaService.getDefectZip).toHaveBeenCalledWith('test-result-id');
-			expect(defectMediaService.images['a.jpg']).toBeDefined();
-			expect(defectMediaService.images['b.jpg']).toBeDefined();
-			expect(defectMediaService.openDocumentFromZip).toHaveBeenCalledTimes(1);
-
-			const zipArg = defectMediaService.openDocumentFromZip.mock.calls[0][0] as JSZip;
-			expect(Object.keys(zipArg.files)).toContain('a.jpg');
-			expect(Object.keys(zipArg.files)).not.toContain('b.jpg');
 		});
 	});
 });

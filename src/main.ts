@@ -75,7 +75,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 	};
 }
 
-const featureFactory = (store: Store) => () => store.dispatch(fetchFeatureFlags({ local: true }));
+const featureFactory = (store: Store) => () => store.dispatch(fetchFeatureFlags({ local: false }));
 
 if (environment.production) {
 	enableProdMode();
