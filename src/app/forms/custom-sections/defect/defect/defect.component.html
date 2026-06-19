@@ -66,7 +66,7 @@
         </dl>
       </div>
     </div>
-    @if (isDangerous) {
+    @if (isDangerous || defect.imNumber === 29) {
       <div>
         <h2 class="govuk-heading-m">Defect media</h2>
         @if (defectMediaService) {
@@ -100,27 +100,27 @@
                 No media available - media was deleted as the retention period had passed
               </p>
           } @else {
-            @if (defectMediaService.hasImages(defect) && defectMediaService.hasCachedImages(defect)) {
-              <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">
+            @if (testResult && defectMediaService.canDownloadMediaItems(defect)) {
+              <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService.downloadMediaItems(testResult, defect)">
                 Download all media for this defect
               </app-button>
             }
             <div class="govuk-heading-s underline">Photos</div>
             @for (media of defect.media; track media) {
-              @if (media.type === 'image' && hasCachedImage(media)) {
+              @if (testResult && media.type === 'image') {
                 <div style="display: inline-flex" class="defect-container">
-                  <img class="media-image" [src]="srcValue(media)" [alt]="media.path" />
-                  <button class="link download-image-link" (click)="downloadPhoto(media)">
+                  <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
+                  <button class="link download-image-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
                     Download photo
                   </button>
                 </div>
-              } }
-                @if (shouldShowMissingMediaMessage()) {
-                  <p class="govuk-body">
-                    No media available
-                  </p>
-                }
-              @else if (!defectMediaService.hasImages(defect)) {
+              } 
+            }
+            @if (!testResult || !this.defectMediaService.mediaItemsExistInCache(testResult.testResultId, defect)) {
+              <p class="govuk-body">
+                No media available
+              </p>
+            } @else if (!defectMediaService.canDownloadMediaItems(defect)) {
               <p class="govuk-body">
                 {{ getFailureToCaptureDefectMediaReason() }}
               </p>

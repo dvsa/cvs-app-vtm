@@ -7,8 +7,10 @@
           Defects
         </caption>
         @if (testResult(); as testResult) {
-          @if (hasMediaAvailable() && testResult && !defectMediaService?.hasRententionPeriodExpired(testResult)) {
-            <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+          @if (defectMediaService?.canDownloadMedia(testResult)) {
+            <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService?.downloadMedia(testResult)">
+              Download all available media
+            </app-button>
           }
         }
         <table class="govuk-table">
