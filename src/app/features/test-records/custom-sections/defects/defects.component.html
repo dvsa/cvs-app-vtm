@@ -6,8 +6,10 @@
         <caption class="govuk-table__caption govuk-table__caption--m">
           Defects
         </caption>
-        @if (hasMediaAvailable() && testResult && !defectMediaService?.hasRententionPeriodExpired(testResult)) {
-          <app-button [id]="'download-all-media-button'" (clicked)="downloadAllMedia()">Download all available media</app-button>
+        @if (defectMediaService?.canDownloadMedia(testResult)) {
+          <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService?.downloadMedia(testResult)">
+            Download all available media
+          </app-button>
         }
         <table class="govuk-table">
           <thead class="govuk-table__head">

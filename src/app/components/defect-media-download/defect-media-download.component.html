@@ -3,9 +3,9 @@
     <td id="media-expired">
       Expired
     </td>
-  } @else if (canDownloadMedia()) {
+  } @else if (defectMediaService?.canDownloadMediaItems(defect)) {
     <td id="media-download-link">
-      <button class="link" (click)="downloadMedia()">
+      <button class="link" (click)="defectMediaService?.downloadMediaItems(testResult, defect)">
         Download media
       </button>
     </td>
