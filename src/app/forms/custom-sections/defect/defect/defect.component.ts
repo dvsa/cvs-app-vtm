@@ -217,7 +217,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
 		if (this.index || this.index === 0) {
 			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
-			if (this.isDangerous) {
+			if (this.isDangerous || defect.imNumber === 29) {
 				defect.media =
 					Array.isArray(defect.media) && defect.media.length > 0
 						? defect.media
@@ -226,7 +226,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 			this.store.dispatch(updateDefect({ defect: defect, index: this.index }));
 		} else {
 			const defect = this.form.getCleanValue(this.form) as DefectDetailsSchema;
-			if (this.isDangerous) {
+			if (this.isDangerous || defect.imNumber === 29) {
 				defect.media =
 					Array.isArray(defect.media) && defect.media.length > 0
 						? defect.media

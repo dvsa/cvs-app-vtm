@@ -193,8 +193,8 @@ export class DefectV2Component {
 			initialValues.itemDescription = item.itemDescription.slice(0, -1);
 		}
 
-		// For dangerous defects, ensure that media array is populated
-		if (initialValues.deficiencyCategory === deficiencyCategory.Dangerous) {
+		// For dangerous/ADAS defects, ensure that media array is populated
+		if (initialValues.deficiencyCategory === deficiencyCategory.Dangerous || initialValues.imNumber === 29) {
 			initialValues.media = [{ type: 'failReason', reason: 'Contingency test', path: ' ' }];
 		}
 
