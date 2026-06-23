@@ -1,3 +1,4 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
@@ -190,6 +191,61 @@ describe('CreateTestRecordV2Component', () => {
 			component.onReview();
 
 			expect(setWarningsSpy).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('handleFormInvalid', () => {
+		it('should sort errors by DOM position regardless of form control declaration order', () => {
+			// Create elements in correct visual order: contingencyTestNumber first, testStationPNumber second
+			const container = document.createElement('div');
+			const elFirst = document.createElement('input');
+			elFirst.id = 'contingencyTestNumber';
+			const elSecond = document.createElement('input');
+			elSecond.id = 'testStationPNumber';
+			container.appendChild(elFirst);
+			container.appendChild(elSecond);
+			document.body.appendChild(container);
+
+			// extractGlobalErrors returns them in reverse order (form declaration order, not DOM order)
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
+				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
+			]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+
+			component.handleFormInvalid();
+
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
+				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
+			]);
+
+			document.body.removeChild(container);
+		});
+
+		it('should place errors with no matching DOM element at the end', () => {
+			const container = document.createElement('div');
+			const el = document.createElement('input');
+			el.id = 'knownField';
+			container.appendChild(el);
+			document.body.appendChild(container);
+
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+				{ error: 'Unknown field error', anchorLink: 'unknownField' },
+				{ error: 'Known field error', anchorLink: 'knownField' },
+			]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+
+			component.handleFormInvalid();
+
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{ error: 'Known field error', anchorLink: 'knownField' },
+				{ error: 'Unknown field error', anchorLink: 'unknownField' },
+			]);
+
+			document.body.removeChild(container);
 		});
 	});
 

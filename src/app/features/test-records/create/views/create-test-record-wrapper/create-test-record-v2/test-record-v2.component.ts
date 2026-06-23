@@ -18,7 +18,7 @@ import {
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
+import { Component, DOCUMENT, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -82,6 +82,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	resultOfTestService = inject(ResultOfTestService);
 	titleService = inject(Title);
 	actions$ = inject(Actions);
+	document = inject(DOCUMENT);
 
 	form = this.testService.form;
 
@@ -174,7 +175,31 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	handleFormInvalid(): void {
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
+
+		errors.sort((a, b) => {
+			// get the id of the element on the page
+			const elA = a.anchorLink ? this.document.getElementById(a.anchorLink) : null;
+			const elB = b.anchorLink ? this.document.getElementById(b.anchorLink) : null;
+
+			if (!elA && !elB) return 0;
+			if (!elA) return 1;
+			if (!elB) return -1;
+
+			// order based on position on screen/dom
+			const position = elA.compareDocumentPosition(elB);
+
+			if (TestRecordV2Component.hasDocumentPosition(position, Node.DOCUMENT_POSITION_FOLLOWING)) return -1;
+			if (TestRecordV2Component.hasDocumentPosition(position, Node.DOCUMENT_POSITION_PRECEDING)) return 1;
+
+			return 0;
+		});
+
 		this.globalErrorService.setErrors(errors);
+	}
+
+	private static hasDocumentPosition(position: number, flag: number): boolean {
+		// the single `&` is a bitwise operator for comparing values
+		return (position & flag) !== 0;
 	}
 
 	onReview(): void {
