@@ -173,9 +173,11 @@ export class DefectMediaService {
 			const defectsZip = await this.getDefectZip(testResult.testResultId);
 			await this.openDocumentFromZip(defectsZip, `${testResult.testResultId}`);
 
-			const adasZip = await this.getAdasZip(testResult.testResultId);
-			if (adasZip) {
-				await this.openDocumentFromZip(adasZip, `${testResult.testResultId}`);
+			if (this.canDownloadAdasMedia(testResult)) {
+				const adasZip = await this.getAdasZip(testResult.testResultId);
+				if (adasZip) {
+					await this.openDocumentFromZip(adasZip, `${testResult.testResultId}`);
+				}
 			}
 		} catch (error) {
 			this.handleError(error);
