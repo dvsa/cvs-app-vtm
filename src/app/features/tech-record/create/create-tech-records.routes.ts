@@ -45,7 +45,7 @@ export const routes: Routes = [
 						data: {
 							title: 'New technical record details',
 							roles: Roles.TechRecordCreate,
-							isCustomLayout: true,
+							isCustomLayout: ['techrecordredesigncreatedetails'],
 							isEditing: true,
 							backlink: {
 								url: RootRoutes.CREATE_TECHNICAL_RECORD,
