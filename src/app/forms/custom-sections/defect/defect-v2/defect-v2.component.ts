@@ -20,7 +20,8 @@ import {
 } from '@/src/app/store/test-records';
 import { KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, computed, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -64,6 +65,7 @@ export class DefectV2Component {
 	globalErrorService = inject(GlobalErrorService);
 	commonValidators = inject(CommonValidatorsService);
 	defectMediaService = inject(DefectMediaService, { optional: true });
+	destroyRef = inject(DestroyRef);
 
 	defectIndex = this.store.selectSignal(selectRouteParam('defectIndex'));
 	deficiencyRef = this.store.selectSignal(selectRouteParam('ref'));
@@ -107,12 +109,15 @@ export class DefectV2Component {
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
 		// metadata: this.fb.control<DefectMetadataSchema>({ category: {} }),
-		media: this.fb.control<MediaSchema[] | undefined>({ value: undefined, disabled: false }),
+		media: this.fb.control<MediaSchema[] | undefined>(undefined),
 	});
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
 	async ngOnInit(): Promise<void> {
+		this.form.controls.prohibitionIssued.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+			this.form.controls.additionalInformation.controls.notes.updateValueAndValidity();
+		});
 		const vehicleType = this.testService.form.controls.vehicleType.value;
 
 		// If we're amending an existing defect, use the existing values
