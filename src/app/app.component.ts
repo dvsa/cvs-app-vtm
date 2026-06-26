@@ -56,14 +56,28 @@ export class AppComponent implements OnInit, OnDestroy {
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
 
-	isStandardLayout$ = this.store.pipe(
+	isCustomLayout$ = this.store.pipe(
 		select(selectRouteData),
-		map(
-			(routeData) =>
-				(routeData && !routeData['isCustomLayout']) ||
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
-		)
+		map((routeData) => {
+			// Use the standard (condensed) layout by default, only use full-width when specified by route data
+			if (routeData && 'isCustomLayout' in routeData) {
+				const featureFlags = routeData['isCustomLayout'];
+				if (Array.isArray(featureFlags)) {
+					// If no feature flags are specified, default to custom layout
+					if (featureFlags.length === 0) {
+						return true;
+					}
+
+					// Otherwise only use custom layout if none of the feature flags are enabled
+					return !this.featureToggleService.isFeatureEnabled(...featureFlags);
+				}
+			}
+
+			return false;
+		})
 	);
+
+	isStandardLayout$ = this.isCustomLayout$.pipe(map((isCustomLayout) => !isCustomLayout));
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {
