@@ -3,7 +3,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
@@ -13,7 +13,7 @@ import { startSendingLogs } from '@store/logs/logs.actions';
 import { selectRouteData } from '@store/router/router.selectors';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';
-import { Subject, map, takeUntil } from 'rxjs';
+import { Subject, combineLatest, map, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { BreadcrumbsComponent } from './core/components/breadcrumbs/breadcrumbs.component';
@@ -24,6 +24,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { PhaseBannerComponent } from './core/components/phase-banner/phase-banner.component';
 import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { State } from './store';
+import { selectFeatureFlags } from './store/feature-flags/feature-flags.selectors';
 
 @Component({
 	selector: 'app-root',
@@ -56,9 +57,8 @@ export class AppComponent implements OnInit, OnDestroy {
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
 
-	isCustomLayout$ = this.store.pipe(
-		select(selectRouteData),
-		map((routeData) => {
+	isCustomLayout$ = combineLatest([this.store.select(selectRouteData), this.store.select(selectFeatureFlags)]).pipe(
+		map(([routeData]) => {
 			// Use the standard (condensed) layout by default, only use full-width when specified by route data
 			if (routeData && 'isCustomLayout' in routeData) {
 				const featureFlags = routeData['isCustomLayout'];
