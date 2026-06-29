@@ -116,14 +116,16 @@
                 </div>
               } 
             }
-            @if (!testResult || !this.defectMediaService.mediaItemsExistInCache(testResult.testResultId, defect)) {
-              <p class="govuk-body">
-                No media available
-              </p>
-            } @else if (!defectMediaService.canDownloadMediaItems(defect)) {
-              <p class="govuk-body">
-                {{ getFailureToCaptureDefectMediaReason() }}
-              </p>
+            @if (testResult) {
+              @if (!defectMediaService.hasMedia(defect)) {
+                <p class="govuk-body">
+                  {{ getFailureToCaptureDefectMediaReason() }}
+                </p>
+              } @else {
+                <p class="govuk-body">
+                  No media available
+                </p>
+              }
             }
           }
         }
