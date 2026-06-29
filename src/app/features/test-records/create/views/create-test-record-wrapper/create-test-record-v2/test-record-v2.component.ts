@@ -110,7 +110,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	private handleMissingTestResult(): void {
 		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
 			this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
-				if (!testResult) {
+				if (!testResult && !this.router.currentNavigation()) {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
 				}
 			});

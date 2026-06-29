@@ -14,8 +14,8 @@ export class CancelEditTestGuard implements CanDeactivate<TestRecordComponent> {
 
 	canDeactivate(): boolean {
 		this.store.dispatch(cancelEditingTestResult());
-		this.testService.form.reset();
-		this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE);
+		this.testService.form.reset(undefined, { emitEvent: false });
+		this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE, { emitEvent: false });
 		return true;
 	}
 }
