@@ -172,6 +172,7 @@ describe('DefectMediaService', () => {
 
 	it('should download media and trigger document opening', async () => {
 		const zip = new JSZip();
+		jest.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
 		jest.spyOn(service, 'getDefectZip').mockResolvedValue(zip);
 		jest.spyOn(service, 'getAdasZip').mockResolvedValue(null);
 		const openSpy = jest.spyOn(service, 'openDocumentFromZip').mockResolvedValue();
@@ -182,6 +183,7 @@ describe('DefectMediaService', () => {
 	});
 
 	it('should handle download errors', async () => {
+		jest.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
 		jest.spyOn(service, 'getDefectZip').mockRejectedValue(new Error('fail'));
 
 		const handleSpy = jest.spyOn(service, 'handleError');

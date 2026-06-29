@@ -106,26 +106,21 @@
               </app-button>
             }
             <div class="govuk-heading-s underline">Photos</div>
-            @for (media of defect.media; track media) {
-              @if (testResult && media.type === 'image') {
-                <div style="display: inline-flex" class="defect-container">
-                  <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
-                  <button class="link download-image-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
-                    Download photo
-                  </button>
-                </div>
-              } 
-            }
-            @if (testResult) {
-              @if (!defectMediaService.hasMedia(defect)) {
-                <p class="govuk-body">
-                  {{ getFailureToCaptureDefectMediaReason() }}
-                </p>
-              } @else {
-                <p class="govuk-body">
-                  No media available
-                </p>
+            @if (defectMediaService.hasMediaInCache(defect)) {
+              @for (media of defect.media; track media) {
+                @if (testResult && media.type === 'image' && defectMediaService.fileCache[media.path]) {
+                  <div style="display: inline-flex" class="defect-container">
+                    <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
+                    <button class="link download-image-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
+                      Download photo
+                    </button>
+                  </div>
+                } 
               }
+            } @else {
+              <p class="govuk-body">
+                {{ getFailureToCaptureDefectMediaReason() }}
+              </p>
             }
           }
         }
