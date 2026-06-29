@@ -14,7 +14,11 @@ export const routes: Routes = [
 	{
 		path: '',
 		loadComponent: () => import('./tech-record.component').then((m) => m.TechRecordComponent),
-		data: { title: 'View technical record', roles: Roles.TechRecordView, isCustomLayout: true },
+		data: {
+			title: 'View technical record',
+			roles: Roles.TechRecordView,
+			isCustomLayout: ['techrecordredesigncreatedetails'],
+		},
 		canActivateChild: [MsalGuard, RoleGuard],
 		canActivate: [CancelEditTechGuard],
 		resolve: {
