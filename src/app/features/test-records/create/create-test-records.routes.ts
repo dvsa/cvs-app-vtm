@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestRecordCreateRoutes } from '@models/routes.enum';
@@ -48,6 +49,7 @@ export const routes: Routes = [
 					mode: 'create',
 				},
 				canActivate: [RoleGuard],
+				canDeactivate: [CancelEditTestGuard],
 				children: [
 					{
 						path: '',
