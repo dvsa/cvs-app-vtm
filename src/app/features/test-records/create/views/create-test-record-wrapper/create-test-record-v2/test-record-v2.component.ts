@@ -126,8 +126,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 		// Copy viewable test result into editing test result
 		if (!testResultInEdit && testResult) {
-			if (this.mode() === Modes.AMEND) testResult.reasonForCreation = ''; // clear reason for creation when amending
-
 			if (this.mode() === Modes.AMEND) {
 				testResult.reasonForCreation = ''; // clear reason for creation when amending
 				testResult.testerName = ''; // clear tester details when amending
