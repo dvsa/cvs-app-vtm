@@ -147,24 +147,28 @@ export class DefectV2Component {
 		const testResult = this.testResult();
 		if (!testResult || !defect || !this.defectMediaService) return;
 
-		this.loading = true;
+		try {
+			this.loading = true;
 
-		if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
-			await this.defectMediaService.getAdasZip(testResult.testResultId);
-		}
-
-		if (this.defectMediaService.canDownloadDefectMediaItems(defect)) {
-			await this.defectMediaService.getDefectZip(testResult.testResultId);
-		}
-
-		if (Array.isArray(defect.media)) {
-			for (const media of defect.media) {
-				await this.defectMediaService.loadMediaItemAsBase64(testResult, defect, media);
+			if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
+				await this.defectMediaService.getAdasZip(testResult.testResultId);
 			}
-		}
 
-		this.loading = false;
-		this.cdr.detectChanges();
+			if (this.defectMediaService.canDownloadDefectMediaItems(defect)) {
+				await this.defectMediaService.getDefectZip(testResult.testResultId);
+			}
+
+			if (Array.isArray(defect.media)) {
+				for (const media of defect.media) {
+					await this.defectMediaService.loadMediaItemAsBase64(testResult, defect, media);
+				}
+			}
+		} catch (error) {
+			// TODO: handle error
+		} finally {
+			this.loading = false;
+			this.cdr.detectChanges();
+		}
 	}
 
 	populateDefectFromTaxonomy(

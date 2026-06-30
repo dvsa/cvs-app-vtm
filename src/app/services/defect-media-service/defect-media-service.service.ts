@@ -28,6 +28,11 @@ export class DefectMediaService {
 		return defect.media.some((media) => media.type !== 'failReason');
 	}
 
+	hasMediaInCache(defect: DefectDetailsSchema): boolean {
+		if (!Array.isArray(defect.media) || defect.media.length === 0) return false;
+		return defect.media.some((media) => this.fileCache[media.path]);
+	}
+
 	canDownloadAdasMediaItems(defect: DefectDetailsSchema): boolean {
 		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
 
@@ -170,8 +175,10 @@ export class DefectMediaService {
 
 	async downloadMedia(testResult: TestResultSchema) {
 		try {
-			const defectsZip = await this.getDefectZip(testResult.testResultId);
-			await this.openDocumentFromZip(defectsZip, `${testResult.testResultId}`);
+			if (this.canDownloadDefectMedia(testResult)) {
+				const defectsZip = await this.getDefectZip(testResult.testResultId);
+				await this.openDocumentFromZip(defectsZip, `${testResult.testResultId}`);
+			}
 
 			if (this.canDownloadAdasMedia(testResult)) {
 				const adasZip = await this.getAdasZip(testResult.testResultId);

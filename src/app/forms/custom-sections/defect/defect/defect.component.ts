@@ -156,24 +156,28 @@ export class DefectComponent implements OnInit, OnDestroy {
 	async loadMediaItems() {
 		if (!this.testResult || !this.defect || !this.defectMediaService) return;
 
-		this.loading = true;
+		try {
+			this.loading = true;
 
-		if (this.defectMediaService.canDownloadAdasMediaItems(this.defect)) {
-			await this.defectMediaService.getAdasZip(this.testResult.testResultId);
-		}
-
-		if (this.defectMediaService.canDownloadDefectMediaItems(this.defect)) {
-			await this.defectMediaService.getDefectZip(this.testResult.testResultId);
-		}
-
-		if (Array.isArray(this.defect.media)) {
-			for (const media of this.defect.media) {
-				await this.defectMediaService.loadMediaItemAsBase64(this.testResult, this.defect, media);
+			if (this.defectMediaService.canDownloadAdasMediaItems(this.defect)) {
+				await this.defectMediaService.getAdasZip(this.testResult.testResultId);
 			}
-		}
 
-		this.loading = false;
-		this.cdr.detectChanges();
+			if (this.defectMediaService.canDownloadDefectMediaItems(this.defect)) {
+				await this.defectMediaService.getDefectZip(this.testResult.testResultId);
+			}
+
+			if (Array.isArray(this.defect.media)) {
+				for (const media of this.defect.media) {
+					await this.defectMediaService.loadMediaItemAsBase64(this.testResult, this.defect, media);
+				}
+			}
+		} catch (error) {
+			// TODO: handle error
+		} finally {
+			this.loading = false;
+			this.cdr.detectChanges();
+		}
 	}
 
 	getFailureToCaptureDefectMediaReason(): string {
