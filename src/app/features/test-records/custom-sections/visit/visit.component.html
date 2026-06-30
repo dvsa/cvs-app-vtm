@@ -14,6 +14,7 @@
       label="Type of test facility"
       formControlName="testStationType"
       [width]="FormNodeWidth.S"
+      [disabled]="mode() === Modes.AMEND"
     />
 
     <!-- Tester details -->
