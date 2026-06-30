@@ -144,7 +144,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		console.log(this.initialMode());
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
