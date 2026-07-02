@@ -1,0 +1,71 @@
+@if (loadStatusForm) {
+  <form [formGroup]="loadStatusForm">
+    <govuk-form-group-radio label="Load status" formControlName="vehicleLoadStatus">
+      <govuk-radio id="unladen" label="Unladen" [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN">
+        <govuk-form-group-select 
+          class="govuk-label govuk-label--s" 
+          label="Body type" 
+          formControlName="unladenBodyType" 
+          [width]="FORM_NODE_WIDTH.L"
+          [options]="UNLADEN_BODY_TYPES_OPTIONS" 
+        />
+
+        @if (loadStatusForm.get('unladenBodyType')?.value === UNLADEN_BODY_TYPES.OTHER) {
+          <govuk-form-group-input       
+            class="govuk-label govuk-label--s"  
+            label="Enter body type" 
+            formControlName="otherUnladenBodyType"
+            [width]="FORM_NODE_WIDTH.XL"
+          />
+        }
+
+        <govuk-form-group-select
+          class="govuk-label govuk-label--s"
+          label="Reason for not loading"
+          formControlName="reasonForNotLoading"
+          [width]="FORM_NODE_WIDTH.L"
+          [options]="REASON_FOR_NOT_LOADING_OPTIONS"
+        />
+
+        @if (loadStatusForm.get('reasonForNotLoading')?.value === REASONS_FOR_NOT_LOADING.OTHER) {
+          <govuk-form-group-textarea
+            class="govuk-label govuk-label--s"
+            label="Enter reason for not loading"
+            formControlName="otherReasonForNotLoading"
+            [width]="FORM_NODE_WIDTH.XXL"
+            [maxLength]="200"
+          />
+        }
+      </govuk-radio>
+      <govuk-radio id="partially-laden" label="Partially laden" [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN">
+        <govuk-form-group-textarea
+          class="govuk-label govuk-label--s"
+          label="Why is the vehicle partially laden?"
+          formControlName="partiallyLadenReason"
+          [width]="FORM_NODE_WIDTH.XXL"
+          [maxLength]="200"
+        />
+      </govuk-radio>
+      <govuk-radio 
+        id="partially-laden-50-to-65" 
+        label="Partially laden 50% to 65%" 
+        [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65" 
+      />
+      <govuk-radio 
+        id="fully-laden" 
+        label="Fully laden" 
+        [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN" 
+      />
+      <govuk-radio 
+        id="load-simulated-partially-laden" 
+        label="Load simulated partially laden" 
+        [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN" 
+      />
+      <govuk-radio 
+        id="load-simulated-fully-laden" 
+        label="Load simulated fully laden" 
+        [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN" 
+      />
+    </govuk-form-group-radio>
+  </form>
+}
