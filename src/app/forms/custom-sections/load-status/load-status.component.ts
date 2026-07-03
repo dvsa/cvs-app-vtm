@@ -63,9 +63,10 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 						),
 					]),
 					otherUnladenBodyType: this.fb.control<string | null>(null, [
+						this.commonValidators.maxLength(200, 'Enter body type'),
 						this.commonValidators.applyWhen(
 							() => this.isOtherUnladenBodyTypeRequired(),
-							this.commonValidators.maxLength(200, 'Enter body type')
+							this.commonValidators.required('Enter body type')
 						),
 					]),
 					reasonForNotLoading: this.fb.control<ReasonForNotLoading | null>(null, [

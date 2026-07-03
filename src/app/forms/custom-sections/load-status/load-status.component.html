@@ -96,7 +96,11 @@
               Body type:
             </td>
             <td class="govuk-table__cell" id="test-unladenBodyType">
-              {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
+              @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
+                {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
+              } @else {
+                {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
+              }
             </td>
           </tr>
           <tr class="govuk-table__row">
@@ -104,7 +108,11 @@
               Reason for not loading:
             </td>
             <td class="govuk-table__cell" id="test-reasonForNotLoading">
-              {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
+              @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
+                {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
+              } @else {
+                {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
+              }
             </td>
           </tr>
         }
