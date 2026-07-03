@@ -40,11 +40,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.GROUP">
-        @if (control.value.meta.editComponent || control.value.meta.viewComponent) {
-          <app-dynamic-form-field [control]="control" [form]="form" [parentForm]="parentForm()" />
-        } @else {
-          <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }" />
-        }
+        <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }" />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.ARRAY">
