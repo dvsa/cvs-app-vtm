@@ -1,7 +1,7 @@
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { Component, effect, inject, input, OnDestroy, OnInit, output } from '@angular/core';
+import { Component, OnDestroy, OnInit, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';

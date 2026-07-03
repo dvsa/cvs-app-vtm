@@ -7,7 +7,6 @@ import {
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
-	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
 	TEST_TYPES_GROUP3_4_8,
@@ -16,6 +15,7 @@ import {
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL,
 } from '@models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
