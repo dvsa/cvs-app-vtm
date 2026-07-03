@@ -119,27 +119,25 @@
             />
           </app-accordion>
         }
-        @default {
-          <!-- skip `reasonForCreationSection` because its handled further down -->
-          @if ('testSection' === template.name) {
-            <app-accordion [id]="template.name" [title]="template.label">
-              <app-dynamic-form-group class="section"
-                [id]="template.name"
-                [template]="template"
-                [data]="testResult()"
+        @case ('testSection') {
+          <app-accordion [id]="template.name" [title]="template.label">
+            <app-dynamic-form-group class="section"
+              [id]="template.name"
+              [template]="template"
+              [data]="testResult()"
+              [edit]="isEditing()"
+              (formChange)="handleFormChange($event)"
+              />
+
+              <app-load-status
                 [edit]="isEditing()"
+                [data]="testResult()"
+                [isContingencyTest]="isContingencyTest()"
                 (formChange)="handleFormChange($event)"
-                />
-
-                <app-load-status
-                  [edit]="isEditing()"
-                  [data]="testResult()"
-                  [isContingencyTest]="isContingencyTest()"
-                  (formChange)="handleFormChange($event)"
-                />
-            </app-accordion>
-          }
-
+              />
+          </app-accordion>
+        }
+        @default {
           <!-- skip `reasonForCreationSection` because its handled further down -->
           @if ('reasonForCreationSection' !== template.name) {
             <app-accordion [id]="template.name" [title]="template.label">

@@ -1,8 +1,6 @@
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { DynamicFormService } from '@/src/app/services/dynamic-forms/dynamic-form.service';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { selectTechRecord } from '@/src/app/store/technical-records';
-import { testResultInEdit, toEditOrNotToEdit } from '@/src/app/store/test-records';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, inject, input, OnDestroy, OnInit, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
@@ -37,7 +35,6 @@ import { CommonValidatorsService } from '../../validators/common-validators.serv
 export class LoadStatusComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	fb = inject(FormBuilder);
-	dfs = inject(DynamicFormService);
 	commonValidators = inject(CommonValidatorsService);
 
 	edit = input(false);
@@ -45,45 +42,53 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
 
-	techRecord = this.store.selectSignal(selectTechRecord);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
-	editingTestResult = this.store.selectSignal(testResultInEdit);
 
 	form = this.fb.group({
-		loadStatus: this.fb.group({
-			vehicleLoadStatus: this.fb.control<VehicleLoadStatusType | null>(null, [
-				this.commonValidators.required('Load status'),
-			]),
-			unladenBodyType: this.fb.control<UnladenBodyType | null>(null, [
-				this.commonValidators.applyWhen(() => this.isUnladenSelected(), this.commonValidators.required('Body type')),
-			]),
-			otherUnladenBodyType: this.fb.control<string | null>(null, [
-				this.commonValidators.applyWhen(
-					() => this.isOtherUnladenBodyTypeRequired(),
-					this.commonValidators.maxLength(200, 'Enter body type')
-				),
-			]),
-			reasonForNotLoading: this.fb.control<ReasonForNotLoading | null>(null, [
-				this.commonValidators.applyWhen(
-					() => this.isUnladenSelected(),
-					this.commonValidators.required('Reason for not loading')
-				),
-			]),
-			partiallyLadenReason: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(200, 'Partially laden reason'),
-				this.commonValidators.applyWhen(
-					() => this.isPartiallyLadenSelected(),
-					this.commonValidators.required('Partially laden reason')
-				),
-			]),
-			otherReasonForNotLoading: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(200, 'Enter reason for not loading'),
-				this.commonValidators.applyWhen(
-					() => this.isOtherReasonForNotLoadingRequired(),
-					this.commonValidators.required('Enter reason for not loading')
-				),
-			]),
-		}),
+		testTypes: this.fb.array([
+			this.fb.group({
+				loadStatus: this.fb.group({
+					vehicleLoadStatus: this.fb.control<VehicleLoadStatusType | null>(null, [
+						this.commonValidators.applyWhen(
+							() => this.isContingencyTest(),
+							this.commonValidators.required('Load status')
+						),
+					]),
+					unladenBodyType: this.fb.control<UnladenBodyType | null>(null, [
+						this.commonValidators.applyWhen(
+							() => this.isUnladenSelected(),
+							this.commonValidators.required('Body type')
+						),
+					]),
+					otherUnladenBodyType: this.fb.control<string | null>(null, [
+						this.commonValidators.applyWhen(
+							() => this.isOtherUnladenBodyTypeRequired(),
+							this.commonValidators.maxLength(200, 'Enter body type')
+						),
+					]),
+					reasonForNotLoading: this.fb.control<ReasonForNotLoading | null>(null, [
+						this.commonValidators.applyWhen(
+							() => this.isUnladenSelected(),
+							this.commonValidators.required('Reason for not loading')
+						),
+					]),
+					partiallyLadenReason: this.fb.control<string | null>(null, [
+						this.commonValidators.maxLength(200, 'Partially laden reason'),
+						this.commonValidators.applyWhen(
+							() => this.isPartiallyLadenSelected(),
+							this.commonValidators.required('Partially laden reason')
+						),
+					]),
+					otherReasonForNotLoading: this.fb.control<string | null>(null, [
+						this.commonValidators.maxLength(200, 'Enter reason for not loading'),
+						this.commonValidators.applyWhen(
+							() => this.isOtherReasonForNotLoadingRequired(),
+							this.commonValidators.required('Enter reason for not loading')
+						),
+					]),
+				}),
+			}),
+		]),
 	});
 
 	FORM_NODE_WIDTH = FormNodeWidth;
@@ -97,6 +102,7 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.handleFormChange();
+		this.initForm();
 	}
 
 	ngOnDestroy(): void {
@@ -104,34 +110,40 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 		this.destroy.complete();
 	}
 
+	initForm(): void {
+		const testResult = this.testResult();
+		if (!testResult) return;
+
+		this.form.patchValue(testResult);
+	}
+
 	handleFormChange(): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
 			this.formChange.emit(this.form.getRawValue());
-			console.log(this.form.getRawValue());
 		});
 	}
 
 	isUnladenSelected(): boolean {
-		const vehicleLoadStatus = this.form.get('loadStatus.vehicleLoadStatus')?.getRawValue();
+		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
 		return vehicleLoadStatus === VehicleLoadStatusType.UNLADEN;
 	}
 
 	isPartiallyLadenSelected(): boolean {
-		const vehicleLoadStatus = this.form.get('loadStatus.vehicleLoadStatus')?.getRawValue();
+		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
 		return vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN;
 	}
 
 	isOtherUnladenBodyTypeRequired(): boolean {
 		if (!this.isUnladenSelected()) return false;
 
-		const unladenBodyType = this.form.get('loadStatus.unladenBodyType')?.getRawValue();
+		const unladenBodyType = this.form.get('testTypes.0.loadStatus.unladenBodyType')?.getRawValue();
 		return unladenBodyType === UnladenBodyType.OTHER;
 	}
 
 	isOtherReasonForNotLoadingRequired(): boolean {
 		if (!this.isUnladenSelected()) return false;
 
-		const reasonForNotLoading = this.form.get('loadStatus.reasonForNotLoading')?.getRawValue();
+		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
 		return reasonForNotLoading === ReasonForNotLoading.OTHER;
 	}
 }

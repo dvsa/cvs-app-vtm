@@ -7,6 +7,7 @@ import {
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
+	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
 	TEST_TYPES_GROUP3_4_8,
@@ -15,7 +16,6 @@ import {
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP8_NOTIFABLE,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_NON_VOLUNTARY_IVA_HGV_TRL,
 } from '@models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
@@ -285,6 +285,20 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		// If required standards is an empty array, convert it to undefined
 		if (Array.isArray(testType.requiredStandards) && testType.requiredStandards.length === 0) {
 			testType.requiredStandards = undefined;
+		}
+
+		if (testType.loadStatus) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status
+			if (testType.loadStatus.vehicleLoadStatus === null) {
+				delete testType.loadStatus;
+			} else {
+				// Otherwise remove null keys if they exist to pass BE validation
+				if (testType.loadStatus.unladenBodyType === null) delete testType.loadStatus.unladenBodyType;
+				if (testType.loadStatus.reasonForNotLoading === null) delete testType.loadStatus.reasonForNotLoading;
+				if (testType.loadStatus.partiallyLadenReason === null) delete testType.loadStatus.partiallyLadenReason;
+				if (testType.loadStatus.otherReasonForNotLoading === null) delete testType.loadStatus.otherReasonForNotLoading;
+				if (testType.loadStatus.otherUnladenBodyType === null) delete testType.loadStatus.otherUnladenBodyType;
+			}
 		}
 
 		return testType;
