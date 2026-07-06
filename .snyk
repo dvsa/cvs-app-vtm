@@ -10,4 +10,14 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-JS-BRACEEXPANSION:
+    - '*':
+        reason: Remediation not yet available
+        expires: 2023-08-27T09:01:15.119Z
+        created: 2023-06-06T08:01:15.122Z
+  SNYK-JS-FASTURI-17675102:
+    - '*':
+        reason: Remediation not yet available
+        expires: 2023-08-27T09:01:15.119Z
+        created: 2023-06-06T08:01:15.122Z
 patch: {}
