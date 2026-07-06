@@ -24,6 +24,7 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 @Component({
 	selector: 'app-batch-vehicle-template',
 	templateUrl: './batch-vehicle-template.component.html',
+	styleUrls: ['./batch-vehicle-template.component.scss'],
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
