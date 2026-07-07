@@ -201,17 +201,20 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 			DynamicFormService.validate(form, errors);
 		});
 
-		const weightsFormGroup = baseTestRecordComponent?.weights();
-		if (weightsFormGroup) {
-			weightsFormGroup.form.markAllAsTouched();
-			errors.push(...this.errorService.extractGlobalErrors(weightsFormGroup.form));
-		}
+		const customForms = [baseTestRecordComponent?.loadStatus(), baseTestRecordComponent?.weights()];
+
+		customForms.forEach((form) => {
+			if (form) {
+				form.form.markAllAsTouched();
+				errors.push(...this.errorService.extractGlobalErrors(form.form));
+			}
+		});
 
 		if (errors.length) {
 			this.errorService.setErrors(errors);
 		}
 
-		return forms.some((form) => form.invalid || weightsFormGroup?.form.invalid);
+		return forms.some((form) => form.invalid) || customForms.some((form) => form?.form.invalid);
 	}
 
 	abandon() {

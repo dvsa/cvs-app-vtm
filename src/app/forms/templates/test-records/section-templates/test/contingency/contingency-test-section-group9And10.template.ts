@@ -6,6 +6,7 @@ import {
 	FormNodeViewTypes,
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
+import { LoadStatusTemplate } from '../../loadStatus/loadStatus.template';
 
 export const ContingencyTestSectionGroup9And10: FormNode = {
 	name: 'testSection',
@@ -136,6 +137,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
 								{ name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
 							],
 						},
+						LoadStatusTemplate,
 						{
 							name: 'prohibitionIssued',
 							label: 'Prohibition issued',

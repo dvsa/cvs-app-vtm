@@ -43,7 +43,7 @@
     (ngModelChange)="onChange($event)"
     (blur)="onTouched();"
     [ngClass]="{ 'govuk-!-margin-bottom-2': max && !disabled() }"
-    [class]="`govuk-textarea govuk-js-character-count govuk-textarea--width-${width()}`"
+    [class]="`govuk-textarea govuk-js-character-count govuk-input--width-${width()}`"
     [class.govuk-textarea--error]="hasError"
   ></textarea>
 

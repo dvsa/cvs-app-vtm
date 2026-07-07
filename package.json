@@ -44,7 +44,7 @@
     "@azure/msal-angular": "^3.0.24",
     "@azure/msal-browser": "^3.24.0",
     "@dvsa/cvs-microservice-common": "^1.6.0",
-    "@dvsa/cvs-type-definitions": "^13.1.0",
+    "@dvsa/cvs-type-definitions": "^14.0.2",
     "@ngneat/cashew": "^4.1.0",
     "@ngrx/effects": "^21.1.0",
     "@ngrx/entity": "^21.1.0",
@@ -128,8 +128,8 @@
       "@ngrx/store": "$@ngrx/store"
     },
     "qs": "^6.15.2",
-    "fast-uri": "^3.1.1",
-    "brace-expansion": "^5.0.6",
+    "fast-uri": "^4.1.0",
+    "brace-expansion": "^5.0.7",
     "js-yaml": "^4.2.0"
   },
   "lint-staged": {

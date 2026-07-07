@@ -1,3 +1,4 @@
+import { LoadStatusComponent } from '@/src/app/forms/custom-sections/load-status/load-status.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections/weights/weights.component';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
@@ -61,6 +62,7 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 		BannerComponent,
 		AsyncPipe,
 		WeightsComponent,
+		LoadStatusComponent,
 	],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
@@ -69,6 +71,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly customDefects = viewChild(CustomDefectsComponent);
 	readonly requiredStandards = viewChild(RequiredStandardsComponent);
 	readonly weights = viewChild(WeightsComponent);
+	readonly loadStatus = viewChild(LoadStatusComponent);
 
 	readonly testResult = input.required<TestResultSchema>();
 	readonly isEditing = input(false);

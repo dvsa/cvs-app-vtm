@@ -287,6 +287,20 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 			testType.requiredStandards = undefined;
 		}
 
+		if (testType.loadStatus) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status
+			if (testType.loadStatus.vehicleLoadStatus === null) {
+				delete testType.loadStatus;
+			} else {
+				// Otherwise remove null keys if they exist to pass BE validation
+				if (testType.loadStatus.unladenBodyType === null) delete testType.loadStatus.unladenBodyType;
+				if (testType.loadStatus.reasonForNotLoading === null) delete testType.loadStatus.reasonForNotLoading;
+				if (testType.loadStatus.partiallyLadenReason === null) delete testType.loadStatus.partiallyLadenReason;
+				if (testType.loadStatus.otherReasonForNotLoading === null) delete testType.loadStatus.otherReasonForNotLoading;
+				if (testType.loadStatus.otherUnladenBodyType === null) delete testType.loadStatus.otherUnladenBodyType;
+			}
+		}
+
 		return testType;
 	});
 
