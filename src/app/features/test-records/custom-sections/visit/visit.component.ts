@@ -50,8 +50,15 @@ export class VisitComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.handleTesterDetailChanges();
 		this.handleTestStationChanges();
+		this.disableRelevantFields();
 		this.loadOptions();
 		this.addValidators();
+	}
+
+	disableRelevantFields(): void {
+		if (this.mode() === Modes.AMEND) {
+			this.form.get('testStationType')?.disable();
+		}
 	}
 
 	addValidators(): void {
