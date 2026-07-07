@@ -153,6 +153,26 @@ describe('VisitComponent', () => {
 		});
 	});
 
+	describe('disableRelevantFields', () => {
+		it('should disable testStationType when mode is AMEND', () => {
+			// set mode to AMEND and ensure control is initially enabled
+			fixture.componentRef.setInput('mode', Modes.AMEND);
+			component.form.controls.testStationType.enable();
+			// call the method under test
+			component.disableRelevantFields();
+			expect(component.form.get('testStationType')?.disabled).toBe(true);
+		});
+
+		it('should not disable testStationType when mode is not AMEND', () => {
+			// ensure mode is EDIT (default from beforeEach) and control is enabled
+			fixture.componentRef.setInput('mode', Modes.EDIT);
+			component.form.controls.testStationType.enable();
+			// call the method under test
+			component.disableRelevantFields();
+			expect(component.form.get('testStationType')?.disabled).toBe(false);
+		});
+	});
+
 	describe('ngOnDestroy', () => {
 		it('should complete the destroy subject', () => {
 			const destroySpy = jest.spyOn(component.destroy$, 'complete');
