@@ -205,7 +205,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 		customForms.forEach((form) => {
 			if (form) {
-				form.form.markAllAsTouched();
+				this.errorService.markAllAsTouched(form.form);
 				errors.push(...this.errorService.extractGlobalErrors(form.form));
 			}
 		});
