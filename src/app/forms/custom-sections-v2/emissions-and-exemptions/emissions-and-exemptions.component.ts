@@ -1,7 +1,7 @@
 import { DecimalOnlyDirective } from '@/src/app/directives/app-decimal-only/app-decimal-only.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
-import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
@@ -57,7 +57,6 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 
 	get hgvFields() {
 		return {
-			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(
@@ -122,7 +121,6 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
 	protected readonly Modes = Modes;

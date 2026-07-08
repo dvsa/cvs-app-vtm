@@ -611,6 +611,7 @@ export class TechnicalRecordChangesService {
 			'techRecord_alterationMarker',
 			'techRecord_fuelPropulsionSystem',
 			'techRecord_roadFriendly',
+			'techRecord_drawbarCouplingFitted',
 			'techRecord_speedRestriction',
 			'techRecord_suspensionType'
 		);
@@ -618,7 +619,6 @@ export class TechnicalRecordChangesService {
 
 	hasEmissionsAndExemptionsSectionChanged(): boolean {
 		return this.hasChanged(
-			'techRecord_drawbarCouplingFitted',
 			'techRecord_euroStandard',
 			'techRecord_emissionsLimit',
 			'techRecord_speedLimiterMrk',
