@@ -75,6 +75,18 @@
     />
   }
 
+  <!-- Drawbar coupling fitted (HGV only) -->
+  @if (shouldDisplayFormControl('techRecord_drawbarCouplingFitted')) {
+    <govuk-form-group-radio
+      label="Drawbar coupling fitted"
+      formControlName="techRecord_drawbarCouplingFitted"
+      [options]="YES_NO_OPTIONS"
+      appFilterByTags
+      [tagNames]="[]"
+      [filters]="filters()"
+    />
+  }
+
   <!-- Suspension type -->
   @if (shouldDisplayFormControl('techRecord_suspensionType')) {
     <govuk-form-group-select
