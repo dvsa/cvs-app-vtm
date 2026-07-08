@@ -1,6 +1,10 @@
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import {
 	DefectDetailsSchema,
+	LoadStatusSchema,
 	SpecialistCustomDefectsSchemaPut,
 	TestResultSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -292,12 +296,29 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 			if (testType.loadStatus.vehicleLoadStatus === null) {
 				delete testType.loadStatus;
 			} else {
-				// Otherwise remove null keys if they exist to pass BE validation
-				if (testType.loadStatus.unladenBodyType === null) delete testType.loadStatus.unladenBodyType;
-				if (testType.loadStatus.reasonForNotLoading === null) delete testType.loadStatus.reasonForNotLoading;
-				if (testType.loadStatus.partiallyLadenReason === null) delete testType.loadStatus.partiallyLadenReason;
-				if (testType.loadStatus.otherReasonForNotLoading === null) delete testType.loadStatus.otherReasonForNotLoading;
-				if (testType.loadStatus.otherUnladenBodyType === null) delete testType.loadStatus.otherUnladenBodyType;
+				// Otherwise create a valid load status object
+				const loadStatus: LoadStatusSchema = {
+					vehicleLoadStatus: testType.loadStatus.vehicleLoadStatus,
+				};
+
+				if (testType.loadStatus.vehicleLoadStatus === VehicleLoadStatusType.UNLADEN) {
+					loadStatus.unladenBodyType = testType.loadStatus.unladenBodyType;
+					loadStatus.reasonForNotLoading = testType.loadStatus.reasonForNotLoading;
+
+					if (testType.loadStatus.unladenBodyType === UnladenBodyType.OTHER) {
+						loadStatus.otherUnladenBodyType = testType.loadStatus.otherUnladenBodyType;
+					}
+
+					if (testType.loadStatus.reasonForNotLoading === ReasonForNotLoading.OTHER) {
+						loadStatus.otherReasonForNotLoading = testType.loadStatus.otherReasonForNotLoading;
+					}
+				}
+
+				if (testType.loadStatus.vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN) {
+					loadStatus.partiallyLadenReason = testType.loadStatus.partiallyLadenReason;
+				}
+
+				testType.loadStatus = loadStatus;
 			}
 		}
 
