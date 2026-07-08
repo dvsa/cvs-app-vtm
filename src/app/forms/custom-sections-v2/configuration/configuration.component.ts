@@ -66,6 +66,7 @@ export class ConfigurationComponent extends EditBaseComponent implements OnInit,
 			techRecord_alterationMarker: this.fb.control<boolean | null>(null),
 			techRecord_fuelPropulsionSystem: this.fb.control<FuelPropulsionSystem | null>(null),
 			techRecord_roadFriendly: this.fb.control<boolean | null>(null),
+			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
 		};
 	}
 

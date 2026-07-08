@@ -1,16 +1,4 @@
 <div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
-  <!-- Drawbar coupling fitted (HGV only) -->
-  @if (shouldDisplayFormControl('techRecord_drawbarCouplingFitted')) {
-    <govuk-form-group-radio
-      label="Drawbar coupling fitted"
-      formControlName="techRecord_drawbarCouplingFitted"
-      [options]="YES_NO_OPTIONS"
-      appFilterByTags
-      [tagNames]="[]"
-      [filters]="filters()"
-    ></govuk-form-group-radio>
-  }
-
   <!-- Euro standard (HGV and PSV) -->
   @if (shouldDisplayFormControl('techRecord_euroStandard')) {
     <govuk-form-group-radio

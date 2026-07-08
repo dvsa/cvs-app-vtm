@@ -210,9 +210,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 					'techRecord_manufactureYear'
 				),
 			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
-			]),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
 				this.adrValidators.requiredWithDangerousGoods('Body make', 'general-vehicle-details'),
@@ -361,9 +358,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first use', 'techRecord_firstUseDate', 'general-vehicle-details'),
-			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
 				this.commonValidators.required(

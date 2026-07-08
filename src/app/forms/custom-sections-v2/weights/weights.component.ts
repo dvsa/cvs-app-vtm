@@ -1,3 +1,5 @@
+import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
@@ -27,6 +29,8 @@ import { ReplaySubject, skip, takeUntil } from 'rxjs';
 		FieldErrorMessageComponent,
 		GovukFormGroupSelectComponent,
 		FilterByTagsDirective,
+		TrimWhitespaceDirective,
+		NoSpaceDirective,
 	],
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
@@ -70,6 +74,9 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	get hgvControls() {
 		return {
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(6, 'DTp number', 'weights', 'techRecord_brakes_dtpNumber'),
+			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
@@ -188,6 +195,9 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	get trlControls() {
 		return {
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(6, 'DTp number', 'weights', 'techRecord_brakes_dtpNumber'),
+			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
