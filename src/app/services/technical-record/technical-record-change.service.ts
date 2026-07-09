@@ -310,6 +310,12 @@ export class TechnicalRecordChangesService {
 		// Edge case 1: Only detect weight changes when axles are modified
 		if (this.hasAxleWeightsChanged()) return true;
 
+		const amended = this.amendedTechRecord();
+		const isHgvOrTrl =
+			amended?.techRecord_vehicleType === VehicleTypes.HGV || amended?.techRecord_vehicleType === VehicleTypes.TRL;
+
+		if (isHgvOrTrl && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
+
 		return this.hasChanged(
 			'techRecord_grossGbWeight',
 			'techRecord_grossEecWeight',
@@ -322,8 +328,7 @@ export class TechnicalRecordChangesService {
 			'techRecord_maxTrainDesignWeight',
 			'techRecord_unladenWeight',
 			'techRecord_grossKerbWeight',
-			'techRecord_grossLadenWeight',
-			'techRecord_brakes_dtpNumber'
+			'techRecord_grossLadenWeight'
 		);
 	}
 
