@@ -322,7 +322,8 @@ export class TechnicalRecordChangesService {
 			'techRecord_maxTrainDesignWeight',
 			'techRecord_unladenWeight',
 			'techRecord_grossKerbWeight',
-			'techRecord_grossLadenWeight'
+			'techRecord_grossLadenWeight',
+			'techRecord_brakes_dtpNumber'
 		);
 	}
 
@@ -576,12 +577,16 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasGeneralVehicleDetailsSectionChanged(): boolean {
+		const amended = this.amendedTechRecord();
+		const isPsv = amended?.techRecord_vehicleType === VehicleTypes.PSV;
+
+		if (isPsv && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
+
 		return this.hasChanged(
 			'techRecord_vehicleType',
 			'techRecord_vehicleClass_description',
 			'techRecord_regnDate',
 			'techRecord_manufactureYear',
-			'techRecord_brakes_dtpNumber',
 			'techRecord_make',
 			'techRecord_model',
 			'techRecord_vehicleConfiguration',
