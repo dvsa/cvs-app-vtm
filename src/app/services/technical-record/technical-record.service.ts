@@ -432,7 +432,7 @@ export class TechnicalRecordService {
 	getConfigAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
 		switch (techRecord.techRecord_vehicleType) {
 			case VehicleTypes.HGV:
-				return 'Off-road, fuel system, road friendly suspension, drawbar coupling.';
+				return 'Off-road, fuel system, road friendly suspension.';
 			case VehicleTypes.TRL:
 				return 'Vehicle markers, road friendly suspension.';
 			case VehicleTypes.PSV:

@@ -310,6 +310,12 @@ export class TechnicalRecordChangesService {
 		// Edge case 1: Only detect weight changes when axles are modified
 		if (this.hasAxleWeightsChanged()) return true;
 
+		const amended = this.amendedTechRecord();
+		const isHgvOrTrl =
+			amended?.techRecord_vehicleType === VehicleTypes.HGV || amended?.techRecord_vehicleType === VehicleTypes.TRL;
+
+		if (isHgvOrTrl && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
+
 		return this.hasChanged(
 			'techRecord_grossGbWeight',
 			'techRecord_grossEecWeight',
@@ -576,12 +582,16 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasGeneralVehicleDetailsSectionChanged(): boolean {
+		const amended = this.amendedTechRecord();
+		const isPsv = amended?.techRecord_vehicleType === VehicleTypes.PSV;
+
+		if (isPsv && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
+
 		return this.hasChanged(
 			'techRecord_vehicleType',
 			'techRecord_vehicleClass_description',
 			'techRecord_regnDate',
 			'techRecord_manufactureYear',
-			'techRecord_brakes_dtpNumber',
 			'techRecord_make',
 			'techRecord_model',
 			'techRecord_vehicleConfiguration',
