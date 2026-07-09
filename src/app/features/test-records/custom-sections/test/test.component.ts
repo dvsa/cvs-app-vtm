@@ -73,12 +73,14 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
 
-		testTypeGroup.controls.testExpiryDate.setValidators(
+		testTypeGroup.controls.testExpiryDate.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.mode() === Modes.AMEND,
 				this.commonValidators.required('Test expiry date')
-			)
-		);
+			),
+			this.commonValidators.date('Test expiry date'),
+			this.commonValidators.pastDate('Test expiry date'),
+		]);
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
 			this.commonValidators.required('Test start date and time'),
