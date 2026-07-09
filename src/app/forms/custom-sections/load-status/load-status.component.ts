@@ -63,10 +63,10 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 						),
 					]),
 					otherUnladenBodyType: this.fb.control<string | null>(null, [
-						this.commonValidators.maxLength(200, 'Enter body type'),
 						this.commonValidators.applyWhen(
 							() => this.isOtherUnladenBodyTypeRequired(),
-							this.commonValidators.required('Enter body type')
+							this.commonValidators.required('Enter body type'),
+							this.commonValidators.maxLength(200, 'Enter body type')
 						),
 					]),
 					reasonForNotLoading: this.fb.control<ReasonForNotLoading | null>(null, [
@@ -76,17 +76,17 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 						),
 					]),
 					partiallyLadenReason: this.fb.control<string | null>(null, [
-						this.commonValidators.maxLength(200, 'Partially laden reason'),
 						this.commonValidators.applyWhen(
 							() => this.isPartiallyLadenSelected(),
-							this.commonValidators.required('Partially laden reason')
+							this.commonValidators.required('Partially laden reason'),
+							this.commonValidators.maxLength(200, 'Partially laden reason')
 						),
 					]),
 					otherReasonForNotLoading: this.fb.control<string | null>(null, [
-						this.commonValidators.maxLength(200, 'Enter reason for not loading'),
 						this.commonValidators.applyWhen(
 							() => this.isOtherReasonForNotLoadingRequired(),
-							this.commonValidators.required('Enter reason for not loading')
+							this.commonValidators.required('Enter reason for not loading'),
+							this.commonValidators.maxLength(200, 'Enter reason for not loading')
 						),
 					]),
 				}),
