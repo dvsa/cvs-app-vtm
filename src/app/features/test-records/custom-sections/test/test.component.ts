@@ -79,7 +79,7 @@ export class TestComponent implements OnInit, OnDestroy {
 				this.commonValidators.required('Test expiry date')
 			),
 			this.commonValidators.date('Test expiry date'),
-			this.commonValidators.pastDate('Test expiry date'),
+			this.commonValidators.isAfterDate('testStartTimestamp', 'Test expiry date', 'Test start date and time'),
 		]);
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
