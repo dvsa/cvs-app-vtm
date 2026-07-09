@@ -9,19 +9,6 @@ export class DefectValidators {
 			const prohibitionIssued = grandParent.get('prohibitionIssued')?.value as boolean;
 			const stdForProhibition = grandParent.get('stdForProhibition')?.value as boolean;
 
-			const imNumber: string = grandParent.get('imNumber')?.value ? `${grandParent.get('imNumber')?.value}.` : '';
-			const itemNumber: string = grandParent.get('itemNumber')?.value ? `${grandParent.get('itemNumber')?.value}.` : '';
-			const deficiencyId: string = grandParent.get('deficiencyId')?.value
-				? `${grandParent.get('deficiencyId')?.value}.`
-				: '';
-			const deficiencySubId: string = grandParent.get('deficiencySubId')?.value ?? '';
-
-			const defectType = imNumber + itemNumber + deficiencyId + deficiencySubId;
-
-			const optionalDefectNotes = ['43.1.a.ii', '41.1.a.ii', '10.1.iii'];
-
-			if (optionalDefectNotes.includes(defectType)) return null;
-
 			if (
 				!control.value &&
 				(defCategory === deficiencyCategory.Advisory ||
