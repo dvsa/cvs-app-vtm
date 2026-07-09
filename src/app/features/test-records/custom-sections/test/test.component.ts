@@ -74,12 +74,9 @@ export class TestComponent implements OnInit, OnDestroy {
 		]);
 
 		testTypeGroup.controls.testExpiryDate.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.AMEND,
-				this.commonValidators.required('Test expiry date')
-			),
-			this.commonValidators.date('Test expiry date'),
-			this.commonValidators.isAfterDate('testStartTimestamp', 'Test expiry date', 'Test start date and time'),
+			this.commonValidators.applyWhen(() => this.mode() === Modes.AMEND, this.commonValidators.required('Expiry Date')),
+			this.commonValidators.date('Expiry Date'),
+			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
 		]);
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
