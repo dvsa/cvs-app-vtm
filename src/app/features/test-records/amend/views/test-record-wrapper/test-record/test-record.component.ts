@@ -171,21 +171,20 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			DynamicFormService.validate(form, errors);
 		});
 
-		const weightsFormGroup = baseTestRecordComponent?.weights();
-		if (weightsFormGroup) {
-			weightsFormGroup.form.markAllAsTouched();
-			errors.push(...this.errorService.extractGlobalErrors(weightsFormGroup.form));
-		}
+		const customForms = [baseTestRecordComponent?.loadStatus(), baseTestRecordComponent?.weights()];
+
+		customForms.forEach((form) => {
+			if (form) {
+				this.errorService.markAllAsTouched(form.form);
+				errors.push(...this.errorService.extractGlobalErrors(form.form));
+			}
+		});
 
 		if (errors.length > 0) {
 			this.errorService.setErrors(errors);
 		}
 
-		if (this.isAnyFormInvalid(forms) || weightsFormGroup?.form.invalid) {
-			return true;
-		}
-
-		return false;
+		return this.isAnyFormInvalid(forms) || customForms.some((form) => form?.form.invalid);
 	}
 
 	handleCancel() {
