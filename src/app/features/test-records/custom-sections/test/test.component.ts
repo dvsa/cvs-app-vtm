@@ -13,6 +13,7 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -71,6 +72,15 @@ export class TestComponent implements OnInit, OnDestroy {
 			),
 			this.commonValidators.minLength(6, 'Contingency Test Number'),
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
+		]);
+
+		testTypeGroup.controls.testExpiryDate.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS,
+				this.commonValidators.required('Expiry Date')
+			),
+			this.commonValidators.date('Expiry Date'),
+			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
 		]);
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([

@@ -109,7 +109,7 @@ export class DefectV2Component {
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
 		// metadata: this.fb.control<DefectMetadataSchema>({ category: {} }),
-		media: this.fb.control<MediaSchema[] | undefined>(undefined),
+		media: this.fb.control<MediaSchema[]>([]),
 	});
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
