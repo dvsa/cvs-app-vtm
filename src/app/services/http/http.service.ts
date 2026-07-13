@@ -474,7 +474,8 @@ export class HttpService {
 	}
 
 	waitForCurrentTechRecord(systemNumber: string) {
-		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+		return timer(3000).pipe(
+			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
 			expand((results, attempt) => {
 				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
 
