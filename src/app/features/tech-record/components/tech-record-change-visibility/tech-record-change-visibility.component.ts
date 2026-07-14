@@ -11,7 +11,12 @@ import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import {
+	clearADRDetailsBeforeUpdate,
+	techRecord,
+	updateTechRecord,
+	updateTechRecordSuccess,
+} from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
@@ -135,6 +140,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 			)
 			.subscribe(([, systemNumber, createdTimestamp]) => {
 				if (systemNumber && createdTimestamp) {
+					this.store.dispatch(clearADRDetailsBeforeUpdate());
 					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp, groupType: 'single' }));
 				}
 			});
