@@ -81,11 +81,12 @@ describe('ReferenceDataAmendComponent', () => {
 	});
 
 	describe('handleSubmit', () => {
-		it('should dispatch if form is valid', () => {
+		it('should dispatch if form is valid and dirty', () => {
 			fixture.ngZone?.run(() => {
 				component.amendedData = { description: 'testing' };
 				jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 					component.isFormInvalid = false;
+					component.isFormDirty = true;
 				});
 				const dispatch = jest.spyOn(store, 'dispatch');
 
@@ -104,6 +105,20 @@ describe('ReferenceDataAmendComponent', () => {
 			component.handleSubmit();
 
 			expect(dispatch).not.toHaveBeenCalled();
+		});
+
+		it('should not dispatch if form is not dirty', () => {
+			jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+				component.isFormInvalid = false;
+				component.isFormDirty = false;
+			});
+			const dispatch = jest.spyOn(store, 'dispatch');
+			const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+
+			component.handleSubmit();
+
+			expect(dispatch).not.toHaveBeenCalled();
+			expect(navigateBackSpy).toHaveBeenCalled();
 		});
 	});
 });
