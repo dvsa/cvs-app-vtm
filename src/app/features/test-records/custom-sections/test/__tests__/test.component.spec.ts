@@ -101,6 +101,90 @@ describe('TestComponent', () => {
 			});
 		});
 
+		describe('testExpiryDate', () => {
+			let startControl: typeof component.form.controls.testTypes extends { at(index: 0): { controls: infer C } }
+				? C extends { testTypeStartTimestamp: infer T }
+					? T
+					: never
+				: never;
+			let expiryControl: typeof component.form.controls.testTypes extends { at(index: 0): { controls: infer C } }
+				? C extends { testExpiryDate: infer T }
+					? T
+					: never
+				: never;
+
+			beforeEach(() => {
+				const testTypeGroup = component.form.controls.testTypes.at(0);
+				startControl = testTypeGroup.controls.testTypeStartTimestamp;
+				expiryControl = testTypeGroup.controls.testExpiryDate;
+			});
+
+			it('should be invalid when expiry date is before start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				expiryControl.setValue('2024-01-14');
+				expiryControl.markAsTouched();
+				expect(expiryControl.valid).toBe(false);
+				expect(expiryControl.errors).toHaveProperty('aheadOfDate');
+			});
+
+			it('should be invalid when expiry date is the same day as start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				expiryControl.setValue('2024-01-15');
+				expiryControl.markAsTouched();
+				expect(expiryControl.valid).toBe(false);
+				expect(expiryControl.errors).toHaveProperty('aheadOfDate');
+			});
+
+			it('should be valid when expiry date is after start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				expiryControl.setValue('2024-01-16');
+				expiryControl.markAsTouched();
+				expect(expiryControl.valid).toBe(true);
+			});
+		});
+
+		describe('testAnniversaryDate', () => {
+			let startControl: typeof component.form.controls.testTypes extends { at(index: 0): { controls: infer C } }
+				? C extends { testTypeStartTimestamp: infer T }
+					? T
+					: never
+				: never;
+			let anniversaryControl: typeof component.form.controls.testTypes extends { at(index: 0): { controls: infer C } }
+				? C extends { testAnniversaryDate: infer T }
+					? T
+					: never
+				: never;
+
+			beforeEach(() => {
+				const testTypeGroup = component.form.controls.testTypes.at(0);
+				startControl = testTypeGroup.controls.testTypeStartTimestamp;
+				anniversaryControl = testTypeGroup.controls.testAnniversaryDate;
+			});
+
+			it('should be invalid when anniversary date is before start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				anniversaryControl.setValue('2024-01-14');
+				anniversaryControl.markAsTouched();
+				expect(anniversaryControl.valid).toBe(false);
+				expect(anniversaryControl.errors).toHaveProperty('aheadOfDate');
+			});
+
+			it('should be invalid when anniversary date is the same day as start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				anniversaryControl.setValue('2024-01-15');
+				anniversaryControl.markAsTouched();
+				expect(anniversaryControl.valid).toBe(false);
+				expect(anniversaryControl.errors).toHaveProperty('aheadOfDate');
+			});
+
+			it('should be valid when anniversary date is after start date', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				anniversaryControl.setValue('2024-01-16');
+				anniversaryControl.markAsTouched();
+				expect(anniversaryControl.valid).toBe(true);
+			});
+		});
+
 		describe('testTypeEndTimestamp', () => {
 			let startControl: typeof component.form.controls.testTypes extends { at(index: 0): { controls: infer C } }
 				? C extends { testTypeStartTimestamp: infer T }
