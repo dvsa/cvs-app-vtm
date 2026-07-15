@@ -83,6 +83,15 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
 		]);
 
+		testTypeGroup.controls.testAnniversaryDate.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS,
+				this.commonValidators.required('Anniversary date')
+			),
+			this.commonValidators.date('Anniversary date'),
+			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Anniversary date', 'Start Time'),
+		]);
+
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
 			this.commonValidators.required('Test start date and time'),
 			this.commonValidators.date('Test start date and time'),
