@@ -54,13 +54,16 @@ describe('CreateTestRecordV2Component', () => {
 			expect(component.mode()).toBe(Modes.SUMMARY);
 		});
 
-		it('should call handleFormInvalid when form is invalid', () => {
-			Object.defineProperty(component.form, 'valid', { get: () => false });
-			const handleFormInvalidSpy = jest.spyOn(component as any, 'handleFormInvalid');
+		it('should set global errors when form has validation errors', () => {
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest
+				.spyOn(globalErrorService, 'extractGlobalErrors')
+				.mockReturnValue([{ error: 'Test error', anchorLink: 'testField' }]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
 
 			component.onReview();
 
-			expect(handleFormInvalidSpy).toHaveBeenCalled();
+			expect(setErrorsSpy).toHaveBeenCalled();
 		});
 
 		it('should set warning when tech record is provisional and test result is PASS for a first test', () => {
@@ -194,9 +197,8 @@ describe('CreateTestRecordV2Component', () => {
 		});
 	});
 
-	describe('handleFormInvalid', () => {
+	describe('onReview error sorting', () => {
 		it('should sort errors by DOM position regardless of form control declaration order', () => {
-			// Create elements in correct visual order: contingencyTestNumber first, testStationPNumber second
 			const container = document.createElement('div');
 			const elFirst = document.createElement('input');
 			elFirst.id = 'contingencyTestNumber';
@@ -206,7 +208,6 @@ describe('CreateTestRecordV2Component', () => {
 			container.appendChild(elSecond);
 			document.body.appendChild(container);
 
-			// extractGlobalErrors returns them in reverse order (form declaration order, not DOM order)
 			const globalErrorService = TestBed.inject(GlobalErrorService);
 			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
 				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
@@ -214,7 +215,7 @@ describe('CreateTestRecordV2Component', () => {
 			]);
 			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
 
-			component.handleFormInvalid();
+			component.onReview();
 
 			expect(setErrorsSpy).toHaveBeenCalledWith([
 				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
@@ -238,7 +239,7 @@ describe('CreateTestRecordV2Component', () => {
 			]);
 			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
 
-			component.handleFormInvalid();
+			component.onReview();
 
 			expect(setErrorsSpy).toHaveBeenCalledWith([
 				{ error: 'Known field error', anchorLink: 'knownField' },

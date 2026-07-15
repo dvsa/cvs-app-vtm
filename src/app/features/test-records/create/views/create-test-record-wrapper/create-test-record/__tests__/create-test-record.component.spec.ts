@@ -151,7 +151,9 @@ describe('CreateTestRecordComponent', () => {
 				dynamicFormGroup: signal({ form: { controls: { errors: 'foo' }, invalid: true } }),
 			} as unknown as AbandonDialogComponent);
 			component.testMode = TestModeEnum.Abandon;
-			DynamicFormService.validate = jest.fn();
+			DynamicFormService.validate = jest.fn().mockImplementation((_form, errors) => {
+				errors.push({ error: 'Field is required', anchorLink: 'testField' });
+			});
 			expect(component.isAnyFormInvalid()).toBe(true);
 		});
 

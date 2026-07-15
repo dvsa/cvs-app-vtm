@@ -214,7 +214,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 			this.errorService.setErrors(errors);
 		}
 
-		return forms.some((form) => form.invalid) || customForms.some((form) => form?.form.invalid);
+		return errors.length > 0;
 	}
 
 	abandon() {

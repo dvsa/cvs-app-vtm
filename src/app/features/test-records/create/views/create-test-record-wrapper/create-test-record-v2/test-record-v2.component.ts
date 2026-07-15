@@ -1,6 +1,7 @@
 import { BannerComponent } from '@/src/app/components/banner/banner.component';
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { GlobalError } from '@/src/app/core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { GlobalWarning } from '@/src/app/core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
@@ -178,11 +179,8 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		return ![...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(testTypeId);
 	}
 
-	handleFormInvalid(): void {
-		const errors = this.globalErrorService.extractGlobalErrors(this.form);
-
+	private setGlobalErrors(errors: GlobalError[]): void {
 		errors.sort((a, b) => {
-			// get the id of the element on the page
 			const elA = a.anchorLink ? this.document.getElementById(a.anchorLink) : null;
 			const elB = b.anchorLink ? this.document.getElementById(b.anchorLink) : null;
 
@@ -190,7 +188,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			if (!elA) return 1;
 			if (!elB) return -1;
 
-			// order based on position on screen/dom
 			const position = elA.compareDocumentPosition(elB);
 
 			if (TestRecordV2Component.hasDocumentPosition(position, Node.DOCUMENT_POSITION_FOLLOWING)) return -1;
@@ -210,13 +207,15 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	onReview(): void {
 		this.form.markAllAsTouched();
 
-		if (this.form.valid) {
+		const errors = this.globalErrorService.extractGlobalErrors(this.form);
+
+		if (errors.length === 0) {
 			this.mode.set(Modes.SUMMARY);
 			this.setProvisionalWarning();
 			return;
 		}
 
-		this.handleFormInvalid();
+		this.setGlobalErrors(errors);
 	}
 
 	onCancel(mode: Modes): void {
@@ -355,28 +354,31 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	onMarkAsAbandoned(): void {
 		this.form.markAllAsTouched();
 
-		if (this.form.valid) {
+		const errors = this.globalErrorService.extractGlobalErrors(this.form);
+
+		if (errors.length === 0) {
 			this.titleService.setTitle('Test abandoned reason - Vehicle Testing Management');
-			// Mark as pristine and untouched to prevent abandon field validation showing immediately
 			this.form.markAsPristine();
 			this.form.markAsUntouched();
 			this.mode.set(Modes.ABANDON);
 			return;
 		}
 
-		this.handleFormInvalid();
+		this.setGlobalErrors(errors);
 	}
 
 	onAbandon(): void {
 		this.form.markAllAsTouched();
 
-		if (this.form.valid) {
+		const errors = this.globalErrorService.extractGlobalErrors(this.form);
+
+		if (errors.length === 0) {
 			this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
 			this.onSubmit();
 			return;
 		}
 
-		this.handleFormInvalid();
+		this.setGlobalErrors(errors);
 	}
 
 	onConfirmCancel() {
