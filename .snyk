@@ -20,4 +20,9 @@ ignore:
         reason: Remediation not yet available
         expires: 2026-08-27T09:01:15.119Z
         created: 2026-06-06T08:01:15.122Z
+  SNYK-JS-BODYPARSER-17906397:
+    - '*':
+        reason: Remediation not yet available
+        expires: 2026-08-14T09:01:15.119Z
+        created: 2026-07-14T09:01:15.122Z
 patch: {}
