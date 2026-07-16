@@ -459,7 +459,6 @@ export class HttpService {
 		return timer(3000).pipe(
 			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
 			expand((results, attempt) => {
-				console.log(results);
 				const record = results.find((r) => r.techRecord_statusCode !== StatusCodes.ARCHIVED);
 
 				if (record) {
