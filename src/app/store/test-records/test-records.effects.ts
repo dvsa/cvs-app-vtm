@@ -371,7 +371,7 @@ export class TestResultsEffects {
 				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
 				filter(Boolean),
 				switchMap((techRecord) =>
-					this.router.navigate([`/tech-records/${techRecord[0].systemNumber}/${techRecord[0].createdTimestamp}`])
+					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
 				)
 			),
 		{ dispatch: false }
