@@ -1,4 +1,3 @@
-import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DefectDetailsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -10,7 +9,6 @@ import { DefectMediaDownloadComponent } from '../defect-media-download.component
 describe('DefectMediaDownloadComponent', () => {
 	let component: DefectMediaDownloadComponent;
 	let fixture: ComponentFixture<DefectMediaDownloadComponent>;
-	let globalErrorService: GlobalErrorService;
 	let defectMediaService: {
 		openDocumentFromZip: jest.Mock;
 		handleError: jest.Mock;
@@ -53,7 +51,6 @@ describe('DefectMediaDownloadComponent', () => {
 					],
 				}),
 				{ provide: DefectMediaService, useValue: defectMediaService },
-				{ provide: GlobalErrorService, useValue: { clearErrors: jest.fn(), setErrors: jest.fn() } },
 			],
 		}).compileComponents();
 
@@ -65,8 +62,6 @@ describe('DefectMediaDownloadComponent', () => {
 			media: [{ type: 'image', path: 'a.jpg' }],
 		} as DefectDetailsSchema;
 		fixture.detectChanges();
-
-		globalErrorService = TestBed.inject(GlobalErrorService);
 	});
 
 	it('should create', () => {
@@ -103,14 +98,6 @@ describe('DefectMediaDownloadComponent', () => {
 				],
 			} as DefectDetailsSchema;
 			expect(component.getFailureToCaptureDefectMediaReason()).toBe('No media available');
-		});
-	});
-
-	describe('ngOnDestroy', () => {
-		it('should clear global errors', () => {
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
-			component.ngOnDestroy();
-			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
 		});
 	});
 });

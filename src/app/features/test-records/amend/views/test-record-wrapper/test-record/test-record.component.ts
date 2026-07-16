@@ -184,7 +184,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			this.errorService.setErrors(errors);
 		}
 
-		return this.isAnyFormInvalid(forms) || customForms.some((form) => form?.form.invalid);
+		return errors.length > 0;
 	}
 
 	handleCancel() {
@@ -211,10 +211,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
 	isAnyFormDirty(forms: Array<FormGroup>) {
 		return forms.some((form) => form.dirty);
-	}
-
-	isAnyFormInvalid(forms: Array<FormGroup>) {
-		return forms.some((form) => form.invalid);
 	}
 
 	public get TestModeEnum(): typeof TestModeEnum {

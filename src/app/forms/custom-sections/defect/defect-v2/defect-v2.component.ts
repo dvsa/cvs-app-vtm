@@ -109,7 +109,7 @@ export class DefectV2Component {
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
 		// metadata: this.fb.control<DefectMetadataSchema>({ category: {} }),
-		media: this.fb.control<MediaSchema[] | undefined>(undefined),
+		media: this.fb.control<MediaSchema[]>([]),
 	});
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
@@ -266,15 +266,6 @@ export class DefectV2Component {
 
 	isNotesRequired(): boolean {
 		const defect = this.form.getRawValue();
-		const imNumber = defect.imNumber ? `${defect.imNumber}.` : '';
-		const itemNumber = defect.itemNumber ? `${defect.itemNumber}.` : '';
-		const deficiencyId = defect.deficiencyId ? `${defect.deficiencyId}.` : '';
-		const deficiencySubId = defect.deficiencySubId ?? '';
-		const defectType = `${imNumber}${itemNumber}${deficiencyId}${deficiencySubId}`;
-
-		// Allow notes to be optional for certain defect types
-		const optionalDefectNotes = ['43.1.a.ii', '41.1.a.ii', '10.1.iii'];
-		if (optionalDefectNotes.includes(defectType)) return false;
 
 		const isAdvisory = defect.deficiencyCategory === deficiencyCategory.Advisory;
 		const isDangerous = defect.deficiencyCategory === deficiencyCategory.Dangerous;
