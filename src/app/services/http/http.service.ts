@@ -456,9 +456,10 @@ export class HttpService {
 	}
 
 	waitForTechRecord(systemNumber: string) {
-		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+		return timer(3000).pipe(
+			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
 			expand((results, attempt) => {
-				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
+				const record = results.find((r) => r.techRecord_statusCode !== StatusCodes.ARCHIVED);
 
 				if (record) {
 					return EMPTY; // stop retrying
@@ -468,13 +469,15 @@ export class HttpService {
 
 				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
 			}),
+			map((results) => results.find((r) => r.techRecord_statusCode !== StatusCodes.ARCHIVED)),
 			takeWhile((record) => !record, true), // include final successful emission
 			last()
 		);
 	}
 
 	waitForCurrentTechRecord(systemNumber: string) {
-		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+		return timer(3000).pipe(
+			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
 			expand((results, attempt) => {
 				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
 
