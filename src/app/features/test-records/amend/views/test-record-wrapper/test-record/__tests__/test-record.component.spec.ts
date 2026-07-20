@@ -139,8 +139,7 @@ describe('TestRecordComponent', () => {
 
 		it('should return without calling updateTestResultState if any forms are invalid', fakeAsync(async () => {
 			const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
-			component.isAnyFormDirty = jest.fn().mockReturnValue(true);
-			component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
+			component.hasErrors = jest.fn().mockResolvedValue(true);
 			await component.handleSave();
 			expect(updateTestResultStateSpy).not.toHaveBeenCalled();
 		}));
