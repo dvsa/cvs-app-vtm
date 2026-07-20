@@ -456,9 +456,10 @@ export class HttpService {
 	}
 
 	waitForTechRecord(systemNumber: string) {
-		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
+		return timer(3000).pipe(
+			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
 			expand((results, attempt) => {
-				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
+				const record = results.find((r) => r.techRecord_statusCode !== StatusCodes.ARCHIVED);
 
 				if (record) {
 					return EMPTY; // stop retrying
@@ -468,27 +469,18 @@ export class HttpService {
 
 				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
 			}),
-			takeWhile((record) => !record, true), // include final successful emission
-			last()
-		);
-	}
-
-	waitForCurrentTechRecord(systemNumber: string) {
-		return defer(() => this.searchTechRecordBySystemNumber(systemNumber)).pipe(
-			expand((results, attempt) => {
-				const record = results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT);
-
-				if (record) {
-					return EMPTY; // stop retrying
-				}
-
-				const delayMs = Math.min(500 * 2 ** attempt, 5000); // exponential backoff (max 5s)
-
-				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
+			map((results) => {
+				return (
+					results.find((r) => r.techRecord_statusCode === 'current') ??
+					results.find((r) => r.techRecord_statusCode === 'provisional') ??
+					results.find(
+						(r) =>
+							new Date(r.createdTimestamp).getTime() ===
+							Math.max(...results.map((rec) => new Date(rec.createdTimestamp).getTime()))
+					) ??
+					results[0]
+				);
 			}),
-
-			map((results) => results.find((r) => r.techRecord_statusCode === StatusCodes.CURRENT)),
-
 			takeWhile((record) => !record, true), // include final successful emission
 			last()
 		);
