@@ -354,7 +354,7 @@ export class TestResultsEffects {
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
 				map((action) => [action.payload.changes.systemNumber as string]),
-				switchMap(([systemNumber]) => this.httpService.waitForCurrentTechRecord(systemNumber)),
+				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
 				filter(Boolean),
 				switchMap((techRecord) =>
 					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
