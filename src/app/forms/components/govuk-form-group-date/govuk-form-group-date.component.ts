@@ -51,11 +51,11 @@ export class GovukFormGroupDateComponent
 		if (obj && typeof obj === 'string') {
 			const date = new Date(obj);
 			this.form.patchValue({
-				year: date.getFullYear(),
-				month: date.getMonth() + 1,
-				day: date.getDate(),
-				hours: date.getHours(),
-				minutes: date.getMinutes(),
+				year: date.getUTCFullYear(),
+				month: date.getUTCMonth() + 1,
+				day: date.getUTCDate(),
+				hours: date.getUTCHours(),
+				minutes: date.getUTCMinutes(),
 			});
 		}
 
@@ -97,7 +97,7 @@ export class GovukFormGroupDateComponent
 
 			switch (this.mode()) {
 				case 'iso':
-					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}.000`);
+					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr || '00'}:${minsStr || '00'}:${secsStr || '00'}.000Z`);
 					break;
 				default:
 					this.onChange(`${year}-${monthStr}-${dayStr}`);
