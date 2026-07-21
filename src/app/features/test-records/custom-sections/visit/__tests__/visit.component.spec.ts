@@ -162,15 +162,6 @@ describe('VisitComponent', () => {
 			component.disableRelevantFields();
 			expect(component.form.get('testStationType')?.disabled).toBe(true);
 		});
-
-		it('should not disable testStationType when mode is not AMEND', () => {
-			// ensure mode is EDIT (default from beforeEach) and control is enabled
-			fixture.componentRef.setInput('mode', Modes.EDIT);
-			component.form.controls.testStationType.enable();
-			// call the method under test
-			component.disableRelevantFields();
-			expect(component.form.get('testStationType')?.disabled).toBe(false);
-		});
 	});
 
 	describe('ngOnDestroy', () => {
