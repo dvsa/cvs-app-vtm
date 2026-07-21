@@ -100,7 +100,7 @@ export class DefectV2Component {
 				this.commonValidators.applyWhen(() => this.isNotesRequired(), this.commonValidators.required('Notes')),
 			]),
 		}),
-		prs: this.fb.control<boolean | null>(null),
+		prs: this.fb.control<boolean>(false),
 		prohibitionIssued: this.fb.control<boolean | null>(null, [
 			this.commonValidators.applyWhen(
 				() => this.isProhibitionIssuedRequired(),
