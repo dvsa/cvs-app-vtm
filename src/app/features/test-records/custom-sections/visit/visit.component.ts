@@ -56,9 +56,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 	}
 
 	disableRelevantFields(): void {
-		if (this.mode() === Modes.AMEND) {
-			this.form.get('testStationType')?.disable();
-		}
+		this.form.get('testStationType')?.disable();
 	}
 
 	addValidators(): void {
