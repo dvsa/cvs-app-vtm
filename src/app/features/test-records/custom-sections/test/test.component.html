@@ -112,19 +112,19 @@
           @if (mode() === Modes.VIEW) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Created:</td>
-              <td class="govuk-table__cell" id="test-createdAt">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-createdAt">
                 {{ testResult.createdAt | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Date:</td>
-              <td class="govuk-table__cell" id="test-testTypeStartTimestamp">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
                 {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Code:</td>
-              <td class="govuk-table__cell" id="test-testCode">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testCode">
                 {{ testResult.testTypes[0].testCode | defaultNullOrEmpty }}
               </td>
             </tr>
@@ -132,51 +132,51 @@
           @if (mode() === Modes.SUMMARY) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Contingency Test Number:</td>
-              <td class="govuk-table__cell" id="test-contingencyTestNumber">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-contingencyTestNumber">
                 {{ testResult.contingencyTestNumber| defaultNullOrEmpty  }}
               </td>
             </tr>
           }
           <tr class="govuk-table__row">
             <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
-            <td class="govuk-table__cell" id="test-issueRequired">
+            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-issueRequired">
               {{ testResult.testTypes[0].centralDocs?.issueRequired ? 'Yes' : 'No' }}
             </td>
           </tr>
           @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Description:</td>
-              <td class="govuk-table__cell" id="test-testTypeName">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeName">
                 {{ testResult.testTypes[0].testTypeName | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Number:</td>
-              <td class="govuk-table__cell" id="test-testNumber">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testNumber">
                 {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
-              <td class="govuk-table__cell" id="test-testExpiryDate">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
                 {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
-              <td class="govuk-table__cell" id="test-testAnniversaryDate">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testAnniversaryDate">
                 {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Start time:</td>
-              <td class="govuk-table__cell" id="test-testTypeStartTimestamp">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
                 {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">End time:</td>
-              <td class="govuk-table__cell" id="test-testTypeEndTimestamp">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
                 {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
@@ -184,13 +184,13 @@
           @if (mode() === Modes.SUMMARY) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test start date and time:</td>
-              <td class="govuk-table__cell" id="test-testTypeStartTimestamp">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
                 {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
-              <td class="govuk-table__cell" id="test-testTypeEndTimestamp">
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
                 {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>

@@ -24,20 +24,20 @@
           <tbody class="govuk-table__body">
             @for (defect of testResult.testTypes[0].defects; track defect; let i = $index) {
               <tr class="govuk-table__row">
-                <td class="govuk-table__cell">
+                <td class="govuk-table__cell whitespace-pre-line">
                   <a data-action="retain-data" [routerLink]="['defect', i]" href="javascript:void(0)" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
                   >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a>
                   </td>
-                  <td class="govuk-table__cell">
+                  <td class="govuk-table__cell whitespace-pre-line">
                     {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + (defect.deficiencyText ? defect.deficiencyText : '') | truncate : 47 }}
                   </td>
-                  <td class="govuk-table__cell">
+                  <td class="govuk-table__cell whitespace-pre-line">
                     <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
                   </td>
-                  <td class="govuk-table__cell">
+                  <td class="govuk-table__cell whitespace-pre-line">
                     <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
                   </td>
-                  <td class="govuk-table__cell">
+                  <td class="govuk-table__cell whitespace-pre-line">
                     <app-defect-media-download [defect]="defect"></app-defect-media-download>
                   </td>
                 </tr>
