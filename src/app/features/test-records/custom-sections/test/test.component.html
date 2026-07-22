@@ -171,13 +171,13 @@
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Start time:</td>
               <td class="govuk-table__cell" id="test-testTypeStartTimestamp">
-                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'HH:mm': 'UTC' | defaultNullOrEmpty }}
+                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">End time:</td>
               <td class="govuk-table__cell" id="test-testTypeEndTimestamp">
-                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'HH:mm': 'UTC' | defaultNullOrEmpty }}
+                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
           }
@@ -185,13 +185,13 @@
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test start date and time:</td>
               <td class="govuk-table__cell" id="test-testTypeStartTimestamp">
-                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm': 'UTC' | defaultNullOrEmpty }}
+                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
               <td class="govuk-table__cell" id="test-testTypeEndTimestamp">
-                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm': 'UTC' | defaultNullOrEmpty }}
+                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
           }
