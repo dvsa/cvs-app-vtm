@@ -31,6 +31,10 @@
   text-wrap: wrap !important;
 }
 
+.overflow-anywhere {
+  overflow-wrap: anywhere;
+}
+
 .tags {
   display: flex;
   align-items: center;
