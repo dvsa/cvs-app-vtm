@@ -129,9 +129,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		if (!testResultInEdit && testResult) {
 			if (this.mode() === Modes.AMEND) {
 				testResult.reasonForCreation = ''; // clear reason for creation when amending
-				testResult.testerName = ''; // clear tester details when amending
-				testResult.testerEmailAddress = '';
-				testResult.testerStaffId = '';
 			}
 			this.testRecordService.editingTestResult(testResult);
 			this.form.patchValue(testResult as any);

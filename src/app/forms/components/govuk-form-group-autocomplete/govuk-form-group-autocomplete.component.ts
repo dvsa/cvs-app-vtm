@@ -83,7 +83,7 @@ export class GovukFormGroupAutocompleteComponent
 				};
 
 				if (latest) {
-					enhanceParams.defaultValue = latest.toString();
+					enhanceParams.defaultValue = this.findOptionValue(latest.toString())?.toString();
 				}
 
 				const selectEl = enhanceParams.selectElement as HTMLSelectElement | null;
