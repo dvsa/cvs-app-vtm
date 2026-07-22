@@ -68,9 +68,13 @@ jobs:
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
 
       - name: Build App
+        run: npm run build -- --configuration='deploy' --output-path='dist/'
+
+      - name: Deploy to Sentry
+        if: ${{ inputs.environment == 'prod' }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: npm run build -- --configuration='deploy' --output-path='dist/'
+        run: npm run sentry:sourcemaps
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7

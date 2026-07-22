@@ -15,7 +15,6 @@
     "start:dev1": "npm run config -- --env=dev1 && ng serve",
     "start:dev2": "npm run config -- --env=dev2 && ng serve",
     "build": "ng build --optimization --progress --aot",
-    "postbuild": "npm run sentry:sourcemaps",
     "watch": "ng build --watch",
     "sonar-scanner": "npm run test:ci && sonar-scanner",
     "security-checks": "git secrets --scan",
