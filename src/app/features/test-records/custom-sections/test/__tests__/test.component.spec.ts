@@ -234,4 +234,70 @@ describe('TestComponent', () => {
 			});
 		});
 	});
+
+	describe('initTimeDisplayControls', () => {
+		it('should not set display controls when not in AMEND mode', () => {
+			expect(component.startTimeDisplay.value).toBe('');
+			expect(component.endTimeDisplay.value).toBe('');
+		});
+	});
+});
+
+describe('TestComponent - AMEND mode', () => {
+	let fixture: ComponentFixture<TestComponent>;
+	let component: TestComponent;
+	let formGroupDirective: FormGroupDirective;
+
+	beforeEach(async () => {
+		formGroupDirective = new FormGroupDirective([], []);
+		formGroupDirective.form = new FormGroup({});
+
+		await TestBed.configureTestingModule({
+			imports: [TestComponent],
+			providers: [
+				{ provide: ControlContainer, useValue: formGroupDirective },
+				provideMockStore({ initialState: initialAppState }),
+			],
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(TestComponent);
+		component = fixture.componentInstance;
+		fixture.componentRef.setInput('mode', Modes.AMEND);
+		fixture.componentRef.setInput('initialMode', Modes.AMEND);
+	});
+
+	describe('initTimeDisplayControls', () => {
+		it('should format start and end times in local time without Z suffix', () => {
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.testTypeStartTimestamp.setValue('2024-06-15T14:30:00.000Z');
+			testTypeGroup.controls.testTypeEndTimestamp.setValue('2024-06-15T15:45:00.000Z');
+
+			fixture.detectChanges();
+
+			const startValue = component.startTimeDisplay.value;
+			const endValue = component.endTimeDisplay.value;
+
+			expect(startValue).not.toContain('Z');
+			expect(endValue).not.toContain('Z');
+
+			const expectedStart = new Date('2024-06-15T14:30:00.000Z');
+			const expectedStartStr = `${expectedStart.getFullYear()}-${(expectedStart.getMonth() + 1).toString().padStart(2, '0')}-${expectedStart.getDate().toString().padStart(2, '0')}T${expectedStart.getHours().toString().padStart(2, '0')}:${expectedStart.getMinutes().toString().padStart(2, '0')}:${expectedStart.getSeconds().toString().padStart(2, '0')}.${expectedStart.getMilliseconds().toString().padStart(3, '0')}`;
+			expect(startValue).toBe(expectedStartStr);
+
+			const expectedEnd = new Date('2024-06-15T15:45:00.000Z');
+			const expectedEndStr = `${expectedEnd.getFullYear()}-${(expectedEnd.getMonth() + 1).toString().padStart(2, '0')}-${expectedEnd.getDate().toString().padStart(2, '0')}T${expectedEnd.getHours().toString().padStart(2, '0')}:${expectedEnd.getMinutes().toString().padStart(2, '0')}:${expectedEnd.getSeconds().toString().padStart(2, '0')}.${expectedEnd.getMilliseconds().toString().padStart(3, '0')}`;
+			expect(endValue).toBe(expectedEndStr);
+		});
+
+		it('should set empty string when timestamp is null', () => {
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.testTypeStartTimestamp.setValue(null);
+			testTypeGroup.controls.testTypeEndTimestamp.setValue(null);
+
+			fixture.detectChanges();
+
+			expect(component.startTimeDisplay.value).toBe('');
+			expect(component.endTimeDisplay.value).toBe('');
+		});
+	});
 });

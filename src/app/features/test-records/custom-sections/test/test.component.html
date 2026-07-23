@@ -78,13 +78,13 @@
           <!-- Test start date and time -->
           <govuk-form-group-input
             label="Start time"
-            formControlName="testTypeStartTimestamp"
+            [formControl]="startTimeDisplay"
           ></govuk-form-group-input>
 
           <!-- Test end date and time -->
           <govuk-form-group-input
             label="End time"
-            formControlName="testTypeEndTimestamp"
+            [formControl]="endTimeDisplay"
           ></govuk-form-group-input>
         }
 
