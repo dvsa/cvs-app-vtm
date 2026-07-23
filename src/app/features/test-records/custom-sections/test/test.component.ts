@@ -12,7 +12,7 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
@@ -47,6 +47,9 @@ export class TestComponent implements OnInit, OnDestroy {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	destroy = new ReplaySubject<boolean>(1);
 
+	startTimeDisplay = new FormControl({ value: '', disabled: true });
+	endTimeDisplay = new FormControl({ value: '', disabled: true });
+
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
@@ -55,6 +58,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		this.disableFields();
 		this.handleTestStartTimestampChange();
 		this.handleTestEndTimestampChange();
+		this.initTimeDisplayControls();
 	}
 
 	ngOnDestroy(): void {
@@ -142,6 +146,28 @@ export class TestComponent implements OnInit, OnDestroy {
 				// Hoist value to top level of form
 				this.form.patchValue({ testEndTimestamp: value || undefined });
 			});
+	}
+
+	private formatDateTimeLocal(isoString: string | null | undefined): string {
+		if (!isoString) return '';
+		const date = new Date(isoString);
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		const hours = date.getHours().toString().padStart(2, '0');
+		const minutes = date.getMinutes().toString().padStart(2, '0');
+		const seconds = date.getSeconds().toString().padStart(2, '0');
+		const ms = date.getMilliseconds().toString().padStart(3, '0');
+		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${ms}`;
+	}
+
+	private initTimeDisplayControls(): void {
+		if (this.initialMode() !== Modes.AMEND) return;
+
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+
+		this.startTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeStartTimestamp.value));
+		this.endTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeEndTimestamp.value));
 	}
 
 	protected readonly Modes = Modes;
