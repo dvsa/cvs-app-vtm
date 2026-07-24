@@ -113,10 +113,6 @@ export class GovukFormGroupAutocompleteComponent
 		isDisabled ? control?.removeAttribute('placeholder') : control?.setAttribute('placeholder', this.placeholder());
 	}
 
-	get style(): string {
-		return `autocomplete__wrapper${this.noBottomMargin() ? '' : ' extra-margin'}`;
-	}
-
 	writeValue(obj: any): void {
 		this.value.set(obj);
 		this.valueSub.next(obj);
