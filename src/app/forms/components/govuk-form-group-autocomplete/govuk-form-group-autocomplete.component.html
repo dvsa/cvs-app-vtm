@@ -1,4 +1,4 @@
-<div [class]="style">
+<div class="autocomplete autocomplete__wrapper" [class.extra-margin]="!noBottomMargin()">
   <label for="{{ id }}" [id]="labelId" class="govuk-label govuk-label--m tags">
     {{ controlLabel() }}
     @if (tags().length) {
