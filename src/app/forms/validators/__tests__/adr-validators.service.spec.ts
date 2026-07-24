@@ -442,5 +442,21 @@ describe('AdrValidatorsService', () => {
 			expect(validator(control1)).toEqual({ required: 'message' });
 			expect(validator(control2)).toEqual({ required: 'message' });
 		});
+
+		it('should return an error when the first un number control is validated', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null, null, null],
+			});
+
+			expect(validator(control.controls[0])).toEqual({ required: 'message' });
+		});
 	});
 });
