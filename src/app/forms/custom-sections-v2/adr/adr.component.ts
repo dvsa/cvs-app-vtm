@@ -516,6 +516,13 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			unNumbers?.forEach((number, index) => {
 				this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
 					this.fb.control<string | null>(number, [
+						...(index === 0
+							? [
+									this.adrValidators.requiresAUnNumberOrReferenceNumber(
+										'Reference number or UN number 1 is required when selecting Product list'
+									),
+								]
+							: []),
 						this.commonValidators.maxLength(1500, () => ({
 							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,
@@ -530,6 +537,9 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		else {
 			this.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.push(
 				this.fb.control<string | null>(null, [
+					this.adrValidators.requiresAUnNumberOrReferenceNumber(
+						'Reference number or UN number 1 is required when selecting Product list'
+					),
 					this.commonValidators.maxLength(1500, () => ({
 						error: 'UN number 1 must be less than or equal to 1500 characters',
 						anchorLink: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-1',

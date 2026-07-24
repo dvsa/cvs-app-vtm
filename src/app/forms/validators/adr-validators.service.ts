@@ -227,9 +227,13 @@ export class AdrValidatorsService {
 
 	requiresAUnNumberOrReferenceNumber(message: string): ValidatorFn {
 		return (control) => {
-			if (control.parent && this.adrService.canDisplayTankStatementProductListSection(control.parent.value)) {
-				const refNo = control.parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo');
-				const unNumbers = control.parent.get(
+			const parent = control.parent?.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')
+				? control.parent
+				: control.parent?.parent;
+
+			if (parent && this.adrService.canDisplayTankStatementProductListSection(parent.getRawValue())) {
+				const refNo = parent.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo');
+				const unNumbers = parent.get(
 					'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'
 				) as FormArray;
 
@@ -238,10 +242,14 @@ export class AdrValidatorsService {
 
 				// If reference number and the first UN number are both empty, then show the error
 				if (!refNo.value && Array.isArray(unNumbers.value) && !unNumbers.value[0]) {
+					if (control === unNumbers.controls[0]) {
+						return { required: message };
+					}
+
 					const refNoErrors = refNo.errors || {};
 					const unNumbersErrors = unNumbers.controls[0].errors || {};
 
-					// Set errors on both simulatenously
+					// Set errors on both simultaneously
 					refNo.setErrors({ ...refNoErrors, required: message });
 
 					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
