@@ -22,6 +22,41 @@ export const routes: Routes = [
 				canActivate: [MsalGuard, RoleGuard],
 			},
 			{
+				path: ReferenceDataRoutes.DEFECTS,
+				data: { title: 'Defect categories', roles: Roles.ReferenceDataView },
+				canActivate: [MsalGuard, RoleGuard],
+				children: [
+					{
+						path: '',
+						pathMatch: 'full',
+						data: { title: 'Defect categories', roles: Roles.ReferenceDataView },
+						loadComponent: () =>
+							import('./defect-categories-list/defect-categories-list.component').then((m) => m.DefectsListComponent),
+					},
+					{
+						path: ':imNumber',
+						data: { title: 'Defect items', roles: Roles.ReferenceDataView },
+						children: [
+							{
+								path: '',
+								pathMatch: 'full',
+								data: { title: 'Defect items', roles: Roles.ReferenceDataView },
+								loadComponent: () =>
+									import('./defect-items-list/defect-items-list.component').then((m) => m.DefectItemsListComponent),
+							},
+							{
+								path: ':itemNumber',
+								data: { title: 'Defect deficiencies', roles: Roles.ReferenceDataView },
+								loadComponent: () =>
+									import('./defect-deficiencies-list/defect-deficiencies-list.component').then(
+										(m) => m.DefectDeficienciesListComponent
+									),
+							},
+						],
+					},
+				],
+			},
+			{
 				path: ReferenceDataRoutes.TYPE,
 				loadComponent: () =>
 					import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),

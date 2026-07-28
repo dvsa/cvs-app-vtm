@@ -1,0 +1,122 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
+      Search for defect categories
+    </h1>
+    <div id="buttonsAndSearch" class="buttons-and-search govuk-!-margin-bottom-7">
+      <div [formGroup]="form" class="search-form" id="searchForm">
+        <div id="filterSelect">
+          <label class="govuk-label" for="searchFilter">Search Filter</label>
+          <govuk-form-group-select
+            #searchFilter
+            id="searchFilter"
+            class="search-filter"
+            formControlName="searchFilter"
+            name="searchFilter"
+            [options]="searchFilterOptions"
+          ></govuk-form-group-select>
+        </div>
+        <div class="search-input-container">
+          <label class="govuk-label" for="searchFilter">Search Term</label>
+          <div class="search-input">
+            <input
+              id="refSearch"
+              #searchTerm
+              aria-describedby="term"
+              formControlName="searchTerm"
+              name="searchTerm"
+              type="text"
+              (keyup.enter)="handleSearch()"
+              class="govuk-input govuk-!-width-two-thirds ref-search"
+              />
+            <button
+              class="govuk-button margin-right search-btn"
+              type="submit"
+              data-module="govuk-button"
+              enterkeyhint="search"
+              data-gem-track-click-module-started="true"
+              aria-label="search button"
+              (click)="handleSearch()"
+              >
+              <svg
+                class="gem-c-search__icon"
+                width="20"
+                height="20"
+                viewBox="0 0 25 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+                >
+                <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
+                <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    <div class="add-delete-buttons">
+      <app-button 
+        id="clear-filters" 
+        type="button" 
+        design="secondary" 
+        (clicked)="handleClear()"
+      >
+        Clear filters
+      </app-button>
+      <app-button id="add-new" (clicked)="handleAdd()">
+        Add New
+      </app-button>
+      <app-button id="deleted-items" (clicked)="handleViewDeletedItems()">
+        Deleted Items
+      </app-button>
+    </div>
+    </div>
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Category</th>
+          <th scope="col" class="govuk-table__header">Vehicle types</th>
+          <th scope="col" class="govuk-table__header govuk-table__cell--numeric"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        @for (defect of defects(); track defect.imNumber) {
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <a
+                class="govuk-link govuk-link--no-visited-state" 
+                href="javascript:void(0)" 
+                (click)="handleView(defect)">
+                {{ defect.imNumber }}. {{ defect.imDescription }}
+              </a>
+            </td>
+            <td class="govuk-table__cell whitespace-pre-wrap">
+              {{ defect.forVehicleType.join(', ') | uppercase}}
+            </td>
+            <td class="govuk-table__cell govuk-table__cell--numeric">
+              <div class="links">
+                <a 
+                  class="govuk-link" 
+                  role="button" 
+                  href="javascript:void(0)" 
+                  (click)="handleAmendDefect(defect)"
+                >
+                  Amend
+                </a>
+                <a 
+                  class="govuk-link" 
+                  role="button" 
+                  href="javascript:void(0)" 
+                  (click)="handleDeleteDefect(defect)"
+                >
+                  Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

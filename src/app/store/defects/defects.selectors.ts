@@ -8,6 +8,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import { Deficiency } from '../../models/defects/deficiency.model';
+import { selectQueryParam, selectRouteParam } from '../router/router.selectors';
 import { defectsAdapter, defectsFeatureState } from './defects.reducer';
 
 const { selectAll } = defectsAdapter.getSelectors();
@@ -77,3 +78,31 @@ export const trlDefects = filteredDefects(VehicleTypes.TRL);
 export const defect = (id: string) => createSelector(defectsFeatureState, (state) => state.entities[`${id}`]);
 
 export const defectsLoadingState = createSelector(defectsFeatureState, (state) => state.loading);
+
+export const selectDefectCategoryFromRoute = createSelector(
+	selectRouteParam('imNumber'),
+	selectQueryParam('forVehicleType'),
+	defects,
+	(imNumber, forVehicleType, defects) => {
+		if (typeof imNumber !== 'string' || typeof forVehicleType !== 'string') return undefined;
+
+		return defects.find((defect) => {
+			const matchesImNumber = defect.imNumber === Number.parseInt(imNumber);
+			const matchesForVehicleType = forVehicleType
+				.split(',')
+				.some((vehicleType) => defect.forVehicleType.includes(vehicleType));
+
+			return matchesImNumber && matchesForVehicleType;
+		});
+	}
+);
+
+export const selectDefectItemFromRoute = createSelector(
+	selectDefectCategoryFromRoute,
+	selectRouteParam('itemNumber'),
+	(defectCategory, itemNumber) => {
+		if (typeof itemNumber !== 'string') return undefined;
+		console.log(defectCategory, itemNumber);
+		return defectCategory?.items.find((item) => item.itemNumber === Number.parseInt(itemNumber));
+	}
+);

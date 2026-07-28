@@ -61,6 +61,7 @@ export enum ReferenceDataRoutes {
 	DELETED_ITEMS = 'deleted-items',
 	KEY = ':key',
 	DELETE = ':key/delete',
+	DEFECTS = 'defects',
 }
 
 export enum TestRecordAmendRoutes {

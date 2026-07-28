@@ -49,14 +49,15 @@ export class ReferenceDataSelectTypeComponent {
 
 	options$ = this.store.pipe(
 		select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
-		map(
-			(types) =>
-				types
-					?.sort((a, b) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-					.map((type) => ({
-						label: type.label ?? type.resourceKey.toString(),
-						value: type.resourceKey.toString(),
-					})) ?? []
+		map((types) => types || []),
+		map((types) =>
+			types
+				.map((type) => ({
+					label: type.label ?? type.resourceKey.toString(),
+					value: type.resourceKey.toString(),
+				}))
+				.concat([{ label: 'Defects', value: 'defects' }])
+				.sort((a, b) => a.label.localeCompare(b.label))
 		)
 	);
 
