@@ -102,7 +102,15 @@ export const selectDefectItemFromRoute = createSelector(
 	selectRouteParam('itemNumber'),
 	(defectCategory, itemNumber) => {
 		if (typeof itemNumber !== 'string') return undefined;
-		console.log(defectCategory, itemNumber);
 		return defectCategory?.items.find((item) => item.itemNumber === Number.parseInt(itemNumber));
+	}
+);
+
+export const selectDefectDeficiencyFromRoute = createSelector(
+	selectDefectItemFromRoute,
+	selectRouteParam('ref'),
+	(item, deficiencyRef) => {
+		if (typeof deficiencyRef !== 'string') return undefined;
+		return item?.deficiencies?.find((deficiency) => deficiency.ref === deficiencyRef);
 	}
 );

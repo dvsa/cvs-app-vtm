@@ -47,10 +47,31 @@ export const routes: Routes = [
 							{
 								path: ':itemNumber',
 								data: { title: 'Defect deficiencies', roles: Roles.ReferenceDataView },
-								loadComponent: () =>
-									import('./defect-deficiencies-list/defect-deficiencies-list.component').then(
-										(m) => m.DefectDeficienciesListComponent
-									),
+								children: [
+									{
+										path: '',
+										pathMatch: 'full',
+										data: { title: 'Defect deficiencies', roles: Roles.ReferenceDataView },
+										loadComponent: () =>
+											import('./defect-deficiencies-list/defect-deficiencies-list.component').then(
+												(m) => m.DefectDeficienciesListComponent
+											),
+									},
+									{
+										path: ':ref',
+										data: { title: 'Amend', roles: Roles.ReferenceDataAmend },
+										children: [
+											{
+												path: 'amend',
+												data: { title: 'Amend', roles: Roles.ReferenceDataAmend },
+												loadComponent: () =>
+													import('./defect-deficiency-amend/defect-deficiency-amend.component').then(
+														(m) => m.DefectDeficiencyAmendComponent
+													),
+											},
+										],
+									},
+								],
 							},
 						],
 					},

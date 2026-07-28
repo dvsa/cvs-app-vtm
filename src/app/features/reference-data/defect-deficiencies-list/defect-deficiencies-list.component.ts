@@ -57,7 +57,9 @@ export class DefectDeficienciesListComponent {
 		const searchFilter = this.form.controls.searchFilter.value;
 	}
 
-	handleAmendDeficiency(deficiency: DefectDeficiencyReferenceDataSchema) {}
+	handleAmendDeficiency(deficiency: DefectDeficiencyReferenceDataSchema) {
+		this.router.navigate([deficiency.ref, 'amend'], { relativeTo: this.activatedRoute, queryParamsHandling: 'merge' });
+	}
 
 	handleDeleteDeficiency(deficiency: DefectDeficiencyReferenceDataSchema) {}
 
