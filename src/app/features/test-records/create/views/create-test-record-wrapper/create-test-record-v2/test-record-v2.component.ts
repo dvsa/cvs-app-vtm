@@ -8,6 +8,7 @@ import { GlobalWarningService } from '@/src/app/core/components/global-warning/g
 import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@/src/app/models/testTypeId.enum';
 import { ResultOfTestService } from '@/src/app/services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
@@ -84,6 +85,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	titleService = inject(Title);
 	actions$ = inject(Actions);
 	document = inject(DOCUMENT);
+	testTypeService = inject(TestTypeService);
 
 	form = this.testService.form;
 
@@ -242,76 +244,11 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	private validateUpdateStatus(testResult: TestResults | null, testTypeId: string): boolean {
 		return (
 			(testResult === TestResults.PASS || testResult === TestResults.PRS) &&
-			(this.isTestTypeFirstTest(testTypeId) ||
-				this.isTestTypeNotifiableAlteration(testTypeId) ||
-				this.isTestTypeCOIF(testTypeId) ||
-				this.isTestTypeIVA(testTypeId))
+			(this.testTypeService.isTestTypeFirstTest(testTypeId) ||
+				this.testTypeService.isTestTypeNotifiableAlteration(testTypeId) ||
+				this.testTypeService.isTestTypeCOIF(testTypeId) ||
+				this.testTypeService.isTestTypeIVA(testTypeId))
 		);
-	}
-
-	private isTestTypeFirstTest(testTypeId: string): boolean {
-		const firstTestIds = ['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'];
-		return firstTestIds.includes(testTypeId);
-	}
-
-	private isTestTypeNotifiableAlteration(testTypeId: string): boolean {
-		const notifiableAlterationIds = ['38', '47', '48'];
-		return notifiableAlterationIds.includes(testTypeId);
-	}
-
-	private isTestTypeCOIF(testTypeId: string): boolean {
-		const coifIds = ['142', '143', '175', '176'];
-		return coifIds.includes(testTypeId);
-	}
-
-	private isTestTypeIVA(testTypeId: string): boolean {
-		const ivaIds = [
-			'133',
-			'134',
-			'138',
-			'139',
-			'140',
-			'165',
-			'169',
-			'167',
-			'170',
-			'135',
-			'172',
-			'173',
-			'439',
-			'449',
-			'136',
-			'187',
-			'126',
-			'186',
-			'193',
-			'192',
-			'195',
-			'162',
-			'191',
-			'128',
-			'188',
-			'189',
-			'125',
-			'161',
-			'158',
-			'159',
-			'154',
-			'190',
-			'129',
-			'196',
-			'194',
-			'197',
-			'185',
-			'420',
-			'438',
-			'163',
-			'153',
-			'184',
-			'130',
-			'183',
-		];
-		return ivaIds.includes(testTypeId);
 	}
 
 	onSubmit(): void {

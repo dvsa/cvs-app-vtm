@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
-describe('CreateTestRecordV2Component', () => {
+describe('TestRecordV2Component', () => {
 	let fixture: ComponentFixture<TestRecordV2Component>;
 	let component: TestRecordV2Component;
 	let store: MockStore;

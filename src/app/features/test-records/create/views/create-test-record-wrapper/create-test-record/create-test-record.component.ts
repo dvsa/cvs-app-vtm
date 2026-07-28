@@ -1,3 +1,4 @@
+import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -56,6 +57,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 	store = inject<Store<State>>(Store<State>);
 	titleService = inject(Title);
 	warningService = inject(GlobalWarningService);
+	testTypeService = inject(TestTypeService);
 
 	baseTestRecordComponent = viewChild(BaseTestRecordComponent);
 	abandonDialog = viewChild(AbandonDialogComponent);
@@ -257,73 +259,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 	validateUpdateStatus = (testResult: TestResults | null, testTypeId: string): boolean =>
 		(testResult === TestResults.PASS || testResult === TestResults.PRS) &&
-		(this.isTestTypeFirstTest(testTypeId) ||
-			this.isTestTypeNotifiableAlteration(testTypeId) ||
-			this.isTestTypeCOIF(testTypeId) ||
-			this.isTestTypeIVA(testTypeId));
-
-	isTestTypeFirstTest(testTypeId: string): boolean {
-		const firstTestIds = ['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'];
-		return firstTestIds.includes(testTypeId);
-	}
-
-	isTestTypeNotifiableAlteration(testTypeId: string): boolean {
-		const notifiableAlterationIds = ['38', '47', '48'];
-		return notifiableAlterationIds.includes(testTypeId);
-	}
-
-	isTestTypeCOIF(testTypeId: string): boolean {
-		const coifIds = ['142', '143', '175', '176'];
-		return coifIds.includes(testTypeId);
-	}
-
-	isTestTypeIVA(testTypeId: string): boolean {
-		const ivaIds = [
-			'133',
-			'134',
-			'138',
-			'139',
-			'140',
-			'165',
-			'169',
-			'167',
-			'170',
-			'135',
-			'172',
-			'173',
-			'439',
-			'449',
-			'136',
-			'187',
-			'126',
-			'186',
-			'193',
-			'192',
-			'195',
-			'162',
-			'191',
-			'128',
-			'188',
-			'189',
-			'125',
-			'161',
-			'158',
-			'159',
-			'154',
-			'190',
-			'129',
-			'196',
-			'194',
-			'197',
-			'185',
-			'420',
-			'438',
-			'163',
-			'153',
-			'184',
-			'130',
-			'183',
-		];
-		return ivaIds.includes(testTypeId);
-	}
+		(this.testTypeService.isTestTypeFirstTest(testTypeId) ||
+			this.testTypeService.isTestTypeNotifiableAlteration(testTypeId) ||
+			this.testTypeService.isTestTypeCOIF(testTypeId) ||
+			this.testTypeService.isTestTypeIVA(testTypeId));
 }
