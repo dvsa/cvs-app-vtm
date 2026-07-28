@@ -1,5 +1,6 @@
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
+import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -10,10 +11,14 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
-describe('CreateTestRecordV2Component', () => {
+const MockUserService = {
+	getUserName$: jest.fn().mockReturnValue(new Observable()),
+};
+
+describe('TestRecordV2Component', () => {
 	let fixture: ComponentFixture<TestRecordV2Component>;
 	let component: TestRecordV2Component;
 	let store: MockStore;
@@ -29,6 +34,7 @@ describe('CreateTestRecordV2Component', () => {
 				provideMockStore({ initialState: initialAppState }),
 				provideRouter([]),
 				{ provide: Actions, useValue: actions$ },
+				{ provide: UserService, useValue: MockUserService },
 			],
 		}).compileComponents();
 

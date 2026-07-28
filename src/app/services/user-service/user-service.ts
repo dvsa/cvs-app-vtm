@@ -23,6 +23,11 @@ export class UserService implements OnDestroy {
 	userEmail$ = this.store.pipe(select(UserServiceState.userEmail));
 	inProgress$ = this.msalBroadcastService.inProgress$;
 
+	id = this.store.selectSignal(UserServiceState.id);
+	user = this.store.selectSignal(UserServiceState.user);
+	name = this.store.selectSignal(UserServiceState.name);
+	roles = this.store.selectSignal(UserServiceState.roles);
+	userEmail = this.store.selectSignal(UserServiceState.userEmail);
 	employeeId = this.store.selectSignal(UserServiceState.employeeId);
 
 	constructor() {
