@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '../../models/testTypeId.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -67,5 +68,10 @@ export class TestTypeService {
 			'183',
 		];
 		return ivaIds.includes(testTypeId);
+	}
+
+	isTestTypeAbandonable(testTypeId: string): boolean {
+		// You cannot abanadon a test that is desk-based or LEC
+		return ![...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(testTypeId);
 	}
 }

@@ -5,11 +5,11 @@ import { GlobalError } from '@/src/app/core/components/global-error/global-error
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { GlobalWarning } from '@/src/app/core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
-import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@/src/app/models/testTypeId.enum';
 import { ResultOfTestService } from '@/src/app/services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
+import { UserService } from '@/src/app/services/user-service/user-service';
 import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
 import {
@@ -85,6 +85,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	titleService = inject(Title);
 	actions$ = inject(Actions);
 	document = inject(DOCUMENT);
+	userService = inject(UserService);
 	testTypeService = inject(TestTypeService);
 
 	form = this.testService.form;
@@ -168,14 +169,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 				name: this.testType()?.name,
 			});
 		}
-	}
-
-	isTestTypeAbandonable(): boolean {
-		const testTypeId = this.testTypeId();
-		if (!testTypeId) return false;
-
-		// You cannot abanadon a test that is desk-based or LEC
-		return ![...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(testTypeId);
 	}
 
 	private setGlobalErrors(errors: GlobalError[]): void {
@@ -267,7 +260,14 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	amendTestResult(): void {
-		const value = cleanTestResultPayload({ ...this.testResult() } as TestResultSchema);
+		const value = cleanTestResultPayload({
+			...this.testResult(),
+			lastUpdatedByName: this.userService.user().name,
+			lastUpdatedByEmailAddress: this.userService.userEmail(),
+			lastUpdatedById: this.userService.user().oid,
+			lastUpdatedAt: new Date().toISOString(),
+		} as TestResultSchema);
+
 		if (!value) return;
 
 		this.populateDefectMedia(value);

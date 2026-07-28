@@ -124,7 +124,7 @@
     <app-button-group>
       @if (mode() === Modes.EDIT) {
         <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
-        @if (isTestTypeAbandonable()) {
+        @if (testTypeService.isTestTypeAbandonable(testTypeId())) {
           <app-button id="abandon-test-result" [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
         }
       }
