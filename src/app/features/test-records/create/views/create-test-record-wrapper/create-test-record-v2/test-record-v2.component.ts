@@ -260,8 +260,11 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	amendTestResult(): void {
+		const testResult = this.testResult();
+
 		const value = cleanTestResultPayload({
-			...this.testResult(),
+			...testResult,
+			contingencyTestNumber: testResult?.contingencyTestNumber || undefined,
 			lastUpdatedByName: this.userService.user().name,
 			lastUpdatedByEmailAddress: this.userService.userEmail(),
 			lastUpdatedById: this.userService.user().oid,
