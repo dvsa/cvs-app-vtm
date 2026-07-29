@@ -10,10 +10,18 @@
     height: 40%;
   }
 
+  .media-video {
+    width: 40%;
+    height: 40%;
+  }
+
   .download-image-link {
     margin-left: 10em;
   }
 
+  .download-video-link {
+    margin-left: 10em;
+  }
 
   .text {
     background-color: transparent;
@@ -46,7 +54,6 @@
   }
 
   .defect-container {
-    @extend .underline;
     padding-bottom: 1em;
     padding-top: 1em;
   }

@@ -33,6 +33,14 @@ export class DefectMediaService {
 		return defect.media.some((media) => this.fileCache[media.path]);
 	}
 
+	hasImages(defect: DefectDetailsSchema): boolean {
+		return defect.media?.some((media) => media.type === 'image') ?? false;
+	}
+
+	hasVideos(defect: DefectDetailsSchema): boolean {
+		return defect.media?.some((media) => media.type === 'video') ?? false;
+	}
+
 	canDownloadAdasMediaItems(defect: DefectDetailsSchema): boolean {
 		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
 
