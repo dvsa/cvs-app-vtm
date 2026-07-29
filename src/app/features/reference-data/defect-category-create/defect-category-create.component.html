@@ -1,0 +1,47 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
+      Create a new defect category
+    </h1>
+    <div class="govuk-inset-text">
+      Ensure the English and Welsh descriptions are valid translations of each other.
+    </div>
+    <form [formGroup]="form">
+      <!-- IM Number -->
+      <govuk-form-group-input
+        formControlName="imNumber"
+        label="IM number"
+        name="imNumber"
+      ></govuk-form-group-input>
+
+      <!-- English description -->
+      <govuk-form-group-textarea
+        formControlName="imDescription"
+        label="English description"
+        name="imDescription"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- Welsh description -->
+      <govuk-form-group-textarea
+        formControlName="imDescriptionWelsh"
+        label="Welsh description"
+        name="imDescriptionWelsh"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- For Vehicle Type -->
+      <govuk-checkbox-group
+        formControlName="forVehicleType"
+        label="For vehicle type"
+        name="forVehicleType"
+        [options]="vehicleTypeOptions"
+      ></govuk-checkbox-group>
+
+      <app-button-group>
+        <app-button id="submit" (clicked)="handleSubmit()">Create</app-button>  
+        <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
+      </app-button-group>
+    </form>
+  </div>
+</div>

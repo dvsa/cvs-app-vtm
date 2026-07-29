@@ -161,6 +161,12 @@ export const routes: Routes = [
 											),
 									},
 									{
+										path: 'amend',
+										data: { title: 'Amend', roles: Roles.ReferenceDataAmend, breadcrumbPreserveQueryParams: true },
+										loadComponent: () =>
+											import('./defect-item-amend/defect-item-amend.component').then((m) => m.DefectItemAmendComponent),
+									},
+									{
 										path: 'deleted-items',
 										data: {
 											title: 'Deleted defect deficiencies',

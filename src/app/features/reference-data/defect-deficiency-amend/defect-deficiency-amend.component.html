@@ -1,8 +1,11 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
   <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
-      Amend defect deficiency
+      Amend {{ defectDeficiency()?.ref }}. {{ defectDeficiency()?.deficiencyText }}
     </h1>
+    <div class="govuk-inset-text">
+      Ensure the English and Welsh descriptions are valid translations of each other.
+    </div>
     <form [formGroup]="form">
       <!-- Category -->
       <govuk-form-group-select
@@ -33,11 +36,18 @@
         name="deficiencySubId"
       ></govuk-form-group-input>
 
-      <!-- Text -->
+      <!-- English deficiency description -->
       <govuk-form-group-textarea
         formControlName="deficiencyText"
-        label="Text"
+        label="English description"
         name="deficiencyText"
+      ></govuk-form-group-textarea>
+
+      <!-- Welsh deficiency description -->
+      <govuk-form-group-textarea
+        formControlName="deficiencyTextWelsh"
+        label="Welsh description"
+        name="deficiencyTextWelsh"
       ></govuk-form-group-textarea>
 
       <!-- Standard for prohibition -->

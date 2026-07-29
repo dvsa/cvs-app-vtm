@@ -1,0 +1,39 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
+      Amend {{ defectCategory()?.imNumber }}. {{ defectItem()?.itemNumber }}. {{ defectItem()?.itemDescription }}
+    </h1>
+    <div class="govuk-inset-text">
+      Ensure when amending the English/Welsh description that both translations match.
+    </div>
+    <form [formGroup]="form">
+      <!-- Item Number -->
+      <govuk-form-group-input
+        formControlName="itemNumber"
+        label="Item Number"
+        name="itemNumber"
+      ></govuk-form-group-input>
+
+      <!-- English item description -->
+      <govuk-form-group-textarea
+        formControlName="itemDescription"
+        label="English item description"
+        name="itemDescription"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- Welsh item description -->
+      <govuk-form-group-textarea
+        formControlName="itemDescriptionWelsh"
+        label="Welsh item description"
+        name="itemDescriptionWelsh"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <app-button-group>
+        <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>  
+        <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
+      </app-button-group>
+    </form>
+  </div>
+</div>

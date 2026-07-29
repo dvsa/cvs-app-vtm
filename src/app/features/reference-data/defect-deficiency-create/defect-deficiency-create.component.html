@@ -1,0 +1,68 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
+      Create a new defect deficiency for {{ defectItem()?.itemNumber }}. {{ defectItem()?.itemDescription }}
+    </h1>
+    <div class="govuk-inset-text">
+      Ensure the English and Welsh descriptions are valid translations of each other.
+    </div>
+    <form [formGroup]="form">
+      <!-- Category -->
+      <govuk-form-group-select
+        formControlName="deficiencyCategory"
+        [options]="deficiencyCategoryOptions"
+        label="Category"
+        name="deficiencyCategory"
+      ></govuk-form-group-select>
+
+      <!-- Reference -->
+      <govuk-form-group-input
+        formControlName="ref"
+        label="Reference"
+        name="deficiencyRef"
+      ></govuk-form-group-input>
+
+      <!-- ID -->
+      <govuk-form-group-input
+        formControlName="deficiencyId"
+        label="ID"
+        name="deficiencyId"
+      ></govuk-form-group-input>
+
+      <!-- Sub ID -->
+      <govuk-form-group-input
+        formControlName="deficiencySubId"
+        label="Sub ID"
+        name="deficiencySubId"
+      ></govuk-form-group-input>
+
+      <!-- English deficiency description -->
+      <govuk-form-group-textarea
+        formControlName="deficiencyText"
+        label="English description"
+        name="deficiencyText"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- Welsh deficiency description -->
+      <govuk-form-group-textarea
+        formControlName="deficiencyTextWelsh"
+        label="Welsh description"
+        name="deficiencyTextWelsh"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- Standard for prohibition -->
+      <govuk-form-group-checkbox
+        formControlName="stdForProhibition"
+        label="Standard for prohibition"
+        name="stdForProhibition"
+      ></govuk-form-group-checkbox>
+
+      <app-button-group>
+        <app-button id="submit" (clicked)="handleSubmit()">Create</app-button>  
+        <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
+      </app-button-group>
+    </form>
+  </div>
+</div>

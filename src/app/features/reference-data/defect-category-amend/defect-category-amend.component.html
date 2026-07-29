@@ -3,19 +3,31 @@
     <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
       Amend {{ defectCategory()?.imNumber }}. {{ defectCategory()?.imDescription }}
     </h1>
+    <div class="govuk-inset-text">
+      Ensure the English and Welsh descriptions are valid translations of each other.
+    </div>
     <form [formGroup]="form">
       <!-- IM Number -->
       <govuk-form-group-input
         formControlName="imNumber"
-        label="IM Number"
+        label="IM number"
         name="imNumber"
       ></govuk-form-group-input>
 
-      <!-- IM Description -->
+      <!-- English description -->
       <govuk-form-group-textarea
         formControlName="imDescription"
-        label="IM Description"
+        label="English description"
         name="imDescription"
+        [maxLength]="4096"
+      ></govuk-form-group-textarea>
+
+      <!-- Welsh description -->
+      <govuk-form-group-textarea
+        formControlName="imDescriptionWelsh"
+        label="Welsh description"
+        name="imDescriptionWelsh"
+        [maxLength]="4096"
       ></govuk-form-group-textarea>
 
       <!-- For Vehicle Type -->

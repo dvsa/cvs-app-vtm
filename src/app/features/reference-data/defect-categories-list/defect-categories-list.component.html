@@ -75,7 +75,8 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Category</th>
+          <th scope="col" class="govuk-table__header">No.</th>
+          <th scope="col" class="govuk-table__header">Description</th>
           <th scope="col" class="govuk-table__header">Vehicle types</th>
           <th scope="col" class="govuk-table__header govuk-table__cell--numeric"></th>
         </tr>
@@ -83,12 +84,13 @@
       <tbody class="govuk-table__body">
         @for (defect of defects(); track defect.imNumber) {
           <tr class="govuk-table__row">
+            <td class="govuk-table__cell">{{ defect.imNumber }}.</td>
             <td class="govuk-table__cell">
               <a
                 class="govuk-link govuk-link--no-visited-state" 
                 href="javascript:void(0)" 
                 (click)="handleView(defect)">
-                {{ defect.imNumber }}. {{ defect.imDescription }}
+                {{ defect.imDescription }}
               </a>
             </td>
             <td class="govuk-table__cell whitespace-pre-wrap">

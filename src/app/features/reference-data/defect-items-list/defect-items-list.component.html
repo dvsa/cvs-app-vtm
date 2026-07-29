@@ -70,7 +70,8 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Defect item</th>
+          <th scope="col" class="govuk-table__header">No.</th>
+          <th scope="col" class="govuk-table__header">Description</th>
           <th scope="col" class="govuk-table__header"></th>
         </tr>
       </thead>
@@ -78,12 +79,15 @@
         @for (defectItem of defectCategory()?.items; track defectItem.itemNumber) {
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
+              {{ defectCategory()?.imNumber }}.{{ defectItem.itemNumber }}. 
+            </td>
+            <td class="govuk-table__cell">
               <a
                 class="govuk-link govuk-link--no-visited-state" 
                 href="javascript:void(0)"
                 (click)="handleView(defectItem)"  
               >
-                {{ defectCategory()?.imNumber }}.{{ defectItem.itemNumber }}. {{ defectItem.itemDescription }}
+                {{ defectItem.itemDescription }}
               </a>
             </td>
             <td class="govuk-table__cell">
