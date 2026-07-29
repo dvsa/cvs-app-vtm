@@ -1,0 +1,35 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">
+      Amend {{ defectCategory()?.imNumber }}. {{ defectCategory()?.imDescription }}
+    </h1>
+    <form [formGroup]="form">
+      <!-- IM Number -->
+      <govuk-form-group-input
+        formControlName="imNumber"
+        label="IM Number"
+        name="imNumber"
+      ></govuk-form-group-input>
+
+      <!-- IM Description -->
+      <govuk-form-group-textarea
+        formControlName="imDescription"
+        label="IM Description"
+        name="imDescription"
+      ></govuk-form-group-textarea>
+
+      <!-- For Vehicle Type -->
+      <govuk-checkbox-group
+        formControlName="forVehicleType"
+        label="For Vehicle Type"
+        name="forVehicleType"
+        [options]="vehicleTypeOptions"
+      ></govuk-checkbox-group>
+
+      <app-button-group>
+        <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>  
+        <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
+      </app-button-group>
+    </form>
+  </div>
+</div>

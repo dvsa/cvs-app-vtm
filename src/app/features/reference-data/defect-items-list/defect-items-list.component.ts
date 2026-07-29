@@ -4,7 +4,7 @@ import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/ap
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
-import { fetchDefects, selectDefectCategoryFromRoute } from '@/src/app/store/defects';
+import { selectDefectCategoryFromRoute } from '@/src/app/store/defects';
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,13 +42,14 @@ export class DefectItemsListComponent {
 	roles = Roles;
 	searchFilterOptions: MultiOptions = [{ label: 'All', value: '' }];
 
-	ngOnInit(): void {
-		this.store.dispatch(fetchDefects());
-	}
-
 	handleClear() {}
 
-	handleAdd() {}
+	handleAdd() {
+		this.router.navigate(['create'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'preserve',
+		});
+	}
 
 	handleView(defectItem: DefectItemReferenceDataSchema) {
 		this.router.navigate([defectItem.itemNumber], {
@@ -57,14 +58,29 @@ export class DefectItemsListComponent {
 		});
 	}
 
-	handleViewDeletedItems() {}
+	handleViewDeletedItems() {
+		this.router.navigate(['deleted-items'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'preserve',
+		});
+	}
 
 	handleSearch() {
 		const searchTerm = this.form.controls.searchTerm.value;
 		const searchFilter = this.form.controls.searchFilter.value;
 	}
 
-	handleAmendDefectItem(defectItem: DefectItemReferenceDataSchema) {}
+	handleAmendDefectItem(defectItem: DefectItemReferenceDataSchema) {
+		this.router.navigate([defectItem.itemNumber, 'amend'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'preserve',
+		});
+	}
 
-	handleDeleteDefectItem(defectItem: DefectItemReferenceDataSchema) {}
+	handleDeleteDefectItem(defectItem: DefectItemReferenceDataSchema) {
+		this.router.navigate([defectItem.itemNumber, 'delete'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'preserve',
+		});
+	}
 }

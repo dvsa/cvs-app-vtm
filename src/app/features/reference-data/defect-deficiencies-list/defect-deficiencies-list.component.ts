@@ -4,7 +4,7 @@ import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/ap
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
-import { fetchDefects, selectDefectCategoryFromRoute, selectDefectItemFromRoute } from '@/src/app/store/defects';
+import { selectDefectCategoryFromRoute, selectDefectItemFromRoute } from '@/src/app/store/defects';
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,15 +42,21 @@ export class DefectDeficienciesListComponent {
 	roles = Roles;
 	searchFilterOptions: MultiOptions = [{ label: 'All', value: '' }];
 
-	ngOnInit(): void {
-		this.store.dispatch(fetchDefects());
-	}
-
 	handleClear() {}
 
-	handleAdd() {}
+	handleAdd() {
+		this.router.navigate(['create'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'merge',
+		});
+	}
 
-	handleViewDeletedItems() {}
+	handleViewDeletedItems() {
+		this.router.navigate(['deleted-items'], {
+			relativeTo: this.activatedRoute,
+			queryParamsHandling: 'merge',
+		});
+	}
 
 	handleSearch() {
 		const searchTerm = this.form.controls.searchTerm.value;
@@ -61,7 +67,9 @@ export class DefectDeficienciesListComponent {
 		this.router.navigate([deficiency.ref, 'amend'], { relativeTo: this.activatedRoute, queryParamsHandling: 'merge' });
 	}
 
-	handleDeleteDeficiency(deficiency: DefectDeficiencyReferenceDataSchema) {}
+	handleDeleteDeficiency(deficiency: DefectDeficiencyReferenceDataSchema) {
+		this.router.navigate([deficiency.ref, 'delete'], { relativeTo: this.activatedRoute, queryParamsHandling: 'merge' });
+	}
 
 	categoryColor(category: string): string {
 		return categoryColors[category as keyof typeof categoryColors];

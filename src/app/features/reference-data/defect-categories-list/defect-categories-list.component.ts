@@ -4,9 +4,9 @@ import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/ap
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
-import { defects, fetchDefects } from '@/src/app/store/defects';
+import { defects } from '@/src/app/store/defects';
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
@@ -27,7 +27,7 @@ import { Store } from '@ngrx/store';
 		RouterLink,
 	],
 })
-export class DefectsListComponent implements OnInit {
+export class DefectsListComponent {
 	fb = inject(FormBuilder);
 	store = inject(Store);
 	router = inject(Router);
@@ -42,13 +42,14 @@ export class DefectsListComponent implements OnInit {
 	roles = Roles;
 	searchFilterOptions: MultiOptions = [{ label: 'All', value: '' }];
 
-	ngOnInit(): void {
-		this.store.dispatch(fetchDefects());
-	}
-
 	handleClear() {}
 
-	handleAdd() {}
+	handleAdd() {
+		this.router.navigate(['create'], {
+			queryParamsHandling: 'merge',
+			relativeTo: this.activatedRoute,
+		});
+	}
 
 	handleView(defect: DefectCategoryReferenceDataSchema) {
 		this.router.navigate([defect.imNumber], {
@@ -58,14 +59,31 @@ export class DefectsListComponent implements OnInit {
 		});
 	}
 
-	handleViewDeletedItems() {}
+	handleViewDeletedItems() {
+		this.router.navigate(['deleted-items'], {
+			queryParamsHandling: 'merge',
+			relativeTo: this.activatedRoute,
+		});
+	}
 
 	handleSearch() {
 		const searchTerm = this.form.controls.searchTerm.value;
 		const searchFilter = this.form.controls.searchFilter.value;
 	}
 
-	handleAmendDefect(defect: DefectCategoryReferenceDataSchema) {}
+	handleAmendDefect(defect: DefectCategoryReferenceDataSchema) {
+		this.router.navigate([defect.imNumber, 'amend'], {
+			queryParams: { forVehicleType: defect.forVehicleType.join(',') },
+			queryParamsHandling: 'merge',
+			relativeTo: this.activatedRoute,
+		});
+	}
 
-	handleDeleteDefect(defect: DefectCategoryReferenceDataSchema) {}
+	handleDeleteDefect(defect: DefectCategoryReferenceDataSchema) {
+		this.router.navigate([defect.imNumber, 'delete'], {
+			queryParams: { forVehicleType: defect.forVehicleType.join(',') },
+			queryParamsHandling: 'merge',
+			relativeTo: this.activatedRoute,
+		});
+	}
 }

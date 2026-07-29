@@ -3,6 +3,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataRoutes } from '@models/routes.enum';
+import { defectsTaxonomyResolver } from '../../resolvers/defects-taxonomy/defects-taxonomy.resolver';
 
 export const routes: Routes = [
 	{
@@ -23,47 +24,169 @@ export const routes: Routes = [
 			},
 			{
 				path: ReferenceDataRoutes.DEFECTS,
-				data: { title: 'Defect categories', roles: Roles.ReferenceDataView },
+				data: { title: 'Defect categories', roles: Roles.ReferenceDataView, breadcrumbPreserveQueryParams: true },
 				canActivate: [MsalGuard, RoleGuard],
+				resolve: { defects: defectsTaxonomyResolver },
 				children: [
 					{
 						path: '',
 						pathMatch: 'full',
-						data: { title: 'Defect categories', roles: Roles.ReferenceDataView },
+						data: { title: 'Defect categories', roles: Roles.ReferenceDataView, breadcrumbPreserveQueryParams: true },
 						loadComponent: () =>
 							import('./defect-categories-list/defect-categories-list.component').then((m) => m.DefectsListComponent),
 					},
 					{
+						path: 'create',
+						data: {
+							title: 'Create defect category',
+							roles: Roles.ReferenceDataAmend,
+							breadcrumbPreserveQueryParams: true,
+						},
+						loadComponent: () =>
+							import('./defect-category-create/defect-category-create.component').then(
+								(m) => m.DefectCategoryCreateComponent
+							),
+					},
+					{
+						path: 'deleted-items',
+						data: {
+							title: 'Deleted defect categories',
+							roles: Roles.ReferenceDataView,
+							breadcrumbPreserveQueryParams: true,
+						},
+						loadComponent: () =>
+							import('./defect-category-deleted-items/defect-category-deleted-items.component').then(
+								(m) => m.DefectCategoryDeletedItemsComponent
+							),
+					},
+					{
+						path: ':imNumber/amend',
+						pathMatch: 'full',
+						data: {
+							title: 'Amend defect category',
+							roles: Roles.ReferenceDataAmend,
+							breadcrumbPreserveQueryParams: true,
+						},
+						loadComponent: () =>
+							import('./defect-category-amend/defect-category-amend.component').then(
+								(m) => m.DefectCategoryAmendComponent
+							),
+					},
+					{
+						path: ':imNumber/delete',
+						pathMatch: 'full',
+						data: {
+							title: 'Delete defect category',
+							roles: Roles.ReferenceDataAmend,
+							breadcrumbPreserveQueryParams: true,
+						},
+						loadComponent: () =>
+							import('./defect-category-delete/defect-category-delete.component').then(
+								(m) => m.DefectCategoryDeleteComponent
+							),
+					},
+					{
 						path: ':imNumber',
-						data: { title: 'Defect items', roles: Roles.ReferenceDataView },
+						data: { title: 'Defect items', roles: Roles.ReferenceDataAmend },
 						children: [
+							{
+								path: 'create',
+								data: {
+									title: 'Create defect item',
+									roles: Roles.ReferenceDataAmend,
+									breadcrumbPreserveQueryParams: true,
+								},
+								loadComponent: () =>
+									import('./defect-item-create/defect-item-create.component').then((m) => m.DefectItemCreateComponent),
+							},
+							{
+								path: 'deleted-items',
+								data: {
+									title: 'Deleted defect items',
+									roles: Roles.ReferenceDataView,
+									breadcrumbPreserveQueryParams: true,
+								},
+								loadComponent: () =>
+									import('./defect-item-deleted-items/defect-item-deleted-items.component').then(
+										(m) => m.DefectItemDeletedItemsComponent
+									),
+							},
 							{
 								path: '',
 								pathMatch: 'full',
-								data: { title: 'Defect items', roles: Roles.ReferenceDataView },
+								data: { title: 'Defect items', roles: Roles.ReferenceDataView, breadcrumbPreserveQueryParams: true },
 								loadComponent: () =>
 									import('./defect-items-list/defect-items-list.component').then((m) => m.DefectItemsListComponent),
 							},
 							{
+								path: ':itemNumber/create',
+								data: {
+									title: 'Create defect deficiency',
+									roles: Roles.ReferenceDataAmend,
+									breadcrumbPreserveQueryParams: true,
+								},
+								loadComponent: () =>
+									import('./defect-deficiency-create/defect-deficiency-create.component').then(
+										(m) => m.DefectDeficiencyCreateComponent
+									),
+							},
+							{
 								path: ':itemNumber',
-								data: { title: 'Defect deficiencies', roles: Roles.ReferenceDataView },
+								data: {
+									title: 'Defect deficiencies',
+									roles: Roles.ReferenceDataView,
+									breadcrumbPreserveQueryParams: true,
+								},
 								children: [
 									{
 										path: '',
 										pathMatch: 'full',
-										data: { title: 'Defect deficiencies', roles: Roles.ReferenceDataView },
+										data: {
+											title: 'Defect deficiencies',
+											roles: Roles.ReferenceDataView,
+											breadcrumbPreserveQueryParams: true,
+										},
 										loadComponent: () =>
 											import('./defect-deficiencies-list/defect-deficiencies-list.component').then(
 												(m) => m.DefectDeficienciesListComponent
 											),
 									},
 									{
+										path: 'create',
+										pathMatch: 'full',
+										data: { title: 'Create', roles: Roles.ReferenceDataAmend, breadcrumbPreserveQueryParams: true },
+										loadComponent: () =>
+											import('./defect-deficiency-create/defect-deficiency-create.component').then(
+												(m) => m.DefectDeficiencyCreateComponent
+											),
+									},
+									{
+										path: 'deleted-items',
+										data: {
+											title: 'Deleted defect deficiencies',
+											roles: Roles.ReferenceDataView,
+											breadcrumbPreserveQueryParams: true,
+										},
+										loadComponent: () =>
+											import('./defect-deficiency-deleted-items/defect-deficiency-deleted-items.component').then(
+												(m) => m.DefectDeficiencyDeletedItemsComponent
+											),
+									},
+									{
 										path: ':ref',
-										data: { title: 'Amend', roles: Roles.ReferenceDataAmend },
+										data: { title: 'Amend', roles: Roles.ReferenceDataAmend, breadcrumbPreserveQueryParams: true },
 										children: [
 											{
 												path: 'amend',
-												data: { title: 'Amend', roles: Roles.ReferenceDataAmend },
+												data: { title: 'Amend', roles: Roles.ReferenceDataAmend, breadcrumbPreserveQueryParams: true },
+												loadComponent: () =>
+													import('./defect-deficiency-amend/defect-deficiency-amend.component').then(
+														(m) => m.DefectDeficiencyAmendComponent
+													),
+											},
+											{
+												path: 'delete',
+												data: { title: 'Delete', roles: Roles.ReferenceDataAmend, breadcrumbPreserveQueryParams: true },
 												loadComponent: () =>
 													import('./defect-deficiency-amend/defect-deficiency-amend.component').then(
 														(m) => m.DefectDeficiencyAmendComponent
