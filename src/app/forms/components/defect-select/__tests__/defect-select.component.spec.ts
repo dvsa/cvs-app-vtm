@@ -94,4 +94,150 @@ describe('DefectSelectComponent', () => {
 			expect(component.hasDeficiencies(itemWithNoDeficiencies)).toBeFalsy();
 		});
 	});
+
+	describe('accordion expand/collapse', () => {
+		it('toggleDefect should open and close a category', () => {
+			expect(component.isDefectOpen(defect)).toBe(false);
+			component.toggleDefect(defect);
+			expect(component.isDefectOpen(defect)).toBe(true);
+			component.toggleDefect(defect);
+			expect(component.isDefectOpen(defect)).toBe(false);
+		});
+
+		it('toggleItem should open and close an item independently', () => {
+			const item = defect.items[0];
+			expect(component.isItemOpen(defect, item)).toBe(false);
+			component.toggleItem(defect, item);
+			expect(component.isItemOpen(defect, item)).toBe(true);
+			component.toggleItem(defect, item);
+			expect(component.isItemOpen(defect, item)).toBe(false);
+		});
+	});
+
+	describe('navigation', () => {
+		it('selectDeficiency should navigate to the deficiency ref', () => {
+			const spy = jest.spyOn(component.router, 'navigate').mockResolvedValue(true);
+			component.selectDeficiency(defect.items[0].deficiencies![0]);
+			expect(spy).toHaveBeenCalledWith(['some ref'], expect.anything());
+		});
+
+		it('selectAdvisory should navigate to the advisory route', () => {
+			const spy = jest.spyOn(component.router, 'navigate').mockResolvedValue(true);
+			component.selectAdvisory(defect, defect.items[0]);
+			expect(spy).toHaveBeenCalledWith(['1.2.advisory'], expect.anything());
+		});
+	});
+
+	describe('filteredTree', () => {
+		const registrationPlate: DefectCategoryReferenceDataSchema = {
+			...defect,
+			imDescription: 'Registration plate',
+			imNumber: 1,
+			items: [
+				{
+					itemNumber: 1,
+					itemDescription: 'A registration plate:',
+					forVehicleType: [VehicleTypes.PSV],
+					deficiencies: [
+						{
+							deficiencyCategory: deficiencyCategory.Major,
+							deficiencyId: 'a',
+							deficiencySubId: '',
+							deficiencyText: 'missing',
+							forVehicleType: [VehicleTypes.PSV],
+							ref: '1.1.a',
+							stdForProhibition: false,
+						},
+					],
+				},
+			],
+		};
+		const tyres: DefectCategoryReferenceDataSchema = {
+			...defect,
+			imDescription: 'Condition of tyres',
+			imNumber: 8,
+			items: [
+				{
+					itemNumber: 1,
+					itemDescription: 'A tyre:',
+					forVehicleType: [VehicleTypes.PSV],
+					deficiencies: [
+						{
+							deficiencyCategory: deficiencyCategory.Major,
+							deficiencyId: 'e',
+							deficiencySubId: '',
+							deficiencyText: 'has a cut in excess of the requirements',
+							forVehicleType: [VehicleTypes.PSV],
+							ref: '8.1.e',
+							stdForProhibition: false,
+						},
+						{
+							deficiencyCategory: deficiencyCategory.Major,
+							deficiencyId: 'f',
+							deficiencySubId: '',
+							deficiencyText: 'showing evidence of a recut',
+							forVehicleType: [VehicleTypes.PSV],
+							ref: '8.1.f',
+							stdForProhibition: false,
+						},
+					],
+				},
+			],
+		};
+
+		beforeEach(() => {
+			component.defects = [registrationPlate, tyres];
+		});
+
+		it('should return all defects unpruned when the filter is empty', () => {
+			component.searchFilter = '';
+			expect(component.filteredTree).toStrictEqual([registrationPlate, tyres]);
+			expect(component.isSearching).toBe(false);
+		});
+
+		it('should keep the whole category when the category matches', () => {
+			component.searchFilter = 'tyres';
+			expect(component.filteredTree).toStrictEqual([tyres]);
+		});
+
+		it('should match on IM number exactly', () => {
+			component.searchFilter = '8';
+			expect(component.filteredTree).toStrictEqual([tyres]);
+		});
+
+		it('should match on a deficiency ref (e.g. "1.1")', () => {
+			component.searchFilter = '1.1';
+
+			const tree = component.filteredTree;
+			expect(tree).toHaveLength(1);
+			expect(tree[0].imNumber).toBe(1);
+			expect(tree[0].items).toHaveLength(1);
+			expect(tree[0].items[0].deficiencies).toHaveLength(1);
+			expect(tree[0].items[0].deficiencies![0].ref).toBe('1.1.a');
+		});
+
+		it('should surface a deep deficiency-level match and prune siblings', () => {
+			component.searchFilter = 'recut';
+
+			const tree = component.filteredTree;
+			expect(tree).toHaveLength(1);
+			expect(tree[0].imNumber).toBe(8);
+			// only the matching item survives
+			expect(tree[0].items).toHaveLength(1);
+			// only the matching deficiency within that item survives
+			expect(tree[0].items[0].deficiencies).toHaveLength(1);
+			expect(tree[0].items[0].deficiencies![0].deficiencyText).toBe('showing evidence of a recut');
+		});
+
+		it('should not mutate the source taxonomy when pruning', () => {
+			component.searchFilter = 'recut';
+			void component.filteredTree;
+			expect(tyres.items[0].deficiencies).toHaveLength(2);
+		});
+
+		it('should return an empty array when nothing matches', () => {
+			component.searchFilter = 'no such defect';
+			expect(component.filteredTree).toStrictEqual([]);
+		});
+	});
 });
