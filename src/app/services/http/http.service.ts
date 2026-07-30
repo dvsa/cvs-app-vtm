@@ -85,7 +85,9 @@ export class HttpService {
 
 	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
-		return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
+		return this.http
+			.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	fetchDefects() {
@@ -200,9 +202,9 @@ export class HttpService {
 	}
 
 	getTechRecordV3(systemNumber: string, createdTimestamp: string) {
-		return this.http.get<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
-		);
+		return this.http
+			.get<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	getTestTypes(typeOfTest?: string) {
@@ -446,9 +448,11 @@ export class HttpService {
 		params = params.set('searchCriteria', type);
 		params = params.set('additionalInfo', true);
 
-		return this.http.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
-			params,
-		});
+		return this.http
+			.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
+				params,
+			})
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
@@ -568,10 +572,12 @@ export class HttpService {
 	}
 
 	updateTechRecord(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
-			techRecord
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
+				techRecord
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	sendLogs = async (logs: Log[]) => {

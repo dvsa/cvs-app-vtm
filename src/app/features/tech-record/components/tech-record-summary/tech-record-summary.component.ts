@@ -286,9 +286,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewI
 
 		this.isFormDirty.emit(forms.some((form) => form.dirty));
 
-		this.setErrors(forms);
-
 		const isInvalid = forms.some((form) => form.invalid) || this.form.invalid;
+		if (isInvalid) {
+			this.setErrors(forms);
+		} else {
+			this.errorService.clearErrors();
+		}
 		this.isFormInvalid.emit(isInvalid);
 
 		return isInvalid;

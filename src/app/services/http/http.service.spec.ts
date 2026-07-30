@@ -98,6 +98,22 @@ describe('HttpService', () => {
 			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
 			request.flush(expectedVehicle);
 		});
+
+		it('should time out a stalled create request after 30 seconds', () => {
+			jest.useFakeTimers();
+			const expectedVehicle = {
+				vin: 'testvin',
+				techRecord_reasonForCreation: 'test',
+			} as unknown as TechRecordType<'put'>;
+			const error = jest.fn();
+
+			httpService.createTechRecord(expectedVehicle).subscribe({ error });
+			httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
+			jest.advanceTimersByTime(30000);
+
+			expect(error).toHaveBeenCalledWith(expect.objectContaining({ name: 'TimeoutError' }));
+			jest.useRealTimers();
+		});
 	});
 
 	describe('fetchDefects', () => {
@@ -378,6 +394,22 @@ describe('HttpService', () => {
 			// should format the vrms for the update payload
 			expect(req.request.body).toHaveProperty('primaryVrm');
 			expect(req.request.body).toHaveProperty('secondaryVrms');
+		});
+
+		it('should time out a stalled update request after 30 seconds', () => {
+			jest.useFakeTimers();
+			const systemNumber = '123456';
+			const createdTimestamp = '2022';
+			const error = jest.fn();
+
+			httpService.updateTechRecord(systemNumber, createdTimestamp, {} as TechRecordType<'put'>).subscribe({ error });
+			httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
+			);
+			jest.advanceTimersByTime(30000);
+
+			expect(error).toHaveBeenCalledWith(expect.objectContaining({ name: 'TimeoutError' }));
+			jest.useRealTimers();
 		});
 	});
 

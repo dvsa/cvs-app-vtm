@@ -2,6 +2,7 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
@@ -274,6 +275,36 @@ describe('TechRecordSummaryComponent', () => {
 			const errors = component.getAxleErrors();
 
 			expect(errors).toEqual([]);
+		});
+	});
+
+	describe('review performance', () => {
+		it('does not recursively revalidate an already-valid form', () => {
+			let validationRuns = 0;
+			const form = new FormGroup({
+				field: new FormControl('value', () => {
+					validationRuns++;
+					return null;
+				}),
+			});
+			validationRuns = 0;
+			jest.spyOn(component, 'sections').mockReturnValue([{ form }] as never);
+
+			component.checkForms();
+
+			expect(validationRuns).toBe(0);
+		});
+
+		it('still validates an invalid form to display its errors', () => {
+			const form = new FormGroup({
+				field: new FormControl('', () => ({ required: true })),
+			});
+			const forms = [{ form }] as never;
+			jest.spyOn(component, 'sections').mockReturnValue(forms);
+			const setErrors = jest.spyOn(component, 'setErrors');
+
+			expect(component.checkForms()).toBe(true);
+			expect(setErrors).toHaveBeenCalledWith([form]);
 		});
 	});
 });
