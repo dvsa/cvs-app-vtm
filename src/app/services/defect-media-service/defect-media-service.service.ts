@@ -34,16 +34,8 @@ export class DefectMediaService {
 		return defect.media.some((media) => this.fileCache[media.path]);
 	}
 
-	hasImages(defect: DefectDetailsSchema): boolean {
-		return defect.media?.some((media) => media.type === 'image') ?? false;
-	}
-
 	getImages(defect: DefectDetailsSchema) {
 		return defect.media?.filter((media) => media.type === 'image') ?? [];
-	}
-
-	hasVideos(defect: DefectDetailsSchema): boolean {
-		return defect.media?.some((media) => media.type === 'video') ?? false;
 	}
 
 	getVideos(defect: DefectDetailsSchema) {
