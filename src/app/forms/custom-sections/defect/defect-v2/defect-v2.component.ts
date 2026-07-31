@@ -326,6 +326,18 @@ export class DefectV2Component {
 			return 'No media available';
 		}
 
+		// Check for HTTP errors (404 or 500) when fetching media
+		if (this.testResult) {
+			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult()?.testResultId ?? '');
+			if (mediaError) {
+				return mediaError.message;
+			}
+		}
+
+		if (!this.defectMediaService?.hasMediaInCache(defect)) {
+			return 'Media could not be found';
+		}
+
 		for (const reason of defect.media) {
 			if (reason.type === 'failReason') {
 				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
