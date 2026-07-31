@@ -5,7 +5,7 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
@@ -35,6 +35,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrakesComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;

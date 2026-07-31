@@ -5,7 +5,7 @@ import { Roles } from '@/src/app/models/roles.enum';
 import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -17,6 +17,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	templateUrl: './search-results-v2.component.html',
 	styleUrls: ['./search-results-v2.component.scss'],
 	imports: [SearchFormComponent, SearchResultComponent, RoleRequiredDirective, AsyncPipe, PaginationComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultsV2Component implements OnInit, OnDestroy {
 	store = inject(Store);

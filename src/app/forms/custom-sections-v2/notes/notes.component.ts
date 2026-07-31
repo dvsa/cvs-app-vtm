@@ -1,6 +1,6 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -12,6 +12,7 @@ import { ReplaySubject } from 'rxjs';
 	templateUrl: './notes.component.html',
 	styleUrls: ['./notes.component.scss'],
 	imports: [GovukFormGroupTextareaComponent, ReactiveFormsModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotesComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);

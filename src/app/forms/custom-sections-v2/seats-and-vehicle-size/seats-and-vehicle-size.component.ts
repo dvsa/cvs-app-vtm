@@ -1,7 +1,7 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
@@ -25,6 +25,7 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupDateComponent,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);

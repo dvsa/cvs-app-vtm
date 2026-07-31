@@ -17,7 +17,7 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { testResultInEdit } from '@/src/app/store/test-records';
-import { Component, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -26,6 +26,7 @@ import { Store } from '@ngrx/store';
 	templateUrl: './abandon.component.html',
 	styleUrls: ['./abandon.component.scss'],
 	imports: [FormsModule, ReactiveFormsModule, GovukCheckboxGroupComponent, GovukFormGroupTextareaComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbandonComponent implements OnInit {
 	store = inject(Store);

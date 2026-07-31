@@ -1,5 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
-import { Component, OnDestroy, OnInit, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
@@ -11,6 +11,7 @@ import { ReplaySubject } from 'rxjs';
 	templateUrl: './reason-for-creation.component.html',
 	styleUrls: ['./reason-for-creation.component.scss'],
 	imports: [ReactiveFormsModule, GovukFormGroupTextareaComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReasonForCreationComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);

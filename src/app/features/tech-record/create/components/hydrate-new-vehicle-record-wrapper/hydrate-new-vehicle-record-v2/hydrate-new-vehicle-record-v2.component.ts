@@ -18,7 +18,7 @@ import {
 	updateADRAdditionalExaminerNotes,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, model } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -79,6 +79,7 @@ import { TechRecordSummaryCardComponent } from '../../../../components/tech-reco
 		FormsModule,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);
@@ -103,6 +104,19 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 	isEditing = false;
 	filters = model<string[]>([]);
+
+	// Precompute accordion descriptions once per record change instead of every change-detection cycle.
+	vehicleMeta = computed(() => {
+		const record = this.techRecord$();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: record ? svc.getApprovalTypeAccordionDescription(record) : '',
+			weightsDescription: record ? svc.getWeightsAccordionDescription(record) : '',
+			tyresDescription: record ? svc.getTyresAccordionDescription(record) : '',
+			configDescription: record ? svc.getConfigAccordionDescription(record) : '',
+			brakesDescription: record ? svc.getBrakesAccordionDescription(record) : '',
+		};
+	});
 
 	ngOnInit(): void {
 		this.isEditing$.pipe(takeUntil(this.destroy)).subscribe((editing) => {
@@ -177,7 +191,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		}
 	}
 
-	get tags(): string[] {
+	tags = computed<string[]>(() => {
 		switch (this.techRecord$()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR'];
@@ -196,5 +210,5 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			default:
 				return [];
 		}
-	}
+	});
 }

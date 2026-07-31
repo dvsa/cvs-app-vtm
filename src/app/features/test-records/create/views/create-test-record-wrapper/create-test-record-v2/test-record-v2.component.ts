@@ -20,7 +20,18 @@ import {
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, DOCUMENT, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DOCUMENT,
+	OnDestroy,
+	OnInit,
+	Signal,
+	computed,
+	inject,
+	input,
+	linkedSignal,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -71,6 +82,7 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestRecordV2Component implements OnDestroy, OnInit {
 	store = inject(Store);

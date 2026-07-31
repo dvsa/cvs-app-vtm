@@ -38,7 +38,17 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { selectSectionState } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, inject, input, model } from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	Component,
+	OnDestroy,
+	OnInit,
+	computed,
+	inject,
+	input,
+	model,
+} from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -97,6 +107,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		TestResultsComponent,
 		AsyncPipe,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit, OnDestroy {
 	fb = inject(FormBuilder);
@@ -122,6 +133,21 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 	destroy = new ReplaySubject<boolean>(1);
 
 	readonly VehicleTypes = VehicleTypes;
+
+	// Precompute accordion descriptions once per techRecord change instead of on every
+	// change-detection cycle. Vehicle-type type-guard predicates stay inline in the template
+	// so their control-flow narrowing of `techRecord` is preserved for child inputs.
+	vehicleMeta = computed(() => {
+		const techRecord = this.techRecord();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: techRecord ? svc.getApprovalTypeAccordionDescription(techRecord) : '',
+			weightsDescription: techRecord ? svc.getWeightsAccordionDescription(techRecord) : '',
+			tyresDescription: techRecord ? svc.getTyresAccordionDescription(techRecord) : '',
+			configDescription: techRecord ? svc.getConfigAccordionDescription(techRecord) : '',
+			brakesDescription: techRecord ? svc.getBrakesAccordionDescription(techRecord) : '',
+		};
+	});
 
 	ngOnInit(): void {
 		this.handleFormChanges();
@@ -165,10 +191,6 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 					}
 				}
 			});
-	}
-
-	getCurrentMode(): Modes {
-		return this.isEditing ? Modes.EDIT : Modes.VIEW;
 	}
 
 	ngAfterViewInit(): void {

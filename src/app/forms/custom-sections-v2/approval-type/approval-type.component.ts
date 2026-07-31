@@ -1,7 +1,16 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
 import {
 	type AbstractControl,
 	type FormControl,
@@ -37,6 +46,7 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupDateComponent,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	tcs = inject(TechnicalRecordChangesService);

@@ -4,7 +4,7 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -23,6 +23,7 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 		FilterByTagsDirective,
 		DecimalOnlyDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
