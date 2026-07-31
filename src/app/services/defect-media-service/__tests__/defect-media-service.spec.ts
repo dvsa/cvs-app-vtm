@@ -217,7 +217,7 @@ describe('DefectMediaService', () => {
 		expect(routerMock.navigate).toHaveBeenCalled();
 		expect(service.getMediaFetchError('test-result-123')).toEqual({
 			status: HttpStatusCode.InternalServerError,
-			message: 'Server error while retrieving media',
+			message: 'Media could not be downloaded',
 		});
 	});
 
