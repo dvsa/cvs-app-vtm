@@ -62,7 +62,7 @@ export class VehicleComponent implements OnInit {
 	}
 
 	addValidators(): void {
-		this.form.controls.countryOfRegistration.setValidators([this.commonValidators.required('Country of Registration')]);
+		this.form.controls.countryOfRegistration.setValidators([this.commonValidators.required('Country Of Registration')]);
 		this.form.controls.euVehicleCategory.setValidators([this.commonValidators.required('EU Vehicle Category')]);
 
 		if (this.isOdometerReadingRequired()) {
