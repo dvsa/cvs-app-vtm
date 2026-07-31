@@ -41,7 +41,7 @@ import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { RouterService } from '@services/router/router.service';
 import { name } from '@store/user/user-service.reducer';
-import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
+import { ReplaySubject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordFiltersComponent } from '../../../../components/tech-record-filters/tech-record-filters.component';
 import { TechRecordSummaryCardComponent } from '../../../../components/tech-record-summary-card/tech-record-summary-card.component';
 
@@ -169,6 +169,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			this.globalErrorService.clearErrors();
+			this.syncFormToStore(); // flush pending debounced change so the ADR fix-up and create use the latest form value
 
 			// TODO: modify if new design is included in batch create
 			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username$() }));
@@ -180,9 +181,14 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
-			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
-		});
+		// Debounce the live store mirror so rapid typing does not re-feed every section's techRecord
+		// input on every keystroke. onCreateNewRecord flushes synchronously before reading the store.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy)).subscribe(() => this.syncFormToStore());
+	}
+
+	/** Immediately mirror the form into the store editing record (flushes any pending debounced change). */
+	private syncFormToStore(): void {
+		this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
 	}
 
 	private handleEmptyEditingTechRecord(): void {

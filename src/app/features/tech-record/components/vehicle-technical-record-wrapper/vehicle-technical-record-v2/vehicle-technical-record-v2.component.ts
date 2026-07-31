@@ -59,7 +59,7 @@ import { TechnicalRecordsHistoryComponent } from '@forms/custom-sections-v2/tech
 import { TestResultsComponent } from '@forms/custom-sections-v2/test-history/test-records.component';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
+import { ReplaySubject, debounceTime, skipWhile, take, takeUntil } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordFiltersComponent } from '../../tech-record-filters/tech-record-filters.component';
 import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/tech-record-summary-card.component';
@@ -205,15 +205,21 @@ export class VehicleTechnicalRecordV2Component implements OnInit, AfterViewInit,
 	}
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
-			this.technicalRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordTypeVerb<'put'>);
-		});
+		// Debounce the live store mirror so rapid typing does not push a new editing record
+		// (which re-feeds every section's techRecord input) on every keystroke. Submit flushes synchronously.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy)).subscribe(() => this.syncFormToStore());
+	}
+
+	/** Immediately mirror the form into the store editing record (flushes any pending debounced change). */
+	private syncFormToStore(): void {
+		this.technicalRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordTypeVerb<'put'>);
 	}
 
 	handleSubmit(): void {
 		this.globalErrorService.markAllAsTouched(this.form);
 
 		if (this.form.valid) {
+			this.syncFormToStore(); // flush before the change-summary route reads the store editing record
 			this.router.navigate(['change-summary'], { relativeTo: this.route });
 		}
 
