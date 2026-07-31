@@ -1,6 +1,6 @@
 import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -15,6 +15,7 @@ import { Observable, map } from 'rxjs';
 	templateUrl: './tech-record-history.component.html',
 	styleUrls: ['./tech-record-history.component.scss'],
 	imports: [ButtonComponent, DatePipe, PaginationComponent, RouterLink, AsyncPipe, TitleCasePipe],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnicalRecordsHistoryComponent extends EditBaseComponent implements OnInit {
 	techRecord = input.required<TechRecordType<'get'>>();

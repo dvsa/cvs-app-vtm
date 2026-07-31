@@ -3,7 +3,16 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { Axle, FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { ViewportScroller } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
@@ -39,6 +48,7 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TyresComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	readonly VehicleTypes = VehicleTypes;
