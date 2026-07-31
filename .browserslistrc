@@ -1,0 +1,5 @@
+# Supported browsers for the application build (drives esbuild downleveling + CSS autoprefixing).
+# "last 2 years" gives the org leeway (no need to be on the very latest browser) while keeping a
+# modern baseline that supports the JS APIs we now use natively (e.g. Object.groupBy / Map.groupBy).
+last 2 years
+not dead
