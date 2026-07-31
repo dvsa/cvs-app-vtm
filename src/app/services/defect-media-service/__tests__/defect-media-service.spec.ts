@@ -200,16 +200,32 @@ describe('DefectMediaService', () => {
 	it('should handle 404 error', () => {
 		const error = new HttpErrorResponse({ status: HttpStatusCode.NotFound });
 
-		service.handleError(error);
+		service.handleError(error, 'test-result-123');
 
 		expect(globalErrorServiceMock.setErrors).toHaveBeenCalled();
+		expect(service.getMediaFetchError('test-result-123')).toEqual({
+			status: HttpStatusCode.NotFound,
+			message: 'Media could not be found',
+		});
 	});
 
 	it('should navigate on 500 error', () => {
 		const error = new HttpErrorResponse({ status: HttpStatusCode.InternalServerError });
 
-		service.handleError(error);
+		service.handleError(error, 'test-result-123');
 
 		expect(routerMock.navigate).toHaveBeenCalled();
+		expect(service.getMediaFetchError('test-result-123')).toEqual({
+			status: HttpStatusCode.InternalServerError,
+			message: 'Server error while retrieving media',
+		});
+	});
+
+	it('should handle error without testResultId for backward compatibility', () => {
+		const error = new HttpErrorResponse({ status: HttpStatusCode.NotFound });
+
+		service.handleError(error);
+
+		expect(globalErrorServiceMock.setErrors).toHaveBeenCalled();
 	});
 });

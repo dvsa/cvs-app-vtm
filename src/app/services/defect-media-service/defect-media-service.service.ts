@@ -22,6 +22,7 @@ export class DefectMediaService {
 
 	zipCache: Record<string, JSZip> = {};
 	fileCache: Record<string, string> = {};
+	mediaFetchErrors: Record<string, { status: number; message: string }> = {};
 
 	hasMedia(defect: DefectDetailsSchema): boolean {
 		if (!Array.isArray(defect.media) || defect.media.length === 0) return false;
@@ -69,6 +70,10 @@ export class DefectMediaService {
 
 	canDownloadMediaItems(defect: DefectDetailsSchema): boolean {
 		return this.canDownloadAdasMediaItems(defect) || this.canDownloadDefectMediaItems(defect);
+	}
+
+	getMediaFetchError(testResultId: string): { status: number; message: string } | undefined {
+		return this.mediaFetchErrors[testResultId];
 	}
 
 	canDownloadMedia(testResult: TestResultSchema): boolean {
@@ -195,7 +200,7 @@ export class DefectMediaService {
 				}
 			}
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error, testResult.testResultId);
 		}
 	}
 
@@ -223,7 +228,7 @@ export class DefectMediaService {
 
 			await this.openDocumentFromZip(targetZip, `${defect.imNumber}-${defect.imDescription}`);
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error, testResult.testResultId);
 		}
 	}
 
@@ -264,10 +269,16 @@ export class DefectMediaService {
 		return reason;
 	}
 
-	handleError(error: unknown) {
+	handleError(error: unknown, testResultId?: string) {
 		if (error instanceof HttpErrorResponse) {
 			switch (error.status) {
 				case HttpStatusCode.NotFound:
+					if (testResultId) {
+						this.mediaFetchErrors[testResultId] = {
+							status: HttpStatusCode.NotFound,
+							message: 'Media could not be found',
+						};
+					}
 					this.globalErrorService.setErrors([
 						{
 							error:
@@ -278,6 +289,12 @@ export class DefectMediaService {
 					]);
 					break;
 				case HttpStatusCode.InternalServerError:
+					if (testResultId) {
+						this.mediaFetchErrors[testResultId] = {
+							status: HttpStatusCode.InternalServerError,
+							message: 'Media could not be downloaded',
+						};
+					}
 					this.router.navigate([RootRoutes.ERROR]);
 					break;
 				default:
