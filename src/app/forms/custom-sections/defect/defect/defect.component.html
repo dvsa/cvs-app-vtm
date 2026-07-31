@@ -106,10 +106,11 @@
               </app-button>
             }
             @if (defectMediaService.hasMediaInCache(defect)) {
-              @if (defectMediaService.hasImages(defect)) {
+              @let images = defectMediaService.getImages(defect);
+              @if (images.length > 0) {
                 <div class="govuk-heading-s underline">Photos</div>
               }
-              @for (media of defect.media; track media) {
+              @for (media of images; track media) {
                 @if (testResult && media.type === 'image' && defectMediaService.fileCache[media.path]) {
                   <div style="display: inline-flex" class="defect-container">
                     <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
@@ -119,10 +120,11 @@
                   </div>
                 }
               }
-              @if (defectMediaService.hasVideos(defect)) {
+              @let videos = defectMediaService.getVideos(defect);
+              @if (videos.length > 0) {
                 <div class="govuk-heading-s underline">Videos</div>
               }
-              @for (media of defect.media; track media) {
+              @for (media of videos; track media) {
                 @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {
                   <div style="display: inline-flex" class="defect-container">
                     <video controls class="media-video" [src]="defectMediaService.fileCache[media.path]"></video>
