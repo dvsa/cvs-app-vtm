@@ -128,7 +128,7 @@
       "@ngrx/store": "$@ngrx/store"
     },
     "qs": "^6.15.2",
-    "fast-uri": "^4.1.1",
+    "fast-uri": "^4.1.2",
     "brace-expansion": "^5.0.8",
     "js-yaml": "^4.2.0"
   },
