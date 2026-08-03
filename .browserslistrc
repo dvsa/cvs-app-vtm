@@ -3,3 +3,6 @@
 # modern baseline that supports the JS APIs we now use natively (e.g. Object.groupBy / Map.groupBy).
 last 2 years
 not dead
+not android > 0
+not opera > 0
+not samsung > 0
