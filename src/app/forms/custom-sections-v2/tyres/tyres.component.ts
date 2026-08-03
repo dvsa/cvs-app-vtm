@@ -14,6 +14,7 @@ import {
 	inject,
 	input,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
@@ -32,9 +33,10 @@ import {
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { selectAllReferenceDataByResourceType } from '@store/reference-data';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
+import { filter } from 'rxjs';
 
 @Component({
 	selector: 'app-tyres',
@@ -62,6 +64,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
 	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 
+	referenceDataService = inject(ReferenceDataService);
 	viewportScroller = inject(ViewportScroller);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
@@ -75,13 +78,15 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
 
-	private readonly tyresReferenceData = this.store.selectSignal(
-		selectAllReferenceDataByResourceType(ReferenceDataResourceType.Tyres)
-	) as Signal<ReferenceDataTyre[] | undefined>;
+	private readonly tyresReferenceData = toSignal(
+		this.referenceDataService.getAll$(ReferenceDataResourceType.Tyres).pipe(filter(Boolean)),
+		{ initialValue: [] }
+	) as Signal<ReferenceDataTyre[]>;
 
-	private readonly tyreLoadIndexReferenceData = this.store.selectSignal(
-		selectAllReferenceDataByResourceType(ReferenceDataResourceType.TyreLoadIndex)
-	) as Signal<ReferenceDataTyreLoadIndex[] | undefined>;
+	private readonly tyreLoadIndexReferenceData = toSignal(
+		this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex).pipe(filter(Boolean)),
+		{ initialValue: [] }
+	) as Signal<ReferenceDataTyreLoadIndex[]>;
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
@@ -141,7 +146,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		const lastAxle = axles[axleNumber - 1];
 
 		if (lastAxle?.tyres_tyreCode) {
-			const refData = this.tyresReferenceData()?.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
+			const refData = this.tyresReferenceData().find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
 				return;
