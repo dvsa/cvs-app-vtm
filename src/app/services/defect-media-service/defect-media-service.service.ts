@@ -73,7 +73,6 @@ export class DefectMediaService {
 	}
 
 	getMediaFetchError(testResultId: string): { status: number; message: string } | undefined {
-    console.log(this.mediaFetchErrors());
 		return this.mediaFetchErrors()[testResultId];
 	}
 
