@@ -173,7 +173,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 				}
 			}
 		} catch (error) {
-			// TODO: handle error
+			this.defectMediaService.handleError(error, this.testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();

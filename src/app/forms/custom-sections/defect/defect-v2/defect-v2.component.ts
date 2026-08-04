@@ -164,7 +164,7 @@ export class DefectV2Component {
 				}
 			}
 		} catch (error) {
-			// TODO: handle error
+			this.defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();
@@ -332,10 +332,6 @@ export class DefectV2Component {
 			if (mediaError) {
 				return mediaError.message;
 			}
-		}
-
-		if (!this.defectMediaService?.hasMediaInCache(defect)) {
-			return 'Media could not be found';
 		}
 
 		for (const reason of defect.media) {
