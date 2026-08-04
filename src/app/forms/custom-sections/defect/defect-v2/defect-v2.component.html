@@ -206,7 +206,7 @@
                 No media available - media was deleted as the retention period had passed
               </p>
           } @else {
-            @if (testResult && defectMediaService.canDownloadMediaItems(defect)) {
+            @if (testResult && defectMediaService.canDownloadMediaItems(defect) && defectMediaService.getMediaFetchError(testResult.testResultId) === undefined) {
               <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService.downloadMediaItems(testResult, defect)">
                 Download all media for this defect
               </app-button>
@@ -228,7 +228,7 @@
               }
               @let videos = defectMediaService.getVideos(defect);
               @if (videos.length > 0) {
-                <div class="govuk-heading-s underline">Videos</div>
+                <div class="govuk-heading-s underline">Video</div>
               }
               @for (media of videos; track media) {
                 @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {

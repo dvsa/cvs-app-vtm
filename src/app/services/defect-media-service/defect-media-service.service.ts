@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpStatusCode } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -22,7 +22,7 @@ export class DefectMediaService {
 
 	zipCache: Record<string, JSZip> = {};
 	fileCache: Record<string, string> = {};
-	mediaFetchErrors: Record<string, { status: number; message: string }> = {};
+	mediaFetchErrors = signal<Record<string, { status: number; message: string }>>({});
 
 	hasMedia(defect: DefectDetailsSchema): boolean {
 		if (!Array.isArray(defect.media) || defect.media.length === 0) return false;
@@ -73,7 +73,8 @@ export class DefectMediaService {
 	}
 
 	getMediaFetchError(testResultId: string): { status: number; message: string } | undefined {
-		return this.mediaFetchErrors[testResultId];
+    console.log(this.mediaFetchErrors());
+		return this.mediaFetchErrors()[testResultId];
 	}
 
 	canDownloadMedia(testResult: TestResultSchema): boolean {
@@ -274,10 +275,13 @@ export class DefectMediaService {
 			switch (error.status) {
 				case HttpStatusCode.NotFound:
 					if (testResultId) {
-						this.mediaFetchErrors[testResultId] = {
-							status: HttpStatusCode.NotFound,
-							message: 'Media could not be found',
-						};
+						this.mediaFetchErrors.update((errors) => ({
+							...errors,
+							[testResultId]: {
+								status: HttpStatusCode.NotFound,
+								message: 'Media could not be found',
+							},
+						}));
 					}
 					this.globalErrorService.setErrors([
 						{
@@ -290,10 +294,13 @@ export class DefectMediaService {
 					break;
 				case HttpStatusCode.InternalServerError:
 					if (testResultId) {
-						this.mediaFetchErrors[testResultId] = {
-							status: HttpStatusCode.InternalServerError,
-							message: 'Media could not be downloaded',
-						};
+						this.mediaFetchErrors.update((errors) => ({
+							...errors,
+							[testResultId]: {
+								status: HttpStatusCode.InternalServerError,
+								message: 'Media could not be downloaded',
+							},
+						}));
 					}
 					this.router.navigate([RootRoutes.ERROR]);
 					break;
