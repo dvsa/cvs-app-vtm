@@ -4,7 +4,16 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -32,6 +41,7 @@ import { ReplaySubject, skip, takeUntil } from 'rxjs';
 		TrimWhitespaceDirective,
 		NoSpaceDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;

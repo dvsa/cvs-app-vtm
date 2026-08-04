@@ -2,7 +2,7 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
@@ -29,6 +29,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupDateComponent,
 	],
 	styleUrls: ['./visit.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisitComponent implements OnInit, OnDestroy {
 	store = inject(Store);

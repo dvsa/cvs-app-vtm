@@ -23,9 +23,9 @@ import { TestTypeInfo } from '@models/test-types/testTypeInfo';
 import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CacheBucket, withCache } from '@ngneat/cashew';
+import { FeatureConfig } from '@store/feature-flags/feature-flags.feature';
 import { cloneDeep } from 'lodash';
 import { EMPTY, defer, expand, last, lastValueFrom, map, switchMap, takeWhile, timeout, timer } from 'rxjs';
-import { FeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
@@ -49,12 +49,14 @@ export class HttpService {
 	}
 
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`,
-			{
-				newVin,
-			}
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`,
+				{
+					newVin,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	amendTechRecordVrm(
@@ -64,28 +66,34 @@ export class HttpService {
 		createdTimestamp: string,
 		thirdMark?: string
 	) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`,
-			{
-				newVrm,
-				isCherishedTransfer,
-				thirdMark: thirdMark ?? undefined,
-			}
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`,
+				{
+					newVrm,
+					isCherishedTransfer,
+					thirdMark: thirdMark ?? undefined,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	archiveTechRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`,
-			{
-				reasonForArchiving,
-			}
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`,
+				{
+					reasonForArchiving,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
-		return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
+		return this.http
+			.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	fetchDefects() {
@@ -121,10 +129,12 @@ export class HttpService {
 	}
 
 	generateADRCertificate(systemNumber: string, createdTimestamp: string, certificateType: string) {
-		return this.http.post<{ message: string; id: string }>(
-			`${environment.VTM_API_URI}/v3/technical-records/adrCertificate/${systemNumber}/${createdTimestamp}`,
-			{ certificateType }
-		);
+		return this.http
+			.post<{ message: string; id: string }>(
+				`${environment.VTM_API_URI}/v3/technical-records/adrCertificate/${systemNumber}/${createdTimestamp}`,
+				{ certificateType }
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	getDocument(paramMap: Map<string, string>) {
@@ -167,29 +177,33 @@ export class HttpService {
 		paragraphId: number,
 		user: { name?: string; email?: string }
 	) {
-		return this.http.post(
-			`${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
-			{
-				vtmUsername: user.name,
-				letterType,
-				paragraphId,
-				recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
-					? vehicleRecord.techRecord_applicantDetails_emailAddress
-					: user.email,
-			},
-			{ responseType: 'text' }
-		);
+		return this.http
+			.post(
+				`${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
+				{
+					vtmUsername: user.name,
+					letterType,
+					paragraphId,
+					recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
+						? vehicleRecord.techRecord_applicantDetails_emailAddress
+						: user.email,
+				},
+				{ responseType: 'text' }
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }) {
-		return this.http.post<Object>(
-			`${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
-			{
-				reasonForCreation: reason,
-				vtmUsername: user.name,
-				recipientEmailAddress: vehicleRecord?.techRecord_applicantDetails_emailAddress ?? user.email,
-			}
-		);
+		return this.http
+			.post<Object>(
+				`${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
+				{
+					reasonForCreation: reason,
+					vtmUsername: user.name,
+					recipientEmailAddress: vehicleRecord?.techRecord_applicantDetails_emailAddress ?? user.email,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	getRecalls(vin: string) {
@@ -200,9 +214,9 @@ export class HttpService {
 	}
 
 	getTechRecordV3(systemNumber: string, createdTimestamp: string) {
-		return this.http.get<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
-		);
+		return this.http
+			.get<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	getTestTypes(typeOfTest?: string) {
@@ -277,18 +291,22 @@ export class HttpService {
 			params = params.set('vehicleWheels', vehicleWheels);
 		}
 
-		return this.http.get<TestTypeInfo>(`${environment.VTM_API_URI}/test-types/${encodeURIComponent(String(id))}`, {
-			params,
-		});
+		return this.http
+			.get<TestTypeInfo>(`${environment.VTM_API_URI}/test-types/${encodeURIComponent(String(id))}`, {
+				params,
+			})
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	promoteTechRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`,
-			{
-				reasonForPromoting,
-			}
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`,
+				{
+					reasonForPromoting,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	referenceResourceTypeGet(resourceType: string, paginationToken?: string) {
@@ -446,9 +464,11 @@ export class HttpService {
 		params = params.set('searchCriteria', type);
 		params = params.set('additionalInfo', true);
 
-		return this.http.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
-			params,
-		});
+		return this.http
+			.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
+				params,
+			})
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	searchTechRecordBySystemNumber(systemNumber: string) {
@@ -520,13 +540,12 @@ export class HttpService {
 			params = params.set('version', version);
 		}
 
-		return this.http.get<TestResultSchema[]>(
-			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
-			{
+		return this.http
+			.get<TestResultSchema[]>(`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`, {
 				params,
 				headers: HttpService.GetGzippedPayloadHeaders,
-			}
-		);
+			})
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	testResultsPost(body: TestResultSchema) {
@@ -534,9 +553,11 @@ export class HttpService {
 			throw new Error('Required parameter body was null or undefined when calling testResultsPost.');
 		}
 
-		return this.http.post<{ testResultId: string }>(`${environment.VTM_API_URI}/test-results`, body, {
-			headers: HttpService.PostPutGzippedPayloadHeaders,
-		});
+		return this.http
+			.post<{ testResultId: string }>(`${environment.VTM_API_URI}/test-results`, body, {
+				headers: HttpService.PostPutGzippedPayloadHeaders,
+			})
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	testResultsSystemNumberPut(body: TestResultSchema, systemNumber: string) {
@@ -548,30 +569,36 @@ export class HttpService {
 			throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberPut.');
 		}
 
-		return this.http.put<TestResultSchema>(
-			`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
-			body,
-			{
-				headers: HttpService.PostPutGzippedPayloadHeaders,
-			}
-		);
+		return this.http
+			.put<TestResultSchema>(
+				`${environment.VTM_API_URI}/test-results/${encodeURIComponent(String(systemNumber))}`,
+				body,
+				{
+					headers: HttpService.PostPutGzippedPayloadHeaders,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	unarchiveTechRecord(systemNumber: string, createdTimestamp: string, reasonForUnarchiving: string, status: string) {
-		return this.http.post<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`,
-			{
-				reasonForUnarchiving,
-				status,
-			}
-		);
+		return this.http
+			.post<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`,
+				{
+					reasonForUnarchiving,
+					status,
+				}
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	updateTechRecord(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>) {
-		return this.http.patch<TechRecordType<'get'>>(
-			`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
-			techRecord
-		);
+		return this.http
+			.patch<TechRecordType<'get'>>(
+				`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
+				techRecord
+			)
+			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
 	sendLogs = async (logs: Log[]) => {

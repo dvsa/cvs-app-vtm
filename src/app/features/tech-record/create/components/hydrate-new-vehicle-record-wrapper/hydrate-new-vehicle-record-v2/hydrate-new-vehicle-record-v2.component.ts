@@ -18,7 +18,7 @@ import {
 	updateADRAdditionalExaminerNotes,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, model } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -41,7 +41,7 @@ import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { RouterService } from '@services/router/router.service';
 import { name } from '@store/user/user-service.reducer';
-import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
+import { ReplaySubject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordFiltersComponent } from '../../../../components/tech-record-filters/tech-record-filters.component';
 import { TechRecordSummaryCardComponent } from '../../../../components/tech-record-summary-card/tech-record-summary-card.component';
 
@@ -79,6 +79,7 @@ import { TechRecordSummaryCardComponent } from '../../../../components/tech-reco
 		FormsModule,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);
@@ -103,6 +104,19 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 	isEditing = false;
 	filters = model<string[]>([]);
+
+	// Precompute accordion descriptions once per record change instead of every change-detection cycle.
+	vehicleMeta = computed(() => {
+		const record = this.techRecord$();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: record ? svc.getApprovalTypeAccordionDescription(record) : '',
+			weightsDescription: record ? svc.getWeightsAccordionDescription(record) : '',
+			tyresDescription: record ? svc.getTyresAccordionDescription(record) : '',
+			configDescription: record ? svc.getConfigAccordionDescription(record) : '',
+			brakesDescription: record ? svc.getBrakesAccordionDescription(record) : '',
+		};
+	});
 
 	ngOnInit(): void {
 		this.isEditing$.pipe(takeUntil(this.destroy)).subscribe((editing) => {
@@ -155,6 +169,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			this.globalErrorService.clearErrors();
+			this.syncFormToStore(); // flush pending debounced change so the ADR fix-up and create use the latest form value
 
 			// TODO: modify if new design is included in batch create
 			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username$() }));
@@ -166,9 +181,14 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
-			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
-		});
+		// Debounce the live store mirror so rapid typing does not re-feed every section's techRecord
+		// input on every keystroke. onCreateNewRecord flushes synchronously before reading the store.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy)).subscribe(() => this.syncFormToStore());
+	}
+
+	/** Immediately mirror the form into the store editing record (flushes any pending debounced change). */
+	private syncFormToStore(): void {
+		this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
 	}
 
 	private handleEmptyEditingTechRecord(): void {
@@ -177,7 +197,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 		}
 	}
 
-	get tags(): string[] {
+	tags = computed<string[]>(() => {
 		switch (this.techRecord$()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR'];
@@ -196,5 +216,5 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			default:
 				return [];
 		}
-	}
+	});
 }

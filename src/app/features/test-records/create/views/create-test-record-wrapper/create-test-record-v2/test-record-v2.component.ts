@@ -20,7 +20,18 @@ import {
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, DOCUMENT, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DOCUMENT,
+	OnDestroy,
+	OnInit,
+	Signal,
+	computed,
+	inject,
+	input,
+	linkedSignal,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,7 +54,7 @@ import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, debounceTime, takeUntil } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
 @Component({
@@ -71,6 +82,7 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestRecordV2Component implements OnDestroy, OnInit {
 	store = inject(Store);
@@ -104,11 +116,18 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	testNumber = computed(() => this.routeParams()['testNumber']);
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+		// Debounce the live store mirror so rapid typing does not push a new editing test result
+		// (and re-render every section) on every keystroke. Explicit actions flush synchronously.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy$)).subscribe(() => {
 			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
-				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+				this.flushFormToStore();
 			}
 		});
+	}
+
+	/** Immediately mirror the form into the store editing test result (flushes any pending debounced change). */
+	private flushFormToStore(): void {
+		this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
 	}
 
 	private handleMissingTestResult(): void {
@@ -198,6 +217,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	onReview(): void {
 		this.form.markAllAsTouched();
+		this.flushFormToStore(); // ensure the store has the latest form value before the summary view reads it
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
@@ -290,6 +310,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	onMarkAsAbandoned(): void {
 		this.form.markAllAsTouched();
+		this.flushFormToStore(); // capture any pending debounced change before leaving edit mode
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 

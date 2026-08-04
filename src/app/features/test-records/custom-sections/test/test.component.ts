@@ -11,7 +11,7 @@ import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.typ
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Modes } from '@models/modes.enum';
@@ -34,6 +34,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		DefaultNullOrEmpty,
 	],
 	styleUrls: ['./test.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestComponent implements OnInit, OnDestroy {
 	store = inject(Store);

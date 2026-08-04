@@ -15,7 +15,7 @@ import {
 } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { Modes } from '@models/modes.enum';
@@ -33,6 +33,7 @@ import { Store } from '@ngrx/store';
 		GovukFormGroupRadioComponent,
 	],
 	styleUrls: ['./vehicle.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleComponent implements OnInit {
 	store = inject(Store);

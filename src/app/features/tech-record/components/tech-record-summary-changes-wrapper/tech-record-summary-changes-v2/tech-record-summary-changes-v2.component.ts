@@ -38,7 +38,7 @@ import {
 	updateTechRecord,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions } from '@ngrx/effects';
@@ -81,6 +81,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ButtonComponent,
 		ButtonGroupComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewInit, OnDestroy {
 	store = inject(Store);
@@ -98,6 +99,20 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
 	sectionStates$ = this.store.selectSignal(selectSectionState);
+
+	// Precompute accordion descriptions once per edited record change. Vehicle-type type-guard
+	// predicates stay inline in the template so their narrowing of `techRecord` is preserved.
+	vehicleMeta = computed(() => {
+		const record = this.amendedTechRecord();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: record ? svc.getApprovalTypeAccordionDescription(record) : '',
+			weightsDescription: record ? svc.getWeightsAccordionDescription(record) : '',
+			tyresDescription: record ? svc.getTyresAccordionDescription(record) : '',
+			configDescription: record ? svc.getConfigAccordionDescription(record) : '',
+			brakesDescription: record ? svc.getBrakesAccordionDescription(record) : '',
+		};
+	});
 
 	form = this.fb.group({});
 

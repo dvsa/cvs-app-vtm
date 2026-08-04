@@ -1,5 +1,5 @@
 import { TestService } from '@/src/app/services/test/test.service';
-import { Component, forwardRef, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
 
@@ -15,6 +15,7 @@ import { Modes } from '@models/modes.enum';
 			multi: true,
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomDefectsComponent {
 	testService = inject(TestService);

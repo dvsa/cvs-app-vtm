@@ -1,4 +1,6 @@
 <div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
+  <!-- Compute the raw form value once per change-detection cycle instead of cloning it in every canDisplay* check below. -->
+  @let adrForm = form.getRawValue();
   @if (form.get('techRecord_adrDetails_dangerousGoods')) {
     <govuk-form-group-radio
       label="Approved to carry dangerous goods"
@@ -148,7 +150,7 @@
         }
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_bodyDeclaration_type')) {
-          @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
+          @if (adrService.canDisplayBodyDeclarationSection($any(adrForm))) {
             <govuk-form-group-radio
               size="small"
               label="Body declaration"
@@ -162,7 +164,7 @@
         }
 
         @if (shouldDisplayFormControl('techRecord_adrDetails_compatibilityGroupJ')) {
-          @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
+          @if (adrService.canDisplayCompatibilityGroupJSection($any(adrForm))) {
             <govuk-form-group-radio
               size="small"
               label="Compatibility group J"
@@ -199,7 +201,7 @@
         }
 
         <!-- When ADR body type contains the words 'tank' or 'battery' -->
-        @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
+        @if (adrService.canDisplayTankOrBatterySection($any(adrForm))) {
           <!-- Tank details section -->
           @if (mode() !== Modes.SUMMARY || tcs.hasADRTankDetailsSectionChanged()) {
             <h3 class="govuk-label govuk-label--s">Tank details</h3>
@@ -282,7 +284,7 @@
             }
 
             <!-- When tank statement (substances permitted) is 'Under UN Number' -->
-            @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
+            @if (adrService.canDisplayTankStatementSelectSection($any(adrForm))) {
               <!-- Tank statement select -->
               @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
                 <div class="govuk-!-margin-bottom-4">
@@ -299,7 +301,7 @@
               }
 
               <!-- When select is 'statement' -->
-              @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
+              @if (adrService.canDisplayTankStatementStatementSection($any(adrForm))) {
                 <!-- Reference number -->
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
                   <govuk-form-group-input
@@ -313,7 +315,7 @@
               }
 
               <!-- When select is 'product '-->
-              @if (adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))) {
+              @if (adrService.canDisplayTankStatementProductListSection($any(adrForm))) {
                 <!-- Reference number -->
                 @if (shouldDisplayFormControl('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
                   <govuk-form-group-input
@@ -568,7 +570,7 @@
         }
 
         <!--   When ADR body type contains 'battery' -->
-        @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
+        @if (adrService.canDisplayBatterySection($any(adrForm))) {
           <!-- Battery list applicable -->
           @if (shouldDisplayFormControl('techRecord_adrDetails_listStatementApplicable')) {
             <govuk-form-group-radio
@@ -584,7 +586,7 @@
           }
 
           <!-- When Battery list applicable is true -->
-          @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
+          @if (adrService.canDisplayBatteryListNumberSection($any(adrForm))) {
             <!-- Battery list reference number -->
             @if (shouldDisplayFormControl('techRecord_adrDetails_batteryListNumber')) {
               <govuk-form-group-input           
@@ -615,7 +617,7 @@
           ></govuk-form-group-checkbox>
         }
 
-        @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
+        @if (adrService.canDisplayIssueSection($any(adrForm))) {
           <!-- Issuer -->
           @if (shouldDisplayFormControl('techRecord_adrDetails_brakeDeclarationIssuer')) {
             <govuk-form-group-textarea
@@ -644,7 +646,7 @@
           }
 
           <!-- Weight (tonnes) -->
-          @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
+          @if (adrService.canDisplayWeightSection($any(adrForm))) {
             @if (shouldDisplayFormControl('techRecord_adrDetails_weight')) {
               <govuk-form-group-input
                 label="Weight"
