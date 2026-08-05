@@ -1,4 +1,4 @@
-import { AsyncPipe, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -53,7 +53,6 @@ import { TextAreaComponent } from '../../../components/text-area/text-area.compo
 		ButtonComponent,
 		KeyValuePipe,
 		DefaultNullOrEmpty_1,
-		AsyncPipe,
 	],
 })
 export class DefectComponent implements OnInit, OnDestroy {
@@ -89,6 +88,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		{ value: true, label: 'Yes' },
 		{ value: false, label: 'No' },
 	];
+	isVideoPlaying = false;
 
 	async ngOnInit(): Promise<void> {
 		const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));
@@ -173,7 +173,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 				}
 			}
 		} catch (error) {
-			// TODO: handle error
+			this.defectMediaService.handleError(error, this.testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();
@@ -185,6 +185,18 @@ export class DefectComponent implements OnInit, OnDestroy {
 			return 'No media available';
 		}
 
+		// Check for HTTP errors (404 or 500) when fetching media
+		if (this.testResult) {
+			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult.testResultId);
+			if (mediaError) {
+				return mediaError.message;
+			}
+		}
+
+		if (!this.defectMediaService?.hasMediaInCache(this.defect)) {
+			return 'Media could not be found';
+		}
+
 		for (const reason of this.defect.media) {
 			if (reason.type === 'failReason') {
 				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
@@ -193,6 +205,22 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 
 		return 'No media available';
+	}
+
+	async playVideo(mediaPath: string): Promise<void> {
+		this.isVideoPlaying = true;
+		this.cdr.detectChanges();
+		const video = this.getVideoElement(mediaPath);
+		if (!video) {
+			this.isVideoPlaying = false;
+			return;
+		}
+		await video.play();
+	}
+
+	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
+		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
+		return element ? (element as HTMLVideoElement) : null;
 	}
 
 	get isDangerous(): boolean {

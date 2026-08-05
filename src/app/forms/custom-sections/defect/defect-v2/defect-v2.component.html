@@ -83,7 +83,7 @@
           </app-button>
         }
         <app-button id="remove-nav-back" design="link" (clicked)="onCancel()">
-          Cancel  
+          Cancel
         </app-button>
       </app-button-group>
     </div>
@@ -160,9 +160,9 @@
           <dt class="govuk-summary-list__key">PRS?</dt>
           <dd class="govuk-summary-list__value" id="defect-additional-information-prs">
             {{ defect.prs | defaultNullOrEmpty }}
-          </dd> 
+          </dd>
         </div>
-        <div class="govuk-summary-list__row"> 
+        <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Prohibition Issued?</dt>
           <dd class="govuk-summary-list__value" id="defect-additional-information-prohibition-issued">
             {{ defect.prohibitionIssued | defaultNullOrEmpty }}
@@ -206,14 +206,17 @@
                 No media available - media was deleted as the retention period had passed
               </p>
           } @else {
-            @if (testResult && defectMediaService.canDownloadMediaItems(defect)) {
+            @if (testResult && defectMediaService.canDownloadMediaItems(defect) && defectMediaService.getMediaFetchError(testResult.testResultId) === undefined) {
               <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService.downloadMediaItems(testResult, defect)">
                 Download all media for this defect
               </app-button>
             }
-            <div class="govuk-heading-s underline">Photos</div>
             @if (defectMediaService.hasMediaInCache(defect)) {
-              @for (media of defect.media; track media) {
+              @let images = defectMediaService.getImages(defect);
+              @if (images.length > 0) {
+                <div class="govuk-heading-s underline">Photos</div>
+              }
+              @for (media of images; track media) {
                 @if (testResult && media.type === 'image' && defectMediaService.fileCache[media.path]) {
                   <div style="display: inline-flex" class="defect-container">
                     <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
@@ -221,7 +224,44 @@
                       Download photo
                     </button>
                   </div>
-                } 
+                }
+              }
+              @let videos = defectMediaService.getVideos(defect);
+              @if (videos.length > 0) {
+                <div class="govuk-heading-s underline">Video</div>
+              }
+              @for (media of videos; track media) {
+                @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {
+                  <div style="display: inline-flex" class="defect-container">
+                    @if (!isVideoPlaying) {
+                      <div class="video-wrapper">
+                        <video
+                          class="media-video"
+                          [src]="defectMediaService.fileCache[media.path]"
+                          [attr.data-media-path]="media.path">
+                        </video>
+                        <button class="video-play-btn" (click)="playVideo(media.path)" aria-label="Play video">
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+                            <path d="M16 12v24l20-12z"/>
+                          </svg>
+                        </button>
+                      </div>
+                    }
+                    @if (isVideoPlaying) {
+                      <div class="video-wrapper">
+                        <video
+                          class="media-video"
+                          controls
+                          [src]="defectMediaService.fileCache[media.path]"
+                          [attr.data-media-path]="media.path">
+                        </video>
+                      </div>
+                    }
+                    <button class="link download-video-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
+                      Download video
+                    </button>
+                  </div>
+                }
               }
             } @else {
               <p class="govuk-body">

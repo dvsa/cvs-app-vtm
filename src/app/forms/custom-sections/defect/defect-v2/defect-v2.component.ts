@@ -18,7 +18,7 @@ import {
 	updateDefect,
 	updateResultOfTest,
 } from '@/src/app/store/test-records';
-import { KeyValuePipe } from '@angular/common';
+import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -52,6 +52,7 @@ import { CommonValidatorsService } from '../../../validators/common-validators.s
 		GovukFormGroupRadioComponent,
 		GovukFormGroupCheckboxComponent,
 		DefaultNullOrEmpty,
+		DecimalPipe,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -76,6 +77,7 @@ export class DefectV2Component {
 
 	loading = false;
 	additionalInfoMultiOptions: Record<string, MultiOptions> = {};
+	isVideoPlaying = false;
 
 	form = this.fb.group({
 		deficiencyRef: this.fb.control<string>(''),
@@ -170,7 +172,7 @@ export class DefectV2Component {
 				}
 			}
 		} catch (error) {
-			// TODO: handle error
+			this.defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();
@@ -326,6 +328,14 @@ export class DefectV2Component {
 			return 'No media available';
 		}
 
+		// Check for HTTP errors (404 or 500) when fetching media
+		if (this.testResult) {
+			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult()?.testResultId ?? '');
+			if (mediaError) {
+				return mediaError.message;
+			}
+		}
+
 		for (const reason of defect.media) {
 			if (reason.type === 'failReason') {
 				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
@@ -334,5 +344,21 @@ export class DefectV2Component {
 		}
 
 		return 'No media available';
+	}
+
+	async playVideo(mediaPath: string): Promise<void> {
+		this.isVideoPlaying = true;
+		this.cdr.detectChanges();
+		const video = this.getVideoElement(mediaPath);
+		if (!video) {
+			this.isVideoPlaying = false;
+			return;
+		}
+		await video.play();
+	}
+
+	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
+		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
+		return element ? (element as HTMLVideoElement) : null;
 	}
 }
