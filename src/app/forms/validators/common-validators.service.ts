@@ -495,7 +495,7 @@ export class CommonValidatorsService {
 				return { invalidDate: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
 			}
 
-			if (hours > 59) {
+			if (minutes > 59) {
 				return { invalidDate: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
 			}
 
