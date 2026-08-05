@@ -20,8 +20,8 @@ import {
 } from '@/src/app/store/test-records';
 import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -54,6 +54,7 @@ import { CommonValidatorsService } from '../../../validators/common-validators.s
 		DefaultNullOrEmpty,
 		DecimalPipe,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefectV2Component {
 	fb = inject(FormBuilder);
@@ -116,6 +117,10 @@ export class DefectV2Component {
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 
+	// Track the form value as a signal so category-driven predicates recompute reactively
+	// instead of each calling form.getRawValue() on every change-detection cycle.
+	private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
+
 	async ngOnInit(): Promise<void> {
 		this.form.controls.prohibitionIssued.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
 			this.form.controls.additionalInformation.controls.notes.updateValueAndValidity();
@@ -151,6 +156,7 @@ export class DefectV2Component {
 
 		try {
 			this.loading = true;
+			this.cdr.markForCheck();
 
 			if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
 				await this.defectMediaService.getAdasZip(testResult.testResultId);
@@ -254,17 +260,11 @@ export class DefectV2Component {
 		return !Number.isNaN(index);
 	}
 
-	isDangerous(): boolean {
-		return this.form.getRawValue().deficiencyCategory === 'dangerous';
-	}
+	isDangerous = computed(() => this.formValue().deficiencyCategory === 'dangerous');
 
-	isDangerousAsterisk(): boolean {
-		return this.form.getRawValue().stdForProhibition === true;
-	}
+	isDangerousAsterisk = computed(() => this.formValue().stdForProhibition === true);
 
-	isAdvisory(): boolean {
-		return this.form.getRawValue().deficiencyCategory === 'advisory';
-	}
+	isAdvisory = computed(() => this.formValue().deficiencyCategory === 'advisory');
 
 	isNotesRequired(): boolean {
 		const defect = this.form.getRawValue();

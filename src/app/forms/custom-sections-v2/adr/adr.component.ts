@@ -5,7 +5,7 @@ import { AdrService } from '@/src/app/services/adr/adr.service';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -65,6 +65,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		TrimWhitespaceDirective,
 		NoSpaceDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	validators = inject(CommonValidatorsService);

@@ -4,6 +4,7 @@
   </h1>
 
   @if (techRecord$(); as techRecord) {
+    @let vm = vehicleMeta();
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
@@ -52,7 +53,7 @@
                       <app-accordion
                         [id]="'approval-type'"
                         [title]="'Approval type'"
-                        [description]="technicalRecordService.getApprovalTypeAccordionDescription(techRecord)"
+                        [description]="vm.approvalTypeDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -111,7 +112,7 @@
                       <app-accordion
                         [id]="'weights'"
                         [title]="'Weights'"
-                        [description]="technicalRecordService.getWeightsAccordionDescription(techRecord)"
+                        [description]="vm.weightsDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -131,7 +132,7 @@
                       <app-accordion
                         [id]="'tyres'"
                         [title]="'Tyres'"
-                        [description]="technicalRecordService.getTyresAccordionDescription(techRecord)"
+                        [description]="vm.tyresDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -151,7 +152,7 @@
                       <app-accordion
                         [id]="'configuration'"
                         [title]="'Configuration'"
-                        [description]="technicalRecordService.getConfigAccordionDescription(techRecord)"
+                        [description]="vm.configDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -211,7 +212,7 @@
                       <app-accordion
                         [id]="'brakes'"
                         [title]="'Brakes'"
-                        [description]="technicalRecordService.getBrakesAccordionDescription(techRecord)"
+                        [description]="vm.brakesDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
@@ -382,7 +383,7 @@
               </app-accordion-control>
             </div>
 
-            <app-tech-record-filters [tags]="tags" [(ngModel)]="filters" />
+            <app-tech-record-filters [tags]="tags()" [(ngModel)]="filters" />
 
             <!-- Accordions appear here -->
             <ng-container [ngTemplateOutlet]="template"></ng-container>

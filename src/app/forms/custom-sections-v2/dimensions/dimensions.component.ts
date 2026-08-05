@@ -3,7 +3,7 @@ import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filte
 import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
@@ -24,6 +24,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		FieldWarningMessageComponent,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DimensionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;

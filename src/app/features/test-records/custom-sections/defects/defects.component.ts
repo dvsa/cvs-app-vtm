@@ -9,7 +9,7 @@ import { DocumentsService } from '@/src/app/services/documents/documents.service
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DefectDetailsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
@@ -19,6 +19,7 @@ import { Store } from '@ngrx/store';
 	templateUrl: './defects.component.html',
 	imports: [ButtonComponent, RouterLink, TruncatePipe, TagComponent, DefectMediaDownloadComponent],
 	styleUrls: ['./defects.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefectsComponent {
 	http = inject(HttpClient);

@@ -1,6 +1,6 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
@@ -14,6 +14,7 @@ import { ReplaySubject } from 'rxjs';
 	templateUrl: './manufacturer.component.html',
 	styleUrls: ['./manufacturer.component.scss'],
 	imports: [GovukFormGroupTextareaComponent, ReactiveFormsModule, GovukFormGroupInputComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManufacturerComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
