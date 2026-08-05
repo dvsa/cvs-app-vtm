@@ -99,13 +99,13 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
 			this.commonValidators.required('Test start date and time'),
-			this.commonValidators.date('Test start date and time'),
+			this.commonValidators.datetime({ label: 'Test start date and time' }),
 			this.commonValidators.pastDate('Test start date and time'),
 		]);
 
 		testTypeGroup.controls.testTypeEndTimestamp.setValidators([
 			this.commonValidators.required('Test end date and time'),
-			this.commonValidators.date('Test end date and time'),
+			this.commonValidators.datetime({ label: 'Test end date and time' }),
 			this.commonValidators.pastDate('Test end date and time'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
 		]);
