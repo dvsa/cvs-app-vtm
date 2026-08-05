@@ -10,4 +10,8 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-JS-BRACEEXPANSION-18512280:
+    - '*':
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
 patch: {}
