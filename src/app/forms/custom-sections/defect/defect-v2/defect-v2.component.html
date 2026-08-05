@@ -232,7 +232,7 @@
               }
               @for (media of videos; track media) {
                 @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {
-                  <div style="display: inline-flex; flex-direction: column" class="defect-container">
+                  <div style="display: inline-flex" class="defect-container">
                     @if (!isVideoPlaying) {
                       <div class="video-wrapper">
                         <video
