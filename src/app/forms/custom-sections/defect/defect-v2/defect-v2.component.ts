@@ -349,15 +349,12 @@ export class DefectV2Component {
 	async playVideo(mediaPath: string): Promise<void> {
 		this.isVideoPlaying = true;
 		this.cdr.detectChanges();
-		console.log(mediaPath);
 		const video = this.getVideoElement(mediaPath);
 		if (!video) {
-			console.log('test2');
 			this.isVideoPlaying = false;
 			return;
 		}
 		await video.play();
-		console.log('test');
 	}
 
 	private getVideoElement(mediaPath: string): HTMLVideoElement | null {

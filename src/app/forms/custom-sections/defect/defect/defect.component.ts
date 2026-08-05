@@ -210,7 +210,6 @@ export class DefectComponent implements OnInit, OnDestroy {
 	async playVideo(mediaPath: string): Promise<void> {
 		this.isVideoPlaying = true;
 		this.cdr.detectChanges();
-		console.log(mediaPath);
 		const video = this.getVideoElement(mediaPath);
 		if (!video) {
 			this.isVideoPlaying = false;
