@@ -232,8 +232,29 @@
               }
               @for (media of videos; track media) {
                 @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {
-                  <div style="display: inline-flex" class="defect-container">
-                    <video controls class="media-video" [src]="defectMediaService.fileCache[media.path]"></video>
+                  <div style="display: inline-flex; flex-direction: column" class="defect-container">
+                    <div class="video-wrapper">
+                      @if (!isVideoPlaying) {
+                        <video
+                          class="media-video"
+                          [src]="defectMediaService.fileCache[media.path]"
+                          [attr.data-media-path]="media.path">
+                        </video>
+                        <button class="video-play-btn" (click)="playVideo(media.path)" aria-label="Play video">
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+                            <path d="M12 8v32l24-16z"/>
+                          </svg>
+                        </button>
+                      }
+                    </div>
+                    @if (isVideoPlaying) {
+                      <video
+                        class="media-video"
+                        controls
+                        [src]="defectMediaService.fileCache[media.path]"
+                        [attr.data-media-path]="media.path">
+                      </video>
+                    }
                     <button class="link download-video-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
                       Download video
                     </button>
