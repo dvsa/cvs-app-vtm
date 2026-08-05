@@ -58,6 +58,39 @@
     padding-top: 1em;
   }
 
+  .video-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 40%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
   .underline {
     border: 0 solid grey;
     border-bottom-width: 1px;

@@ -1,4 +1,4 @@
-import { AsyncPipe, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -53,7 +53,6 @@ import { TextAreaComponent } from '../../../components/text-area/text-area.compo
 		ButtonComponent,
 		KeyValuePipe,
 		DefaultNullOrEmpty_1,
-		AsyncPipe,
 	],
 })
 export class DefectComponent implements OnInit, OnDestroy {
@@ -89,6 +88,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		{ value: true, label: 'Yes' },
 		{ value: false, label: 'No' },
 	];
+	isVideoPlaying = false;
 
 	async ngOnInit(): Promise<void> {
 		const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));
@@ -205,6 +205,23 @@ export class DefectComponent implements OnInit, OnDestroy {
 		}
 
 		return 'No media available';
+	}
+
+	async playVideo(mediaPath: string): Promise<void> {
+		this.isVideoPlaying = true;
+		this.cdr.detectChanges();
+		console.log(mediaPath);
+		const video = this.getVideoElement(mediaPath);
+		if (!video) {
+			this.isVideoPlaying = false;
+			return;
+		}
+		await video.play();
+	}
+
+	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
+		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
+		return element ? (element as HTMLVideoElement) : null;
 	}
 
 	get isDangerous(): boolean {

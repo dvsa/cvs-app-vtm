@@ -20,7 +20,7 @@ import {
 } from '@/src/app/store/test-records';
 import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -77,7 +77,6 @@ export class DefectV2Component {
 	loading = false;
 	additionalInfoMultiOptions: Record<string, MultiOptions> = {};
 	isVideoPlaying = false;
-	videoStates = signal<Record<string, { paused: boolean; muted: boolean; currentTime: number; duration: number }>>({});
 
 	form = this.fb.group({
 		deficiencyRef: this.fb.control<string>(''),
@@ -361,48 +360,8 @@ export class DefectV2Component {
 		console.log('test');
 	}
 
-	async toggleVideoPlayPause(mediaPath: string): Promise<void> {
-		const video = this.getVideoElement(mediaPath);
-		if (video) {
-			if (video.paused) {
-				await video.play();
-				this.isVideoPlaying = true;
-			} else {
-				video.pause();
-				this.isVideoPlaying = false;
-			}
-		}
-	}
-
-	toggleVideoMute(mediaPath: string): void {
-		const video = this.getVideoElement(mediaPath);
-		if (video) {
-			video.muted = !video.muted;
-			this.videoStates.update((states) => ({
-				...states,
-				[mediaPath]: {
-					...states[mediaPath],
-					muted: video.muted,
-				},
-			}));
-		}
-	}
-
-	toggleVideoFullscreen(mediaPath: string): void {
-		const video = this.getVideoElement(mediaPath);
-		if (video && video.requestFullscreen) {
-			video.requestFullscreen().catch(() => {
-				console.log('Fullscreen request denied');
-			});
-		}
-	}
-
 	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
 		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
 		return element ? (element as HTMLVideoElement) : null;
-	}
-
-	getVideoState(mediaPath: string) {
-		return this.videoStates()[mediaPath] || { paused: true, muted: false, currentTime: 0, duration: 0 };
 	}
 }

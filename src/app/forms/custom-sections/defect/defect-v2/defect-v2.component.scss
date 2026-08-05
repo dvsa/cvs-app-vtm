@@ -49,48 +49,6 @@
     }
   }
 
-  .video-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 8px;
-    background: #f3f2f1;
-    border: 1px solid #b1b4b6;
-    margin-top: 8px;
-  }
-
-  .control-btn {
-    @extend .text;
-    color: $govuk-brand-colour;
-    padding: 6px 12px;
-    background: #fff;
-    border: 1px solid #b1b4b6;
-    cursor: pointer;
-    text-decoration: none;
-    border-radius: 3px;
-
-    &:hover {
-      background: #f3f2f1;
-      color: govuk-colour('dark-blue', $legacy: 'light-blue');
-    }
-  }
-
-  .progress-bar {
-    display: flex;
-    align-items: center;
-  }
-
-  .progress-slider {
-    width: 100%;
-    height: 6px;
-    cursor: pointer;
-  }
-
-  .time-display {
-    font-size: 14px;
-    color: #0b0c0c;
-  }
-
   .download-image-link {
     margin-left: 10em;
   }
