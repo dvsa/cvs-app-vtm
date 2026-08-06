@@ -638,23 +638,24 @@ export class CommonValidatorsService {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (!control.parent) return null;
 
-			const inputValue = control.value;
-			if (!inputValue) return null;
+			if (!control.value) return null;
+			const inputValue = dayjs(control.value);
+			if (!inputValue.isValid()) return null;
 
 			// Only perform comparison if both controls contain valid dates
 			const siblingControl = control.parent.get(sibling) as AbstractControl;
-			const siblingValue = siblingControl.value;
-			if (!siblingValue) return null;
-			if (!siblingControl.valid) return null;
+			if (!siblingControl.value || !siblingControl.valid) return null;
+			const siblingValue = dayjs(siblingControl.value);
+			if (!siblingValue.isValid()) return null;
 
 			// If dates are the same, return null
-			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;
+			if (inputValue.isSame(siblingValue)) return null;
 
-			return dayjs(inputValue).isAfter(dayjs(siblingValue))
+			return inputValue.isAfter(siblingValue)
 				? null
 				: {
 						aheadOfDate: {
-							error: `${label} must be ahead of ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
+							error: `${label} must be ahead of ${siblingLabel} (${siblingValue.format('DD/MM/YYYY')})`,
 							anchorLink,
 							accordion,
 						},
