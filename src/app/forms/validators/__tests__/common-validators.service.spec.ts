@@ -160,4 +160,156 @@ describe('CommonValidatorsService', () => {
 			expect(result).toEqual({ invalidDate: { error: 'message', anchorLink: '', accordion: '' } });
 		});
 	});
+
+	describe('datetime', () => {
+		it('should return null if the control has a value of null', () => {
+			const control = new FormControl(null);
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return minutes error if minutes is greater than 59', () => {
+			const control = new FormControl('2021-01-01T00:60:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' minutes must be between 0 and 59",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return hours error if hours is greater than 23', () => {
+			const control = new FormControl('2021-01-01T24:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' hours must be between 0 and 23",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return time error if time is not included', () => {
+			const control = new FormControl('2021-01-01');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' must include time",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return year error if year is not four digits', () => {
+			const control = new FormControl('999-01-01T00:00:00.000');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' year must be four digits",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return must include a day error if day is not included', () => {
+			const control = new FormControl('2021-01T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' must include a day",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return must include a month error if month is not included', () => {
+			const control = new FormControl('2021--01T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' must include a month",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return must include a year error if year is not included', () => {
+			const control = new FormControl('-01-01T00:00:00.000');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' must include a year",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return day must be between 1 and 28 in the month of February error if day is greater than 28, and the year is not a leap year', () => {
+			const control = new FormControl('2021-02-29T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' day must be between 1 and 28 in the month of February",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return day must be between 1 and 29 in the month of February error if day is greater than 29, and the year is a leap year', () => {
+			const control = new FormControl('2004-02-30T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' day must be between 1 and 29 in the month of February",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return day must be between 1 and 31 in the month of March error if day is greater than 31, and the year is not a leap year', () => {
+			const control = new FormControl('2021-03-32T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' day must be between 1 and 31 in the month of March",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return day must be between 1 and 30 in the month of April error if day is greater than 30, and the year is a leap year', () => {
+			const control = new FormControl('2004-04-31T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' day must be between 1 and 30 in the month of April",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+
+		it('should return month must be between 1 and 12 error if month is greater than 12', () => {
+			const control = new FormControl('2021-13-01T00:00:00.000Z');
+			const result = service.datetime({ label: 'Test start date and time' })(control);
+			expect(result).toEqual({
+				datetime: {
+					error: "'Test start date and time' month must be between 1 and 12",
+					anchorLink: '',
+					accordion: '',
+				},
+			});
+		});
+	});
 });

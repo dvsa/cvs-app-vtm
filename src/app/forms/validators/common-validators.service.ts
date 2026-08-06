@@ -476,11 +476,15 @@ export class CommonValidatorsService {
 			const { errors } = validateDate(day || '', month || '', year || '', label);
 
 			if (errors?.length) {
-				return { invalidDate: { error: errors[0].reason, anchorLink, accordion } };
+				return { datetime: { error: errors[0].reason, anchorLink, accordion } };
 			}
 
 			if (year.length !== 4) {
-				return { invalidDate: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+			}
+
+			if (!t) {
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
 			}
 
 			const [hh, mm] = t.split(':');
@@ -488,15 +492,15 @@ export class CommonValidatorsService {
 			const minutes = Number.parseInt(mm, 10);
 
 			if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-				return { invalidDate: { error: `'${label}' must include time`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
 			}
 
 			if (hours > 23) {
-				return { invalidDate: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
 			}
 
 			if (minutes > 59) {
-				return { invalidDate: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
 			}
 
 			return null;
@@ -641,6 +645,7 @@ export class CommonValidatorsService {
 			const siblingControl = control.parent.get(sibling) as AbstractControl;
 			const siblingValue = siblingControl.value;
 			if (!siblingValue) return null;
+			if (!siblingControl.valid) return null;
 
 			// If dates are the same, return null
 			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;

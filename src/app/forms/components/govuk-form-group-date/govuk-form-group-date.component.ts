@@ -89,15 +89,15 @@ export class GovukFormGroupDateComponent
 				return;
 			}
 
-			const monthStr = month?.toString().padStart(2, '0');
-			const dayStr = day?.toString().padStart(2, '0');
-			const hoursStr = hours?.toString().padStart(2, '0');
-			const minsStr = minutes?.toString().padStart(2, '0');
-			const secsStr = seconds?.toString().padStart(2, '0');
+			const dayStr = this.pad(day);
+			const monthStr = this.pad(month);
+			const hoursStr = this.pad(hours);
+			const minsStr = this.pad(minutes);
+			const secsStr = this.pad(seconds);
 
 			switch (this.mode()) {
 				case 'iso':
-					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr}:${minsStr}:${secsStr || '00'}.000Z`);
+					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr}:${minsStr}:${secsStr || '00'}.000`);
 					break;
 				default:
 					this.onChange(`${year}-${monthStr}-${dayStr}`);
@@ -108,6 +108,10 @@ export class GovukFormGroupDateComponent
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	pad(number: number | null | undefined, length = 2) {
+		return number != null && !Number.isNaN(+number) ? String(number).padStart(length, '0') || '' : '';
 	}
 }
 
