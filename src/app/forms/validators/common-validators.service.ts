@@ -428,9 +428,11 @@ export class CommonValidatorsService {
 	date(label: string, id?: string | ((control: AbstractControl) => string), accordion?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
+
 			const [d] = (control.value as string).split('T');
 			const [year, month, day] = d.split('-');
 			const { error, errors } = validateDate(day || '', month || '', year || '', label);
+
 			const anchorLink = typeof id === 'string' ? id : id?.(control) || label;
 
 			if (error && errors?.length) {
@@ -455,6 +457,46 @@ export class CommonValidatorsService {
 					globalError.invalidDate.accordion = accordion;
 				}
 				return globalError;
+			}
+
+			return null;
+		};
+	}
+
+	datetime({
+		label,
+		anchorLink = '',
+		accordion = '',
+	}: { label: string; anchorLink?: string; accordion?: string }): ValidatorFn {
+		return (control) => {
+			if (!control.value) return null;
+
+			const [d, t] = control.value.split('T');
+			const [year, month, day] = d.split('-');
+			const { errors } = validateDate(day || '', month || '', year || '', label);
+
+			if (errors?.length) {
+				return { invalidDate: { error: errors[0].reason, anchorLink, accordion } };
+			}
+
+			if (year.length !== 4) {
+				return { invalidDate: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+			}
+
+			const [hh, mm] = t.split(':');
+			const hours = Number.parseInt(hh, 10);
+			const minutes = Number.parseInt(mm, 10);
+
+			if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+				return { invalidDate: { error: `'${label}' must include time`, anchorLink, accordion } };
+			}
+
+			if (hours > 23) {
+				return { invalidDate: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
+			}
+
+			if (minutes > 59) {
+				return { invalidDate: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
 			}
 
 			return null;
