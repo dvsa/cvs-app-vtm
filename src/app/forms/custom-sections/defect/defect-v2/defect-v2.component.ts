@@ -328,18 +328,18 @@ export class DefectV2Component {
 			return 'No media available';
 		}
 
+		for (const reason of defect.media) {
+			if (reason.type === 'failReason') {
+				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
+				return `No media available - ${formattedReason}`;
+			}
+		}
+
 		// Check for HTTP errors (404 or 500) when fetching media
 		if (this.testResult) {
 			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult()?.testResultId ?? '');
 			if (mediaError) {
 				return mediaError.message;
-			}
-		}
-
-		for (const reason of defect.media) {
-			if (reason.type === 'failReason') {
-				const formattedReason = this.defectMediaService?.formatMediaFailureReason(reason.reason) ?? reason.reason;
-				return `No media available - ${formattedReason}`;
 			}
 		}
 

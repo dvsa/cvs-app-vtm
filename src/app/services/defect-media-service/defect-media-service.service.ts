@@ -285,8 +285,8 @@ export class DefectMediaService {
 					this.globalErrorService.setErrors([
 						{
 							error:
-								'Media could not be found. <br>' +
-								'Try again later or contact the service desk if this issue keeps happening.',
+								'Media could not be found <br>' +
+								'Try again later or contact the Service Desk if this issue keeps happening.',
 							anchorLink: '',
 						},
 					]);
