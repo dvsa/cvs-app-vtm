@@ -34,6 +34,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	selectedDeficiency?: DefectDeficiencyReferenceDataSchema;
 	vehicleType!: VehicleType;
 	searchFilter = '';
+	searchTerm = '';
 
 	private openDefects = new Set<number>();
 	private openItems = new Set<string>();
@@ -68,11 +69,21 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	}
 
 	get isSearching(): boolean {
-		return this.searchFilter.trim().length > 0;
+		return this.searchTerm.trim().length > 0;
+	}
+
+	search(): void {
+		this.searchTerm = this.searchFilter;
+	}
+
+	onSearchInput(): void {
+		if (!this.searchFilter.trim()) {
+			this.searchTerm = '';
+		}
 	}
 
 	get filteredTree(): DefectCategoryReferenceDataSchema[] {
-		const term = this.searchFilter.trim().toLowerCase();
+		const term = this.searchTerm.trim().toLowerCase();
 		if (!term) {
 			return this.defects;
 		}

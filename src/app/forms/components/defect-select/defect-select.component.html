@@ -12,12 +12,15 @@
         type="text"
         class="govuk-input"
         [(ngModel)]="searchFilter"
+        (ngModelChange)="onSearchInput()"
+        (keyup.enter)="search()"
         />
       <button
         id="defect-search-button"
         type="button"
         class="govuk-button defect-search__button"
         data-module="govuk-button"
+        (click)="search()"
         >
         Search
       </button>
@@ -40,7 +43,7 @@
             @if (hasChildren) {
               <span class="defect-tree__chevron" [class.defect-tree__chevron--open]="defectOpen" aria-hidden="true"></span>
             }
-            <span class="defect-tree__label" [innerHTML]="defect.imNumber + '. ' + defect.imDescription | highlight: searchFilter"></span>
+            <span class="defect-tree__label" [innerHTML]="defect.imNumber + '. ' + defect.imDescription | highlight: searchTerm"></span>
           </button>
           @if (hasChildren && defectOpen) {
             <ul class="defect-tree__children">
@@ -56,7 +59,7 @@
                     (click)="toggleItem(defect, item)"
                     >
                     <span class="defect-tree__chevron" [class.defect-tree__chevron--open]="itemOpen" aria-hidden="true"></span>
-                    <span class="defect-tree__label" [innerHTML]="defect.imNumber + '.' + item.itemNumber + ' ' + item.itemDescription | highlight: searchFilter"></span>
+                    <span class="defect-tree__label" [innerHTML]="defect.imNumber + '.' + item.itemNumber + ' ' + item.itemDescription | highlight: searchTerm"></span>
                   </button>
                   @if (itemOpen) {
                     <ul class="defect-tree__children defect-tree__children--leaves">
@@ -68,12 +71,12 @@
                             [id]="'selectedDefect-' + getDeficiencyId(deficiency)"
                             [attr.data-testid]="getDeficiencyId(deficiency)"
                             (click)="selectDeficiency(deficiency)"
-                            [innerHTML]="deficiencyRefLabel(defect, item, deficiency) | highlight: searchFilter"
+                            [innerHTML]="deficiencyRefLabel(defect, item, deficiency) | highlight: searchTerm"
                             ></a>
                           <span class="govuk-!-margin-left-3">
                             <app-tag [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
                           </span>
-                          <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2" [innerHTML]="deficiency.deficiencyText | highlight: searchFilter"></p>
+                          <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2" [innerHTML]="deficiency.deficiencyText | highlight: searchTerm"></p>
                         </li>
                       }
                       @if (!isSearching) {
@@ -103,7 +106,7 @@
       }
     </ul>
   } @else {
-    <p class="govuk-body" id="no-defect-search-results">No defects match “{{ searchFilter }}”.</p>
+    <p class="govuk-body" id="no-defect-search-results">No defects match “{{ searchTerm }}”.</p>
   }
 } @else {
   <h1 class="govuk-heading-l">No defects found</h1>
