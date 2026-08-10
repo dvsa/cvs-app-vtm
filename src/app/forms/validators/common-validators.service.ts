@@ -476,11 +476,15 @@ export class CommonValidatorsService {
 			const { errors } = validateDate(day || '', month || '', year || '', label);
 
 			if (errors?.length) {
-				return { invalidDate: { error: errors[0].reason, anchorLink, accordion } };
+				return { datetime: { error: errors[0].reason, anchorLink, accordion } };
 			}
 
 			if (year.length !== 4) {
-				return { invalidDate: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+			}
+
+			if (!t) {
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
 			}
 
 			const [hh, mm] = t.split(':');
@@ -488,15 +492,15 @@ export class CommonValidatorsService {
 			const minutes = Number.parseInt(mm, 10);
 
 			if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-				return { invalidDate: { error: `'${label}' must include time`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
 			}
 
 			if (hours > 23) {
-				return { invalidDate: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
 			}
 
 			if (minutes > 59) {
-				return { invalidDate: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
+				return { datetime: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
 			}
 
 			return null;
@@ -634,22 +638,24 @@ export class CommonValidatorsService {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (!control.parent) return null;
 
-			const inputValue = control.value;
-			if (!inputValue) return null;
+			if (!control.value) return null;
+			const inputValue = dayjs(control.value);
+			if (!inputValue.isValid()) return null;
 
 			// Only perform comparison if both controls contain valid dates
 			const siblingControl = control.parent.get(sibling) as AbstractControl;
-			const siblingValue = siblingControl.value;
-			if (!siblingValue) return null;
+			if (!siblingControl.value || !siblingControl.valid) return null;
+			const siblingValue = dayjs(siblingControl.value);
+			if (!siblingValue.isValid()) return null;
 
 			// If dates are the same, return null
-			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;
+			if (inputValue.isSame(siblingValue)) return null;
 
-			return dayjs(inputValue).isAfter(dayjs(siblingValue))
+			return inputValue.isAfter(siblingValue)
 				? null
 				: {
 						aheadOfDate: {
-							error: `${label} must be ahead of ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
+							error: `${label} must be ahead of ${siblingLabel} (${siblingValue.format('DD/MM/YYYY')})`,
 							anchorLink,
 							accordion,
 						},
