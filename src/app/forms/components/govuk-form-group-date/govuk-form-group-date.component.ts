@@ -89,18 +89,20 @@ export class GovukFormGroupDateComponent
 				return;
 			}
 
-			const dayStr = this.pad(day);
-			const monthStr = this.pad(month);
-			const hoursStr = this.pad(hours);
-			const minsStr = this.pad(minutes);
-			const secsStr = this.pad(seconds);
+			const dayStr = day?.toString().padStart(2, '0');
+			const monthStr = month?.toString().padStart(2, '0');
 
 			switch (this.mode()) {
-				case 'iso':
+				case 'iso': {
+					const hoursStr = this.pad(hours);
+					const minsStr = this.pad(minutes);
+					const secsStr = this.pad(seconds);
 					this.onChange(`${year}-${monthStr}-${dayStr}T${hoursStr}:${minsStr}:${secsStr || '00'}.000`);
 					break;
-				default:
+				}
+				default: {
 					this.onChange(`${year}-${monthStr}-${dayStr}`);
+				}
 			}
 		});
 	}
