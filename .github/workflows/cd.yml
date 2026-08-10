@@ -68,9 +68,13 @@ jobs:
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
 
       - name: Build App
+        run: npm run build -- --configuration='deploy' --output-path='dist/'
+
+      - name: Deploy to Sentry
+        if: ${{ inputs.environment == 'prod' }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: npm run build -- --configuration='deploy' --output-path='dist/'
+        run: npm run sentry:sourcemaps
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
@@ -105,6 +109,19 @@ jobs:
         with:
           name: VTM-App-build-output
           path: dist/browser
+
+      - name: Remove source maps from build
+        run: find dist/ -name "*.map" -delete
+        shell: bash
+
+      - name: Verify source maps removed
+        shell: bash
+        run: |
+          if find dist/ -name "*.map" | grep -q .; then
+            echo "❌ ERROR: Source maps still present after removal!"
+            exit 1
+          fi
+          echo "✅ Confirmed: No source maps in deployment package"
 
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
