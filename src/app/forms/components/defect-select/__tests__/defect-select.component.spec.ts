@@ -197,16 +197,19 @@ describe('DefectSelectComponent', () => {
 
 		it('should keep the whole category when the category matches', () => {
 			component.searchFilter = 'tyres';
+			component.search();
 			expect(component.filteredTree).toStrictEqual([tyres]);
 		});
 
 		it('should match on IM number exactly', () => {
 			component.searchFilter = '8';
+			component.search();
 			expect(component.filteredTree).toStrictEqual([tyres]);
 		});
 
 		it('should match on a deficiency ref (e.g. "1.1")', () => {
 			component.searchFilter = '1.1';
+			component.search();
 
 			const tree = component.filteredTree;
 			expect(tree).toHaveLength(1);
@@ -218,6 +221,7 @@ describe('DefectSelectComponent', () => {
 
 		it('should surface a deep deficiency-level match and prune siblings', () => {
 			component.searchFilter = 'recut';
+			component.search();
 
 			const tree = component.filteredTree;
 			expect(tree).toHaveLength(1);
@@ -231,12 +235,14 @@ describe('DefectSelectComponent', () => {
 
 		it('should not mutate the source taxonomy when pruning', () => {
 			component.searchFilter = 'recut';
+			component.search();
 			void component.filteredTree;
 			expect(tyres.items[0].deficiencies).toHaveLength(2);
 		});
 
 		it('should return an empty array when nothing matches', () => {
 			component.searchFilter = 'no such defect';
+			component.search();
 			expect(component.filteredTree).toStrictEqual([]);
 		});
 	});
