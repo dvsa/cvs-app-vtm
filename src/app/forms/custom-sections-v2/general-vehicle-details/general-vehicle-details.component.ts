@@ -1,4 +1,5 @@
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { NumberOnlyDirective } from '@/src/app/directives/app-number-only/app-number-only.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
@@ -76,6 +77,7 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 		GovukCheckboxGroupComponent,
 		GovukFormGroupAutocompleteComponent,
 		TrimWhitespaceDirective,
+		NumberOnlyDirective,
 		NoSpaceDirective,
 		FilterByTagsDirective,
 	],
@@ -172,6 +174,20 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
+
+		const manufactureYearControl = this.form.get('techRecord_manufactureYear');
+		manufactureYearControl?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val) => {
+			let str = val == null ? '' : String(val);
+			// remove non-digits and limit to 4 chars
+			str = str.replace(/\D+/g, '').slice(0, 4);
+			const parsed = str === '' ? null : Number(str);
+			// only patch when different to avoid loop
+			if (manufactureYearControl.getRawValue() !== parsed) {
+				if (manufactureYearControl) {
+					(manufactureYearControl as unknown as FormControl<number | null>).patchValue(parsed, { emitEvent: false });
+				}
+			}
+		});
 	}
 
 	get controlsBasedOffVehicleType() {
