@@ -15,15 +15,15 @@
         (ngModelChange)="onSearchInput()"
         (keyup.enter)="search()"
         />
-      <button
-        id="defect-search-button"
-        type="button"
-        class="govuk-button defect-search__button"
-        data-module="govuk-button"
-        (click)="search()"
-        >
+      <app-button
+        class="search-button"
+        [id]="'defect-search-button'"
+        [type]="'submit'"
+        [design]="'tertiary'"
+        (clicked)="search()"
+      >
         Search
-      </button>
+      </app-button>
     </div>
   </div>
   @if (filteredTree.length) {

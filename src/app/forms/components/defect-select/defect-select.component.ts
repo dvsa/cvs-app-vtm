@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonComponent } from '@components/button/button.component';
 import { TagComponent } from '@components/tag/tag.component';
 import {
 	DefectCategoryReferenceDataSchema,
@@ -19,7 +20,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 	selector: 'app-defect-select',
 	templateUrl: './defect-select.component.html',
 	styleUrls: ['./defect-select.component.scss'],
-	imports: [TagComponent, FormsModule, HighlightPipe],
+	imports: [TagComponent, FormsModule, HighlightPipe, ButtonComponent],
 })
 export class DefectSelectComponent implements OnInit, OnDestroy {
 	testResultsStore = inject(Store<TestResultsState>);
