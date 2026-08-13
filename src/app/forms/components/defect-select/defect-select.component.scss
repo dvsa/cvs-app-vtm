@@ -1,6 +1,20 @@
 $tree-line: #b1b4b6;
 $tree-divider: #b1b4b6;
 
+:host {
+  display: block;
+}
+
+@media (min-width: 40.0625em) {
+  :host {
+    width: 66.6667%;
+  }
+}
+
+.defect-search {
+  margin-bottom: 3px;
+}
+
 .defect-search__row {
   display: flex;
   align-items: flex-start;
@@ -37,7 +51,7 @@ $tree-divider: #b1b4b6;
   text-align: left;
   cursor: pointer;
   font-family: 'GDS Transport', arial, sans-serif;
-  font-size: 1rem;
+  font-size: 19px;
   line-height: 1.25;
   color: #0b0c0c;
 }
@@ -47,6 +61,15 @@ $tree-divider: #b1b4b6;
 .defect-tree__toggle:focus-visible {
   outline: 3px solid #ffdd00;
   outline-offset: 0;
+}
+.defect-tree__toggle:focus {
+  background-color: #ffdd00;
+  color: #0b0c0c;
+}
+.defect-tree__toggle:focus .defect-tree__label {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.1em;
 }
 .defect-tree__label {
   flex: 1 1 auto;
@@ -58,7 +81,7 @@ $tree-divider: #b1b4b6;
   flex: 0 0 auto;
   width: 26px;
   height: 26px;
-  border: 2px solid #0b0c0c;
+  border: 1px solid #505a5f;
   border-radius: 50%;
 }
 .defect-tree__chevron::before {
@@ -66,10 +89,10 @@ $tree-divider: #b1b4b6;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #0b0c0c;
-  border-bottom: 2px solid #0b0c0c;
+  width: 5px;
+  height: 5px;
+  border-right: 3px solid #0b0c0c;
+  border-bottom: 3px solid #0b0c0c;
   transform: translate(-50%, -75%) rotate(45deg);
 }
 .defect-tree__chevron--open::before {
