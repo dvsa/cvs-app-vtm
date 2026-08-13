@@ -213,4 +213,49 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 		}
 		return id;
 	}
+
+	readonly maxLength = {
+		day: 2,
+		month: 2,
+		year: 4,
+		hour: 2,
+		minute: 2,
+	} as const;
+
+	onDateInput(event: Event, field: 'day' | 'month' | 'year' | 'hour' | 'minute') {
+		const input = event.target as HTMLInputElement | null;
+		if (!input) return;
+		let val = input.value ?? '';
+		val = val.replace(/\D+/g, '');
+
+		const max = this.maxLength[field];
+		if (val.length > max) {
+			val = val.slice(0, max);
+			input.value = val;
+		}
+
+		const parsed = val === '' ? undefined : Number(val);
+		switch (field) {
+			case 'day':
+				this.day = parsed;
+				this.onDayChange(parsed);
+				break;
+			case 'month':
+				this.month = parsed;
+				this.onMonthChange(parsed);
+				break;
+			case 'year':
+				this.year = parsed;
+				this.onYearChange(parsed);
+				break;
+			case 'hour':
+				this.hour = parsed;
+				this.onHourChange(parsed);
+				break;
+			case 'minute':
+				this.minute = parsed;
+				this.onMinuteChange(parsed);
+				break;
+		}
+	}
 }
