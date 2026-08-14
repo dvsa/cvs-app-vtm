@@ -28,7 +28,10 @@
       label="Year of manufacture"
       formControlName="techRecord_manufactureYear"
       [width]="FormNodeWidth.XS"
-      type="number"
+      type="text"
+      inputmode="numeric"
+      maxlength="4"
+      appNumberOnly
       appFilterByTags
       [filters]="filters()"
       [tagNames]="['Plates']"
@@ -302,7 +305,7 @@
           Number of axles
         </label>
       </h1>
-      
+
       @if (mode() === Modes.EDIT) {
         <div class="govuk-hint" [id]="'techRecord_noOfAxles-hint'"> This will affect how many axle-related fields appear in the record </div>
       }
@@ -328,7 +331,7 @@
               Remove and clear all axles
             </button>
           }
-  
+
           @if (!isAxlesDisabled) {
             <button
               type="button"
