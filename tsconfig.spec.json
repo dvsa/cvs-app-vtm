@@ -11,8 +11,7 @@
       "node",
       "jest"
     ],
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true
+    "esModuleInterop": true
   },
   "files": [
     "setup-jest.ts",
