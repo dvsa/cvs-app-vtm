@@ -39,6 +39,8 @@
             type="number"
             inputmode="numeric"
             formControlName="day"
+            (input)="onDateInput($event, 'day')"
+            [attr.maxlength]="maxLength.day"
             (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
@@ -55,6 +57,8 @@
             type="number"
             inputmode="numeric"
             formControlName="month"
+            (input)="onDateInput($event, 'month')"
+            [attr.maxlength]="maxLength.month"
             (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
@@ -71,6 +75,8 @@
             type="number"
             inputmode="numeric"
             formControlName="year"
+            (input)="onDateInput($event, 'year')"
+            [attr.maxlength]="maxLength.year"
             (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
@@ -90,8 +96,10 @@
               inputmode="numeric"
               formControlName="hours"
               appFocusNext
+              (input)="onDateInput($event, 'hours')"
               (wheel)="$event.preventDefault()"
               appNumberOnly
+              [attr.maxlength]="maxLength.hours"
               [min]="0"
               [max]="23"
               [disabled]="disabled()"
@@ -109,8 +117,10 @@
               inputmode="numeric"
               formControlName="minutes"
               appFocusNext
+              (input)="onDateInput($event, 'minutes')"
               (wheel)="$event.preventDefault()"
               appNumberOnly
+              [attr.maxlength]="maxLength.minutes"
               [min]="0"
               [max]="59"
               [disabled]="disabled()"

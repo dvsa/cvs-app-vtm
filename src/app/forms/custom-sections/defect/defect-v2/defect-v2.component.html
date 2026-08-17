@@ -168,12 +168,14 @@
             {{ defect.prs | defaultNullOrEmpty }}
           </dd>
         </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Prohibition Issued?</dt>
-          <dd class="govuk-summary-list__value" id="defect-additional-information-prohibition-issued">
-            {{ defect.prohibitionIssued | defaultNullOrEmpty }}
-          </dd>
-        </div>
+        @if (isDangerous()) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Prohibition Issued?</dt>
+            <dd class="govuk-summary-list__value" id="defect-additional-information-prohibition-issued">
+              {{ defect.prohibitionIssued | defaultNullOrEmpty }}
+            </dd>
+          </div>
+        }
       </dl>
     </div>
   </div>

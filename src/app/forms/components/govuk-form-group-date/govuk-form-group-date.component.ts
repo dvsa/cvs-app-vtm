@@ -43,6 +43,14 @@ export class GovukFormGroupDateComponent
 		seconds: this.fb.nonNullable.control<null | number>(null),
 	});
 
+	readonly maxLength = {
+		day: 2,
+		month: 2,
+		year: 4,
+		hours: 2,
+		minutes: 2,
+	} as const;
+
 	destroy = new ReplaySubject<boolean>(1);
 
 	writeValue(obj: any): void {
@@ -110,6 +118,26 @@ export class GovukFormGroupDateComponent
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	onDateInput(event: Event, field: 'day' | 'month' | 'year' | 'hours' | 'minutes') {
+		const input = event.target as HTMLInputElement | null;
+		if (!input) return;
+		let val = input.value ?? '';
+
+		// Remove any non-digit characters (defensive)
+		val = val.replace(/\D+/g, '');
+
+		const max = this.maxLength[field as keyof typeof this.maxLength];
+		if (val.length > max) {
+			val = val.slice(0, max);
+			// update the visible input value
+			input.value = val;
+		}
+
+		const parsed = val === '' ? null : Number(val);
+		// Update form control with parsed number (or null) and allow valueChanges to run
+		this.form.get(field)?.setValue(parsed, { emitEvent: true });
 	}
 
 	pad(number: number | null | undefined, length = 2) {

@@ -31,14 +31,13 @@
         }
       </app-vehicle-header>
 
-      <app-accordion-control>
+      <app-accordion-control [isExpanded]="!(mode() === Modes.AMEND || mode() === Modes.VIEW)">
         <ng-template #template>
           @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
               [id]="'vehicle'"
               [title]="'Vehicle Details'"
               [description]="''"
-              [isExpanded]="true"
             >
               <form ngNoForm>
                 <app-test-vehicle [mode]="mode()"></app-test-vehicle>
@@ -49,7 +48,6 @@
             [id]="'test'"
             [title]="'Test'"
             [description]="''"
-            [isExpanded]="true"
           >
             <form ngNoForm>
               <app-test [mode]="mode()" [initialMode]="initialMode()"></app-test>
@@ -59,7 +57,6 @@
             [id]="'visit'"
             [title]="'Visit'"
             [description]="''"
-            [isExpanded]="true"
           >
             <form ngNoForm>
               <app-test-visit [mode]="mode()"></app-test-visit>
@@ -69,7 +66,6 @@
             [id]="'notes'"
             [title]="'Notes'"
             [description]="''"
-            [isExpanded]="true"
           >
             <form ngNoForm>
               <app-test-notes [mode]="mode()"></app-test-notes>
@@ -79,7 +75,6 @@
             [id]="'defects'"
             [title]="'Defects'"
             [description]="''"
-            [isExpanded]="true"
           >
             <form ngNoForm>
               <app-test-defects [mode]="mode()"></app-test-defects>
@@ -93,7 +88,6 @@
               [id]="'reason-for-creation'"
               [title]="'Reason for creation'"
               [description]="''"
-              [isExpanded]="true"
             >
               <form ngNoForm>
                 <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
