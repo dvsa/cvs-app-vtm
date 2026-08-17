@@ -41,14 +41,16 @@
           ></govuk-form-group-input>
         }
 
-        <!-- Issue Documents Centrally -->
-        <ng-container formGroupName="centralDocs">
-          <govuk-form-group-radio
-            label="Issue documents centrally"
-            formControlName="issueRequired"
-            [options]="YES_NO_OPTIONS"
-          ></govuk-form-group-radio>
-        </ng-container>
+        @if (shouldShowCentralDocs()) {
+          <!-- Issue Documents Centrally -->
+          <ng-container formGroupName="centralDocs">
+            <govuk-form-group-radio
+              label="Issue documents centrally"
+              formControlName="issueRequired"
+              [options]="YES_NO_OPTIONS"
+            ></govuk-form-group-radio>
+          </ng-container>
+        }
 
         @if (mode() === Modes.AMEND) {
           <!-- Test description -->
@@ -137,7 +139,7 @@
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) {
+          @if ((mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) && shouldShowCentralDocs()) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-issueRequired">

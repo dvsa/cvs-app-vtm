@@ -15,6 +15,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } 
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { Modes } from '@models/modes.enum';
+import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
@@ -147,6 +148,10 @@ export class TestComponent implements OnInit, OnDestroy {
 				// Hoist value to top level of form
 				this.form.patchValue({ testEndTimestamp: value || undefined });
 			});
+	}
+
+	shouldShowCentralDocs(): boolean {
+		return TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	private formatDateTimeLocal(isoString: string | null | undefined): string {
