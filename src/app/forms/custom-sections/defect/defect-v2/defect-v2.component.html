@@ -50,7 +50,13 @@
         </ng-container>
       }
 
-      <govuk-form-group-textarea name="notes" label="Notes" formControlName="notes" />
+      <govuk-form-group-textarea
+        name="notes"
+        label="Notes"
+        hint="Enter any notes for this defect"
+        formControlName="notes"
+        [maxLength]="500"
+        />
     </ng-container>
 
     @if (isDangerous()) {
