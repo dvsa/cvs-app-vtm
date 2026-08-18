@@ -26,9 +26,6 @@ export class CustomFormControlComponent extends BaseControlComponent {
 			if (ngControl.value) {
 				this.name.set(ngControl.key);
 				this.control = ngControl.value;
-				// FORM_INJECTION_TOKEN is only provided by DynamicFormFieldComponent. Subclasses rendered
-				// outside that machinery (or via ViewListItemComponent, which provides NgControl but not
-				// the form) would otherwise throw NG0201 here.
 				this.form = (this.injector.get(FORM_INJECTION_TOKEN, null) as FormGroup | null) ?? undefined;
 			}
 		}
