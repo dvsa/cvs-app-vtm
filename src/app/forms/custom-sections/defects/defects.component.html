@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody class="govuk-table__body">
-            @for (defect of testDefects; track defect; let i = $index) {
+            @for (defect of testDefects; track i; let i = $index) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
                   <a data-action="retain-data" routerLink="defect/{{ i }}" href="javascript:void(0)" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
