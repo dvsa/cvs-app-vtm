@@ -2,6 +2,7 @@ import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store, select } from '@ngrx/store';
+import * as Sentry from '@sentry/angular';
 import * as UserServiceActions from '@store/user/user-service.actions';
 import * as UserServiceState from '@store/user/user-service.reducer';
 import { jwtDecode } from 'jwt-decode';
@@ -31,6 +32,10 @@ export class UserService implements OnDestroy {
 	employeeId = this.store.selectSignal(UserServiceState.employeeId);
 
 	constructor() {
+		this.id$.pipe(takeUntil(this.destroying$)).subscribe((oid) => {
+			Sentry.setUser(oid ? { id: oid } : null);
+		});
+
 		this.msalBroadcastService.msalSubject$
 			.pipe(
 				filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
