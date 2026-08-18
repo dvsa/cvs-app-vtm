@@ -113,6 +113,24 @@ describe('RefDataDecodePipe', () => {
 		});
 	});
 
+	it('should return untransformed value when the audit search returned no results', (done) => {
+		store.setState({
+			...initialAppState,
+			[STORE_FEATURE_REFERENCE_DATA_KEY]: {
+				...initialReferenceDataState,
+				[`${ReferenceDataResourceType.CountryOfRegistration}#AUDIT` as ReferenceDataResourceType]: {
+					searchReturn: [],
+					loading: false,
+				},
+			},
+		});
+
+		pipe.transform('zz', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
+			expect(val).toBe('zz');
+			done();
+		});
+	});
+
 	it('should return untransformed value when data not in state', (done) => {
 		pipe.transform('bar', 'baz').subscribe((val) => {
 			expect(val).toBe('bar');
