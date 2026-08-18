@@ -29,7 +29,7 @@ import { State } from '@store/index';
 import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, Observable, Subject, filter, firstValueFrom, of, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, filter, firstValueFrom, skipLast, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -66,13 +66,16 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
 	canCreate$ = new BehaviorSubject(false);
 	testMode = TestModeEnum.Edit;
-	testResult$: Observable<TestResultSchema | undefined> = of(undefined);
+	testResult$ = this.testRecordsService.editingTestResult$;
 	testTypeId?: string;
 	techRecord: V3TechRecordModel | undefined = undefined;
 
 	ngOnInit(): void {
-		this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
-			tap((editingTestResult) => !editingTestResult && this.backToTechRecord())
+		this.testRecordsService.editingTestResult$.pipe(
+			takeUntil(this.destroy$),
+			skipLast(1),
+			filter((editingTestResult) => !editingTestResult),
+			tap(() => this.backToTechRecord())
 		);
 
 		this.routerService
