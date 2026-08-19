@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,6 +28,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	defectsStore = inject(Store<DefectsState>);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+	viewportScroller = inject(ViewportScroller);
 
 	defects: DefectCategoryReferenceDataSchema[] = [];
 	isEditing = false;
@@ -43,6 +45,8 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	onDestroy$ = new Subject();
 
 	ngOnInit(): void {
+		this.viewportScroller.scrollToPosition([0, 0]);
+
 		this.testResultsStore
 			.select(toEditOrNotToEdit)
 			.pipe(
