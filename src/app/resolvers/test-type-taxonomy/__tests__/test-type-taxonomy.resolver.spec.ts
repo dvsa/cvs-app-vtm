@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { fetchTestTypes } from '@store/test-types/test-types.actions';
+import { selectTestTypesTotal } from '@store/test-types/test-types.selectors';
 import { testTypeTaxonomyResolver } from '../test-type-taxonomy.resolver';
 
 describe('TestTypeTaxonomyResolver', () => {
@@ -27,5 +28,14 @@ describe('TestTypeTaxonomyResolver', () => {
 		TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
 		expect(dispatchSpy).toHaveBeenCalledWith(fetchTestTypes());
+	});
+
+	it('should not fetch test types again when they are already loaded', () => {
+		store.overrideSelector(selectTestTypesTotal, 1);
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
+
+		expect(dispatchSpy).not.toHaveBeenCalled();
 	});
 });

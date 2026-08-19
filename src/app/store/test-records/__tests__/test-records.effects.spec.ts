@@ -40,6 +40,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	isTestTypeOldIvaOrMsva,
+	patchEditingTestResult,
 	selectedTestResultState,
 	templateSectionsChanged,
 	testResultInEdit,
@@ -891,6 +892,21 @@ describe('TestResultsEffects', () => {
 					b: getRecallsFailure({ error: 'Bad Gateway' }),
 				});
 			});
+		});
+
+		it('should keep the shared form in sync when recalls load in the background', () => {
+			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
+			const setValueSpy = jest.spyOn(effects['testService'].form.controls.recalls, 'setValue');
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a', { a: getRecallsSuccess({ recalls }) });
+
+				expectObservable(effects.onGetRecallsSuccess$).toBe('-b', {
+					b: patchEditingTestResult({ testResult: { recalls } }),
+				});
+			});
+
+			expect(setValueSpy).toHaveBeenCalledWith(recalls, { emitEvent: false });
 		});
 	});
 

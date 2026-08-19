@@ -550,35 +550,14 @@ describe('Test Results Reducer', () => {
 	});
 
 	describe('getRecalls actions', () => {
-		it('should set loading to true', () => {
-			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
-			const action = getRecalls();
-			const state = testResultsReducer(initialTestResultsState, action);
+		it.each([
+			getRecalls(),
+			getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } }),
+			getRecallsFailure({ error: 'unit testing error message' }),
+		])('should not change the global loading state for background recalls requests', (action) => {
+			const state = { ...initialTestResultsState, loading: true };
 
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
-		});
-
-		describe('getRequiredStandardsSuccess', () => {
-			it('should set loading to false', () => {
-				const newState: TestResultsState = { ...initialTestResultsState, loading: false };
-				const action = getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } });
-				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
-
-				expect(state).toEqual(newState);
-				expect(state).not.toBe(newState);
-			});
-
-			describe('getRequiredStandardsFailure', () => {
-				it('should set loading to false', () => {
-					const newState = { ...initialTestResultsState, loading: false };
-					const action = getRecallsFailure({ error: 'unit testing error message' });
-					const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
-
-					expect(state).toEqual(newState);
-					expect(state).not.toBe(newState);
-				});
-			});
+			expect(testResultsReducer(state, action)).toBe(state);
 		});
 	});
 });

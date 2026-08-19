@@ -45,9 +45,6 @@ import {
 	fetchTestResultsBySystemNumberFailed,
 	fetchTestResultsBySystemNumberSuccess,
 	fetchTestResultsSuccess,
-	getRecalls,
-	getRecallsFailure,
-	getRecallsSuccess,
 	initialContingencyTest,
 	patchEditingTestResult,
 	removeDefect,
@@ -179,8 +176,6 @@ export const testResultsReducer = createReducer(
 
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 
-	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
 	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
 );
 

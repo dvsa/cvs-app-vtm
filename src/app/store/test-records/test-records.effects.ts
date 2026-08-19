@@ -413,6 +413,7 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
+			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
 			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
 		)
 	);

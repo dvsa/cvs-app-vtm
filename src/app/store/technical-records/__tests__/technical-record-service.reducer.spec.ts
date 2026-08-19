@@ -28,6 +28,9 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
+	getTechRecordV3,
+	getTechRecordV3Failure,
+	getTechRecordV3Success,
 	removeSectionState,
 	updateADRAdditionalExaminerNotes,
 	updateBody,
@@ -92,6 +95,39 @@ describe('Vehicle Technical Record Reducer', () => {
 
 			expect(state).toEqual(newState);
 			expect(state).not.toBe(newState);
+		});
+	});
+
+	describe('getTechRecordV3', () => {
+		it('should keep the loading overlay visible while the technical record is requested', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: false };
+			const action = getTechRecordV3({ systemNumber: '001', createdTimestamp: '2026-08-19T12:00:00.000Z' });
+
+			const newState = vehicleTechRecordReducer(oldState, action);
+
+			expect(newState.loading).toBe(true);
+		});
+
+		it('should hide the loading overlay when the technical record request succeeds', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: true };
+			const vehicleTechRecord = {
+				systemNumber: '001',
+				createdTimestamp: '2026-08-19T12:00:00.000Z',
+				vin: 'testVin',
+			} as TechRecordType<'get'>;
+
+			const newState = vehicleTechRecordReducer(oldState, getTechRecordV3Success({ vehicleTechRecord }));
+
+			expect(newState.vehicleTechRecord).toBe(vehicleTechRecord);
+			expect(newState.loading).toBe(false);
+		});
+
+		it('should hide the loading overlay when the technical record request fails', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: true };
+
+			const newState = vehicleTechRecordReducer(oldState, getTechRecordV3Failure({ error: 'error' }));
+
+			expect(newState.loading).toBe(false);
 		});
 	});
 

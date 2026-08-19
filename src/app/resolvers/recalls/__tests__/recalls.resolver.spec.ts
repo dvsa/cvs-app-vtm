@@ -1,86 +1,63 @@
-import { HttpService } from '@/src/app/services/http/http.service';
-import { techRecord } from '@/src/app/store/technical-records';
-import { patchEditingTestResult } from '@/src/app/store/test-records';
-import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
-import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { Observable, of, take, throwError } from 'rxjs';
+import { techRecord } from '@store/technical-records';
+import { getRecalls } from '@store/test-records';
+import { NEVER, Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { recallsResolver } from '../recalls.resolver';
 
 describe('recallsResolver', () => {
-	let resolver: ResolveFn<Observable<RecallsSchema | undefined>>;
-	const actions$ = new Observable<Action>();
-	let testScheduler: TestScheduler;
-	let store: MockStore<State>;
-	let httpService: HttpService;
+	const actions$ = NEVER as Observable<Action>;
 	const activatedRouteSnapshot = {} as ActivatedRouteSnapshot;
 	const routerStateSnapshot = {} as RouterStateSnapshot;
-	const mockRecall = { hasRecall: true, manufacturer: 'MAN' } as RecallsSchema;
-	const mockTechRecord = { vin: '12345678901234567' } as TechRecordType<'get'>;
+	let store: MockStore<State>;
+	let testScheduler: TestScheduler;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [
-				provideHttpClient(),
-				provideHttpClientTesting(),
-				provideMockStore({ initialState: initialAppState }),
-				provideMockActions(() => actions$),
-			],
+			providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
 		});
-
-		resolver = (...resolverParameters) => TestBed.runInInjectionContext(() => recallsResolver(...resolverParameters));
 
 		store = TestBed.inject(MockStore);
-		httpService = TestBed.inject(HttpService);
-
-		store.overrideSelector(techRecord, mockTechRecord);
+		testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 	});
 
-	beforeEach(() => {
-		testScheduler = new TestScheduler((actual, expected) => {
-			expect(actual).toEqual(expected);
-		});
-	});
-
-	it('should be created', () => {
-		expect(resolver).toBeTruthy();
-	});
-
-	it('should add the result of the recalls check to the test record currently being edited', () => {
-		const spy = jest.spyOn(httpService, 'getRecalls').mockReturnValue(of(mockRecall));
+	it('starts the recalls request without blocking route activation', () => {
+		store.overrideSelector(techRecord, {
+			vin: '12345678901234567',
+			techRecord_vehicleType: VehicleTypes.HGV,
+		} as never);
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
-			resolver(activatedRouteSnapshot, routerStateSnapshot)
-		) as Observable<RecallsSchema | undefined>;
+			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
+		) as Observable<undefined>;
 
-		result.pipe(take(1)).subscribe((result) => {
-			expect(spy).toHaveBeenCalledWith(mockTechRecord.vin);
-			expect(store.dispatch).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls: mockRecall } }));
-			expect(result).toBe(mockRecall);
+		testScheduler.run(({ expectObservable }) => {
+			expectObservable(result).toBe('(a|)', { a: undefined });
 		});
+		expect(dispatchSpy).toHaveBeenCalledWith(getRecalls());
 	});
 
-	it('should add undefined (no recall) to the test record if an error occurs', () => {
-		const spy = jest
-			.spyOn(httpService, 'getRecalls')
-			.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+	it('does not request recalls for an unsupported vehicle type', () => {
+		store.overrideSelector(techRecord, {
+			vin: '12345678901234567',
+			techRecord_vehicleType: VehicleTypes.CAR,
+		} as never);
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
-			resolver(activatedRouteSnapshot, routerStateSnapshot)
-		) as Observable<RecallsSchema | undefined>;
+			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
+		) as Observable<undefined>;
 
-		result.pipe(take(1)).subscribe((result) => {
-			expect(spy).toHaveBeenCalledWith(mockTechRecord.vin);
-			expect(store.dispatch).not.toHaveBeenCalled();
-			expect(result).toBeUndefined();
+		testScheduler.run(({ expectObservable }) => {
+			expectObservable(result).toBe('(a|)', { a: undefined });
 		});
+		expect(dispatchSpy).not.toHaveBeenCalled();
 	});
 });

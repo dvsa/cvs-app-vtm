@@ -162,6 +162,9 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
+		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
+			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
+		}
 		this.prepopulateForm();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
