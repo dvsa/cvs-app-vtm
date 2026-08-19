@@ -3,6 +3,7 @@ import { GlobalWarningService } from '@/src/app/core/components/global-warning/g
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
+import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -60,6 +61,22 @@ describe('TestRecordV2Component', () => {
 
 		expect(selectSpy).toHaveBeenCalledTimes(1);
 		expect(selectSpy).toHaveBeenCalledWith('94');
+	});
+
+	it('should apply recalls prefetched by the v2 search flow when the create page opens', () => {
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+		store.overrideSelector(techRecord, { vin } as never);
+		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		component.ngOnInit();
+
+		expect(component.form.controls.recalls.value).toEqual(recalls);
+		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
 	});
 
 	describe('onReview', () => {

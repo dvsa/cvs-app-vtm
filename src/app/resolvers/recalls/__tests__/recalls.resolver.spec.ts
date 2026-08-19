@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, convertToParamMap } from '@angular/router';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { State, initialAppState } from '@store/index';
 import { techRecord } from '@store/technical-records';
 import { getRecalls, getRecallsSuccess, selectRecallsState } from '@store/test-records';
@@ -11,19 +12,27 @@ import { Observable, ReplaySubject, firstValueFrom } from 'rxjs';
 import { recallsResolver } from '../recalls.resolver';
 
 describe('recallsResolver', () => {
-	const activatedRouteSnapshot = {} as ActivatedRouteSnapshot;
+	const activatedRouteSnapshot = {
+		queryParamMap: convertToParamMap({ testType: '94' }),
+	} as ActivatedRouteSnapshot;
 	const routerStateSnapshot = {} as RouterStateSnapshot;
 	const vin = '12345678901234567';
 	let actions$: ReplaySubject<Action>;
 	let store: MockStore<State>;
+	const featureToggleService = { shouldUseV2TestResults: jest.fn().mockReturnValue(true) };
 
 	beforeEach(() => {
 		actions$ = new ReplaySubject<Action>(1);
 		TestBed.configureTestingModule({
-			providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => actions$),
+				{ provide: FeatureToggleService, useValue: featureToggleService },
+			],
 		});
 
 		store = TestBed.inject(MockStore);
+		featureToggleService.shouldUseV2TestResults.mockReturnValue(true);
 	});
 
 	it('waits for recalls when the earlier request has not completed', async () => {
@@ -61,6 +70,22 @@ describe('recallsResolver', () => {
 
 		expect(await firstValueFrom(result)).toEqual(recalls);
 		expect(dispatchSpy).not.toHaveBeenCalled();
+	});
+
+	it('keeps the legacy test flow non-blocking', async () => {
+		store.overrideSelector(techRecord, {
+			vin,
+			techRecord_vehicleType: VehicleTypes.HGV,
+		} as never);
+		featureToggleService.shouldUseV2TestResults.mockReturnValue(false);
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		const result = TestBed.runInInjectionContext(() =>
+			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
+		) as Observable<undefined>;
+
+		await expect(firstValueFrom(result)).resolves.toBeUndefined();
+		expect(dispatchSpy).toHaveBeenCalledWith(getRecalls({ vin }));
 	});
 
 	it('does not request recalls for an unsupported vehicle type', async () => {

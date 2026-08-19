@@ -127,9 +127,6 @@ export const testResultsReducer = createReducer(
 		recalls: action.recalls,
 		recallsVin: action.vin,
 		recallsLoading: false,
-		editingTestResult: state.editingTestResult
-			? merge({}, state.editingTestResult, { recalls: action.recalls })
-			: undefined,
 	})),
 	on(getRecallsFailure, (state, action) => ({
 		...state,

@@ -14,6 +14,8 @@ import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/route
 import { techRecord } from '@/src/app/store/technical-records';
 import {
 	cleanTestResultPayload,
+	patchEditingTestResult,
+	selectRecallsState,
 	selectedTestResultState,
 	testResultInEdit,
 	toEditOrNotToEdit,
@@ -166,9 +168,20 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
 		}
 		this.prepopulateForm();
+		this.applyPrefetchedRecalls();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
 		this.loadEditingTestResult();
+	}
+
+	private applyPrefetchedRecalls(): void {
+		if (this.initialMode() !== Modes.EDIT) return;
+
+		const recallsState = this.store.selectSignal(selectRecallsState)();
+		if (!recallsState.recalls || recallsState.vin !== this.techRecord()?.vin) return;
+
+		this.form.controls.recalls.setValue(recallsState.recalls, { emitEvent: false });
+		this.store.dispatch(patchEditingTestResult({ testResult: { recalls: recallsState.recalls } }));
 	}
 
 	ngOnDestroy(): void {

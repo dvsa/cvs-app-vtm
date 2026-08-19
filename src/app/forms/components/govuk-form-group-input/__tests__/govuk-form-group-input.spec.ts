@@ -137,4 +137,14 @@ describe('GovukFormGroupInputComponent', () => {
 
 		expect(writeSpy).toHaveBeenCalled();
 	});
+
+	it('should propagate null without throwing when a text input is cleared', () => {
+		const onChange = jest.fn();
+		component.registerOnChange(onChange);
+		const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+		input.value = '';
+
+		expect(() => input.dispatchEvent(new Event('input'))).not.toThrow();
+		expect(onChange).toHaveBeenCalledWith(null);
+	});
 });

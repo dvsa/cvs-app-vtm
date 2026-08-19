@@ -40,7 +40,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	isTestTypeOldIvaOrMsva,
-	selectRecallsState,
+	patchEditingTestResult,
 	selectedTestResultState,
 	templateSectionsChanged,
 	testResultInEdit,
@@ -140,13 +140,10 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 }));
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
-import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { Router } from '@angular/router';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { getTechRecordV3Success } from '../../technical-records';
 
 describe('TestResultsEffects', () => {
 	let effects: TestResultsEffects;
@@ -859,31 +856,6 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('getRecalls$', () => {
-		it('should start fetching recalls as soon as a supported technical record loads', () => {
-			const vehicleTechRecord = createMockHgv(1234) as TechRecordType<'get'>;
-
-			testScheduler.run(({ hot, expectObservable }) => {
-				actions$ = hot('-a', { a: getTechRecordV3Success({ vehicleTechRecord }) });
-
-				expectObservable(effects.prefetchRecalls$).toBe('-b', { b: getRecalls({ vin: vehicleTechRecord.vin }) });
-			});
-		});
-
-		it('should not restart a recall request already started from search results', () => {
-			const vehicleTechRecord = createMockHgv(1234) as TechRecordType<'get'>;
-			store.overrideSelector(selectRecallsState, {
-				recalls: undefined,
-				vin: vehicleTechRecord.vin,
-				loading: true,
-			});
-
-			testScheduler.run(({ hot, expectObservable }) => {
-				actions$ = hot('-a|', { a: getTechRecordV3Success({ vehicleTechRecord }) });
-
-				expectObservable(effects.prefetchRecalls$).toBe('--|');
-			});
-		});
-
 		it('should return getRecallsSuccess action on a successful API call', () => {
 			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
 
@@ -931,6 +903,19 @@ describe('TestResultsEffects', () => {
 			});
 
 			expect(setValueSpy).toHaveBeenCalledWith(recalls, { emitEvent: false });
+		});
+
+		it('should patch recalls into a test result that is already being edited', () => {
+			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
+			store.overrideSelector(testResultInEdit, mockTestResult());
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a', { a: getRecallsSuccess({ vin: '12345678901234567', recalls }) });
+
+				expectObservable(effects.onGetRecallsSuccess$).toBe('-b', {
+					b: patchEditingTestResult({ testResult: { recalls } }),
+				});
+			});
 		});
 	});
 

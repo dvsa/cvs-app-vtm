@@ -12,7 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectTechRecord } from '@store/technical-records';
-import { initialContingencyTest, selectRecallsState } from '@store/test-records';
+import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -27,8 +27,8 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 			const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
 			const trailerId = techRecord?.techRecord_vehicleType === 'trl' ? techRecord.trailerId : undefined;
 			return store.select(selectTechRecord).pipe(
-				withLatestFrom(userService.user$, store.select(selectRecallsState)),
-				map(([viewableTechRecord, user, recallsState]) => {
+				withLatestFrom(userService.user$),
+				map(([viewableTechRecord, user]) => {
 					const now = new Date();
 					return {
 						vin,
@@ -86,7 +86,6 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
 						make: getBodyMake(viewableTechRecord),
 						model: getBodyModel(viewableTechRecord),
 						bodyType: getBodyType(viewableTechRecord),
-						recalls: recallsState.vin === vin ? recallsState.recalls : undefined,
 						testTypes: [
 							{
 								testResult: 'pass',

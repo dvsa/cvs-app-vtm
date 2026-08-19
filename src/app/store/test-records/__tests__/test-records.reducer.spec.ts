@@ -573,14 +573,14 @@ describe('Test Results Reducer', () => {
 			expect(state.loading).toBe(false);
 		});
 
-		it('should patch recalls into an existing editing test result', () => {
+		it('should leave an existing editing test result unchanged while caching recalls', () => {
 			const editingTestResult = { vin, testTypes: [] } as unknown as TestResultSchema;
 			const state = testResultsReducer(
 				{ ...initialTestResultsState, editingTestResult, recallsLoading: true, recallsVin: vin },
 				getRecallsSuccess({ vin, recalls })
 			);
 
-			expect(state.editingTestResult?.recalls).toEqual(recalls);
+			expect(state.editingTestResult).toBe(editingTestResult);
 		});
 
 		it('should stop the background loading state when the request fails', () => {
