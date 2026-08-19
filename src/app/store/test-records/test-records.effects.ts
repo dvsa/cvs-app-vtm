@@ -9,12 +9,13 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -68,6 +69,7 @@ export class TestResultsEffects {
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
 	private testService = inject(TestService);
+	private featureToggleService = inject(FeatureToggleService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -352,8 +354,23 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
-				map((action) => [action.payload.changes.systemNumber as string]),
-				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
+				map((action) => action.payload.changes),
+				switchMap((testResult) => {
+					const systemNumber = testResult.systemNumber as string;
+					const testType = testResult.testTypes?.[0];
+					const shouldWaitForV2FirstTestPromotion =
+						!!testType &&
+						this.featureToggleService.shouldUseV2TestResults(testType.testTypeId) &&
+						this.testRecordsService.isTestTypeFirstTest(testType.testTypeId) &&
+						(testType.testResult === TestResults.PASS || testType.testResult === TestResults.PRS);
+
+					return shouldWaitForV2FirstTestPromotion
+						? this.httpService.waitForTechRecord(systemNumber, {
+								expectedStatus: StatusCodes.CURRENT,
+								initialDelayMs: 0,
+							})
+						: this.httpService.waitForTechRecord(systemNumber);
+				}),
 				filter(Boolean),
 				switchMap((techRecord) =>
 					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])

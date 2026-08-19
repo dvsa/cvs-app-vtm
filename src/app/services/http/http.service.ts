@@ -475,21 +475,30 @@ export class HttpService {
 		return this.searchTechRecords(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
 	}
 
-	waitForTechRecord(systemNumber: string) {
-		return timer(3000).pipe(
-			switchMap(() => defer(() => this.searchTechRecordBySystemNumber(systemNumber))),
-			expand((results, attempt) => {
-				const record = results.find((r) => r.techRecord_statusCode !== StatusCodes.ARCHIVED);
+	waitForTechRecord(systemNumber: string, options: { expectedStatus?: StatusCodes; initialDelayMs?: number } = {}) {
+		const initialDelayMs = options.initialDelayMs ?? 3000;
+		const search = () => defer(() => this.searchTechRecordBySystemNumber(systemNumber));
+		const initialSearch = initialDelayMs > 0 ? timer(initialDelayMs).pipe(switchMap(search)) : search();
+		const findExpectedRecord = (results: TechRecordSearchSchema[]) =>
+			options.expectedStatus
+				? results.find((record) => record.techRecord_statusCode === options.expectedStatus)
+				: results.find((record) => record.techRecord_statusCode !== StatusCodes.ARCHIVED);
 
-				if (record) {
+		return initialSearch.pipe(
+			expand((results, attempt) => {
+				if (findExpectedRecord(results)) {
 					return EMPTY; // stop retrying
 				}
 
 				const delayMs = Math.min(500 * 2 ** attempt, 5000); // exponential backoff (max 5s)
 
-				return timer(delayMs).pipe(switchMap(() => this.searchTechRecordBySystemNumber(systemNumber)));
+				return timer(delayMs).pipe(switchMap(search));
 			}),
 			map((results) => {
+				if (options.expectedStatus) {
+					return findExpectedRecord(results);
+				}
+
 				return (
 					results.find((r) => r.techRecord_statusCode === 'current') ??
 					results.find((r) => r.techRecord_statusCode === 'provisional') ??

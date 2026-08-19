@@ -9,6 +9,7 @@ import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
 
@@ -565,6 +566,56 @@ describe('HttpService', () => {
 			jest.advanceTimersByTime(3000);
 			jest.runAllTimers();
 			expect(spy).toHaveBeenCalled();
+		});
+
+		it('should allow the first search attempt to run immediately', () => {
+			const systemNumber = 'TEST-IMMEDIATE';
+			const currentRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: StatusCodes.CURRENT,
+			} as any;
+			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([currentRecord]));
+			let result: unknown;
+
+			httpService.waitForTechRecord(systemNumber, { initialDelayMs: 0 }).subscribe((value) => (result = value));
+
+			expect(spy).toHaveBeenCalledTimes(1);
+			expect(result).toEqual(currentRecord);
+		});
+
+		it('should keep polling until the expected record status is available', () => {
+			const systemNumber = 'TEST-PROMOTION';
+			const provisionalRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: StatusCodes.PROVISIONAL,
+			} as any;
+			const currentRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-02T00:00:00Z',
+				techRecord_statusCode: StatusCodes.CURRENT,
+			} as any;
+			const spy = jest
+				.spyOn(httpService, 'searchTechRecordBySystemNumber')
+				.mockReturnValueOnce(of([provisionalRecord]))
+				.mockReturnValueOnce(of([provisionalRecord, currentRecord]));
+			let result: unknown;
+
+			httpService
+				.waitForTechRecord(systemNumber, {
+					expectedStatus: StatusCodes.CURRENT,
+					initialDelayMs: 0,
+				})
+				.subscribe((value) => (result = value));
+
+			expect(spy).toHaveBeenCalledTimes(1);
+			expect(result).toBeUndefined();
+
+			jest.advanceTimersByTime(500);
+
+			expect(spy).toHaveBeenCalledTimes(2);
+			expect(result).toEqual(currentRecord);
 		});
 
 		it('should stop retrying when a non-archived record is found', (done) => {
