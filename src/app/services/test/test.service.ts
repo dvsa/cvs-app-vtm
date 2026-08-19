@@ -1,5 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
 import {
 	DefectDetailsSchema,
 	EUVehicleCategory,
@@ -131,6 +134,20 @@ export class TestService {
 					notes: this.fb.control<string>(' '),
 					reasonsForIssue: this.fb.control<string[]>([]),
 				}),
+				loadStatus: this.fb.group({
+					vehicleLoadStatus: this.fb.control<VehicleLoadStatusType | null | undefined>({
+						value: undefined,
+						disabled: false,
+					}),
+					unladenBodyType: this.fb.control<UnladenBodyType | null | undefined>({ value: undefined, disabled: false }),
+					otherUnladenBodyType: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+					reasonForNotLoading: this.fb.control<ReasonForNotLoading | null | undefined>({
+						value: undefined,
+						disabled: false,
+					}),
+					partiallyLadenReason: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+					otherReasonForNotLoading: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+				}),
 			}),
 		]),
 	});
@@ -225,6 +242,7 @@ export const INITIAL_TEST_RESULT_FORM_VALUE = {
 			testCode: undefined,
 			createdAt: undefined,
 			testTypeClassification: undefined,
+			loadStatus: {},
 			centralDocs: {
 				issueRequired: false,
 				notes: ' ',

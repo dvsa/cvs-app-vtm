@@ -13,7 +13,14 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
+import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
+import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
+import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Modes } from '@models/modes.enum';
 import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
@@ -33,6 +40,9 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
 		DefaultNullOrEmpty,
+		GovukFormGroupSelectComponent,
+		GovukFormGroupTextareaComponent,
+		RadioComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,6 +64,8 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
+	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
+	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 
 	ngOnInit(): void {
 		this.addValidators();
@@ -110,6 +122,41 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.pastDate('Test end date and time'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
 		]);
+
+		const loadStatusGroup = testTypeGroup.controls.loadStatus;
+		loadStatusGroup.controls.vehicleLoadStatus.setValidators([
+			this.commonValidators.applyWhen(() => this.shouldShowLoadStatus(), this.commonValidators.required('Load status')),
+		]);
+		loadStatusGroup.controls.unladenBodyType.setValidators([
+			this.commonValidators.applyWhen(() => this.isUnladenSelected(), this.commonValidators.required('Body type')),
+		]);
+		loadStatusGroup.controls.otherUnladenBodyType.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isOtherUnladenBodyTypeRequired(),
+				this.commonValidators.required('Enter body type'),
+				this.commonValidators.maxLength(200, 'Enter body type')
+			),
+		]);
+		loadStatusGroup.controls.reasonForNotLoading.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isUnladenSelected(),
+				this.commonValidators.required('Reason for not loading')
+			),
+		]);
+		loadStatusGroup.controls.partiallyLadenReason.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isPartiallyLadenSelected(),
+				this.commonValidators.required('Partially laden reason'),
+				this.commonValidators.maxLength(200, 'Partially laden reason')
+			),
+		]);
+		loadStatusGroup.controls.otherReasonForNotLoading.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isOtherReasonForNotLoadingRequired(),
+				this.commonValidators.required('Enter reason for not loading'),
+				this.commonValidators.maxLength(200, 'Enter reason for not loading')
+			),
+		]);
 	}
 
 	disableFields(): void {
@@ -154,6 +201,50 @@ export class TestComponent implements OnInit, OnDestroy {
 		return TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
+	shouldShowLoadStatus(): boolean {
+		const testType = this.testResult()?.testTypes?.[0];
+		if (!testType) return false;
+
+		// Applicable for HGV/TRL annual tests, or full prohibition tests
+		const loadStatusTestIds = ['94', '40', '70', '107'];
+		if (loadStatusTestIds.includes(testType.testTypeId)) return true;
+
+		// Also applicable for HGV/TRL annual test retests
+		const loadStatusRetestIds = ['53', '98'];
+		if (!loadStatusRetestIds.includes(testType.testTypeId)) return false;
+
+		if (testType.testResult !== TestResults.FAIL) return false;
+		if (!Array.isArray(testType.defects)) return false;
+
+		return testType.defects.some((defect) => {
+			return [59, 71, 72, 73].includes(defect.imNumber);
+		});
+	}
+
+	isUnladenSelected(): boolean {
+		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
+		return vehicleLoadStatus === VehicleLoadStatusType.UNLADEN;
+	}
+
+	isPartiallyLadenSelected(): boolean {
+		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
+		return vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN;
+	}
+
+	isOtherUnladenBodyTypeRequired(): boolean {
+		if (!this.isUnladenSelected()) return false;
+
+		const unladenBodyType = this.form.get('testTypes.0.loadStatus.unladenBodyType')?.getRawValue();
+		return unladenBodyType === UnladenBodyType.OTHER;
+	}
+
+	isOtherReasonForNotLoadingRequired(): boolean {
+		if (!this.isUnladenSelected()) return false;
+
+		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
+		return reasonForNotLoading === ReasonForNotLoading.OTHER;
+	}
+
 	private formatDateTimeLocal(isoString: string | null | undefined): string {
 		if (!isoString) return '';
 		const date = new Date(isoString);
@@ -177,4 +268,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	protected readonly Modes = Modes;
+	protected readonly FORM_NODE_WIDTH = FormNodeWidth;
+	protected readonly UNLADEN_BODY_TYPES = UnladenBodyType;
+	protected readonly REASONS_FOR_NOT_LOADING = ReasonForNotLoading;
+	protected readonly VEHICLE_LOAD_STATUS_TYPES = VehicleLoadStatusType;
 }
