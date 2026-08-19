@@ -40,7 +40,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	isTestTypeOldIvaOrMsva,
-	patchEditingTestResult,
+	selectRecallsState,
 	selectedTestResultState,
 	templateSectionsChanged,
 	testResultInEdit,
@@ -146,7 +146,7 @@ import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { techRecord } from '../../technical-records';
+import { getTechRecordV3Success } from '../../technical-records';
 
 describe('TestResultsEffects', () => {
 	let effects: TestResultsEffects;
@@ -859,37 +859,62 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('getRecalls$', () => {
+		it('should start fetching recalls as soon as a supported technical record loads', () => {
+			const vehicleTechRecord = createMockHgv(1234) as TechRecordType<'get'>;
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a', { a: getTechRecordV3Success({ vehicleTechRecord }) });
+
+				expectObservable(effects.prefetchRecalls$).toBe('-b', { b: getRecalls({ vin: vehicleTechRecord.vin }) });
+			});
+		});
+
+		it('should not restart a recall request already started from search results', () => {
+			const vehicleTechRecord = createMockHgv(1234) as TechRecordType<'get'>;
+			store.overrideSelector(selectRecallsState, {
+				recalls: undefined,
+				vin: vehicleTechRecord.vin,
+				loading: true,
+			});
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a|', { a: getTechRecordV3Success({ vehicleTechRecord }) });
+
+				expectObservable(effects.prefetchRecalls$).toBe('--|');
+			});
+		});
+
 		it('should return getRecallsSuccess action on a successful API call', () => {
 			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
 
-			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+			const vin = '12345678901234567';
 
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				// mock action to trigger effect
-				actions$ = hot('-a--', { a: getRecalls() });
+				actions$ = hot('-a--', { a: getRecalls({ vin }) });
 
 				// mock service call
 				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--a|', { a: recalls }));
 
 				// expect effect to return success action
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
-					b: getRecallsSuccess({ recalls }),
+					b: getRecallsSuccess({ vin, recalls }),
 				});
 			});
 		});
 
 		it('should return getRecallsFailed action on API error', () => {
-			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+			const vin = '12345678901234567';
 
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				actions$ = hot('-a--', { a: getRecalls() });
+				actions$ = hot('-a--', { a: getRecalls({ vin }) });
 
 				const expectedError = new Error('Bad Gateway');
 
 				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
-					b: getRecallsFailure({ error: 'Bad Gateway' }),
+					b: getRecallsFailure({ vin, error: 'Bad Gateway' }),
 				});
 			});
 		});
@@ -898,12 +923,11 @@ describe('TestResultsEffects', () => {
 			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
 			const setValueSpy = jest.spyOn(effects['testService'].form.controls.recalls, 'setValue');
 
-			testScheduler.run(({ hot, expectObservable }) => {
-				actions$ = hot('-a', { a: getRecallsSuccess({ recalls }) });
+			testScheduler.run(({ hot, flush }) => {
+				actions$ = hot('-a', { a: getRecallsSuccess({ vin: '12345678901234567', recalls }) });
 
-				expectObservable(effects.onGetRecallsSuccess$).toBe('-b', {
-					b: patchEditingTestResult({ testResult: { recalls } }),
-				});
+				effects.onGetRecallsSuccess$.subscribe();
+				flush();
 			});
 
 			expect(setValueSpy).toHaveBeenCalledWith(recalls, { emitEvent: false });

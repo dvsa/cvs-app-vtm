@@ -1,13 +1,16 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { techRecord } from '@store/technical-records';
-import { getRecalls } from '@store/test-records';
-import { of } from 'rxjs';
+import { getRecalls, getRecallsFailure, getRecallsSuccess, selectRecallsState } from '@store/test-records';
+import { filter, map, of, take } from 'rxjs';
 
-export const recallsResolver: ResolveFn<void> = () => {
+export const recallsResolver: ResolveFn<RecallsSchema | undefined> = () => {
 	const store = inject(Store);
+	const actions$ = inject(Actions);
 	const record = store.selectSignal(techRecord)();
 
 	if (
@@ -21,9 +24,19 @@ export const recallsResolver: ResolveFn<void> = () => {
 		return of(undefined);
 	}
 
-	store.dispatch(getRecalls());
+	const recallsState = store.selectSignal(selectRecallsState)();
+	if (recallsState.vin === record.vin && recallsState.recalls) {
+		return of(recallsState.recalls);
+	}
 
-	// Recalls are patched into the editing test result by TestResultsEffects.
-	// Do not hold route activation open while the background request completes.
-	return of(undefined);
+	if (recallsState.vin !== record.vin || !recallsState.loading) {
+		store.dispatch(getRecalls({ vin: record.vin }));
+	}
+
+	return actions$.pipe(
+		ofType(getRecallsSuccess, getRecallsFailure),
+		filter((action) => action.vin === record.vin),
+		take(1),
+		map((action) => ('recalls' in action ? action.recalls : undefined))
+	);
 };

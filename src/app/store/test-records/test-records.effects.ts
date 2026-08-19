@@ -27,7 +27,7 @@ import merge from 'lodash.merge';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
-import { techRecord } from '../technical-records';
+import { getTechRecordV3Success } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -43,7 +43,6 @@ import {
 	getRecalls,
 	getRecallsFailure,
 	getRecallsSuccess,
-	patchEditingTestResult,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -53,6 +52,7 @@ import {
 import {
 	isTestTypeOldIvaOrMsva,
 	selectAllTestResultsInDateOrder,
+	selectRecallsState,
 	selectedTestResultState,
 	testResultInEdit,
 } from './test-records.selectors';
@@ -397,24 +397,40 @@ export class TestResultsEffects {
 		{ dispatch: false }
 	);
 
+	prefetchRecalls$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(getTechRecordV3Success),
+			filter(({ vehicleTechRecord }) => {
+				const vehicleType = vehicleTechRecord.techRecord_vehicleType;
+				return vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV || vehicleType === VehicleTypes.TRL;
+			}),
+			concatLatestFrom(() => this.store.select(selectRecallsState)),
+			filter(
+				([{ vehicleTechRecord }, recallsState]) =>
+					recallsState.vin !== vehicleTechRecord.vin || (!recallsState.loading && !recallsState.recalls)
+			),
+			map(([{ vehicleTechRecord }]) => getRecalls({ vin: vehicleTechRecord.vin }))
+		)
+	);
+
 	onGetRecalls$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecalls),
-			concatLatestFrom(() => this.store.select(techRecord)),
-			switchMap(([_, techRecord]) =>
-				this.httpService.getRecalls(techRecord!.vin).pipe(
-					map((recalls) => getRecallsSuccess({ recalls })),
-					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+			switchMap(({ vin }) =>
+				this.httpService.getRecalls(vin).pipe(
+					map((recalls) => getRecallsSuccess({ vin, recalls })),
+					catchError((e) => of(getRecallsFailure({ vin, error: e?.message })))
 				)
 			)
 		)
 	);
 
-	onGetRecallsSuccess$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(getRecallsSuccess),
-			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
-			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
-		)
+	onGetRecallsSuccess$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(getRecallsSuccess),
+				tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false }))
+			),
+		{ dispatch: false }
 	);
 }

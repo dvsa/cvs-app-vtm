@@ -11,7 +11,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
-import { initialContingencyTest } from '@store/test-records';
+import { initialContingencyTest, selectRecallsState } from '@store/test-records';
 import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
 import { contingencyTestResolver, getBodyMake, getBodyModel, getBodyType } from '../contingency-test.resolver';
 
@@ -60,6 +60,23 @@ describe('ContingencyTestResolver', () => {
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(
 			expect.objectContaining({ type: initialContingencyTest.type, testResult: expect.anything() })
+		);
+	});
+
+	it('should include prefetched recalls in the initial test result', async () => {
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const technicalRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		techRecordService.techRecord$ = of(technicalRecord);
+		store.overrideSelector(selectRecallsState, { recalls, vin: technicalRecord.vin, loading: false });
+
+		const result = TestBed.runInInjectionContext(() =>
+			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+		) as Observable<boolean>;
+
+		expect(await firstValueFrom(result)).toBe(true);
+		expect(dispatchSpy).toHaveBeenCalledWith(
+			initialContingencyTest({ testResult: expect.objectContaining({ recalls }) })
 		);
 	});
 

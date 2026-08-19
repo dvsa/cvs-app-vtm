@@ -550,14 +550,47 @@ describe('Test Results Reducer', () => {
 	});
 
 	describe('getRecalls actions', () => {
-		it.each([
-			getRecalls(),
-			getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } }),
-			getRecallsFailure({ error: 'unit testing error message' }),
-		])('should not change the global loading state for background recalls requests', (action) => {
-			const state = { ...initialTestResultsState, loading: true };
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
 
-			expect(testResultsReducer(state, action)).toBe(state);
+		it('should cache the VIN and mark the background request as loading', () => {
+			const state = testResultsReducer(initialTestResultsState, getRecalls({ vin }));
+
+			expect(state.recallsVin).toBe(vin);
+			expect(state.recallsLoading).toBe(true);
+			expect(state.loading).toBe(false);
+		});
+
+		it('should cache recalls without creating a partial editing test result', () => {
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, recallsLoading: true, recallsVin: vin },
+				getRecallsSuccess({ vin, recalls })
+			);
+
+			expect(state.recalls).toEqual(recalls);
+			expect(state.recallsLoading).toBe(false);
+			expect(state.editingTestResult).toBeUndefined();
+			expect(state.loading).toBe(false);
+		});
+
+		it('should patch recalls into an existing editing test result', () => {
+			const editingTestResult = { vin, testTypes: [] } as unknown as TestResultSchema;
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, editingTestResult, recallsLoading: true, recallsVin: vin },
+				getRecallsSuccess({ vin, recalls })
+			);
+
+			expect(state.editingTestResult?.recalls).toEqual(recalls);
+		});
+
+		it('should stop the background loading state when the request fails', () => {
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, recallsLoading: true, recallsVin: vin },
+				getRecallsFailure({ vin, error: 'unit testing error message' })
+			);
+
+			expect(state.recallsLoading).toBe(false);
+			expect(state.loading).toBe(false);
 		});
 	});
 });

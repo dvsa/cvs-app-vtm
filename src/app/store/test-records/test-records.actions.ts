@@ -127,12 +127,15 @@ export const removeRequiredStandard = createAction(
 
 export const updateResultOfTestRequiredStandards = createAction('[test-results] update test result required standards');
 
-export const getRecalls = createAction('[test-results] get recalls');
+export const getRecalls = createAction('[test-results] get recalls', props<{ vin: string }>());
 export const getRecallsSuccess = createAction(
 	'[test-results] get recalls success',
-	props<{ recalls: RecallsSchema }>()
+	props<{ vin: string; recalls: RecallsSchema }>()
 );
-export const getRecallsFailure = createAction('[test-results] get recalls failed', props<GlobalError>());
+export const getRecallsFailure = createAction(
+	'[test-results] get recalls failed',
+	props<GlobalError & { vin: string }>()
+);
 
 export const setTestResultLoading = createAction(
 	'[test-results] set test result loading',

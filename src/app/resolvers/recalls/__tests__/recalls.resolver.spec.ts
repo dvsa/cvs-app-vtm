@@ -6,47 +6,66 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { techRecord } from '@store/technical-records';
-import { getRecalls } from '@store/test-records';
-import { NEVER, Observable } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
+import { getRecalls, getRecallsSuccess, selectRecallsState } from '@store/test-records';
+import { Observable, ReplaySubject, firstValueFrom } from 'rxjs';
 import { recallsResolver } from '../recalls.resolver';
 
 describe('recallsResolver', () => {
-	const actions$ = NEVER as Observable<Action>;
 	const activatedRouteSnapshot = {} as ActivatedRouteSnapshot;
 	const routerStateSnapshot = {} as RouterStateSnapshot;
+	const vin = '12345678901234567';
+	let actions$: ReplaySubject<Action>;
 	let store: MockStore<State>;
-	let testScheduler: TestScheduler;
 
 	beforeEach(() => {
+		actions$ = new ReplaySubject<Action>(1);
 		TestBed.configureTestingModule({
 			providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
 		});
 
 		store = TestBed.inject(MockStore);
-		testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 	});
 
-	it('starts the recalls request without blocking route activation', () => {
+	it('waits for recalls when the earlier request has not completed', async () => {
 		store.overrideSelector(techRecord, {
-			vin: '12345678901234567',
+			vin,
 			techRecord_vehicleType: VehicleTypes.HGV,
 		} as never);
+		store.overrideSelector(selectRecallsState, { recalls: undefined, vin: undefined, loading: false });
 		const dispatchSpy = jest.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
-		) as Observable<undefined>;
+		) as Observable<{ hasRecall: boolean; manufacturer?: string } | undefined>;
+		const resolved = firstValueFrom(result);
 
-		testScheduler.run(({ expectObservable }) => {
-			expectObservable(result).toBe('(a|)', { a: undefined });
-		});
-		expect(dispatchSpy).toHaveBeenCalledWith(getRecalls());
+		expect(dispatchSpy).toHaveBeenCalledWith(getRecalls({ vin }));
+
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		actions$.next(getRecallsSuccess({ vin, recalls }));
+		expect(await resolved).toEqual(recalls);
 	});
 
-	it('does not request recalls for an unsupported vehicle type', () => {
+	it('uses recalls that were prefetched for the selected vehicle', async () => {
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
 		store.overrideSelector(techRecord, {
-			vin: '12345678901234567',
+			vin,
+			techRecord_vehicleType: VehicleTypes.HGV,
+		} as never);
+		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		const result = TestBed.runInInjectionContext(() =>
+			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
+		) as Observable<typeof recalls | undefined>;
+
+		expect(await firstValueFrom(result)).toEqual(recalls);
+		expect(dispatchSpy).not.toHaveBeenCalled();
+	});
+
+	it('does not request recalls for an unsupported vehicle type', async () => {
+		store.overrideSelector(techRecord, {
+			vin,
 			techRecord_vehicleType: VehicleTypes.CAR,
 		} as never);
 		const dispatchSpy = jest.spyOn(store, 'dispatch');
@@ -55,9 +74,7 @@ describe('recallsResolver', () => {
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
 		) as Observable<undefined>;
 
-		testScheduler.run(({ expectObservable }) => {
-			expectObservable(result).toBe('(a|)', { a: undefined });
-		});
+		await expect(firstValueFrom(result)).resolves.toBeUndefined();
 		expect(dispatchSpy).not.toHaveBeenCalled();
 	});
 });
