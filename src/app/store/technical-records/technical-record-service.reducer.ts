@@ -52,6 +52,8 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
+	getTechRecordV3,
+	getTechRecordV3Failure,
 	getTechRecordV3Success,
 	promoteTechRecord,
 	promoteTechRecordFailure,
@@ -115,6 +117,14 @@ export const vehicleTechRecordReducer = createReducer(
 		techRecordHistory: action.techRecordHistory,
 	})),
 	on(getBySystemNumberFailure, (state) => ({ ...state, loading: false, techRecordHistory: [] })),
+
+	on(getTechRecordV3, (state) => ({ ...state, loading: true })),
+	on(getTechRecordV3Success, (state, action) => ({
+		...state,
+		vehicleTechRecord: action.vehicleTechRecord,
+		loading: false,
+	})),
+	on(getTechRecordV3Failure, (state) => ({ ...state, loading: false })),
 
 	on(updateTechRecord, defaultArgs),
 	on(updateTechRecordSuccess, successArgs),
@@ -189,8 +199,6 @@ export const vehicleTechRecordReducer = createReducer(
 			batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action),
 		})
 	),
-
-	on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord })),
 
 	on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
 	on(clearScrollPosition, (state) => ({ ...state, scrollPosition: [0, 0] as [number, number] })),

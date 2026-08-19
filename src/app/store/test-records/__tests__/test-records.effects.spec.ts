@@ -40,6 +40,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	isTestTypeOldIvaOrMsva,
+	patchEditingTestResult,
 	selectedTestResultState,
 	templateSectionsChanged,
 	testResultInEdit,
@@ -139,13 +140,10 @@ jest.mock('@forms/templates/test-records/master.template', () => ({
 }));
 // This must be imported here to avoid the test suite failing -
 // https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization/67114668#67114668
-import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { Router } from '@angular/router';
 import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import { TestResultSchema, VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { techRecord } from '../../technical-records';
 
 describe('TestResultsEffects', () => {
 	let effects: TestResultsEffects;
@@ -861,34 +859,61 @@ describe('TestResultsEffects', () => {
 		it('should return getRecallsSuccess action on a successful API call', () => {
 			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
 
-			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+			const vin = '12345678901234567';
 
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				// mock action to trigger effect
-				actions$ = hot('-a--', { a: getRecalls() });
+				actions$ = hot('-a--', { a: getRecalls({ vin }) });
 
 				// mock service call
 				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--a|', { a: recalls }));
 
 				// expect effect to return success action
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
-					b: getRecallsSuccess({ recalls }),
+					b: getRecallsSuccess({ vin, recalls }),
 				});
 			});
 		});
 
 		it('should return getRecallsFailed action on API error', () => {
-			store.overrideSelector(techRecord, createMockHgv(1234) as TechRecordType<'get'>);
+			const vin = '12345678901234567';
 
 			testScheduler.run(({ hot, cold, expectObservable }) => {
-				actions$ = hot('-a--', { a: getRecalls() });
+				actions$ = hot('-a--', { a: getRecalls({ vin }) });
 
 				const expectedError = new Error('Bad Gateway');
 
 				jest.spyOn(httpService, 'getRecalls').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.onGetRecalls$).toBe('---b', {
-					b: getRecallsFailure({ error: 'Bad Gateway' }),
+					b: getRecallsFailure({ vin, error: 'Bad Gateway' }),
+				});
+			});
+		});
+
+		it('should keep the shared form in sync when recalls load in the background', () => {
+			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
+			const setValueSpy = jest.spyOn(effects['testService'].form.controls.recalls, 'setValue');
+
+			testScheduler.run(({ hot, flush }) => {
+				actions$ = hot('-a', { a: getRecallsSuccess({ vin: '12345678901234567', recalls }) });
+
+				effects.onGetRecallsSuccess$.subscribe();
+				flush();
+			});
+
+			expect(setValueSpy).toHaveBeenCalledWith(recalls, { emitEvent: false });
+		});
+
+		it('should patch recalls into a test result that is already being edited', () => {
+			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
+			store.overrideSelector(testResultInEdit, mockTestResult());
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a', { a: getRecallsSuccess({ vin: '12345678901234567', recalls }) });
+
+				expectObservable(effects.onGetRecallsSuccess$).toBe('-b', {
+					b: patchEditingTestResult({ testResult: { recalls } }),
 				});
 			});
 		});

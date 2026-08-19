@@ -27,7 +27,6 @@ import merge from 'lodash.merge';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
-import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -400,11 +399,10 @@ export class TestResultsEffects {
 	onGetRecalls$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecalls),
-			concatLatestFrom(() => this.store.select(techRecord)),
-			switchMap(([_, techRecord]) =>
-				this.httpService.getRecalls(techRecord!.vin).pipe(
-					map((recalls) => getRecallsSuccess({ recalls })),
-					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+			switchMap(({ vin }) =>
+				this.httpService.getRecalls(vin).pipe(
+					map((recalls) => getRecallsSuccess({ vin, recalls })),
+					catchError((e) => of(getRecallsFailure({ vin, error: e?.message })))
 				)
 			)
 		)
@@ -413,7 +411,10 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
-			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
+			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
+			concatLatestFrom(() => this.store.select(testResultInEdit)),
+			filter(([_, editingTestResult]) => Boolean(editingTestResult)),
+			map(([{ recalls }]) => patchEditingTestResult({ testResult: { recalls } }))
 		)
 	);
 }

@@ -3,6 +3,7 @@ import { GlobalWarningService } from '@/src/app/core/components/global-warning/g
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
+import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -11,6 +12,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
@@ -24,6 +26,7 @@ describe('TestRecordV2Component', () => {
 	let store: MockStore;
 	let globalWarningService: GlobalWarningService;
 	let actions$: ReplaySubject<Action>;
+	let testRecordsService: TestRecordsService;
 
 	beforeEach(async () => {
 		actions$ = new ReplaySubject(1);
@@ -40,12 +43,40 @@ describe('TestRecordV2Component', () => {
 
 		store = TestBed.inject(MockStore);
 		globalWarningService = TestBed.inject(GlobalWarningService);
+		testRecordsService = TestBed.inject(TestRecordsService);
 		fixture = TestBed.createComponent(TestRecordV2Component);
 		component = fixture.componentInstance;
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should initialise the selected test type when the create page opens', () => {
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		const selectSpy = jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+
+		component.ngOnInit();
+
+		expect(selectSpy).toHaveBeenCalledTimes(1);
+		expect(selectSpy).toHaveBeenCalledWith('94');
+	});
+
+	it('should apply recalls prefetched by the v2 search flow when the create page opens', () => {
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+		store.overrideSelector(techRecord, { vin } as never);
+		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		component.ngOnInit();
+
+		expect(component.form.controls.recalls.value).toEqual(recalls);
+		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
 	});
 
 	describe('onReview', () => {

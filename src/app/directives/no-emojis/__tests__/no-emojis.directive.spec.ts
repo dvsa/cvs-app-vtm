@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoEmojisDirective } from '../no-emojis.directive';
 
@@ -9,7 +9,7 @@ import { NoEmojisDirective } from '../no-emojis.directive';
 	imports: [NoEmojisDirective, FormsModule],
 })
 class TestComponent {
-	testInput = '';
+	testInput: string | null = '';
 }
 
 describe('NoEmojisDirective', () => {
@@ -38,5 +38,13 @@ describe('NoEmojisDirective', () => {
 		inputEl.dispatchEvent(new Event('input'));
 		fixture.detectChanges();
 		expect(inputEl.value).toBe('Hello');
+	});
+
+	it('should pass null through the wrapped value accessor', () => {
+		const ngControl = fixture.debugElement.query(By.directive(NoEmojisDirective)).injector.get(NgControl);
+		const valueAccessor = ngControl.valueAccessor as any;
+
+		expect(() => valueAccessor.onChange(null)).not.toThrow();
+		expect(fixture.componentInstance.testInput).toBeNull();
 	});
 });
