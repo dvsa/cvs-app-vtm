@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import {
@@ -13,6 +14,7 @@ import { DefectSelectComponent } from '../defect-select.component';
 describe('DefectSelectComponent', () => {
 	let component: DefectSelectComponent;
 	let fixture: ComponentFixture<DefectSelectComponent>;
+	const viewportScroller = { scrollToPosition: jest.fn() };
 
 	const defect: DefectCategoryReferenceDataSchema = {
 		additionalInfo: {
@@ -44,9 +46,14 @@ describe('DefectSelectComponent', () => {
 	};
 
 	beforeEach(async () => {
+		viewportScroller.scrollToPosition.mockClear();
 		await TestBed.configureTestingModule({
 			imports: [DefectSelectComponent],
-			providers: [provideRouter([]), provideMockStore({ initialState: initialAppState })],
+			providers: [
+				provideRouter([]),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: ViewportScroller, useValue: viewportScroller },
+			],
 		}).compileComponents();
 	});
 
@@ -58,6 +65,10 @@ describe('DefectSelectComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should scroll to the top of the page on initialisation', () => {
+		expect(viewportScroller.scrollToPosition).toHaveBeenCalledWith([0, 0]);
 	});
 
 	it('should return all types', () => {
