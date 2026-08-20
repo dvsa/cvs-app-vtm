@@ -25,6 +25,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/router.selectors';
+import { techRecord } from '@store/technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -775,6 +776,30 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('createTestResult$$', () => {
+		it('navigates with the cached tech record after a V2 test is abandoned', async () => {
+			const testResult = mockTestResult();
+			testResult.systemNumber = 'systemNumber01';
+			testResult.testTypes[0].testTypeId = '95';
+			testResult.testTypes[0].testResult = TestResults.ABANDONED;
+			const cachedRecord = {
+				systemNumber: testResult.systemNumber,
+				createdTimestamp: '2026-08-20T07:31:53.334Z',
+				techRecord_statusCode: StatusCodes.PROVISIONAL,
+			};
+			store.overrideSelector(techRecord, cachedRecord as never);
+			actions$ = of(createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } }));
+			jest.spyOn(featureToggleService, 'shouldUseV2TestResults').mockReturnValue(true);
+			const waitSpy = jest.spyOn(httpService, 'waitForTechRecord').mockReturnValue(of(cachedRecord as never));
+			const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+			await firstValueFrom(effects.createTestResultSuccess$);
+
+			expect(waitSpy).not.toHaveBeenCalled();
+			expect(navigateSpy).toHaveBeenCalledWith([
+				`/tech-records/${cachedRecord.systemNumber}/${cachedRecord.createdTimestamp}`,
+			]);
+		});
+
 		it('checks immediately for promotion before navigating after a V2 first test', async () => {
 			const testResult = mockTestResult();
 			testResult.systemNumber = 'systemNumber01';

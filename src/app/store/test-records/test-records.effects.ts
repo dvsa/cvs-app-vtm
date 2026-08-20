@@ -21,6 +21,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.selectors';
+import { techRecord } from '@store/technical-records';
 import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
@@ -355,20 +356,29 @@ export class TestResultsEffects {
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
 				map((action) => action.payload.changes),
-				switchMap((testResult) => {
+				concatLatestFrom(() => this.store.select(techRecord)),
+				switchMap(([testResult, cachedTechRecord]) => {
 					const systemNumber = testResult.systemNumber as string;
 					const testType = testResult.testTypes?.[0];
+					const isV2Test = !!testType && this.featureToggleService.shouldUseV2TestResults(testType.testTypeId);
 					const shouldWaitForV2FirstTestPromotion =
-						!!testType &&
-						this.featureToggleService.shouldUseV2TestResults(testType.testTypeId) &&
+						isV2Test &&
 						this.testRecordsService.isTestTypeFirstTest(testType.testTypeId) &&
 						(testType.testResult === TestResults.PASS || testType.testResult === TestResults.PRS);
 
-					return shouldWaitForV2FirstTestPromotion
-						? this.httpService.waitForTechRecord(systemNumber, {
-								expectedStatus: StatusCodes.CURRENT,
-								initialDelayMs: 0,
-							})
+					if (isV2Test && !shouldWaitForV2FirstTestPromotion && cachedTechRecord?.systemNumber === systemNumber) {
+						return of(cachedTechRecord);
+					}
+
+					if (shouldWaitForV2FirstTestPromotion) {
+						return this.httpService.waitForTechRecord(systemNumber, {
+							expectedStatus: StatusCodes.CURRENT,
+							initialDelayMs: 0,
+						});
+					}
+
+					return isV2Test
+						? this.httpService.waitForTechRecord(systemNumber, { initialDelayMs: 0 })
 						: this.httpService.waitForTechRecord(systemNumber);
 				}),
 				filter(Boolean),
