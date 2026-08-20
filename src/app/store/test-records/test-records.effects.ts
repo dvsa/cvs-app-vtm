@@ -9,7 +9,7 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
@@ -21,12 +21,11 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.selectors';
-import { techRecord } from '@store/technical-records';
 import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
 import {
@@ -45,6 +44,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	patchEditingTestResult,
+	setTestResultLoading,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -356,35 +356,27 @@ export class TestResultsEffects {
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
 				map((action) => action.payload.changes),
-				concatLatestFrom(() => this.store.select(techRecord)),
-				switchMap(([testResult, cachedTechRecord]) => {
+				switchMap((testResult) => {
 					const systemNumber = testResult.systemNumber as string;
 					const testType = testResult.testTypes?.[0];
 					const isV2Test = !!testType && this.featureToggleService.shouldUseV2TestResults(testType.testTypeId);
-					const shouldWaitForV2FirstTestPromotion =
-						isV2Test &&
-						this.testRecordsService.isTestTypeFirstTest(testType.testTypeId) &&
-						(testType.testResult === TestResults.PASS || testType.testResult === TestResults.PRS);
 
-					if (isV2Test && !shouldWaitForV2FirstTestPromotion && cachedTechRecord?.systemNumber === systemNumber) {
-						return of(cachedTechRecord);
+					if (isV2Test) {
+						this.store.dispatch(setTestResultLoading({ loading: true }));
 					}
 
-					if (shouldWaitForV2FirstTestPromotion) {
-						return this.httpService.waitForTechRecord(systemNumber, {
-							expectedStatus: StatusCodes.CURRENT,
-							initialDelayMs: 0,
-						});
-					}
-
-					return isV2Test
-						? this.httpService.waitForTechRecord(systemNumber, { initialDelayMs: 0 })
-						: this.httpService.waitForTechRecord(systemNumber);
-				}),
-				filter(Boolean),
-				switchMap((techRecord) =>
-					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
-				)
+					return this.httpService.waitForTechRecord(systemNumber).pipe(
+						filter(Boolean),
+						switchMap((techRecord) =>
+							this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
+						),
+						finalize(() => {
+							if (isV2Test) {
+								this.store.dispatch(setTestResultLoading({ loading: false }));
+							}
+						})
+					);
+				})
 			),
 		{ dispatch: false }
 	);
