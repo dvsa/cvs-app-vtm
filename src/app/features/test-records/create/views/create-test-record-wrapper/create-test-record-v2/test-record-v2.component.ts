@@ -16,7 +16,6 @@ import {
 	cleanTestResultPayload,
 	patchEditingTestResult,
 	selectRecallsState,
-	selectedTestResultState,
 	testResultInEdit,
 	toEditOrNotToEdit,
 } from '@/src/app/store/test-records';
@@ -110,7 +109,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
-	testResultInView = this.store.selectSignal(selectedTestResultState);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
@@ -347,6 +345,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
+			this.flushFormToStore();
 			this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
 			this.onSubmit();
 			return;

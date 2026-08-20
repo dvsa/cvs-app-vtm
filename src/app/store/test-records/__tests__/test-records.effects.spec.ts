@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult, mockTestResultList } from '@mocks/mock-test-result';
@@ -11,7 +12,7 @@ import { createMockTestType } from '@mocks/test-type.mock';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -24,6 +25,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/router.selectors';
+import { techRecord } from '@store/technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -42,6 +44,7 @@ import {
 	isTestTypeOldIvaOrMsva,
 	patchEditingTestResult,
 	selectedTestResultState,
+	setTestResultLoading,
 	templateSectionsChanged,
 	testResultInEdit,
 	testTypeIdChanged,
@@ -50,7 +53,7 @@ import {
 	updateTestResultFailed,
 	updateTestResultSuccess,
 } from '@store/test-records';
-import { Observable, of } from 'rxjs';
+import { Observable, firstValueFrom, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestResultsEffects } from '../test-records.effects';
 
@@ -193,6 +196,7 @@ describe('TestResultsEffects', () => {
 					useValue: {
 						getRecalls: jest.fn(),
 						getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())),
+						waitForTechRecord: jest.fn(),
 					},
 				},
 			],
@@ -773,6 +777,105 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('createTestResult$$', () => {
+		it('resolves the latest active tech record after a V2 test is abandoned', async () => {
+			const testResult = mockTestResult();
+			testResult.systemNumber = 'systemNumber01';
+			testResult.testTypes[0].testTypeId = '95';
+			testResult.testTypes[0].testResult = TestResults.ABANDONED;
+			const cachedRecord = {
+				systemNumber: testResult.systemNumber,
+				createdTimestamp: '2026-08-20T07:31:53.334Z',
+				techRecord_statusCode: StatusCodes.PROVISIONAL,
+				techRecord_euVehicleCategory: null,
+			};
+			const updatedRecord = {
+				...cachedRecord,
+				createdTimestamp: '2026-08-20T08:31:53.334Z',
+				techRecord_euVehicleCategory: 'n3',
+			};
+			store.overrideSelector(techRecord, cachedRecord as never);
+			actions$ = of(createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } }));
+			jest.spyOn(featureToggleService, 'shouldUseV2TestResults').mockReturnValue(true);
+			const waitSpy = jest.spyOn(httpService, 'waitForTechRecord').mockReturnValue(of(updatedRecord as never));
+			const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+			await firstValueFrom(effects.createTestResultSuccess$);
+
+			expect(waitSpy).toHaveBeenCalledWith(testResult.systemNumber);
+			expect(dispatchSpy).toHaveBeenCalledWith(setTestResultLoading({ loading: true }));
+			expect(dispatchSpy).toHaveBeenCalledWith(setTestResultLoading({ loading: false }));
+			expect(navigateSpy).toHaveBeenCalledWith([
+				`/tech-records/${updatedRecord.systemNumber}/${updatedRecord.createdTimestamp}`,
+			]);
+		});
+
+		it.each(['38', '142', '133', '999'])(
+			'resolves the latest active record after V2 test type %s',
+			async (testTypeId) => {
+				const testResult = mockTestResult();
+				testResult.systemNumber = 'systemNumber01';
+				testResult.testTypes[0].testTypeId = testTypeId;
+				testResult.testTypes[0].testResult = TestResults.PASS;
+				const currentRecord = {
+					systemNumber: testResult.systemNumber,
+					createdTimestamp: '2026-08-20T08:31:53.334Z',
+					techRecord_statusCode: StatusCodes.CURRENT,
+				};
+				actions$ = of(createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } }));
+				jest.spyOn(featureToggleService, 'shouldUseV2TestResults').mockReturnValue(true);
+				const waitSpy = jest.spyOn(httpService, 'waitForTechRecord').mockReturnValue(of(currentRecord as never));
+				jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+				await firstValueFrom(effects.createTestResultSuccess$);
+
+				expect(waitSpy).toHaveBeenCalledWith(testResult.systemNumber);
+			}
+		);
+
+		it('resolves the latest active record before navigating after a V2 first test', async () => {
+			const testResult = mockTestResult();
+			testResult.systemNumber = 'systemNumber01';
+			testResult.testTypes[0].testTypeId = '41';
+			testResult.testTypes[0].testResult = TestResults.PASS;
+			const currentRecord = {
+				systemNumber: testResult.systemNumber,
+				createdTimestamp: '2026-08-19T12:00:00.000Z',
+				techRecord_statusCode: StatusCodes.CURRENT,
+			};
+			actions$ = of(createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } }));
+			jest.spyOn(featureToggleService, 'shouldUseV2TestResults').mockReturnValue(true);
+			const waitSpy = jest.spyOn(httpService, 'waitForTechRecord').mockReturnValue(of(currentRecord as never));
+			const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+			await firstValueFrom(effects.createTestResultSuccess$);
+
+			expect(waitSpy).toHaveBeenCalledWith(testResult.systemNumber);
+			expect(navigateSpy).toHaveBeenCalledWith([
+				`/tech-records/${currentRecord.systemNumber}/${currentRecord.createdTimestamp}`,
+			]);
+		});
+
+		it('keeps the existing wait behaviour outside the V2 first-test flow', async () => {
+			const testResult = mockTestResult();
+			testResult.systemNumber = 'systemNumber01';
+			testResult.testTypes[0].testTypeId = '41';
+			testResult.testTypes[0].testResult = TestResults.PASS;
+			const provisionalRecord = {
+				systemNumber: testResult.systemNumber,
+				createdTimestamp: '2026-08-19T12:00:00.000Z',
+				techRecord_statusCode: StatusCodes.PROVISIONAL,
+			};
+			actions$ = of(createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } }));
+			jest.spyOn(featureToggleService, 'shouldUseV2TestResults').mockReturnValue(false);
+			const waitSpy = jest.spyOn(httpService, 'waitForTechRecord').mockReturnValue(of(provisionalRecord as never));
+			jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+			await firstValueFrom(effects.createTestResultSuccess$);
+
+			expect(waitSpy).toHaveBeenCalledWith(testResult.systemNumber);
+		});
+
 		it('should return createTestResultSuccess action on successfull API call', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				const testResult: TestResultSchema = mockTestResult();

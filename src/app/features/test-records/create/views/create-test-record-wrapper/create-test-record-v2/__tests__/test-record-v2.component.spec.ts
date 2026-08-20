@@ -7,11 +7,13 @@ import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Modes } from '@models/modes.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
@@ -302,6 +304,44 @@ describe('TestRecordV2Component', () => {
 			component.onCancel(component.initialMode());
 
 			expect(clearWarningsSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('onAbandon', () => {
+		it('includes the selected reason and additional comments in the submitted test result', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			let storedTestResult = component.form.getRawValue() as TestResultSchema;
+			jest.spyOn(component as never, 'testResult').mockImplementation(() => storedTestResult);
+			jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation((testResult) => {
+				storedTestResult = testResult;
+			});
+			jest.spyOn(TestBed.inject(ResultOfTestService), 'toggleAbandoned').mockImplementation((result) => {
+				storedTestResult = {
+					...storedTestResult,
+					testTypes: [{ ...storedTestResult.testTypes[0], testResult: result }],
+				};
+			});
+			const createSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation();
+			jest.spyOn(TestBed.inject(GlobalErrorService), 'extractGlobalErrors').mockReturnValue([]);
+			component.form.controls.testTypes.at(0).patchValue({
+				testTypeId: '95',
+				reasonForAbandoning: ['Abandoned at presenter request'] as never,
+				additionalCommentsForAbandon: 'Presenter could not continue the test',
+			});
+
+			component.onAbandon();
+
+			expect(createSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					testTypes: [
+						expect.objectContaining({
+							testResult: TestResults.ABANDONED,
+							reasonForAbandoning: 'Abandoned at presenter request',
+							additionalCommentsForAbandon: 'Presenter could not continue the test',
+						}),
+					],
+				})
+			);
 		});
 	});
 });
