@@ -550,35 +550,47 @@ describe('Test Results Reducer', () => {
 	});
 
 	describe('getRecalls actions', () => {
-		it('should set loading to true', () => {
-			const newState: TestResultsState = { ...initialTestResultsState, loading: true };
-			const action = getRecalls();
-			const state = testResultsReducer(initialTestResultsState, action);
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
 
-			expect(state).toEqual(newState);
-			expect(state).not.toBe(newState);
+		it('should cache the VIN and mark the background request as loading', () => {
+			const state = testResultsReducer(initialTestResultsState, getRecalls({ vin }));
+
+			expect(state.recallsVin).toBe(vin);
+			expect(state.recallsLoading).toBe(true);
+			expect(state.loading).toBe(false);
 		});
 
-		describe('getRequiredStandardsSuccess', () => {
-			it('should set loading to false', () => {
-				const newState: TestResultsState = { ...initialTestResultsState, loading: false };
-				const action = getRecallsSuccess({ recalls: { hasRecall: true, manufacturer: 'Ford' } });
-				const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+		it('should cache recalls without creating a partial editing test result', () => {
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, recallsLoading: true, recallsVin: vin },
+				getRecallsSuccess({ vin, recalls })
+			);
 
-				expect(state).toEqual(newState);
-				expect(state).not.toBe(newState);
-			});
+			expect(state.recalls).toEqual(recalls);
+			expect(state.recallsLoading).toBe(false);
+			expect(state.editingTestResult).toBeUndefined();
+			expect(state.loading).toBe(false);
+		});
 
-			describe('getRequiredStandardsFailure', () => {
-				it('should set loading to false', () => {
-					const newState = { ...initialTestResultsState, loading: false };
-					const action = getRecallsFailure({ error: 'unit testing error message' });
-					const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+		it('should leave an existing editing test result unchanged while caching recalls', () => {
+			const editingTestResult = { vin, testTypes: [] } as unknown as TestResultSchema;
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, editingTestResult, recallsLoading: true, recallsVin: vin },
+				getRecallsSuccess({ vin, recalls })
+			);
 
-					expect(state).toEqual(newState);
-					expect(state).not.toBe(newState);
-				});
-			});
+			expect(state.editingTestResult).toBe(editingTestResult);
+		});
+
+		it('should stop the background loading state when the request fails', () => {
+			const state = testResultsReducer(
+				{ ...initialTestResultsState, recallsLoading: true, recallsVin: vin },
+				getRecallsFailure({ vin, error: 'unit testing error message' })
+			);
+
+			expect(state.recallsLoading).toBe(false);
+			expect(state.loading).toBe(false);
 		});
 	});
 });

@@ -101,6 +101,7 @@ export class DefectV2Component {
 			}),
 			notes: this.fb.control<string | null>(null, [
 				this.commonValidators.applyWhen(() => this.isNotesRequired(), this.commonValidators.required('Notes')),
+				this.commonValidators.maxLength(500, 'Notes'),
 			]),
 		}),
 		prs: this.fb.control<boolean>(false),

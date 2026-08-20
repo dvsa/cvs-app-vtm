@@ -16,6 +16,7 @@ import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
 import { DTOLayer } from '@services/dto/dto.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -25,10 +26,9 @@ import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/t
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
-import { techRecord } from '../technical-records';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -45,6 +45,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	patchEditingTestResult,
+	setTestResultLoading,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -71,6 +72,7 @@ export class TestResultsEffects {
 	private globalErrorService = inject(GlobalErrorService);
 	private testService = inject(TestService);
 	private dtoLayer = inject(DTOLayer);
+	private featureToggleService = inject(FeatureToggleService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -357,12 +359,28 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
-				map((action) => [action.payload.changes.systemNumber as string]),
-				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
-				filter(Boolean),
-				switchMap((techRecord) =>
-					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
-				)
+				map((action) => action.payload.changes),
+				switchMap((testResult) => {
+					const systemNumber = testResult.systemNumber as string;
+					const testType = testResult.testTypes?.[0];
+					const isV2Test = !!testType && this.featureToggleService.shouldUseV2TestResults(testType.testTypeId);
+
+					if (isV2Test) {
+						this.store.dispatch(setTestResultLoading({ loading: true }));
+					}
+
+					return this.httpService.waitForTechRecord(systemNumber).pipe(
+						filter(Boolean),
+						switchMap((techRecord) =>
+							this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
+						),
+						finalize(() => {
+							if (isV2Test) {
+								this.store.dispatch(setTestResultLoading({ loading: false }));
+							}
+						})
+					);
+				})
 			),
 		{ dispatch: false }
 	);
@@ -404,11 +422,10 @@ export class TestResultsEffects {
 	onGetRecalls$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecalls),
-			concatLatestFrom(() => this.store.select(techRecord)),
-			switchMap(([_, techRecord]) =>
-				this.httpService.getRecalls(techRecord!.vin).pipe(
-					map((recalls) => getRecallsSuccess({ recalls })),
-					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+			switchMap(({ vin }) =>
+				this.httpService.getRecalls(vin).pipe(
+					map((recalls) => getRecallsSuccess({ vin, recalls })),
+					catchError((e) => of(getRecallsFailure({ vin, error: e?.message })))
 				)
 			)
 		)
@@ -417,7 +434,10 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
-			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
+			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
+			concatLatestFrom(() => this.store.select(testResultInEdit)),
+			filter(([_, editingTestResult]) => Boolean(editingTestResult)),
+			map(([{ recalls }]) => patchEditingTestResult({ testResult: { recalls } }))
 		)
 	);
 }

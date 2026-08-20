@@ -3,14 +3,18 @@ import { GlobalWarningService } from '@/src/app/core/components/global-warning/g
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
+import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Modes } from '@models/modes.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
@@ -24,6 +28,7 @@ describe('TestRecordV2Component', () => {
 	let store: MockStore;
 	let globalWarningService: GlobalWarningService;
 	let actions$: ReplaySubject<Action>;
+	let testRecordsService: TestRecordsService;
 
 	beforeEach(async () => {
 		actions$ = new ReplaySubject(1);
@@ -40,12 +45,40 @@ describe('TestRecordV2Component', () => {
 
 		store = TestBed.inject(MockStore);
 		globalWarningService = TestBed.inject(GlobalWarningService);
+		testRecordsService = TestBed.inject(TestRecordsService);
 		fixture = TestBed.createComponent(TestRecordV2Component);
 		component = fixture.componentInstance;
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should initialise the selected test type when the create page opens', () => {
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		const selectSpy = jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+
+		component.ngOnInit();
+
+		expect(selectSpy).toHaveBeenCalledTimes(1);
+		expect(selectSpy).toHaveBeenCalledWith('94');
+	});
+
+	it('should apply recalls prefetched by the v2 search flow when the create page opens', () => {
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+		store.overrideSelector(techRecord, { vin } as never);
+		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		component.ngOnInit();
+
+		expect(component.form.controls.recalls.value).toEqual(recalls);
+		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
 	});
 
 	describe('onReview', () => {
@@ -271,6 +304,44 @@ describe('TestRecordV2Component', () => {
 			component.onCancel(component.initialMode());
 
 			expect(clearWarningsSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('onAbandon', () => {
+		it('includes the selected reason and additional comments in the submitted test result', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			let storedTestResult = component.form.getRawValue() as TestResultSchema;
+			jest.spyOn(component as never, 'testResult').mockImplementation(() => storedTestResult);
+			jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation((testResult) => {
+				storedTestResult = testResult;
+			});
+			jest.spyOn(TestBed.inject(ResultOfTestService), 'toggleAbandoned').mockImplementation((result) => {
+				storedTestResult = {
+					...storedTestResult,
+					testTypes: [{ ...storedTestResult.testTypes[0], testResult: result }],
+				};
+			});
+			const createSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation();
+			jest.spyOn(TestBed.inject(GlobalErrorService), 'extractGlobalErrors').mockReturnValue([]);
+			component.form.controls.testTypes.at(0).patchValue({
+				testTypeId: '95',
+				reasonForAbandoning: ['Abandoned at presenter request'] as never,
+				additionalCommentsForAbandon: 'Presenter could not continue the test',
+			});
+
+			component.onAbandon();
+
+			expect(createSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					testTypes: [
+						expect.objectContaining({
+							testResult: TestResults.ABANDONED,
+							reasonForAbandoning: 'Abandoned at presenter request',
+							additionalCommentsForAbandon: 'Presenter could not continue the test',
+						}),
+					],
+				})
+			);
 		});
 	});
 });

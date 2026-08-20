@@ -14,7 +14,8 @@ import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/route
 import { techRecord } from '@/src/app/store/technical-records';
 import {
 	cleanTestResultPayload,
-	selectedTestResultState,
+	patchEditingTestResult,
+	selectRecallsState,
 	testResultInEdit,
 	toEditOrNotToEdit,
 } from '@/src/app/store/test-records';
@@ -108,7 +109,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
-	testResultInView = this.store.selectSignal(selectedTestResultState);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
@@ -162,10 +162,24 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
+		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
+			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
+		}
 		this.prepopulateForm();
+		this.applyPrefetchedRecalls();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
 		this.loadEditingTestResult();
+	}
+
+	private applyPrefetchedRecalls(): void {
+		if (this.initialMode() !== Modes.EDIT) return;
+
+		const recallsState = this.store.selectSignal(selectRecallsState)();
+		if (!recallsState.recalls || recallsState.vin !== this.techRecord()?.vin) return;
+
+		this.form.controls.recalls.setValue(recallsState.recalls, { emitEvent: false });
+		this.store.dispatch(patchEditingTestResult({ testResult: { recalls: recallsState.recalls } }));
 	}
 
 	ngOnDestroy(): void {
@@ -331,6 +345,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
+			this.flushFormToStore();
 			this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
 			this.onSubmit();
 			return;

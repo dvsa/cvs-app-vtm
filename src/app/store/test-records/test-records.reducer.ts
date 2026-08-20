@@ -2,6 +2,7 @@ import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/r
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import {
 	DefectDetailsSchema,
 	LoadStatusSchema,
@@ -72,6 +73,9 @@ interface Extras {
 	loading: boolean;
 	editingTestResult?: TestResultSchema;
 	sectionTemplates?: FormNode[];
+	recalls?: RecallsSchema;
+	recallsVin?: string;
+	recallsLoading: boolean;
 }
 
 export interface TestResultsState extends EntityState<TestResultSchema>, Extras {}
@@ -87,6 +91,7 @@ export const testResultAdapter: EntityAdapter<TestResultSchema> = createEntityAd
 export const initialTestResultsState: EntityState<TestResultSchema> & Extras = testResultAdapter.getInitialState({
 	error: '',
 	loading: false,
+	recallsLoading: false,
 });
 
 export const testResultsReducer = createReducer(
@@ -110,6 +115,25 @@ export const testResultsReducer = createReducer(
 		loading: false,
 	})),
 	on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
+
+	on(getRecalls, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: true,
+	})),
+	on(getRecallsSuccess, (state, action) => ({
+		...state,
+		recalls: action.recalls,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
+	on(getRecallsFailure, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
 
 	on(createTestResult, updateTestResult, (state) => ({ ...state, loading: true })),
 	on(updateTestResultSuccess, (state, action) => ({
@@ -179,8 +203,6 @@ export const testResultsReducer = createReducer(
 
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 
-	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
 	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
 );
 
