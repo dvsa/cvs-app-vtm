@@ -41,14 +41,16 @@
           ></govuk-form-group-input>
         }
 
-        <!-- Issue Documents Centrally -->
-        <ng-container formGroupName="centralDocs">
-          <govuk-form-group-radio
-            label="Issue documents centrally"
-            formControlName="issueRequired"
-            [options]="YES_NO_OPTIONS"
-          ></govuk-form-group-radio>
-        </ng-container>
+        @if (shouldShowCentralDocs()) {
+          <!-- Issue Documents Centrally -->
+          <ng-container formGroupName="centralDocs">
+            <govuk-form-group-radio
+              label="Issue documents centrally"
+              formControlName="issueRequired"
+              [options]="YES_NO_OPTIONS"
+            ></govuk-form-group-radio>
+          </ng-container>
+        }
 
         @if (mode() === Modes.AMEND) {
           <!-- Test description -->
@@ -103,6 +105,88 @@
             formControlName="testTypeEndTimestamp"
           ></govuk-form-group-date>
         }
+        @if (shouldShowLoadStatus()) {
+          <ng-container formGroupName="loadStatus">
+          <govuk-form-group-radio label="Load status" formControlName="vehicleLoadStatus">
+            <govuk-radio id="unladen" label="Unladen" [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN">
+              <govuk-form-group-select
+                class="govuk-label govuk-label--s"
+                label="Body type"
+                formControlName="unladenBodyType"
+                [width]="FORM_NODE_WIDTH.L"
+                [options]="UNLADEN_BODY_TYPES_OPTIONS"
+              />
+
+              @if (form.get('testTypes.0.loadStatus.unladenBodyType')?.value === UNLADEN_BODY_TYPES.OTHER) {
+                <govuk-form-group-input
+                  class="govuk-label govuk-label--s"
+                  label="Enter body type"
+                  formControlName="otherUnladenBodyType"
+                  [width]="FORM_NODE_WIDTH.XL"
+                />
+              }
+
+              <govuk-form-group-select
+                class="govuk-label govuk-label--s"
+                label="Reason for not loading"
+                formControlName="reasonForNotLoading"
+                [width]="FORM_NODE_WIDTH.L"
+                [options]="REASON_FOR_NOT_LOADING_OPTIONS"
+              />
+
+              @if (form.get('testTypes.0.loadStatus.reasonForNotLoading')?.value === REASONS_FOR_NOT_LOADING.OTHER) {
+                <govuk-form-group-textarea
+                  class="govuk-label govuk-label--s"
+                  label="Enter reason for not loading"
+                  formControlName="otherReasonForNotLoading"
+                  [width]="FORM_NODE_WIDTH.XXL"
+                  [maxLength]="200"
+                />
+              }
+            </govuk-radio>
+
+            <govuk-radio id="partially-laden" label="Partially laden" [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN">
+              <govuk-form-group-textarea
+                class="govuk-label govuk-label--s"
+                label="Why is the vehicle partially laden?"
+                formControlName="partiallyLadenReason"
+                [width]="FORM_NODE_WIDTH.XXL"
+                [maxLength]="200"
+              />
+            </govuk-radio>
+            <govuk-radio
+              id="partially-laden-50-to-65"
+              label="Partially laden 50% to 65%"
+              [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65"
+            />
+            <govuk-radio
+              id="fully-laden"
+              label="Fully laden"
+              [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN"
+            />
+            <govuk-radio
+              id="load-simulated-partially-laden"
+              label="Load simulated partially laden"
+              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN"
+            />
+            <govuk-radio
+              id="load-simulated-fully-laden"
+              label="Load simulated fully laden"
+              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN"
+            />
+          </govuk-form-group-radio>
+          </ng-container>
+
+
+          @if (form.get('testTypes.0.loadStatus.unladenBodyType')?.value === UNLADEN_BODY_TYPES.OTHER) {
+            <govuk-form-group-input
+              class="govuk-label govuk-label--s"
+              label="Enter body type"
+              formControlName="otherUnladenBodyType"
+              [width]="FORM_NODE_WIDTH.XL"
+            />
+          }
+        }
       </ng-container>
     </ng-container>
   } @else {
@@ -137,7 +221,7 @@
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) {
+          @if ((mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) && shouldShowCentralDocs()) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-issueRequired">
@@ -194,6 +278,41 @@
               <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
                 {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          }
+          @let loadStatus = testResult.testTypes?.[0]?.loadStatus;
+          <tr class="govuk-table__row">
+            <td scope="row" class="govuk-table__header" style="width: 30%">
+              Load status:
+            </td>
+            <td class="govuk-table__cell" id="test-vehicleLoadStatus">
+              {{ loadStatus?.vehicleLoadStatus | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          @if (loadStatus?.vehicleLoadStatus === VEHICLE_LOAD_STATUS_TYPES.UNLADEN) {
+            <tr class="govuk-table__row">
+              <td scope="row" class="govuk-table__header" style="width: 30%">
+                Body type:
+              </td>
+              <td class="govuk-table__cell" id="test-unladenBodyType">
+                @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
+                  {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
+                } @else {
+                  {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
+                }
+              </td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td scope="row" class="govuk-table__header" style="width: 30%">
+                Reason for not loading:
+              </td>
+              <td class="govuk-table__cell" id="test-reasonForNotLoading">
+                @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
+                  {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
+                } @else {
+                  {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
+                }
               </td>
             </tr>
           }

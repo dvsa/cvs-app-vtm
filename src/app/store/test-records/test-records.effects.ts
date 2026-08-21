@@ -14,6 +14,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
+import { DTOLayer } from '@services/dto/dto.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
@@ -70,6 +71,7 @@ export class TestResultsEffects {
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
 	private testService = inject(TestService);
+	private dtoLayer = inject(DTOLayer);
 	private featureToggleService = inject(FeatureToggleService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
@@ -122,7 +124,9 @@ export class TestResultsEffects {
 			ofType(createTestResult),
 			switchMap((action) => {
 				const testResult = action.value;
-				return this.testRecordsService.postTestResult(testResult).pipe(
+				const cleanedTestResult = this.dtoLayer.transformPayload(testResult);
+
+				return this.testRecordsService.postTestResult(cleanedTestResult).pipe(
 					take(1),
 					map(() => {
 						// if the test type is a failed first test, submit a different action so it does not wait for a current record since promotion doesnt happen
