@@ -89,7 +89,7 @@ export class TechnicalRecordServiceEffects {
 	getTechRecordV3$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getTechRecordV3),
-			mergeMap((action) => {
+			switchMap((action) => {
 				const anchorLink = 'search-term';
 
 				return this.httpService.getTechRecordV3(action.systemNumber, action.createdTimestamp).pipe(
