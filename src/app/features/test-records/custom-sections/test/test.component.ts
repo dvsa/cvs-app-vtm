@@ -88,7 +88,7 @@ export class TestComponent implements OnInit, OnDestroy {
 				() => this.contingencyTestNumberIsRequired(),
 				this.commonValidators.required('Contingency Test Number')
 			),
-			this.commonValidators.min(6, 'Contingency Test Number'),
+			this.commonValidators.minLength(6, 'Contingency Test Number'),
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
 

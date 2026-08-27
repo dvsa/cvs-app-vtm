@@ -48,7 +48,7 @@ describe('TestComponent', () => {
 				control.setValue('12345');
 				control.markAsTouched();
 				expect(control.valid).toBe(false);
-				expect(control.errors).toHaveProperty('minLength');
+				expect(control.errors).toHaveProperty('min');
 			});
 
 			it('should be invalid when more than 8 characters', () => {
