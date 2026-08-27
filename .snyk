@@ -14,4 +14,20 @@ ignore:
     - '*':
         reason: No direct upgrade path available
         expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256867:
+    - '*':
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256869:
+    - '*':
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256871:
+    - '*':
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256873:
+    - '*':
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
 patch: {}
