@@ -76,7 +76,7 @@ export class TestService {
 		lastUpdatedByEmailAddress: this.fb.nonNullable.control<string | undefined>({ value: undefined, disabled: false }),
 		lastUpdatedByName: this.fb.nonNullable.control<string>(''),
 		lastUpdatedById: this.fb.nonNullable.control<string>(''),
-		contingencyTestNumber: this.fb.control<string | null>(null),
+		contingencyTestNumber: this.fb.control<number | null>(null),
 		typeOfTest: this.fb.nonNullable.control<TypeOfTest>('contingency' as TypeOfTest),
 		source: this.fb.nonNullable.control<TestSources>('vtm' as TestSources),
 		make: this.fb.control<string | null>(null),
