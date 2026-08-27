@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { getTechRecordV3, getTechRecordV3Failure, getTechRecordV3Success, techRecord } from '@store/technical-records';
@@ -20,7 +20,7 @@ export const techRecordViewResolver: ResolveFn<boolean> = (route) => {
 	const cachedRecord = store.selectSignal(techRecord)();
 
 	if (
-		featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails') &&
+		featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS) &&
 		route.data['isEditing'] &&
 		cachedRecord?.systemNumber === route.params['systemNumber'] &&
 		cachedRecord?.createdTimestamp === route.params['createdTimestamp']

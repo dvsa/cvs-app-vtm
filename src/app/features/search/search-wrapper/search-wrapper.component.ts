@@ -1,4 +1,4 @@
-import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { Component, inject } from '@angular/core';
 import { SearchComponent } from './search-v1/search.component';
 import { SearchV2Component } from './search-v2/search-v2.component';
@@ -6,7 +6,7 @@ import { SearchV2Component } from './search-v2/search-v2.component';
 @Component({
 	selector: 'app-search-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+    @if (featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
       <app-search-v2 />
     } @else {
       <app-search />
@@ -16,4 +16,5 @@ import { SearchV2Component } from './search-v2/search-v2.component';
 })
 export class SearchWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
+	FeatureFlags = FeatureFlags;
 }

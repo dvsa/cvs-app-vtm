@@ -6,5 +6,6 @@
   "testresultcreate": { "enabled": true },
   "testresultamend": { "enabled": true },
   "hide-test-restriction-functionality": { "enabled": false },
-  "adas-images-on-defects": { "enabled": true }
+  "adas-images-on-defects": { "enabled": true },
+  "batch-redesign": { "enabled": true }
 }
