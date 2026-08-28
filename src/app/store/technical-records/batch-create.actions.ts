@@ -1,4 +1,4 @@
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createAction, props } from '@ngrx/store';
 
 export const upsertVehicleBatch = createAction(
@@ -16,10 +16,18 @@ export const setApplicationId = createAction(
 );
 export const setVehicleStatus = createAction(
 	'[Technical Record Batch Create] set record status',
-	props<{ vehicleStatus: string }>()
+	props<{ vehicleStatus: StatusCodes }>()
 );
 export const setVehicleType = createAction(
 	'[Technical Record Batch Create] set batch vehicle type',
 	props<{ vehicleType: VehicleTypes }>()
+);
+export const setTrailerFormType = createAction(
+	'[Technical Record Batch Create] set batch trailer form type',
+	props<{ trlFormType: TrailerFormType }>()
+);
+export const setBatchDetails = createAction(
+	'[Technical Record Batch Create] set batch details',
+	props<{ vehicleType: VehicleTypes; vehicleStatus: StatusCodes; trlFormType: TrailerFormType }>()
 );
 export const clearBatch = createAction('[Technical Record Batch Create] clear all');

@@ -1,12 +1,14 @@
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { initialAppState } from '@/src/app/store';
+import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { EnterBatchDetailsComponent } from '../enter-batch-details.component';
 
 describe('EnterBatchDetailsComponent', () => {
+	let store: MockStore;
 	let router: Router;
 	let fixture: ComponentFixture<EnterBatchDetailsComponent>;
 	let component: EnterBatchDetailsComponent;
@@ -29,6 +31,7 @@ describe('EnterBatchDetailsComponent', () => {
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
 		router = TestBed.inject(Router);
 		fixture = TestBed.createComponent(EnterBatchDetailsComponent);
 		component = fixture.componentInstance;
@@ -62,6 +65,32 @@ describe('EnterBatchDetailsComponent', () => {
 			const navigateSpy = jest.spyOn(router, 'navigate');
 			component.handleCancel();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
+		});
+	});
+
+	describe('handlePopulateForm', () => {
+		it('should populate the form with the saved batch details', () => {
+			const savedBatchDetails = {
+				vehicleType: VehicleTypes.PSV,
+				vehicleStatus: StatusCodes.CURRENT,
+				trlFormType: TrailerFormType.TES1,
+			};
+			store.overrideSelector(selectBatchDetails, savedBatchDetails);
+			store.refreshState();
+			component.handlePopulateForm();
+			expect(component.form.getRawValue()).toEqual(savedBatchDetails);
+		});
+
+		it('should disable the vehicle type field when the vehicle type is saved', () => {
+			const savedBatchDetails = {
+				vehicleType: VehicleTypes.PSV,
+				vehicleStatus: StatusCodes.CURRENT,
+				trlFormType: TrailerFormType.TES1,
+			};
+			store.overrideSelector(selectBatchDetails, savedBatchDetails);
+			store.refreshState();
+			component.handlePopulateForm();
+			expect(component.form.controls.vehicleType.disabled).toBe(true);
 		});
 	});
 

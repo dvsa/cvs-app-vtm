@@ -12,6 +12,12 @@ export const selectApplicationId = createSelector(selectBatchState, (state) => s
 export const selectGenerateNumber = createSelector(selectBatchState, (state) => state.generateNumber);
 export const selectVehicleStatus = createSelector(selectBatchState, (state) => state.vehicleStatus);
 export const selectVehicleType = createSelector(selectBatchState, (state) => state.vehicleType);
+export const selectTrailerFormType = createSelector(selectBatchState, (state) => state.trlFormType);
+export const selectBatchDetails = createSelector(selectBatchState, (state) => ({
+	vehicleType: state.vehicleType,
+	vehicleStatus: state.vehicleStatus,
+	trlFormType: state.trlFormType,
+}));
 
 export const selectBatchSuccess = createSelector(selectAllBatch, (state) => state.filter((v) => v.created));
 export const selectBatchSuccessCount = createSelector(selectBatchSuccess, (state) => state.length);
