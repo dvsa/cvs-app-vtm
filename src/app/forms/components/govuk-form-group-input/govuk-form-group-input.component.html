@@ -17,7 +17,7 @@
     </div>
   }
 
-  @if (controlHint() && !disabled()) {
+  @if (controlHint()) {
     <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
   }
 
