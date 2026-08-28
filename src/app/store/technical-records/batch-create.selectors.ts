@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 import { batchAdapter } from './batch-create.reducer';
 import { getTechRecordState } from './technical-record-service.reducer';
 
@@ -17,7 +18,20 @@ export const selectBatchDetails = createSelector(selectBatchState, (state) => ({
 	vehicleType: state.vehicleType,
 	vehicleStatus: state.vehicleStatus,
 	trlFormType: state.trlFormType,
+	batchSize: state.batchSize,
 }));
+export const selectBatchVehicleTypeDescriptor = createSelector(selectVehicleType, (vehicleType) => {
+	switch (vehicleType) {
+		case VehicleTypes.HGV:
+			return 'HGV';
+		case VehicleTypes.PSV:
+			return 'PSV';
+		case VehicleTypes.TRL:
+			return 'trailer';
+		default:
+			return 'vehicle';
+	}
+});
 
 export const selectBatchSuccess = createSelector(selectAllBatch, (state) => state.filter((v) => v.created));
 export const selectBatchSuccessCount = createSelector(selectBatchSuccess, (state) => state.length);

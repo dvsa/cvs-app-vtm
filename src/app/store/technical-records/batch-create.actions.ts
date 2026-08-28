@@ -28,6 +28,8 @@ export const setTrailerFormType = createAction(
 );
 export const setBatchDetails = createAction(
 	'[Technical Record Batch Create] set batch details',
-	props<{ vehicleType: VehicleTypes; vehicleStatus: StatusCodes; trlFormType: TrailerFormType }>()
+	props<
+		Partial<{ vehicleType: VehicleTypes; vehicleStatus: StatusCodes; trlFormType: TrailerFormType; batchSize: number }>
+	>()
 );
 export const clearBatch = createAction('[Technical Record Batch Create] clear all');

@@ -60,6 +60,7 @@ export enum BatchRoutes {
 	CANCEL_BATCH = 'cancel',
 	ENTER_BATCH_DETAILS = 'enter-details',
 	ENTER_BATCH_SIZE = 'enter-size',
+	ENTER_BATCH_IDENTIFIERS = 'enter-identifiers',
 }
 
 export enum ReferenceDataRoutes {
