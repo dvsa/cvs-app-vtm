@@ -40,5 +40,13 @@ export const Vtg15Template = {
 			viewType: FormNodeViewTypes.HIDDEN,
 			editType: FormNodeEditTypes.HIDDEN,
 		},
+		{
+			name: 'media',
+			label: 'Media',
+			value: [{ type: 'failReason', reason: 'Contingency test', path: ' ' }],
+			type: FormNodeTypes.CONTROL,
+			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
+		},
 	],
 };
