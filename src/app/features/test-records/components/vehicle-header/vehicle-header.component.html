@@ -56,6 +56,7 @@
                 {{ testResult.vin }}
               </dd>
             </div>
+
             @if (isADRTest) {
               <div
                 class="govuk-summary-list__row guidance_notes_link"
@@ -165,6 +166,37 @@
             }}
           </dd>
         </div>
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">VTG15 Required?</dt>
+          <dd class="govuk-summary-list__value">
+            {{ testResult.vtg15?.vtg15Required }}
+          </dd>
+        </div>
+
+        @if (testResult.vtg15?.vtg15Required) {
+          @if (!isReview()) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Photo of VTG15</dt>
+              <dd class="govuk-summary-list__value">
+                Download VTG15
+              </dd>
+            </div>
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">UN Number</dt>
+            <dd class="govuk-summary-list__value">
+              {{ testResult.vtg15?.unNumber }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Hazard classification numbers</dt>
+            <dd class="govuk-summary-list__value">
+              {{ testResult.vtg15?.primaryHazardClassification }}
+              {{ testResult.vtg15?.secondaryHazardClassification }}
+            </dd>
+          </div>
+        }
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Country of registration</dt>
           <dd id="test-cor" class="govuk-summary-list__value">

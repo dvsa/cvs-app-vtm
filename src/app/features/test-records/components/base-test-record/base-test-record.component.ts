@@ -19,6 +19,7 @@ import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { Vtg15Component } from '@forms/components/vtg15/vtg15.component';
 import {
 	CustomDefectsComponent,
 	CustomDefectsComponent as CustomDefectsComponent_1,
@@ -63,6 +64,7 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 		AsyncPipe,
 		WeightsComponent,
 		LoadStatusComponent,
+		Vtg15Component,
 	],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
