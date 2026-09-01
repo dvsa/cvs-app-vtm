@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -18,6 +19,7 @@ describe('TestComponent', () => {
 			imports: [TestComponent],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
+				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
 				provideMockStore({ initialState: initialAppState }),
 			],
 		}).compileComponents();
@@ -256,6 +258,7 @@ describe('TestComponent - AMEND mode', () => {
 			imports: [TestComponent],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
+				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
 				provideMockStore({ initialState: initialAppState }),
 			],
 		}).compileComponents();
