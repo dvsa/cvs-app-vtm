@@ -3,14 +3,15 @@
 
   @if (isEditing) {
     <form [formGroup]="form">
-      <ng-container formArrayName="vtg15">
+      <ng-container formGroupName="vtg15">
         <govuk-form-group-radio label="VTG15 required?" formControlName="vtg15Required">
-          <govuk-radio id="vtg15RequiredTrue" label="Yes" [value]="'Yes'">
+          <govuk-radio id="vtg15RequiredTrue" label="Yes" [value]="true">
             <govuk-form-group-input
               class="govuk-label govuk-label--s"
               label="UN Number"
               prefix="UN"
               formControlName="unNumber"
+              type="number"
               [width]="FORM_NODE_WIDTH.S"
             />
             <h1 class="govuk-label-wrapper">
@@ -33,7 +34,7 @@
               [width]="FORM_NODE_WIDTH.L"
             />
           </govuk-radio>
-          <govuk-radio id="vtg15RequiredFalse" label="No" [value]="'No'">
+          <govuk-radio id="vtg15RequiredFalse" label="No" [value]="false">
           </govuk-radio>
         </govuk-form-group-radio>
       </ng-container>

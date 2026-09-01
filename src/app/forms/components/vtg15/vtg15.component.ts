@@ -1,9 +1,6 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
-import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
-import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
-import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
@@ -13,8 +10,9 @@ import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map'
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { Store } from '@ngrx/store';
-import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
+import { toEditOrNotToEdit } from '@store/test-records';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-vtg15',
@@ -26,10 +24,9 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 		RadioComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupSelectComponent,
-		DefaultNullOrEmpty,
 	],
 })
-export class Vtg15Component {
+export class Vtg15Component implements OnInit, OnDestroy {
 	store = inject(Store);
 	fb = inject(FormBuilder);
 	commonValidators = inject(CommonValidatorsService);
@@ -37,9 +34,10 @@ export class Vtg15Component {
 	form = this.fb.group({
 		vtg15: this.fb.group({
 			vtg15Required: false,
-			primaryHazardClassification: '',
-			secondaryHazardClassification: '',
-			unNumber: '',
+			primaryHazardClassification: undefined,
+			secondaryHazardClassification: undefined,
+			unNumber: undefined,
+			media: undefined,
 		}),
 	});
 
@@ -47,13 +45,41 @@ export class Vtg15Component {
 	isContingencyTest = input(true);
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
+	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	destroy = new ReplaySubject<boolean>(1);
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.handleFormChange();
+		this.initForm();
+	}
 
 	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly HAZARD_CLASSIFICATION_OPTIONS = getOptionsFromEnumWithCodeAndDescription(HazardClassification);
 	protected readonly FORM_NODE_WIDTH = FormNodeWidth;
-	protected readonly UNLADEN_BODY_TYPES = UnladenBodyType;
-	protected readonly REASONS_FOR_NOT_LOADING = ReasonForNotLoading;
-	protected readonly VEHICLE_LOAD_STATUS_TYPES = VehicleLoadStatusType;
+
+	initForm(): void {
+		const testResult = this.testResult();
+		if (!testResult) return;
+
+		if (testResult?.vtg15) {
+			const vtg15 = {
+				...testResult.vtg15,
+				primaryHazardClassification: testResult.vtg15.primaryHazardClassification?.code,
+				secondaryHazardClassification: testResult.vtg15.primaryHazardClassification?.code,
+			};
+
+			this.form.patchValue({ vtg15 });
+		}
+	}
+
+	handleFormChange(): void {
+		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
+			this.formChange.emit(this.form.getRawValue());
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.destroy.next(true);
+		this.destroy.complete();
+	}
 }

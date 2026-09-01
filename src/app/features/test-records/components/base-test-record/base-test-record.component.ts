@@ -110,8 +110,10 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		const requiredStandardsValue = requiredStandards?.form.getCleanValue(requiredStandards?.form);
 
 		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
+		console.log(latestTest);
 
 		if (this.shouldUpdateTest(latestTest)) {
+			console.log('test');
 			this.newTestResult.emit(latestTest);
 		}
 	}
