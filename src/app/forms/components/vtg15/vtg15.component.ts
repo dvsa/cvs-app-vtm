@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
@@ -11,6 +12,7 @@ import { CommonValidatorsService } from '@forms/validators/common-validators.ser
 import { YES_NO_OPTIONS } from '@models/options.model';
 import { Store } from '@ngrx/store';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
+import { techRecord } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
@@ -46,6 +48,7 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	currentTechRecord = this.store.selectSignal(techRecord) as Signal<TechRecordType<'hgv' | 'lgv' | 'trl'>>;
 	destroy = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
@@ -69,6 +72,14 @@ export class Vtg15Component implements OnInit, OnDestroy {
 			};
 
 			this.form.patchValue({ vtg15 });
+		} else {
+			if (this.currentTechRecord()?.techRecord_adrDetails_dangerousGoods) {
+				this.form.patchValue({
+					vtg15: {
+						vtg15Required: true,
+					},
+				});
+			}
 		}
 	}
 
