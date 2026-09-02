@@ -175,11 +175,17 @@
         </div>
 
         @if (testResult.vtg15?.vtg15Required) {
-          @if (!isReview()) {
+          @if (!isReview() && hasVTG15Media()) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Photo of VTG15</dt>
-              <dd class="govuk-summary-list__value">
-                Download VTG15
+
+              <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                <a
+                  class="govuk-link"
+                  (click)="downloadVTG15(testResult)"
+                  href="javascript:void(0)">
+                  Download media
+                </a>
               </dd>
             </div>
           }
@@ -263,8 +269,8 @@
                 class="govuk-link"
                 href="javascript:void(0)"
                 appRetrieveDocument
-                [params]="params"
-                [fileName]="fileName"
+                [params]="abandonCertDocParams"
+                [fileName]="fileAbandonCertDocName"
                 [documentType]="DocumentType.CERTIFICATE"
               >
                 Download
