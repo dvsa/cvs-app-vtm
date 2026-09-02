@@ -178,15 +178,20 @@
           @if (!isReview() && hasVTG15Media()) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Photo of VTG15</dt>
-
-              <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
-                <a
-                  class="govuk-link"
-                  (click)="downloadVTG15(testResult)"
-                  href="javascript:void(0)">
-                  Download media
-                </a>
-              </dd>
+              @if (!hasVTG15RetentionPeriodPassed()) {
+                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <a
+                    class="govuk-link"
+                    (click)="downloadVTG15(testResult)"
+                    href="javascript:void(0)">
+                    Download VTG15
+                  </a>
+                </dd>
+              } @else {
+                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  No photo available - photo was deleted as the retention period had passed
+                </dd>
+              }
             </div>
           }
           <div class="govuk-summary-list__row">

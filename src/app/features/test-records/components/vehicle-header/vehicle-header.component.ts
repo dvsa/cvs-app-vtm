@@ -241,6 +241,17 @@ export class VehicleHeaderComponent {
 		return !!media && media.length > 0;
 	}
 
+	hasVTG15RetentionPeriodPassed(): boolean {
+		const testEndTimestamp = new Date(this.testResult()?.testTypes?.[0]?.testTypeEndTimestamp || '');
+		if (Number.isNaN(testEndTimestamp.getTime())) return false;
+		const today = new Date();
+		const target = new Date(testEndTimestamp);
+		const retentionPeriod = 21;
+		target.setFullYear(testEndTimestamp.getFullYear() + retentionPeriod);
+
+		return today >= target;
+	}
+
 	get certificateParams(): Map<string, string> {
 		return new Map([
 			['testNumber', this.testNumber() ?? ''],
