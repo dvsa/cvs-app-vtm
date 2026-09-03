@@ -6,10 +6,13 @@ import { RadioComponent } from '@/src/app/forms/components/govuk-form-group-radi
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
+import { setBatchDetails } from '@/src/app/store/technical-records/batch-create.actions';
+import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { ReplaySubject, combineLatest, takeUntil } from 'rxjs';
 
 @Component({
@@ -27,15 +30,18 @@ import { ReplaySubject, combineLatest, takeUntil } from 'rxjs';
 })
 export class EnterBatchDetailsComponent implements OnInit {
 	readonly fb = inject(FormBuilder);
+	readonly store = inject(Store);
 	readonly router = inject(Router);
 	readonly activatedRoute = inject(ActivatedRoute);
 	readonly validators = inject(CommonValidatorsService);
 	readonly errorService = inject(GlobalErrorService);
 
+	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
+
 	readonly form = this.fb.group({
-		vehicleStatus: this.fb.control<string | null>(null, [this.validators.required('Vehicle status')]),
-		vehicleType: this.fb.control<string | null>(null, [this.validators.required('Vehicle type')]),
-		trlFormType: this.fb.control<string | null>(null, [
+		vehicleStatus: this.fb.control<StatusCodes | null>(null, [this.validators.required('Vehicle status')]),
+		vehicleType: this.fb.control<VehicleTypes | null>(null, [this.validators.required('Vehicle type')]),
+		trlFormType: this.fb.control<TrailerFormType | null>(null, [
 			this.validators.applyWhen(
 				() => this.isTrlSelected(),
 				this.validators.required(() => ({ error: 'Select a trailer form type', anchorLink: 'trlFormType-tes1-radio' }))
@@ -60,6 +66,7 @@ export class EnterBatchDetailsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.handleFormChange();
+		this.handlePopulateForm();
 	}
 
 	isTrlSelected(): boolean {
@@ -88,16 +95,35 @@ export class EnterBatchDetailsComponent implements OnInit {
 			});
 	}
 
+	handlePopulateForm(): void {
+		const savedBatchDetails = this.savedBatchDetails();
+		this.form.patchValue(savedBatchDetails);
+
+		// Once a vehicle type is selected it cannot be changed by going back to this page
+		if (savedBatchDetails.vehicleType) {
+			this.form.controls.vehicleType.disable({ emitEvent: false });
+		}
+	}
+
 	handleContinue(): void {
 		this.form.markAllAsTouched();
 
 		const errors = this.errorService.extractGlobalErrors(this.form);
 		if (errors.length > 0) {
 			this.errorService.setErrors(errors);
-			return;
 		}
 
-		this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
+		if (errors.length === 0) {
+			const value = this.form.getRawValue();
+			this.store.dispatch(
+				setBatchDetails({
+					vehicleType: value.vehicleType as VehicleTypes,
+					vehicleStatus: value.vehicleStatus as StatusCodes,
+					trlFormType: value.trlFormType as TrailerFormType,
+				})
+			);
+			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
+		}
 	}
 
 	handleCancel(): void {

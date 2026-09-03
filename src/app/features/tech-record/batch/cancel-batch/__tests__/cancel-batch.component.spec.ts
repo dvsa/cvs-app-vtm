@@ -1,10 +1,14 @@
 import { RootRoutes } from '@/src/app/models/routes.enum';
+import { initialAppState } from '@/src/app/store';
+import { clearBatch } from '@/src/app/store/technical-records/batch-create.actions';
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CancelBatchComponent } from '../cancel-batch.component';
 
 describe('CancelBatchComponent', () => {
+	let store: MockStore;
 	let router: Router;
 	let location: Location;
 	let fixture: ComponentFixture<CancelBatchComponent>;
@@ -15,6 +19,7 @@ describe('CancelBatchComponent', () => {
 			imports: [CancelBatchComponent],
 			providers: [
 				{ provide: Location, useValue: { back: jest.fn() } },
+				provideMockStore({ initialState: initialAppState }),
 				provideRouter([
 					{
 						path: RootRoutes.ROOT,
@@ -24,6 +29,7 @@ describe('CancelBatchComponent', () => {
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
 		router = TestBed.inject(Router);
 		location = TestBed.inject(Location);
 		fixture = TestBed.createComponent(CancelBatchComponent);
@@ -40,10 +46,12 @@ describe('CancelBatchComponent', () => {
 	});
 
 	describe('handleCancelBatch', () => {
-		it('should navigate the user to the home page', () => {
+		it('should clear the batch and navigate the user to the home page', () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 			const navigateSpy = jest.spyOn(router, 'navigate');
 			component.handleCancelBatch();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ROOT]);
+			expect(dispatchSpy).toHaveBeenCalledWith(clearBatch());
 		});
 	});
 });

@@ -1,11 +1,13 @@
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { EntityAdapter, EntityState, Update, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import {
 	clearBatch,
 	setApplicationId,
+	setBatchDetails,
 	setGenerateNumberFlag,
+	setTrailerFormType,
 	setVehicleStatus,
 	setVehicleType,
 	upsertVehicleBatch,
@@ -27,7 +29,8 @@ export interface BatchRecords extends EntityState<BatchRecord> {
 	vehicleType?: VehicleTypes;
 	generateNumber: boolean;
 	applicationId?: string;
-	vehicleStatus?: string;
+	vehicleStatus?: StatusCodes;
+	trlFormType?: TrailerFormType;
 }
 
 const selectId = (a: BatchRecord): string => {
@@ -47,6 +50,8 @@ export const vehicleBatchCreateReducer = createReducer(
 	on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
 	on(setVehicleStatus, (state, { vehicleStatus }) => ({ ...state, vehicleStatus })),
 	on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
+	on(setTrailerFormType, (state, { trlFormType }) => ({ ...state, trlFormType })),
+	on(setBatchDetails, (state, details) => ({ ...state, ...details })),
 	on(createVehicleRecordSuccess, (state, action) =>
 		batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord), state)
 	),
@@ -56,9 +61,10 @@ export const vehicleBatchCreateReducer = createReducer(
 	on(clearBatch, (state) =>
 		batchAdapter.removeAll({
 			...state,
-			vehicleStatus: '',
 			applicationId: '',
 			vehicleType: undefined,
+			vehicleStatus: undefined,
+			trlFormType: undefined,
 		})
 	)
 );

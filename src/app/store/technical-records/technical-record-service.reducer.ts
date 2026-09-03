@@ -13,7 +13,9 @@ import { cloneDeep } from 'lodash';
 import {
 	clearBatch,
 	setApplicationId,
+	setBatchDetails,
 	setGenerateNumberFlag,
+	setTrailerFormType,
 	setVehicleStatus,
 	setVehicleType,
 	upsertVehicleBatch,
@@ -192,6 +194,8 @@ export const vehicleTechRecordReducer = createReducer(
 		setApplicationId,
 		setVehicleStatus,
 		setVehicleType,
+		setTrailerFormType,
+		setBatchDetails,
 		setGenerateNumberFlag,
 		clearBatch,
 		(state, action) => ({
