@@ -373,7 +373,9 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	shouldShowSeatbeltSection(): boolean {
-		return;
+		// Sourced from the test result rather than the tech record, as the tech record is not
+		// guaranteed to be loaded when amending or viewing an existing test.
+		return this.testResult()?.vehicleType === VehicleTypes.PSV;
 	}
 
 	protected readonly Modes = Modes;

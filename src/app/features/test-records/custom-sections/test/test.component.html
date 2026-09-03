@@ -281,40 +281,42 @@
               </td>
             </tr>
           }
-          @let loadStatus = testResult.testTypes?.[0]?.loadStatus;
-          <tr class="govuk-table__row">
-            <td scope="row" class="govuk-table__header" style="width: 30%">
-              Load status:
-            </td>
-            <td class="govuk-table__cell" id="test-vehicleLoadStatus">
-              {{ loadStatus?.vehicleLoadStatus | defaultNullOrEmpty }}
-            </td>
-          </tr>
-          @if (loadStatus?.vehicleLoadStatus === VEHICLE_LOAD_STATUS_TYPES.UNLADEN) {
+          @if (shouldShowLoadStatus()) {
+            @let loadStatus = testResult.testTypes?.[0]?.loadStatus;
             <tr class="govuk-table__row">
               <td scope="row" class="govuk-table__header" style="width: 30%">
-                Body type:
+                Load status:
               </td>
-              <td class="govuk-table__cell" id="test-unladenBodyType">
-                @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
-                  {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
-                } @else {
-                  {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
-                }
+              <td class="govuk-table__cell" id="test-vehicleLoadStatus">
+                {{ loadStatus?.vehicleLoadStatus | defaultNullOrEmpty }}
               </td>
             </tr>
-            <tr class="govuk-table__row">
-              <td scope="row" class="govuk-table__header" style="width: 30%">
-                Reason for not loading:
-              </td>
-              <td class="govuk-table__cell" id="test-reasonForNotLoading">
-                @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
-                  {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
-                } @else {
-                  {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
-                }
-              </td>
-            </tr>
+            @if (loadStatus?.vehicleLoadStatus === VEHICLE_LOAD_STATUS_TYPES.UNLADEN) {
+              <tr class="govuk-table__row">
+                <td scope="row" class="govuk-table__header" style="width: 30%">
+                  Body type:
+                </td>
+                <td class="govuk-table__cell" id="test-unladenBodyType">
+                  @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
+                    {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
+                  } @else {
+                    {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
+                  }
+                </td>
+              </tr>
+              <tr class="govuk-table__row">
+                <td scope="row" class="govuk-table__header" style="width: 30%">
+                  Reason for not loading:
+                </td>
+                <td class="govuk-table__cell" id="test-reasonForNotLoading">
+                  @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
+                    {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
+                  } @else {
+                    {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
+                  }
+                </td>
+              </tr>
+            }
           }
         </tbody>
       </table>

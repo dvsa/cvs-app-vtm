@@ -53,14 +53,14 @@
               <app-test [mode]="mode()" [initialMode]="initialMode()"></app-test>
             </form>
           </app-accordion>
-          @if (techRecord()?.techRecord_vehicleType === 'psv') {
+          @if (shouldShowSeatbeltSection()) {
             <app-accordion
               [id]="'seatbelts'"
               [title]="'Seatbelts'"
               [description]="''"
             >
               <form ngNoForm>
-                <app-seatbelts [mode]="mode()" [initialMode]="initialMode()"></app-seatbelts>
+                <app-seatbelts [mode]="mode()"></app-seatbelts>
               </form>
             </app-accordion>
           }
