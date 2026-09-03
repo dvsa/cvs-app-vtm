@@ -147,4 +147,170 @@ describe('VehicleHeaderComponent', () => {
 			);
 		});
 	});
+
+	describe('hasVTG15Media', () => {
+		it('should return false when testResult is null', () => {
+			fixture.componentRef.setInput('testResult', null);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return false when testResult is undefined', () => {
+			fixture.componentRef.setInput('testResult', undefined);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return false when vtg15 is undefined', () => {
+			fixture.componentRef.setInput('testResult', { vtg15: undefined } as any);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return false when media is undefined', () => {
+			fixture.componentRef.setInput('testResult', { vtg15: { media: undefined } } as any);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return false when media is an empty array', () => {
+			fixture.componentRef.setInput('testResult', { vtg15: { media: [] } } as any);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return false when media only contains failReason items', () => {
+			fixture.componentRef.setInput('testResult', {
+				vtg15: {
+					media: [{ type: 'failReason', location: 'test' }],
+				},
+			} as any);
+			expect(component.hasVTG15Media()).toBe(false);
+		});
+
+		it('should return true when media contains valid non-failReason items', () => {
+			fixture.componentRef.setInput('testResult', {
+				vtg15: {
+					media: [{ type: 'image', location: 'test' }],
+				},
+			} as any);
+			expect(component.hasVTG15Media()).toBe(true);
+		});
+	});
+
+	describe('hasVTG15RetentionPeriodPassed', () => {
+		it('should return false when testResult is null', () => {
+			fixture.componentRef.setInput('testResult', null);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when testResult is undefined', () => {
+			fixture.componentRef.setInput('testResult', undefined);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when testTypes is undefined', () => {
+			fixture.componentRef.setInput('testResult', { testTypes: undefined } as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when testTypes is empty array', () => {
+			fixture.componentRef.setInput('testResult', { testTypes: [] } as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when testTypeEndTimestamp is invalid', () => {
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: 'invalid-date' }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when testTypeEndTimestamp is empty string', () => {
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: '' }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false when retention period has not passed (5 days)', () => {
+			const recentDate = new Date();
+			recentDate.setDate(recentDate.getDate() - 5); // 5 days ago
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: recentDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return true when retention period has exactly passed (21 days)', () => {
+			const pastDate = new Date();
+			pastDate.setDate(pastDate.getDate() - 21); // 21 days ago
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: pastDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
+		});
+
+		it('should return true when retention period has long passed (60 days)', () => {
+			const oldDate = new Date();
+			oldDate.setDate(oldDate.getDate() - 60); // 60 days ago
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: oldDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
+		});
+
+		it('should return false for date exactly 21 days in future', () => {
+			const futureDate = new Date();
+			futureDate.setDate(futureDate.getDate() + 21); // 21 days in future
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: futureDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should handle dates with time component correctly', () => {
+			const pastDate = new Date();
+			pastDate.setDate(pastDate.getDate() - 21);
+			pastDate.setHours(12, 30, 45);
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: pastDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
+		});
+
+		it('should use first testType when multiple testTypes exist', () => {
+			const pastDate = new Date();
+			pastDate.setDate(pastDate.getDate() - 25); // 25 days ago, past 21-day threshold
+			const recentDate = new Date();
+			recentDate.setDate(recentDate.getDate() - 5); // 5 days ago, within 21-day threshold
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [
+					{ testTypeEndTimestamp: pastDate.toISOString() },
+					{ testTypeEndTimestamp: recentDate.toISOString() },
+				],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
+		});
+
+		it('should return false for undefined testTypeEndTimestamp', () => {
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: undefined }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return false for dates less than 21 days old', () => {
+			const testDate = new Date();
+			testDate.setDate(testDate.getDate() - 20); // 20 days ago
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: testDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
+		});
+
+		it('should return true for dates more than 21 days old', () => {
+			const testDate = new Date();
+			testDate.setDate(testDate.getDate() - 22); // 22 days ago
+			fixture.componentRef.setInput('testResult', {
+				testTypes: [{ testTypeEndTimestamp: testDate.toISOString() }],
+			} as any);
+			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
+		});
+	});
 });

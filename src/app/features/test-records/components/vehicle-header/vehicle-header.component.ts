@@ -246,8 +246,8 @@ export class VehicleHeaderComponent {
 		if (Number.isNaN(testEndTimestamp.getTime())) return false;
 		const today = new Date();
 		const target = new Date(testEndTimestamp);
-		const retentionPeriod = 21;
-		target.setFullYear(testEndTimestamp.getFullYear() + retentionPeriod);
+		const retentionPeriodDays = 21;
+		target.setDate(testEndTimestamp.getDate() + retentionPeriodDays);
 
 		return today >= target;
 	}
