@@ -1,4 +1,5 @@
 import { AxlesService } from '@/src/app/services/axles/axles.service';
+import { FeatureFlags } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
@@ -28,7 +29,7 @@ export const routes: Routes = [
 					roles: Roles.TechRecordCreate,
 					backlink: {
 						url: RootRoutes.ROOT,
-						featureFlags: ['techrecordredesigncreate'],
+						featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE],
 					},
 				},
 				children: [],
@@ -45,11 +46,11 @@ export const routes: Routes = [
 						data: {
 							title: 'New technical record details',
 							roles: Roles.TechRecordCreate,
-							isCustomLayout: ['techrecordredesigncreatedetails'],
+							isCustomLayout: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							isEditing: true,
 							backlink: {
 								url: RootRoutes.CREATE_TECHNICAL_RECORD,
-								featureFlags: ['techrecordredesigncreatedetails'],
+								featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							},
 						},
 					},
@@ -65,7 +66,7 @@ export const routes: Routes = [
 							title: 'Cancel technical record reason',
 							backlink: {
 								url: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
-								featureFlags: ['techrecordredesigncreatedetails'],
+								featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							},
 						},
 					},
@@ -88,7 +89,7 @@ export const routes: Routes = [
 					roles: Roles.TechRecordCreate,
 					backlink: {
 						url: RootRoutes.CREATE_TECHNICAL_RECORD,
-						featureFlags: ['techrecordredesigncreate'],
+						featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE],
 					},
 				},
 			},

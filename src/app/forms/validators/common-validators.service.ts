@@ -204,7 +204,7 @@ export class CommonValidatorsService {
 		anchorLink?: string
 	): ValidatorFn {
 		return (control) => {
-			if (!control.value) return null;
+			if (!control.value && control.value !== 0) return null;
 			if (!control.touched) return null;
 			if (typeof control.value !== 'number') return null;
 

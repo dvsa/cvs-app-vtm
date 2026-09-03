@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { NoQueryParamsGuard } from '@guards/no-query-params/no-query-params.guard';
 import { RootRoutes, SearchRoutes } from '@models/routes.enum';
+import { FeatureFlags } from '../../services/feature-toggle-service/feature-toggle-service';
 
 export const routes: Routes = [
 	{
@@ -10,7 +11,7 @@ export const routes: Routes = [
 		data: {
 			backlink: {
 				url: RootRoutes.ROOT,
-				featureFlags: ['techrecordredesigncreatedetails'],
+				featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			},
 		},
 	},
@@ -23,7 +24,7 @@ export const routes: Routes = [
 			title: 'Search results for technical records',
 			backlink: {
 				url: RootRoutes.SEARCH_TECHNICAL_RECORD,
-				featureFlags: ['techrecordredesigncreatedetails'],
+				featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			},
 		},
 	},

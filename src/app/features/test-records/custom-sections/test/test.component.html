@@ -77,6 +77,23 @@
             formControlName="testAnniversaryDate"
           ></govuk-form-group-date>
 
+          @if (testResult()?.testTypes?.[0]?.testResult === TestResults.ABANDONED) {
+            <!-- Reason for abandoning -->
+            <govuk-checkbox-group
+              label="Reason for abandoning"
+              formControlName="reasonForAbandoning"
+              [options]="abandonReasons()"
+              [seperator]="'. '"
+            ></govuk-checkbox-group>
+
+            <!-- Addition details for abandoning -->
+            <govuk-form-group-textarea
+              label="Additional notes as to why this test was abandoned (optional)"
+              formControlName="additionalCommentsForAbandon"
+              [maxLength]="500"
+            ></govuk-form-group-textarea>
+          }
+
           <!-- Test start date and time -->
           <govuk-form-group-input
             label="Start time"
@@ -254,6 +271,22 @@
                 {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
               </td>
             </tr>
+            @if (testResult.testTypes[0].testResult === TestResults.ABANDONED) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header" style="width: 30%">Reason for abandoning:</td>
+                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-reasonForAbandoning">
+                  @for (reason of getReasonsList(testResult.testTypes[0].reasonForAbandoning); track reason) {
+                   <p class="govuk-body" [id]="`test-reasonForAbandoning-${$index}`">{{ reason }}</p>
+                  }
+                </td>
+              </tr>
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header" style="width: 30%">Additional details for abandoning:</td>
+                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-additionalCommentsForAbandon">
+                  {{ testResult.testTypes[0].additionalCommentsForAbandon | defaultNullOrEmpty }}
+                </td>
+              </tr>
+            }
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Start time:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">

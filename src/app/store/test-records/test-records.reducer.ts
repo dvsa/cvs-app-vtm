@@ -305,7 +305,7 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 
 		// If abandon reasons is an array, convert it to a string
 		if (Array.isArray(testType.reasonForAbandoning)) {
-			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('. ');
 		}
 
 		// If required standards is an empty array, convert it to undefined
