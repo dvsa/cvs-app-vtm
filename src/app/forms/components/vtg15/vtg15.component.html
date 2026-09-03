@@ -21,17 +21,19 @@
             </h1>
             <govuk-form-group-select
               class="govuk-label govuk-label--s"
-              label="Primary Hazard Classification"
+              label="Primary"
               formControlName="primaryHazardClassification"
               [options]="HAZARD_CLASSIFICATION_OPTIONS"
               [width]="FORM_NODE_WIDTH.L"
+              [defaultOption]="primaryHazardClassificationDefaultValue()"
             />
             <govuk-form-group-select
               class="govuk-label govuk-label--s"
-              label="Secondary Hazard Classification"
+              label="Secondary (optional)"
               formControlName="secondaryHazardClassification"
               [options]="HAZARD_CLASSIFICATION_OPTIONS"
               [width]="FORM_NODE_WIDTH.L"
+              [defaultOption]="secondaryHazardClassificationDefaultValue()"
             />
           </govuk-radio>
           <govuk-radio id="vtg15RequiredFalse" label="No" [value]="false">

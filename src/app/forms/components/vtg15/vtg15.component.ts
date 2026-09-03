@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, Signal, inject, input, output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
-import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
@@ -32,14 +31,22 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	store = inject(Store);
 	fb = inject(FormBuilder);
 	commonValidators = inject(CommonValidatorsService);
+	cdr = inject(ChangeDetectorRef);
 
 	form = this.fb.group({
 		vtg15: this.fb.group({
-			vtg15Required: false,
-			primaryHazardClassification: undefined,
-			secondaryHazardClassification: undefined,
-			unNumber: undefined,
-			media: undefined,
+			vtg15Required: this.fb.control(false, []),
+			primaryHazardClassification: this.fb.control<HazardClassification | undefined>(undefined, [
+				this.commonValidators.applyWhen(
+					() => this.vtgRequired(),
+					this.commonValidators.required('Primary hazard classification')
+				),
+			]),
+			secondaryHazardClassification: this.fb.control<HazardClassification | undefined>(undefined, []),
+			unNumber: this.fb.control<number | undefined>(undefined, [
+				this.commonValidators.applyWhen(() => this.vtgRequired(), this.commonValidators.required('UN number')),
+			]),
+			media: this.fb.control<MediaSchema[] | undefined>(undefined, []),
 		}),
 	});
 
@@ -48,7 +55,7 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
-	currentTechRecord = this.store.selectSignal(techRecord) as Signal<TechRecordType<'hgv' | 'lgv' | 'trl'>>;
+	currentTechRecord = this.store.selectSignal(techRecord);
 	destroy = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
@@ -67,20 +74,38 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		if (testResult?.vtg15) {
 			const vtg15 = {
 				...testResult.vtg15,
-				primaryHazardClassification: testResult.vtg15.primaryHazardClassification?.code,
-				secondaryHazardClassification: testResult.vtg15.primaryHazardClassification?.code,
 			};
 
 			this.form.patchValue({ vtg15 });
+			this.cdr.detectChanges();
 		} else {
-			if (this.currentTechRecord()?.techRecord_adrDetails_dangerousGoods) {
-				this.form.patchValue({
-					vtg15: {
-						vtg15Required: true,
-					},
-				});
+			const techRecord = this.currentTechRecord();
+			if (
+				techRecord?.techRecord_vehicleType === 'hgv' ||
+				techRecord?.techRecord_vehicleType === 'lgv' ||
+				techRecord?.techRecord_vehicleType === 'trl'
+			) {
+				if (techRecord?.techRecord_adrDetails_dangerousGoods) {
+					this.form.patchValue({
+						vtg15: {
+							vtg15Required: true,
+						},
+					});
+				}
 			}
 		}
+	}
+
+	vtgRequired(): boolean {
+		return this.form.controls.vtg15.controls.vtg15Required.value ?? false;
+	}
+
+	primaryHazardClassificationDefaultValue(): string {
+		return this.form.controls.vtg15.controls.primaryHazardClassification.value?.description ?? '';
+	}
+
+	secondaryHazardClassificationDefaultValue(): string {
+		return this.form.controls.vtg15.controls.secondaryHazardClassification.value?.description ?? '';
 	}
 
 	handleFormChange(): void {
