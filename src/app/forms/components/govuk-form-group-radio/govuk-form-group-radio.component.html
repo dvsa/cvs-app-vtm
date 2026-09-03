@@ -1,4 +1,4 @@
-<div class="govuk-form-group" [id]="id">
+<div [id]="id" [ngClass]="{ 'govuk-form-group': true, 'govuk-form-group--error': hasError && errorMode() === 'group' }">
   <fieldset class="govuk-fieldset" role="group">
     <legend class="govuk-fieldset__legend">
       <div class="govuk-fieldset__heading tags">
@@ -13,7 +13,7 @@
       </div>
     </legend>
 
-    @if (controlHint() && !disabled()) {
+    @if (controlHint()) {
       <div class="govuk-hint" [id]="hintId">{{ controlHint() }}</div>
     }
 

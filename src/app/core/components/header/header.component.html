@@ -1,8 +1,8 @@
 <a [href]="skipLinkHref" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 @if (
-  featureToggleService.isFeatureEnabled('betas') && 
-  featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+  featureToggleService.isFeatureEnabled(FeatureFlags.BETAS) && 
+  featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 ) {
   <header class="govuk-header header" role="banner" data-module="govuk-header">
     <div class="govuk-header__container header-container govuk-!-padding-top-4 govuk-!-padding-bottom-2">

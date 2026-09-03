@@ -8,7 +8,7 @@ import { CommonValidatorsService } from '@forms/validators/common-validators.ser
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { AxleSpacing, Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
-import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable()
@@ -75,7 +75,7 @@ export class AxlesService {
 	}
 
 	refDataValidator(): ValidatorFn {
-		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+		return this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 			? this.commonValidators.doesTyresRefDataExist(ReferenceDataResourceType.Tyres, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
 					return {
@@ -95,7 +95,7 @@ export class AxlesService {
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be less than or equal to 99999`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -109,7 +109,7 @@ export class AxlesService {
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be greater than or equal to 0`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -124,32 +124,32 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.maxLength(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.maxLength(12, 'Tyre Size'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.minLength(0, 'Tyre Size', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.minLength(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.maxLength(2, 'Ply Rating', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.maxLength(2, 'Ply Rating'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.minLength(0, 'Ply Rating', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.minLength(0, 'Ply Rating'),
 			]),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? axle?.tyres_fitmentCode || FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.max(999, 'Data TR Axles', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.max(999, 'Data TR Axles'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Data TR Axles', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.min(0, 'Data TR Axles'),
 			]),
@@ -178,7 +178,7 @@ export class AxlesService {
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be less than or equal to 99999`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -192,7 +192,7 @@ export class AxlesService {
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be greater than or equal to 0`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -207,25 +207,25 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.maxLength(12, 'Tyre Size', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.maxLength(12, 'Tyre Size'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Tyre Size', '', 'tyres_tyreSize', 'tyres')
 					: this.commonValidators.min(0, 'Tyre Size'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.maxLength(2, 'Ply Rating', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.maxLength(2, 'Ply Rating'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Ply Rating', '', 'tyres_plyRating', 'tyres')
 					: this.commonValidators.min(0, 'Ply Rating'),
 			]),
 			tyres_speedCategorySymbol: this.fb.control<string | null>(axle?.tyres_speedCategorySymbol || null),
 			// TODO remove feature flag when released to production and flag disabled
 			tyres_fitmentCode: this.fb.control<string | null>(
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? axle?.tyres_fitmentCode || FitmentCodeEnum.Single
 					: axle?.tyres_fitmentCode || null
 			),
@@ -248,7 +248,7 @@ export class AxlesService {
 	}
 
 	generateTRLAxleForm(axle?: TRLAxles) {
-		const featureEnabled = this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails');
+		const featureEnabled = this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS);
 
 		return this.fb.group({
 			axleNumber: this.fb.control<number | null>(axle?.axleNumber || null),
@@ -257,7 +257,7 @@ export class AxlesService {
 			brakes_brakeActuator: this.fb.control<number | null>(axle?.brakes_brakeActuator || null, [
 				this.commonValidators.max(999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: featureEnabled
 								? 'Brake actuator and Lever length must be less than or equal to 999mm'
@@ -277,7 +277,7 @@ export class AxlesService {
 			brakes_leverLength: this.fb.control<number | null>(axle?.brakes_leverLength || null, [
 				this.commonValidators.max(999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: featureEnabled
 								? 'Brake actuator and Lever length must be less than or equal to 999mm'
@@ -304,7 +304,7 @@ export class AxlesService {
 			tyres_tyreCode: this.fb.control<number | null>(axle?.tyres_tyreCode || null, [
 				this.commonValidators.max(99999, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be less than or equal to 99999`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -318,7 +318,7 @@ export class AxlesService {
 				}),
 				this.commonValidators.min(0, (control) => {
 					const index = control.parent?.get('axleNumber')?.value || 0;
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${index} tyre code must be greater than or equal to 0`,
 							anchorLink: `tyres_tyreCode-${index}`,
@@ -333,19 +333,19 @@ export class AxlesService {
 				this.refDataValidator(),
 			]),
 			tyres_tyreSize: this.fb.control<string | null>({ value: axle?.tyres_tyreSize || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.max(12, 'Tyre Size', '', 'tyres', 'tyres_tyreSize')
 					: this.commonValidators.max(12, 'Tyre Size'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Tyre Size')
 					: this.commonValidators.min(0, 'Tyre Size', '', 'tyres', 'tyres_tyreSize'),
 			]),
 			tyres_plyRating: this.fb.control<string | null>({ value: axle?.tyres_plyRating || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.max(2, 'Ply rating', '', 'tyres', 'tyres_plyRating')
 					: this.commonValidators.max(2, 'Ply rating'),
 
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Ply rating')
 					: this.commonValidators.min(0, 'Ply rating', '', 'tyres', 'tyres_plyRating'),
 			]),
@@ -354,10 +354,10 @@ export class AxlesService {
 				featureEnabled ? axle?.tyres_fitmentCode || FitmentCodeEnum.Single : axle?.tyres_fitmentCode || null
 			),
 			tyres_dataTrAxles: this.fb.control<number | null>({ value: axle?.tyres_dataTrAxles || null, disabled: true }, [
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.max(999, 'Load index', '', 'tyres', 'tyres_dataTrAxles')
 					: this.commonValidators.max(999, 'Load index'),
-				this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+				this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 					? this.commonValidators.min(0, 'Load index')
 					: this.commonValidators.min(0, 'Load index', '', 'tyres', 'tyres_dataTrAxles'),
 			]),
@@ -378,7 +378,7 @@ export class AxlesService {
 	maxWeightHGV(label: string, id: string): ValidatorFn {
 		return this.commonValidators.max(99999, (control) => {
 			const index = control.parent?.get('axleNumber')?.value || 0;
-			if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+			if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 				return {
 					error: `Axle ${index} GB, EEC, Design Weight must be less than or equal to 99999kg`,
 					anchorLink: `${id}-${index}`,
@@ -395,7 +395,7 @@ export class AxlesService {
 	maxWeightPSV(label: string, id: string): ValidatorFn {
 		return this.commonValidators.max(99999, (control) => {
 			const index = control.parent?.get('axleNumber')?.value || 0;
-			if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+			if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 				return {
 					error: `Axle ${index} Kerb, Laden, GB Max, EEC, Design Weight must be less than or equal to 99999kg`,
 					anchorLink: `${id}-${index}`,
@@ -419,7 +419,7 @@ export class AxlesService {
 			axles: this.fb.control<string>(spacing?.axles || ''),
 			value: this.fb.control<number | null>(spacing?.value || null, [
 				this.commonValidators.max(99999, () => {
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							error: `Axle ${axlesNumber - 1} to ${axlesNumber} spacing must be less than or equal to 99999mm`,
 							anchorLink: `techRecord_dimensions_axleSpacing_${axlesNumber - 2}_value`,
@@ -503,7 +503,7 @@ export class AxlesService {
 		const noOfAxles = axlesForm.controls.length === 0 ? null : axlesForm.controls.length;
 		parent.get('techRecord_noOfAxles')?.patchValue(noOfAxles);
 
-		if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+		if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 			parent.get('techRecord_frontAxleToRearAxle')?.patchValue(null);
 		}
 
@@ -513,7 +513,7 @@ export class AxlesService {
 
 			// Relabel axle spacings
 			for (let i = 0; i < axleSpacingsForm.controls.length; i++) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					if (type === VehicleTypes.TRL) {
 						parent.patchValue({
 							techRecord_rearAxleToRearTrl: null,

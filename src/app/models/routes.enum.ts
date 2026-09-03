@@ -2,6 +2,7 @@ export enum RootRoutes {
 	ROOT = '',
 	SEARCH_TECHNICAL_RECORD = 'search',
 	CREATE_TECHNICAL_RECORD = 'create',
+	BATCH = 'batch',
 	BATCH_CREATE_TECHNICAL_RECORD = 'create-batch',
 	CURRENT_TEST_RESULT = 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
 	CURRENT_TECH_RECORD = 'tech-records/:systemNumber/:createdTimestamp',
@@ -53,6 +54,12 @@ export enum TechRecordCreateBatchRoutes {
 	DETAILS = 'details',
 	BATCH_RESULT = 'batch-results',
 	TYRE_SEARCH = 'tyre-search/:axleNumber',
+}
+
+export enum BatchRoutes {
+	CANCEL_BATCH = 'cancel',
+	ENTER_BATCH_DETAILS = 'enter-details',
+	ENTER_BATCH_SIZE = 'enter-size',
 }
 
 export enum ReferenceDataRoutes {

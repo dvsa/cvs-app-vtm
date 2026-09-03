@@ -1,4 +1,4 @@
-import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 	readonly logOutEvent = output<void>();
 	readonly username = input<string | null>('');
 	protected readonly version = packageInfo.version;
+	readonly FeatureFlags = FeatureFlags;
 
 	router = inject(Router);
 	featureToggleService = inject(FeatureToggleService);
