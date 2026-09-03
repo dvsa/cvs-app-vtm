@@ -31,6 +31,7 @@ export interface BatchRecords extends EntityState<BatchRecord> {
 	applicationId?: string;
 	vehicleStatus?: StatusCodes;
 	trlFormType?: TrailerFormType;
+	batchSize?: number;
 }
 
 const selectId = (a: BatchRecord): string => {

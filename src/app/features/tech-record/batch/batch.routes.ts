@@ -45,7 +45,7 @@ export const routes: Routes = [
 			{
 				path: BatchRoutes.ENTER_BATCH_SIZE,
 				data: {
-					title: 'Enter batch size - Vehicle Testing Management',
+					title: 'Enter number of vehicles in this batch - Vehicle Testing Management',
 					roles: Roles.TechRecordCreate,
 					featureToggleName: FeatureFlags.BATCH_REDESIGN,
 					backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}` },
@@ -53,6 +53,18 @@ export const routes: Routes = [
 				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
 				loadComponent: () =>
 					import('./enter-batch-size/enter-batch-size.component').then((m) => m.EnterBatchSizeComponent),
+			},
+			{
+				path: BatchRoutes.ENTER_BATCH_IDENTIFIERS,
+				data: {
+					title: 'Enter details for each vehicle - Vehicle Testing Management',
+					roles: Roles.TechRecordCreate,
+					featureToggleName: FeatureFlags.BATCH_REDESIGN,
+					backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_SIZE}` },
+				},
+				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
+				loadComponent: () =>
+					import('./enter-batch-identifiers/enter-batch-identifiers.component').then((m) => m.EnterBatchIdentifiers),
 			},
 		],
 	},
