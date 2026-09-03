@@ -58,6 +58,11 @@ export class EnterBatchSizeComponent implements OnInit {
 	handlePopulateForm(): void {
 		const savedBatchDetails = this.savedBatchDetails();
 		this.form.patchValue(savedBatchDetails);
+
+		// Once a batch size is entered it cannot be changed by going back to this page
+		if (savedBatchDetails.batchSize) {
+			this.form.controls.batchSize.disable({ emitEvent: false });
+		}
 	}
 
 	handleContinue(): void {
