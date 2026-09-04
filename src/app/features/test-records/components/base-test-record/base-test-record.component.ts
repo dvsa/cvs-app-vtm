@@ -92,12 +92,19 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 
+	private isViewInitialised = false;
+
 	ngAfterViewInit(): void {
+		this.isViewInitialised = true;
 		this.handleFormChange({});
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	handleFormChange(event: any) {
+		if (!this.isViewInitialised) {
+			return;
+		}
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let latestTest: any;
 		this.sections()?.forEach((section) => {
