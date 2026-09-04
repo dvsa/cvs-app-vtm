@@ -114,11 +114,26 @@ describe('VehicleComponent', () => {
 			it('should not have validators when vehicle is a TRL', () => {
 				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
 				store.refreshState();
-				component.form.controls.odometerReading.clearValidators();
 				component.addValidators();
 				const control = component.form.controls.odometerReading;
 				control.setValue(null);
 				control.markAsTouched();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should not carry validators over from a previously viewed non-TRL vehicle', () => {
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+
+				const control = component.form.controls.odometerReading;
+				control.setValue(null);
+				control.markAsTouched();
+				control.updateValueAndValidity();
 				expect(control.valid).toBe(true);
 			});
 		});
@@ -148,11 +163,26 @@ describe('VehicleComponent', () => {
 			it('should not have validators when vehicle is a TRL', () => {
 				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
 				store.refreshState();
-				component.form.controls.odometerReadingUnits.clearValidators();
 				component.addValidators();
 				const control = component.form.controls.odometerReadingUnits;
 				control.setValue(null);
 				control.markAsTouched();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should not carry validators over from a previously viewed non-TRL vehicle', () => {
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+
+				const control = component.form.controls.odometerReadingUnits;
+				control.setValue(null);
+				control.markAsTouched();
+				control.updateValueAndValidity();
 				expect(control.valid).toBe(true);
 			});
 		});
