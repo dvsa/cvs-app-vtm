@@ -120,7 +120,6 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		const techRecord = this.currentTechRecord();
 		// not mandatory for amend mode
 		if (this.amend()) {
-			console.log('test');
 			return false;
 		}
 		if (
@@ -128,13 +127,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 			techRecord?.techRecord_vehicleType === 'lgv' ||
 			techRecord?.techRecord_vehicleType === 'trl'
 		) {
-			console.log('test1');
 			if (techRecord?.techRecord_adrDetails_dangerousGoods === true) {
-				console.log('test2');
 				return true;
 			}
 		}
-		console.log('test3');
 		return false;
 	}
 
