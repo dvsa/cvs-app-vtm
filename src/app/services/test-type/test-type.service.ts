@@ -1,5 +1,18 @@
 import { Injectable } from '@angular/core';
-import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '../../models/testTypeId.enum';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { ReferenceDataResourceType } from '../../models/reference-data.model';
+import {
+	TEST_TYPES_ALL_DESK_BASED_TESTS,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2_SPEC_TEST,
+	TEST_TYPES_GROUP3_SPEC_TEST,
+	TEST_TYPES_GROUP4_SPEC_TEST,
+	TEST_TYPES_GROUP5_13,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP15_16,
+	TEST_TYPES_MSVA,
+} from '../../models/testTypeId.enum';
+import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -73,5 +86,50 @@ export class TestTypeService {
 	isTestTypeAbandonable(testTypeId: string): boolean {
 		// You cannot abanadon a test that is desk-based or LEC
 		return ![...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(testTypeId);
+	}
+
+	getAbandonReasonsResourceType(testResult: TestResultSchema) {
+		const testTypeId = testResult.testTypes[0].testTypeId;
+
+		// Display TIR reasons when abandoning TIR tests
+		if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
+			return ReferenceDataResourceType.TirReasonsForAbandoning;
+		}
+
+		// Display MSVA reasons when abandoning MSVA tests
+		if (TEST_TYPES_MSVA.includes(testTypeId)) {
+			return ReferenceDataResourceType.MsvaReasonsForAbandoning;
+		}
+
+		// Display specialist reasons when abandoning non-MSVA specialist tests
+		if (
+			[
+				...TEST_TYPES_GROUP1_SPEC_TEST,
+				...TEST_TYPES_GROUP2_SPEC_TEST,
+				...TEST_TYPES_GROUP3_SPEC_TEST,
+				...TEST_TYPES_GROUP4_SPEC_TEST,
+				...TEST_TYPES_GROUP5_SPEC_TEST,
+			].includes(testTypeId)
+		) {
+			return ReferenceDataResourceType.SpecialistReasonsForAbandoning;
+		}
+
+		// Otherwise, display vehicle type specific reasons
+		const vehicleType = testResult.vehicleType;
+
+		if (vehicleType === VehicleTypes.PSV) {
+			return ReferenceDataResourceType.ReasonsForAbandoningPsv;
+		}
+
+		if (vehicleType === VehicleTypes.HGV) {
+			return ReferenceDataResourceType.ReasonsForAbandoningHgv;
+		}
+
+		if (vehicleType === VehicleTypes.TRL) {
+			return ReferenceDataResourceType.ReasonsForAbandoningTrl;
+		}
+
+		// If we reach here, then we have invalid data
+		throw new Error('Unexpected vehicle type');
 	}
 }

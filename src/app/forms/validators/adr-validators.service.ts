@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormArray, ValidatorFn } from '@angular/forms';
 import { AdrService } from '@services/adr/adr.service';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +16,7 @@ export class AdrValidatorsService {
 				(!control.value || (Array.isArray(control.value) && control.value.length === 0)) &&
 				this.adrService.canDisplayDangerousGoodsSection(control.parent.value)
 			) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return {
 						required: {
 							error: `${message} is required with Approved to carry dangerous goods`,
@@ -38,7 +38,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayCompatibilityGroupJSection(control.parent.value)
 			) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required with Permitted dangerous goods`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required with Permitted dangerous goods` };
@@ -56,7 +56,7 @@ export class AdrValidatorsService {
 				}
 
 				if (!control.value) {
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return { required: { error: `${message} is required with ADR body type`, accordion: 'adr' } };
 					}
 					return { required: `${message} is required with ADR body type` };
@@ -70,7 +70,7 @@ export class AdrValidatorsService {
 	requiredWithTankOrBattery(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayTankOrBatterySection(control.parent.value)) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required with ADR body type`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required with ADR body type` };
@@ -87,7 +87,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayTankStatementSelectSection(control.parent.value)
 			) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required with Substances permitted`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required with Substances permitted` };
@@ -100,7 +100,7 @@ export class AdrValidatorsService {
 	requiredWithBrakeEndurance(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.canDisplayWeightSection(control.parent.value)) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required` };
@@ -117,7 +117,7 @@ export class AdrValidatorsService {
 				!control.value &&
 				this.adrService.canDisplayBatteryListNumberSection(control.parent.value)
 			) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required with Battery list applicable`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required with Battery list applicable` };
@@ -141,7 +141,7 @@ export class AdrValidatorsService {
 				const allFieldsEmpty = !tc3InspectionType?.value && !tc3PeriodicNumber?.value && !tc3ExpiryDate?.value;
 
 				if (allFieldsEmpty) {
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							required: {
 								error: message,
@@ -183,7 +183,7 @@ export class AdrValidatorsService {
 					const control = unNumbersArray?.controls[index];
 					if (control) {
 						const errors = control.errors || {};
-						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 							control.setErrors({
 								...errors,
 								required: {
@@ -202,7 +202,7 @@ export class AdrValidatorsService {
 							});
 						}
 
-						if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+						if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 							return {
 								required: {
 									error: `UN number ${index + 1} is required or remove UN number ${index + 1}`,
@@ -252,7 +252,7 @@ export class AdrValidatorsService {
 					// Set errors on both simultaneously
 					refNo.setErrors({ ...refNoErrors, required: message });
 
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						unNumbers.controls[0].setErrors({
 							...unNumbersErrors,
 							required: {
@@ -271,7 +271,7 @@ export class AdrValidatorsService {
 						});
 					}
 
-					if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+					if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 						return {
 							required: {
 								error: message,
@@ -297,7 +297,7 @@ export class AdrValidatorsService {
 	requiredWithADRApplicationApproved(message: string): ValidatorFn {
 		return (control) => {
 			if (control.parent && !control.value && this.adrService.applicationDetailsRequired(control.parent.value)) {
-				if (this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')) {
+				if (this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)) {
 					return { required: { error: `${message} is required with Ready for inspection`, accordion: 'adr' } };
 				}
 				return { required: `${message} is required with Ready for inspection` };

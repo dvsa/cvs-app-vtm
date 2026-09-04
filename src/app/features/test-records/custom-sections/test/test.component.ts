@@ -1,17 +1,21 @@
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { MultiOptions, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
+import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
+import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -43,6 +47,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupSelectComponent,
 		GovukFormGroupTextareaComponent,
 		RadioComponent,
+		GovukCheckboxGroupComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,6 +55,8 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 export class TestComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	testService = inject(TestService);
+	testTypeService = inject(TestTypeService);
+	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
 
 	mode = input.required<Modes>();
@@ -57,17 +64,21 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	abandonReasons = computed(() => this.getAbandonReasonsList());
 	destroy = new ReplaySubject<boolean>(1);
 
 	startTimeDisplay = new FormControl({ value: '', disabled: true });
 	endTimeDisplay = new FormControl({ value: '', disabled: true });
 
 	readonly FormNodeWidth = FormNodeWidth;
+	readonly TestResults = TestResults;
+	readonly ABANDON_REASONS_REGEX = new RegExp('\\. (?<!\\..\\. )');
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 
 	ngOnInit(): void {
+		this.loadOptions();
 		this.addValidators();
 		this.disableFields();
 		this.handleTestStartTimestampChange();
@@ -78,6 +89,21 @@ export class TestComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	getAbandonReasonsList(): MultiOptions {
+		const testResult = this.testResult();
+		if (!testResult) return [];
+
+		const resourceType = this.testTypeService.getAbandonReasonsResourceType(testResult);
+		const referenceData = this.store.selectSignal(selectAllReferenceDataByResourceType(resourceType))() || [];
+		return referenceData.map((reason) => ({ label: `${reason.description}`, value: `${reason.description}` }));
+	}
+
+	loadOptions(): void {
+		const testResult = this.testResult();
+		if (!testResult) return;
+		this.optionsService.loadOptions(this.testTypeService.getAbandonReasonsResourceType(testResult));
 	}
 
 	addValidators(): void {
@@ -262,6 +288,10 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		this.startTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeStartTimestamp.value));
 		this.endTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeEndTimestamp.value));
+	}
+
+	getReasonsList(reasons: string | string[] | null): string[] {
+		return Array.isArray(reasons) ? reasons : (reasons?.split(this.ABANDON_REASONS_REGEX) ?? []);
 	}
 
 	protected readonly Modes = Modes;

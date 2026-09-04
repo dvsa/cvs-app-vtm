@@ -16,12 +16,12 @@ export class FeatureToggleDirective {
 
 	constructor() {
 		effect(() => {
+			this.viewContainer.clear();
+
 			if (this.featureFlags()) {
 				const isEnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName());
 				if (isEnabled) {
 					this.viewContainer.createEmbeddedView(this.templateRef);
-				} else {
-					this.viewContainer.clear();
 				}
 			}
 		});

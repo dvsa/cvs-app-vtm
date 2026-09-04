@@ -21,6 +21,18 @@ export class FeatureToggleService {
 		if (!testTypeId) return false;
 		const allowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP9_10];
 
-		return this.isFeatureEnabled('testresultcreate') && allowList.includes(testTypeId || '');
+		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
 	}
+}
+
+export enum FeatureFlags {
+	BETAS = 'betas',
+	TECH_RECORD_REDESIGN = 'techrecordredesign',
+	TECH_RECORD_REDESIGN_CREATE = 'techrecordredesigncreate',
+	TECH_RECORD_REDESIGN_CREATE_DETAILS = 'techrecordredesigncreatedetails',
+	TEST_RESULT_CREATE = 'testresultcreate',
+	TEST_RESULT_AMEND = 'testresultamend',
+	HIDE_TEST_RESTRICTIONS = 'hide-test-restriction-functionality',
+	ADAS_IMAGES_ON_DEFECTS = 'adas-images-on-defects',
+	BATCH_REDESIGN = 'batch-redesign',
 }

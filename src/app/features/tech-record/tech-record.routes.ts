@@ -9,6 +9,7 @@ import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tec
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { FeatureFlags } from '../../services/feature-toggle-service/feature-toggle-service';
 
 export const routes: Routes = [
 	{
@@ -17,7 +18,7 @@ export const routes: Routes = [
 		data: {
 			title: 'View technical record',
 			roles: Roles.TechRecordView,
-			isCustomLayout: ['techrecordredesigncreatedetails'],
+			isCustomLayout: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 		},
 		canActivateChild: [MsalGuard, RoleGuard],
 		canActivate: [CancelEditTechGuard],
@@ -33,7 +34,7 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			reason: ReasonForEditing.CORRECTING_AN_ERROR,
-			isCustomLayout: ['techrecordredesigncreatedetails'],
+			isCustomLayout: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			title: 'Amend technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
@@ -50,7 +51,7 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
-			isCustomLayout: ['techrecordredesigncreatedetails'],
+			isCustomLayout: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			title: 'Amend technical record',
 		},
 		canActivate: [MsalGuard, RoleGuard],
@@ -178,7 +179,7 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			backlink: {
-				featureFlags: ['techrecordredesigncreatedetails'],
+				featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			},
 			title: 'Review technical record',
 		},
@@ -209,7 +210,7 @@ export const routes: Routes = [
 			roles: Roles.TechRecordAmend,
 			isEditing: true,
 			backlink: {
-				featureFlags: ['techrecordredesigncreatedetails'],
+				featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 			},
 			title: 'Review technical record',
 		},
