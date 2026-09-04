@@ -46,6 +46,7 @@ import { TestAmendmentHistoryComponent } from '@features/test-records/amend/comp
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
+import { SeatbeltsComponent } from '@features/test-records/custom-sections/seatbelts/seatbelts.component';
 import { TestComponent } from '@features/test-records/custom-sections/test/test.component';
 import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
@@ -82,6 +83,7 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		AsyncPipe,
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
+		SeatbeltsComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -368,6 +370,12 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	get isTestTypeGroupEditable$(): Observable<boolean> {
 		return this.testRecordService.isTestTypeGroupEditable$;
+	}
+
+	shouldShowSeatbeltSection(): boolean {
+		// Sourced from the test result rather than the tech record, as the tech record is not
+		// guaranteed to be loaded when amending or viewing an existing test.
+		return this.testResult()?.vehicleType === VehicleTypes.PSV;
 	}
 
 	protected readonly Modes = Modes;
