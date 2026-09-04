@@ -95,9 +95,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		} else {
 			const techRecord = this.currentTechRecord();
 			if (
-				techRecord?.techRecord_vehicleType === 'hgv' ||
-				techRecord?.techRecord_vehicleType === 'lgv' ||
-				techRecord?.techRecord_vehicleType === 'trl'
+				(techRecord?.techRecord_vehicleType === 'hgv' ||
+					techRecord?.techRecord_vehicleType === 'lgv' ||
+					techRecord?.techRecord_vehicleType === 'trl') &&
+				!this.amend()
 			) {
 				if (techRecord?.techRecord_adrDetails_dangerousGoods) {
 					this.form.patchValue({

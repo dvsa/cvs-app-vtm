@@ -252,6 +252,13 @@ export class VehicleHeaderComponent {
 		return today >= target;
 	}
 
+	getVTG15RequiredText(): string {
+		const vtgRequired = this.testResult()?.vtg15?.vtg15Required;
+		if (vtgRequired === null) return '-';
+		if (vtgRequired) return 'Yes';
+		return 'No';
+	}
+
 	get certificateParams(): Map<string, string> {
 		return new Map([
 			['testNumber', this.testNumber() ?? ''],
