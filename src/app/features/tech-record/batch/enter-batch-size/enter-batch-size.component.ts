@@ -38,8 +38,8 @@ export class EnterBatchSizeComponent implements OnInit {
 
 	readonly form = this.fb.group({
 		batchSize: this.fb.control<number | null>(null, [
-			this.validators.required(() => ({ error: 'Enter a number from 1 to 41', anchorLink: 'batchSize' })),
-			this.validators.range(1, 41, () => ({ error: 'Enter a number from 1 to 41', anchorLink: 'batchSize' })),
+			this.validators.required(() => ({ error: 'Enter a number between 1 to 41', anchorLink: 'batchSize' })),
+			this.validators.range(1, 41, () => ({ error: 'Enter a number between 1 to 41', anchorLink: 'batchSize' })),
 		]),
 	});
 
