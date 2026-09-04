@@ -125,7 +125,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		);
 
 		if (this.shouldUpdateTest(latestTest)) {
-			console.log('test');
 			this.newTestResult.emit(latestTest);
 		}
 	}
