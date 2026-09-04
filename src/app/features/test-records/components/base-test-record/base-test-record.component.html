@@ -70,6 +70,7 @@
           @if (isEditing()) {
             <app-accordion [id]="template.name" [title]="template.label">
               <app-vtg15
+                [amend]="amendMode()"
                 [edit]="isEditing()"
                 [data]="testResult()"
                 [isContingencyTest]="isContingencyTest()"

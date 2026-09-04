@@ -35,7 +35,17 @@ export class Vtg15Component implements OnInit, OnDestroy {
 
 	form = this.fb.group({
 		vtg15: this.fb.group({
-			vtg15Required: this.fb.control(false, []),
+			vtg15Required: this.fb.control<boolean | undefined>(undefined, [
+				this.commonValidators.applyWhen(
+					() => this.isVTGRequiredMandatory(),
+					this.commonValidators.required(() => {
+						return {
+							error: 'Select if a VTG15 is required',
+							anchorLink: 'vtg15Required',
+						};
+					})
+				),
+			]),
 			primaryHazardClassification: this.fb.control<HazardClassification | undefined>(undefined, [
 				this.commonValidators.applyWhen(
 					() => this.vtgRequired(),
@@ -51,6 +61,7 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	});
 
 	edit = input(false);
+	amend = input(false);
 	isContingencyTest = input(true);
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
@@ -69,9 +80,8 @@ export class Vtg15Component implements OnInit, OnDestroy {
 
 	initForm(): void {
 		const testResult = this.testResult();
-		if (!testResult) return;
 
-		if (testResult?.vtg15) {
+		if (testResult && testResult.vtg15 && testResult.vtg15.vtg15Required !== null) {
 			const vtg15 = {
 				...testResult.vtg15,
 				primaryHazardClassification: this.toHazardClassificationOption(testResult.vtg15.primaryHazardClassification),
@@ -89,12 +99,13 @@ export class Vtg15Component implements OnInit, OnDestroy {
 				techRecord?.techRecord_vehicleType === 'lgv' ||
 				techRecord?.techRecord_vehicleType === 'trl'
 			) {
-				if (techRecord?.techRecord_adrDetails_dangerousGoods) {
+				if (!techRecord?.techRecord_adrDetails_dangerousGoods) {
 					this.form.patchValue({
 						vtg15: {
-							vtg15Required: true,
+							vtg15Required: false,
 						},
 					});
+					this.cdr.detectChanges();
 				}
 			}
 		}
@@ -103,6 +114,28 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	toHazardClassificationOption(value?: HazardClassification): HazardClassification | undefined {
 		if (!value) return undefined;
 		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
+	}
+
+	isVTGRequiredMandatory(): boolean {
+		const techRecord = this.currentTechRecord();
+		// not mandatory for amend mode
+		if (this.amend()) {
+			console.log('test');
+			return false;
+		}
+		if (
+			techRecord?.techRecord_vehicleType === 'hgv' ||
+			techRecord?.techRecord_vehicleType === 'lgv' ||
+			techRecord?.techRecord_vehicleType === 'trl'
+		) {
+			console.log('test1');
+			if (techRecord?.techRecord_adrDetails_dangerousGoods === true) {
+				console.log('test2');
+				return true;
+			}
+		}
+		console.log('test3');
+		return false;
 	}
 
 	vtgRequired(): boolean {

@@ -32,6 +32,18 @@
   }
 
   <div class="govuk-input__wrapper">
+    <!-- Provide prefix via string input -->
+    @if (prefix()) {
+      <div
+        class="govuk-input__prefix"
+        [class.govuk-input__prefix-disabled]="control?.disabled || disabled() || false"
+        aria-hidden="true">
+        {{ prefix() }}
+      </div>
+    }
+
+    <!-- Also allow providing of prefix via content projection for more complex suffixes -->
+    <ng-content select=".govuk-input__prefix"></ng-content>
     @if (controlType() === 'text') {
       <input
         appNoEmojis
