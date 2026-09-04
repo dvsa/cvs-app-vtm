@@ -74,6 +74,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		if (testResult?.vtg15) {
 			const vtg15 = {
 				...testResult.vtg15,
+				primaryHazardClassification: this.toHazardClassificationOption(testResult.vtg15.primaryHazardClassification),
+				secondaryHazardClassification: this.toHazardClassificationOption(
+					testResult.vtg15.secondaryHazardClassification
+				),
 			};
 
 			this.form.patchValue({ vtg15 });
@@ -96,16 +100,13 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		}
 	}
 
+	toHazardClassificationOption(value?: HazardClassification): HazardClassification | undefined {
+		if (!value) return undefined;
+		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
+	}
+
 	vtgRequired(): boolean {
 		return this.form.controls.vtg15.controls.vtg15Required.value ?? false;
-	}
-
-	primaryHazardClassificationDefaultValue(): string {
-		return this.form.controls.vtg15.controls.primaryHazardClassification.value?.description ?? '';
-	}
-
-	secondaryHazardClassificationDefaultValue(): string {
-		return this.form.controls.vtg15.controls.secondaryHazardClassification.value?.description ?? '';
 	}
 
 	handleFormChange(): void {

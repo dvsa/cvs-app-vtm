@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { Vtg15Component } from '@forms/components/vtg15/vtg15.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -69,7 +70,7 @@ describe('VTG15Component', () => {
 		it('should patch form with vtg15 data when testResult has vtg15 property', () => {
 			const vtg15Data = {
 				vtg15Required: true,
-				primaryHazardClassification: { code: '1', description: 'Explosives' },
+				primaryHazardClassification: { code: '1', description: 'Explosive' },
 				unNumber: 123,
 			};
 			const testResultData = {
@@ -78,7 +79,48 @@ describe('VTG15Component', () => {
 			store.overrideSelector(toEditOrNotToEdit, testResultData as any);
 			const patchValueSpy = jest.spyOn(component.form, 'patchValue');
 			component.initForm();
-			expect(patchValueSpy).toHaveBeenCalledWith({ vtg15: vtg15Data });
+			expect(patchValueSpy).toHaveBeenCalledWith({
+				vtg15: { ...vtg15Data, secondaryHazardClassification: undefined },
+			});
+		});
+
+		it('should patch hazard classifications as the HazardClassification members the options are built from', () => {
+			// The API returns equivalent but distinct objects; the select matches options by identity, so the
+			// patched value has to be the enum member itself or the dropdown renders blank.
+			store.overrideSelector(toEditOrNotToEdit, {
+				vtg15: {
+					vtg15Required: true,
+					primaryHazardClassification: { code: '1', description: 'Explosive' },
+					secondaryHazardClassification: { code: '4.2', description: 'Spontaneously combustible' },
+				},
+			} as any);
+
+			component.initForm();
+
+			const { primaryHazardClassification, secondaryHazardClassification } = component.form.controls.vtg15.controls;
+			expect(primaryHazardClassification.value).toBe(HazardClassification._1);
+			expect(secondaryHazardClassification.value).toBe(HazardClassification['_4.2']);
+		});
+
+		it('should keep a hazard classification whose code is not a known member', () => {
+			const unknown = { code: '99', description: 'Not a real classification' };
+			store.overrideSelector(toEditOrNotToEdit, {
+				vtg15: { vtg15Required: true, primaryHazardClassification: unknown },
+			} as any);
+
+			component.initForm();
+
+			expect(component.form.controls.vtg15.controls.primaryHazardClassification.value).toEqual(unknown);
+		});
+
+		it('should leave hazard classifications unset when the test result has none', () => {
+			store.overrideSelector(toEditOrNotToEdit, { vtg15: { vtg15Required: false } } as any);
+
+			component.initForm();
+
+			const { primaryHazardClassification, secondaryHazardClassification } = component.form.controls.vtg15.controls;
+			expect(primaryHazardClassification.value).toBeUndefined();
+			expect(secondaryHazardClassification.value).toBeUndefined();
 		});
 
 		it('should set vtg15Required to true for HGV with dangerous goods', () => {
@@ -161,6 +203,47 @@ describe('VTG15Component', () => {
 			const detectChangesSpy = jest.spyOn(component.cdr, 'detectChanges');
 			component.initForm();
 			expect(detectChangesSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('hazard classification dropdowns', () => {
+		it('should not render a duplicate option for a retained hazard classification', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vtg15: {
+					vtg15Required: true,
+					primaryHazardClassification: { code: '1', description: 'Explosive' },
+					secondaryHazardClassification: { code: '1', description: 'Explosive' },
+				},
+			} as any);
+			fixture.componentRef.setInput('edit', true);
+			fixture.componentRef.setInput('data', { vin: 'ABC001' });
+
+			fixture.detectChanges();
+
+			const selects = fixture.nativeElement.querySelectorAll('select') as NodeListOf<HTMLSelectElement>;
+			expect(selects).toHaveLength(2);
+
+			for (const select of Array.from(selects)) {
+				const explosiveOptions = Array.from(select.options).filter((option) => option.text === 'Explosive');
+				expect(explosiveOptions).toHaveLength(1);
+			}
+		});
+
+		it('should select the retained hazard classification rather than the placeholder', async () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vtg15: {
+					vtg15Required: true,
+					primaryHazardClassification: { code: '4.2', description: 'Spontaneously combustible' },
+				},
+			} as any);
+			fixture.componentRef.setInput('edit', true);
+			fixture.componentRef.setInput('data', { vin: 'ABC001' });
+
+			fixture.detectChanges();
+			await fixture.whenStable();
+			fixture.detectChanges();
+			const [primary] = Array.from(fixture.nativeElement.querySelectorAll('select') as NodeListOf<HTMLSelectElement>);
+			expect(primary.options[primary.selectedIndex].text).toBe('Spontaneously combustible');
 		});
 	});
 });

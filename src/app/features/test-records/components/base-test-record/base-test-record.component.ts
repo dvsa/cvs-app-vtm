@@ -74,6 +74,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly requiredStandards = viewChild(RequiredStandardsComponent);
 	readonly weights = viewChild(WeightsComponent);
 	readonly loadStatus = viewChild(LoadStatusComponent);
+	readonly vtg15 = viewChild(Vtg15Component);
 
 	readonly testResult = input.required<TestResultSchema>();
 	readonly isEditing = input(false);
@@ -108,9 +109,20 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		const customDefectsValue = customDefects?.form.getCleanValue(customDefects?.form);
 		const requiredStandards = this.requiredStandards();
 		const requiredStandardsValue = requiredStandards?.form.getCleanValue(requiredStandards?.form);
+		const weightsValue = this.weights()?.form.getRawValue();
+		const loadStatusValue = this.loadStatus()?.form.getRawValue();
+		const vtg15Value = this.vtg15()?.form.getRawValue();
 
-		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
-		console.log(latestTest);
+		latestTest = merge(
+			latestTest,
+			defectsValue,
+			customDefectsValue,
+			requiredStandardsValue,
+			weightsValue,
+			loadStatusValue,
+			vtg15Value,
+			event
+		);
 
 		if (this.shouldUpdateTest(latestTest)) {
 			console.log('test');
