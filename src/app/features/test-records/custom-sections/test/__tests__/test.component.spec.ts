@@ -1,14 +1,18 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { initialAppState } from '@/src/app/store';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
-import { provideMockStore } from '@ngrx/store/testing';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestComponent } from '../test.component';
 
 describe('TestComponent', () => {
 	let fixture: ComponentFixture<TestComponent>;
 	let component: TestComponent;
+	let store: MockStore;
 	let formGroupDirective: FormGroupDirective;
 
 	beforeEach(async () => {
@@ -24,11 +28,16 @@ describe('TestComponent', () => {
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.EDIT);
 		fixture.componentRef.setInput('initialMode', Modes.EDIT);
 		fixture.detectChanges();
+	});
+
+	afterEach(() => {
+		store.resetSelectors();
 	});
 
 	it('should create', () => {
@@ -241,6 +250,45 @@ describe('TestComponent', () => {
 		it('should not set display controls when not in AMEND mode', () => {
 			expect(component.startTimeDisplay.value).toBe('');
 			expect(component.endTimeDisplay.value).toBe('');
+		});
+	});
+
+	describe('shouldShowLoadStatus', () => {
+		const setTestType = (testType: Record<string, unknown>) => {
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [testType] } as TestResultSchema);
+			store.refreshState();
+		};
+
+		it('should be false when there is no test result', () => {
+			store.overrideSelector(toEditOrNotToEdit, undefined);
+			store.refreshState();
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be true for an HGV/TRL annual test', () => {
+			setTestType({ testTypeId: '94' });
+			expect(component.shouldShowLoadStatus()).toBe(true);
+		});
+
+		// Group 1/2 are PSV tests, which have no load status in the dynamic form templates
+		it.each(['1', '18', '15', '22'])('should be false for group 1/2 test type %s', (testTypeId) => {
+			setTestType({ testTypeId });
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be false for a retest that did not fail', () => {
+			setTestType({ testTypeId: '53', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be false for a failed retest without a qualifying defect', () => {
+			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be true for a failed retest with a qualifying defect', () => {
+			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
+			expect(component.shouldShowLoadStatus()).toBe(true);
 		});
 	});
 });
