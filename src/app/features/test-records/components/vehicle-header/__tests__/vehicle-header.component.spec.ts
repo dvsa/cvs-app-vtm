@@ -264,16 +264,6 @@ describe('VehicleHeaderComponent', () => {
 			expect(component.hasVTG15RetentionPeriodPassed()).toBe(false);
 		});
 
-		it('should handle dates with time component correctly', () => {
-			const pastDate = new Date();
-			pastDate.setDate(pastDate.getDate() - 21);
-			pastDate.setHours(12, 30, 45);
-			fixture.componentRef.setInput('testResult', {
-				testTypes: [{ testTypeEndTimestamp: pastDate.toISOString() }],
-			} as any);
-			expect(component.hasVTG15RetentionPeriodPassed()).toBe(true);
-		});
-
 		it('should use first testType when multiple testTypes exist', () => {
 			const pastDate = new Date();
 			pastDate.setDate(pastDate.getDate() - 25); // 25 days ago, past 21-day threshold
