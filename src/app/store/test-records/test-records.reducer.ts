@@ -314,8 +314,9 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		}
 
 		if (testType.loadStatus) {
-			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status
-			if (testType.loadStatus.vehicleLoadStatus === null) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status.
+			// The dynamic form initialises this control to null, the reactive form to undefined; both mean "not entered".
+			if (testType.loadStatus.vehicleLoadStatus === null || testType.loadStatus.vehicleLoadStatus === undefined) {
 				delete testType.loadStatus;
 			} else {
 				// Otherwise create a valid load status object

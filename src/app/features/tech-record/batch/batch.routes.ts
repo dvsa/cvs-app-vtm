@@ -1,3 +1,4 @@
+import { cancelBatchGuard } from '@/src/app/guards/cancel-batch/cancel-batch.guard';
 import { FeatureToggleGuard } from '@/src/app/guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@/src/app/guards/role-guard/roles.guard';
 import { Roles } from '@/src/app/models/roles.enum';
@@ -12,6 +13,7 @@ export const routes: Routes = [
 		path: '',
 		data: { roles: Roles.TechRecordCreate, featureToggleName: FeatureFlags.BATCH_REDESIGN },
 		canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
+		canDeactivate: [cancelBatchGuard],
 		resolve: { data: techRecordDataResolver },
 		children: [
 			{

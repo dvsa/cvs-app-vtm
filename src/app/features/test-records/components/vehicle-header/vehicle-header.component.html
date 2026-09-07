@@ -56,6 +56,7 @@
                 {{ testResult.vin }}
               </dd>
             </div>
+
             @if (isADRTest) {
               <div
                 class="govuk-summary-list__row guidance_notes_link"
@@ -165,6 +166,49 @@
             }}
           </dd>
         </div>
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">VTG15 Required?</dt>
+          <dd class="govuk-summary-list__value">
+            {{ getVTG15RequiredText() }}
+          </dd>
+        </div>
+
+        @if (testResult.vtg15?.vtg15Required) {
+          @if (!isReview() && hasVTG15Media()) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Photo of VTG15</dt>
+              @if (!hasVTG15RetentionPeriodPassed()) {
+                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <a
+                    class="govuk-link"
+                    (click)="downloadVTG15(testResult)"
+                    href="javascript:void(0)">
+                    Download VTG15
+                  </a>
+                </dd>
+              } @else {
+                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  No photo available - photo was deleted as the retention period had passed
+                </dd>
+              }
+            </div>
+          }
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">UN Number</dt>
+            <dd class="govuk-summary-list__value">
+              {{ testResult.vtg15?.unNumber }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Hazard classification numbers</dt>
+            <dd class="govuk-summary-list__value">
+              Primary - Class {{ testResult.vtg15?.primaryHazardClassification?.code }}: {{ testResult.vtg15?.primaryHazardClassification?.description }}
+              <br />
+              Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+            </dd>
+          </div>
+        }
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Country of registration</dt>
           <dd id="test-cor" class="govuk-summary-list__value">
@@ -231,8 +275,8 @@
                 class="govuk-link"
                 href="javascript:void(0)"
                 appRetrieveDocument
-                [params]="params"
-                [fileName]="fileName"
+                [params]="abandonCertDocParams"
+                [fileName]="fileAbandonCertDocName"
                 [documentType]="DocumentType.CERTIFICATE"
               >
                 Download
