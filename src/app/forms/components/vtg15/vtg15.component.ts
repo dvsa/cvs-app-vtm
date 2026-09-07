@@ -105,10 +105,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 					techRecord?.techRecord_vehicleType === 'trl') &&
 				!this.amend()
 			) {
-				if (techRecord?.techRecord_adrDetails_dangerousGoods) {
+				if (!techRecord?.techRecord_adrDetails_dangerousGoods) {
 					this.form.patchValue({
 						vtg15: {
-							vtg15Required: true,
+							vtg15Required: false,
 						},
 					});
 					this.cdr.detectChanges();
