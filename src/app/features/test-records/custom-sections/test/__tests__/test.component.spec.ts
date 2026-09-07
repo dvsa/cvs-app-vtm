@@ -7,6 +7,7 @@ import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms'
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+
 import { TestComponent } from '../test.component';
 
 describe('TestComponent', () => {
@@ -149,6 +150,23 @@ describe('TestComponent', () => {
 			it('should be valid when expiry date is after start date', () => {
 				startControl.setValue('2024-01-15T14:00:00');
 				expiryControl.setValue('2024-01-16');
+				expiryControl.markAsTouched();
+				expect(expiryControl.valid).toBe(true);
+			});
+
+			it('should be required when amending a passed test', () => {
+				fixture.componentRef.setInput('mode', Modes.AMEND);
+				component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+				expiryControl.setValue(null);
+				expiryControl.markAsTouched();
+				expect(expiryControl.valid).toBe(false);
+				expect(expiryControl.errors).toHaveProperty('required');
+			});
+
+			it('should not be required when amending a failed test', () => {
+				fixture.componentRef.setInput('mode', Modes.AMEND);
+				component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
+				expiryControl.setValue(null);
 				expiryControl.markAsTouched();
 				expect(expiryControl.valid).toBe(true);
 			});
