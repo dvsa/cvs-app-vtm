@@ -9,6 +9,7 @@
         appToUppercase
         appNoSpace
         appTrimWhitespace
+        type="number"
       ></govuk-form-group-input>
     }
 
@@ -20,14 +21,12 @@
           <govuk-form-group-date
             label="Created"
             formControlName="createdAt"
-            [disabled]="true"
           ></govuk-form-group-date>
 
           <!-- Test date -->
           <govuk-form-group-date
             label="Test Date"
             formControlName="testTypeStartTimestamp"
-            [disabled]="true"
           ></govuk-form-group-date>
 
           <!-- Test code -->
@@ -193,16 +192,6 @@
             />
           </govuk-form-group-radio>
           </ng-container>
-
-
-          @if (form.get('testTypes.0.loadStatus.unladenBodyType')?.value === UNLADEN_BODY_TYPES.OTHER) {
-            <govuk-form-group-input
-              class="govuk-label govuk-label--s"
-              label="Enter body type"
-              formControlName="otherUnladenBodyType"
-              [width]="FORM_NODE_WIDTH.XL"
-            />
-          }
         }
       </ng-container>
     </ng-container>
