@@ -63,7 +63,7 @@ describe('TechnicalRecordServiceEffects', () => {
 	});
 
 	describe('getTechRecordV3$', () => {
-		it('should cancel an older request when a different record is requested', () => {
+		it('should cancel an older request when a new/different record is requested', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				const archivedRecord = {
 					systemNumber: 'system-number',
