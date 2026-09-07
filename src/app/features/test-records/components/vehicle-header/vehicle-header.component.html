@@ -175,21 +175,28 @@
         </div>
 
         @if (testResult.vtg15?.vtg15Required) {
-          @if (!isReview() && hasVTG15Media()) {
+          @if (!isReview() && ((testResult.vtg15?.media?.length ?? 0) > 0)) {
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Photo of VTG15</dt>
-              @if (!hasVTG15RetentionPeriodPassed()) {
-                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
-                  <a
-                    class="govuk-link"
-                    (click)="downloadVTG15(testResult)"
-                    href="javascript:void(0)">
-                    Download VTG15
-                  </a>
-                </dd>
+              @if (hasVTG15Media()) {
+                @if (!hasVTG15RetentionPeriodPassed()) {
+                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                    <a
+                      class="govuk-link"
+                      (click)="downloadVTG15(testResult)"
+                      href="javascript:void(0)">
+                      Download VTG15
+                    </a>
+                  </dd>
+                } @else {
+                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                    No photo available - photo was deleted as the retention period had passed
+                  </dd>
+                }
               } @else {
-                <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
-                  No photo available - photo was deleted as the retention period had passed
+
+                <dd id="media-failure-to-capture-reason">
+                  {{ getFailureToCaptureVTG15MediaReason() }}
                 </dd>
               }
             </div>

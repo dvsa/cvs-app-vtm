@@ -259,6 +259,19 @@ export class VehicleHeaderComponent {
 		return 'No';
 	}
 
+	getFailureToCaptureVTG15MediaReason(): string {
+		const media = this.testResult()?.vtg15?.media;
+		if (!media) return 'No media available';
+
+		for (const reason of media) {
+			if (reason.type === 'failReason') {
+				return `No media available - ${reason.reason}`;
+			}
+		}
+
+		return 'Reason for failure to capture media not available';
+	}
+
 	get certificateParams(): Map<string, string> {
 		return new Map([
 			['testNumber', this.testNumber() ?? ''],
