@@ -53,10 +53,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 				),
 			]),
 			secondaryHazardClassification: this.fb.control<HazardClassification | undefined>(undefined, []),
-			unNumber: this.fb.control<number | undefined>(undefined, [
+			unNumber: this.fb.control<string | undefined>(undefined, [
 				this.commonValidators.applyWhen(() => this.vtgRequired(), this.commonValidators.required('UN number')),
-				this.commonValidators.max(9999, 'UN number'),
-				this.commonValidators.min(1000, 'UN number'),
+				this.commonValidators.maxLength(4, 'UN number'),
+				this.commonValidators.minLength(4, 'UN number'),
 			]),
 			media: this.fb.control<MediaSchema[] | undefined>(
 				[{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
