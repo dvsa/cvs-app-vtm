@@ -521,7 +521,7 @@ export class CommonValidatorsService {
 			if (Array.isArray(control.value) && control.value.length > 0) return null;
 
 			// If the value is truthy or 0 it satisfies the required condition
-			if (typeof control.value === 'number' || !!control.value) return null;
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
 
 			const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
 
