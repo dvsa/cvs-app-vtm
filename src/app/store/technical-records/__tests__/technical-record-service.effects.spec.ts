@@ -22,6 +22,8 @@ import {
 	createVehicleRecord,
 	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
+	getTechRecordV3,
+	getTechRecordV3Success,
 	unarchiveTechRecord,
 	unarchiveTechRecordFailure,
 	unarchiveTechRecordSuccess,
@@ -58,6 +60,44 @@ describe('TechnicalRecordServiceEffects', () => {
 
 	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
+	});
+
+	describe('getTechRecordV3$', () => {
+		it('should cancel an older request when a new/different record is requested', () => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				const archivedRecord = {
+					systemNumber: 'system-number',
+					createdTimestamp: '2026-01-01T00:00:00.000Z',
+				} as TechRecordType<'get'>;
+				const currentRecord = {
+					systemNumber: 'system-number',
+					createdTimestamp: '2026-02-01T00:00:00.000Z',
+				} as TechRecordType<'get'>;
+
+				actions$ = hot('-a-b----|', {
+					a: getTechRecordV3({
+						systemNumber: archivedRecord.systemNumber,
+						createdTimestamp: archivedRecord.createdTimestamp,
+					}),
+					b: getTechRecordV3({
+						systemNumber: currentRecord.systemNumber,
+						createdTimestamp: currentRecord.createdTimestamp,
+					}),
+				});
+
+				jest
+					.spyOn(httpService, 'getTechRecordV3')
+					.mockImplementation((_systemNumber, createdTimestamp) =>
+						createdTimestamp === archivedRecord.createdTimestamp
+							? cold('-----a|', { a: archivedRecord })
+							: cold('-a|', { a: currentRecord })
+					);
+
+				expectObservable(effects.getTechRecordV3$).toBe('----c---|', {
+					c: getTechRecordV3Success({ vehicleTechRecord: currentRecord }),
+				});
+			});
+		});
 	});
 
 	describe('createVehicleRecord', () => {
