@@ -69,6 +69,13 @@
         @case ('vehicleSection') {
           @if (isEditing()) {
             <app-accordion [id]="template.name" [title]="template.label">
+              <app-vtg15
+                [amend]="amendMode()"
+                [edit]="isEditing()"
+                [data]="testResult()"
+                [isContingencyTest]="isContingencyTest()"
+                (formChange)="handleFormChange($event)">
+              </app-vtg15>
               <app-dynamic-form-group class="section"
                 [id]="template.name"
                 [template]="template"
@@ -109,7 +116,7 @@
         }
         @case ('weightsSection') {
           <app-accordion [id]="template.name" [title]="template.label">
-            <app-weights 
+            <app-weights
               id="weights"
               class="section"
               [edit]="isEditing()"

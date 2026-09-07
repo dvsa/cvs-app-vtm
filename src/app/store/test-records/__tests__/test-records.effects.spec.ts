@@ -468,6 +468,13 @@ describe('TestResultsEffects', () => {
 							vehicleType: 'car',
 							vin: '',
 							vrm: '',
+							vtg15: {
+								vtg15Required: null,
+								unNumber: null,
+								primaryHazardClassification: null,
+								secondaryHazardClassification: null,
+								media: [{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
+							},
 						} as unknown as TestResultSchema,
 					}),
 				});
@@ -769,6 +776,13 @@ describe('TestResultsEffects', () => {
 							vehicleType: 'psv',
 							vin: '',
 							vrm: '',
+							vtg15: {
+								vtg15Required: null,
+								unNumber: null,
+								primaryHazardClassification: null,
+								secondaryHazardClassification: null,
+								media: [{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
+							},
 						} as unknown as TestResultSchema,
 					}),
 				});
