@@ -180,7 +180,7 @@
               <dt class="govuk-summary-list__key">Photo of VTG15</dt>
               @if (hasVTG15Media()) {
                 @if (!hasVTG15RetentionPeriodPassed()) {
-                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <dd id="test-vtg15-document" class="govuk-summary-list__value">
                     <a
                       class="govuk-link"
                       (click)="downloadVTG15(testResult)"
@@ -189,13 +189,13 @@
                     </a>
                   </dd>
                 } @else {
-                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <dd id="test-vtg15-document" class="govuk-summary-list__value">
                     No photo available - photo was deleted as the retention period had passed
                   </dd>
                 }
               } @else {
 
-                <dd id="media-failure-to-capture-reason" class="govuk-summary-list__value">
+                <dd id="test-vtg15-document" class="govuk-summary-list__value">
                   {{ getFailureToCaptureVTG15MediaReason() }}
                 </dd>
               }
@@ -204,7 +204,7 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">UN number</dt>
             <dd class="govuk-summary-list__value">
-              {{ testResult.vtg15?.unNumber }}
+              UN{{ testResult.vtg15?.unNumber }}
             </dd>
           </div>
           <div class="govuk-summary-list__row">
