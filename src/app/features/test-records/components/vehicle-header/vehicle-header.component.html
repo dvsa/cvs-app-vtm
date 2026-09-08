@@ -168,7 +168,7 @@
         </div>
 
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">VTG15 Required?</dt>
+          <dt class="govuk-summary-list__key">VTG15 required?</dt>
           <dd class="govuk-summary-list__value">
             {{ getVTG15RequiredText() }}
           </dd>
@@ -202,7 +202,7 @@
             </div>
           }
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">UN Number</dt>
+            <dt class="govuk-summary-list__key">UN number</dt>
             <dd class="govuk-summary-list__value">
               {{ testResult.vtg15?.unNumber }}
             </dd>
@@ -212,7 +212,9 @@
             <dd class="govuk-summary-list__value">
               Primary - Class {{ testResult.vtg15?.primaryHazardClassification?.code }}: {{ testResult.vtg15?.primaryHazardClassification?.description }}
               <br />
-              Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+              @if (testResult.vtg15?.secondaryHazardClassification) {
+                Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+              }
             </dd>
           </div>
         }
