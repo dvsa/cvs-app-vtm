@@ -265,6 +265,10 @@ export class VehicleHeaderComponent {
 
 		for (const reason of media) {
 			if (reason.type === 'failReason') {
+				const cleanedReason = reason.reason.trim().replace(/\.$/, '');
+				if (cleanedReason.toLowerCase() === 'failed to upload') {
+					return 'No media available - Media failed to upload';
+				}
 				return `No media available - ${reason.reason}`;
 			}
 		}
