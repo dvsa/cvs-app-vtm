@@ -177,7 +177,7 @@
         @if (testResult.vtg15?.vtg15Required) {
           @if (!isReview() && ((testResult.vtg15?.media?.length ?? 0) > 0)) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Photo of VTG15</dt>
+              <dt class="govuk-summary-list__key"style="width:75%">Photo of VTG15</dt>
               @if (hasVTG15Media()) {
                 @if (!hasVTG15RetentionPeriodPassed()) {
                   <dd id="test-vtg15-document" class="govuk-summary-list__value">
