@@ -118,8 +118,8 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		}
 	}
 
-	toHazardClassificationOption(value?: HazardClassification): HazardClassification | undefined {
-		if (!value) return undefined;
+	toHazardClassificationOption(value?: HazardClassification): HazardClassification | null {
+		if (!value) return null;
 		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
 	}
 
