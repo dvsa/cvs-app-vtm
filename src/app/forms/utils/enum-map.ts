@@ -22,6 +22,6 @@ export function getSortedOptionsFromEnum(object: object): MultiOptions {
 export function getOptionsFromEnumWithCodeAndDescription(object: object): MultiOptions {
 	return Object.values(object).map((item: any) => ({
 		value: item,
-		label: item.description,
+		label: `Class ${item.code}: ${item.description}`,
 	}));
 }
