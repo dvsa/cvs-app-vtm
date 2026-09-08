@@ -168,7 +168,7 @@
         </div>
 
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">VTG15 Required?</dt>
+          <dt class="govuk-summary-list__key">VTG15 required?</dt>
           <dd class="govuk-summary-list__value">
             {{ getVTG15RequiredText() }}
           </dd>
@@ -177,10 +177,10 @@
         @if (testResult.vtg15?.vtg15Required) {
           @if (!isReview() && ((testResult.vtg15?.media?.length ?? 0) > 0)) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Photo of VTG15</dt>
+              <dt class="govuk-summary-list__key"style="width:75%">Photo of VTG15</dt>
               @if (hasVTG15Media()) {
                 @if (!hasVTG15RetentionPeriodPassed()) {
-                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <dd id="test-vtg15-document" class="govuk-summary-list__value">
                     <a
                       class="govuk-link"
                       (click)="downloadVTG15(testResult)"
@@ -189,22 +189,22 @@
                     </a>
                   </dd>
                 } @else {
-                  <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
+                  <dd id="test-vtg15-document" class="govuk-summary-list__value">
                     No photo available - photo was deleted as the retention period had passed
                   </dd>
                 }
               } @else {
 
-                <dd id="media-failure-to-capture-reason" class="govuk-summary-list__value">
+                <dd id="test-vtg15-document" class="govuk-summary-list__value">
                   {{ getFailureToCaptureVTG15MediaReason() }}
                 </dd>
               }
             </div>
           }
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">UN Number</dt>
+            <dt class="govuk-summary-list__key">UN number</dt>
             <dd class="govuk-summary-list__value">
-              {{ testResult.vtg15?.unNumber }}
+              UN{{ testResult.vtg15?.unNumber }}
             </dd>
           </div>
           <div class="govuk-summary-list__row">
@@ -212,7 +212,9 @@
             <dd class="govuk-summary-list__value">
               Primary - Class {{ testResult.vtg15?.primaryHazardClassification?.code }}: {{ testResult.vtg15?.primaryHazardClassification?.description }}
               <br />
-              Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+              @if (testResult.vtg15?.secondaryHazardClassification) {
+                Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+              }
             </dd>
           </div>
         }
