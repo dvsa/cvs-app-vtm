@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
@@ -25,6 +26,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		RadioComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupSelectComponent,
+		NumberOnlyDirective,
 	],
 })
 export class Vtg15Component implements OnInit, OnDestroy {
@@ -53,10 +55,10 @@ export class Vtg15Component implements OnInit, OnDestroy {
 				),
 			]),
 			secondaryHazardClassification: this.fb.control<HazardClassification | undefined>(undefined, []),
-			unNumber: this.fb.control<number | undefined>(undefined, [
+			unNumber: this.fb.control<string | undefined>(undefined, [
 				this.commonValidators.applyWhen(() => this.vtgRequired(), this.commonValidators.required('UN number')),
-				this.commonValidators.max(9999, 'UN number'),
-				this.commonValidators.min(1000, 'UN number'),
+				this.commonValidators.maxLength(4, 'UN number'),
+				this.commonValidators.minLength(4, 'UN number'),
 			]),
 			media: this.fb.control<MediaSchema[] | undefined>(
 				[{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
