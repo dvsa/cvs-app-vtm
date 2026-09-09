@@ -1,5 +1,7 @@
 import { LoadStatusComponent } from '@/src/app/forms/custom-sections/load-status/load-status.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections/weights/weights.component';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { techRecord } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -19,6 +21,7 @@ import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { Vtg15Component } from '@forms/components/vtg15/vtg15.component';
 import {
 	CustomDefectsComponent,
 	CustomDefectsComponent as CustomDefectsComponent_1,
@@ -63,6 +66,7 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 		AsyncPipe,
 		WeightsComponent,
 		LoadStatusComponent,
+		Vtg15Component,
 	],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
@@ -72,28 +76,41 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	readonly requiredStandards = viewChild(RequiredStandardsComponent);
 	readonly weights = viewChild(WeightsComponent);
 	readonly loadStatus = viewChild(LoadStatusComponent);
+	readonly vtg15 = viewChild(Vtg15Component);
 
 	readonly testResult = input.required<TestResultSchema>();
 	readonly isEditing = input(false);
 	readonly expandSections = input(false);
 	readonly isReview = input(false);
 	readonly isContingencyTest = input(true);
+	readonly amendMode = input(false);
 
 	readonly newTestResult = output<TestResultSchema>();
 
-	private defectsStore = inject(Store<DefectsState>);
-	private routerService = inject(RouterService);
-	private testRecordsService = inject(TestRecordsService);
-	private globalErrorService = inject(GlobalErrorService);
+	readonly store = inject(Store);
+	readonly defectsStore = inject(Store<DefectsState>);
+	readonly routerService = inject(RouterService);
+	readonly testRecordsService = inject(TestRecordsService);
+	readonly globalErrorService = inject(GlobalErrorService);
+	readonly technicalRecordService = inject(TechnicalRecordService);
+
+	readonly techRecord = this.store.selectSignal(techRecord);
 
 	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 
+	private isViewInitialised = false;
+
 	ngAfterViewInit(): void {
+		this.isViewInitialised = true;
 		this.handleFormChange({});
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	handleFormChange(event: any) {
+		if (!this.isViewInitialised) {
+			return;
+		}
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let latestTest: any;
 		this.sections()?.forEach((section) => {
@@ -106,8 +123,20 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		const customDefectsValue = customDefects?.form.getCleanValue(customDefects?.form);
 		const requiredStandards = this.requiredStandards();
 		const requiredStandardsValue = requiredStandards?.form.getCleanValue(requiredStandards?.form);
+		const weightsValue = this.weights()?.form.getRawValue();
+		const loadStatusValue = this.loadStatus()?.form.getRawValue();
+		const vtg15Value = this.vtg15()?.form.getRawValue();
 
-		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
+		latestTest = merge(
+			latestTest,
+			defectsValue,
+			customDefectsValue,
+			requiredStandardsValue,
+			weightsValue,
+			loadStatusValue,
+			vtg15Value,
+			event
+		);
 
 		if (this.shouldUpdateTest(latestTest)) {
 			this.newTestResult.emit(latestTest);

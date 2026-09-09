@@ -9,6 +9,7 @@ import {
 	SpecialistCustomDefectsSchemaPut,
 	TestResultSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
@@ -235,14 +236,36 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		testResult.model = null;
 	}
 
-	// Remove recalls from non HGV/PSV/TRL tests
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
 	const isPSV = vehicleType === VehicleTypes.PSV;
 	const isTRL = vehicleType === VehicleTypes.TRL;
+	const isLGV = vehicleType === VehicleTypes.LGV;
+	const isHeavyTRL =
+		isTRL &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O1 &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O2;
 
+	// Remove recalls from non HGV/PSV/TRL tests
 	if (!(isHGV || isPSV || isTRL)) {
 		delete testResult.recalls;
+	}
+
+	// Remove VTG15 from non HGV/LGV/TRL tests
+	if (!isHGV && !isLGV && !isHeavyTRL) {
+		delete testResult.vtg15;
+	}
+
+	if (!testResult.vtg15?.vtg15Required) {
+		delete testResult.vtg15?.primaryHazardClassification;
+		delete testResult.vtg15?.secondaryHazardClassification;
+		delete testResult.vtg15?.unNumber;
+		delete testResult.vtg15?.media;
+	}
+
+	// Remove secondary hazard classification if not populated
+	if (!testResult.vtg15?.secondaryHazardClassification) {
+		delete testResult.vtg15?.secondaryHazardClassification;
 	}
 
 	const testTypes = testResult.testTypes.map((testType, index) => {
@@ -305,7 +328,7 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 
 		// If abandon reasons is an array, convert it to a string
 		if (Array.isArray(testType.reasonForAbandoning)) {
-			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('. ');
 		}
 
 		// If required standards is an empty array, convert it to undefined
@@ -314,8 +337,9 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		}
 
 		if (testType.loadStatus) {
-			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status
-			if (testType.loadStatus.vehicleLoadStatus === null) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status.
+			// The dynamic form initialises this control to null, the reactive form to undefined; both mean "not entered".
+			if (testType.loadStatus.vehicleLoadStatus === null || testType.loadStatus.vehicleLoadStatus === undefined) {
 				delete testType.loadStatus;
 			} else {
 				// Otherwise create a valid load status object

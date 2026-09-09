@@ -24,7 +24,7 @@ import {
 	VehicleSubclass,
 } from './vehicle-tech-record.model';
 
-export interface MultiOption<T = string | number | boolean> {
+export interface MultiOption<T = string | number | boolean | object> {
 	label: string;
 	value: T;
 	hint?: string;

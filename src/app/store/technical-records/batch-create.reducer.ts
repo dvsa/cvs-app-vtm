@@ -66,6 +66,7 @@ export const vehicleBatchCreateReducer = createReducer(
 			vehicleType: undefined,
 			vehicleStatus: undefined,
 			trlFormType: undefined,
+			batchSize: undefined,
 		})
 	)
 );

@@ -112,6 +112,44 @@ export class CommonValidatorsService {
 		};
 	}
 
+	exactLengthDigits(
+		length: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	exactLengthDigits(length: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	exactLengthDigits(
+		length: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (control.value && (control.value.length < length || control.value.length > length)) {
+				if (typeof message !== 'string') {
+					return { minLength: message(control) };
+				}
+				const globalError = {
+					minLength: {
+						error: `${message} must be ${length} digits`,
+						anchorLink: '',
+						accordion: '',
+					},
+				};
+				if (anchorLink) {
+					globalError.minLength.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.minLength.accordion = accordion;
+				}
+				return globalError;
+			}
+
+			return null;
+		};
+	}
+
 	minLength(
 		length: number,
 		func: (control: AbstractControl) => GlobalError,
@@ -521,7 +559,7 @@ export class CommonValidatorsService {
 			if (Array.isArray(control.value) && control.value.length > 0) return null;
 
 			// If the value is truthy or 0 it satisfies the required condition
-			if (typeof control.value === 'number' || !!control.value) return null;
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
 
 			const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
 
