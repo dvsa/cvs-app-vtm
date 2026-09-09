@@ -9,6 +9,7 @@ import {
 	SpecialistCustomDefectsSchemaPut,
 	TestResultSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
@@ -235,14 +236,24 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		testResult.model = null;
 	}
 
-	// Remove recalls from non HGV/PSV/TRL tests
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
 	const isPSV = vehicleType === VehicleTypes.PSV;
 	const isTRL = vehicleType === VehicleTypes.TRL;
+	const isLGV = vehicleType === VehicleTypes.LGV;
+	const isHeavyTRL =
+		isTRL &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O1 &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O2;
 
+	// Remove recalls from non HGV/PSV/TRL tests
 	if (!(isHGV || isPSV || isTRL)) {
 		delete testResult.recalls;
+	}
+
+	// Remove VTG15 from non HGV/LGV/TRL tests
+	if (!isHGV && !isLGV && !isHeavyTRL) {
+		delete testResult.vtg15;
 	}
 
 	if (!testResult.vtg15?.vtg15Required) {

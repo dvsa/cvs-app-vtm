@@ -1,3 +1,4 @@
+import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
@@ -71,6 +72,7 @@ export class Vtg15Component implements OnInit, OnDestroy {
 	isContingencyTest = input(true);
 	data = input<Partial<TestResultSchema>>({});
 	formChange = output<Record<string, any> | [][]>();
+	techRecord = input<V3TechRecordModel>();
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	currentTechRecord = this.store.selectSignal(techRecord);
 	destroy = new ReplaySubject<boolean>(1);

@@ -1,3 +1,4 @@
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { isTestTypeOldIvaOrMsva } from '@/src/app/store/test-records';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
@@ -76,6 +77,7 @@ export class VehicleHeaderComponent {
 	router = inject(Router);
 	documentsService = inject(DocumentsService);
 	globalErrorService = inject(GlobalErrorService);
+	technicalRecordService = inject(TechnicalRecordService);
 
 	techRecord$ = this.store.select(techRecord);
 	isTestTypeOldIvaOrMsva = this.store.selectSignal(isTestTypeOldIvaOrMsva);
