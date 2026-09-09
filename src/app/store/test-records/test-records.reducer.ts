@@ -263,6 +263,11 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		delete testResult.vtg15?.media;
 	}
 
+	// Remove secondary hazard classification if not populated
+	if (!testResult.vtg15?.secondaryHazardClassification) {
+		delete testResult.vtg15?.secondaryHazardClassification;
+	}
+
 	const testTypes = testResult.testTypes.map((testType, index) => {
 		// Remove empty requiredStandards from pass/prs non-voluntary IVA/MVSA tests
 		if (index === 0) {
