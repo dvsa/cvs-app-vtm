@@ -1,5 +1,7 @@
 import { LoadStatusComponent } from '@/src/app/forms/custom-sections/load-status/load-status.component';
 import { WeightsComponent } from '@/src/app/forms/custom-sections/weights/weights.component';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { techRecord } from '@/src/app/store/technical-records';
 import { AsyncPipe, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, inject, input, output, viewChild, viewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -85,10 +87,14 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	readonly newTestResult = output<TestResultSchema>();
 
-	private defectsStore = inject(Store<DefectsState>);
-	private routerService = inject(RouterService);
-	private testRecordsService = inject(TestRecordsService);
-	private globalErrorService = inject(GlobalErrorService);
+	readonly store = inject(Store);
+	readonly defectsStore = inject(Store<DefectsState>);
+	readonly routerService = inject(RouterService);
+	readonly testRecordsService = inject(TestRecordsService);
+	readonly globalErrorService = inject(GlobalErrorService);
+	readonly technicalRecordService = inject(TechnicalRecordService);
+
+	readonly techRecord = this.store.selectSignal(techRecord);
 
 	testNumber$ = this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
 

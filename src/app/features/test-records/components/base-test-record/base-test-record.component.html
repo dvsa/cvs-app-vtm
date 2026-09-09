@@ -69,13 +69,17 @@
         @case ('vehicleSection') {
           @if (isEditing()) {
             <app-accordion [id]="template.name" [title]="template.label">
-              <app-vtg15
-                [amend]="amendMode()"
-                [edit]="isEditing()"
-                [data]="testResult()"
-                [isContingencyTest]="isContingencyTest()"
-                (formChange)="handleFormChange($event)">
-              </app-vtg15>
+              @if (techRecord(); as techRecord) {
+                @if (technicalRecordService.isAdrVehicle(techRecord)) {
+                  <app-vtg15
+                    [amend]="amendMode()"
+                    [edit]="isEditing()"
+                    [data]="testResult()"
+                    [isContingencyTest]="isContingencyTest()"
+                    (formChange)="handleFormChange($event)">
+                  </app-vtg15>
+                }
+              }
               <app-dynamic-form-group class="section"
                 [id]="template.name"
                 [template]="template"
