@@ -7,11 +7,17 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { CacheKeys } from '@models/cache-keys.enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { withCache } from '@ngneat/cashew';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
+
+// cashew does not export CACHE_CONTEXT, so recover the token from a context it builds
+const [CACHE_CONTEXT] = [...withCache({}).keys()];
 
 describe('HttpService', () => {
 	let httpService: HttpService;
@@ -697,6 +703,40 @@ describe('HttpService', () => {
 
 			jest.advanceTimersByTime(3000);
 			jest.runAllTimers();
+		});
+	});
+
+	describe('referenceResourceTypeResourceKeyGet', () => {
+		it('should cache admin type lookups, bucketed by resource type', () => {
+			httpService
+				.referenceResourceTypeResourceKeyGet(ReferenceDataResourceType.ReferenceDataAdminType, 'TYRES')
+				.subscribe();
+
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/reference/${ReferenceDataResourceType.ReferenceDataAdminType}/TYRES`
+			);
+
+			expect(req.request.context.get(CACHE_CONTEXT)).toEqual(
+				expect.objectContaining({
+					cache: true,
+					key: `${CacheKeys.REFERENCE_DATA}${ReferenceDataResourceType.ReferenceDataAdminType}TYRES`,
+					bucket: httpService.getRefDataBucket(ReferenceDataResourceType.ReferenceDataAdminType),
+				})
+			);
+
+			req.flush({});
+		});
+
+		it('should not cache any other single item lookup', () => {
+			httpService.referenceResourceTypeResourceKeyGet(ReferenceDataResourceType.Tyres, 'some-key').subscribe();
+
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/reference/${ReferenceDataResourceType.Tyres}/some-key`
+			);
+
+			expect(req.request.context.get(CACHE_CONTEXT)).toEqual({});
+
+			req.flush({});
 		});
 	});
 });

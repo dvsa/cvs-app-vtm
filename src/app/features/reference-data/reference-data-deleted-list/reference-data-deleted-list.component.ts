@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Signal, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
@@ -22,6 +22,8 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 	cdr = inject(ChangeDetectorRef);
 
 	type!: ReferenceDataResourceType;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
 	pageStart?: number;
 	pageEnd?: number;
 
@@ -31,12 +33,8 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 			this.store.dispatch(fetchReferenceDataAudit({ resourceType: `${this.type}#AUDIT` as ReferenceDataResourceType }));
 		});
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
 		);
 	}
 

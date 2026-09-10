@@ -49,7 +49,7 @@ describe('RequiredStandardSelectComponent', () => {
 
 			component.handleSelectBasicOrNormal('basic');
 
-			expect(component.requiredStandards).toStrictEqual(['basic', 'basic1']);
+			expect(component.requiredStandards()).toStrictEqual(['basic', 'basic1']);
 		});
 		it('should work for normal inspection', () => {
 			component.basicAndNormalRequiredStandards = {
@@ -66,7 +66,7 @@ describe('RequiredStandardSelectComponent', () => {
 
 			component.handleSelectBasicOrNormal('normal');
 
-			expect(component.requiredStandards).toStrictEqual(['normal', 'normal1']);
+			expect(component.requiredStandards()).toStrictEqual(['normal', 'normal1']);
 		});
 	});
 
@@ -77,7 +77,7 @@ describe('RequiredStandardSelectComponent', () => {
 			component.handleSelect('basic', Types.InspectionType);
 
 			expect(spy).toHaveBeenCalled();
-			expect(component.selectedInspectionType).toBe('basic');
+			expect(component.selectedInspectionType()).toBe('basic');
 			expect(component.selectedSection).toBeUndefined();
 			expect(component.selectedRequiredStandard).toBeUndefined();
 		});

@@ -1,5 +1,5 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -222,7 +222,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		{ value: 'n/a', label: 'Not applicable' },
 	];
 
-	permittedDangerousGoodsOptions = getOptionsFromEnum(ADRDangerousGood);
+	readonly permittedDangerousGoodsOptions = signal(getOptionsFromEnum(ADRDangerousGood));
 
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
@@ -277,11 +277,13 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 						techRecord_adrDetails_bodyDeclaration_type: null,
 					});
 
-					this.permittedDangerousGoodsOptions = options.filter(({ value }) => {
-						return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
-					});
+					this.permittedDangerousGoodsOptions.set(
+						options.filter(({ value }) => {
+							return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
+						})
+					);
 				} else {
-					this.permittedDangerousGoodsOptions = options;
+					this.permittedDangerousGoodsOptions.set(options);
 				}
 			});
 	}
