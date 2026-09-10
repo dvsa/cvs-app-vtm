@@ -1,4 +1,4 @@
 <th class="govuk-table__header" scope="row">{{ label }}:</th>
 <td class="govuk-table__cell" id="test-{{ leftComponent?.meta?.name }}">
-  <span>{{ (leftComponent?.value | defaultNullOrEmpty) + separator + (rightComponent?.value | defaultNullOrEmpty) }}</span>
+  <span>{{ (leftValue() | defaultNullOrEmpty) + separator + (rightValue() | defaultNullOrEmpty) }}</span>
 </td>
