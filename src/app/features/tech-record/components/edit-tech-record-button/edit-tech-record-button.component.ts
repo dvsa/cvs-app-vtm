@@ -27,7 +27,6 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 	readonly isDirty = input(false);
 	readonly customId = input('');
 
-	readonly isEditingChange = output<boolean>();
 	readonly submitChange = output();
 	destroy$ = new Subject();
 
@@ -65,7 +64,6 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 
 	toggleEditMode() {
 		this.isEditing.set(!this.isEditing());
-		this.isEditingChange.emit(this.isEditing());
 	}
 
 	cancel() {
