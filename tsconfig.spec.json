@@ -14,12 +14,12 @@
     "esModuleInterop": true
   },
   "files": [
-    "setup-jest.ts",
-    "jest-global-mocks.ts",
-    "src/polyfills.ts"
+    "./setup-jest.ts",
+    "./jest-global-mocks.ts",
+    "./src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "./src/**/*.spec.ts",
+    "./src/**/*.d.ts"
   ]
 }

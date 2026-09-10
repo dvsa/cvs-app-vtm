@@ -182,7 +182,7 @@ describe('EditTechRecordButtonComponent', () => {
 
 						expect(cancelSpy).toHaveBeenCalled();
 						expect(toggleEditModeSpy).not.toHaveBeenCalled();
-						expect(component.isEditingChange).toBeTruthy();
+						expect(component.isEditing()).toBe(true);
 						expect(window.confirm).toHaveBeenCalledTimes(1);
 						expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
 						expect(navigateSpy).not.toHaveBeenCalled();
