@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
@@ -30,7 +30,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	route = inject(ActivatedRoute);
 	viewportScroller = inject(ViewportScroller);
 
-	defects: DefectCategoryReferenceDataSchema[] = [];
+	readonly defects = signal<DefectCategoryReferenceDataSchema[]>([]);
 	isEditing = false;
 	selectedDefect?: DefectCategoryReferenceDataSchema;
 	selectedItem?: DefectItemReferenceDataSchema;
@@ -60,7 +60,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 			});
 
 		this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => {
-			this.defects = defectsTaxonomy;
+			this.defects.set(defectsTaxonomy);
 		});
 	}
 
@@ -90,12 +90,12 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 	get filteredTree(): DefectCategoryReferenceDataSchema[] {
 		const term = this.searchTerm.trim().toLowerCase();
 		if (!term) {
-			return this.defects;
+			return this.defects();
 		}
 
 		const result: DefectCategoryReferenceDataSchema[] = [];
 
-		for (const defect of this.defects) {
+		for (const defect of this.defects()) {
 			if (this.matches(defect.imDescription, term) || this.matches(defect.imNumber, term)) {
 				result.push(defect);
 				continue;

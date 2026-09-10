@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -29,7 +29,7 @@ import {
 	fetchReferenceDataByKey,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, take } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-delete',
@@ -45,8 +45,9 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	key!: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	reasonForDeletion: any;
 	isFormDirty = false;
 	isFormInvalid = true;
@@ -88,9 +89,17 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 			}
 		});
 
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Delete this ${type?.labelSingular} - Vehicle Testing Management`);
-		});
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(
+					`Delete this ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`
+				),
+			{ injector: this.injector }
+		);
 	}
 
 	ngOnDestroy(): void {
@@ -106,13 +115,6 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	get refData$(): Observable<any> {
 		return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
 	}
 
 	get widths(): typeof FormNodeWidth {

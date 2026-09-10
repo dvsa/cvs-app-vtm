@@ -172,7 +172,7 @@ describe('TechRecordChangeVrmComponent', () => {
 			mockTechRecordService.validateVrmForCherishedTransfer.mockReturnValue(of(null));
 			component.cherishedTransferForm.controls['currentVrm'].setValue('TESTVRM1');
 			component.cherishedTransferForm.controls['thirdMark'].setValue('3MARK');
-			component.isCherishedTransfer = true;
+			component.isCherishedTransfer.set(true);
 
 			component.handleSubmit();
 

@@ -1,11 +1,11 @@
-@if (requiredStandards?.length || normalAndBasic) {
+@if (requiredStandards()?.length || normalAndBasic()) {
   <h1 class="govuk-heading-l">Select a required standard</h1>
   <div class="list_container--wrapper">
-    @if (normalAndBasic) {
+    @if (normalAndBasic()) {
       <div class="list_container list_container--small list_container--shrink">
         <ol class="list">
           @for (type of inspectionTypes; track type; let i = $index) {
-            @let selected = type === selectedInspectionType;
+            @let selected = type === selectedInspectionType();
             <li>
               <a
                 href="javascript:void(0)"
@@ -23,9 +23,9 @@
         </ol>
       </div>
     }
-    <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic ? selectedInspectionType : selectedSection }">
+    <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic() ? selectedInspectionType() : selectedSection }">
       <ol class="list">
-        @for (section of requiredStandards; track section; let i = $index) {
+        @for (section of requiredStandards(); track section; let i = $index) {
           @let selected = section === selectedSection;
           <li>
             <a

@@ -1,11 +1,11 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ (refDataAdminType$ | async)?.label }}</h1>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ refDataAdminType()?.label }}</h1>
 
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          @for (column of (refDataAdminType$ | async)?.columns; track column) {
+          @for (column of refDataAdminType()?.columns; track column) {
             <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
           }
           <th scope="col" class="govuk-table__header">Deleted At</th>
@@ -18,7 +18,7 @@
         @for (item of paginatedItems$ | async; track item) {
           <tr class="govuk-table__row">
             @if (item.reason) {
-              @for (column of (refDataAdminType$ | async)?.columns; track column) {
+              @for (column of refDataAdminType()?.columns; track column) {
                 <td class="govuk-table__cell">{{ item[column.name] }}</td>
               }
               <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>

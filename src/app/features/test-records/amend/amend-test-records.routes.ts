@@ -4,8 +4,8 @@ import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.g
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestRecordAmendRoutes } from '@models/routes.enum';
-import { loadingResolver } from '@resolvers/loading/loading.resolver';
 import { defectsTaxonomyResolver } from '@resolvers/defects-taxonomy/defects-taxonomy.resolver';
+import { loadingResolver } from '@resolvers/loading/loading.resolver';
 import { requiredStandardsResolver } from '@resolvers/required-standards/required-standards.resolver';
 import { testResultResolver } from '@resolvers/test-result/test-result.resolver';
 import { testTypeTaxonomyResolver } from '@resolvers/test-type-taxonomy/test-type-taxonomy.resolver';

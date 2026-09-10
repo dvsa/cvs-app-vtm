@@ -29,7 +29,9 @@ export class ViewCombinationComponent implements OnInit {
 	// form is patched from outside our template, so track its value to stay reactive under OnPush
 	private readonly formValue = toSignal(
 		toObservable(this.formGroup).pipe(
-			switchMap((formGroup) => (formGroup instanceof FormGroup ? formGroup.valueChanges.pipe(startWith(formGroup.value)) : EMPTY))
+			switchMap((formGroup) =>
+				formGroup instanceof FormGroup ? formGroup.valueChanges.pipe(startWith(formGroup.value)) : EMPTY
+			)
 		)
 	);
 

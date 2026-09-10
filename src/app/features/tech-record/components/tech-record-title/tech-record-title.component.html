@@ -1,12 +1,12 @@
-<ng-container *ngIf="currentTechRecord$ | async as editableTechRecord">
+<ng-container *ngIf="currentTechRecord() as editableTechRecord">
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
-      <span>{{ customTitle() || vehicleMakeAndModel }}</span>
+      <span>{{ customTitle() || vehicleMakeAndModel() }}</span>
       <app-icon [icon]="editableTechRecord.techRecord_vehicleType || ''"></app-icon>
     </h1>
   </div>
 
-  <dl *ngIf="currentTechRecord$ | async as currentTechRecord" class="govuk-summary-list">
+  <dl *ngIf="currentTechRecord() as currentTechRecord" class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
@@ -18,7 +18,7 @@
             <app-button
               *ngIf="
                 currentTechRecord.techRecord_statusCode !== 'archived' &&
-                currentTechRecord.techRecord_vehicleType === (currentTechRecord$ | async)?.techRecord_vehicleType
+                currentTechRecord.techRecord_vehicleType === editableTechRecord.techRecord_vehicleType
               "
               design="link"
               id="change-type-link"
@@ -41,7 +41,7 @@
             <app-button
               *ngIf="
                 currentTechRecord.techRecord_statusCode !== 'archived' &&
-                currentTechRecord.techRecord_vehicleType === (currentTechRecord$ | async)?.techRecord_vehicleType
+                currentTechRecord.techRecord_vehicleType === editableTechRecord.techRecord_vehicleType
               "
               design="link"
               id="change-vin-link"
@@ -104,14 +104,14 @@
         <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
-              *ngIf="queryableActions.includes('archive')"
+              *ngIf="queryableActions().includes('archive')"
               design="link"
               id="change-status-to-archive-link"
               (clicked)="navigateTo('change-status', { to: 'archived' })"
               >Archive</app-button
             >
             <app-button
-              *ngIf="queryableActions.includes('promote')"
+              *ngIf="queryableActions().includes('promote')"
               design="link"
               id="promote-link"
               (clicked)="navigateTo('change-status', { to: 'current' })"
@@ -119,7 +119,7 @@
             >
           </div>
         </dd>
-        <ng-container *ngIf="queryableActions.includes('unarchive')">
+        <ng-container *ngIf="queryableActions().includes('unarchive')">
           <dd *appRoleRequired="roles.TechRecordUnarchive" class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
               <app-button design="link" id="unarchive-link" (clicked)="navigateTo('unarchive-record')"> Unarchive </app-button>
