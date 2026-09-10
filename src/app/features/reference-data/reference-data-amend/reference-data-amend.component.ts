@@ -1,6 +1,6 @@
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -18,7 +18,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, ReplaySubject, first, skipWhile, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, first, skipWhile, take } from 'rxjs';
 import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
@@ -43,6 +43,9 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	key!: string;
 	isFormDirty = false;
 	isFormInvalid = true;
@@ -79,9 +82,15 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 				this.amendedData = data;
 			});
 
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Amend this ${type?.labelSingular} - Vehicle Testing Management`);
-		});
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(`Amend this ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`),
+			{ injector: this.injector }
+		);
 	}
 
 	ngOnDestroy(): void {
@@ -92,13 +101,6 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 
 	get roles(): typeof Roles {
 		return Roles;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

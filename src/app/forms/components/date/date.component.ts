@@ -1,6 +1,16 @@
 import { NgClass } from '@angular/common';
 /* eslint-disable no-underscore-dangle */
-import { AfterContentInit, Component, OnDestroy, OnInit, inject, input, output, viewChild } from '@angular/core';
+import {
+	AfterContentInit,
+	Component,
+	OnDestroy,
+	OnInit,
+	inject,
+	input,
+	output,
+	signal,
+	viewChild,
+} from '@angular/core';
 import { AbstractControlDirective, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -54,7 +64,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 	public originalDate = '';
 	public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
 	private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
-	protected formSubmitted? = false;
+	protected readonly formSubmitted = signal(false);
 
 	public day?: number;
 	public month?: number;
@@ -75,7 +85,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 		this.minute$ = this.minute_.asObservable();
 		this.globalErrorService.errors$.subscribe((globalErrors) => {
 			if (globalErrors.length) {
-				this.formSubmitted = true;
+				this.formSubmitted.set(true);
 			}
 		});
 	}

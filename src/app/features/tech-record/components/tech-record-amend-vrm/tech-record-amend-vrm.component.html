@@ -31,7 +31,7 @@
         <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
       </div>
     </dl>
-    @if (!isCherishedTransfer) {
+    @if (!isCherishedTransfer()) {
       <form [formGroup]="correctingAnErrorForm">
         <app-text-input
           #newVrm
@@ -45,7 +45,7 @@
         ></app-text-input>
       </form>
     }
-    @if (isCherishedTransfer) {
+    @if (isCherishedTransfer()) {
       <form [formGroup]="cherishedTransferForm">
         <app-text-input
           appToUppercase

@@ -9,7 +9,7 @@
     @if (hint()) {
       <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
     }
-    @if (formSubmitted || customError() || dayEl.touched || monthEl.touched || yearEl.touched) {
+    @if (formSubmitted() || customError() || dayEl.touched || monthEl.touched || yearEl.touched) {
       <app-field-error-message
         [error]="error"
         [name]="name()"
@@ -92,7 +92,7 @@
      @if (hint()) {
        <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
      }
-     @if (formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched && hourEl.touched && minuteEl.touched)) {
+     @if (formSubmitted() || (dayEl.touched && monthEl.touched && yearEl.touched && hourEl.touched && minuteEl.touched)) {
        <app-field-error-message
          [error]="error"
          [name]="name()"

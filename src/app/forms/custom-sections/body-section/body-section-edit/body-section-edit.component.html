@@ -38,7 +38,7 @@
       label="Body type"
       [width]="FormNodeWidth.L"
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
-      [options]="bodyTypes"
+      [options]="bodyTypes()"
       [allowNull]="true"
       >
     </govuk-form-group-select>

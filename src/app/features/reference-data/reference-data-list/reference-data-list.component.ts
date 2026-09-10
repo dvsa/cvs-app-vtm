@@ -1,5 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	Injector,
+	OnDestroy,
+	OnInit,
+	Signal,
+	effect,
+	inject,
+	signal,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +35,7 @@ import {
 	selectRefDataBySearchTerm,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-list',
@@ -54,7 +64,9 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
-	disabled = true;
+	refDataAdminType!: Signal<ReferenceDataAdminType | undefined>;
+	private readonly injector = inject(Injector);
+	readonly disabled = signal(true);
 	pageStart?: number;
 	pageEnd?: number;
 	currentPage?: number;
@@ -100,7 +112,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 						map((array) =>
 							array.data.map((item) => {
 								if (item.reason !== undefined) {
-									this.disabled = false;
+									this.disabled.set(false);
 								}
 							})
 						)
@@ -108,7 +120,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				),
 				catchError((error) => {
 					if (error.status === 404) {
-						this.disabled = true;
+						this.disabled.set(true);
 						return of(true);
 					}
 					return of(false);
@@ -118,14 +130,15 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				next: (res) => of(!!res),
 			});
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Search for ${type?.label} - Vehicle Testing Management`);
-		});
-	}
-
-	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		) as Signal<ReferenceDataAdminType | undefined>;
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() => {
+				this.titleService.setTitle(`Search for ${this.refDataAdminType()?.label} - Vehicle Testing Management`);
+			},
+			{ injector: this.injector }
 		);
 	}
 
