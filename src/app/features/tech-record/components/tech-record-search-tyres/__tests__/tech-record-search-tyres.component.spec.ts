@@ -92,7 +92,7 @@ describe('TechRecordSearchTyresComponent', () => {
 	describe('handleSearch', () => {
 		it('should set search results to an empty array before populating data', () => {
 			component.handleSearch('', '');
-			expect(component.searchResults).toStrictEqual([]);
+			expect(component.searchResults()).toStrictEqual([]);
 		});
 		it('should call add error in global error service when term is empty', () => {
 			const filter = 'code';
@@ -144,7 +144,7 @@ describe('TechRecordSearchTyresComponent', () => {
 			tick();
 
 			expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
-			expect(component.searchResults).toEqual(mockTyreSearchReturn);
+			expect(component.searchResults()).toEqual(mockTyreSearchReturn);
 		}));
 
 		const testCases = [
@@ -216,12 +216,12 @@ describe('TechRecordSearchTyresComponent', () => {
 			expect(component.currentVrm).toBe('bar');
 		});
 		it('should get the paginated fields', () => {
-			component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
+			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
 			expect(component.paginatedFields).toEqual(['foo', 'bar', 'foobar']);
 		});
 		it('should get the number of results', () => {
-			component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
-			expect(component.numberOfResults).toEqual(component.searchResults?.length);
+			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
+			expect(component.numberOfResults).toEqual(component.searchResults()?.length);
 		});
 	});
 
@@ -248,7 +248,7 @@ describe('TechRecordSearchTyresComponent', () => {
 			expect(dfsSpy).toHaveBeenCalledWith(component.template);
 			expect(filterSpy).toHaveBeenCalledWith(mockSearchCriteria.filter);
 			expect(termSpy).toHaveBeenCalledWith(mockSearchCriteria.term);
-			expect(component.searchResults).toEqual(mockTyreSearchReturn);
+			expect(component.searchResults()).toEqual(mockTyreSearchReturn);
 		});
 		it('should navigate if there is no viewable tech record', () => {
 			const routerSpy = jest.spyOn(router, 'navigate');

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
@@ -62,7 +62,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 	];
 
 	public form!: CustomFormGroup;
-	public searchResults: Array<ReferenceDataTyre> | null = null;
+	public readonly searchResults = signal<Array<ReferenceDataTyre> | null>(null);
 	public vehicleTechRecord?: V3TechRecordModel;
 	public viewableTechRecord?: TechRecordType<'hgv' | 'psv' | 'trl'>;
 	private params: SearchParams = {};
@@ -105,7 +105,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			.getTyreSearchReturn$()
 			.pipe(take(1))
 			.subscribe((data) => {
-				this.searchResults = data;
+				this.searchResults.set(data);
 			});
 		this.referenceDataService
 			.getTyreSearchCriteria$()
@@ -132,15 +132,15 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			: undefined;
 	}
 	get paginatedFields(): ReferenceDataTyre[] {
-		return this.searchResults?.slice(this.pageStart, this.pageEnd) ?? [];
+		return this.searchResults()?.slice(this.pageStart, this.pageEnd) ?? [];
 	}
 	get numberOfResults(): number {
-		return this.searchResults?.length ?? 0;
+		return this.searchResults()?.length ?? 0;
 	}
 
 	handleSearch(filter: string, term: string): void {
 		this.globalErrorService.clearErrors();
-		this.searchResults = [];
+		this.searchResults.set([]);
 		const trimmedTerm = term?.trim();
 		if (!trimmedTerm || !filter) {
 			const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
@@ -162,7 +162,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			)
 			.subscribe((data) => {
 				void this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
-				this.searchResults = data as ReferenceDataTyre[];
+				this.searchResults.set(data as ReferenceDataTyre[]);
 			});
 	}
 

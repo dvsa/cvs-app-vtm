@@ -197,7 +197,7 @@ describe('DefectSelectComponent', () => {
 		};
 
 		beforeEach(() => {
-			component.defects = [registrationPlate, tyres];
+			component.defects.set([registrationPlate, tyres]);
 		});
 
 		it('should return all defects unpruned when the filter is empty', () => {

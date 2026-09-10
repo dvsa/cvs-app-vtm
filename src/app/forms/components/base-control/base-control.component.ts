@@ -107,6 +107,8 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
 	writeValue(obj: unknown): void {
 		this.value = obj;
+		// the form writes to us from outside the template, so mark dirty for OnPush
+		this.cdr.markForCheck();
 	}
 
 	registerOnChange(fn: (event: unknown) => void): void {

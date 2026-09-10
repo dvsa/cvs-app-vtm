@@ -5,11 +5,13 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { TechRecordEditAdditionalExaminerNoteComponent } from '../tech-record-edit-additional-examiner-note.component';
 
+const techRecord$ = new BehaviorSubject<unknown>(undefined);
+
 const mockTechRecordService = {
-	techRecord$: jest.fn(),
+	techRecord$,
 };
 describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	let fixture: ComponentFixture<TechRecordEditAdditionalExaminerNoteComponent>;
@@ -42,12 +44,10 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
 	describe('ngOnInit', () => {
 		it('should call all initialisation functions', () => {
 			const examinerNoteSpy = jest.spyOn(component, 'getExaminerNote').mockReturnValue();
-			const techRecordSpy = jest.spyOn(component, 'getTechRecord').mockReturnValue();
 			const formSpy = jest.spyOn(component, 'setupForm').mockReturnValue();
 			component.ngOnInit();
 			expect(examinerNoteSpy).toHaveBeenCalled();
 			expect(formSpy).toHaveBeenCalled();
-			expect(techRecordSpy).toHaveBeenCalled();
 		});
 	});
 	describe('navigateBack', () => {

@@ -13,7 +13,8 @@ import { FormatVehicleTypePipe } from '@pipes/format-vehicle-type/format-vehicle
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams } from '@store/router/router.selectors';
-import { BehaviorSubject, ReplaySubject, firstValueFrom, of } from 'rxjs';
+import { selectTechRecordSearchResultsBySystemNumber } from '@store/tech-record-search/tech-record-search.selector';
+import { ReplaySubject, firstValueFrom, of } from 'rxjs';
 import { MultipleSearchResultsComponent } from '../multiple-search-results.component';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 
@@ -80,7 +81,9 @@ describe('MultipleSearchResultsComponent', () => {
 					techRecord_manufactureYear: 2013,
 				},
 			];
-			component.searchResults$ = new BehaviorSubject<TechRecordSearchSchema[] | undefined>(newData);
+			// feed the real source: reassigning the field leaves the async pipe on the old observable
+			store.overrideSelector(selectTechRecordSearchResultsBySystemNumber, newData);
+			store.refreshState();
 			fixture.detectChanges();
 
 			const button = fixture.debugElement.query(By.css('.govuk-back-link'));

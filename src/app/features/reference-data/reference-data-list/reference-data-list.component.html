@@ -1,9 +1,9 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">Search for {{ (refDataAdminType$ | async)?.label }}</h1>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">Search for {{ refDataAdminType()?.label }}</h1>
 
     <div id="buttonsAndSearch" class="buttons-and-search govuk-!-margin-bottom-7">
-      @if ((refDataAdminType$ | async)?.searchOptions; as searchOptions) {
+      @if (refDataAdminType()?.searchOptions; as searchOptions) {
         <div [formGroup]="form" class="search-form" id="searchForm">
           <div id="filterSelect">
             <label class="govuk-label" for="searchFilter">Search Filter</label>
@@ -60,14 +60,14 @@
       <div class="add-delete-buttons">
         <app-button id="searchCancel" type="button" design="secondary" (clicked)="clear()">Clear filters</app-button>
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>
-        <app-button id="submit" [disabled]="disabled" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
+        <app-button id="submit" [disabled]="disabled()" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
       </div>
     </div>
 
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          @for (column of (refDataAdminType$ | async)?.columns; track column) {
+          @for (column of refDataAdminType()?.columns; track column) {
             <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
           }
           <th scope="col" class="govuk-table__header"></th>
@@ -77,7 +77,7 @@
       <tbody class="govuk-table__body">
         @for (item of paginatedItems$ | async; track item) {
           <tr class="govuk-table__row">
-            @for (column of (refDataAdminType$ | async)?.columns; track column) {
+            @for (column of refDataAdminType()?.columns; track column) {
               <td class="govuk-table__cell">{{ item[column.name] }}</td>
             }
             <td class="govuk-table__cell buttons">

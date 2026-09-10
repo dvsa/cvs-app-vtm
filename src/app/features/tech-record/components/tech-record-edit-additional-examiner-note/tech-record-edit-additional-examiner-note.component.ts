@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Signal, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -19,7 +20,7 @@ import {
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';
-import { ReplaySubject, take, takeUntil } from 'rxjs';
+import { ReplaySubject, take } from 'rxjs';
 
 @Component({
 	selector: 'tech-record-edit-additional-examiner-note',
@@ -42,7 +43,9 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
 	globalErrorService = inject(GlobalErrorService);
 	store = inject(Store<State>);
 
-	currentTechRecord!: TechRecordType<'hgv' | 'trl' | 'lgv'>;
+	readonly currentTechRecord = toSignal(this.technicalRecordService.techRecord$) as Signal<
+		TechRecordType<'hgv' | 'trl' | 'lgv'> | undefined
+	>;
 	examinerNoteIndex!: number;
 	editedExaminerNote = '';
 	originalExaminerNote = '';
@@ -52,22 +55,15 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
 	formControl!: CustomFormControl;
 
 	ngOnInit() {
-		this.getTechRecord();
 		this.getExaminerNote();
 		this.setupForm();
-	}
-
-	getTechRecord() {
-		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
-			this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-		});
 	}
 
 	getExaminerNote() {
 		this.route.params.pipe(take(1)).subscribe((params) => {
 			this.examinerNoteIndex = params['examinerNoteIndex'];
 		});
-		const additionalExaminerNotes = this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes;
+		const additionalExaminerNotes = this.currentTechRecord()?.techRecord_adrDetails_additionalExaminerNotes;
 		if (additionalExaminerNotes) {
 			const examinerNote = additionalExaminerNotes[this.examinerNoteIndex].note;
 			if (examinerNote) {

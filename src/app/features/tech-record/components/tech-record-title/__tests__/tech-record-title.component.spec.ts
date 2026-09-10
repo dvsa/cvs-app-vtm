@@ -65,8 +65,8 @@ describe('TechRecordTitleComponent', () => {
 				secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
 				techRecord_vehicleType: VehicleTypes.LGV,
 			} as unknown as TechRecordType<'put'>;
-			jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
 			fixture.componentRef.setInput('vehicle', mockRecord);
+			store.overrideSelector(selectTechRecord, mockRecord);
 			store.overrideSelector(editingTechRecord, mockRecord);
 		});
 		it('should show primary VRM for current record', () => {
