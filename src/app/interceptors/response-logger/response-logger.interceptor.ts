@@ -13,7 +13,6 @@ import { Store } from '@ngrx/store';
 import { CompressionService } from '@services/compression/compression.service';
 import { LogsProvider } from '@services/logs/logs.service';
 import { id } from '@store/user/user-service.reducer';
-import { get } from 'lodash';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { version } from '../../../../package.json';
 
@@ -99,17 +98,47 @@ export class ResponseLoggerInterceptor implements HttpInterceptor {
 				return event;
 			}),
 			catchError((err) => {
-				const status = err instanceof HttpErrorResponse ? err.status : 0;
+				// network failure
+				if (err instanceof HttpErrorResponse && err.status === 0) {
+					this.logsProvider.dispatchLog({
+						type: LogType.ERROR,
+						message: `${this.oid()} - Network failure when calling ${request.method} ${request.url}`,
+						timestamp: Date.now(),
+            msg: err.message,
+						errors: err.error,
+						// @ts-ignore
+						stackTrace: err.stack,
+					});
+					return throwError(() => err);
+				}
 
-				const message = err instanceof HttpErrorResponse || err instanceof Error ? err.message : JSON.stringify(err);
+				// html body rather than JSON
+				if (err instanceof HttpErrorResponse && typeof err.error === 'string' && this.looksLikeHtml(err.error)) {
+					const headers = Object.fromEntries(err.headers.keys().map((key) => [key, err.headers.get(key)]));
+
+					this.logsProvider.dispatchLog({
+						type: LogType.ERROR,
+						message: `${this.oid()} - Received HTML response instead of JSON for ${request.method} ${request.url}`,
+						status: err.status,
+            msg: err.message,
+            timestamp: Date.now(),
+						body: err.error,
+						headers,
+					});
+					return throwError(() => err);
+				}
+
+				// Normal HTTP error
+				const message = err instanceof Error ? err.message : JSON.stringify(err);
 
 				this.logsProvider.dispatchLog({
 					type: LogType.ERROR,
 					message: `${this.oid()} - Method: ${request.method}. ${message}.`,
-					status,
+					status: err instanceof HttpErrorResponse ? err.status : undefined,
 					timestamp: Date.now(),
-					errors: err instanceof HttpErrorResponse ? err.error : get(err, 'error.errors', undefined),
+					errors: err instanceof HttpErrorResponse ? err.error : undefined,
 					stackTrace: err instanceof Error ? err.stack : undefined,
+          msg: err.message,
 				});
 
 				return throwError(() => err);
@@ -124,5 +153,10 @@ export class ResponseLoggerInterceptor implements HttpInterceptor {
 	// separated out to allow simplified spies in tests
 	getRequestDuration(finish: number, start: number): number {
 		return finish - start;
+	}
+
+	private looksLikeHtml(payload: string): boolean {
+		const trimmed = payload.trim();
+		return trimmed.startsWith('<!DOCTYPE html') || trimmed.startsWith('<html');
 	}
 }
