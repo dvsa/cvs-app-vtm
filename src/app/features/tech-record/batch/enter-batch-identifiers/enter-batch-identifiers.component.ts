@@ -11,6 +11,8 @@ import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { HttpService } from '@/src/app/services/http/http.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
+import { BatchRecord } from '@/src/app/store/technical-records/batch-create.reducer';
 import {
 	selectBatchDetails,
 	selectBatchVehicleTypeDescriptor,
@@ -80,10 +82,14 @@ export class EnterBatchIdentifiers implements OnInit {
 	}
 
 	handlePopulateForm(): void {
-		const { vehicleType, batchSize } = this.savedBatchDetails();
+		const { vehicleType, batchSize, vehicles } = this.savedBatchDetails();
 		if (!vehicleType || !batchSize) return;
 
 		this.addVehicles(vehicleType, batchSize);
+
+		// Restore batch details if returning to this page
+		this.form.patchValue({ vehicles });
+		this.form.markAllAsTouched();
 	}
 
 	addVehicles(vehicleType: VehicleTypes, batchSize: number): void {
@@ -96,7 +102,7 @@ export class EnterBatchIdentifiers implements OnInit {
 		const form = this.fb.group<VehicleForm>({
 			systemNumber: this.fb.control<string | null>(''),
 			createdTimestamp: this.fb.control<string | null>(''),
-			vehicleType: this.fb.nonNullable.control<VehicleTypes>(vehicleType),
+			vehicleType: this.fb.nonNullable.control<string>(vehicleType),
 			vin: this.fb.control<string | null>(null, {
 				updateOn: 'blur',
 				validators: [
@@ -257,7 +263,6 @@ export class EnterBatchIdentifiers implements OnInit {
 
 		const value = this.form.getRawValue();
 		const errors = this.errorService.extractGlobalErrors(this.form);
-		console.log(this.form, errors);
 
 		// Ensure at least one vehicle has a VIN
 		const vins = value.vehicles.filter((vehicle) => vehicle.vin);
@@ -270,11 +275,16 @@ export class EnterBatchIdentifiers implements OnInit {
 		}
 
 		if (errors.length === 0) {
+			this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
 			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		}
 	}
 
 	handleCancel(): void {
+		// Save unsaved changes before leaving the page
+		const value = this.form.getRawValue();
+		this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
+
 		this.router.navigate([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 	}
 }
@@ -282,7 +292,7 @@ export class EnterBatchIdentifiers implements OnInit {
 export type VehicleForm = {
 	vin: FormControl<string | null>;
 	trailerIdOrVrm: FormControl<string | null>;
-	vehicleType: FormControl<VehicleTypes>;
+	vehicleType: FormControl<string>;
 	createdTimestamp: FormControl<string | null>;
 	systemNumber: FormControl<string | null>;
 };
