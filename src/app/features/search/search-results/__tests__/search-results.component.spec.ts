@@ -7,27 +7,27 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { SearchResultsV2Component } from '../search-results-v2.component';
+import { SearchResultsComponent } from '../search-results.component';
 
-describe('SearchResultsV2Component', () => {
-	let fixture: ComponentFixture<SearchResultsV2Component>;
-	let component: SearchResultsV2Component;
+describe('SearchResultsComponent', () => {
+	let fixture: ComponentFixture<SearchResultsComponent>;
+	let component: SearchResultsComponent;
 	let router: Router;
 	let techRecordService: TechnicalRecordService;
 	let globalErrorService: GlobalErrorService;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [SearchResultsV2Component],
+			imports: [SearchResultsComponent],
 			providers: [
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
-				provideRouter([{ path: 'search/results', component: SearchResultsV2Component }]),
+				provideRouter([{ path: 'search/results', component: SearchResultsComponent }]),
 			],
 		}).compileComponents();
 
-		fixture = TestBed.createComponent(SearchResultsV2Component);
+		fixture = TestBed.createComponent(SearchResultsComponent);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);
 		techRecordService = TestBed.inject(TechnicalRecordService);
