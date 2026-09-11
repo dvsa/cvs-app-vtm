@@ -19,6 +19,7 @@ export const selectBatchDetails = createSelector(selectBatchState, (state) => ({
 	vehicleStatus: state.vehicleStatus,
 	trlFormType: state.trlFormType,
 	batchSize: state.batchSize,
+	vehicles: selectAll(state),
 }));
 export const selectBatchVehicleTypeDescriptor = createSelector(selectVehicleType, (vehicleType) => {
 	switch (vehicleType) {
