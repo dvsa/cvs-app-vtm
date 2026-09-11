@@ -4,6 +4,7 @@ import { RoleGuard } from '@/src/app/guards/role-guard/roles.guard';
 import { Roles } from '@/src/app/models/roles.enum';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { techRecordDataResolver } from '@/src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { FeatureFlags } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
@@ -15,6 +16,7 @@ export const routes: Routes = [
 		canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
 		canDeactivate: [cancelBatchGuard],
 		resolve: { data: techRecordDataResolver },
+		providers: [AxlesService],
 		children: [
 			{
 				path: '',
@@ -71,16 +73,53 @@ export const routes: Routes = [
 			{
 				path: BatchRoutes.ENTER_TECH_RECORD_DETAILS,
 				data: {
-					title: 'Enter details for this batch - Vehicle Testing Management',
 					roles: Roles.TechRecordCreate,
 					featureToggleName: FeatureFlags.BATCH_REDESIGN,
-					backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}` },
+					isEditing: true,
 				},
 				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
-				loadComponent: () =>
-					import('./enter-tech-record-details/enter-tech-record-details.component').then(
-						(m) => m.EnterTechRecordDetailsComponent
-					),
+				children: [
+					{
+						path: '',
+						data: {
+							title: 'Enter details for this batch - Vehicle Testing Management',
+							roles: Roles.TechRecordCreate,
+							featureToggleName: FeatureFlags.BATCH_REDESIGN,
+							backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}` },
+							isEditing: true,
+						},
+						loadComponent: () =>
+							import('./enter-tech-record-details/enter-tech-record-details.component').then(
+								(m) => m.EnterTechRecordDetailsComponent
+							),
+					},
+					{
+						path: BatchRoutes.TYRE_SEARCH,
+						data: {
+							title: 'Tyre search',
+							roles: Roles.TechRecordCreate,
+							isEditing: true,
+							featureToggleName: FeatureFlags.BATCH_REDESIGN,
+							backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_TECH_RECORD_DETAILS}` },
+						},
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('../components/tech-record-search-tyres/tech-record-search-tyres.component').then(
+								(m) => m.TechRecordSearchTyresComponent
+							),
+					},
+				],
+			},
+			{
+				path: BatchRoutes.BATCH_SUMMARY,
+				data: {
+					title: 'Batch summary',
+					roles: Roles.TechRecordCreate,
+					featureToggleName: FeatureFlags.BATCH_REDESIGN,
+					backlink: { url: RootRoutes.ROOT, label: 'Go back to home page' },
+				},
+				canActivate: [MsalGuard, RoleGuard],
+				loadComponent: () => import('./batch-summary/batch-summary.component').then((m) => m.BatchSummaryComponent),
 			},
 		],
 	},

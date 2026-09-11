@@ -1,0 +1,31 @@
+.summary-link-wrapper {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  float: right;
+  padding-left: 10px;
+}
+
+.govuk-summary-list__value--tag {
+  overflow-wrap: normal;
+  padding-top: 8px;
+  padding-bottom: 15px !important;
+}
+
+.govuk-summary-list__key-tech {
+  width: 48%;
+  padding-bottom: 4px !important;
+}
+
+.govuk-summary-list__row--value {
+  border-bottom: 1px solid #b1b4b6;
+}
+
+.govuk-summary-list__row--last {
+  border-bottom: 0px;
+}
+
+.govuk-summary-list__value--overflow {
+  overflow-wrap: normal;
+  padding-top: 0px;
+  padding-bottom: 15px !important;
+}

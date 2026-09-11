@@ -11,7 +11,7 @@ import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { HttpService } from '@/src/app/services/http/http.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
-import { upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
+import { setBatchDetails, upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
 import { BatchRecord } from '@/src/app/store/technical-records/batch-create.reducer';
 import {
 	selectBatchDetails,
@@ -30,6 +30,7 @@ import {
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -217,10 +218,13 @@ export class EnterBatchIdentifiers implements OnInit {
 
 				const vehicleToUpdate = matches.find((record) => record.techRecord_statusCode !== StatusCodes.ARCHIVED);
 				if (vehicleToUpdate) {
-					form.patchValue({
-						systemNumber: vehicleToUpdate.systemNumber,
-						createdTimestamp: vehicleToUpdate.createdTimestamp,
-					});
+					form.patchValue(
+						{
+							systemNumber: vehicleToUpdate.systemNumber,
+							createdTimestamp: vehicleToUpdate.createdTimestamp,
+						},
+						{ emitEvent: false }
+					);
 				}
 
 				return null;
@@ -275,6 +279,16 @@ export class EnterBatchIdentifiers implements OnInit {
 		}
 
 		if (errors.length === 0) {
+			const savedBatchDetails = this.savedBatchDetails();
+			this.technicalRecordService.updateEditingTechRecord({
+				techRecord_statusCode: savedBatchDetails.vehicleStatus,
+				techRecord_vehicleType: savedBatchDetails.vehicleType,
+			} as TechRecordType<'put'>);
+			this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(
+				savedBatchDetails.vehicleType as VehicleTypes
+			);
+			this.technicalRecordService.clearSectionTemplateStates();
+			this.store.dispatch(setBatchDetails({ batchSize: value.vehicles.length }));
 			this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
 			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		}
