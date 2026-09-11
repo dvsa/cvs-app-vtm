@@ -2,4 +2,17 @@
   <h1 class="govuk-heading-l">
     Enter technical record details for this batch
   </h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third-from-desktop">
+      <app-batch-tech-record-details-summary-card />
+      <app-button-group>
+        <app-button id="save-and-process-batch-btn" (clicked)="handleSave()">
+          Save and process batch
+        </app-button>
+      </app-button-group>
+    </div>
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <app-tech-record [techRecord]="techRecord()" [isEditing]="true" />
+    </div>
+  </div>
 </div>

@@ -1,0 +1,98 @@
+@if (savedBatchDetails(); as batchDetails) {
+  <div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+      <h2 class="govuk-summary-card__title govuk-heading-l">
+        Summary
+      </h2>
+      <ul class="govuk-summary-card__actions">
+        <li class="govuk-summary-card__action">
+          <a id="cancel-link" class="govuk-link" [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`]">
+            Cancel<span class="govuk-visually-hidden"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="govuk-summary-card__content">
+      <dl class="govuk-summary-list govuk-summary-list--no-border">
+        <!-- Vehicle type -->
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+            Vehicle type
+          </dt>
+        </div>
+        <div class="govuk-summary-list__row--value">
+          <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicle-type">
+            {{ batchDetails.vehicleType | defaultNullOrEmpty | uppercase }}
+          </dd>
+        </div>
+        <!-- Trailer form type -->
+        @if (batchDetails.vehicleType === VehicleTypes.TRL) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+              Trailer form type
+              <div class="summary-link-wrapper">
+                <a 
+                  href="javascript:void(0)" 
+                  class="govuk-link summary-link" 
+                  id="change-trailer-form-type-link" 
+                  [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}`]"
+                >
+                  Change
+                </a>
+              </div>
+            </dt>
+          </div>
+          <div class="govuk-summary-list__row--value">
+            <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="trailer-form-type">
+              {{ batchDetails.trlFormType | defaultNullOrEmpty | uppercase }}
+            </dd>
+          </div>
+        }
+        <!-- Record type -->
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+            Record type
+            <div class="summary-link-wrapper">
+              <a 
+                href="javascript:void(0)" 
+                class="govuk-link summary-link" 
+                id="change-record-type-link" 
+                [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}`]"
+              >
+                Change
+              </a>
+            </div>
+          </dt>
+        </div>
+        <div class="govuk-summary-list__row--value">
+          <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-type">
+            <app-tag [type]="batchDetails.vehicleStatus === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
+              {{ batchDetails.vehicleStatus | defaultNullOrEmpty }}
+            </app-tag>
+          </dd>
+        </div>
+        <!-- Vehicles in batch -->
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
+            Vehicles in batch
+            <div class="summary-link-wrapper">
+              <a 
+                href="javascript:void(0)" 
+                class="govuk-link summary-link" 
+                id="change-vehicles-in-batch-link" 
+                [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}`]"
+              >
+                Change
+              </a>
+            </div>
+          </dt>
+        </div>
+        <div class="govuk-summary-list__row--value govuk-summary-list__row--last">
+          <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="batch-size">
+            {{ batchDetails.batchSize | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+}

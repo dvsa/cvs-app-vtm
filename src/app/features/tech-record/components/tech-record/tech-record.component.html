@@ -1,0 +1,483 @@
+@if (techRecord(); as techRecord) {
+  @let vm = vehicleMeta();
+  <!-- Accordion -->
+  <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+    <div class="govuk-accordion__section-heading-top-container">
+      <h2 class="govuk-accordion__section-heading-top">
+        <span class="govuk-accordion-heading-vtm">
+          Technical record
+        </span>
+      </h2>
+
+      <app-accordion-control [sectionState]="sectionStates$()">
+        <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
+        <ng-template #template>
+          <ng-container [formGroup]="form">
+            <!-- General vehicle details section-->
+            <app-accordion
+              [id]="'general-vehicle-details'"
+              [title]="'General vehicle details'"
+              [description]="'Date of registration, body details, EU category.'"
+              [type]="'condensed'"
+              [isExpanded]="false"
+              appFilterByTags
+              [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
+              [filters]="filters()"
+            >
+              <form ngNoForm>
+                <app-general-vehicle-details
+                  [techRecord]="techRecord"
+                  [filters]="filters()"
+                  [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                ></app-general-vehicle-details>
+              </form>
+            </app-accordion>
+
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <!-- Approval type details section-->
+              <app-accordion
+                [id]="'approval-type'"
+                [title]="'Approval type'"
+                [description]="vm.approvalTypeDescription"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-approval-type
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-approval-type>
+                </form>
+              </app-accordion>
+            }
+
+            @if (technicalRecordService.isHeavyTrailer(techRecord)) {
+              <app-accordion
+                [id]="'authorisation-into-service'"
+                [title]="'Authorisation into service'"
+                [description]="'COC date, authorisation date, rejected date.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-authorisation-into-service
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-authorisation-into-service>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Dimensions section-->
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <app-accordion
+                [id]="'dimensions'"
+                [title]="'Dimensions'"
+                [description]="'Axle distance, vehicle dimensions.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-dimensions
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-dimensions>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Weights section-->
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <app-accordion
+                [id]="'weights'"
+                [title]="'Weights'"
+                [description]="vm.weightsDescription"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-weights
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-weights>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Tyres section-->
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <app-accordion
+                [id]="'tyres'"
+                [title]="'Tyres'"
+                [description]="vm.tyresDescription"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-tyres
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-tyres>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- configuration -->
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <app-accordion
+                [id]="'configuration'"
+                [title]="'Configuration'"
+                [description]="vm.configDescription"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-configuration
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-configuration>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Emissions and exemptions -->
+            @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+              <app-accordion
+                [id]="'emissions-and-exemptions'"
+                [title]="'Emissions and exemptions'"
+                [description]="'Euro standard, emissions limit, tacho exemption.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-emissions-and-exemptions
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-emissions-and-exemptions>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Seats and vehicle size -->
+            @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+              <app-accordion
+                [id]="'seats-and-vehicle-size'"
+                [title]="'Seats and vehicle size'"
+                [description]="'Seats, vehicle size, seatbelts.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Required']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-seats-and-vehicle-size
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-seats-and-vehicle-size>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Brakes -->
+            @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || technicalRecordService.isHeavyTrailer(techRecord)) {
+              <app-accordion
+                [id]="'brakes'"
+                [title]="'Brakes'"
+                [description]="vm.brakesDescription"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-brakes
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-brakes>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Disability Discrimination Act (DDA) -->
+            @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+              <app-accordion
+                [id]="'dda'"
+                [title]="'Disability Discrimination Act'"
+                [description]="'DDA certificate, accessibility, schedules.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-dda
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-dda>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- Plates -->
+            @if ((techRecord.techRecord_vehicleType === VehicleTypes.HGV || technicalRecordService.isHeavyTrailer(techRecord)) && !isEditing()) {
+              <app-accordion
+                [id]="'plates'"
+                [title]="'Plates'"
+                [description]="'Generate and view plates.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <app-plates [techRecord]="techRecord"></app-plates>
+              </app-accordion>
+            }
+
+            <!-- ADR -->
+            @if (technicalRecordService.isAdrVehicle(techRecord)) {
+              <app-accordion
+                [id]="'adr'"
+                [title]="'ADR'"
+                [description]="'Approval for carrying dangerous goods.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['ADR']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-adr
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-adr>
+                </form>
+              </app-accordion>
+            }
+
+            <!-- ADR certificates -->
+            @if (technicalRecordService.isAdrVehicle(techRecord) && !isEditing()) {
+              <app-accordion
+                [id]="'adr-certs'"
+                [title]="'ADR certificates'"
+                [description]="'Generate and view ADR certificates.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['ADR']"
+                [filters]="filters()"
+              >
+                <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
+              </app-accordion>
+            }
+
+            @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV) {
+              <app-accordion
+                [id]="'last-applicant'"
+                [title]="'Last applicant'"
+                [description]="'Contact details for the last applicant.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-last-applicant
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-last-applicant>
+                </form>
+              </app-accordion>
+            }
+
+            @if (technicalRecordService.isHeavyTrailer(techRecord)) {
+              <app-accordion
+                [id]="'purchasers'"
+                [title]="'Purchasers'"
+                [description]="'Contact details for the purchaser.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-purchasers
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-purchasers>
+                </form>
+              </app-accordion>
+
+              <app-accordion
+                [id]="'manufacturer'"
+                [title]="'Manufacturer'"
+                [description]="'Contact details for the manufacturer.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-manufacturer
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-manufacturer>
+                </form>
+              </app-accordion>
+
+              <app-accordion
+                [id]="'letter-of-authorisation'"
+                [title]="'Letter of authorisation'"
+                [description]="'Generate and send a letter of authorisation.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
+              </app-accordion>
+            }
+
+            @if (technicalRecordService.isHeavyVehicle(techRecord)) {
+              <app-accordion
+                [id]="'documents'"
+                [title]="'Documents'"
+                [description]="'Microfilm document details.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="[]"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-documents
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-documents>
+                </form>
+              </app-accordion>
+            }
+
+            @if (!isEditing()) {
+              <app-accordion
+                [id]="'technical-records-history'"
+                [title]="'Technical records history'"
+                [description]="'View technical records history.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Records']"
+                [filters]="filters()"
+              >
+                <app-technical-record-history [techRecord]="$any(techRecord)"></app-technical-record-history>
+              </app-accordion>
+            }
+
+            @if (!isEditing()) {
+              <app-accordion
+                [id]="'test-records'"
+                [title]="'Test records'"
+                [description]="'Create and view test records.'"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Records']"
+                [filters]="filters()"
+              >
+                <app-test-records [testResults]="(testResults$ | async) || []" [techRecord]="techRecord"></app-test-records>
+              </app-accordion>
+            }
+
+            <app-accordion
+              [id]="'notes'"
+              [title]="'Notes'"
+              [description]="'Notes attached to this record.'"
+              [type]="'condensed'"
+              [isExpanded]="false"
+              appFilterByTags
+              [tagNames]="['ADR']"
+              [filters]="filters()"
+            >
+              <form ngNoForm>
+                <app-notes
+                  [techRecord]="techRecord"
+                  [filters]="filters()"
+                  [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                ></app-notes>
+              </form>
+            </app-accordion>
+
+            @if (isEditing()) {
+              <app-accordion
+                [id]="'reason-for-creation'"
+                [title]="'Reason for creation'"
+                [description]="`Tell us why you're creating this record.`"
+                [type]="'condensed'"
+                [isExpanded]="false"
+                appFilterByTags
+                [tagNames]="['Plates', 'Required', 'ADR']"
+                [filters]="filters()"
+              >
+                <form ngNoForm>
+                  <app-reason-for-creation
+                    [techRecord]="techRecord"
+                    [filters]="filters()"
+                    [mode]="isEditing() ? Modes.EDIT : Modes.VIEW"
+                  ></app-reason-for-creation>
+                </form>
+              </app-accordion>
+            }
+          </ng-container>
+        </ng-template>
+      </app-accordion-control>
+    </div>
+
+    <app-tech-record-filters [tags]="tags()" [(ngModel)]="filters" />
+
+    <!-- Accordions appear here -->
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+  </div>
+}
