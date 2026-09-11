@@ -509,9 +509,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	get smallTrlFields(): Partial<Record<any, FormControl>> {
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.SMALL_TRL, disabled: true }),
-			techRecord_regnDate: this.fb.control<string | null>(null, [
-				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
-			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
 				this.commonValidators.min(
