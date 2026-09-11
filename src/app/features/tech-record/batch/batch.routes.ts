@@ -68,6 +68,20 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('./enter-batch-identifiers/enter-batch-identifiers.component').then((m) => m.EnterBatchIdentifiers),
 			},
+			{
+				path: BatchRoutes.ENTER_TECH_RECORD_DETAILS,
+				data: {
+					title: 'Enter details for this batch - Vehicle Testing Management',
+					roles: Roles.TechRecordCreate,
+					featureToggleName: FeatureFlags.BATCH_REDESIGN,
+					backlink: { url: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}` },
+				},
+				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
+				loadComponent: () =>
+					import('./enter-tech-record-details/enter-tech-record-details.component').then(
+						(m) => m.EnterTechRecordDetailsComponent
+					),
+			},
 		],
 	},
 ];

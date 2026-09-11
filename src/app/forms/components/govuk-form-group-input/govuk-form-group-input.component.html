@@ -1,4 +1,4 @@
-<div class="govuk-form-group">
+<div class="govuk-form-group" [ngClass]="{ 'govuk-form-group' : true, 'govuk-form-group--error' : hasError && showGroupError() }">
   @if (controlLabel()) {
     <div class="govuk-label-wrapper">
       <label class="govuk-label tags" [id]="labelId" [htmlFor]="id" [for]="id">
