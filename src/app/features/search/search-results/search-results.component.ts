@@ -9,17 +9,17 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, distinctUntilChanged, takeUntil } from 'rxjs';
-import { SearchFormComponent } from '../../search-form/search-form.component';
+import { SearchFormComponent } from '../search-form/search-form.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 
 @Component({
-	selector: 'app-search-results-v2',
-	templateUrl: './search-results-v2.component.html',
-	styleUrls: ['./search-results-v2.component.scss'],
+	selector: 'app-search-results',
+	templateUrl: './search-results.component.html',
+	styleUrls: ['./search-results.component.scss'],
 	imports: [SearchFormComponent, SearchResultComponent, RoleRequiredDirective, AsyncPipe, PaginationComponent],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchResultsV2Component implements OnInit, OnDestroy {
+export class SearchResultsComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	activatedRoute = inject(ActivatedRoute);
 	globalErrorService = inject(GlobalErrorService);
