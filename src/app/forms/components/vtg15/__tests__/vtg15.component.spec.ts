@@ -51,6 +51,52 @@ describe('VTG15Component', () => {
 			expect(component.vtgRequired()).toBe(false);
 		});
 	});
+	describe('unNumber validation', () => {
+		it('should be invalid when VTG15 is required and the UN number is not 4 digits', () => {
+			const { vtg15Required, unNumber } = component.form.controls.vtg15.controls;
+
+			vtg15Required.setValue(true);
+			unNumber.setValue('12345');
+			unNumber.updateValueAndValidity();
+
+			expect(unNumber.invalid).toBe(true);
+		});
+
+		it('should be valid when VTG15 is required and the UN number is 4 digits', () => {
+			const { vtg15Required, unNumber } = component.form.controls.vtg15.controls;
+
+			vtg15Required.setValue(true);
+			unNumber.setValue('1234');
+			unNumber.updateValueAndValidity();
+
+			expect(unNumber.valid).toBe(true);
+		});
+
+		it('should clear the length error when VTG15 is changed from required to not required', () => {
+			const { vtg15Required, unNumber } = component.form.controls.vtg15.controls;
+
+			vtg15Required.setValue(true);
+			unNumber.setValue('12345');
+			unNumber.updateValueAndValidity();
+			expect(unNumber.invalid).toBe(true);
+
+			vtg15Required.setValue(false);
+			unNumber.updateValueAndValidity();
+
+			expect(unNumber.valid).toBe(true);
+			expect(unNumber.errors).toBeNull();
+		});
+
+		it('should not require a UN number when VTG15 is not required', () => {
+			const { vtg15Required, unNumber } = component.form.controls.vtg15.controls;
+
+			vtg15Required.setValue(false);
+			unNumber.setValue(null);
+			unNumber.updateValueAndValidity();
+
+			expect(unNumber.valid).toBe(true);
+		});
+	});
 	describe('initForm', () => {
 		it('should return early when testResult is undefined', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined as any);
