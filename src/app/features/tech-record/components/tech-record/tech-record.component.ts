@@ -189,7 +189,7 @@ export class TechRecordComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngAfterViewInit(): void {
-		if (!this.isEditing) {
+		if (!this.isEditing()) {
 			this.form.disable();
 		}
 	}
