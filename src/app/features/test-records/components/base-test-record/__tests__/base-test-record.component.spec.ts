@@ -6,6 +6,8 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { Vtg15Component } from '@forms/components/vtg15/vtg15.component';
+import { LoadStatusComponent } from '@forms/custom-sections/load-status/load-status.component';
 import { Roles } from '@models/roles.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -74,6 +76,29 @@ describe('BaseTestRecordComponent', () => {
 			});
 
 			component.handleFormChange(event);
+		});
+
+		it('should keep the load status and vtg15 values when another section emits', (done) => {
+			const loadStatus = { testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }] };
+			const vtg15 = { vtg15: { vtg15Required: true, unNumber: 1234 } };
+
+			jest.spyOn(component, 'loadStatus').mockReturnValue({
+				form: { getRawValue: () => loadStatus },
+			} as unknown as LoadStatusComponent);
+			jest.spyOn(component, 'vtg15').mockReturnValue({
+				form: { getRawValue: () => vtg15 },
+			} as unknown as Vtg15Component);
+
+			component.newTestResult.subscribe((testResult) => {
+				expect(testResult).toEqual({
+					vin: 'ABC001',
+					testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }],
+					vtg15: { vtg15Required: true, unNumber: 1234 },
+				});
+				done();
+			});
+
+			component.handleFormChange({ vin: 'ABC001' } as TestResultSchema);
 		});
 	});
 

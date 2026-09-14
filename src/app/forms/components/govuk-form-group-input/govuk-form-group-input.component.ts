@@ -28,6 +28,7 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 	readonly suffix = input<string>();
 	readonly nullIfEmpty = input<boolean>(false);
 	readonly showErrors = input<boolean>(true);
+	readonly showGroupError = input<boolean>(false);
 	readonly customScreenReaderLabelSuffix = input<string | null>(null);
 	readonly screenReaderLabelSuffix = computed(() => this.getScreenReaderLabelSuffix());
 	readonly FormNodeWidth = FormNodeWidth;

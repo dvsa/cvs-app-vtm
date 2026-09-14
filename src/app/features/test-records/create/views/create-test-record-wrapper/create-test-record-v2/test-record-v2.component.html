@@ -53,6 +53,17 @@
               <app-test [mode]="mode()" [initialMode]="initialMode()"></app-test>
             </form>
           </app-accordion>
+          @if (shouldShowSeatbeltSection()) {
+            <app-accordion
+              [id]="'seatbelts'"
+              [title]="'Seatbelts'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-seatbelts [mode]="mode()"></app-seatbelts>
+              </form>
+            </app-accordion>
+          }
           <app-accordion
             [id]="'visit'"
             [title]="'Visit'"

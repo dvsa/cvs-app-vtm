@@ -1,10 +1,13 @@
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { isTestTypeOldIvaOrMsva } from '@/src/app/store/test-records';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
+import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IconComponent } from '@components/icon/icon.component';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
 import { TagComponent, TagType, TagTypes } from '@components/tag/tag.component';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
@@ -19,6 +22,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
 import { DocumentType } from '@models/document-type.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { RootRoutes } from '@models/routes.enum';
 import {
 	ADR_DESK_BASED_TEST_TYPE_IDS,
 	TEST_TYPES_GROUP1_SPEC_TEST,
@@ -33,6 +37,8 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { DigitGroupSeparatorPipe } from '@pipes/digit-group-separator/digit-group-separator.pipe';
 import { RefDataDecodePipe } from '@pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
+import { DocumentsService } from '@services/documents/documents.service';
+import { HttpService } from '@services/http/http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { techRecord } from '@store/technical-records';
 import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
@@ -67,6 +73,11 @@ export class VehicleHeaderComponent {
 	store = inject(Store);
 	activatedRoute = inject(ActivatedRoute);
 	testRecordsService = inject(TestRecordsService);
+	httpService = inject(HttpService);
+	router = inject(Router);
+	documentsService = inject(DocumentsService);
+	globalErrorService = inject(GlobalErrorService);
+	technicalRecordService = inject(TechnicalRecordService);
 
 	techRecord$ = this.store.select(techRecord);
 	isTestTypeOldIvaOrMsva = this.store.selectSignal(isTestTypeOldIvaOrMsva);
@@ -173,13 +184,98 @@ export class VehicleHeaderComponent {
 		return `VT${this.testResult()?.vehicleType === this.vehicleTypes.PSV ? 'P' : 'G'}12`;
 	}
 
-	get fileName(): string {
+	get fileAbandonCertDocName(): string {
 		const prefix = this.abandonCertDocName;
 		return `${prefix}_${this.testNumber()}`;
 	}
 
-	get params(): Map<string, string> {
-		return new Map([['fileName', this.fileName]]);
+	get abandonCertDocParams(): Map<string, string> {
+		return new Map([['fileName', this.fileAbandonCertDocName]]);
+	}
+
+	get vtg15Params(): Map<string, string> {
+		return new Map([['category', 'vtg15']]);
+	}
+
+	downloadVTG15(test: TestResultSchema) {
+		const fileType = 'zip';
+		const fileName = `${test.testResultId}.zip`;
+
+		this.httpService.getTestResultMedia(test.testResultId, this.vtg15Params).subscribe({
+			next: (response) => {
+				switch (response.type) {
+					case HttpEventType.DownloadProgress:
+						break;
+					case HttpEventType.Response:
+						this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
+						break;
+					default:
+						break;
+				}
+			},
+			error: (error) => {
+				if (error instanceof HttpErrorResponse) {
+					switch (error.status) {
+						case HttpStatusCode.NotFound:
+							this.globalErrorService.setErrors([
+								{
+									error:
+										'Media could not be found. <br>Try again later or contact the service desk if this issue keeps happening.',
+									anchorLink: '',
+								},
+							]);
+							break;
+						case HttpStatusCode.InternalServerError:
+							this.router.navigate([RootRoutes.ERROR]);
+							break;
+						default:
+							// for sentry reporting
+							console.error(error);
+							break;
+					}
+				}
+			},
+		});
+	}
+
+	hasVTG15Media(): boolean {
+		const media = this.testResult()?.vtg15?.media?.filter((media) => media.type !== 'failReason');
+		return !!media && media.length > 0;
+	}
+
+	hasVTG15RetentionPeriodPassed(): boolean {
+		const testEndTimestamp = new Date(this.testResult()?.testTypes?.[0]?.testTypeEndTimestamp || '');
+		if (Number.isNaN(testEndTimestamp.getTime())) return false;
+		const today = new Date();
+		const target = new Date(testEndTimestamp);
+		const retentionPeriodDays = 21;
+		target.setDate(testEndTimestamp.getDate() + retentionPeriodDays);
+
+		return today >= target;
+	}
+
+	getVTG15RequiredText(): string {
+		const vtgRequired = this.testResult()?.vtg15?.vtg15Required;
+		if (vtgRequired === null) return '-';
+		if (vtgRequired) return 'Yes';
+		return 'No';
+	}
+
+	getFailureToCaptureVTG15MediaReason(): string {
+		const media = this.testResult()?.vtg15?.media;
+		if (!media) return 'No media available';
+
+		for (const reason of media) {
+			if (reason.type === 'failReason') {
+				const cleanedReason = reason.reason.trim().replace(/\.$/, '');
+				if (cleanedReason.toLowerCase() === 'failed to upload') {
+					return 'No media available - Media failed to upload';
+				}
+				return `No media available - ${reason.reason}`;
+			}
+		}
+
+		return 'Reason for failure to capture media not available';
 	}
 
 	get certificateParams(): Map<string, string> {

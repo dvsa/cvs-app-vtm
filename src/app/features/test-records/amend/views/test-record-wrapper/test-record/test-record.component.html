@@ -8,7 +8,7 @@
       </app-banner>
     }
     @if (testResult$ | async; as testResult) {
-      <app-base-test-record [isEditing]="true" [isContingencyTest]="false" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)" />
+      <app-base-test-record [amendMode]="true" [isEditing]="true" [isContingencyTest]="false" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)" />
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
       <ng-container *appRoleRequired="Roles.TestResultAmend">
         @if (isTestTypeGroupEditable$ | async) {

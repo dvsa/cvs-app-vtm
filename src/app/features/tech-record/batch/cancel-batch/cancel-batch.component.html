@@ -1,0 +1,12 @@
+<div class="govuk-width-container">
+  <h1 class="govuk-heading-l">
+    Are you sure you want to cancel creating this batch of technical records?
+  </h1>
+  <p class="govuk-body">
+    This will delete any data in the batch record and return you to the homepage.
+  </p>
+  <app-button-group>
+    <app-button id="cancel-btn" design="warning" (clicked)="handleCancelBatch()">Cancel batch</app-button>
+    <app-button id="back-btn" design="link" (clicked)="handleBack()">Back</app-button>
+  </app-button-group>
+</div>

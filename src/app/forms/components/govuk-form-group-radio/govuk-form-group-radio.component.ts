@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, forwardRef, input, model, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
@@ -8,7 +8,7 @@ import { GOVUK_RADIOS } from './govuk-form-group-radio.model';
 
 @Component({
 	selector: 'govuk-form-group-radio',
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, TagComponent, NgClass],
 	templateUrl: './govuk-form-group-radio.component.html',
 	styleUrls: ['./govuk-form-group-radio.component.scss'],
 	providers: [
@@ -30,6 +30,7 @@ export class GovukFormGroupRadioComponent extends GovukFormGroupBaseComponent im
 	orientation = input<RadioGroupOrientation>('vertical');
 	size = input<'small' | 'regular'>('regular');
 	value = model<string | number | boolean | null>(null);
+	errorMode = input<'group' | 'inline'>('inline');
 
 	readonly options = input<MultiOption<any>[]>([]);
 

@@ -1,4 +1,4 @@
-<div class="govuk-form-group">
+<div class="govuk-form-group" [ngClass]="{ 'govuk-form-group' : true, 'govuk-form-group--error' : hasError && showGroupError() }">
   @if (controlLabel()) {
     <div class="govuk-label-wrapper">
       <label class="govuk-label tags" [id]="labelId" [htmlFor]="id" [for]="id">
@@ -17,7 +17,7 @@
     </div>
   }
 
-  @if (controlHint() && !disabled()) {
+  @if (controlHint()) {
     <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
   }
 
@@ -32,6 +32,18 @@
   }
 
   <div class="govuk-input__wrapper">
+    <!-- Provide prefix via string input -->
+    @if (prefix()) {
+      <div
+        class="govuk-input__prefix"
+        [class.govuk-input__prefix-disabled]="control?.disabled || disabled() || false"
+        aria-hidden="true">
+        {{ prefix() }}
+      </div>
+    }
+
+    <!-- Also allow providing of prefix via content projection for more complex suffixes -->
+    <ng-content select=".govuk-input__prefix"></ng-content>
     @if (controlType() === 'text') {
       <input
         appNoEmojis

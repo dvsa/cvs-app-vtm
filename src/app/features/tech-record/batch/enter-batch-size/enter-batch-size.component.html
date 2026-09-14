@@ -1,0 +1,19 @@
+<div class="govuk-width-container">
+  <h1 class="govuk-heading-l">
+    {{ pageTitle() }}
+  </h1>
+
+  <form [formGroup]="form">
+    <govuk-form-group-input
+      type="number"
+      hint="Enter a number from 1 to 41"
+      formControlName="batchSize"
+      [width]="FormNodeWidth.L"
+    ></govuk-form-group-input>
+  </form>
+
+  <app-button-group>
+    <app-button id="continue-btn" (clicked)="handleContinue()">Continue</app-button>
+    <app-button id="cancel-btn" design="link" (clicked)="handleCancel()">Cancel</app-button>
+  </app-button-group>
+</div>

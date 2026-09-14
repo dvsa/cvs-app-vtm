@@ -164,6 +164,7 @@ describe('CreateTestRecordComponent', () => {
 				customDefects: jest.fn(),
 				weights: jest.fn(),
 				loadStatus: jest.fn(),
+				vtg15: jest.fn(),
 			} as unknown as BaseTestRecordComponent);
 			tick();
 			fixture.detectChanges();
@@ -205,6 +206,7 @@ describe('CreateTestRecordComponent', () => {
 			customDefects: jest.fn(),
 			weights: jest.fn(),
 			loadStatus: jest.fn(),
+			vtg15: jest.fn(),
 		} as unknown as BaseTestRecordComponent);
 		// component['baseTestRecordComponent'] = {
 		// 	sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },

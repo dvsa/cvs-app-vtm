@@ -171,7 +171,11 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 			DynamicFormService.validate(form, errors);
 		});
 
-		const customForms = [baseTestRecordComponent?.loadStatus(), baseTestRecordComponent?.weights()];
+		const customForms = [
+			baseTestRecordComponent?.loadStatus(),
+			baseTestRecordComponent?.weights(),
+			baseTestRecordComponent?.vtg15(),
+		];
 
 		customForms.forEach((form) => {
 			if (form) {

@@ -1,3 +1,4 @@
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import {
 	DefectDetailsSchema,
 	SpecialistCustomDefectsSchemaPut,
@@ -546,6 +547,33 @@ describe('Test Results Reducer', () => {
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
 
 			expect(newState.editingTestResult?.testTypes[0].requiredStandards).toBeUndefined();
+		});
+
+		it.each([
+			['null', null],
+			['undefined', undefined],
+		])('should delete load status when vehicle load status is %s', (_, vehicleLoadStatus) => {
+			const editingTestResult = {
+				testTypes: [{ testTypeId: '1', loadStatus: { vehicleLoadStatus } }],
+			} as unknown as TestResultSchema;
+
+			const action = cleanTestResult();
+			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+			expect(newState.editingTestResult?.testTypes[0].loadStatus).toBeUndefined();
+		});
+
+		it('should keep load status when a vehicle load status has been entered', () => {
+			const editingTestResult = {
+				testTypes: [{ testTypeId: '94', loadStatus: { vehicleLoadStatus: VehicleLoadStatusType.FULLY_LADEN } }],
+			} as unknown as TestResultSchema;
+
+			const action = cleanTestResult();
+			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+			expect(newState.editingTestResult?.testTypes[0].loadStatus).toEqual({
+				vehicleLoadStatus: VehicleLoadStatusType.FULLY_LADEN,
+			});
 		});
 	});
 

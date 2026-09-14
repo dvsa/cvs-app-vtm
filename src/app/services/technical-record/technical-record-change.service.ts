@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { get, isEqual } from 'lodash';
 import { VehicleTypes } from '../../models/vehicle-tech-record.model';
-import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
@@ -301,7 +301,7 @@ export class TechnicalRecordChangesService {
 		// Edge case 1: Only detect tyre changes when axles are modified
 		if (this.hasAxleTyresChanged()) return true;
 
-		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+		return this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 			? this.hasChanged('techRecord_tyreUseCode')
 			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_speedRestriction');
 	}

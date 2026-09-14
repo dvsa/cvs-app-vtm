@@ -65,17 +65,20 @@ export class VehicleComponent implements OnInit {
 	addValidators(): void {
 		this.form.controls.countryOfRegistration.setValidators([this.commonValidators.required('Country Of Registration')]);
 		this.form.controls.euVehicleCategory.setValidators([this.commonValidators.required('EU Vehicle Category')]);
-
-		if (this.isOdometerReadingRequired()) {
-			this.form.controls.odometerReading.setValidators([
+		this.form.controls.odometerReading.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isOdometerReadingRequired(),
 				this.commonValidators.required('Odometer Reading'),
-				this.commonValidators.max(9999999, 'Odometer Reading'),
-			]);
-		}
+				this.commonValidators.max(9999999, 'Odometer Reading')
+			),
+		]);
 
-		if (this.isOdometerReadingUnitsRequired()) {
-			this.form.controls.odometerReadingUnits.setValidators([this.commonValidators.required('Odometer Reading Units')]);
-		}
+		this.form.controls.odometerReadingUnits.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isOdometerReadingUnitsRequired(),
+				this.commonValidators.required('Odometer Reading Units')
+			),
+		]);
 	}
 
 	handlePrepopulateEuVehicleCategory() {
