@@ -31,7 +31,7 @@
                   </span>
                 </h2>
 
-                <app-accordion-control [sectionState]="sectionStates$()">
+                <app-accordion-control [sectionState]="sectionStates()">
                   <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
                   <ng-template #template>
                     <ng-container [formGroup]="form">

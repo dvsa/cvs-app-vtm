@@ -3,7 +3,7 @@
     Create a new technical record
   </h1>
 
-  @if (techRecord$(); as techRecord) {
+  @if (techRecord(); as techRecord) {
     @let vm = vehicleMeta();
     <div class="govuk-grid-row">
       <!-- Summary card -->
@@ -26,7 +26,7 @@
                 </span>
               </h2>
 
-              <app-accordion-control [sectionState]="sectionStates$()">
+              <app-accordion-control [sectionState]="sectionStates()">
                 <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
                 <ng-template #template>
                   <ng-container [formGroup]="form">
@@ -271,7 +271,7 @@
                       </app-accordion>
                     }
 
-                    @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
+                    @if (techRecord?.techRecord_vehicleType !== VehicleTypes.PSV) {
                       <app-accordion
                         [id]="'last-applicant'"
                         [title]="'Last applicant'"

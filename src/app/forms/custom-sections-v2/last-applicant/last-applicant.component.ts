@@ -6,7 +6,6 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-last-applicant',
@@ -20,7 +19,6 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -84,9 +82,5 @@ export class LastApplicantComponent extends EditBaseComponent implements OnInit,
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 }

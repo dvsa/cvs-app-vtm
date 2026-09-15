@@ -73,12 +73,10 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 		this.destroy$.complete();
 	}
 
-	get reasons(): Array<FormNodeOption<string>> {
-		return [
-			{ label: 'Cherished transfer', value: 'cherished-transfer', hint: 'Current VRM will be archived' },
-			{ label: 'Correcting an error', value: 'correcting-error', hint: 'Current VRM will not be archived' },
-		];
-	}
+	readonly reasons: Array<FormNodeOption<string>> = [
+		{ label: 'Cherished transfer', value: 'cherished-transfer', hint: 'Current VRM will be archived' },
+		{ label: 'Correcting an error', value: 'correcting-error', hint: 'Current VRM will not be archived' },
+	];
 
 	get width(): FormNodeWidth {
 		return FormNodeWidth.L;

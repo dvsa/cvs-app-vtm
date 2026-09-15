@@ -142,7 +142,7 @@
             size="small"
             label="Permitted dangerous goods"
             formControlName="techRecord_adrDetails_permittedDangerousGoods"
-            [options]="permittedDangerousGoodsOptions"
+            [options]="permittedDangerousGoodsOptions()"
             appFilterByTags
             [filters]="filters()"
             [tagNames]="['ADR']"

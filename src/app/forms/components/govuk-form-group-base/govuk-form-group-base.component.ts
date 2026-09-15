@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, input, model } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject, input, model } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer } from '@angular/forms';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
@@ -7,10 +8,24 @@ import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.t
 	selector: 'govuk-form-group-base-component',
 	template: '',
 })
-export class GovukFormGroupBaseComponent {
+export class GovukFormGroupBaseComponent implements OnInit {
 	controlContainer = inject(ControlContainer);
 	cdr = inject(ChangeDetectorRef);
 	commonValidators = inject(CommonValidatorsService);
+	destroyRef = inject(DestroyRef);
+
+	ngOnInit(): void {
+		this.watchFormEvents();
+	}
+
+	/**
+	 * Touched and validity changes are applied to the control from outside this template (e.g.
+	 * GlobalErrorService.markAllAsTouched when a form is submitted), so nothing tells Angular this
+	 * view needs refreshing and the inline error never renders.
+	 */
+	protected watchFormEvents(): void {
+		this.control?.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.cdr.markForCheck());
+	}
 
 	readonly tags = input<CustomTag[]>([]);
 
