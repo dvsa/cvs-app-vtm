@@ -249,6 +249,10 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
+		if (mode === Modes.ABANDON) {
+			const testTypeGroup = this.form.controls.testTypes.at(0);
+			testTypeGroup.controls.reasonForAbandoning.setValidators([]);
+		}
 		this.mode.set(mode);
 	}
 

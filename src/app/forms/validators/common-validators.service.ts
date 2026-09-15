@@ -170,7 +170,7 @@ export class CommonValidatorsService {
 				}
 				const globalError = {
 					minLength: {
-						error: `${message} must be at least ${length} characters`,
+						error: `${message} must be greater than or equal to ${length} characters`,
 						anchorLink: '',
 						accordion: '',
 					},

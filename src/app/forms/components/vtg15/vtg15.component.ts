@@ -95,6 +95,7 @@ export class Vtg15Component implements OnInit, OnDestroy {
 		if (testResult && testResult.vtg15 && testResult.vtg15.vtg15Required !== null) {
 			const vtg15 = {
 				...testResult.vtg15,
+				unNumber: testResult.vtg15.unNumber?.toString(),
 				primaryHazardClassification: this.toHazardClassificationOption(testResult.vtg15.primaryHazardClassification),
 				secondaryHazardClassification: this.toHazardClassificationOption(
 					testResult.vtg15.secondaryHazardClassification
