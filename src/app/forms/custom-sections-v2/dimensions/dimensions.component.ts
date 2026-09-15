@@ -3,7 +3,8 @@ import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filte
 import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { FieldWarningMessageComponent } from '@forms/components/field-warning-message/field-warning-message.component';
@@ -11,7 +12,6 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-dimensions',
@@ -34,11 +34,10 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	readonly Modes = Modes;
 
 	axlesService = inject(AxlesService);
+	destroyRef = inject(DestroyRef);
 	tcs = inject(TechnicalRecordChangesService);
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
-
-	destroy$ = new ReplaySubject<boolean>(1);
 
 	form: FormGroup = this.fb.group({});
 	filters = input<string[]>([]);
@@ -56,7 +55,7 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	}
 
 	shouldShowDimensionsWarning() {
-		this.parent.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((parentValue) => {
+		this.parent.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((parentValue) => {
 			const allFields = Object.keys(this.form.value);
 			const excludedFields = [
 				'techRecord_dimensions_length',
@@ -303,10 +302,6 @@ export class DimensionsComponent extends EditBaseComponent implements OnInit, On
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

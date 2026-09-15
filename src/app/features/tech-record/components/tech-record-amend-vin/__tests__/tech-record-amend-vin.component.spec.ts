@@ -12,10 +12,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { amendVin, amendVinSuccess } from '@store/technical-records';
-import { ReplaySubject, of } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, of } from 'rxjs';
 import { AmendVinComponent } from '../tech-record-amend-vin.component';
 
+const techRecord$ = new BehaviorSubject<V3TechRecordModel | undefined>(undefined);
+
 const mockTechRecordService = {
+	techRecord$,
 	editableTechRecord$: of({}),
 	selectedVehicleTechRecord$: of({}),
 	viewableTechRecord$: jest.fn(),
@@ -76,7 +79,7 @@ describe('TechRecordChangeVinComponent', () => {
 				createdTimestamp: 'bar',
 				newVin: 'testVin',
 			} as unknown as TechRecordType<'put'>;
-			component.techRecord = expectedTechRecord;
+			techRecord$.next(expectedTechRecord);
 		});
 		it('should dispatch the amendVin action with the new vin', () => {
 			const createdTimestamp = '2022';

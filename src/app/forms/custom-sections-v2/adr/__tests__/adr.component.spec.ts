@@ -70,12 +70,6 @@ describe('AdrComponent', () => {
 	});
 
 	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
-
 		it('should detach its form from its parent form', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
@@ -264,7 +258,7 @@ describe('AdrComponent', () => {
 			});
 
 			const options = PERMITTED_DANGEROUS_GOODS_OPTIONS;
-			expect(component.permittedDangerousGoodsOptions).toEqual(options);
+			expect(component.permittedDangerousGoodsOptions()).toEqual(options);
 
 			component.handleADRBodyTypeChange();
 
@@ -273,7 +267,7 @@ describe('AdrComponent', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
 			});
 
-			expect(component.permittedDangerousGoodsOptions).toEqual(
+			expect(component.permittedDangerousGoodsOptions()).toEqual(
 				options.filter(
 					(option) =>
 						option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3

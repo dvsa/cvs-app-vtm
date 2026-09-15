@@ -10,12 +10,16 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	DestroyRef,
 	OnDestroy,
 	OnInit,
+	computed,
 	effect,
 	inject,
 	input,
+	signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
@@ -57,10 +61,8 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
-import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, map, of, skipWhile, switchMap, take } from 'rxjs';
 import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-group/govuk-checkbox-group.component';
-
-// type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
 @Component({
 	selector: 'app-general-vehicle-details',
@@ -94,13 +96,14 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	protected readonly MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS = MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 
 	optionsService = inject(MultiOptionsService);
+	destroyRef = inject(DestroyRef);
 	referenceDataService = inject(ReferenceDataService);
 	cdr = inject(ChangeDetectorRef);
 	axlesService = inject(AxlesService);
 	tcs = inject(TechnicalRecordChangesService);
 	adrValidators = inject(AdrValidatorsService);
 
-	bodyTypes: MultiOptions = [];
+	readonly bodyTypes = signal<MultiOptions>([]);
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 	dtpNumbers$ = combineLatest([
 		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
@@ -111,20 +114,19 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
 	);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
-	isAxlesDisabled = false;
+	readonly isAxlesDisabled = this.axlesService.lockAxles$;
 
 	form = this.fb.group({});
 
 	constructor() {
 		super();
 
+		// isAxlesDisabled is the service signal itself, so this effect only carries the side effect
 		effect(() => {
-			this.isAxlesDisabled = this.axlesService.lockAxles$();
-			this.isAxlesDisabled
+			this.isAxlesDisabled()
 				? this.form.get('techRecord_noOfAxles')?.disable()
 				: this.form.get('techRecord_noOfAxles')?.enable();
 		});
@@ -141,19 +143,19 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
 		vehicleConfigurationControl?.valueChanges
-			.pipe(takeUntil(this.destroy$))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => this.handleVehicleConfigurationChange());
 
 		const bodyTypeControl = this.form.get('techRecord_bodyType_description');
 		bodyTypeControl?.valueChanges
-			.pipe(takeUntil(this.destroy$))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => this.handleBodyTypeDescriptionChange());
 
 		if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
 			this.form
 				.get('techRecord_brakes_dtpNumber')
 				?.valueChanges.pipe(
-					takeUntil(this.destroy$),
+					takeUntilDestroyed(this.destroyRef),
 					switchMap((value) => {
 						return this.store.select(
 							selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, value as string)
@@ -169,14 +171,14 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleType = this.getVehicleType();
 		if (vehicleType === VehicleTypes.TRL) {
-			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
+			this.bodyTypes.set(getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat()));
 		}
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
 
 		const manufactureYearControl = this.form.get('techRecord_manufactureYear');
-		manufactureYearControl?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val) => {
+		manufactureYearControl?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((val) => {
 			let str = val == null ? '' : String(val);
 			// remove non-digits and limit to 4 chars
 			str = str.replace(/\D+/g, '').slice(0, 4);
@@ -615,31 +617,30 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
-	get dateOfFirstRegistrationFilterOptions() {
+	// Computed rather than getters: a getter hands the template a new array on every change
+	// detection pass, which re-writes the tagNames input and re-runs the filter directive's effect
+	// for no reason.
+	readonly dateOfFirstRegistrationFilterOptions = computed(() => {
 		switch (this.getVehicleType()) {
 			case VehicleTypes.TRL:
 				return [];
 			default:
 				return ['Plates'];
 		}
-	}
+	});
 
-	get euVehicleCategoryFilterOptions() {
+	readonly euVehicleCategoryFilterOptions = computed(() => {
 		switch (this.getVehicleType() as VehicleTypes) {
 			case VehicleTypes.SMALL_TRL:
 				return ['Required'];
 			default:
 				return [];
 		}
-	}
+	});
 
-	get bodyTypeFilterOptions() {
+	readonly bodyTypeFilterOptions = computed(() => {
 		switch (this.getVehicleType()) {
 			case VehicleTypes.HGV:
 			case VehicleTypes.TRL:
@@ -647,7 +648,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			default:
 				return [];
 		}
-	}
+	});
 
 	// Returns a local copy of the bodyMake options
 	loadBodyMakes() {
@@ -675,12 +676,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		if (vehicleType === VehicleTypes.HGV) {
 			if (vehicleConfigurationValue === null) {
-				this.bodyTypes = [];
+				this.bodyTypes.set([]);
 			}
 
 			// When vehicle configuration is set to articulated, update the body type description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort());
+				this.bodyTypes.set(getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort()));
 
 				this.form.patchValue({
 					techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
@@ -690,7 +691,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 			// When vehicle configuration is rigid, clear artic body description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.RIGID) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort());
+				this.bodyTypes.set(getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort()));
 
 				const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
 				const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();

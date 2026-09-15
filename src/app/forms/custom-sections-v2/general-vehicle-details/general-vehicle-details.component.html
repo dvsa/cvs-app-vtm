@@ -7,7 +7,7 @@
       formControlName="techRecord_regnDate"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="dateOfFirstRegistrationFilterOptions"
+      [tagNames]="dateOfFirstRegistrationFilterOptions()"
     ></govuk-form-group-date>
   }
 
@@ -223,10 +223,10 @@
         label="Body type"
         [defaultOption]="'Select body type'"
         [width]="FormNodeWidth.L"
-        [options]="bodyTypes"
+        [options]="bodyTypes()"
         appFilterByTags
         [filters]="filters()"
-        [tagNames]="bodyTypeFilterOptions"
+        [tagNames]="bodyTypeFilterOptions()"
       >
       </govuk-form-group-select>
     }
@@ -282,7 +282,7 @@
       [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord())"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="euVehicleCategoryFilterOptions"
+      [tagNames]="euVehicleCategoryFilterOptions()"
     ></govuk-form-group-radio>
   }
 
@@ -319,7 +319,7 @@
         />
 
         @if (mode() === Modes.EDIT) {
-          @if (isAxlesDisabled) {
+          @if (isAxlesDisabled()) {
             <button
               type="button"
               class="govuk-button govuk-button--warning"
@@ -332,7 +332,7 @@
             </button>
           }
 
-          @if (!isAxlesDisabled) {
+          @if (!isAxlesDisabled()) {
             <button
               type="button"
               class="govuk-button"

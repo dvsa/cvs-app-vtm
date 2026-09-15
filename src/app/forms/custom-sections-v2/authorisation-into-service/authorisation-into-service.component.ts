@@ -5,7 +5,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-authorisation-into-service',
@@ -17,7 +16,6 @@ import { ReplaySubject } from 'rxjs';
 export class AuthorisationIntoServiceComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -91,10 +89,6 @@ export class AuthorisationIntoServiceComponent extends EditBaseComponent impleme
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

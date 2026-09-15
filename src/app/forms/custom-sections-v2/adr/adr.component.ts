@@ -5,7 +5,17 @@ import { AdrService } from '@/src/app/services/adr/adr.service';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { techRecord } from '@/src/app/store/technical-records/technical-record-service.selectors';
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	OnDestroy,
+	OnInit,
+	inject,
+	input,
+	signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -41,7 +51,6 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import _ from 'lodash';
-import { ReplaySubject, takeUntil } from 'rxjs';
 import { getOptionsFromEnum } from '../../utils/enum-map';
 
 @Component({
@@ -69,6 +78,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 })
 export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	validators = inject(CommonValidatorsService);
+	destroyRef = inject(DestroyRef);
 	adrService = inject(AdrService);
 	adrValidators = inject(AdrValidatorsService);
 	router = inject(Router);
@@ -408,7 +418,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		{ value: 'n/a', label: 'Not applicable' },
 	];
 
-	permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS;
+	readonly permittedDangerousGoodsOptions = signal(PERMITTED_DANGEROUS_GOODS_OPTIONS);
 
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
@@ -425,7 +435,6 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 
 	tankStatementSelectOptions = getOptionsFromEnum(ADRTankDetailsTankStatementSelect);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'lgv' | 'trl'>>();
 
 	ngOnInit(): void {
@@ -453,15 +462,11 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	handleADRBodyTypeChange() {
 		this.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges
-			.pipe(takeUntil(this.destroy$))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				// When the ADR body type is a tank or battery, remove the explosives type 2 and 3 from the permitted dangerous goods list
 				if (this.adrService.canDisplayTankOrBatterySection(this.form.getRawValue() as any)) {
@@ -474,11 +479,13 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 						techRecord_adrDetails_bodyDeclaration_type: null,
 					});
 
-					this.permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS.filter(({ value }) => {
-						return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
-					});
+					this.permittedDangerousGoodsOptions.set(
+						PERMITTED_DANGEROUS_GOODS_OPTIONS.filter(({ value }) => {
+							return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
+						})
+					);
 				} else {
-					this.permittedDangerousGoodsOptions = PERMITTED_DANGEROUS_GOODS_OPTIONS;
+					this.permittedDangerousGoodsOptions.set(PERMITTED_DANGEROUS_GOODS_OPTIONS);
 				}
 			});
 	}

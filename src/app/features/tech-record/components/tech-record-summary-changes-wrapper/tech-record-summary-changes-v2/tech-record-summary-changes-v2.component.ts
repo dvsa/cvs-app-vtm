@@ -98,7 +98,7 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
-	sectionStates$ = this.store.selectSignal(selectSectionState);
+	sectionStates = this.store.selectSignal(selectSectionState);
 
 	// Precompute accordion descriptions once per edited record change. Vehicle-type type-guard
 	// predicates stay inline in the template so their narrowing of `techRecord` is preserved.

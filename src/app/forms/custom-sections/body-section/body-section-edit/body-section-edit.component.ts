@@ -2,7 +2,7 @@ import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { VehicleConfiguration } from '@/src/app/models/vehicle-configuration.enum';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, input, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
@@ -56,7 +56,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 
 	form: FormGroup = this.fb.group({});
 
-	bodyTypes: MultiOptions = [];
+	readonly bodyTypes = signal<MultiOptions>([]);
 
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 
@@ -112,7 +112,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 		let vehicleType: string = this.techRecord().techRecord_vehicleType;
 		if (this.techRecord().techRecord_vehicleType === 'hgv') {
 			if (!vehicleConfig) {
-				this.bodyTypes = [];
+				this.bodyTypes.set([]);
 				return;
 			}
 
@@ -121,7 +121,7 @@ export class BodySectionEditComponent extends EditBaseComponent implements OnIni
 
 		const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
 		const values = [...optionsMap.values()];
-		this.bodyTypes = getOptionsFromEnum(values.sort());
+		this.bodyTypes.set(getOptionsFromEnum(values.sort()));
 	}
 
 	loadBodyMakes() {

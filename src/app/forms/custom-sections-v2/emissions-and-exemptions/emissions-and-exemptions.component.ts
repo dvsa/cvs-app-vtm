@@ -8,7 +8,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } 
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ReplaySubject } from 'rxjs';
 import { GovukFormGroupInputComponent } from '../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-radio/govuk-form-group-radio.component';
 
@@ -28,7 +27,6 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
 	form = this.fb.group({});
@@ -114,10 +112,6 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	protected readonly VehicleTypes = VehicleTypes;

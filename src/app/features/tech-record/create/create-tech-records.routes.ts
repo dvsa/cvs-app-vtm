@@ -6,7 +6,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes, TechRecordCreateRoutes } from '@models/routes.enum';
-import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { techRecordDataResolver } from '@resolvers/tech-record-data/tech-record-data.resolver';
 
 export const routes: Routes = [
 	{

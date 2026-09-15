@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-reason-for-creation',
@@ -14,7 +13,6 @@ import { ReplaySubject } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReasonForCreationComponent extends EditBaseComponent implements OnInit, OnDestroy {
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -40,10 +38,6 @@ export class ReasonForCreationComponent extends EditBaseComponent implements OnI
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	generateHintMessage(): string {

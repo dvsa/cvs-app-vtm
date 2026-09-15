@@ -1,9 +1,9 @@
 @if (refData$ | async) {
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Delete this {{ (refDataAdminType$ | async).labelSingular }}</h1>
+      <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Delete this {{ refDataAdminType().labelSingular }}</h1>
       <dl class="govuk-summary-list">
-        @for (column of (refDataAdminType$ | async).columns; track column) {
+        @for (column of refDataAdminType().columns; track column) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
               {{ column.heading }}
