@@ -7,6 +7,8 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { initialAppState } from '@/src/app/store';
 import { upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
 import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { GlobalErrorServiceMock } from '@/src/mocks/global-error-service.mock';
+import { TechnicalRecordServiceMock } from '@/src/mocks/technical-record-service.mock';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
@@ -48,8 +50,8 @@ describe('EnterBatchIdentifiers', () => {
 				]),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: HttpService, useValue: { searchTechRecords: jest.fn() } },
-				{ provide: GlobalErrorService, useValue: { extractGlobalErrors: jest.fn(), setErrors: jest.fn() } },
-				{ provide: TechnicalRecordService, useValue: { isUnique: jest.fn() } },
+				{ provide: GlobalErrorService, useValue: GlobalErrorServiceMock },
+				{ provide: TechnicalRecordService, useValue: TechnicalRecordServiceMock },
 			],
 		}).compileComponents();
 

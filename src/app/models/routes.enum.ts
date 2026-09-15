@@ -62,6 +62,8 @@ export enum BatchRoutes {
 	ENTER_BATCH_SIZE = 'enter-size',
 	ENTER_BATCH_IDENTIFIERS = 'enter-identifiers',
 	ENTER_TECH_RECORD_DETAILS = 'enter-tech-record-details',
+	TYRE_SEARCH = 'tyre-search/:axleNumber',
+	BATCH_SUMMARY = 'batch-summary',
 }
 
 export enum ReferenceDataRoutes {
