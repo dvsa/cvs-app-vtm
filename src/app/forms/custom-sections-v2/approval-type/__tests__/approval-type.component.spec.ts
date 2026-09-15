@@ -67,12 +67,6 @@ describe('ApprovalTypeComponent', () => {
 	});
 
 	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
-
 		it('should detach its form from its parent form', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();

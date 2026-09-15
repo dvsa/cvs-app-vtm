@@ -5,14 +5,15 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Retarders, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { FieldWarningMessageComponent } from '../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupAutocompleteComponent } from '../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupCheckboxComponent } from '../../components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
@@ -45,6 +46,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	protected readonly Modes = Modes;
 
 	tcs = inject(TechnicalRecordChangesService);
+	destroyRef = inject(DestroyRef);
 	optionsService = inject(MultiOptionsService);
 
 	techRecord = input.required<V3TechRecordModel>();
@@ -56,8 +58,6 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	brakeCodeOptions$ = this.optionsService
 		.getOptions(ReferenceDataResourceType.Brakes)
 		.pipe(map((options) => options?.map((option) => option.value) ?? []));
-
-	destroy$ = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
@@ -75,10 +75,6 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
@@ -146,7 +142,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 				debounceTime(400),
 				distinctUntilChanged(),
 				switchMap((value) => this.store.select(selectBrakeByCode(value))),
-				takeUntil(this.destroy$)
+				takeUntilDestroyed(this.destroyRef)
 			)
 			.subscribe((selectedBrake) => {
 				const mode = this.mode();

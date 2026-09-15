@@ -12,7 +12,6 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { EXEMPT_OR_NOT_OPTIONS, VEHICLE_SIZE_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-seats-and-vehicle-size',
@@ -30,7 +29,6 @@ import { ReplaySubject } from 'rxjs';
 export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -123,10 +121,6 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

@@ -80,7 +80,9 @@ export class GovukFormGroupDateComponent
 		return errorClass.trim();
 	}
 
-	ngOnInit(): void {
+	override ngOnInit(): void {
+		super.ngOnInit();
+
 		// Ensure events of children are propagated to the parent
 		this.form.events.pipe(takeUntil(this.destroy)).subscribe((value) => {
 			if ('touched' in value && value.touched) {

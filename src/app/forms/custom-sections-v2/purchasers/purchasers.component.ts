@@ -7,7 +7,6 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-purchasers',
@@ -21,7 +20,6 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -90,9 +88,5 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 }

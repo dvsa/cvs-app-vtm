@@ -1,4 +1,4 @@
-import { Injectable, effect, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
@@ -15,18 +15,15 @@ export class TechnicalRecordChangesService {
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
 
-	// create a change cache which resets when either the current or amend tech record changes
-	changeCache = new Map<string, boolean>();
-
-	constructor() {
-		effect(() => {
-			const a = this.currentTechRecord();
-			const b = this.amendedTechRecord();
-			if (a && b) {
-				this.changeCache = new Map<string, boolean>();
-			}
-		});
-	}
+	// A change cache which resets when either the current or amended tech record changes. Reading
+	// both signals here is what ties the cache to them: computed hands back a new, empty map on the
+	// next read after either changes. An effect would clear it only after change detection had
+	// already read stale answers.
+	changeCache = computed(() => {
+		this.currentTechRecord();
+		this.amendedTechRecord();
+		return new Map<string, boolean>();
+	});
 
 	private _isNotEqual(a: unknown, b: unknown): boolean {
 		// Do not count the following edge cases as changes
@@ -56,7 +53,8 @@ export class TechnicalRecordChangesService {
 
 	private _hasChanged(property: string) {
 		// Use cached value instead of recomputing if available
-		const cachedValue = this.changeCache.get(property);
+		const changeCache = this.changeCache();
+		const cachedValue = changeCache.get(property);
 		if (typeof cachedValue === 'boolean') return cachedValue;
 
 		const current = this.currentTechRecord();
@@ -69,7 +67,7 @@ export class TechnicalRecordChangesService {
 
 		// Cache result to avoid recomputing in future
 		const result = this._isNotEqual(a, b);
-		this.changeCache.set(property, result);
+		changeCache.set(property, result);
 
 		return result;
 	}
