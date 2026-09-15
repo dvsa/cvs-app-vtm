@@ -269,7 +269,7 @@ export class EnterBatchIdentifiers implements OnInit {
 		const errors = this.errorService.extractGlobalErrors(this.form);
 
 		// Ensure at least one vehicle has a VIN
-		const vins = value.vehicles.filter((vehicle) => vehicle.vin);
+		const vins = value.vehicles.filter((vehicle) => !!vehicle.vin);
 		if (vins.length === 0) {
 			errors.push({ error: 'At least 1 vehicle must have a VIN', anchorLink: 'vin-0' });
 		}
@@ -288,7 +288,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				savedBatchDetails.vehicleType as VehicleTypes
 			);
 			this.technicalRecordService.clearSectionTemplateStates();
-			this.store.dispatch(setBatchDetails({ batchSize: value.vehicles.length }));
+			this.store.dispatch(setBatchDetails({ batchSize: vins.length }));
 			this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
 			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		}

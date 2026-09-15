@@ -27,19 +27,25 @@ export const createVehicleRecord = createAction(
 	props<{ vehicle: TechRecordType<'put'> }>()
 );
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
-export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord', false);
+export const createVehicleRecordFailure = createAction(
+	`${prefix} createVehicleRecord Failure`,
+	props<{ vehicleRecord: TechRecordType<'put'>; error: string }>()
+);
 
 export type GroupType = 'single' | 'batch';
 export const updateTechRecord = createAction(
 	`${prefix} updateTechRecords`,
-	props<{ systemNumber: string; createdTimestamp: string; groupType: GroupType }>()
+	props<{ systemNumber: string; createdTimestamp: string; groupType: GroupType; vin?: string }>()
 );
 export const updateTechRecordSuccess = createAction(
 	`${prefix} updateTechRecords Success`,
 	props<{ vehicleTechRecord: TechRecordType<'get'>; groupType: GroupType }>()
 );
 
-export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', false);
+export const updateTechRecordFailure = createAction(
+	`${prefix} updateTechRecords Failure`,
+	props<{ techRecord?: TechRecordType<'put'>; error: string }>()
+);
 
 export const amendVin = createAction(
 	`${prefix} amendVin`,

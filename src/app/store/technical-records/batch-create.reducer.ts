@@ -12,7 +12,14 @@ import {
 	setVehicleType,
 	upsertVehicleBatch,
 } from './batch-create.actions';
-import { createVehicleRecordSuccess, updateTechRecordSuccess } from './technical-record-service.actions';
+import {
+	createVehicleRecord,
+	createVehicleRecordFailure,
+	createVehicleRecordSuccess,
+	updateTechRecord,
+	updateTechRecordFailure,
+	updateTechRecordSuccess,
+} from './technical-record-service.actions';
 
 export type BatchRecord = {
 	vin: string;
@@ -23,6 +30,8 @@ export type BatchRecord = {
 	created?: boolean;
 	amendedRecord?: boolean;
 	createdTimestamp?: string;
+	pending?: boolean;
+	failed?: boolean;
 };
 
 export interface BatchRecords extends EntityState<BatchRecord> {
@@ -53,8 +62,20 @@ export const vehicleBatchCreateReducer = createReducer(
 	on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
 	on(setTrailerFormType, (state, { trlFormType }) => ({ ...state, trlFormType })),
 	on(setBatchDetails, (state, details) => ({ ...state, ...details })),
+	on(createVehicleRecord, (state, action) =>
+		batchAdapter.updateOne({ id: action.vehicle.vin, changes: { pending: true } }, state)
+	),
+	on(updateTechRecord, (state, action) => {
+		return batchAdapter.updateOne({ id: action.vin || '', changes: { pending: true } }, state);
+	}),
+	on(createVehicleRecordFailure, (state, action) =>
+		batchAdapter.updateOne({ id: action.vehicleRecord.vin, changes: { pending: false, failed: true } }, state)
+	),
 	on(createVehicleRecordSuccess, (state, action) =>
 		batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord), state)
+	),
+	on(updateTechRecordFailure, (state, action) =>
+		batchAdapter.updateOne({ id: action.techRecord?.vin || '', changes: { pending: false, failed: true } }, state)
 	),
 	on(updateTechRecordSuccess, (state, action) =>
 		batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord, true, true), state)
@@ -74,7 +95,9 @@ export const vehicleBatchCreateReducer = createReducer(
 function vehicleRecordsToBatchRecordMapper(
 	techRecord: TechRecordType<'get'>,
 	created = true,
-	amendedRecord = false
+	amendedRecord = false,
+	pending = false,
+	failed = false
 ): Update<BatchRecord> {
 	return {
 		id: techRecord.vin,
@@ -87,6 +110,8 @@ function vehicleRecordsToBatchRecordMapper(
 			status: (techRecord.techRecord_statusCode as StatusCodes) ?? undefined,
 			created,
 			amendedRecord,
+			pending,
+			failed,
 			createdTimestamp: techRecord.createdTimestamp,
 		},
 	};

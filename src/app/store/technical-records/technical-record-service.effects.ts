@@ -121,6 +121,7 @@ export class TechnicalRecordServiceEffects {
 					catchError((error) =>
 						of(
 							createVehicleRecordFailure({
+								vehicleRecord,
 								error: `Unable to create vehicle with VIN ${vehicle.vin}${
 									error.error?.errors
 										? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
@@ -145,7 +146,12 @@ export class TechnicalRecordServiceEffects {
 				return this.httpService.updateTechRecord(systemNumber, createdTimestamp, techRecord).pipe(
 					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord, groupType })),
 					catchError((error) =>
-						of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
+						of(
+							updateTechRecordFailure({
+								techRecord,
+								error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord'),
+							})
+						)
 					)
 				);
 			})
