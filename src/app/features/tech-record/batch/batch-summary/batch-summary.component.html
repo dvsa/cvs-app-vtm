@@ -1,5 +1,150 @@
 <div class="govuk-width-container">
+  @let batchSize = batchDetails().batchSize || 0;
+
+  @if (batchSuccessCount() === batchSize) {
+    <app-banner type="success" id="batch-success-banner">
+      <ng-container title>Success</ng-container>
+      <ng-container content>
+        <h3 class="govuk-notification-banner__heading">
+          Successfully processed {{ batchSuccessCount() }} {{ batchVehicleTypeDescriptor() }} technical records.
+        </h3>
+        @if (batchCreatedCount() > 0) {
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            You have created {{ batchCreatedCount() }} technical records.
+          </p>
+        }
+        @if (batchUpdatedCount() > 0) {
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            You have updated {{ batchUpdatedCount() }} technical records.
+          </p>
+        }
+      </ng-container>
+    </app-banner>
+  }
+
+  @if (batchPendingCount() > 0) {
+    <app-banner type="information" id="batch-progress-banner">
+      <ng-container title>In progress</ng-container>
+      <ng-container content>
+        <h3 class="govuk-notification-banner__heading">
+          Processing {{ batchSize }} {{ batchVehicleTypeDescriptor() }} technical records.
+        </h3>
+        <p class="govuk-body">
+          {{ (batchSize - batchPendingCount()) / batchSize | percent }} complete.
+        </p>
+      </ng-container>
+    </app-banner>
+  }
+
   <h1 class="govuk-heading-l">
     Batch summary
   </h1>
+
+  @if (batchSuccessCount() > 0) {
+    <h2 class="govuk-heading-m">
+      Successfully processed records ({{ batchSuccessCount() }} of {{ batchSize }})
+    </h2>
+
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key" style="width: 22% !important;">VIN</dt>
+        <dt class="govuk-summary-list__key" style="width: 18% !important;">
+          {{ batchDetails().vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}
+        </dt>
+        <dt class="govuk-summary-list__key" style="width: 14% !important;">Vehicle type</dt>
+        <dt class="govuk-summary-list__key" style="width: 13% !important;">Record type</dt>
+        <dt class="govuk-summary-list__key" style="width: 22% !important;">
+          <span class="govuk-visually-hidden">Link to view record</span>
+        </dt>
+      </div>
+      @for (vehicle of batchSuccess(); track $index) {
+        <div class="govuk-summary-list__row" [id]="`vehicle-${$index}`">
+          <dd class="govuk-summary-list__value" [id]="`vehicle-${$index}-vin`">
+            {{ vehicle.vin | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`vehicle-${$index}-trailer-id-or-vrm`">
+            {{ vehicle.trailerIdOrVrm | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-vehicle-type`">
+            {{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-status`">
+            <app-tag [type]="vehicle.status === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
+              {{ vehicle.status | defaultNullOrEmpty | uppercase }}
+            </app-tag>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a 
+              class="govuk-link" 
+              [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]" 
+              [id]="`vehicle-${$index}-view-link`"
+            >
+              View (opens in new tab)
+              <span class="govuk-visually-hidden">
+                VIN {{ vehicle.vin }} {{ vehicle.vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} {{ vehicle.trailerIdOrVrm }}
+              </span>
+            </a>
+          </dd>
+        </div>
+      }
+    </dl>
+  }
+
+  @if (batchFailedCount() > 0) {
+    <h2 class="govuk-heading-m">
+      Failed records ({{ batchFailedCount() }} of {{ batchSize }})
+    </h2>
+
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key" style="width: 32% !important;">VIN</dt>
+        <dt class="govuk-summary-list__key" style="width: 18% !important;">
+          {{ batchDetails().vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}
+        </dt>
+        <dt class="govuk-summary-list__key" style="width: 14% !important;">Vehicle type</dt>
+        <dt class="govuk-summary-list__key" style="width: 13% !important;">Record type</dt>
+        <dt class="govuk-summary-list__key" style="width: 22% !important;">
+          <span class="govuk-visually-hidden">Link to view record</span>
+        </dt>
+      </div>
+      @for (vehicle of batchFailed(); track $index) {
+        <div class="govuk-summary-list__row" [id]="`failed-vehicle-${$index}`">
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-vin`">
+            {{ vehicle.vin | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-trailer-id-or-vrm`">
+            {{ vehicle.trailerIdOrVrm | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-vehicle-type`">
+            {{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}
+          </dd>
+          <dd class="govuk-summary-list__value" [id]="`failed-vehicle-${$index}-status`">
+            <app-tag [type]="batchDetails().vehicleStatus === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
+              {{ batchDetails().vehicleStatus | uppercase | defaultNullOrEmpty }}
+            </app-tag>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <p class="govuk-error-message govuk-!-margin-bottom-0">
+              Failed to {{ vehicle.amendedRecord ? 'amend' : 'create' }}
+              <span class="govuk-visually-hidden">
+                VIN {{ vehicle.vin }} {{ vehicle.vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} {{ vehicle.trailerIdOrVrm }}
+              </span>
+            </p>
+          </dd>
+        </div>
+      }
+    </dl>   
+  }
+
+  @if (batchSuccessCount() === batchSize) {
+    <app-button id="go-back-to-homepage-btn" (clicked)="goBackToHomePage()">
+      Go back to home page
+    </app-button>
+  }
+
+  @if (batchPendingCount() === 0 && batchFailedCount() > 0) {
+    <app-button id="retry-failed-btn" (clicked)="handleRetryFailed()">
+      Retry failed records
+    </app-button>
+  }
 </div>

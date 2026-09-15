@@ -113,7 +113,7 @@ export const routes: Routes = [
 			{
 				path: BatchRoutes.BATCH_SUMMARY,
 				data: {
-					title: 'Batch summary',
+					title: 'Batch summary - Vehicle Testing Management',
 					roles: Roles.TechRecordCreate,
 					featureToggleName: FeatureFlags.BATCH_REDESIGN,
 					backlink: { url: RootRoutes.ROOT, label: 'Go back to home page' },

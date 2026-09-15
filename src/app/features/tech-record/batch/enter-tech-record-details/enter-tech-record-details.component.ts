@@ -81,6 +81,7 @@ export class EnterTechRecordDetailsComponent {
 							systemNumber: record.systemNumber,
 							createdTimestamp: record.createdTimestamp,
 							groupType: 'batch',
+							vin: record.vin,
 						})
 					);
 				}

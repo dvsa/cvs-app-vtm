@@ -188,9 +188,13 @@ export const vehicleTechRecordReducer = createReducer(
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
 
 	on(
+		createVehicleRecord,
+		updateTechRecord,
 		upsertVehicleBatch,
 		createVehicleRecordSuccess,
 		updateTechRecordSuccess,
+		createVehicleRecordFailure,
+		updateTechRecordFailure,
 		setApplicationId,
 		setVehicleStatus,
 		setVehicleType,
