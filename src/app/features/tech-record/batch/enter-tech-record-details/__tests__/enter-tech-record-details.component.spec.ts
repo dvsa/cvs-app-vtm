@@ -171,6 +171,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 					systemNumber: '123456',
 					createdTimestamp: '2022-01-01T00:00:00.000Z',
 					groupType: 'batch',
+					vin: '123456',
 				})
 			);
 

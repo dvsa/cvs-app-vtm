@@ -171,7 +171,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
 	describe('createVehicleRecordFailure', () => {
 		it('should add an error to the state and set loading to false', () => {
-			const action = createVehicleRecordFailure({ error: 'something bad happened' });
+			const action = createVehicleRecordFailure({
+				error: 'something bad happened',
+				vehicleRecord: {} as TechRecordType<'put'>,
+			});
 			const newState = vehicleTechRecordReducer(initialState, action);
 
 			expect(newState.loading).toBeFalsy();

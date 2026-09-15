@@ -15,6 +15,7 @@ import { State, initialAppState } from '@store/index';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
+	GroupType,
 	archiveTechRecord,
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
@@ -90,16 +91,16 @@ describe('TechnicalRecordServiceEffects', () => {
 		});
 
 		it('should return an error message if not created', () => {
+			const vehicle = {
+				systemNumber: 'foo',
+				createdTimestamp: 'bar',
+				vin: 'testVin',
+			} as unknown as TechRecordType<'put'>;
+
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				// mock action to trigger effect
 				actions$ = hot('-a--', {
-					a: createVehicleRecord({
-						vehicle: {
-							systemNumber: 'foo',
-							createdTimestamp: 'bar',
-							vin: 'testVin',
-						} as unknown as TechRecordType<'put'>,
-					}),
+					a: createVehicleRecord({ vehicle }),
 				});
 
 				// mock service call
@@ -108,7 +109,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				jest.spyOn(httpService, 'createTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.createVehicleRecord$).toBe('---b', {
-					b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' }),
+					b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin', vehicleRecord: vehicle }),
 				});
 			});
 		});
@@ -125,17 +126,23 @@ describe('TechnicalRecordServiceEffects', () => {
 					systemNumber: 'foo',
 					createdTimestamp: 'bar',
 					vin: 'testVin',
-				} as TechRecordType<'get'>;
+					groupType: 'single' as GroupType,
+				};
 
 				// mock action to trigger effect
-				actions$ = hot('-a--', { a: updateTechRecord });
+				actions$ = hot('-a--', { a: updateTechRecord(technicalRecord) });
 
 				// mock service call
-				jest.spyOn(httpService, 'updateTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
+				jest
+					.spyOn(httpService, 'updateTechRecord')
+					.mockReturnValue(cold('--a|', { a: technicalRecord as unknown as TechRecordType<'get'> }));
 
 				// expect effect to return success action
 				expectObservable(effects.updateTechRecord$).toBe('---b', {
-					b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
+					b: updateTechRecordSuccess({
+						vehicleTechRecord: technicalRecord as unknown as TechRecordType<'get'>,
+						groupType: 'single',
+					}),
 				});
 			});
 		});
@@ -151,6 +158,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
 				expectObservable(effects.updateTechRecord$).toBe('---b', {
 					b: updateTechRecordFailure({
+						techRecord: {} as TechRecordType<'put'>,
 						error: 'Unable to update technical record null',
 					}),
 				});
