@@ -11,6 +11,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { environment } from '@environments/environment';
 import { CacheKeys } from '@models/cache-keys.enum';
 import { Log } from '@models/logs/logs.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import {
 	DeleteItem,
 	ReferenceDataApiResponse,
@@ -345,11 +346,24 @@ export class HttpService {
 			);
 		}
 
-		return this.http.get<ReferenceDataItemApiResponse>(
-			`${environment.VTM_API_URI}/reference/${encodeURIComponent(
-				String(resourceType)
-			)}/${encodeURIComponent(String(resourceKey))}`
-		);
+		const url = `${environment.VTM_API_URI}/reference/${encodeURIComponent(
+			String(resourceType)
+		)}/${encodeURIComponent(String(resourceKey))}`;
+
+		// Admin types are screen configuration rather than user data, and every reference-data screen
+		// fetches one on init. Cache only those; every other single-item lookup must stay fresh.
+		// The bucket is keyed on resourceType, so the existing create/amend/delete effects invalidate
+		// this entry only when an admin type itself is mutated.
+		if (resourceType !== ReferenceDataResourceType.ReferenceDataAdminType) {
+			return this.http.get<ReferenceDataItemApiResponse>(url);
+		}
+
+		return this.http.get<ReferenceDataItemApiResponse>(url, {
+			context: withCache({
+				key: CacheKeys.REFERENCE_DATA + resourceType + resourceKey,
+				bucket: this.getRefDataBucket(resourceType),
+			}),
+		});
 	}
 
 	referenceResourceTypeResourceKeyDelete(

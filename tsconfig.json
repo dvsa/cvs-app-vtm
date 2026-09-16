@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -21,27 +20,28 @@
     "target": "ES2023",
     "module": "ES2022",
     "lib": ["ES2024", "dom"],
+    "types": ["bun", "node"],
     "paths": {
       "@/*": ["./*"],
-      "@api/*": ["src/app/api/*"],
-      "@components/*": ["src/app/components/*"],
-      "@core/*": ["src/app/core/*"],
-      "@environments/*": ["src/environments/*"],
-      "@directives/*": ["src/app/directives/*"],
-      "@features/*": ["src/app/features/*"],
-      "@forms/*": ["src/app/forms/*"],
-      "@guards/*": ["src/app/guards/*"],
-      "@interceptors/*": ["src/app/interceptors/*"],
-      "@models/*": ["src/app/models/*"],
-      "@pipes/*": ["src/app/pipes/*"],
-      "@resolvers/*": ["src/app/resolvers/*"],
-      "@services/*": ["src/app/services/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@store/*": ["src/app/store/*"],
-      "@mocks/*": ["src/mocks/*"],
-      "govuk-frontend/*": ["node_modules/govuk-frontend/*"],
-      "stream": ["node_modules/stream-browserify"],
-      "zlib": ["node_modules/browserify-zlib"]
+      "@api/*": ["./src/app/api/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@environments/*": ["./src/environments/*"],
+      "@directives/*": ["./src/app/directives/*"],
+      "@features/*": ["./src/app/features/*"],
+      "@forms/*": ["./src/app/forms/*"],
+      "@guards/*": ["./src/app/guards/*"],
+      "@interceptors/*": ["./src/app/interceptors/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@pipes/*": ["./src/app/pipes/*"],
+      "@resolvers/*": ["./src/app/resolvers/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@store/*": ["./src/app/store/*"],
+      "@mocks/*": ["./src/mocks/*"],
+      "govuk-frontend/*": ["./node_modules/govuk-frontend/*"],
+      "stream": ["./node_modules/stream-browserify"],
+      "zlib": ["./node_modules/browserify-zlib"]
     }
   },
   "angularCompilerOptions": {
@@ -51,5 +51,5 @@
     "strictStandalone": true,
     "strictTemplates": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["./node_modules"]
 }

@@ -184,7 +184,7 @@
       <div>
         <h2 class="govuk-heading-m">Defect media</h2>
         @if (defectMediaService) {
-          @if (loading) {
+          @if (loading()) {
             <div class="spinner-group">
               <p class="govuk-body fetching-label">Fetching media</p>
               <div class="govuk-box spinner-wrapper" aria-busy="true">

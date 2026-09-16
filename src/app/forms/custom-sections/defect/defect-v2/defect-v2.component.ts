@@ -20,7 +20,15 @@ import {
 } from '@/src/app/store/test-records';
 import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	DestroyRef,
+	computed,
+	inject,
+	signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -75,7 +83,7 @@ export class DefectV2Component {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	defect = computed(() => this.getDefect());
 
-	loading = false;
+	readonly loading = signal(false);
 	additionalInfoMultiOptions: Record<string, MultiOptions> = {};
 	isVideoPlaying = false;
 
@@ -156,7 +164,7 @@ export class DefectV2Component {
 		if (!testResult || !defect || !this.defectMediaService) return;
 
 		try {
-			this.loading = true;
+			this.loading.set(true);
 			this.cdr.markForCheck();
 
 			if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
@@ -175,7 +183,7 @@ export class DefectV2Component {
 		} catch (error) {
 			this.defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
-			this.loading = false;
+			this.loading.set(false);
 			this.cdr.detectChanges();
 		}
 	}

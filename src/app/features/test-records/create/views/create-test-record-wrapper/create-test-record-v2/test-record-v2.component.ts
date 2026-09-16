@@ -25,7 +25,7 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	DOCUMENT,
-	OnDestroy,
+	DestroyRef,
 	OnInit,
 	Signal,
 	computed,
@@ -33,6 +33,7 @@ import {
 	input,
 	linkedSignal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -56,7 +57,7 @@ import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, ReplaySubject, debounceTime, takeUntil } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
 @Component({
@@ -87,8 +88,9 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TestRecordV2Component implements OnDestroy, OnInit {
+export class TestRecordV2Component implements OnInit {
 	store = inject(Store);
+	destroyRef = inject(DestroyRef);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 	testService = inject(TestService);
@@ -108,7 +110,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	initialMode = input.required<Modes>();
 	mode = linkedSignal(() => this.initialMode());
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -120,7 +121,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	private handleFormChanges(): void {
 		// Debounce the live store mirror so rapid typing does not push a new editing test result
 		// (and re-render every section) on every keystroke. Explicit actions flush synchronously.
-		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy$)).subscribe(() => {
+		this.form.valueChanges.pipe(debounceTime(100), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
 			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
 				this.flushFormToStore();
 			}
@@ -134,7 +135,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	private handleMissingTestResult(): void {
 		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
-			this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
+			this.testRecordService.editingTestResult$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((testResult) => {
 				if (!testResult && !this.router.currentNavigation()) {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
 				}
@@ -182,12 +183,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 		this.form.controls.recalls.setValue(recallsState.recalls, { emitEvent: false });
 		this.store.dispatch(patchEditingTestResult({ testResult: { recalls: recallsState.recalls } }));
-	}
-
-	ngOnDestroy(): void {
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	prepopulateForm(): void {

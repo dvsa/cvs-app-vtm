@@ -9,7 +9,7 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { DOCUMENT_TYPES } from '@forms/templates/general/document-types';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, of } from 'rxjs';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-documents',
@@ -27,8 +27,6 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
-
-	destroy$ = new ReplaySubject<boolean>(1);
 
 	form: FormGroup = this.fb.group({});
 

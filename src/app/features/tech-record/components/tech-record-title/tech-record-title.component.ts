@@ -1,5 +1,5 @@
-import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, UpperCasePipe } from '@angular/common';
-import { Component, OnInit, inject, input } from '@angular/core';
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, UpperCasePipe } from '@angular/common';
+import { Component, Signal, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { IconComponent } from '@components/icon/icon.component';
@@ -16,7 +16,6 @@ import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectTechRecord } from '@store/technical-records';
-import { Observable, take } from 'rxjs';
 
 @Component({
 	selector: 'app-tech-record-title[vehicle]',
@@ -32,38 +31,29 @@ import { Observable, take } from 'rxjs';
 		NgSwitchDefault,
 		NumberPlateComponent,
 		TagComponent,
-		AsyncPipe,
 		UpperCasePipe,
 		DefaultNullOrEmpty,
 	],
 })
-export class TechRecordTitleComponent implements OnInit {
+export class TechRecordTitleComponent {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store);
 	technicalRecordService = inject(TechnicalRecordService);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly vehicle = input<any>();
 	readonly actions = input<TechRecordActions>(TechRecordActions.NONE);
 	readonly hideActions = input(false);
 	readonly customTitle = input('');
 
-	currentTechRecord$?: Observable<TechRecordType<'get'> | undefined>;
-	queryableActions: string[] = [];
-	vehicleMakeAndModel = '';
+	readonly currentTechRecord = this.store.selectSignal(selectTechRecord) as Signal<TechRecordType<'get'> | undefined>;
 
-	ngOnInit(): void {
-		this.queryableActions = this.actions().split(',');
+	readonly queryableActions = computed(() => this.actions().split(','));
 
-		this.currentTechRecord$ = this.store.select(selectTechRecord) as Observable<TechRecordType<'get'> | undefined>;
-
-		this.currentTechRecord$.pipe(take(1)).subscribe((data) => {
-			if (data) {
-				this.vehicleMakeAndModel = this.technicalRecordService.getMakeAndModel(data);
-			}
-		});
-	}
+	readonly vehicleMakeAndModel = computed(() => {
+		const techRecord = this.currentTechRecord();
+		return techRecord ? this.technicalRecordService.getMakeAndModel(techRecord) : '';
+	});
 
 	get currentVrm(): string | undefined {
 		const vehicle = this.vehicle();
