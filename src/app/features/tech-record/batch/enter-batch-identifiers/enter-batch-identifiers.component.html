@@ -24,15 +24,12 @@
             @if (vehicle.pending) {
               <span class="spinner" aria-hidden="true"></span>
             } @else if (vehicle.touched && (vin || trailerIdOrVrm)) {
-              @if (vinIsDuplicate) {
+              @if (vehicle.invalid) {
+                <span class="icon icon-error" aria-hidden="true">×</span>
+              } @else if (vinIsDuplicate) {
                 <span class="icon icon-warning" aria-hidden="true">!</span>
-              } @else {
-                @if (vehicle.valid) {
-                  <span class="icon icon-check" aria-hidden="true">✓</span>
-                }
-                @if (vehicle.invalid) {
-                  <span class="icon icon-error" aria-hidden="true">×</span>
-                } 
+              } @else if (vehicle.valid) {
+                <span class="icon icon-check" aria-hidden="true">✓</span>
               }
             }
           </h2>
