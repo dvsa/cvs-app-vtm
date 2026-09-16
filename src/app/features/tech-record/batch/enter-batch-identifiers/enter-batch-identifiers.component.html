@@ -5,14 +5,14 @@
   <p class="govuk-body">You can:</p>
   <ul class="govuk-list govuk-list--bullet">
     <li> enter only the VIN to create a new record</li>
-    <li>enter the VIN and VRM to update an existing record</li>
+    <li>enter the VIN and {{ savedBatchDetails().vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} to update an existing record</li>
     <li>add up to 41 vehicles</li>
   </ul>
   <p class="govuk-body">
     Make sure you leave any unused fields blank so that they are not added to the batch.
   </p>
 
-  <form [formGroup]="form">
+  <form class="govuk-!-margin-top-7" [formGroup]="form">
     <div class="vehicle-grid" formArrayName="vehicles">
       @for (vehicle of form.controls.vehicles.controls; track $index) {
         @let vin = vehicle.controls.vin.value;

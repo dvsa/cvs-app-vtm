@@ -71,7 +71,7 @@ export class EnterBatchIdentifiers implements OnInit {
 	});
 
 	constructor() {
-		effect(() => this.title.setTitle(this.pageTitle()));
+		effect(() => this.title.setTitle(`${this.pageTitle()} - Vehicle Testing Management`));
 	}
 
 	ngOnInit(): void {
