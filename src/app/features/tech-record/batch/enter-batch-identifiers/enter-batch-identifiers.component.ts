@@ -1,5 +1,6 @@
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { GlobalError } from '@/src/app/core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
@@ -17,7 +18,8 @@ import {
 	selectBatchDetails,
 	selectBatchVehicleTypeDescriptor,
 } from '@/src/app/store/technical-records/batch-create.selectors';
-import { Component, OnInit, computed, effect, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, effect, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
 	AbstractControl,
 	AsyncValidatorFn,
@@ -27,12 +29,13 @@ import {
 	FormsModule,
 	ReactiveFormsModule,
 	ValidationErrors,
+	ValidatorFn,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, filter, map, of, take } from 'rxjs';
 
 @Component({
 	selector: 'app-enter-batch-identifiers',
@@ -58,6 +61,7 @@ export class EnterBatchIdentifiers implements OnInit {
 	readonly errorService = inject(GlobalErrorService);
 	readonly httpService = inject(HttpService);
 	readonly technicalRecordService = inject(TechnicalRecordService);
+	readonly destroyRef = inject(DestroyRef);
 
 	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
 	readonly vehicleTypeDescriptor = this.store.selectSignal(selectBatchVehicleTypeDescriptor);
@@ -123,6 +127,8 @@ export class EnterBatchIdentifiers implements OnInit {
 						error: `Vehicle ${index + 1} VIN should not contain O, I or Q`,
 						anchorLink: `vin-${index}`,
 					})),
+					// Checked last so that a badly formatted VIN reports its format error first
+					this.validateVinIsNotDuplicated(index),
 				],
 				asyncValidators: [this.validateVehicle(index, vehicleType)],
 			}),
@@ -164,7 +170,38 @@ export class EnterBatchIdentifiers implements OnInit {
 			}),
 		});
 
+		form.controls.vin.valueChanges
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((vin) => this.revalidateDuplicateVins(index, vin));
+
 		this.form.controls.vehicles.push(form, { emitEvent: false });
+	}
+
+	validateVinIsNotDuplicated(index: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const vin = control.value;
+			if (!vin) return null;
+
+			const isDuplicate = this.form.controls.vehicles.controls.some(
+				(vehicle, position) => position < index && vehicle.controls.vin.value === vin
+			);
+
+			if (!isDuplicate) return null;
+
+			return { duplicateVin: { error: `Vehicle ${index + 1} - remove duplicate VIN`, anchorLink: `vin-${index}` } };
+		};
+	}
+
+	revalidateDuplicateVins(index: number, vin: string | null): void {
+		this.form.controls.vehicles.controls.forEach((vehicle, position) => {
+			if (position === index) return;
+
+			// Only vehicles using the new VIN, or already reported as duplicates, can have changed
+			const control = vehicle.controls.vin;
+			if (control.value === vin || control.hasError('duplicateVin')) {
+				control.updateValueAndValidity({ emitEvent: false });
+			}
+		});
 	}
 
 	validateVehicleForCreate(form: FormGroup<VehicleForm>): Observable<ValidationErrors | null> {
@@ -197,23 +234,27 @@ export class EnterBatchIdentifiers implements OnInit {
 					(result) => result.trailerId === vehicle.trailerIdOrVrm || result.primaryVrm === vehicle.trailerIdOrVrm
 				);
 
-				if (matches.length === 0) {
-					if (vehicleType === VehicleTypes.TRL) {
-						return {
-							vehicle: { error: `Vehicle ${index + 1} - could not find a record with matching VIN and Trailer ID` },
-						};
-					}
+				// Errors are anchored to the VIN so that selecting them moves focus to the vehicle they belong to
+				const identifier = vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM';
+				const anchorLink = `vin-${index}`;
 
-					return { vehicle: { error: `Vehicle ${index + 1} - could not find a record with matching VIN and VRM` } };
+				if (matches.length === 0) {
+					return {
+						vehicle: {
+							error: `Vehicle ${index + 1} - could not find a record with matching VIN and ${identifier}`,
+							anchorLink,
+						},
+					};
 				}
 
 				const uniqueRecords = new Set(matches.map((record) => record.systemNumber));
 				if (uniqueRecords.size > 1) {
-					if (vehicleType === VehicleTypes.TRL) {
-						return { vehicle: { error: `Vehicle ${index + 1} - more than one vehicle has this VIN and Trailer ID` } };
-					}
-
-					return { vehicle: { error: `Vehicle ${index + 1} - more than one vehicle has this VIN and VRM` } };
+					return {
+						vehicle: {
+							error: `Vehicle ${index + 1} - more than one vehicle has this VIN and ${identifier}`,
+							anchorLink,
+						},
+					};
 				}
 
 				const vehicleToUpdate = matches.find((record) => record.techRecord_statusCode !== StatusCodes.ARCHIVED);
@@ -229,7 +270,14 @@ export class EnterBatchIdentifiers implements OnInit {
 
 				return null;
 			}),
-			catchError(() => of({ vehicle: { error: `Vehicle ${index + 1} - could not find a record with matching VIN` } }))
+			catchError(() =>
+				of({
+					vehicle: {
+						error: `Vehicle ${index + 1} - could not find a record with matching VIN`,
+						anchorLink: `vin-${index}`,
+					},
+				})
+			)
 		);
 	}
 
@@ -242,7 +290,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 			if (vehicle.trailerIdOrVrm) {
 				if (!vehicle.vin) {
-					return of({ vin: { error: `Vehicle ${index + 1} VIN is required` } });
+					return of({ vin: { error: `Vehicle ${index + 1} VIN is required`, anchorLink: `vin-${index}` } });
 				}
 
 				return this.validateVehicleForUpdate(form, index, vehicleType);
@@ -260,13 +308,40 @@ export class EnterBatchIdentifiers implements OnInit {
 		this.addVehicle(vehicleType, size);
 	}
 
-	handleConfirm(): void {
-		if (this.form.status === 'PENDING') return;
+	// Errors are read from the vehicles as they stand, rather than by re-running validation, because
+	// re-running validation clears the results of the VIN and VRM checks before they can be collected
+	extractVehicleErrors(): GlobalError[] {
+		const errors: GlobalError[] = this.form.controls.vehicles.controls.flatMap((vehicle) =>
+			Object.values(vehicle.controls).flatMap((control) => {
+				// Only report the first error of each field to prevent duplication
+				const [error] = Object.values(control.errors ?? {});
+				return error ? [{ error: error.error, anchorLink: error.anchorLink }] : [];
+			})
+		);
 
+		// The VIN and VRM are validated together, so both fields report the same error
+		return errors.filter((error, position) => errors.findIndex((it) => it.error === error.error) === position);
+	}
+
+	handleConfirm(): void {
 		this.form.markAllAsTouched();
 
+		// Checking a VIN and VRM against existing records calls the API, so wait for any checks that
+		// are still running, otherwise the batch is confirmed before their errors are known
+		if (this.form.status === 'PENDING') {
+			this.form.statusChanges
+				.pipe(
+					filter((status) => status !== 'PENDING'),
+					take(1),
+					takeUntilDestroyed(this.destroyRef)
+				)
+				.subscribe(() => this.handleConfirm());
+
+			return;
+		}
+
 		const value = this.form.getRawValue();
-		const errors = this.errorService.extractGlobalErrors(this.form);
+		const errors = this.extractVehicleErrors();
 
 		// Ensure at least one vehicle has a VIN
 		const vins = value.vehicles.filter((vehicle) => !!vehicle.vin);
