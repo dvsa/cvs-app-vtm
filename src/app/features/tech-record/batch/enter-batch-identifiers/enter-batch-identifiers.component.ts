@@ -179,11 +179,11 @@ export class EnterBatchIdentifiers implements OnInit {
 
 	validateVinIsNotDuplicated(index: number): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
-			const vin = control.value;
+			const vin = control.value?.toUpperCase();
 			if (!vin) return null;
 
 			const isDuplicate = this.form.controls.vehicles.controls.some(
-				(vehicle, position) => position < index && vehicle.controls.vin.value === vin
+				(vehicle, position) => position < index && vehicle.controls.vin.value?.toUpperCase() === vin
 			);
 
 			if (!isDuplicate) return null;
@@ -205,7 +205,7 @@ export class EnterBatchIdentifiers implements OnInit {
 	}
 
 	validateVehicleForCreate(form: FormGroup<VehicleForm>): Observable<ValidationErrors | null> {
-		const vin = form.getRawValue().vin;
+		const vin = form.getRawValue().vin?.toUpperCase();
 		if (!vin) return of(null);
 
 		return this.technicalRecordService.isUnique(vin, SEARCH_TYPES.VIN).pipe(
@@ -228,10 +228,14 @@ export class EnterBatchIdentifiers implements OnInit {
 		const vehicle = form.getRawValue();
 		if (!vehicle.vin) return of(null);
 
-		return this.httpService.searchTechRecords(SEARCH_TYPES.VIN, vehicle.vin).pipe(
+		// Ensure identifiers are uppercase
+		const vin = vehicle.vin.toUpperCase();
+		const trailerIdOrVrm = vehicle.trailerIdOrVrm?.toUpperCase();
+
+		return this.httpService.searchTechRecords(SEARCH_TYPES.VIN, vin).pipe(
 			map((results) => {
 				const matches = results.filter(
-					(result) => result.trailerId === vehicle.trailerIdOrVrm || result.primaryVrm === vehicle.trailerIdOrVrm
+					(result) => result.trailerId === trailerIdOrVrm || result.primaryVrm === trailerIdOrVrm
 				);
 
 				// Errors are anchored to the VIN so that selecting them moves focus to the vehicle they belong to
@@ -239,22 +243,34 @@ export class EnterBatchIdentifiers implements OnInit {
 				const anchorLink = `vin-${index}`;
 
 				if (matches.length === 0) {
-					return {
+					const error = {
 						vehicle: {
 							error: `Vehicle ${index + 1} - could not find a record with matching VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
+
+					// Apply error to both VIN and VRM/Trailer ID simultaneously
+					form.controls.vin.setErrors({ ...form.controls.vin.errors, ...error });
+					form.controls.trailerIdOrVrm.setErrors({ ...form.controls.trailerIdOrVrm.errors, ...error });
+
+					return error;
 				}
 
 				const uniqueRecords = new Set(matches.map((record) => record.systemNumber));
 				if (uniqueRecords.size > 1) {
-					return {
+					const error = {
 						vehicle: {
 							error: `Vehicle ${index + 1} - more than one vehicle has this VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
+
+					// Apply error to both VIN and VRM/Trailer ID simultaneously
+					form.controls.vin.setErrors({ ...form.controls.vin.errors, ...error });
+					form.controls.trailerIdOrVrm.setErrors({ ...form.controls.trailerIdOrVrm.errors, ...error });
+
+					return error;
 				}
 
 				const vehicleToUpdate = matches.find((record) => record.techRecord_statusCode !== StatusCodes.ARCHIVED);
@@ -266,6 +282,18 @@ export class EnterBatchIdentifiers implements OnInit {
 						},
 						{ emitEvent: false }
 					);
+				}
+
+				// Clear vehicle error from VIN
+				if (form.controls.vin.errors && form.controls.vin.hasError('vehicle')) {
+					const { vehicle, ...errors } = form.controls.vin.errors;
+					form.controls.vin.setErrors(Object.values(errors).length > 0 ? errors : null);
+				}
+
+				// Clear vehicle error from VRM/Trailer ID
+				if (form.controls.trailerIdOrVrm.errors && form.controls.trailerIdOrVrm.hasError('vehicle')) {
+					const { vehicle, ...errors } = form.controls.trailerIdOrVrm.errors;
+					form.controls.trailerIdOrVrm.setErrors(Object.values(errors).length > 0 ? errors : null);
 				}
 
 				return null;

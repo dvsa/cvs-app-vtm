@@ -4,13 +4,6 @@ import { Directive, HostListener, input } from '@angular/core';
 export class ToUppercaseDirective {
 	readonly uppercase = input<boolean | undefined>(true);
 
-	// The value is uppercased as it is typed, rather than only when the field is left, because a
-	// field that takes its value on blur has already been read by the time focusout is handled
-	@HostListener('input', ['$event'])
-	public onInput(event: Event): void {
-		this.applyUppercase(event);
-	}
-
 	@HostListener('focusout', ['$event'])
 	public onBlur(event: Event): void {
 		this.applyUppercase(event);
