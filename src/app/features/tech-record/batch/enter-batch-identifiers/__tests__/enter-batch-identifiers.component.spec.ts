@@ -13,7 +13,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, Subject, of, throwError } from 'rxjs';
 import { EnterBatchIdentifiers } from '../enter-batch-identifiers.component';
 
 function createForm(initialValues: object) {
@@ -206,6 +206,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vehicle: {
 						error: 'Vehicle 1 - could not find a record with matching VIN and Trailer ID',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -231,6 +232,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vehicle: {
 						error: 'Vehicle 1 - could not find a record with matching VIN and VRM',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -260,6 +262,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vehicle: {
 						error: 'Vehicle 1 - more than one vehicle has this VIN and Trailer ID',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -289,6 +292,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vehicle: {
 						error: 'Vehicle 1 - more than one vehicle has this VIN and VRM',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -356,6 +360,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vehicle: {
 						error: 'Vehicle 1 - could not find a record with matching VIN',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -400,6 +405,7 @@ describe('EnterBatchIdentifiers', () => {
 				expect(result).toEqual({
 					vin: {
 						error: 'Vehicle 1 VIN is required',
+						anchorLink: 'vin-0',
 					},
 				});
 				done();
@@ -515,15 +521,46 @@ describe('EnterBatchIdentifiers', () => {
 	});
 
 	describe('handleConfirm', () => {
-		it('should do nothing when form is pending', () => {
+		function addVehicle(vehicleType = VehicleTypes.HGV) {
+			component.form.controls.vehicles.clear();
+			component.addVehicle(vehicleType, 0);
+			return component.form.controls.vehicles.controls[0];
+		}
+
+		it('should wait for validation that is still running before confirming', () => {
+			const validation = new Subject<ValidationErrors | null>();
+			jest.spyOn(component, 'validateVehicleForCreate').mockReturnValue(validation);
 			jest.spyOn(store, 'dispatch');
 			jest.spyOn(router, 'navigate');
-			jest.spyOn(component.form, 'status', 'get').mockReturnValue('PENDING');
-			jest.spyOn(component.form, 'markAllAsTouched');
+
+			addVehicle().controls.vin.setValue('ABC123');
+			expect(component.form.status).toBe('PENDING');
 
 			component.handleConfirm();
 
-			expect(component.form.markAllAsTouched).not.toHaveBeenCalled();
+			expect(router.navigate).not.toHaveBeenCalled();
+
+			validation.next(null);
+			validation.complete();
+
+			expect(router.navigate).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
+		});
+
+		it('should not confirm when a VIN and VRM do not match an existing record', () => {
+			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			jest.spyOn(errorService, 'setErrors');
+			jest.spyOn(store, 'dispatch');
+			jest.spyOn(router, 'navigate');
+
+			const vehicle = addVehicle();
+			vehicle.controls.vin.setValue('ABC123');
+			vehicle.controls.trailerIdOrVrm.setValue('AB12CDE');
+
+			component.handleConfirm();
+
+			expect(errorService.setErrors).toHaveBeenCalledWith([
+				{ error: 'Vehicle 1 - could not find a record with matching VIN and VRM', anchorLink: 'vin-0' },
+			]);
 			expect(store.dispatch).not.toHaveBeenCalled();
 			expect(router.navigate).not.toHaveBeenCalled();
 		});
@@ -558,23 +595,15 @@ describe('EnterBatchIdentifiers', () => {
 		});
 
 		it('should combine validation errors with the missing VIN error', () => {
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([
-				{
-					error: 'Some existing error',
-					anchorLink: 'field-1',
-				},
-			]);
 			jest.spyOn(errorService, 'setErrors');
 
-			component.form.patchValue({
-				vehicles: [{ vin: null }],
-			});
+			addVehicle().controls.trailerIdOrVrm.setValue('AB12CDEFGHJ');
 			component.handleConfirm();
 
 			expect(errorService.setErrors).toHaveBeenCalledWith([
 				{
-					error: 'Some existing error',
-					anchorLink: 'field-1',
+					error: 'Vehicle 1 VRM must be less than or equal to 9 characters',
+					anchorLink: 'trailerIdOrVrm-0',
 				},
 				{
 					error: 'At least 1 vehicle must have a VIN',
@@ -584,25 +613,21 @@ describe('EnterBatchIdentifiers', () => {
 		});
 
 		it('should set errors when validation errors exist', () => {
-			const errors = [
-				{
-					error: 'Validation error',
-					anchorLink: 'field-1',
-				},
-			];
-
+			jest.spyOn(component, 'validateVehicleForCreate').mockReturnValue(of(null));
 			jest.spyOn(store, 'dispatch');
 			jest.spyOn(router, 'navigate');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue(errors);
 			jest.spyOn(errorService, 'setErrors');
 
-			component.form.patchValue({
-				vehicles: [{ vin: 'VIN123' }],
-			});
+			addVehicle().controls.vin.setValue('AB');
 
 			component.handleConfirm();
 
-			expect(errorService.setErrors).toHaveBeenCalledWith(errors);
+			expect(errorService.setErrors).toHaveBeenCalledWith([
+				{
+					error: 'Vehicle 1 VIN must be greater than or equal to 3 characters',
+					anchorLink: 'vin-0',
+				},
+			]);
 			expect(store.dispatch).not.toHaveBeenCalled();
 			expect(router.navigate).not.toHaveBeenCalled();
 		});
