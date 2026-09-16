@@ -5,6 +5,7 @@
 
   <form [formGroup]="form">
     <govuk-form-group-input
+      (blur)="handleBatchSizeBlur()"
       type="number"
       hint="Enter a number from 1 to 41"
       formControlName="batchSize"
