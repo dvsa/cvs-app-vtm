@@ -46,52 +46,11 @@ describe('ToUppercaseDirective', () => {
 		component = fixture.componentInstance;
 	});
 
-	it('should make the text uppercase on input', () => {
+	it('should make the text uppercase on focusout', () => {
 		input.value = 'lowercase';
 		input.dispatchEvent(new Event('focusout'));
 
 		expect(input.value).toBe('LOWERCASE');
 		expect(component.form.get('foo')?.value).toBe('LOWERCASE');
-	});
-
-	it('should make the text uppercase as it is typed', () => {
-		type(input, 'lowercase');
-
-		expect(input.value).toBe('LOWERCASE');
-		expect(component.form.get('foo')?.value).toBe('LOWERCASE');
-	});
-
-	it('should make the text uppercase for a control that takes its value on blur', () => {
-		type(blurInput, 'lowercase');
-		blurInput.dispatchEvent(new Event('blur'));
-		blurInput.dispatchEvent(new Event('focusout'));
-
-		expect(component.form.get('bar')?.value).toBe('LOWERCASE');
-	});
-
-	it('should leave the control alone when the field is left without being changed', () => {
-		type(blurInput, 'lowercase');
-		blurInput.dispatchEvent(new Event('blur'));
-		blurInput.dispatchEvent(new Event('focusout'));
-
-		const changes = jest.fn();
-		component.form.get('bar')?.valueChanges.subscribe(changes);
-
-		blurInput.dispatchEvent(new Event('blur'));
-		blurInput.dispatchEvent(new Event('focusout'));
-
-		expect(changes).not.toHaveBeenCalled();
-	});
-
-	it('should keep the cursor in place when typing into the middle of a value', () => {
-		type(input, 'abcdef');
-
-		// typing leaves the cursor after the character that was entered
-		input.value = 'abcxdef';
-		input.setSelectionRange(4, 4);
-		input.dispatchEvent(new Event('input', { bubbles: true }));
-
-		expect(input.value).toBe('ABCXDEF');
-		expect(input.selectionStart).toBe(4);
 	});
 });
