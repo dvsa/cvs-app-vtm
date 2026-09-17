@@ -112,19 +112,19 @@ export class EnterBatchIdentifiers implements OnInit {
 				updateOn: 'blur',
 				validators: [
 					this.validators.alphanumeric(() => ({
-						error: `Vehicle ${index + 1} VIN must be alphanumeric`,
+						error: `Vehicle ${index + 1} - VIN must be alphanumeric`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.minLength(3, () => ({
-						error: `Vehicle ${index + 1} VIN must be greater than or equal to 3 characters`,
+						error: `Vehicle ${index + 1} - VIN must be greater than or equal to 3 characters`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.maxLength(21, () => ({
-						error: `Vehicle ${index + 1} VIN must be less than or equal to 21 characters`,
+						error: `Vehicle ${index + 1} - VIN must be less than or equal to 21 characters`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.pattern('^(?!.*[OIQoij]).*$', () => ({
-						error: `Vehicle ${index + 1} VIN should not contain O, I or Q`,
+						error: `Vehicle ${index + 1} - VIN should not contain O, I or Q`,
 						anchorLink: `vin-${index}`,
 					})),
 					// Checked last so that a badly formatted VIN reports its format error first
@@ -138,30 +138,30 @@ export class EnterBatchIdentifiers implements OnInit {
 					this.validators.applyWhen(
 						() => vehicleType === VehicleTypes.TRL,
 						this.validators.alphanumeric(() => ({
-							error: `Vehicle ${index + 1} Trailer ID must be alphanumeric`,
+							error: `Vehicle ${index + 1} - Trailer ID must be alphanumeric`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.minLength(7, () => ({
-							error: `Vehicle ${index + 1} Trailer ID must be greater than or equal to 7 characters`,
+							error: `Vehicle ${index + 1} - Trailer ID must be greater than or equal to 7 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.maxLength(8, () => ({
-							error: `Vehicle ${index + 1} Trailer ID must be less than or equal to 8 characters`,
+							error: `Vehicle ${index + 1} - Trailer ID must be less than or equal to 8 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						}))
 					),
 					this.validators.applyWhen(
 						() => vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV,
 						this.validators.alphanumeric(() => ({
-							error: `Vehicle ${index + 1} VRM must be alphanumeric`,
+							error: `Vehicle ${index + 1} - VRM must be alphanumeric`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.minLength(1, () => ({
-							error: `Vehicle ${index + 1} VRM must be greater than or equal to 1 character`,
+							error: `Vehicle ${index + 1} - VRM must be greater than or equal to 1 character`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.maxLength(9, () => ({
-							error: `Vehicle ${index + 1} VRM must be less than or equal to 9 characters`,
+							error: `Vehicle ${index + 1} - VRM must be less than or equal to 9 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						}))
 					),
@@ -188,7 +188,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 			if (!isDuplicate) return null;
 
-			return { duplicateVin: { error: `Vehicle ${index + 1} - remove duplicate VIN`, anchorLink: `vin-${index}` } };
+			return { duplicateVin: { error: `Vehicle ${index + 1} - Remove duplicate VIN`, anchorLink: `vin-${index}` } };
 		};
 	}
 
@@ -245,7 +245,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				if (matches.length === 0) {
 					const error = {
 						vehicle: {
-							error: `Vehicle ${index + 1} - could not find a record with matching VIN and ${identifier}`,
+							error: `Vehicle ${index + 1} - Could not find a record with matching VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
@@ -261,7 +261,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				if (uniqueRecords.size > 1) {
 					const error = {
 						vehicle: {
-							error: `Vehicle ${index + 1} - more than one vehicle has this VIN and ${identifier}`,
+							error: `Vehicle ${index + 1} - More than one vehicle has this VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
@@ -301,7 +301,7 @@ export class EnterBatchIdentifiers implements OnInit {
 			catchError(() =>
 				of({
 					vehicle: {
-						error: `Vehicle ${index + 1} - could not find a record with matching VIN`,
+						error: `Vehicle ${index + 1} - Could not find a record with matching VIN`,
 						anchorLink: `vin-${index}`,
 					},
 				})
@@ -318,7 +318,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 			if (vehicle.trailerIdOrVrm) {
 				if (!vehicle.vin) {
-					return of({ vin: { error: `Vehicle ${index + 1} VIN is required`, anchorLink: `vin-${index}` } });
+					return of({ vin: { error: `Vehicle ${index + 1} - VIN is required`, anchorLink: `vin-${index}` } });
 				}
 
 				return this.validateVehicleForUpdate(form, index, vehicleType);

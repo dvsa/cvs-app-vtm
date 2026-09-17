@@ -205,7 +205,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.validateVehicleForUpdate(form, 0, VehicleTypes.TRL).subscribe((result) => {
 				expect(result).toEqual({
 					vehicle: {
-						error: 'Vehicle 1 - could not find a record with matching VIN and Trailer ID',
+						error: 'Vehicle 1 - Could not find a record with matching VIN and Trailer ID',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -231,7 +231,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.validateVehicleForUpdate(form, 0, VehicleTypes.PSV).subscribe((result) => {
 				expect(result).toEqual({
 					vehicle: {
-						error: 'Vehicle 1 - could not find a record with matching VIN and VRM',
+						error: 'Vehicle 1 - Could not find a record with matching VIN and VRM',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -261,7 +261,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.validateVehicleForUpdate(form, 0, VehicleTypes.TRL).subscribe((result) => {
 				expect(result).toEqual({
 					vehicle: {
-						error: 'Vehicle 1 - more than one vehicle has this VIN and Trailer ID',
+						error: 'Vehicle 1 - More than one vehicle has this VIN and Trailer ID',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -291,7 +291,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.validateVehicleForUpdate(form, 0, VehicleTypes.PSV).subscribe((result) => {
 				expect(result).toEqual({
 					vehicle: {
-						error: 'Vehicle 1 - more than one vehicle has this VIN and VRM',
+						error: 'Vehicle 1 - More than one vehicle has this VIN and VRM',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -359,7 +359,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.validateVehicleForUpdate(form, 0, VehicleTypes.TRL).subscribe((result) => {
 				expect(result).toEqual({
 					vehicle: {
-						error: 'Vehicle 1 - could not find a record with matching VIN',
+						error: 'Vehicle 1 - Could not find a record with matching VIN',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -404,7 +404,7 @@ describe('EnterBatchIdentifiers', () => {
 			validator.subscribe((result) => {
 				expect(result).toEqual({
 					vin: {
-						error: 'Vehicle 1 VIN is required',
+						error: 'Vehicle 1 - VIN is required',
 						anchorLink: 'vin-0',
 					},
 				});
@@ -438,7 +438,7 @@ describe('EnterBatchIdentifiers', () => {
 
 			const validationError = {
 				vehicle: {
-					error: 'Vehicle 1 - could not find a record with matching VIN and Trailer ID',
+					error: 'Vehicle 1 - Could not find a record with matching VIN and Trailer ID',
 				},
 			};
 
@@ -559,7 +559,7 @@ describe('EnterBatchIdentifiers', () => {
 			component.handleConfirm();
 
 			expect(errorService.setErrors).toHaveBeenCalledWith([
-				{ error: 'Vehicle 1 - could not find a record with matching VIN and VRM', anchorLink: 'vin-0' },
+				{ error: 'Vehicle 1 - Could not find a record with matching VIN and VRM', anchorLink: 'vin-0' },
 			]);
 			expect(store.dispatch).not.toHaveBeenCalled();
 			expect(router.navigate).not.toHaveBeenCalled();
@@ -602,7 +602,7 @@ describe('EnterBatchIdentifiers', () => {
 
 			expect(errorService.setErrors).toHaveBeenCalledWith([
 				{
-					error: 'Vehicle 1 VRM must be less than or equal to 9 characters',
+					error: 'Vehicle 1 - VRM must be less than or equal to 9 characters',
 					anchorLink: 'trailerIdOrVrm-0',
 				},
 				{
@@ -624,7 +624,7 @@ describe('EnterBatchIdentifiers', () => {
 
 			expect(errorService.setErrors).toHaveBeenCalledWith([
 				{
-					error: 'Vehicle 1 VIN must be greater than or equal to 3 characters',
+					error: 'Vehicle 1 - VIN must be greater than or equal to 3 characters',
 					anchorLink: 'vin-0',
 				},
 			]);
