@@ -6,7 +6,7 @@
     <form [formGroup]="form">
       <app-text-area [id]="'reasonForAmend'" name="reason" [label]="label" formControlName="reason"></app-text-area>
 
-      <app-button id="submit-change-status" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
+      <app-button id="submit-change-status" [disabled]="isSubmitting()" (clicked)="handleSubmit(form.value)">
         {{ buttonLabel }} record
       </app-button>
       <app-button design="link" id="tech-record-back-link" (clicked)="navigateBack()">Back</app-button>
