@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -14,8 +14,10 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import {
 	archiveTechRecord,
+	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	promoteTechRecord,
+	promoteTechRecordFailure,
 	promoteTechRecordSuccess,
 } from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
@@ -45,10 +47,15 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	);
 
 	isPromotion = false;
+	readonly isSubmitting = signal(false);
 
 	destroy$ = new Subject<void>();
 
 	ngOnInit(): void {
+		this.actions$
+			.pipe(ofType(promoteTechRecordFailure, archiveTechRecordFailure), takeUntil(this.destroy$))
+			.subscribe(() => this.isSubmitting.set(false));
+
 		this.actions$
 			.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$))
 			.subscribe(({ vehicleTechRecord }) => {
@@ -89,6 +96,10 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	}
 
 	handleSubmit(form: { reason: string }): void {
+		if (this.isSubmitting()) {
+			return;
+		}
+
 		this.form.markAllAsTouched();
 
 		const techRecord = this.techRecord();
@@ -110,6 +121,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 		if (!this.form.valid || !form.reason) {
 			return;
 		}
+
+		this.isSubmitting.set(true);
 
 		if (this.isPromotion) {
 			this.store.dispatch(
