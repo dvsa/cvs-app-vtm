@@ -1,7 +1,8 @@
 import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { AsyncPipe, Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RouterService } from '@services/router/router.service';
 import { distinctUntilChanged, map } from 'rxjs';
 
@@ -12,9 +13,13 @@ import { distinctUntilChanged, map } from 'rxjs';
 	imports: [RouterLink, AsyncPipe],
 })
 export class BreadcrumbsComponent {
-	location = inject(Location);
-	routerService = inject(RouterService);
-	featureToggleService = inject(FeatureToggleService);
+	readonly location = inject(Location);
+	readonly routerService = inject(RouterService);
+	readonly featureToggleService = inject(FeatureToggleService);
+	readonly activatedRoute = inject(ActivatedRoute);
+
+	readonly queryParamMap = toSignal(this.activatedRoute.queryParamMap);
+	readonly redirectUrl = computed(() => this.queryParamMap()?.get('redirectUrl'));
 
 	breadcrumbs$ = this.routerService.router$.pipe(
 		distinctUntilChanged(),
