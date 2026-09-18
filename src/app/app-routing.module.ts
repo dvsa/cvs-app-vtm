@@ -11,8 +11,13 @@ import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
 import { FeatureFlags } from './services/feature-toggle-service/feature-toggle-service';
+import { LoginComponent } from './features/login/login.component';
 
 const routes: Routes = [
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
 	{
 		path: RootRoutes.ROOT,
 		resolve: { title: titleResolver },
