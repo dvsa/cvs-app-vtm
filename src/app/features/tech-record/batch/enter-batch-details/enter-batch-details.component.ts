@@ -6,8 +6,8 @@ import { RadioComponent } from '@/src/app/forms/components/govuk-form-group-radi
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
-import { setBatchDetails } from '@/src/app/store/technical-records/batch-create.actions';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { updateBatch } from '@/src/app/store/batch/batch.actions';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -116,10 +116,12 @@ export class EnterBatchDetailsComponent implements OnInit {
 		if (errors.length === 0) {
 			const value = this.form.getRawValue();
 			this.store.dispatch(
-				setBatchDetails({
-					vehicleType: value.vehicleType as VehicleTypes,
-					vehicleStatus: value.vehicleStatus as StatusCodes,
-					trlFormType: value.trlFormType as TrailerFormType,
+				updateBatch({
+					changes: {
+						vehicleType: value.vehicleType as VehicleTypes,
+						vehicleStatus: value.vehicleStatus as StatusCodes,
+						trlFormType: value.trlFormType as TrailerFormType,
+					},
 				})
 			);
 			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);

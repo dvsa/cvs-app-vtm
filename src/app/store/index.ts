@@ -20,6 +20,8 @@ import {
 	initialSpinnerState,
 	spinnerReducer,
 } from '@store/spinner/spinner.reducer';
+import { STORE_FEATURE_BATCH_KEY } from './batch/batch.feature';
+import { BatchState } from './batch/batch.models';
 import { DefectsState, STORE_FEATURE_DEFECTS_KEY, defectsReducer, initialDefectsState } from './defects';
 import { STORE_FEATURE_FLAGS_KEY } from './feature-flags/feature-flags.feature';
 import {
@@ -45,6 +47,7 @@ import {
 	initialTechSearchResultState,
 	techSearchResultReducer,
 } from './tech-record-search/tech-record-search.reducer';
+import { initialBatchState } from './technical-records/batch-create.reducer';
 import {
 	STORE_FEATURE_TECHNICAL_RECORDS_KEY,
 	TechnicalRecordServiceState,
@@ -75,6 +78,7 @@ import {
 	initialState as initialUserState,
 	userServiceReducer,
 } from './user/user-service.reducer';
+import { batchReducer } from './batch/batch.reducer';
 
 export interface State {
 	[STORE_FEATURE_DEFECTS_KEY]: DefectsState;
@@ -91,6 +95,7 @@ export interface State {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: RequiredStandardState;
 	[STORE_FEATURE_LOGS_KEY]: LogsModel;
 	[STORE_FEATURE_FLAGS_KEY]: FeatureFlagsState;
+	[STORE_FEATURE_BATCH_KEY]: BatchState;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	router?: any;
 }
@@ -110,6 +115,7 @@ export const initialAppState = {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: initialRequiredStandardsState,
 	[STORE_FEATURE_LOGS_KEY]: initialLogState,
 	[STORE_FEATURE_FLAGS_KEY]: initialFeatureFlagsState,
+	[STORE_FEATURE_BATCH_KEY]: initialBatchState,
 };
 
 export const reducers = {
@@ -127,4 +133,5 @@ export const reducers = {
 	[STORE_FEATURE_REQUIRED_STANDARDS_KEY]: requiredStandardsReducer,
 	[STORE_FEATURE_LOGS_KEY]: logsReducer,
 	[STORE_FEATURE_FLAGS_KEY]: featureFlagsReducer,
+	[STORE_FEATURE_BATCH_KEY]: batchReducer,
 };
