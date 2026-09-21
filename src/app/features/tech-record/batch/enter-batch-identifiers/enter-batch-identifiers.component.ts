@@ -392,7 +392,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				savedBatchDetails.vehicleType as VehicleTypes
 			);
 			this.technicalRecordService.clearSectionTemplateStates();
-			this.store.dispatch(updateBatch({ changes: { batchSize: vins.length } }));
+			this.store.dispatch(updateBatch({ changes: { batchSize: value.vehicles.length } }));
 			this.store.dispatch(upsertBatchVehicles({ vehicles: value.vehicles as BatchRecord[] }));
 
 			const redirectUrl = this.redirectUrl();
