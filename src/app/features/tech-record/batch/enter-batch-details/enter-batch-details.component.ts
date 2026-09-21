@@ -8,7 +8,8 @@ import { MultiOptions } from '@/src/app/models/options.model';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { updateBatch } from '@/src/app/store/batch/batch.actions';
 import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -36,6 +37,8 @@ export class EnterBatchDetailsComponent implements OnInit {
 	readonly validators = inject(CommonValidatorsService);
 	readonly errorService = inject(GlobalErrorService);
 
+	readonly queryParamMap = toSignal(this.activatedRoute.queryParamMap);
+	readonly redirectUrl = computed(() => this.queryParamMap()?.get('redirectUrl'));
 	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
 
 	readonly form = this.fb.group({
@@ -124,7 +127,13 @@ export class EnterBatchDetailsComponent implements OnInit {
 					},
 				})
 			);
-			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
+
+			const redirectUrl = this.redirectUrl();
+			if (redirectUrl) {
+				return void this.router.navigate([redirectUrl]);
+			}
+
+			return void this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
 		}
 	}
 

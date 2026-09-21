@@ -16,7 +16,7 @@ import { updateBatch, upsertBatchVehicles } from '@/src/app/store/batch/batch.ac
 import { BatchRecord } from '@/src/app/store/batch/batch.models';
 import { selectBatchDetails, selectBatchVehicleTypeDescriptor } from '@/src/app/store/batch/batch.selectors';
 import { Component, DestroyRef, OnInit, computed, effect, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
 	AbstractControl,
 	AsyncValidatorFn,
@@ -29,7 +29,7 @@ import {
 	ValidatorFn,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, filter, map, of, take } from 'rxjs';
@@ -59,7 +59,10 @@ export class EnterBatchIdentifiers implements OnInit {
 	readonly httpService = inject(HttpService);
 	readonly technicalRecordService = inject(TechnicalRecordService);
 	readonly destroyRef = inject(DestroyRef);
+	readonly activatedRoute = inject(ActivatedRoute);
 
+	readonly queryParamMap = toSignal(this.activatedRoute.queryParamMap);
+	readonly redirectUrl = computed(() => this.queryParamMap()?.get('redirectUrl'));
 	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
 	readonly vehicleTypeDescriptor = this.store.selectSignal(selectBatchVehicleTypeDescriptor);
 	readonly pageTitle = computed(() => this.computePageTitle());
@@ -389,9 +392,15 @@ export class EnterBatchIdentifiers implements OnInit {
 				savedBatchDetails.vehicleType as VehicleTypes
 			);
 			this.technicalRecordService.clearSectionTemplateStates();
-			this.store.dispatch(updateBatch({ changes: { batchSize: value.vehicles.length } }));
+			this.store.dispatch(updateBatch({ changes: { batchSize: vins.length } }));
 			this.store.dispatch(upsertBatchVehicles({ vehicles: value.vehicles as BatchRecord[] }));
-			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
+
+			const redirectUrl = this.redirectUrl();
+			if (redirectUrl) {
+				return void this.router.navigate([redirectUrl]);
+			}
+
+			return void this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		}
 	}
 
