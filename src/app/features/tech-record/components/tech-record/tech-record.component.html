@@ -365,19 +365,20 @@
                   ></app-manufacturer>
                 </form>
               </app-accordion>
-
-              <app-accordion
-                [id]="'letter-of-authorisation'"
-                [title]="'Letter of authorisation'"
-                [description]="'Generate and send a letter of authorisation.'"
-                [type]="'condensed'"
-                [isExpanded]="false"
-                appFilterByTags
-                [tagNames]="[]"
-                [filters]="filters()"
-              >
-                <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
-              </app-accordion>
+              @if (!isEditing()) {
+                <app-accordion
+                  [id]="'letter-of-authorisation'"
+                  [title]="'Letter of authorisation'"
+                  [description]="'Generate and send a letter of authorisation.'"
+                  [type]="'condensed'"
+                  [isExpanded]="false"
+                  appFilterByTags
+                  [tagNames]="[]"
+                  [filters]="filters()"
+                >
+                  <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
+                </app-accordion>
+              }
             }
 
             @if (technicalRecordService.isHeavyVehicle(techRecord)) {
