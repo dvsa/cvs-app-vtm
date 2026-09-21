@@ -22,6 +22,7 @@ import {
 } from '@store/spinner/spinner.reducer';
 import { STORE_FEATURE_BATCH_KEY } from './batch/batch.feature';
 import { BatchState } from './batch/batch.models';
+import { batchReducer } from './batch/batch.reducer';
 import { DefectsState, STORE_FEATURE_DEFECTS_KEY, defectsReducer, initialDefectsState } from './defects';
 import { STORE_FEATURE_FLAGS_KEY } from './feature-flags/feature-flags.feature';
 import {
@@ -78,7 +79,6 @@ import {
 	initialState as initialUserState,
 	userServiceReducer,
 } from './user/user-service.reducer';
-import { batchReducer } from './batch/batch.reducer';
 
 export interface State {
 	[STORE_FEATURE_DEFECTS_KEY]: DefectsState;

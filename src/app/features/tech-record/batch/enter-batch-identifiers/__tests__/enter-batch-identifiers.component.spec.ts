@@ -5,8 +5,8 @@ import { StatusCodes, TrailerFormType, VehicleTypes } from '@/src/app/models/veh
 import { HttpService } from '@/src/app/services/http/http.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { initialAppState } from '@/src/app/store';
-import { upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { upsertBatchVehicles } from '@/src/app/store/batch/batch.actions';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { GlobalErrorServiceMock } from '@/src/mocks/global-error-service.mock';
 import { TechnicalRecordServiceMock } from '@/src/mocks/technical-record-service.mock';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -18,6 +18,7 @@ import { EnterBatchIdentifiers } from '../enter-batch-identifiers.component';
 
 function createForm(initialValues: object) {
 	const form = new FormGroup({
+		id: new FormControl<number | null>(null),
 		vin: new FormControl<string | null>(null),
 		trailerIdOrVrm: new FormControl<string | null>(null),
 		vehicleType: new FormControl<string>(VehicleTypes.TRL, { nonNullable: true }),
@@ -515,7 +516,7 @@ describe('EnterBatchIdentifiers', () => {
 			jest.spyOn(component.router, 'navigate');
 			jest.spyOn(component.form, 'getRawValue').mockReturnValue({ vehicles: [] });
 			component.handleCancel();
-			expect(store.dispatch).toHaveBeenCalledWith(upsertVehicleBatch({ vehicles: [] }));
+			expect(store.dispatch).toHaveBeenCalledWith(upsertBatchVehicles({ vehicles: [] }));
 			expect(component.router.navigate).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 		});
 	});
@@ -639,9 +640,10 @@ describe('EnterBatchIdentifiers', () => {
 
 			const vehicles = [
 				{
+					id: 0,
 					vin: 'VIN123',
 					trailerIdOrVrm: 'TRL001',
-					vehicleType: 'trl',
+					vehicleType: VehicleTypes.TRL,
 					createdTimestamp: '',
 					systemNumber: '',
 				},
@@ -650,7 +652,7 @@ describe('EnterBatchIdentifiers', () => {
 
 			component.handleConfirm();
 
-			expect(store.dispatch).toHaveBeenCalledWith(upsertVehicleBatch({ vehicles }));
+			expect(store.dispatch).toHaveBeenCalledWith(upsertBatchVehicles({ vehicles }));
 			expect(router.navigate).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		});
 

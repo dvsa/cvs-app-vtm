@@ -16,6 +16,9 @@ export const selectBatchDetails = createSelector(selectBatchFeature, (state) => 
 	vehicles: selectAll(state),
 }));
 export const selectBatchVehicles = createSelector(selectBatchFeature, (state) => selectAll(state));
+export const selectCompleteBatchVehicles = createSelector(selectBatchVehicles, (vehicles) =>
+	vehicles.filter((v) => v.vin)
+);
 export const selectBatchCount = createSelector(selectBatchDetails, (details) => details.vehicles.length);
 export const selectBatchPending = createSelector(selectBatchVehicles, (state) => state.filter((v) => v.pending));
 export const selectBatchPendingCount = createSelector(selectBatchPending, (state) => state.length);

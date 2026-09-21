@@ -1,5 +1,5 @@
 <div class="govuk-width-container">
-  @let batchSize = batchDetails().batchSize || 0;
+  @let batchSize = completeBatchVehicles().length || 0;
 
   @if (batchSuccessCount() === batchSize) {
     <app-banner type="success" id="batch-success-banner">

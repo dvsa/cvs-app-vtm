@@ -17,6 +17,7 @@ import {
 	selectBatchUpdatedCount,
 	selectBatchUpdatedSuccessCount,
 	selectBatchVehicleTypeDescriptor,
+	selectCompleteBatchVehicles,
 } from '@/src/app/store/batch/batch.selectors';
 import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
 import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
@@ -38,6 +39,7 @@ export class BatchSummaryComponent {
 	readonly errorService = inject(GlobalErrorService);
 
 	readonly techRecord = this.store.selectSignal(editingTechRecord);
+	readonly completeBatchVehicles = this.store.selectSignal(selectCompleteBatchVehicles);
 	readonly batchDetails = this.store.selectSignal(selectBatchDetails);
 	readonly batchPending = this.store.selectSignal(selectBatchPending);
 	readonly batchPendingCount = this.store.selectSignal(selectBatchPendingCount);

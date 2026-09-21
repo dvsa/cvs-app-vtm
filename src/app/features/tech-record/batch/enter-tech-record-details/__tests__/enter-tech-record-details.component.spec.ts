@@ -7,8 +7,8 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
 import { AxlesServiceMock } from '@/src/mocks/axles-service.mock';
 import { GlobalErrorServiceMock } from '@/src/mocks/global-error-service.mock';
 import { MultiOptionsServiceMock } from '@/src/mocks/multi-options-service.mock';
@@ -23,11 +23,12 @@ import { EnterTechRecordDetailsComponent } from '../enter-tech-record-details.co
 
 const mockSavedBatchDetails = {
 	batchSize: 1,
-	trlFormType: undefined,
+	trlFormType: null,
 	vehicleStatus: StatusCodes.CURRENT,
 	vehicleType: VehicleTypes.HGV,
 	vehicles: [
 		{
+			id: 0,
 			vin: '123456',
 			systemNumber: '123456',
 			createdTimestamp: '2022-01-01T00:00:00.000Z',
@@ -168,10 +169,10 @@ describe('EnterTechRecordDetailsComponent', () => {
 
 			expect(store.dispatch).toHaveBeenCalledWith(
 				updateTechRecord({
+					batchRecordId: 0,
 					systemNumber: '123456',
 					createdTimestamp: '2022-01-01T00:00:00.000Z',
 					groupType: 'batch',
-					vin: '123456',
 				})
 			);
 
@@ -188,6 +189,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 				...mockSavedBatchDetails,
 				vehicles: [
 					{
+						id: 0,
 						vin: '123456',
 						trailerIdOrVrm: undefined,
 					},
@@ -198,6 +200,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 
 			expect(store.dispatch).toHaveBeenCalledWith(
 				createVehicleRecord({
+					batchRecordId: 0,
 					vehicle: {
 						createdTimestamp: undefined,
 						systemNumber: undefined,
