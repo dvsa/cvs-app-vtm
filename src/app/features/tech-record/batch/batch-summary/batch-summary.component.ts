@@ -97,7 +97,7 @@ export class BatchSummaryComponent {
 
 			if (!record.systemNumber) {
 				const cleansedRecord = nullADRDetails(record as TechRecordType<'put'>);
-				this.store.dispatch(createVehicleRecord({ vehicle: cleansedRecord }));
+				this.store.dispatch(createVehicleRecord({ batchRecordId: vehicle.id, vehicle: cleansedRecord }));
 			}
 		}
 	}

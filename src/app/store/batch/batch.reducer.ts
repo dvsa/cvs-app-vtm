@@ -3,8 +3,10 @@ import { createReducer, on } from '@ngrx/store';
 import { StatusCodes, VehicleTypes } from '../../models/vehicle-tech-record.model';
 import {
 	createVehicleRecord,
+	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
 	updateTechRecord,
+	updateTechRecordFailure,
 	updateTechRecordSuccess,
 } from '../technical-records';
 import { cancelBatch, updateBatch, upsertBatchVehicles } from './batch.actions';
@@ -43,6 +45,7 @@ export const batchReducer = createReducer(
 					pending: false,
 					created: true,
 					updated: false,
+					failed: false,
 					systemNumber: techRecord.systemNumber,
 					createdTimestamp: techRecord.createdTimestamp,
 					status: techRecord.techRecord_statusCode as StatusCodes,
@@ -61,11 +64,24 @@ export const batchReducer = createReducer(
 					pending: false,
 					created: false,
 					updated: true,
+					failed: false,
 					systemNumber: techRecord.systemNumber,
 					createdTimestamp: techRecord.createdTimestamp,
 					status: techRecord.techRecord_statusCode as StatusCodes,
 					trailerIdOrVrm:
 						techRecord.techRecord_vehicleType === VehicleTypes.TRL ? techRecord.trailerId : techRecord.primaryVrm || '',
+				},
+			},
+			state
+		);
+	}),
+	on(createVehicleRecordFailure, updateTechRecordFailure, (state, { batchRecordId }) => {
+		return batchAdapter.updateOne(
+			{
+				id: batchRecordId!,
+				changes: {
+					pending: false,
+					failed: true,
 				},
 			},
 			state
