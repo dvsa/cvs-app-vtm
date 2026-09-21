@@ -6,7 +6,12 @@
       </h2>
       <ul class="govuk-summary-card__actions">
         <li class="govuk-summary-card__action">
-          <a id="cancel-link" class="govuk-link" [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`]">
+          <a 
+            id="cancel-link" 
+            class="govuk-link" 
+            [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`]"
+            [queryParams]="{ 'redirectUrl' : `/${RootRoutes.BATCH}/${BatchRoutes.ENTER_TECH_RECORD_DETAILS}` }"
+          >
             Cancel<span class="govuk-visually-hidden"></span>
           </a>
         </li>
@@ -36,6 +41,7 @@
                   class="govuk-link summary-link" 
                   id="change-trailer-form-type-link" 
                   [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}`]"
+                  [queryParams]="{ 'redirectUrl' : `/${RootRoutes.BATCH}/${BatchRoutes.ENTER_TECH_RECORD_DETAILS}` }"
                 >
                   Change
                 </a>
@@ -58,6 +64,7 @@
                 class="govuk-link summary-link" 
                 id="change-record-type-link" 
                 [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}`]"
+                [queryParams]="{ 'redirectUrl' : `/${RootRoutes.BATCH}/${BatchRoutes.ENTER_TECH_RECORD_DETAILS}` }"
               >
                 Change
               </a>
@@ -81,6 +88,7 @@
                 class="govuk-link summary-link" 
                 id="change-vehicles-in-batch-link" 
                 [routerLink]="[`/${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}`]"
+                [queryParams]="{ 'redirectUrl' : `/${RootRoutes.BATCH}/${BatchRoutes.ENTER_TECH_RECORD_DETAILS}` }"
               >
                 Change
               </a>

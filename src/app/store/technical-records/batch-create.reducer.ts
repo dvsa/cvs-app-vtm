@@ -69,13 +69,19 @@ export const vehicleBatchCreateReducer = createReducer(
 		return batchAdapter.updateOne({ id: action.vin || '', changes: { pending: true } }, state);
 	}),
 	on(createVehicleRecordFailure, (state, action) =>
-		batchAdapter.updateOne({ id: action.vehicleRecord.vin, changes: { pending: false, failed: true } }, state)
+		batchAdapter.updateOne(
+			{ id: action.vehicleRecord.vin, changes: { pending: false, failed: true, amendedRecord: false } },
+			state
+		)
 	),
 	on(createVehicleRecordSuccess, (state, action) =>
 		batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord), state)
 	),
 	on(updateTechRecordFailure, (state, action) =>
-		batchAdapter.updateOne({ id: action.techRecord?.vin || '', changes: { pending: false, failed: true } }, state)
+		batchAdapter.updateOne(
+			{ id: action.techRecord?.vin || '', changes: { pending: false, failed: true, amendedRecord: true } },
+			state
+		)
 	),
 	on(updateTechRecordSuccess, (state, action) =>
 		batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord, true, true), state)

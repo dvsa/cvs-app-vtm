@@ -76,6 +76,7 @@
           <dd class="govuk-summary-list__actions">
             <a 
               class="govuk-link" 
+              target="_blank"
               [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]" 
               [id]="`vehicle-${$index}-view-link`"
             >
@@ -125,7 +126,7 @@
           </dd>
           <dd class="govuk-summary-list__actions">
             <p class="govuk-error-message govuk-!-margin-bottom-0">
-              Failed to {{ vehicle.amendedRecord ? 'amend' : 'create' }}
+              Failed to {{ vehicle.amendedRecord ? 'update' : 'create' }}
               <span class="govuk-visually-hidden">
                 VIN {{ vehicle.vin }} {{ vehicle.vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} {{ vehicle.trailerIdOrVrm }}
               </span>

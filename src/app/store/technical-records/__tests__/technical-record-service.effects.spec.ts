@@ -159,7 +159,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				expectObservable(effects.updateTechRecord$).toBe('---b', {
 					b: updateTechRecordFailure({
 						techRecord: {} as TechRecordType<'put'>,
-						error: 'Unable to update technical record null',
+						error: 'Unable to update technical record with VIN undefined',
 					}),
 				});
 			});

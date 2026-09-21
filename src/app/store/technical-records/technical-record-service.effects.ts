@@ -149,7 +149,7 @@ export class TechnicalRecordServiceEffects {
 						of(
 							updateTechRecordFailure({
 								techRecord,
-								error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord'),
+								error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord', `with VIN ${techRecord.vin}`),
 							})
 						)
 					)
