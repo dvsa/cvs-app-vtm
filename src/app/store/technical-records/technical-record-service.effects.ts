@@ -16,7 +16,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep } from 'lodash';
-import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, exhaustMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
 import {
 	amendVin,
@@ -226,7 +226,7 @@ export class TechnicalRecordServiceEffects {
 	promoteTechRecord$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(promoteTechRecord),
-			switchMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
+			exhaustMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
 				this.httpService.promoteTechRecord(systemNumber, createdTimestamp, reasonForPromoting).pipe(
 					map((vehicleTechRecord) => promoteTechRecordSuccess({ vehicleTechRecord })),
 					catchError((error) =>

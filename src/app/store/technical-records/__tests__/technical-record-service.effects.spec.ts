@@ -11,8 +11,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
+import { globalErrorReducer, initialGlobalErrorState } from '@store/global-error/global-error-service.reducer';
 import { State, initialAppState } from '@store/index';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
 	GroupType,
@@ -23,6 +24,9 @@ import {
 	createVehicleRecord,
 	createVehicleRecordFailure,
 	createVehicleRecordSuccess,
+	promoteTechRecord,
+	promoteTechRecordFailure,
+	promoteTechRecordSuccess,
 	unarchiveTechRecord,
 	unarchiveTechRecordFailure,
 	unarchiveTechRecordSuccess,
@@ -163,6 +167,75 @@ describe('TechnicalRecordServiceEffects', () => {
 					}),
 				});
 			});
+		});
+	});
+
+	describe('promoteTechRecord', () => {
+		const request = promoteTechRecord({
+			systemNumber: '12345',
+			createdTimestamp: '2026-09-01T12:00:00.000Z',
+			reasonForPromoting: 'Ready to issue plates',
+		});
+		const promotedRecord = {
+			systemNumber: request.systemNumber,
+			createdTimestamp: '2026-09-18T12:00:00.000Z',
+			techRecord_vehicleType: 'hgv',
+			techRecord_statusCode: 'current',
+		} as TechRecordType<'get'>;
+
+		it('keeps the original response when Promote is clicked again while the request is pending', () => {
+			testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+				actions$ = hot('-a-a----|', { a: request });
+				const firstResponse = cold('----a|', { a: promotedRecord });
+				const alreadyPromoted = new HttpErrorResponse({
+					status: 400,
+					error: 'Record provided is not a provisional record so cannot be promoted.',
+				});
+				// The server may have committed the first request before the browser receives its response.
+				jest
+					.spyOn(httpService, 'promoteTechRecord')
+					.mockReturnValueOnce(firstResponse)
+					.mockReturnValue(cold('--#', {}, alreadyPromoted));
+
+				expectObservable(effects.promoteTechRecord$).toBe('-----a--|', {
+					a: promoteTechRecordSuccess({ vehicleTechRecord: promotedRecord }),
+				});
+				expectSubscriptions(firstResponse.subscriptions).toBe('-^----!');
+			});
+			expect(httpService.promoteTechRecord).toHaveBeenCalledTimes(1);
+		});
+
+		it('shows a failed promotion in the global error summary', () => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a---|', { a: request });
+				jest
+					.spyOn(httpService, 'promoteTechRecord')
+					.mockReturnValue(cold('--#', {}, new HttpErrorResponse({ status: 400, error: 'Promotion rejected' })));
+
+				expectObservable(
+					effects.promoteTechRecord$.pipe(map((action) => globalErrorReducer(initialGlobalErrorState, action)))
+				).toBe('---a-|', {
+					a: {
+						errors: [{ error: 'Unable to promote technical record "Promotion rejected"', anchorLink: undefined }],
+					},
+				});
+			});
+		});
+
+		it('accepts a retry after the previous promotion request fails', () => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a---a----|', { a: request });
+				jest
+					.spyOn(httpService, 'promoteTechRecord')
+					.mockReturnValueOnce(cold('--#', {}, new HttpErrorResponse({ status: 500, error: 'Save failed' })))
+					.mockReturnValueOnce(cold('--a|', { a: promotedRecord }));
+
+				expectObservable(effects.promoteTechRecord$).toBe('---a---b--|', {
+					a: promoteTechRecordFailure({ error: 'Unable to promote technical record "Save failed"' }),
+					b: promoteTechRecordSuccess({ vehicleTechRecord: promotedRecord }),
+				});
+			});
+			expect(httpService.promoteTechRecord).toHaveBeenCalledTimes(2);
 		});
 	});
 
