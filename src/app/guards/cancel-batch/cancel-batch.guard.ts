@@ -3,7 +3,7 @@ import { CanDeactivateFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '../../services/axles/axles.service';
 import { TechnicalRecordService } from '../../services/technical-record/technical-record.service';
-import { clearBatch } from '../../store/technical-records/batch-create.actions';
+import { cancelBatch } from '../../store/batch/batch.actions';
 
 export const cancelBatchGuard: CanDeactivateFn<boolean> = () => {
 	const store = inject(Store);
@@ -12,6 +12,6 @@ export const cancelBatchGuard: CanDeactivateFn<boolean> = () => {
 	axlesService.reset();
 	technicalRecordService.clearEditingTechRecord();
 	technicalRecordService.clearSectionTemplateStates();
-	store.dispatch(clearBatch());
+	store.dispatch(cancelBatch());
 	return true;
 };
