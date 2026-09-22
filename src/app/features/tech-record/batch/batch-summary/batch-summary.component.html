@@ -126,7 +126,7 @@
           </dd>
           <dd class="govuk-summary-list__actions">
             <p class="govuk-error-message govuk-!-margin-bottom-0">
-              Failed to {{ vehicle.updated ? 'update' : 'create' }}
+              Failed to {{ vehicle.trailerIdOrVrm ? 'update' : 'create' }}
               <span class="govuk-visually-hidden">
                 VIN {{ vehicle.vin }} {{ vehicle.vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} {{ vehicle.trailerIdOrVrm }}
               </span>
