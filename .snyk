@@ -30,4 +30,9 @@ ignore:
     - '*':
         reason: No direct upgrade path available
         expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-DEEPMERGE-19964053:
+    - '*':
+        reason: No fix available
+        expires: 2026-10-14T00:00:00.000Z
+        created: 2026-09-14T00:00:00.000Z
 patch: {}
