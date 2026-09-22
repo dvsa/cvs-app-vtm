@@ -81,13 +81,13 @@ export class EnterTechRecordDetailsComponent {
 							systemNumber: record.systemNumber,
 							createdTimestamp: record.createdTimestamp,
 							groupType: 'batch',
-							batchRecordId: index,
+							batchRecordId: vehicle.id,
 						})
 					);
 				}
 
 				if (!record.systemNumber) {
-					this.store.dispatch(createVehicleRecord({ batchRecordId: index, vehicle: cleansedRecord }));
+					this.store.dispatch(createVehicleRecord({ batchRecordId: vehicle.id, vehicle: cleansedRecord }));
 				}
 
 				this.technicalRecordService.clearSectionTemplateStates();
