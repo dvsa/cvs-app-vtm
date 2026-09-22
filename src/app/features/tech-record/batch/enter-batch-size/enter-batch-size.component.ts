@@ -5,11 +5,8 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { setBatchDetails } from '@/src/app/store/technical-records/batch-create.actions';
-import {
-	selectBatchDetails,
-	selectBatchVehicleTypeDescriptor,
-} from '@/src/app/store/technical-records/batch-create.selectors';
+import { updateBatch } from '@/src/app/store/batch/batch.actions';
+import { selectBatchDetails, selectBatchVehicleTypeDescriptor } from '@/src/app/store/batch/batch.selectors';
 import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -80,7 +77,7 @@ export class EnterBatchSizeComponent implements OnInit {
 
 		if (errors.length === 0) {
 			const batchSize = this.form.controls.batchSize.getRawValue();
-			this.store.dispatch(setBatchDetails({ batchSize: batchSize as number }));
+			this.store.dispatch(updateBatch({ changes: { batchSize: batchSize as number } }));
 			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_IDENTIFIERS]);
 		}
 	}

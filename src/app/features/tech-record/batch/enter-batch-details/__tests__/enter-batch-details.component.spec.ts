@@ -1,7 +1,7 @@
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { initialAppState } from '@/src/app/store';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -74,11 +74,17 @@ describe('EnterBatchDetailsComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				vehicleStatus: StatusCodes.CURRENT,
 				trlFormType: TrailerFormType.TES1,
+				batchSize: null,
+				vehicles: [],
 			};
 			store.overrideSelector(selectBatchDetails, savedBatchDetails);
 			store.refreshState();
 			component.handlePopulateForm();
-			expect(component.form.getRawValue()).toEqual(savedBatchDetails);
+			expect(component.form.getRawValue()).toEqual({
+				vehicleType: VehicleTypes.PSV,
+				vehicleStatus: StatusCodes.CURRENT,
+				trlFormType: TrailerFormType.TES1,
+			});
 		});
 
 		it('should disable the vehicle type field when the vehicle type is saved', () => {
@@ -86,6 +92,8 @@ describe('EnterBatchDetailsComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				vehicleStatus: StatusCodes.CURRENT,
 				trlFormType: TrailerFormType.TES1,
+				batchSize: 10,
+				vehicles: new Array(10).fill(null),
 			};
 			store.overrideSelector(selectBatchDetails, savedBatchDetails);
 			store.refreshState();

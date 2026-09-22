@@ -1,6 +1,6 @@
 import { RootRoutes } from '@/src/app/models/routes.enum';
 import { initialAppState } from '@/src/app/store';
-import { clearBatch } from '@/src/app/store/technical-records/batch-create.actions';
+import { cancelBatch } from '@/src/app/store/batch/batch.actions';
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
@@ -51,7 +51,7 @@ describe('CancelBatchComponent', () => {
 			const navigateSpy = jest.spyOn(router, 'navigate');
 			component.handleCancelBatch();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ROOT]);
-			expect(dispatchSpy).toHaveBeenCalledWith(clearBatch());
+			expect(dispatchSpy).toHaveBeenCalledWith(cancelBatch());
 		});
 	});
 });

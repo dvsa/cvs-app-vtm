@@ -24,27 +24,30 @@ export const getTechRecordV3Failure = createOutcomeAction('getTechRecordV3', fal
 
 export const createVehicleRecord = createAction(
 	`${prefix} createVehicleRecord`,
-	props<{ vehicle: TechRecordType<'put'> }>()
+	props<{ batchRecordId?: number; vehicle: TechRecordType<'put'> }>()
 );
-export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
+export const createVehicleRecordSuccess = createAction(
+	`${prefix} createVehicleRecord Success`,
+	props<{ batchRecordId?: number; vehicleTechRecord: TechRecordType<'get'> }>()
+);
 export const createVehicleRecordFailure = createAction(
 	`${prefix} createVehicleRecord Failure`,
-	props<{ vehicleRecord: TechRecordType<'put'>; error: string }>()
+	props<{ batchRecordId?: number; vehicleRecord: TechRecordType<'put'>; error: string }>()
 );
 
 export type GroupType = 'single' | 'batch';
 export const updateTechRecord = createAction(
 	`${prefix} updateTechRecords`,
-	props<{ systemNumber: string; createdTimestamp: string; groupType: GroupType; vin?: string }>()
+	props<{ batchRecordId?: number; systemNumber: string; createdTimestamp: string; groupType: GroupType }>()
 );
 export const updateTechRecordSuccess = createAction(
 	`${prefix} updateTechRecords Success`,
-	props<{ vehicleTechRecord: TechRecordType<'get'>; groupType: GroupType }>()
+	props<{ batchRecordId?: number; vehicleTechRecord: TechRecordType<'get'>; groupType: GroupType }>()
 );
 
 export const updateTechRecordFailure = createAction(
 	`${prefix} updateTechRecords Failure`,
-	props<{ techRecord?: TechRecordType<'put'>; error: string }>()
+	props<{ batchRecordId?: number; techRecord?: TechRecordType<'put'>; error: string }>()
 );
 
 export const amendVin = createAction(
