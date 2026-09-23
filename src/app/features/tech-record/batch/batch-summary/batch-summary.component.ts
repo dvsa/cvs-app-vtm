@@ -4,6 +4,7 @@ import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { BatchUpdateVehicleModel, StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import {
 	selectBatchCreatedCount,
 	selectBatchCreatedSuccessCount,
@@ -37,6 +38,7 @@ export class BatchSummaryComponent {
 	readonly store = inject(Store);
 	readonly router = inject(Router);
 	readonly errorService = inject(GlobalErrorService);
+	readonly technicalRecordService = inject(TechnicalRecordService);
 
 	readonly techRecord = this.store.selectSignal(editingTechRecord);
 	readonly completeBatchVehicles = this.store.selectSignal(selectCompleteBatchVehicles);
@@ -76,15 +78,16 @@ export class BatchSummaryComponent {
 				createdTimestamp: vehicle.createdTimestamp,
 			} as BatchUpdateVehicleModel;
 
-			if (record.techRecord_vehicleType === VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
+			if (record.techRecord_vehicleType === VehicleTypes.TRL) {
 				record.trailerId = vehicle.trailerIdOrVrm;
 			}
 
-			if (record.techRecord_vehicleType !== VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
+			if (record.techRecord_vehicleType !== VehicleTypes.TRL) {
 				record.primaryVrm = vehicle.trailerIdOrVrm;
 			}
 
 			if (record.systemNumber) {
+				this.technicalRecordService.updateEditingTechRecord(record);
 				this.store.dispatch(
 					updateTechRecord({
 						systemNumber: record.systemNumber,
