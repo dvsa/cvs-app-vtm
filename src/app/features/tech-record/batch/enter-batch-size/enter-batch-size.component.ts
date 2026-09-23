@@ -62,6 +62,11 @@ export class EnterBatchSizeComponent implements OnInit {
 		}
 	}
 
+	handleBatchSizeBlur() {
+		// if someone deletes the `disabled` attribute, then re-enable the field so validation kicks in
+		this.form.controls.batchSize.enable({ emitEvent: false });
+	}
+
 	handleContinue(): void {
 		this.form.markAllAsTouched();
 
