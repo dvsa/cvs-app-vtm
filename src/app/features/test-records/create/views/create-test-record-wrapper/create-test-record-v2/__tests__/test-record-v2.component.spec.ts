@@ -81,6 +81,63 @@ describe('TestRecordV2Component', () => {
 		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
 	});
 
+	describe('amending a test because the test type was incorrect', () => {
+		const existingTest = {
+			testResultId: 'test-result-id',
+			vin: 'VIN00000001',
+			testTypes: [
+				{
+					testTypeId: '95',
+					testTypeName: 'First test',
+					testNumber: 'T12345678',
+					testCode: 'FFV2',
+					createdAt: '2026-09-01T09:00:00.000Z',
+				},
+			],
+		} as TestResultSchema;
+
+		beforeEach(() => {
+			fixture.componentRef.setInput('initialMode', Modes.AMEND);
+			jest.spyOn(component as never, 'testResult').mockReturnValue(existingTest as never);
+			jest.spyOn(component as never, 'testResultInEdit').mockReturnValue(existingTest as never);
+			jest.spyOn(component as never, 'testTypeId').mockReturnValue('65' as never);
+			jest.spyOn(component as never, 'testType').mockReturnValue({ id: '65', name: 'Paid first test retest' } as never);
+			// `testTypeIdChanged` blanks the shared form via an effect; emulate that side effect here.
+			jest.spyOn(testRecordsService, 'testTypeChange').mockImplementation(() => {
+				component.form.reset(undefined, { emitEvent: false });
+			});
+		});
+
+		it('should keep the existing test details once the shared form has been reset', () => {
+			component.ngOnInit();
+
+			const value = component.form.getRawValue();
+			expect(value.vin).toBe('VIN00000001');
+			expect(value.testTypes[0].testNumber).toBe('T12345678');
+			expect(value.testTypes[0].testCode).toBe('FFV2');
+			expect(value.testTypes[0].createdAt).toBe('2026-09-01T09:00:00.000Z');
+		});
+
+		it('should stamp the newly selected test type onto the form', () => {
+			component.ngOnInit();
+
+			const testType = component.form.controls.testTypes.at(0).getRawValue();
+			expect(testType.testTypeId).toBe('65');
+			expect(testType.testTypeName).toBe('Paid first test retest');
+			expect(testType.name).toBe('Paid first test retest');
+		});
+
+		it('should mirror the restored form into the store without waiting for the debounced sync', () => {
+			const updateSpy = jest.spyOn(testRecordsService, 'updateEditingTestResult');
+
+			component.ngOnInit();
+
+			expect(updateSpy).toHaveBeenCalledTimes(1);
+			expect(updateSpy.mock.calls[0][0].testTypes[0].testTypeId).toBe('65');
+			expect(updateSpy.mock.calls[0][0].vin).toBe('VIN00000001');
+		});
+	});
+
 	describe('onReview', () => {
 		it('should set mode to SUMMARY when form is valid', () => {
 			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);

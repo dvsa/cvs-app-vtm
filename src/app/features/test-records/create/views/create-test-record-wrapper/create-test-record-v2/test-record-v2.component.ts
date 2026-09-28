@@ -161,7 +161,19 @@ export class TestRecordV2Component implements OnInit {
 
 		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
 			this.testRecordService.testTypeChange(testTypeId);
+			this.applyTestTypeChange(testResult, testTypeId);
 		}
+	}
+
+	private applyTestTypeChange(testResult: TestResultSchema | undefined, testTypeId: string): void {
+		if (!testResult) return;
+
+		this.form.patchValue(testResult as any);
+		const testTypeName = this.testType()?.name;
+		this.form.controls.testTypes
+			.at(0)
+			.patchValue(testTypeName ? { testTypeId, testTypeName, name: testTypeName } : { testTypeId });
+		this.flushFormToStore();
 	}
 
 	ngOnInit(): void {
