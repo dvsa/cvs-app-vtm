@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
@@ -150,6 +151,22 @@ export class TestService {
 				}),
 			}),
 		]),
+		vtg15: this.fb.group({
+			vtg15Required: this.fb.control<boolean | undefined>({ value: undefined, disabled: false }),
+			primaryHazardClassification: this.fb.control<HazardClassification | undefined>({
+				value: undefined,
+				disabled: false,
+			}),
+			secondaryHazardClassification: this.fb.control<HazardClassification | undefined>({
+				value: undefined,
+				disabled: false,
+			}),
+			unNumber: this.fb.control<string | undefined>({ value: undefined, disabled: false }),
+			media: this.fb.control<MediaSchema[] | undefined>({
+				value: [{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
+				disabled: false,
+			}),
+		}),
 	});
 }
 
