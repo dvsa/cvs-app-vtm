@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
@@ -27,6 +27,14 @@ import {
 })
 export class TestService {
 	fb = inject(FormBuilder);
+
+	/**
+	 * True while the user is abandoning the test (from clicking "Mark as abandoned" until they either
+	 * submit the abandonment or cancel out of it). Sections read this to skip the validation that only
+	 * applies to a test that is being completed, mirroring the `requiredIfNotAbandoned` async validator
+	 * used by the dynamic form service.
+	 */
+	isAbandoning = signal(false);
 
 	form = this.fb.group({
 		testResultId: this.fb.nonNullable.control<string>(''),

@@ -1,4 +1,5 @@
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
+import { TestService } from '@/src/app/services/test/test.service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -14,6 +15,7 @@ describe('VehicleComponent', () => {
 	let fixture: ComponentFixture<VehicleComponent>;
 	let component: VehicleComponent;
 	let store: MockStore;
+	let testService: TestService;
 	let formGroupDirective: FormGroupDirective;
 
 	beforeEach(async () => {
@@ -34,6 +36,8 @@ describe('VehicleComponent', () => {
 		}).compileComponents();
 
 		store = TestBed.inject(MockStore);
+		testService = TestBed.inject(TestService);
+		testService.isAbandoning.set(false);
 		fixture = TestBed.createComponent(VehicleComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
@@ -57,6 +61,15 @@ describe('VehicleComponent', () => {
 				const control = component.form.controls.countryOfRegistration;
 				control.setValue('gb');
 				control.markAsTouched();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should be valid when empty and the test is being abandoned', () => {
+				testService.isAbandoning.set(true);
+				const control = component.form.controls.countryOfRegistration;
+				control.setValue(null);
+				control.markAsTouched();
+				control.updateValueAndValidity();
 				expect(control.valid).toBe(true);
 			});
 		});
@@ -136,6 +149,33 @@ describe('VehicleComponent', () => {
 				control.updateValueAndValidity();
 				expect(control.valid).toBe(true);
 			});
+
+			it('should be valid when empty and the test is being abandoned', () => {
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+				testService.isAbandoning.set(true);
+
+				const control = component.form.controls.odometerReading;
+				control.setValue(null);
+				control.markAsTouched();
+				control.updateValueAndValidity();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should still enforce the max value when the test is being abandoned', () => {
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+				testService.isAbandoning.set(true);
+
+				const control = component.form.controls.odometerReading;
+				control.setValue(10000000);
+				control.markAsTouched();
+				control.updateValueAndValidity();
+				expect(control.valid).toBe(false);
+				expect(control.errors).toHaveProperty('max');
+			});
 		});
 
 		describe('odometerReadingUnits', () => {
@@ -178,6 +218,19 @@ describe('VehicleComponent', () => {
 				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
 				store.refreshState();
 				component.addValidators();
+
+				const control = component.form.controls.odometerReadingUnits;
+				control.setValue(null);
+				control.markAsTouched();
+				control.updateValueAndValidity();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should be valid when empty and the test is being abandoned', () => {
+				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
+				store.refreshState();
+				component.addValidators();
+				testService.isAbandoning.set(true);
 
 				const control = component.form.controls.odometerReadingUnits;
 				control.setValue(null);
@@ -238,6 +291,13 @@ describe('VehicleComponent', () => {
 			store.refreshState();
 			expect(component.isOdometerReadingRequired()).toBe(false);
 		});
+
+		it('should return false if the test is being abandoned', () => {
+			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
+			store.refreshState();
+			testService.isAbandoning.set(true);
+			expect(component.isOdometerReadingRequired()).toBe(false);
+		});
 	});
 
 	describe('isOdometerReadingUnitsRequired', () => {
@@ -256,6 +316,13 @@ describe('VehicleComponent', () => {
 		it('should return false if there is no techRecord', () => {
 			store.overrideSelector(techRecord, null);
 			store.refreshState();
+			expect(component.isOdometerReadingUnitsRequired()).toBe(false);
+		});
+
+		it('should return false if the test is being abandoned', () => {
+			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
+			store.refreshState();
+			testService.isAbandoning.set(true);
 			expect(component.isOdometerReadingUnitsRequired()).toBe(false);
 		});
 	});
