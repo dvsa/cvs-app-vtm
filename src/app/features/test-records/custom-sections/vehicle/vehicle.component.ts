@@ -18,7 +18,7 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
-import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
@@ -61,11 +61,35 @@ export class VehicleComponent implements OnInit {
 	readonly FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
+		this.prepopulateHazardClassificationOptions();
 		this.addValidators();
 		this.handlePrepopulateEuVehicleCategory();
 
 		// Load reference data
 		this.optionsService.loadOptions(ReferenceDataResourceType.CountryOfRegistration);
+	}
+
+	prepopulateHazardClassificationOptions(): void {
+		const vtg15 = this.form.controls.vtg15;
+		const primaryHazardClassification = this.toHazardClassificationOption(
+			vtg15.controls.primaryHazardClassification.value
+		);
+		const secondaryHazardClassification = this.toHazardClassificationOption(
+			vtg15.controls.secondaryHazardClassification.value
+		);
+
+		if (
+			primaryHazardClassification !== vtg15.controls.primaryHazardClassification.value ||
+			secondaryHazardClassification !== vtg15.controls.secondaryHazardClassification.value
+		) {
+			vtg15.patchValue(
+				{
+					primaryHazardClassification,
+					secondaryHazardClassification,
+				},
+				{ emitEvent: false }
+			);
+		}
 	}
 
 	addValidators(): void {
@@ -143,6 +167,11 @@ export class VehicleComponent implements OnInit {
 			euVehicleCategory.patchValue(EUVehicleCategory.N1);
 			euVehicleCategory.disable();
 		}
+	}
+
+	toHazardClassificationOption(value?: HazardClassification | null): HazardClassification | null {
+		if (!value) return null;
+		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
 	}
 
 	isOdometerReadingRequired(): boolean {
