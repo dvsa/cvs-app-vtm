@@ -28,7 +28,7 @@ export class LogsEffects {
 	sendLogsEffect$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(logsActions.sendLogs),
-			filter(() => !LogsEffects.isAutomation),
+			filter(() => navigator.onLine && !LogsEffects.isAutomation),
 			concatLatestFrom(() => this.store$.pipe(select(getLogsState))),
 			switchMap(([_, logs]) =>
 				forkJoin([this.logsProvider.sendLogs(logs)]).pipe(
