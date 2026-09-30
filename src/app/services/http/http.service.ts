@@ -40,6 +40,10 @@ export class HttpService {
 	private static readonly PostPutGzippedPayloadHeaders = new HttpHeaders({
 		[CompressionHeaders.outbound.request]: CompressionHeaders.compressionValue,
 	});
+	private static readonly InboundOutboundPayloadHeaders = new HttpHeaders({
+		[CompressionHeaders.inbound.request]: CompressionHeaders.compressionValue,
+		[CompressionHeaders.outbound.request]: CompressionHeaders.compressionValue,
+	});
 	private readonly refDataBuckets = new Map<string, CacheBucket>();
 
 	getRefDataBucket(resourceType: string): CacheBucket {
@@ -52,9 +56,10 @@ export class HttpService {
 	amendTechRecordVin(newVin: string, systemNumber: string, createdTimestamp: string) {
 		return this.http
 			.patch<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/updateVin/${systemNumber}/${createdTimestamp}`,
+				{ newVin },
 				{
-					newVin,
+					headers: HttpService.GetGzippedPayloadHeaders,
 				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -69,11 +74,14 @@ export class HttpService {
 	) {
 		return this.http
 			.patch<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/updateVrm/${systemNumber}/${createdTimestamp}`,
 				{
 					newVrm,
 					isCherishedTransfer,
 					thirdMark: thirdMark ?? undefined,
+				},
+				{
+					headers: HttpService.GetGzippedPayloadHeaders,
 				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -82,9 +90,12 @@ export class HttpService {
 	archiveTechRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string) {
 		return this.http
 			.patch<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/archive/${systemNumber}/${createdTimestamp}`,
 				{
 					reasonForArchiving,
+				},
+				{
+					headers: HttpService.GetGzippedPayloadHeaders,
 				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -93,7 +104,9 @@ export class HttpService {
 	createTechRecord(newVehicleRecord: V3TechRecordModel) {
 		const body = cloneDeep<TechRecordType<'put'>>(newVehicleRecord as TechRecordType<'put'>);
 		return this.http
-			.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body)
+			.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/tech-records/v4`, body, {
+				headers: HttpService.InboundOutboundPayloadHeaders,
+			})
 			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
@@ -132,7 +145,7 @@ export class HttpService {
 	generateADRCertificate(systemNumber: string, createdTimestamp: string, certificateType: string) {
 		return this.http
 			.post<{ message: string; id: string }>(
-				`${environment.VTM_API_URI}/v3/technical-records/adrCertificate/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/adrCertificate/${systemNumber}/${createdTimestamp}`,
 				{ certificateType }
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -150,7 +163,6 @@ export class HttpService {
 			headers,
 			observe: 'events',
 			params,
-			reportProgress: true,
 			responseType: 'text',
 		});
 	}
@@ -167,7 +179,6 @@ export class HttpService {
 			headers,
 			observe: 'events',
 			params,
-			reportProgress: true,
 			responseType: 'text',
 		});
 	}
@@ -180,7 +191,7 @@ export class HttpService {
 	) {
 		return this.http
 			.post(
-				`${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
 				{
 					vtmUsername: user.name,
 					letterType,
@@ -197,7 +208,7 @@ export class HttpService {
 	generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }) {
 		return this.http
 			.post<Object>(
-				`${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`,
 				{
 					reasonForCreation: reason,
 					vtmUsername: user.name,
@@ -210,13 +221,15 @@ export class HttpService {
 	getRecalls(vin: string) {
 		const timeoutMs = environment.production ? 30000 : 10000;
 		return this.http
-			.get<RecallsSchema>(`${environment.VTM_API_URI}/v3/technical-records/recalls/${vin}`)
+			.get<RecallsSchema>(`${environment.VTM_API_URI}/tech-records/v4/recalls/${vin}`)
 			.pipe(timeout(timeoutMs));
 	}
 
-	getTechRecordV3(systemNumber: string, createdTimestamp: string) {
+	getTechRecordBySysNumberAndTimestamp(systemNumber: string, createdTimestamp: string) {
 		return this.http
-			.get<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`)
+			.get<TechRecordType<'get'>>(`${environment.VTM_API_URI}/tech-records/v4/${systemNumber}/${createdTimestamp}`, {
+				headers: HttpService.GetGzippedPayloadHeaders,
+			})
 			.pipe(timeout(HttpService.TIMEOUT));
 	}
 
@@ -302,9 +315,12 @@ export class HttpService {
 	promoteTechRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string) {
 		return this.http
 			.patch<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/promote/${systemNumber}/${createdTimestamp}`,
 				{
 					reasonForPromoting,
+				},
+				{
+					headers: HttpService.GetGzippedPayloadHeaders,
 				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -479,8 +495,9 @@ export class HttpService {
 		params = params.set('additionalInfo', true);
 
 		return this.http
-			.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/v3/technical-records/search/${term}`, {
+			.get<TechRecordSearchSchema[]>(`${environment.VTM_API_URI}/tech-records/v4/search/${term}`, {
 				params,
+				headers: HttpService.GetGzippedPayloadHeaders,
 			})
 			.pipe(timeout(HttpService.TIMEOUT));
 	}
@@ -606,10 +623,13 @@ export class HttpService {
 	unarchiveTechRecord(systemNumber: string, createdTimestamp: string, reasonForUnarchiving: string, status: string) {
 		return this.http
 			.post<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`,
+				`${environment.VTM_API_URI}/tech-records/v4/unarchive/${systemNumber}/${createdTimestamp}`,
 				{
 					reasonForUnarchiving,
 					status,
+				},
+				{
+					headers: HttpService.PostPutGzippedPayloadHeaders,
 				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
@@ -618,8 +638,11 @@ export class HttpService {
 	updateTechRecord(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>) {
 		return this.http
 			.patch<TechRecordType<'get'>>(
-				`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`,
-				techRecord
+				`${environment.VTM_API_URI}/tech-records/v4/${systemNumber}/${createdTimestamp}`,
+				techRecord,
+				{
+					headers: HttpService.PostPutGzippedPayloadHeaders,
+				}
 			)
 			.pipe(timeout(HttpService.TIMEOUT));
 	}

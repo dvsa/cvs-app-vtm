@@ -92,7 +92,7 @@ export class TechnicalRecordServiceEffects {
 			mergeMap((action) => {
 				const anchorLink = 'search-term';
 
-				return this.httpService.getTechRecordV3(action.systemNumber, action.createdTimestamp).pipe(
+				return this.httpService.getTechRecordBySysNumberAndTimestamp(action.systemNumber, action.createdTimestamp).pipe(
 					map((vehicleTechRecord) => {
 						return getTechRecordV3Success({ vehicleTechRecord });
 					}),
