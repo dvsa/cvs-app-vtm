@@ -9,6 +9,7 @@ import { CommonValidatorsService } from '@/src/app/forms/validators/common-valid
 import { MultiOptions, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
@@ -58,6 +59,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	testTypeService = inject(TestTypeService);
 	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
+	loadStatusService = inject(LoadStatusService);
 
 	mode = input.required<Modes>();
 	initialMode = input.required<Modes>();
@@ -151,7 +153,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		const loadStatusGroup = testTypeGroup.controls.loadStatus;
 		loadStatusGroup.controls.vehicleLoadStatus.setValidators([
-			this.commonValidators.applyWhen(() => this.shouldShowLoadStatus(), this.commonValidators.required('Load status')),
+			this.commonValidators.applyWhen(() => this.isLoadStatusRequired(), this.commonValidators.required('Load status')),
 		]);
 		loadStatusGroup.controls.unladenBodyType.setValidators([
 			this.commonValidators.applyWhen(() => this.isUnladenSelected(), this.commonValidators.required('Body type')),
@@ -228,23 +230,12 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowLoadStatus(): boolean {
-		const testType = this.testResult()?.testTypes?.[0];
-		if (!testType) return false;
+		return this.loadStatusService.isLoadStatusApplicable(this.testResult());
+	}
 
-		// Applicable for HGV/TRL annual tests, or full prohibition tests
-		const loadStatusTestIds = ['94', '40', '70', '107'];
-		if (loadStatusTestIds.includes(testType.testTypeId)) return true;
-
-		// Also applicable for HGV/TRL annual test retests
-		const loadStatusRetestIds = ['53', '98'];
-		if (!loadStatusRetestIds.includes(testType.testTypeId)) return false;
-
-		if (testType.testResult !== TestResults.FAIL) return false;
-		if (!Array.isArray(testType.defects)) return false;
-
-		return testType.defects.some((defect) => {
-			return [59, 71, 72, 73].includes(defect.imNumber);
-		});
+	isLoadStatusRequired(): boolean {
+		// When amending a test, load status is displayed but can be left blank
+		return this.shouldShowLoadStatus() && this.initialMode() !== Modes.AMEND;
 	}
 
 	isUnladenSelected(): boolean {

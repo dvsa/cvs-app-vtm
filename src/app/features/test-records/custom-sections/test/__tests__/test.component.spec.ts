@@ -5,8 +5,10 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { selectAllTestResults } from '@store/test-records';
 
 import { TestComponent } from '../test.component';
 
@@ -273,7 +275,21 @@ describe('TestComponent', () => {
 
 	describe('shouldShowLoadStatus', () => {
 		const setTestType = (testType: Record<string, unknown>) => {
-			store.overrideSelector(toEditOrNotToEdit, { testTypes: [testType] } as TestResultSchema);
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
+				testTypes: [{ testTypeStartTimestamp: '2026-09-28T10:00:00.000Z', ...testType }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		// The annual test being retested
+		const setTestHistory = (testType: Record<string, unknown>) => {
+			store.overrideSelector(selectAllTestResults, [
+				{
+					testStatus: TestStatus.SUBMITTED,
+					testTypes: [{ testTypeStartTimestamp: '2026-09-23T09:00:00.000Z', ...testType }],
+				} as TestResultSchema,
+			]);
 			store.refreshState();
 		};
 
@@ -294,19 +310,49 @@ describe('TestComponent', () => {
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be false for a retest that did not fail', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
+		it('should be false for a retest when the vehicle has no test history', () => {
+			setTestType({ testTypeId: '53' });
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be false for a failed retest without a qualifying defect', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
+		it('should be false for a retest of an annual test that did not fail', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be true for a failed retest with a qualifying defect', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
+		it('should be false for a retest of an annual test without a qualifying defect', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be true for a retest of an annual test failed on a qualifying defect', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
 			expect(component.shouldShowLoadStatus()).toBe(true);
+		});
+	});
+
+	describe('isLoadStatusRequired', () => {
+		it('should be required when creating a test that captures load status', () => {
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '94' }] } as TestResultSchema);
+			store.refreshState();
+
+			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
+			control.setValue(null);
+			control.markAsTouched();
+
+			expect(component.isLoadStatusRequired()).toBe(true);
+			expect(control.valid).toBe(false);
+			expect(control.errors).toHaveProperty('required');
+		});
+
+		it('should not be required when the test does not capture load status', () => {
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '1' }] } as TestResultSchema);
+			store.refreshState();
+
+			expect(component.isLoadStatusRequired()).toBe(false);
 		});
 	});
 });
@@ -315,6 +361,7 @@ describe('TestComponent - AMEND mode', () => {
 	let fixture: ComponentFixture<TestComponent>;
 	let component: TestComponent;
 	let formGroupDirective: FormGroupDirective;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
@@ -329,10 +376,52 @@ describe('TestComponent - AMEND mode', () => {
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.AMEND);
 		fixture.componentRef.setInput('initialMode', Modes.AMEND);
+	});
+
+	afterEach(() => {
+		store.resetSelectors();
+	});
+
+	describe('load status', () => {
+		beforeEach(() => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
+				testTypes: [{ testTypeId: '53', testTypeStartTimestamp: '2026-09-28T10:00:00.000Z' }],
+			} as TestResultSchema);
+			store.overrideSelector(selectAllTestResults, [
+				{
+					testStatus: TestStatus.SUBMITTED,
+					testTypes: [
+						{
+							testTypeId: '94',
+							testResult: TestResults.FAIL,
+							testTypeStartTimestamp: '2026-09-23T09:00:00.000Z',
+							defects: [{ imNumber: 59 }],
+						},
+					],
+				} as TestResultSchema,
+			]);
+			store.refreshState();
+			fixture.detectChanges();
+		});
+
+		it('should be displayed when the annual test being retested failed on a qualifying defect', () => {
+			expect(component.shouldShowLoadStatus()).toBe(true);
+		});
+
+		it('should not be mandatory, so an amendment can be saved with it left blank', () => {
+			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
+			control.setValue(null);
+			control.markAsTouched();
+
+			expect(component.isLoadStatusRequired()).toBe(false);
+			expect(control.valid).toBe(true);
+		});
 	});
 
 	describe('initTimeDisplayControls', () => {
