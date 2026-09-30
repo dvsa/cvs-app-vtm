@@ -280,6 +280,9 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		if ((isFail || isAbandon) && testType.centralDocs?.issueRequired) {
 			testType.centralDocs.issueRequired = false;
 		}
+		if (isFail && !testType.testAnniversaryDate) {
+			testType.testAnniversaryDate = null;
+		}
 
 		// If test type has issueRequired set to true, but not HGV/TRL IVA test, set the cert number to 000000
 		if (
