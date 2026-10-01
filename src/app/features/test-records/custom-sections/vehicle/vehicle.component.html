@@ -54,6 +54,7 @@
     <!-- EU vehicle category -->
     <govuk-form-group-select
       label="EU Vehicle Category"
+      [defaultOption]="' '"
       [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord)"
       [width]="FormNodeWidth.S"
       formControlName="euVehicleCategory"

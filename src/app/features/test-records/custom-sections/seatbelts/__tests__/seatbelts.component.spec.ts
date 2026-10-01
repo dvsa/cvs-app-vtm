@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { TestService } from '@/src/app/services/test/test.service';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -8,6 +9,7 @@ import { SeatbeltsComponent } from '../seatbelts.component';
 describe('SeatbeltsComponent', () => {
 	let fixture: ComponentFixture<SeatbeltsComponent>;
 	let component: SeatbeltsComponent;
+	let testService: TestService;
 	let formGroupDirective: FormGroupDirective;
 
 	/** Mirrors what `extractGlobalErrors` does on review, so sibling-dependent validators re-run. */
@@ -25,6 +27,8 @@ describe('SeatbeltsComponent', () => {
 			],
 		}).compileComponents();
 
+		testService = TestBed.inject(TestService);
+		testService.isAbandoning.set(false);
 		fixture = TestBed.createComponent(SeatbeltsComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.EDIT);
@@ -57,6 +61,15 @@ describe('SeatbeltsComponent', () => {
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
 				control.setValue(false);
 				control.markAsTouched();
+				expect(control.valid).toBe(true);
+			});
+
+			it('should be valid when unanswered and the test is being abandoned', () => {
+				testService.isAbandoning.set(true);
+				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
+				control.setValue(null);
+				control.markAsTouched();
+				revalidate(control);
 				expect(control.valid).toBe(true);
 			});
 		});
@@ -143,6 +156,33 @@ describe('SeatbeltsComponent', () => {
 
 				expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.valid).toBe(true);
 			});
+		});
+	});
+
+	// The dependent fields used to keep whatever validity they last had, so their errors only
+	// caught up with the answer once the user edited the fields themselves.
+	describe('watchSeatbeltCheck', () => {
+		it('should raise the dependent errors as soon as the check is answered Yes', () => {
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(null);
+			testTypeGroup.controls.lastSeatbeltInstallationCheckDate.setValue(null);
+
+			testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
+
+			expect(testTypeGroup.controls.numberOfSeatbeltsFitted.errors).toHaveProperty('required');
+			expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.errors).toHaveProperty('required');
+		});
+
+		it('should clear the dependent errors as soon as the check is answered No', () => {
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(null);
+			testTypeGroup.controls.lastSeatbeltInstallationCheckDate.setValue(null);
+			testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
+
+			testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(false);
+
+			expect(testTypeGroup.controls.numberOfSeatbeltsFitted.errors).toBeNull();
+			expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.errors).toBeNull();
 		});
 	});
 

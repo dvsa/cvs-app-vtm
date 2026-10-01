@@ -15,6 +15,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { TestService } from '@services/test/test.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
@@ -29,6 +30,7 @@ describe('TestRecordV2Component', () => {
 	let globalWarningService: GlobalWarningService;
 	let actions$: ReplaySubject<Action>;
 	let testRecordsService: TestRecordsService;
+	let testService: TestService;
 
 	beforeEach(async () => {
 		actions$ = new ReplaySubject(1);
@@ -46,6 +48,8 @@ describe('TestRecordV2Component', () => {
 		store = TestBed.inject(MockStore);
 		globalWarningService = TestBed.inject(GlobalWarningService);
 		testRecordsService = TestBed.inject(TestRecordsService);
+		testService = TestBed.inject(TestService);
+		testService.isAbandoning.set(false);
 		fixture = TestBed.createComponent(TestRecordV2Component);
 		component = fixture.componentInstance;
 	});
@@ -304,6 +308,56 @@ describe('TestRecordV2Component', () => {
 			component.onCancel(component.initialMode());
 
 			expect(clearWarningsSpy).toHaveBeenCalled();
+		});
+
+		it('should stop abandoning the test when backing out of the abandon flow', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.ABANDON);
+			testService.isAbandoning.set(true);
+
+			component.onCancel(component.initialMode());
+
+			expect(testService.isAbandoning()).toBe(false);
+		});
+
+		it('should clear errors', () => {
+			const clearErrorsSpy = jest.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.ABANDON);
+
+			component.onCancel(component.initialMode());
+
+			expect(clearErrorsSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('onMarkAsAbandoned', () => {
+		it('should flag the test as being abandoned before validating the form', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockImplementation(() => {
+				// the sections read this flag while their validators run
+				expect(testService.isAbandoning()).toBe(true);
+				return [];
+			});
+
+			component.onMarkAsAbandoned();
+
+			expect(testService.isAbandoning()).toBe(true);
+			expect(component.mode()).toBe(Modes.ABANDON);
+		});
+
+		it('should stop abandoning the test when the form is invalid', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest
+				.spyOn(globalErrorService, 'extractGlobalErrors')
+				.mockReturnValue([{ error: 'Contingency Test Number is required', anchorLink: 'contingencyTestNumber' }]);
+
+			component.onMarkAsAbandoned();
+
+			expect(testService.isAbandoning()).toBe(false);
+			expect(component.mode()).toBe(Modes.EDIT);
 		});
 	});
 

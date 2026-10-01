@@ -72,6 +72,12 @@ export const TEST_TYPES_GROUP9_10: string[] = [
 // tests for HGV and TRL - First tests, Paid/Part paid prohibition clearance on first test
 export const TEST_TYPES_GROUP9_10_CENTRAL_DOCS = ['95', '41', '65', '103', '66', '104', '82', '119', '83', '120', '67'];
 
+// load status - tests for HGV and TRL - Annual tests, Paid prohibition clearance on annual test(full inspection)
+export const TEST_TYPES_LOAD_STATUS_ANNUAL: string[] = ['94', '40', '70', '107'];
+
+// load status - tests for HGV and TRL - Paid annual test retests
+export const TEST_TYPES_LOAD_STATUS_ANNUAL_RETEST: string[] = ['53', '98'];
+
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
 export const TEST_TYPES_GROUP12_14: string[] = ['117', '108', '109', '110', '114', '71', '72', '73', '77', '80'];
 

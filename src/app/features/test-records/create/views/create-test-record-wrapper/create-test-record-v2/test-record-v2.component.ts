@@ -165,6 +165,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.testService.isAbandoning.set(false); // the flag is held on a root service, so clear it per test
 		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
 			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
 		}
@@ -244,9 +245,12 @@ export class TestRecordV2Component implements OnInit {
 	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
-		if (mode === Modes.ABANDON) {
-			const testTypeGroup = this.form.controls.testTypes.at(0);
-			testTypeGroup.controls.reasonForAbandoning.setValidators([]);
+		// The errors belong to the page being left behind, so they must not follow the user back.
+		this.globalErrorService.clearErrors();
+		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
+		// The abandon-only validation is dropped by the abandon page as it is destroyed.
+		if (this.mode() === Modes.ABANDON) {
+			this.testService.isAbandoning.set(false);
 		}
 		this.mode.set(mode);
 	}
@@ -327,6 +331,10 @@ export class TestRecordV2Component implements OnInit {
 		this.form.markAllAsTouched();
 		this.flushFormToStore(); // capture any pending debounced change before leaving edit mode
 
+		// Flag the abandonment before validating, so the sections skip the validation that only applies
+		// to a test that is being completed (e.g. country of registration, odometer, seatbelt check).
+		this.testService.isAbandoning.set(true);
+
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
@@ -337,11 +345,15 @@ export class TestRecordV2Component implements OnInit {
 			return;
 		}
 
+		// The user stays in edit mode to fix the errors, so they are no longer abandoning the test.
+		this.testService.isAbandoning.set(false);
 		this.setGlobalErrors(errors);
 	}
 
 	onAbandon(): void {
-		this.form.markAllAsTouched();
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+		testTypeGroup.controls.reasonForAbandoning.markAsTouched();
+		testTypeGroup.controls.additionalCommentsForAbandon.markAsTouched();
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 

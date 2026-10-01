@@ -93,14 +93,19 @@ export class VehicleComponent implements OnInit {
 	}
 
 	addValidators(): void {
-		this.form.controls.countryOfRegistration.setValidators([this.commonValidators.required('Country Of Registration')]);
+		this.form.controls.countryOfRegistration.setValidators([
+			this.commonValidators.applyWhen(
+				() => !this.testService.isAbandoning(),
+				this.commonValidators.required('Country Of Registration')
+			),
+		]);
 		this.form.controls.euVehicleCategory.setValidators([this.commonValidators.required('EU Vehicle Category')]);
 		this.form.controls.odometerReading.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.isOdometerReadingRequired(),
-				this.commonValidators.required('Odometer Reading'),
-				this.commonValidators.max(9999999, 'Odometer Reading')
+				this.commonValidators.required('Odometer Reading')
 			),
+			this.commonValidators.applyWhen(() => this.hasOdometer(), this.commonValidators.max(9999999, 'Odometer Reading')),
 		]);
 
 		this.form.controls.odometerReadingUnits.setValidators([
@@ -174,23 +179,29 @@ export class VehicleComponent implements OnInit {
 		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
 	}
 
-	isOdometerReadingRequired(): boolean {
+	hasOdometer(): boolean {
 		const techRecord = this.techRecord();
 		if (!techRecord) return false;
 
 		// Exclude TRLs as they do not have an odometer
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) return false;
+		return techRecord.techRecord_vehicleType !== VehicleTypes.TRL;
+	}
+
+	isOdometerReadingRequired(): boolean {
+		// The odometer reading is not needed to abandon a test
+		if (this.testService.isAbandoning()) return false;
+
+		if (!this.hasOdometer()) return false;
 
 		// Add test specific logic here
 		return true;
 	}
 
 	isOdometerReadingUnitsRequired(): boolean {
-		const techRecord = this.techRecord();
-		if (!techRecord) return false;
+		// The odometer reading units are not needed to abandon a test
+		if (this.testService.isAbandoning()) return false;
 
-		// Exclude TRLs as they do not have an odometer
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) return false;
+		if (!this.hasOdometer()) return false;
 
 		// Add test specific logic here
 		return true;
