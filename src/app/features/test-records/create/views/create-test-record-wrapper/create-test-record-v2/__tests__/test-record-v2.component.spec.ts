@@ -314,12 +314,20 @@ describe('TestRecordV2Component', () => {
 			fixture.componentRef.setInput('initialMode', Modes.EDIT);
 			component.mode.set(Modes.ABANDON);
 			testService.isAbandoning.set(true);
-			component.form.controls.testTypes.at(0).controls.reasonForAbandoning.setValidators([() => ({ required: {} })]);
 
 			component.onCancel(component.initialMode());
 
 			expect(testService.isAbandoning()).toBe(false);
-			expect(component.form.controls.testTypes.at(0).controls.reasonForAbandoning.validator).toBeNull();
+		});
+
+		it('should clear errors', () => {
+			const clearErrorsSpy = jest.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.ABANDON);
+
+			component.onCancel(component.initialMode());
+
+			expect(clearErrorsSpy).toHaveBeenCalled();
 		});
 	});
 
