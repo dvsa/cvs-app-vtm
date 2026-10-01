@@ -280,7 +280,7 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		if ((isFail || isAbandon) && testType.centralDocs?.issueRequired) {
 			testType.centralDocs.issueRequired = false;
 		}
-		if (isFail && !testType.testAnniversaryDate) {
+		if (isFail && !testType.testAnniversaryDate && TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(testType.testTypeId)) {
 			testType.testAnniversaryDate = null;
 		}
 
