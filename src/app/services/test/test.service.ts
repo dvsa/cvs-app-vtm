@@ -234,7 +234,7 @@ export const INITIAL_TEST_RESULT_FORM_VALUE = {
 			lastSeatbeltInstallationCheckDate: undefined,
 			seatbeltInstallationCheckDate: undefined,
 			testExpiryDate: undefined,
-			testAnniversaryDate: undefined,
+			testAnniversaryDate: '',
 			modType: undefined,
 			emissionStandard: undefined,
 			fuelType: undefined,

@@ -17,7 +17,16 @@ export class DTOLayer {
 			return editingTestResult;
 		}
 		const payload = this.stripCentralDocsForNonApplicableTestTypes(editingTestResult);
-		return payload;
+
+		return this.stripTestAnniversaryDate(payload);
+	}
+
+	private stripTestAnniversaryDate(editingTestResult: TestResultSchema): TestResultSchema {
+		// transformPayload is called for Creations only. When creating a record, there should be no testAnniversaryDate
+		return {
+			...editingTestResult,
+			testTypes: editingTestResult.testTypes.map(({ testAnniversaryDate, ...testType }) => testType),
+		};
 	}
 
 	private stripCentralDocsForNonApplicableTestTypes(editingTestResult: TestResultSchema): TestResultSchema {
