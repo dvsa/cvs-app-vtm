@@ -19,12 +19,14 @@
         @if (mode() === Modes.AMEND) {
           <!-- Created -->
           <govuk-form-group-date
+            mode="iso-date"
             label="Created"
             formControlName="createdAt"
           ></govuk-form-group-date>
 
           <!-- Test date -->
           <govuk-form-group-date
+            mode="iso-date"
             label="Test Date"
             formControlName="testTypeStartTimestamp"
           ></govuk-form-group-date>
@@ -66,12 +68,14 @@
 
           <!-- Expiry Date -->
           <govuk-form-group-date
+            mode="iso-date"
             label="Expiry Date"
             formControlName="testExpiryDate"
           ></govuk-form-group-date>
 
           <!-- Anniversary date -->
           <govuk-form-group-date
+            mode="iso-date"
             label="Anniversary date"
             formControlName="testAnniversaryDate"
           ></govuk-form-group-date>
