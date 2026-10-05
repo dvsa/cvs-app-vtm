@@ -79,8 +79,8 @@ export class BatchSummaryComponent {
 			} as BatchUpdateVehicleModel;
 
 			// Do not set trailer id to null if trailerIdOrVrm is not populated as it fails backend validation
-			if (record.techRecord_vehicleType === VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
-				record.trailerId = vehicle.trailerIdOrVrm;
+			if (record.techRecord_vehicleType === VehicleTypes.TRL) {
+				record.trailerId = vehicle.trailerIdOrVrm ?? '';
 			}
 
 			if (record.techRecord_vehicleType !== VehicleTypes.TRL) {
