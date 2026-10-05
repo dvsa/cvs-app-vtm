@@ -1,6 +1,8 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { initialAppState } from '@/src/app/store';
+import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -45,6 +47,76 @@ describe('TestComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	describe('prepopulateVTG15Required', () => {
+		it.each([
+			['hgv', true, null],
+			['lgv', true, null],
+			['trl', true, null],
+			['hgv', false, false],
+			['lgv', false, false],
+			['trl', false, false],
+		] as const)(
+			'should default VTG15 required for vehicle type %s with dangerous goods %s to %s',
+			(vehicleType, dangerousGoods, expected) => {
+				store.overrideSelector(techRecord, {
+					techRecord_vehicleType: vehicleType,
+					techRecord_adrDetails_dangerousGoods: dangerousGoods,
+				} as V3TechRecordModel);
+				store.refreshState();
+				fixture = TestBed.createComponent(TestComponent);
+				component = fixture.componentInstance;
+				fixture.componentRef.setInput('mode', Modes.EDIT);
+				fixture.componentRef.setInput('initialMode', Modes.EDIT);
+				const control = component.form.controls.vtg15.controls.vtg15Required;
+				control.setValue(undefined);
+
+				fixture.detectChanges();
+
+				expect(control.value).toBe(expected);
+			}
+		);
+
+		it.each([true, false])('should preserve an existing VTG15 required value of %s', (value) => {
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: false,
+			} as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(value);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBe(value);
+		});
+
+		it.each([Modes.AMEND, Modes.VIEW])('should not default VTG15 required in initial mode %s', (initialMode) => {
+			fixture.componentRef.setInput('initialMode', initialMode);
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: false,
+			} as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(null);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBeNull();
+		});
+
+		it('should not default VTG15 required for a vehicle without ADR details', () => {
+			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(null);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBeNull();
+		});
 	});
 
 	describe('addValidators', () => {
