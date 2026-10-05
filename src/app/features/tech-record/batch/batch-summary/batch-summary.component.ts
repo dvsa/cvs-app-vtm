@@ -69,10 +69,14 @@ export class BatchSummaryComponent {
 
 		this.errorService.clearErrors();
 
+		// The editing tech record may hold identifiers from a previously processed vehicle in the batch,
+		// so strip them to prevent them leaking into other vehicles (e.g. duplicate trailer IDs on create)
+		const { trailerId, primaryVrm, ...baseTechRecord } = techRecord as BatchUpdateVehicleModel;
+
 		const batchFailed = this.batchFailed();
 		for (const vehicle of batchFailed) {
 			const record = {
-				...techRecord,
+				...baseTechRecord,
 				vin: vehicle.vin,
 				systemNumber: vehicle.systemNumber,
 				createdTimestamp: vehicle.createdTimestamp,
@@ -83,7 +87,7 @@ export class BatchSummaryComponent {
 				record.trailerId = vehicle.trailerIdOrVrm;
 			}
 
-			if (record.techRecord_vehicleType !== VehicleTypes.TRL) {
+			if (record.techRecord_vehicleType !== VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
 				record.primaryVrm = vehicle.trailerIdOrVrm;
 			}
 
