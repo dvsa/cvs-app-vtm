@@ -17,7 +17,11 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
+import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
 import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
 
@@ -31,6 +35,8 @@ import { Store } from '@ngrx/store';
 		GovukFormGroupSelectComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupRadioComponent,
+		NumberOnlyDirective,
+		RadioComponent,
 	],
 	styleUrls: ['./vehicle.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,11 +61,35 @@ export class VehicleComponent implements OnInit {
 	readonly FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
+		this.prepopulateHazardClassificationOptions();
 		this.addValidators();
 		this.handlePrepopulateEuVehicleCategory();
 
 		// Load reference data
 		this.optionsService.loadOptions(ReferenceDataResourceType.CountryOfRegistration);
+	}
+
+	prepopulateHazardClassificationOptions(): void {
+		const vtg15 = this.form.controls.vtg15;
+		const primaryHazardClassification = this.toHazardClassificationOption(
+			vtg15.controls.primaryHazardClassification.value
+		);
+		const secondaryHazardClassification = this.toHazardClassificationOption(
+			vtg15.controls.secondaryHazardClassification.value
+		);
+
+		if (
+			primaryHazardClassification !== vtg15.controls.primaryHazardClassification.value ||
+			secondaryHazardClassification !== vtg15.controls.secondaryHazardClassification.value
+		) {
+			vtg15.patchValue(
+				{
+					primaryHazardClassification,
+					secondaryHazardClassification,
+				},
+				{ emitEvent: false }
+			);
+		}
 	}
 
 	addValidators(): void {
@@ -84,6 +114,47 @@ export class VehicleComponent implements OnInit {
 				this.commonValidators.required('Odometer Reading Units')
 			),
 		]);
+		this.form.controls.vtg15.controls.vtg15Required.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isVTGRequiredMandatory(),
+				this.commonValidators.required(() => {
+					return {
+						error: 'Select if a VTG15 is required',
+						anchorLink: 'vtg15Required',
+					};
+				})
+			),
+		]);
+		this.form.controls.vtg15.controls.primaryHazardClassification.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.form.controls.vtg15.controls.vtg15Required.value ?? false,
+				this.commonValidators.required('Primary hazard classification')
+			),
+		]);
+		this.form.controls.vtg15.controls.unNumber.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.form.controls.vtg15.controls.vtg15Required.value ?? false,
+				this.commonValidators.required('UN number'),
+				this.commonValidators.exactLengthDigits(4, 'UN number')
+			),
+		]);
+	}
+	isVTGRequiredMandatory(): boolean {
+		const techRecord = this.techRecord();
+		// not mandatory for amend mode
+		if (this.mode() === Modes.AMEND) {
+			return false;
+		}
+		if (
+			techRecord?.techRecord_vehicleType === 'hgv' ||
+			techRecord?.techRecord_vehicleType === 'lgv' ||
+			techRecord?.techRecord_vehicleType === 'trl'
+		) {
+			if (techRecord?.techRecord_adrDetails_dangerousGoods === true) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	handlePrepopulateEuVehicleCategory() {
@@ -101,6 +172,11 @@ export class VehicleComponent implements OnInit {
 			euVehicleCategory.patchValue(EUVehicleCategory.N1);
 			euVehicleCategory.disable();
 		}
+	}
+
+	toHazardClassificationOption(value?: HazardClassification | null): HazardClassification | null {
+		if (!value) return null;
+		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
 	}
 
 	hasOdometer(): boolean {
@@ -132,4 +208,6 @@ export class VehicleComponent implements OnInit {
 	}
 
 	protected readonly Modes = Modes;
+	protected readonly FORM_NODE_WIDTH = FormNodeWidth;
+	protected readonly HAZARD_CLASSIFICATION_OPTIONS = getOptionsFromEnumWithCodeAndDescription(HazardClassification);
 }
