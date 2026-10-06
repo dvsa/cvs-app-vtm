@@ -6,7 +6,7 @@ import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-fo
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { MultiOptions, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { MultiOptions, PASS_FAIL_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
@@ -16,20 +16,33 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonComponent } from '@components/button/button.component';
+import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
+import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import {
+	TechRecordGETHGV,
+	TechRecordGETTRL,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
-import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP7, TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
+import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
+import { ReplaySubject, take, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-test',
@@ -49,6 +62,9 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupTextareaComponent,
 		RadioComponent,
 		GovukCheckboxGroupComponent,
+		ButtonComponent,
+		FieldErrorMessageComponent,
+		RetrieveDocumentDirective,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,9 +73,11 @@ export class TestComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	testService = inject(TestService);
 	testTypeService = inject(TestTypeService);
+	techRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
 	loadStatusService = inject(LoadStatusService);
+	actions$ = inject(Actions);
 
 	mode = input.required<Modes>();
 	initialMode = input.required<Modes>();
@@ -68,6 +86,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	abandonReasons = computed(() => this.getAbandonReasonsList());
 	destroy = new ReplaySubject<boolean>(1);
+	systemNumber?: string;
+	createdTimestamp?: string;
 
 	startTimeDisplay = new FormControl({ value: '', disabled: true });
 	endTimeDisplay = new FormControl({ value: '', disabled: true });
@@ -78,6 +98,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
+	readonly adrCertificateFileName = signal<string | undefined>(undefined);
+	readonly adrCertificateError = signal<string | null | undefined>(undefined);
 
 	ngOnInit(): void {
 		this.loadOptions();
@@ -86,6 +108,21 @@ export class TestComponent implements OnInit, OnDestroy {
 		this.handleTestStartTimestampChange();
 		this.handleTestEndTimestampChange();
 		this.initTimeDisplayControls();
+
+		this.techRecordService.techRecord$.pipe(takeUntil(this.destroy)).subscribe((record) => {
+			this.systemNumber = (record as TechRecordGETHGV).systemNumber;
+			this.createdTimestamp = (record as TechRecordGETHGV).createdTimestamp;
+		});
+
+		this.actions$.pipe(ofType(generateADRCertificateSuccess), takeUntil(this.destroy)).subscribe(({ id }) => {
+			this.adrCertificateFileName.set(id);
+		});
+
+		this.actions$.pipe(ofType(retryInterceptorFailure), takeUntil(this.destroy)).subscribe(() => {
+			this.adrCertificateError.set(
+				'Try link again or Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS'
+			);
+		});
 	}
 
 	ngOnDestroy(): void {
@@ -225,8 +262,30 @@ export class TestComponent implements OnInit, OnDestroy {
 			});
 	}
 
+	shouldShowResult(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	shouldShowDescription(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
 	shouldShowCentralDocs(): boolean {
-		return TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		return [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
+			this.testResult()?.testTypes[0].testTypeId ?? ''
+		);
+	}
+
+	shouldShowGenerateADRCertificate(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	shouldShowCertificateNumber(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	shouldShowProhibitionIssued(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	shouldShowLoadStatus(): boolean {
@@ -288,9 +347,41 @@ export class TestComponent implements OnInit, OnDestroy {
 		return Array.isArray(reasons) ? reasons : (reasons?.split(this.ABANDON_REASONS_REGEX) ?? []);
 	}
 
+	get lastCertificateDate() {
+		let sortedTests: ADRCertificateDetails[] | undefined;
+		this.techRecordService.techRecord$.pipe(take(1)).subscribe((record) => {
+			sortedTests = (record as TechRecordGETHGV | TechRecordGETTRL).techRecord_adrPassCertificateDetails?.sort(
+				(a, b) =>
+					a.generatedTimestamp && b.generatedTimestamp
+						? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime()
+						: 0
+			);
+		});
+		return sortedTests && sortedTests?.length > 0
+			? `An ADR certificate was last generated on ${new Date(sortedTests[0].generatedTimestamp).toLocaleDateString('en-UK')}`
+			: 'There are no previous ADR certificates for this vehicle';
+	}
+
+	documentParams(certificate: string): Map<string, string> {
+		return new Map([['fileName', certificate]]);
+	}
+
+	handleGenerateADRCertificateSubmit(): void {
+		this.store.dispatch(
+			generateADRCertificate({
+				systemNumber: this.systemNumber ?? '',
+				createdTimestamp: this.createdTimestamp ?? '',
+				certificateType: 'PASS',
+			})
+		);
+	}
+
 	protected readonly Modes = Modes;
 	protected readonly FORM_NODE_WIDTH = FormNodeWidth;
 	protected readonly UNLADEN_BODY_TYPES = UnladenBodyType;
 	protected readonly REASONS_FOR_NOT_LOADING = ReasonForNotLoading;
 	protected readonly VEHICLE_LOAD_STATUS_TYPES = VehicleLoadStatusType;
+	protected readonly getOptionsFromEnum = getOptionsFromEnum;
+	protected readonly PASS_FAIL_OPTIONS = PASS_FAIL_OPTIONS;
+	protected readonly DocumentType = DocumentType;
 }

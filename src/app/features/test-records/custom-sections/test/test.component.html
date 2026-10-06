@@ -39,6 +39,14 @@
             appTrimWhitespace
           ></govuk-form-group-input>
         }
+        @if (shouldShowResult()) {
+          <!-- Result -->
+          <govuk-form-group-radio
+            label="Result"
+            formControlName="testResult"
+            [options]="PASS_FAIL_OPTIONS"
+          ></govuk-form-group-radio>
+        }
 
         @if (shouldShowCentralDocs()) {
           <!-- Issue Documents Centrally -->
@@ -49,6 +57,53 @@
               [options]="YES_NO_OPTIONS"
             ></govuk-form-group-radio>
           </ng-container>
+        }
+
+        @if (shouldShowDescription()) {
+          <!-- Test description -->
+          <govuk-form-group-input
+            label="Description"
+            formControlName="testTypeName"
+          ></govuk-form-group-input>
+        }
+
+        @if (shouldShowGenerateADRCertificate()) {
+          <!-- Generate ADR Certificate -->
+          <label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
+          <ng-container>
+            <div class="govuk-hint" for="generate-cert">
+              Only press this button if you wish to generate a new certificate, otherwise fill in previous certificate details below
+            </div>
+
+            <app-button id="submit-adr-cert-form" (clicked)="handleGenerateADRCertificateSubmit()">Generate certificate</app-button>
+          </ng-container>
+          @if (adrCertificateFileName(); as fileName) {
+          <div id="link-div">
+            <app-field-error-message for="view-button" [error]="adrCertificateError()"></app-field-error-message>
+            <app-button
+              id="view-button"
+              [params]="documentParams(fileName)"
+              [fileName]="fileName"
+              [documentType]="DocumentType.ADR_CERTIFICATE"
+              appRetrieveDocument
+              [loading]="true"
+              type="link"
+              design="link"
+            >View certificate</app-button
+            >
+          </div>}
+        }
+
+        @if (shouldShowCertificateNumber()) {
+          <!-- Certificate Number -->
+          <govuk-form-group-input
+            label="Certificate Number"
+            formControlName="certificateNumber"
+            [width]="FormNodeWidth.XXL"
+            appToUppercase
+            appNoSpace
+            appTrimWhitespace
+          ></govuk-form-group-input>
         }
 
         @if (mode() === Modes.AMEND) {
@@ -120,6 +175,14 @@
             label="Test end date and time"
             formControlName="testTypeEndTimestamp"
           ></govuk-form-group-date>
+        }
+        @if (shouldShowProhibitionIssued()) {
+          <!-- Prohibition Issued -->
+          <govuk-form-group-radio
+            label="Prohibition Issued"
+            formControlName="prohibitionIssued"
+            [options]="YES_NO_OPTIONS"
+          ></govuk-form-group-radio>
         }
         @if (shouldShowLoadStatus()) {
           <ng-container formGroupName="loadStatus">
