@@ -110,6 +110,7 @@ export const MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	{ label: 'Motorcycles up to 200cc', value: 'motorbikes up to 200cc' },
 	{ label: 'Motorcycles over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
 	{ label: '3 wheelers', value: '3 wheelers' },
+	{ label: 'MOT class 4', value: 'MOT class 4' },
 ];
 
 export const ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [

@@ -161,7 +161,19 @@ export class TestRecordV2Component implements OnInit {
 
 		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
 			this.testRecordService.testTypeChange(testTypeId);
+			this.applyTestTypeChange(testResult, testTypeId);
 		}
+	}
+
+	private applyTestTypeChange(testResult: TestResultSchema | undefined, testTypeId: string): void {
+		if (!testResult) return;
+
+		this.form.patchValue(testResult as any);
+		const testTypeName = this.testType()?.name;
+		this.form.controls.testTypes
+			.at(0)
+			.patchValue(testTypeName ? { testTypeId, testTypeName, name: testTypeName } : { testTypeId });
+		this.flushFormToStore();
 	}
 
 	ngOnInit(): void {
@@ -245,11 +257,11 @@ export class TestRecordV2Component implements OnInit {
 	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
-		// Backing out of the abandon flow: drop the abandon-only validation and restore the validation
-		// that is skipped while abandoning.
+		// The errors belong to the page being left behind, so they must not follow the user back.
+		this.globalErrorService.clearErrors();
+		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
+		// The abandon-only validation is dropped by the abandon page as it is destroyed.
 		if (this.mode() === Modes.ABANDON) {
-			const testTypeGroup = this.form.controls.testTypes.at(0);
-			testTypeGroup.controls.reasonForAbandoning.setValidators([]);
 			this.testService.isAbandoning.set(false);
 		}
 		this.mode.set(mode);
@@ -351,7 +363,9 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	onAbandon(): void {
-		this.form.markAllAsTouched();
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+		testTypeGroup.controls.reasonForAbandoning.markAsTouched();
+		testTypeGroup.controls.additionalCommentsForAbandon.markAsTouched();
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 

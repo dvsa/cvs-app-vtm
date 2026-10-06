@@ -579,6 +579,37 @@ export class CommonValidatorsService {
 		};
 	}
 
+	requiredTrue(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// Only an explicit answer of `false` fails here, a missing answer is left to the required condition
+			if (control.value !== false) return null;
+
+			if (typeof message !== 'string') {
+				return { requiredTrue: message(control) };
+			}
+
+			const globalError: GlobalError = { error: message, anchorLink: '', accordion: '' };
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { requiredTrue: globalError };
+		};
+	}
+
 	xYearsAfterCurrent(xYears: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
 			const currentYear = new Date().getFullYear();
