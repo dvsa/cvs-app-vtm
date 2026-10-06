@@ -90,7 +90,7 @@ export class EnterBatchIdentifiers implements OnInit {
 		const { vehicleType, batchSize, vehicles } = this.savedBatchDetails();
 		if (!vehicleType || !batchSize) return;
 
-		this.addVehicles(vehicleType, batchSize);
+		this.addVehicles(vehicleType, Math.max(batchSize, vehicles.length));
 
 		// Restore batch details if returning to this page
 		this.form.patchValue({ vehicles });
