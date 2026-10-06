@@ -56,10 +56,10 @@ describe('DateComponent', () => {
 	describe('control values', () => {
 		it.each([
 			['2342346-6213-234T00:00:00.000', 2342346, 6213, 234, 1, 6],
-			['2022-01-12T00:00:00.000', 2022, 0o1, 12, 1, 6],
+			['2022-01-12T00:00:00.000Z', 2022, 0o1, 12, 1, 6],
 			['2022--01T00:00:00.000', 2022, Number.NaN, 0o1, 0o1, 0o1],
 			['2022-01-T00:00:00.000', 2022, 0o1, Number.NaN, 0o1, 0o1],
-			['2022-02-01T13:45:00.000', 2022, 2, 0o1, 13, 45, true],
+			[new Date(2022, 1, 1, 13, 45).toISOString(), 2022, 2, 0o1, 13, 45, true],
 			['-01-01T01:01:00.000', Number.NaN, 0o1, 0o1, 0o1, 0o1, true],
 			[undefined, undefined, undefined, undefined, undefined, undefined, true],
 		])(
@@ -139,12 +139,104 @@ describe('DateComponent', () => {
 			tick();
 			dateComponent.control?.meta.changeDetection?.detectChanges();
 
-			expect(dateComponent.day).toEqual(date.getDate());
-			expect(dateComponent.month).toEqual(date.getMonth() + 1);
-			expect(dateComponent.year).toEqual(date.getFullYear());
+			expect(dateComponent.day).toEqual(date.getUTCDate());
+			expect(dateComponent.month).toEqual(date.getUTCMonth() + 1);
+			expect(dateComponent.year).toEqual(date.getUTCFullYear());
 			expect(dateComponent.hour).toEqual(date.getUTCHours());
 			expect(dateComponent.minute).toEqual(date.getUTCMinutes());
 		}));
+	});
+
+	// These assertions hold in any timezone, but the BST cases only catch regressions when run with TZ=Europe/London
+	describe('timezone handling', () => {
+		const reEmit = () => {
+			dateComponent.onDayChange(dateComponent.day);
+			dateComponent.onMonthChange(dateComponent.month);
+			dateComponent.onYearChange(dateComponent.year);
+			dateComponent.onHourChange(dateComponent.hour);
+			dateComponent.onMinuteChange(dateComponent.minute);
+		};
+
+		it.each([
+			['GMT', '2025-02-09T00:00:00.000Z'],
+			['BST', '2025-07-09T00:00:00.000Z'],
+			['BST, midnight local time', '2025-07-08T23:00:00.000Z'],
+			['BST, time of day preserved', '2025-07-09T10:15:30.000Z'],
+		])('should show the UTC date and write it back unchanged for a date only field (%s)', (_, value) => {
+			component.form.get('foo')?.setValue(value);
+			fixture.detectChanges();
+
+			expect(dateComponent.day).toBe(new Date(value).getUTCDate());
+
+			reEmit();
+
+			expect(component.form.get('foo')?.value).toBe(value);
+		});
+
+		it('should read a legacy value without a Z as UTC and write it back with a Z', () => {
+			component.form.get('foo')?.setValue('2025-07-09T00:00:00.000');
+			fixture.detectChanges();
+
+			expect(dateComponent.day).toBe(9);
+
+			reEmit();
+
+			expect(component.form.get('foo')?.value).toBe('2025-07-09T00:00:00.000Z');
+		});
+
+		it.each([
+			['GMT', 2025, 2, 9, '2025-02-09T00:00:00.000Z'],
+			['BST', 2025, 7, 9, '2025-07-09T00:00:00.000Z'],
+		])('should write a new date only value as UTC midnight (%s)', (_, year, month, day, expected) => {
+			fixture.detectChanges();
+
+			dateComponent.onDayChange(day);
+			dateComponent.onMonthChange(month);
+			dateComponent.onYearChange(year);
+
+			expect(component.form.get('foo')?.value).toBe(expected);
+		});
+
+		it.each([
+			['GMT', '2025-02-09T13:45:00.000Z'],
+			['BST', '2025-07-09T13:45:00.000Z'],
+		])('should show local time and write it back unchanged for a date and time field (%s)', (_, value) => {
+			jest.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
+			component.form.get('foo')?.setValue(value);
+			fixture.detectChanges();
+
+			expect(dateComponent.hour).toBe(new Date(value).getHours());
+
+			reEmit();
+
+			expect(component.form.get('foo')?.value).toBe(value);
+		});
+
+		it('should convert an entered local date and time to UTC', () => {
+			jest.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
+			fixture.detectChanges();
+
+			dateComponent.onDayChange(9);
+			dateComponent.onMonthChange(7);
+			dateComponent.onYearChange(2025);
+			dateComponent.onHourChange(13);
+			dateComponent.onMinuteChange(45);
+
+			expect(component.form.get('foo')?.value).toBe(new Date(2025, 6, 9, 13, 45).toISOString());
+		});
+
+		it.each([
+			['an invalid day', 2025, 2, 30, '2025-02-30T00:00:00.000'],
+			['a two digit year', 25, 2, 9, '25-02-09T00:00:00.000'],
+		])('should not convert %s so the validator can report it', (_, year, month, day, expected) => {
+			fixture.detectChanges();
+
+			dateComponent.onDayChange(day);
+			dateComponent.onMonthChange(month);
+			dateComponent.onYearChange(year);
+
+			expect(component.form.get('foo')?.value).toBe(expected);
+		});
 	});
 
 	describe('error handling', () => {
