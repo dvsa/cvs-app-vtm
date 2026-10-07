@@ -239,7 +239,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	contingencyTestNumberIsRequired(): boolean {
-		return this.initialMode() === Modes.EDIT;
+		return this.initialMode() === Modes.EDIT && this.shouldShowCertificateNumber();
 	}
 
 	handleTestStartTimestampChange(): void {
@@ -281,7 +281,14 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowCertificateNumber(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		const group7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		if (!group7) return false;
+		if (this.testResult()?.testTypes[0].testResult == 'fail') {
+			return false;
+		}
+		return !(
+			this.testResult()?.testTypes[0].testResult == 'pass' && this.testResult()?.testTypes[0].centralDocs?.issueRequired
+		);
 	}
 
 	shouldShowProhibitionIssued(): boolean {
