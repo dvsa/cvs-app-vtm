@@ -22,6 +22,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { TestService } from '@services/test/test.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/router.selectors';
@@ -1033,6 +1034,29 @@ describe('TestResultsEffects', () => {
 					b: patchEditingTestResult({ testResult: { recalls } }),
 				});
 			});
+		});
+	});
+
+	describe('onEnterTestCreateOrAmend', () => {
+		it('should clear the shared test form without emitting, so the v2 form mirror cannot write blanks to the store', () => {
+			const testService = TestBed.inject(TestService);
+			testService.form.controls.vin.setValue('VIN00000001');
+
+			const emissions: unknown[] = [];
+			const subscription = testService.form.valueChanges.subscribe((value) => emissions.push(value));
+
+			testScheduler.run(({ hot, flush }) => {
+				actions$ = hot('-a', { a: testTypeIdChanged({ testTypeId: '65' }) });
+
+				effects.onEnterTestCreateOrAmend.subscribe();
+
+				flush();
+			});
+
+			subscription.unsubscribe();
+
+			expect(testService.form.controls.vin.value).toBe('');
+			expect(emissions).toEqual([]);
 		});
 	});
 

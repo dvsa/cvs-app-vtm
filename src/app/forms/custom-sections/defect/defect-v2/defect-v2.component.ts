@@ -116,7 +116,10 @@ export class DefectV2Component {
 		prohibitionIssued: this.fb.control<boolean | null>(null, [
 			this.commonValidators.applyWhen(
 				() => this.isProhibitionIssuedRequired(),
-				this.commonValidators.required('Prohibition issued')
+				this.commonValidators.required('Prohibition issued'),
+				// A dangerous defect with no standard for prohibition can only be added once a notice has been issued,
+				// so answering 'No' is not a valid way of satisfying the required condition above
+				this.commonValidators.requiredTrue('Prohibition notice has not been issued.')
 			),
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
@@ -149,6 +152,10 @@ export class DefectV2Component {
 			this.populateDefectFromTaxonomy(defect, item, deficiency);
 		}
 
+		// `notes` and `prohibitionIssued` are validated against their siblings, but patchValue validates each control
+		// in declaration order, before the siblings below it have been set. Re-run them now the whole defect is in.
+		this.revalidateSiblingDependentControls();
+
 		// Initialise the additonal information for the defect using the taxonomy
 		const imNumber = this.form.controls.imNumber.value;
 		const defectCategory = this.store.selectSignal(selectByImNumber(imNumber || Number.NaN, vehicleType))();
@@ -156,6 +163,11 @@ export class DefectV2Component {
 
 		// Load images (if applicable)
 		await this.loadMediaItems();
+	}
+
+	revalidateSiblingDependentControls(): void {
+		this.form.controls.additionalInformation.controls.notes.updateValueAndValidity({ emitEvent: false });
+		this.form.controls.prohibitionIssued.updateValueAndValidity({ emitEvent: false });
 	}
 
 	async loadMediaItems() {

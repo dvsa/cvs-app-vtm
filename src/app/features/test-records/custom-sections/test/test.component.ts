@@ -14,6 +14,7 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
+import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
@@ -84,6 +85,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	techRecord = this.store.selectSignal(techRecord);
 	abandonReasons = computed(() => this.getAbandonReasonsList());
 	destroy = new ReplaySubject<boolean>(1);
 	systemNumber?: string;
@@ -102,6 +104,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly adrCertificateError = signal<string | null | undefined>(undefined);
 
 	ngOnInit(): void {
+		this.prepopulateVTG15Required();
 		this.loadOptions();
 		this.addValidators();
 		this.disableFields();
@@ -128,6 +131,22 @@ export class TestComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy.next(true);
 		this.destroy.complete();
+	}
+
+	prepopulateVTG15Required(): void {
+		if (this.initialMode() !== Modes.EDIT && this.initialMode() !== Modes.CREATE) return;
+
+		const vtg15Required = this.form.controls.vtg15.controls.vtg15Required;
+		if (vtg15Required.value != null) return;
+
+		const techRecord = this.techRecord();
+		if (
+			techRecord?.techRecord_vehicleType === 'hgv' ||
+			techRecord?.techRecord_vehicleType === 'lgv' ||
+			techRecord?.techRecord_vehicleType === 'trl'
+		) {
+			vtg15Required.setValue(techRecord.techRecord_adrDetails_dangerousGoods ? null : false);
+		}
 	}
 
 	getAbandonReasonsList(): MultiOptions {
