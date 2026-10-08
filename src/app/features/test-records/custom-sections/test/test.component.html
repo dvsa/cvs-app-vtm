@@ -71,6 +71,7 @@
 
         @if (shouldShowGenerateADRCertificate()) {
           <!-- Generate ADR Certificate -->
+          <label class="govuk-label govuk-label--m">Generate ADR Certificate</label>
           <label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
           <ng-container>
             <div class="govuk-hint" for="generate-cert">
@@ -106,6 +107,15 @@
             appNoSpace
             appTrimWhitespace
           ></govuk-form-group-input>
+        }
+
+        @if (shouldShowExpiryDate()) {
+          <!-- Expiry Date -->
+          <govuk-form-group-date
+            mode="iso-date"
+            label="Expiry date"
+            formControlName="testExpiryDate"
+          ></govuk-form-group-date>
         }
 
         @if (mode() === Modes.AMEND) {

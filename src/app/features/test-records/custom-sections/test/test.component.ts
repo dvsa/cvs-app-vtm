@@ -176,9 +176,19 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
 
+		testTypeGroup.controls.certificateNumber.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.shouldShowCertificateNumber(),
+				this.commonValidators.required('Certificate Number')
+			),
+			this.commonValidators.alphanumeric('Certificate Number'),
+		]);
+
 		testTypeGroup.controls.testExpiryDate.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS,
+				() =>
+					(this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS) ||
+					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
 			this.commonValidators.date('Expiry Date'),
@@ -255,10 +265,14 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
 		}
+
+		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
+		}
 	}
 
 	contingencyTestNumberIsRequired(): boolean {
-		return this.initialMode() === Modes.EDIT && this.shouldShowCertificateNumber();
+		return this.initialMode() === Modes.EDIT;
 	}
 
 	handleTestStartTimestampChange(): void {
@@ -283,6 +297,13 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	shouldShowResult(): boolean {
 		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	shouldShowExpiryDate(): boolean {
+		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		if (!isGroup7) return false;
+		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
+		return true;
 	}
 
 	shouldShowDescription(): boolean {
