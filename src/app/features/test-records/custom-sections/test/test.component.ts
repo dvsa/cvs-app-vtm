@@ -176,6 +176,13 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
 
+		testTypeGroup.controls.prohibitionIssued.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.shouldShowProhibitionIssued(),
+				this.commonValidators.required('Prohibition Issued')
+			),
+		]);
+
 		testTypeGroup.controls.certificateNumber.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.shouldShowCertificateNumber(),
@@ -311,13 +318,18 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowCentralDocs(): boolean {
-		return [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
-			this.testResult()?.testTypes[0].testTypeId ?? ''
+		return (
+			[...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
+				this.testResult()?.testTypes[0].testTypeId ?? ''
+			) && this.testResult()?.testTypes[0].testResult !== 'fail'
 		);
 	}
 
 	shouldShowGenerateADRCertificate(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		return (
+			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
+			this.testResult()?.testTypes[0].testResult === 'pass'
+		);
 	}
 
 	shouldShowCertificateNumber(): boolean {
