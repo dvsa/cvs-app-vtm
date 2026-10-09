@@ -61,7 +61,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 	}
 
 	addValidators(): void {
-		this.form.controls.testStationPNumber.setValidators([this.commonValidators.required('Test station details')]);
+		this.form.controls.testStationPNumber.setValidators([this.commonValidators.required('Test Station Details')]);
 		this.form.controls.testerStaffId.setValidators([this.commonValidators.required('Tester details')]);
 	}
 

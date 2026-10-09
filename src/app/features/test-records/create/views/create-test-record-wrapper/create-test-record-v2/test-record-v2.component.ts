@@ -53,6 +53,7 @@ import { VehicleComponent } from '@features/test-records/custom-sections/vehicle
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -399,6 +400,10 @@ export class TestRecordV2Component implements OnInit {
 		// Sourced from the test result rather than the tech record, as the tech record is not
 		// guaranteed to be loaded when amending or viewing an existing test.
 		return this.testResult()?.vehicleType === VehicleTypes.PSV;
+	}
+
+	shouldShowDefectSection(): boolean {
+		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	protected readonly Modes = Modes;

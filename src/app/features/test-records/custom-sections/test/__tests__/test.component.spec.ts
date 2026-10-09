@@ -6,11 +6,14 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { Actions } from '@ngrx/effects';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
+import { ReplaySubject } from 'rxjs';
 
 import { TestComponent } from '../test.component';
 
@@ -25,11 +28,12 @@ describe('TestComponent', () => {
 		formGroupDirective.form = new FormGroup({});
 
 		await TestBed.configureTestingModule({
-			imports: [TestComponent],
+			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
 				provideMockStore({ initialState: initialAppState }),
+				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 
@@ -122,6 +126,12 @@ describe('TestComponent', () => {
 	describe('addValidators', () => {
 		describe('contingencyTestNumber', () => {
 			it('should be invalid when empty', () => {
+				// Ensure the test result is a group7 PASS with no centralDocs.issueRequired so certificate number is shown
+				store.overrideSelector(toEditOrNotToEdit, {
+					testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: false } }],
+				} as TestResultSchema);
+				store.refreshState();
+
 				const control = component.form.controls.contingencyTestNumber;
 				control.setValue(null);
 				control.markAsTouched();
@@ -406,6 +416,75 @@ describe('TestComponent', () => {
 		});
 	});
 
+	describe('visibility helpers (ADR / central docs)', () => {
+		it('should return false when there is no test result', () => {
+			store.overrideSelector(toEditOrNotToEdit, undefined);
+			store.refreshState();
+			expect(component.shouldShowResult()).toBe(false);
+			expect(component.shouldShowDescription()).toBe(false);
+			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
+			expect(component.shouldShowProhibitionIssued()).toBe(false);
+			expect(component.shouldShowCentralDocs()).toBe(false);
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+
+		it('should be true for group 7 test types', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS }],
+			} as TestResultSchema);
+			store.refreshState();
+
+			expect(component.shouldShowResult()).toBe(true);
+			expect(component.shouldShowDescription()).toBe(true);
+			expect(component.shouldShowGenerateADRCertificate()).toBe(true);
+			expect(component.shouldShowProhibitionIssued()).toBe(true);
+		});
+
+		it('should include central docs ids and group7 for central docs check', () => {
+			// central docs id from TEST_TYPES_GROUP9_10_CENTRAL_DOCS (e.g. '95')
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '95' }] } as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCentralDocs()).toBe(true);
+
+			// also true for group7 id
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '59' }] } as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCentralDocs()).toBe(true);
+		});
+
+		it('shouldShowCertificateNumber rules: false for non-group7 or failing tests', () => {
+			// non-group7 -> false
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '1', testResult: TestResults.PASS }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+
+			// group7 but failed -> false
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.FAIL }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+
+		it('shouldShowCertificateNumber: pass and no centralDocs.issueRequired => true', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: false } }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(true);
+		});
+
+		it('shouldShowCertificateNumber: pass but centralDocs.issueRequired true => false', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: true } }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+	});
+
 	describe('isLoadStatusRequired', () => {
 		it('should be required when creating a test that captures load status', () => {
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '94' }] } as TestResultSchema);
@@ -440,11 +519,12 @@ describe('TestComponent - AMEND mode', () => {
 		formGroupDirective.form = new FormGroup({});
 
 		await TestBed.configureTestingModule({
-			imports: [TestComponent],
+			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
 				provideMockStore({ initialState: initialAppState }),
+				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 

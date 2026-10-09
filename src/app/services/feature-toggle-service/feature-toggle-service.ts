@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import {
 	TEST_TYPES_GROUP1,
 	TEST_TYPES_GROUP2,
+	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 } from '../../models/testTypeId.enum';
@@ -29,6 +30,7 @@ export class FeatureToggleService {
 			...TEST_TYPES_GROUP9_10,
 			...TEST_TYPES_GROUP1,
 			...TEST_TYPES_GROUP2,
+			...TEST_TYPES_GROUP7,
 		];
 
 		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
