@@ -324,8 +324,12 @@ export class TestComponent implements OnInit, OnDestroy {
 		return true;
 	}
 
-	shouldShowDescription(): boolean {
-		return this.isTestTypeGroup7();
+	shouldShowCreateModeDescription(): boolean {
+		return this.isTestTypeGroup7() && this.mode() === Modes.CREATE;
+	}
+
+	shouldShowAnniversaryDate(): boolean {
+		return !this.isTestTypeGroup7();
 	}
 
 	shouldShowCentralDocs(): boolean {
