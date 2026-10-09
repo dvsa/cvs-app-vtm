@@ -46,7 +46,7 @@
           <govuk-form-group-radio
             label="Result"
             formControlName="testResult"
-            [options]="PASS_FAIL_OPTIONS"
+            [options]="getResultOptions()"
           ></govuk-form-group-radio>
         }
 
@@ -312,13 +312,31 @@
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
+          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) || (isTestTypeGroup7() && mode() === Modes.SUMMARY)) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Description:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeName">
                 {{ testResult.testTypes[0].testTypeName | defaultNullOrEmpty }}
               </td>
             </tr>
+          }
+          @if (isTestTypeGroup7() && mode() === Modes.SUMMARY) {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-certificateNumber">
+                {{ testResult.testTypes[0].certificateNumber | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          }
+          @if (isTestTypeGroup7() && mode() === Modes.SUMMARY && initialMode() === Modes.EDIT) {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
+                {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+              </td>
+            </tr>
+          }
+          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Number:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testNumber">
@@ -377,6 +395,15 @@
               <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
                 {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          }
+          @if (isTestTypeGroup7()) {
+
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" style="width: 30%">Prohibition issued:</td>
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-prohibitionIssued">
+                {{ testResult.testTypes[0].prohibitionIssued | defaultNullOrEmpty }}
               </td>
             </tr>
           }

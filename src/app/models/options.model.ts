@@ -42,6 +42,13 @@ export const PASS_FAIL_OPTIONS: MultiOptions = [
 	{ value: 'fail', label: 'Fail' },
 ];
 
+export const RESULT_OPTIONS: MultiOptions = [
+	{ value: 'pass', label: 'Pass' },
+	{ value: 'fail', label: 'Fail' },
+	{ value: 'prs', label: 'Prs' },
+	{ value: 'abandoned', label: 'Abandoned' },
+];
+
 export const YES_NO_NULL_OPTIONS: MultiOptions<boolean | null> = [
 	{ value: true, label: 'Yes' },
 	{ value: false, label: 'No' },

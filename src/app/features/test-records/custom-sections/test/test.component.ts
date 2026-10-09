@@ -6,7 +6,7 @@ import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-fo
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { MultiOptions, PASS_FAIL_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { MultiOptions, PASS_FAIL_OPTIONS, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
@@ -278,6 +278,13 @@ export class TestComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	getResultOptions() {
+		if (this.mode() === Modes.AMEND) {
+			return RESULT_OPTIONS;
+		}
+		return PASS_FAIL_OPTIONS;
+	}
+
 	contingencyTestNumberIsRequired(): boolean {
 		return this.initialMode() === Modes.EDIT;
 	}
@@ -302,8 +309,12 @@ export class TestComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	shouldShowResult(): boolean {
+	isTestTypeGroup7(): boolean {
 		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	shouldShowResult(): boolean {
+		return this.isTestTypeGroup7();
 	}
 
 	shouldShowExpiryDate(): boolean {
@@ -314,7 +325,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowDescription(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		return this.isTestTypeGroup7();
 	}
 
 	shouldShowCentralDocs(): boolean {
@@ -326,6 +337,9 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowGenerateADRCertificate(): boolean {
+		if (this.mode() === Modes.AMEND) {
+			return false;
+		}
 		return (
 			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
 			this.testResult()?.testTypes[0].testResult === 'pass'
@@ -333,8 +347,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowCertificateNumber(): boolean {
-		const group7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-		if (!group7) return false;
+		if (!this.isTestTypeGroup7()) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
 		}
@@ -344,7 +357,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowProhibitionIssued(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		return this.isTestTypeGroup7();
 	}
 
 	shouldShowLoadStatus(): boolean {
