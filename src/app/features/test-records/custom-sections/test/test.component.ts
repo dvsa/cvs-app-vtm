@@ -185,8 +185,11 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		testTypeGroup.controls.certificateNumber.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.shouldShowCertificateNumber(),
-				this.commonValidators.required('Certificate Number')
+				() =>
+					this.shouldShowCertificateNumber() &&
+					this.testResult()?.testTypes[0].testResult !== null &&
+					this.mode() !== Modes.ABANDON,
+				this.commonValidators.requiredWith('Certificate Number', 'Result')
 			),
 			this.commonValidators.alphanumeric('Certificate Number'),
 		]);
@@ -195,11 +198,15 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.applyWhen(
 				() =>
 					(this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS) ||
-					this.shouldShowExpiryDate(),
+					(this.shouldShowExpiryDate() && this.mode() !== Modes.ABANDON),
 				this.commonValidators.required('Expiry Date')
 			),
 			this.commonValidators.date('Expiry Date'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
+			this.commonValidators.applyWhen(
+				() => this.isTestTypeGroup7() && this.mode() === Modes.CREATE,
+				this.commonValidators.futureDate('Expiry Date')
+			),
 		]);
 
 		testTypeGroup.controls.testAnniversaryDate.setValidators([
@@ -256,6 +263,12 @@ export class TestComponent implements OnInit, OnDestroy {
 				() => this.isOtherReasonForNotLoadingRequired(),
 				this.commonValidators.required('Enter reason for not loading'),
 				this.commonValidators.maxLength(200, 'Enter reason for not loading')
+			),
+		]);
+		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.mode() === Modes.ABANDON,
+				this.commonValidators.requiredWith('Additional details for abandoning abandoned', 'Result')
 			),
 		]);
 	}
@@ -322,6 +335,13 @@ export class TestComponent implements OnInit, OnDestroy {
 		if (!isGroup7) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
+	}
+
+	getAbandonNotesLabel(): string {
+		if (!this.isTestTypeGroup7()) {
+			return 'Additional notes as to why this test was abandoned';
+		}
+		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
 	shouldShowCreateModeDescription(): boolean {
