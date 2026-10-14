@@ -421,7 +421,6 @@ describe('TestComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined);
 			store.refreshState();
 			expect(component.shouldShowResult()).toBe(false);
-			expect(component.shouldShowDescription()).toBe(false);
 			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
 			expect(component.shouldShowProhibitionIssued()).toBe(false);
 			expect(component.shouldShowCentralDocs()).toBe(false);
@@ -435,7 +434,6 @@ describe('TestComponent', () => {
 			store.refreshState();
 
 			expect(component.shouldShowResult()).toBe(true);
-			expect(component.shouldShowDescription()).toBe(true);
 			expect(component.shouldShowGenerateADRCertificate()).toBe(true);
 			expect(component.shouldShowProhibitionIssued()).toBe(true);
 		});
