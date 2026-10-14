@@ -198,7 +198,7 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.applyWhen(
 				() =>
 					(this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS) ||
-					(this.shouldShowExpiryDate() && this.mode() !== Modes.ABANDON),
+					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
 			this.commonValidators.date('Expiry Date'),
@@ -267,8 +267,8 @@ export class TestComponent implements OnInit, OnDestroy {
 		]);
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.ABANDON,
-				this.commonValidators.requiredWith('Additional details for abandoning abandoned', 'Result')
+				() => this.mode() === Modes.AMEND && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
+				this.commonValidators.requiredWith('Additional details for abandoning', 'Result')
 			),
 		]);
 	}
@@ -332,13 +332,15 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	shouldShowExpiryDate(): boolean {
 		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
+		if (this.mode() === Modes.ABANDON) return false;
 		if (!isGroup7) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
 	}
 
 	getAbandonNotesLabel(): string {
-		if (!this.isTestTypeGroup7()) {
+		if (this.isTestTypeGroup7()) {
 			return 'Additional notes as to why this test was abandoned';
 		}
 		return 'Additional notes as to why this test was abandoned (optional)';

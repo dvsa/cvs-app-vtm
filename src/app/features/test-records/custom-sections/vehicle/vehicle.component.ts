@@ -19,6 +19,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angu
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
@@ -95,7 +96,7 @@ export class VehicleComponent implements OnInit {
 	addValidators(): void {
 		this.form.controls.countryOfRegistration.setValidators([
 			this.commonValidators.applyWhen(
-				() => !this.testService.isAbandoning(),
+				() => !this.testService.isAbandoning() && this.testResult()?.testTypes[0].testResult !== TestResults.ABANDONED,
 				this.commonValidators.required('Country Of Registration')
 			),
 		]);
@@ -191,6 +192,8 @@ export class VehicleComponent implements OnInit {
 		// The odometer reading is not needed to abandon a test
 		if (this.testService.isAbandoning()) return false;
 
+		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
+
 		if (!this.hasOdometer()) return false;
 
 		// Add test specific logic here
@@ -200,6 +203,8 @@ export class VehicleComponent implements OnInit {
 	isOdometerReadingUnitsRequired(): boolean {
 		// The odometer reading units are not needed to abandon a test
 		if (this.testService.isAbandoning()) return false;
+
+		if (this.testResult()?.testTypes[0].testResult !== TestResults.ABANDONED) return false;
 
 		if (!this.hasOdometer()) return false;
 
