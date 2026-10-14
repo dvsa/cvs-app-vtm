@@ -1,13 +1,5 @@
-import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
-import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
-import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
-import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-form-group-date/govuk-form-group-date.component';
-import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
-import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions, PASS_FAIL_OPTIONS, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
-import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
@@ -16,11 +8,8 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent } from '@components/button/button.component';
-import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
@@ -30,10 +19,6 @@ import {
 	TechRecordGETHGV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
-import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
-import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
-import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
@@ -44,29 +29,14 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
 import { ReplaySubject, take, takeUntil } from 'rxjs';
+import { TestAmendComponent } from './test-amend/test-amend.component';
+import { TestCreateComponent } from './test-create/test-create.component';
+import { TestViewComponent } from './test-view/test-view.component';
 
 @Component({
 	selector: 'app-test',
 	templateUrl: './test.component.html',
-	imports: [
-		DatePipe,
-		FormsModule,
-		ReactiveFormsModule,
-		ToUppercaseDirective,
-		NoSpaceDirective,
-		TrimWhitespaceDirective,
-		GovukFormGroupRadioComponent,
-		GovukFormGroupInputComponent,
-		GovukFormGroupDateComponent,
-		DefaultNullOrEmpty,
-		GovukFormGroupSelectComponent,
-		GovukFormGroupTextareaComponent,
-		RadioComponent,
-		GovukCheckboxGroupComponent,
-		ButtonComponent,
-		FieldErrorMessageComponent,
-		RetrieveDocumentDirective,
-	],
+	imports: [FormsModule, ReactiveFormsModule, TestViewComponent, TestCreateComponent, TestAmendComponent],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
