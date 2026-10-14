@@ -96,7 +96,7 @@ export class VehicleComponent implements OnInit {
 	addValidators(): void {
 		this.form.controls.countryOfRegistration.setValidators([
 			this.commonValidators.applyWhen(
-				() => !this.testService.isAbandoning() && this.testResult()?.testTypes[0].testResult !== TestResults.ABANDONED,
+				() => !this.testService.isAbandoning(),
 				this.commonValidators.required('Country Of Registration')
 			),
 		]);
@@ -204,7 +204,7 @@ export class VehicleComponent implements OnInit {
 		// The odometer reading units are not needed to abandon a test
 		if (this.testService.isAbandoning()) return false;
 
-		if (this.testResult()?.testTypes[0].testResult !== TestResults.ABANDONED) return false;
+		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
 
 		if (!this.hasOdometer()) return false;
 
