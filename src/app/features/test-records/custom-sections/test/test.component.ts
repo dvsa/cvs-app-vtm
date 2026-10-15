@@ -1,22 +1,19 @@
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { MultiOptions } from '@/src/app/models/options.model';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
-import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import { Modes } from '@models/modes.enum';
-import { TEST_TYPES_GROUP7, TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { TestAmendComponent } from './test-amend/test-amend.component';
 import { TestCreateComponent } from './test-create/test-create.component';
@@ -33,7 +30,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	testService = inject(TestService);
 	testTypeService = inject(TestTypeService);
-	techRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
 	loadStatusService = inject(LoadStatusService);
@@ -44,7 +40,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	techRecord = this.store.selectSignal(techRecord);
-	abandonReasons = computed(() => this.getAbandonReasonsList());
 	destroy = new ReplaySubject<boolean>(1);
 
 	readonly Modes = Modes;
@@ -78,15 +73,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		) {
 			vtg15Required.setValue(techRecord.techRecord_adrDetails_dangerousGoods ? null : false);
 		}
-	}
-
-	getAbandonReasonsList(): MultiOptions {
-		const testResult = this.testResult();
-		if (!testResult) return [];
-
-		const resourceType = this.testTypeService.getAbandonReasonsResourceType(testResult);
-		const referenceData = this.store.selectSignal(selectAllReferenceDataByResourceType(resourceType))() || [];
-		return referenceData.map((reason) => ({ label: `${reason.description}`, value: `${reason.description}` }));
 	}
 
 	loadOptions(): void {
@@ -250,10 +236,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
-	shouldShowResult(): boolean {
-		return this.isTestTypeGroup7();
-	}
-
 	shouldShowExpiryDate(): boolean {
 		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
@@ -261,39 +243,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		if (!isGroup7) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
-	}
-
-	getAbandonNotesLabel(): string {
-		if (this.isTestTypeGroup7()) {
-			return 'Additional notes as to why this test was abandoned';
-		}
-		return 'Additional notes as to why this test was abandoned (optional)';
-	}
-
-	shouldShowCreateModeDescription(): boolean {
-		return this.isTestTypeGroup7() && this.mode() === Modes.CREATE;
-	}
-
-	shouldShowAnniversaryDate(): boolean {
-		return !this.isTestTypeGroup7();
-	}
-
-	shouldShowCentralDocs(): boolean {
-		return (
-			[...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
-				this.testResult()?.testTypes[0].testTypeId ?? ''
-			) && this.testResult()?.testTypes[0].testResult !== 'fail'
-		);
-	}
-
-	shouldShowGenerateADRCertificate(): boolean {
-		if (this.mode() === Modes.AMEND) {
-			return false;
-		}
-		return (
-			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
-			this.testResult()?.testTypes[0].testResult === 'pass'
-		);
 	}
 
 	shouldShowCertificateNumber(): boolean {
