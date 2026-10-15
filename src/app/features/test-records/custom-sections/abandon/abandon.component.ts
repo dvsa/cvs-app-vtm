@@ -9,6 +9,7 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -36,6 +37,13 @@ export class AbandonComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.removeValidators();
+	}
+
+	getAbandonNotesLabel(): string {
+		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+			return 'Additional notes as to why this test was abandoned';
+		}
+		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
 	getAbandonReasonsList(): MultiOptions {
