@@ -1,205 +1,172 @@
-<div [formGroup]="form">
-  <govuk-form-group-input
-    label="Contingency Test Number"
-    formControlName="contingencyTestNumber"
-    [width]="FormNodeWidth.L"
-    appToUppercase
-    appNoSpace
-    appTrimWhitespace
-    type="numericString"
-  ></govuk-form-group-input>
+@if (testResult(); as testResult) {
+  <div [formGroup]="form">
+    <govuk-form-group-input
+      label="Contingency Test Number"
+      formControlName="contingencyTestNumber"
+      [width]="FormNodeWidth.L"
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      type="numericString"
+    ></govuk-form-group-input>
 
-  <ng-container formArrayName="testTypes">
-    <ng-container formGroupName="0">
-      @if (shouldShowResult()) {
-        <!-- Result -->
-        <govuk-form-group-radio
-          label="Result"
-          formControlName="testResult"
-          [options]="PASS_FAIL_OPTIONS"
-        ></govuk-form-group-radio>
-      }
-
-      @if (shouldShowCentralDocs()) {
-        <!-- Issue Documents Centrally -->
-        <ng-container formGroupName="centralDocs">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        @if (testTypeService.isTestResultApplicable(testResult)) {
+          <!-- Result -->
           <govuk-form-group-radio
-            label="Issue documents centrally"
-            formControlName="issueRequired"
+            label="Result"
+            formControlName="testResult"
+            [options]="PASS_FAIL_OPTIONS"
+          ></govuk-form-group-radio>
+        }
+
+        @if (testTypeService.isCentralDocsApplicable(testResult)) {
+          <ng-container formGroupName="centralDocs">
+            <govuk-form-group-radio
+              label="Issue documents centrally"
+              formControlName="issueRequired"
+              [options]="YES_NO_OPTIONS"
+            ></govuk-form-group-radio>
+          </ng-container>
+        }
+
+        @if (testTypeService.isADRTest(testResult)) {
+          <govuk-form-group-input
+            label="Description"
+            formControlName="testTypeName"
+          ></govuk-form-group-input>
+        }
+
+        @if (testTypeService.isGeneratedADRCertificateApplicable(testResult)) {
+          <app-generate-adr-certificate />
+        }
+
+        @if (testTypeService.isCertificateNumberApplicable(testResult)) {
+          <govuk-form-group-input
+            label="Certificate number"
+            formControlName="certificateNumber"
+            [width]="FormNodeWidth.XXL"
+            appToUppercase
+            appNoSpace
+            appTrimWhitespace
+          ></govuk-form-group-input>
+        }
+
+        @if (shouldShowExpiryDate()) {
+          <!-- Expiry Date -->
+          <govuk-form-group-date
+            mode="iso-date"
+            label="Expiry Date"
+            formControlName="testExpiryDate"
+          ></govuk-form-group-date>
+        }
+
+        <!-- Test start date and time -->
+        <govuk-form-group-date
+          mode="iso"
+          label="Test start date and time"
+          formControlName="testTypeStartTimestamp"
+        ></govuk-form-group-date>
+
+        <!-- Test end date and time -->
+        <govuk-form-group-date
+          mode="iso"
+          label="Test end date and time"
+          formControlName="testTypeEndTimestamp"
+        ></govuk-form-group-date>
+
+        @if (testTypeService.isProhibitionIssuedApplicable(testResult)) {
+          <govuk-form-group-radio
+            label="Prohibition issued"
+            formControlName="prohibitionIssued"
             [options]="YES_NO_OPTIONS"
           ></govuk-form-group-radio>
-        </ng-container>
-      }
-
-      @if (shouldShowDescription()) {
-        <!-- Test description -->
-        <govuk-form-group-input
-          label="Description"
-          formControlName="testTypeName"
-        ></govuk-form-group-input>
-      }
-
-      @if (shouldShowGenerateADRCertificate()) {
-        <!-- Generate ADR Certificate -->
-        <label class="govuk-label govuk-label--m">Generate ADR Certificate</label>
-        <label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
-        <ng-container>
-          <div class="govuk-hint" for="generate-cert">
-            Only press this button if you wish to generate a new certificate, otherwise fill in
-            previous certificate details below
-          </div>
-
-          <app-button id="submit-adr-cert-form" (clicked)="handleGenerateADRCertificateSubmit()"
-            >Generate certificate</app-button
-          >
-        </ng-container>
-        @if (adrCertificateFileName(); as fileName) {
-          <div id="link-div">
-            <app-field-error-message
-              for="view-button"
-              [error]="adrCertificateError()"
-            ></app-field-error-message>
-            <app-button
-              id="view-button"
-              [params]="documentParams(fileName)"
-              [fileName]="fileName"
-              [documentType]="DocumentType.ADR_CERTIFICATE"
-              appRetrieveDocument
-              [loading]="true"
-              type="link"
-              design="link"
-              >View certificate</app-button
-            >
-          </div>
         }
-      }
 
-      @if (shouldShowCertificateNumber()) {
-        <!-- Certificate number -->
-        <govuk-form-group-input
-          label="Certificate number"
-          formControlName="certificateNumber"
-          [width]="FormNodeWidth.XXL"
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-        ></govuk-form-group-input>
-      }
-
-      @if (shouldShowExpiryDate()) {
-        <!-- Expiry Date -->
-        <govuk-form-group-date
-          mode="iso-date"
-          label="Expiry Date"
-          formControlName="testExpiryDate"
-        ></govuk-form-group-date>
-      }
-
-      <!-- Test start date and time -->
-      <govuk-form-group-date
-        mode="iso"
-        label="Test start date and time"
-        formControlName="testTypeStartTimestamp"
-      ></govuk-form-group-date>
-
-      <!-- Test end date and time -->
-      <govuk-form-group-date
-        mode="iso"
-        label="Test end date and time"
-        formControlName="testTypeEndTimestamp"
-      ></govuk-form-group-date>
-
-      @if (shouldShowProhibitionIssued()) {
-        <!-- Prohibition Issued -->
-        <govuk-form-group-radio
-          label="Prohibition issued"
-          formControlName="prohibitionIssued"
-          [options]="YES_NO_OPTIONS"
-        ></govuk-form-group-radio>
-      }
-
-      @if (shouldShowLoadStatus()) {
-        <ng-container formGroupName="loadStatus">
-          <govuk-form-group-radio label="Load status" formControlName="vehicleLoadStatus">
-            <govuk-radio id="unladen" label="Unladen" [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN">
-              <govuk-form-group-select
-                class="govuk-label govuk-label--s"
-                label="Body type"
-                formControlName="unladenBodyType"
-                [width]="FormNodeWidth.L"
-                [options]="UNLADEN_BODY_TYPES_OPTIONS"
-              />
-
-              @if (
-                form.get('testTypes.0.loadStatus.unladenBodyType')?.value ===
-                UNLADEN_BODY_TYPES.OTHER
-              ) {
-                <govuk-form-group-input
+        @if (loadStatusService.isLoadStatusApplicable(testResult)) {
+          <ng-container formGroupName="loadStatus">
+            <govuk-form-group-radio label="Load status" formControlName="vehicleLoadStatus">
+              <govuk-radio id="unladen" label="Unladen" [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN">
+                <govuk-form-group-select
                   class="govuk-label govuk-label--s"
-                  label="Enter body type"
-                  formControlName="otherUnladenBodyType"
-                  [width]="FormNodeWidth.XL"
+                  label="Body type"
+                  formControlName="unladenBodyType"
+                  [width]="FormNodeWidth.L"
+                  [options]="UNLADEN_BODY_TYPES_OPTIONS"
                 />
-              }
 
-              <govuk-form-group-select
-                class="govuk-label govuk-label--s"
-                label="Reason for not loading"
-                formControlName="reasonForNotLoading"
-                [width]="FormNodeWidth.L"
-                [options]="REASON_FOR_NOT_LOADING_OPTIONS"
-              />
+                @if (
+                  form.get('testTypes.0.loadStatus.unladenBodyType')?.value ===
+                  UNLADEN_BODY_TYPES.OTHER
+                ) {
+                  <govuk-form-group-input
+                    class="govuk-label govuk-label--s"
+                    label="Enter body type"
+                    formControlName="otherUnladenBodyType"
+                    [width]="FormNodeWidth.XL"
+                  />
+                }
 
-              @if (
-                form.get('testTypes.0.loadStatus.reasonForNotLoading')?.value ===
-                REASONS_FOR_NOT_LOADING.OTHER
-              ) {
+                <govuk-form-group-select
+                  class="govuk-label govuk-label--s"
+                  label="Reason for not loading"
+                  formControlName="reasonForNotLoading"
+                  [width]="FormNodeWidth.L"
+                  [options]="REASON_FOR_NOT_LOADING_OPTIONS"
+                />
+
+                @if (
+                  form.get('testTypes.0.loadStatus.reasonForNotLoading')?.value ===
+                  REASONS_FOR_NOT_LOADING.OTHER
+                ) {
+                  <govuk-form-group-textarea
+                    class="govuk-label govuk-label--s"
+                    label="Enter reason for not loading"
+                    formControlName="otherReasonForNotLoading"
+                    [width]="FormNodeWidth.XXL"
+                    [maxLength]="200"
+                  />
+                }
+              </govuk-radio>
+
+              <govuk-radio
+                id="partially-laden"
+                label="Partially laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN"
+              >
                 <govuk-form-group-textarea
                   class="govuk-label govuk-label--s"
-                  label="Enter reason for not loading"
-                  formControlName="otherReasonForNotLoading"
+                  label="Why is the vehicle partially laden?"
+                  formControlName="partiallyLadenReason"
                   [width]="FormNodeWidth.XXL"
                   [maxLength]="200"
                 />
-              }
-            </govuk-radio>
-
-            <govuk-radio
-              id="partially-laden"
-              label="Partially laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN"
-            >
-              <govuk-form-group-textarea
-                class="govuk-label govuk-label--s"
-                label="Why is the vehicle partially laden?"
-                formControlName="partiallyLadenReason"
-                [width]="FormNodeWidth.XXL"
-                [maxLength]="200"
+              </govuk-radio>
+              <govuk-radio
+                id="partially-laden-50-to-65"
+                label="Partially laden 50% to 65%"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65"
               />
-            </govuk-radio>
-            <govuk-radio
-              id="partially-laden-50-to-65"
-              label="Partially laden 50% to 65%"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65"
-            />
-            <govuk-radio
-              id="fully-laden"
-              label="Fully laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN"
-            />
-            <govuk-radio
-              id="load-simulated-partially-laden"
-              label="Load simulated partially laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN"
-            />
-            <govuk-radio
-              id="load-simulated-fully-laden"
-              label="Load simulated fully laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN"
-            />
-          </govuk-form-group-radio>
-        </ng-container>
-      }
+              <govuk-radio
+                id="fully-laden"
+                label="Fully laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN"
+              />
+              <govuk-radio
+                id="load-simulated-partially-laden"
+                label="Load simulated partially laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN"
+              />
+              <govuk-radio
+                id="load-simulated-fully-laden"
+                label="Load simulated fully laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN"
+              />
+            </govuk-form-group-radio>
+          </ng-container>
+        }
+      </ng-container>
     </ng-container>
-  </ng-container>
-</div>
+  </div>
+}

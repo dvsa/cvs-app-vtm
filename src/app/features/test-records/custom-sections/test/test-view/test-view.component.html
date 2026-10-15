@@ -41,7 +41,7 @@
       }
       @if (
         (mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) &&
-        shouldShowCentralDocs()
+        testTypeService.isCentralDocsApplicable(testResult)
       ) {
         <tr class="govuk-table__row">
           <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
@@ -56,7 +56,7 @@
       @if (
         mode() === Modes.VIEW ||
         (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) ||
-        (isTestTypeGroup7() && mode() === Modes.SUMMARY)
+        (testTypeService.isADRTest(testResult) && mode() === Modes.SUMMARY)
       ) {
         <tr class="govuk-table__row">
           <td class="govuk-table__header" style="width: 30%">Description:</td>
@@ -68,7 +68,7 @@
           </td>
         </tr>
       }
-      @if (isTestTypeGroup7() && mode() === Modes.SUMMARY) {
+      @if (testTypeService.isADRTest(testResult) && mode() === Modes.SUMMARY) {
         <tr class="govuk-table__row">
           <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
           <td
@@ -79,7 +79,11 @@
           </td>
         </tr>
       }
-      @if (isTestTypeGroup7() && mode() === Modes.SUMMARY && initialMode() === Modes.EDIT) {
+      @if (
+        testTypeService.isADRTest(testResult) &&
+        mode() === Modes.SUMMARY &&
+        initialMode() === Modes.EDIT
+      ) {
         <tr class="govuk-table__row">
           <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
           <td
@@ -205,7 +209,7 @@
           </td>
         </tr>
       }
-      @if (isTestTypeGroup7()) {
+      @if (testTypeService.isADRTest(testResult)) {
         <tr class="govuk-table__row">
           <td class="govuk-table__header" style="width: 30%">Prohibition issued:</td>
           <td
@@ -216,7 +220,7 @@
           </td>
         </tr>
       }
-      @if (shouldShowLoadStatus()) {
+      @if (loadStatusService.isLoadStatusApplicable(testResult)) {
         @let loadStatus = testResult.testTypes[0].loadStatus;
         <tr class="govuk-table__row">
           <td scope="row" class="govuk-table__header" style="width: 30%">Load status:</td>

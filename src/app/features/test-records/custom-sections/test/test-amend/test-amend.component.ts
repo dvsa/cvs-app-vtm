@@ -10,7 +10,7 @@ import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@/src/app/forms/utils/enum-map';
 import { MultiOptions, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
-import { TEST_TYPES_GROUP7, TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@/src/app/models/testTypeId.enum';
+import { TEST_TYPES_GROUP7 } from '@/src/app/models/testTypeId.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
@@ -64,6 +64,7 @@ export class TestAmendComponent {
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 
+	// @TODO: move into a ngrx selector
 	getAbandonReasonsList(): MultiOptions {
 		const testResult = this.testResult();
 		if (!testResult) return [];
@@ -73,53 +74,12 @@ export class TestAmendComponent {
 		return referenceData.map((reason) => ({ label: `${reason.description}`, value: `${reason.description}` }));
 	}
 
-	isTestTypeGroup7(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-	}
-
-	shouldShowResult(): boolean {
-		return this.isTestTypeGroup7();
-	}
-
-	shouldShowCentralDocs(): boolean {
-		return (
-			[...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
-				this.testResult()?.testTypes[0].testTypeId ?? ''
-			) && this.testResult()?.testTypes[0].testResult !== 'fail'
-		);
-	}
-
-	shouldShowCertificateNumber(): boolean {
-		if (!this.isTestTypeGroup7()) return false;
-		if (this.testResult()?.testTypes[0].testResult == 'fail') {
-			return false;
-		}
-		return !(
-			this.testResult()?.testTypes[0].testResult == 'pass' && this.testResult()?.testTypes[0].centralDocs?.issueRequired
-		);
-	}
-
 	shouldShowExpiryDate(): boolean {
-		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
+		const testType = this.testResult()?.testTypes[0];
+		const isGroup7 = TEST_TYPES_GROUP7.includes(testType?.testTypeId ?? '');
+		if (testType?.testResult === TestResults.ABANDONED) return false;
 		if (!isGroup7) return false;
-		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
+		if (testType?.testResult === TestResults.FAIL) return false;
 		return true;
-	}
-
-	shouldShowAnniversaryDate(): boolean {
-		return !this.isTestTypeGroup7();
-	}
-
-	shouldShowAbandonReasons(): boolean {
-		return this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED;
-	}
-
-	shouldShowProhibitionIssued(): boolean {
-		return this.isTestTypeGroup7();
-	}
-
-	shouldShowLoadStatus(): boolean {
-		return this.loadStatusService.isLoadStatusApplicable(this.testResult());
 	}
 }
