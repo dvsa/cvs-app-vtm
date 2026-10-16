@@ -191,6 +191,7 @@ export class TestComponent implements OnInit, OnDestroy {
 					this.mode() !== Modes.ABANDON,
 				this.commonValidators.requiredWith('Certificate Number', 'Result')
 			),
+			this.commonValidators.alphanumeric('Certificate Number must be alphanumeric'),
 		]);
 
 		testTypeGroup.controls.testExpiryDate.setValidators([
