@@ -6,7 +6,7 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { retryInterceptorFailure } from '@/src/app/store/retry-interceptor/retry-interceptor.actions';
 import { selectRouteNestedParam } from '@/src/app/store/router/router.selectors';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@/src/app/store/technical-records';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import {

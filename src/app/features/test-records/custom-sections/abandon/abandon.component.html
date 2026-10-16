@@ -13,7 +13,7 @@
       <!-- Additional comments for abandon -->
       <govuk-form-group-textarea
         name="additionalCommentsForAbandon"
-        label="Additional notes as to why this test was abandoned (optional)"
+        [label]="getAbandonNotesLabel()"
         formControlName="additionalCommentsForAbandon"
         [maxLength]="500"
       ></govuk-form-group-textarea>

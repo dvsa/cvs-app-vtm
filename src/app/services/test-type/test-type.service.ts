@@ -5,7 +5,6 @@ import { ReferenceDataResourceType } from '../../models/reference-data.model';
 import {
 	TEST_TYPES_ALL_DESK_BASED_TESTS,
 	TEST_TYPES_GROUP1,
-	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2,
 	TEST_TYPES_GROUP2_SPEC_TEST,
@@ -16,6 +15,7 @@ import {
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_MSVA,
 } from '../../models/testTypeId.enum';
 import { VehicleTypes } from '../../models/vehicle-tech-record.model';

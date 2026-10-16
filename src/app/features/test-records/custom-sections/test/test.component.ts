@@ -41,6 +41,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	techRecord = this.store.selectSignal(techRecord);
 	destroy = new ReplaySubject<boolean>(1);
+	systemNumber?: string;
+	createdTimestamp?: string;
 
 	readonly Modes = Modes;
 	readonly TestResults = TestResults;
