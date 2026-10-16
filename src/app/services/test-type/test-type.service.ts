@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { ReferenceDataResourceType } from '../../models/reference-data.model';
 import {
 	TEST_TYPES_ALL_DESK_BASED_TESTS,
+	TEST_TYPES_GROUP1,
 	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2,
 	TEST_TYPES_GROUP2_SPEC_TEST,
 	TEST_TYPES_GROUP3_SPEC_TEST,
 	TEST_TYPES_GROUP4_SPEC_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP9_10,
+	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_MSVA,
 } from '../../models/testTypeId.enum';
@@ -131,5 +137,68 @@ export class TestTypeService {
 
 		// If we reach here, then we have invalid data
 		throw new Error('Unexpected vehicle type');
+	}
+
+	isADRTest(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		return TEST_TYPES_GROUP7.includes(testType.testTypeId);
+	}
+
+	isTestResultApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		const hasTestResult = [...TEST_TYPES_GROUP7].includes(testType.testTypeId);
+		return hasTestResult;
+	}
+
+	isCentralDocsApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		const hasCentralDocs = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS].includes(testType.testTypeId);
+		return hasCentralDocs && testType.testResult !== TestResults.FAIL;
+	}
+
+	isAnniversaryDateApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		const hasAnniversaryDate = [
+			...TEST_TYPES_GROUP1,
+			...TEST_TYPES_GROUP2,
+			...TEST_TYPES_GROUP9_10,
+			...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+		].includes(testType.testTypeId);
+		return hasAnniversaryDate;
+	}
+
+	isProhibitionIssuedApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		const hasProhibitionIssued = [...TEST_TYPES_GROUP7].includes(testType.testTypeId);
+		return hasProhibitionIssued;
+	}
+
+	isAbandonReasonsApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		return testType.testResult === TestResults.ABANDONED;
+	}
+
+	isCertificateNumberApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+
+		// Certificate number is not applicable for tests that have failed
+		const isFail = testType.testResult === TestResults.FAIL;
+		if (isFail) return false;
+
+		// When issuing central docs for pass tests, certificate number is not applicable
+		if (this.isCentralDocsApplicable(testResult)) {
+			const isPass = testType.testResult === TestResults.PASS;
+			const issueRequired = testType.centralDocs?.issueRequired === true;
+			return isPass && issueRequired;
+		}
+
+		return true;
+	}
+
+	isGeneratedADRCertificateApplicable(testResult: TestResultSchema): boolean {
+		const testType = testResult.testTypes[0];
+		const isADRTest = TEST_TYPES_GROUP7.includes(testType.testTypeId);
+		const isPass = testType.testResult === TestResults.PASS;
+		return isADRTest && isPass;
 	}
 }

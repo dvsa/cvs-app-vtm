@@ -39,4 +39,7 @@ export const selectRouteNestedParams = createSelector(selectRouter, (router) => 
 	return params;
 });
 
+export const selectRouteNestedParam = (param: string) =>
+	createSelector(selectRouteNestedParams, (params) => params?.[param]);
+
 export const routeEditable = createSelector(selectQueryParam('edit'), (edit) => edit === 'true');

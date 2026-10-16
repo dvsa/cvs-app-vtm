@@ -1,0 +1,258 @@
+@if (testResult(); as testResult) {
+  <table class="govuk-table">
+    <tbody class="govuk-table__body">
+      @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Created:</td>
+          <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-createdAt">
+            {{ testResult.createdAt | date: 'dd/MM/yyyy' : 'UTC' | defaultNullOrEmpty }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Test Date:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeStartTimestamp"
+          >
+            {{
+              testResult.testTypes[0].testTypeStartTimestamp
+                | date: 'dd/MM/yyyy' : 'UTC'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Test Code:</td>
+          <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testCode">
+            {{ testResult.testTypes[0].testCode | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Contingency Test Number:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-contingencyTestNumber"
+          >
+            {{ testResult.contingencyTestNumber | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (
+        (mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) &&
+        testTypeService.isCentralDocsApplicable(testResult)
+      ) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-issueRequired"
+          >
+            {{ testResult.testTypes[0].centralDocs?.issueRequired ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+      }
+      @if (
+        mode() === Modes.VIEW ||
+        (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) ||
+        (testTypeService.isADRTest(testResult) && mode() === Modes.SUMMARY)
+      ) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Description:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeName"
+          >
+            {{ testResult.testTypes[0].testTypeName | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (testTypeService.isADRTest(testResult) && mode() === Modes.SUMMARY) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-certificateNumber"
+          >
+            {{ testResult.testTypes[0].certificateNumber | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (
+        testTypeService.isADRTest(testResult) &&
+        mode() === Modes.SUMMARY &&
+        initialMode() === Modes.EDIT
+      ) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testExpiryDate"
+          >
+            {{
+              testResult.testTypes[0].testExpiryDate
+                | date: 'dd/MM/yyyy' : 'UTC'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+      }
+      @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Test Number:</td>
+          <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testNumber">
+            {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testExpiryDate"
+          >
+            {{
+              testResult.testTypes[0].testExpiryDate
+                | date: 'dd/MM/yyyy' : 'UTC'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testAnniversaryDate"
+          >
+            {{
+              testResult.testTypes[0].testAnniversaryDate
+                | date: 'dd/MM/yyyy' : 'UTC'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+        @if (testResult.testTypes[0].testResult === TestResults.ABANDONED) {
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Reason for abandoning:</td>
+            <td
+              class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+              id="test-reasonForAbandoning"
+            >
+              @for (
+                reason of getReasonsList(testResult.testTypes[0].reasonForAbandoning);
+                track reason
+              ) {
+                <p class="govuk-body" [id]="`test-reasonForAbandoning-${$index}`">
+                  {{ reason }}
+                </p>
+              }
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">
+              Additional details for abandoning:
+            </td>
+            <td
+              class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+              id="test-additionalCommentsForAbandon"
+            >
+              {{ testResult.testTypes[0].additionalCommentsForAbandon | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        }
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Start time:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeStartTimestamp"
+          >
+            {{
+              testResult.testTypes[0].testTypeStartTimestamp | date: 'HH:mm' | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">End time:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeEndTimestamp"
+          >
+            {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Test start date and time:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeStartTimestamp"
+          >
+            {{
+              testResult.testTypes[0].testTypeStartTimestamp
+                | date: 'dd/MM/yyyy HH:mm'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-testTypeEndTimestamp"
+          >
+            {{
+              testResult.testTypes[0].testTypeEndTimestamp
+                | date: 'dd/MM/yyyy HH:mm'
+                | defaultNullOrEmpty
+            }}
+          </td>
+        </tr>
+      }
+      @if (testTypeService.isADRTest(testResult)) {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header" style="width: 30%">Prohibition issued:</td>
+          <td
+            class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+            id="test-prohibitionIssued"
+          >
+            {{ testResult.testTypes[0].prohibitionIssued | defaultNullOrEmpty }}
+          </td>
+        </tr>
+      }
+      @if (loadStatusService.isLoadStatusApplicable(testResult)) {
+        @let loadStatus = testResult.testTypes[0].loadStatus;
+        <tr class="govuk-table__row">
+          <td scope="row" class="govuk-table__header" style="width: 30%">Load status:</td>
+          <td class="govuk-table__cell" id="test-vehicleLoadStatus">
+            {{ loadStatus?.vehicleLoadStatus | defaultNullOrEmpty }}
+          </td>
+        </tr>
+        @if (loadStatus?.vehicleLoadStatus === VEHICLE_LOAD_STATUS_TYPES.UNLADEN) {
+          <tr class="govuk-table__row">
+            <td scope="row" class="govuk-table__header" style="width: 30%">Body type:</td>
+            <td class="govuk-table__cell" id="test-unladenBodyType">
+              @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
+                {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
+              } @else {
+                {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
+              }
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td scope="row" class="govuk-table__header" style="width: 30%">
+              Reason for not loading:
+            </td>
+            <td class="govuk-table__cell" id="test-reasonForNotLoading">
+              @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
+                {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
+              } @else {
+                {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
+              }
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+}
