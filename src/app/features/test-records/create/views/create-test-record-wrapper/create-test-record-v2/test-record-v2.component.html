@@ -82,15 +82,17 @@
               <app-test-notes [mode]="mode()"></app-test-notes>
             </form>
           </app-accordion>
-          <app-accordion
-            [id]="'defects'"
-            [title]="'Defects'"
-            [description]="''"
-          >
-            <form ngNoForm>
-              <app-test-defects [mode]="mode()"></app-test-defects>
-            </form>
-          </app-accordion>
+          @if (shouldShowDefectSection()) {
+            <app-accordion
+              [id]="'defects'"
+              [title]="'Defects'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-defects [mode]="mode()"></app-test-defects>
+              </form>
+            </app-accordion>
+          }
           @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
             <app-test-amendment-history class="section" [testRecord]="testResult()" />
           }

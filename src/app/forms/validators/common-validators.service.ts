@@ -357,6 +357,26 @@ export class CommonValidatorsService {
 		};
 	}
 
+	futureDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
+		return (control) => {
+			// Determine future date (ignore seconds)
+			if (control.value && dayjs(control.value).startOf('minute').isBefore(dayjs().startOf('minute'))) {
+				const globalError = {
+					futureDate: { error: `${message} must be in the future`, anchorLink: '', accordion: '' },
+				};
+				if (anchorLink) {
+					globalError.futureDate.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.futureDate.accordion = accordion;
+				}
+				return globalError;
+			}
+
+			return null;
+		};
+	}
+
 	pastOrCurrentDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
@@ -542,6 +562,43 @@ export class CommonValidatorsService {
 			}
 
 			return null;
+		};
+	}
+
+	requiredWith(
+		message: string | ((control: AbstractControl) => GlobalError),
+		message2: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// If array has an element it satisfies the required condition
+			if (Array.isArray(control.value) && control.value.length > 0) return null;
+
+			// If the value is truthy or 0 it satisfies the required condition
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
+
+			const globalError: GlobalError = {
+				error: `${message} is required with ${message2}`,
+				anchorLink: '',
+				accordion: '',
+			};
+
+			if (typeof message !== 'string') {
+				return { required: message(control) };
+			}
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { required: globalError };
 		};
 	}
 

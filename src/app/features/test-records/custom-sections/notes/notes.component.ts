@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angu
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { Modes } from '@models/modes.enum';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -33,8 +34,23 @@ export class NotesComponent implements OnInit {
 		this.form.controls.testTypes
 			.at(0)
 			.controls.additionalNotesRecorded.setValidators([
-				this.commonValidators.maxLength(500, 'Additional Notes (optional)'),
+				this.commonValidators.maxLength(500, this.getAdditionalNotesLabel()),
 			]);
+	}
+
+	getAdditionalNotesLabel(): string {
+		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+			return 'Additional Notes';
+		}
+		return 'Additional Notes (optional)';
+	}
+
+	getAdditionalNotesHint(): string {
+		const testType = this.testResult()?.testTypes[0];
+		if (TEST_TYPES_GROUP7.includes(testType?.testTypeId ?? '') && testType?.centralDocs?.issueRequired) {
+			return 'Enter a reason for issuing documents centrally';
+		}
+		return '';
 	}
 
 	protected readonly Modes = Modes;
