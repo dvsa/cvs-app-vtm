@@ -696,7 +696,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
 				const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
 
-				if (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
+				if (bodyTypeCode === BodyTypeCode.A && bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
 					this.form.patchValue({
 						techRecord_bodyType_description: null,
 						techRecord_bodyType_code: null,
