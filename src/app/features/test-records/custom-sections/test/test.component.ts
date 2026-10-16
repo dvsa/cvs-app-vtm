@@ -191,7 +191,6 @@ export class TestComponent implements OnInit, OnDestroy {
 					this.mode() !== Modes.ABANDON,
 				this.commonValidators.requiredWith('Certificate Number', 'Result')
 			),
-			this.commonValidators.alphanumeric('Certificate Number'),
 		]);
 
 		testTypeGroup.controls.testExpiryDate.setValidators([
@@ -204,7 +203,7 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.date('Expiry Date'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
 			this.commonValidators.applyWhen(
-				() => this.isTestTypeGroup7() && this.mode() === Modes.CREATE,
+				() => this.isTestTypeGroup7() && this.mode() === Modes.EDIT,
 				this.commonValidators.futureDate('Expiry Date')
 			),
 		]);
@@ -347,7 +346,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowCreateModeDescription(): boolean {
-		return this.isTestTypeGroup7() && this.mode() === Modes.CREATE;
+		return this.isTestTypeGroup7() && this.mode() === Modes.EDIT;
 	}
 
 	shouldShowAnniversaryDate(): boolean {
