@@ -24,6 +24,8 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
 import { Modes } from '@models/modes.enum';
+import { MultiOptions } from '@models/options.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -60,6 +62,10 @@ export class VehicleComponent implements OnInit {
 
 	readonly VehicleTypes = VehicleTypes;
 	readonly FormNodeWidth = FormNodeWidth;
+	readonly ODOMETER_READING_UNITS_OPTIONS: MultiOptions = [
+		{ value: 'kilometres', label: 'Kilometres' },
+		{ value: 'miles', label: 'Miles' },
+	];
 
 	ngOnInit(): void {
 		this.prepopulateHazardClassificationOptions();
@@ -178,6 +184,10 @@ export class VehicleComponent implements OnInit {
 	toHazardClassificationOption(value?: HazardClassification | null): HazardClassification | null {
 		if (!value) return null;
 		return Object.values(HazardClassification).find((option) => option.code === value.code) ?? value;
+	}
+
+	isSpecialistGroup1(): boolean {
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	hasOdometer(): boolean {

@@ -72,15 +72,21 @@
       />
 
       <!-- Odometer reading units -->
-      <govuk-form-group-radio
-        label="Odometer Reading Units"
-        formControlName="odometerReadingUnits"
-        [width]="FormNodeWidth.L"
-        [options]="[
-          { value: 'kilometres', label: 'Kilometres' },
-          { value: 'miles', label: 'Miles' },
-        ]"
-      ></govuk-form-group-radio>
+      @if (isSpecialistGroup1()) {
+        <govuk-form-group-select
+          label="Odometer Reading Units"
+          formControlName="odometerReadingUnits"
+          [allowNull]="true"
+          [options]="ODOMETER_READING_UNITS_OPTIONS"
+        />
+      } @else {
+        <govuk-form-group-radio
+          label="Odometer Reading Units"
+          formControlName="odometerReadingUnits"
+          [width]="FormNodeWidth.L"
+          [options]="ODOMETER_READING_UNITS_OPTIONS"
+        ></govuk-form-group-radio>
+      }
     }
   </div>
 }
