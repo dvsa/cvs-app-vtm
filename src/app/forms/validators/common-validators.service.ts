@@ -359,8 +359,17 @@ export class CommonValidatorsService {
 
 	futureDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
+			// Ensure value exists
+			if (!control.value) return null;
+			// Parse value with dayjs and ensure it's valid
+			const inputDate = dayjs(control.value);
+			if (!inputDate.isValid()) return null;
+			// Ensure year is a four-digit year (1000-9999). This avoids relying on the raw string format.
+			const year = inputDate.year();
+			if (year.toString().length < 4) return null;
+
 			// Determine future date (ignore seconds)
-			if (control.value && dayjs(control.value).startOf('minute').isBefore(dayjs().startOf('minute'))) {
+			if (inputDate.startOf('minute').isBefore(dayjs().startOf('minute'))) {
 				const globalError = {
 					futureDate: { error: `${message} must be in the future`, anchorLink: '', accordion: '' },
 				};
