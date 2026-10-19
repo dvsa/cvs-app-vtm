@@ -93,6 +93,28 @@
               </form>
             </app-accordion>
           }
+          @if (shouldShowRequiredStandardsSection()) {
+            <app-accordion
+              [id]="'requiredStandards'"
+              [title]="'Required Standards'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-required-standards [mode]="mode()"></app-test-required-standards>
+              </form>
+            </app-accordion>
+          }
+          @if (shouldShowAdditionalDefectsSection()) {
+            <app-accordion
+              [id]="'additionalDefects'"
+              [title]="'Additional Defects'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-custom-defects [mode]="mode()"></app-test-custom-defects>
+              </form>
+            </app-accordion>
+          }
           @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
             <app-test-amendment-history class="section" [testRecord]="testResult()" />
           }

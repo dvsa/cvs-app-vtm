@@ -125,12 +125,14 @@
             formControlName="testTypeName"
           ></govuk-form-group-input>
 
-          <!-- Expiry Date -->
-          <govuk-form-group-date
-            mode="iso-date"
-            label="Expiry Date"
-            formControlName="testExpiryDate"
-          ></govuk-form-group-date>
+          @if (!isSpecialistGroup1()) {
+            <!-- Expiry Date -->
+            <govuk-form-group-date
+              mode="iso-date"
+              label="Expiry Date"
+              formControlName="testExpiryDate"
+            ></govuk-form-group-date>
+          }
 
           <!-- Test number -->
           <govuk-form-group-input
@@ -199,6 +201,15 @@
             formControlName="prohibitionIssued"
             [options]="YES_NO_OPTIONS"
           ></govuk-form-group-radio>
+        }
+        @if (shouldShowReapplicationDate()) {
+          <!-- Reapplication date -->
+          <govuk-form-group-date
+            mode="iso-date"
+            label="Reapplication date"
+            hint="For example, 27 3 2007"
+            formControlName="reapplicationDate"
+          ></govuk-form-group-date>
         }
         @if (shouldShowLoadStatus()) {
           <ng-container formGroupName="loadStatus">
@@ -314,7 +325,7 @@
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) || (isTestTypeGroup7() && mode() === Modes.SUMMARY)) {
+          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) || ((isTestTypeGroup7() || isSpecialistGroup1()) && mode() === Modes.SUMMARY)) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Description:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeName">
@@ -323,6 +334,14 @@
             </tr>
           }
           @if (isTestTypeGroup7() && mode() === Modes.SUMMARY) {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-certificateNumber">
+                {{ testResult.testTypes[0].certificateNumber | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          }
+          @if (isSpecialistGroup1() && shouldShowCertificateNumber()) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-certificateNumber">
@@ -345,18 +364,20 @@
                 {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
               </td>
             </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
-                {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
-              </td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testAnniversaryDate">
-                {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
-              </td>
-            </tr>
+            @if (!isSpecialistGroup1()) {
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
+                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
+                  {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+                </td>
+              </tr>
+              <tr class="govuk-table__row">
+                <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
+                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testAnniversaryDate">
+                  {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+                </td>
+              </tr>
+            }
             @if (testResult.testTypes[0].testResult === TestResults.ABANDONED) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__header" style="width: 30%">Reason for abandoning:</td>
@@ -400,14 +421,24 @@
               </td>
             </tr>
           }
-          @if (isTestTypeGroup7()) {
-
+          @if (shouldShowProhibitionIssued()) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Prohibition issued:</td>
               <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-prohibitionIssued">
                 {{ testResult.testTypes[0].prohibitionIssued | defaultNullOrEmpty }}
               </td>
             </tr>
+          }
+          @if (shouldShowReapplicationDate()) {
+            <tr class="govuk-table__row">
+              <td class="govuk-table__header" style="width: 30%">Reapplication date:</td>
+              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-reapplicationDate">
+                {{ testResult.testTypes[0].reapplicationDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          }
+          @if (shouldShowApprovalsMedia()) {
+            <app-approval-approval-media-download />
           }
           @if (shouldShowLoadStatus()) {
             @let loadStatus = testResult.testTypes?.[0]?.loadStatus;

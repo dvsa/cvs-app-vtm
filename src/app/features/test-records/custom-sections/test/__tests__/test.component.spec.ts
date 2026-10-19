@@ -483,6 +483,148 @@ describe('TestComponent', () => {
 		});
 	});
 
+	describe('specialist group 1 (IVA/MSVA)', () => {
+		const setTestResult = (testType: Partial<TestResultSchema['testTypes'][0]>, vehicleType = 'psv') => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType,
+				testTypes: [{ testTypeId: '126', ...testType }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		it('should show the result with pass, fail and PRS options when creating', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.isSpecialistGroup1()).toBe(true);
+			expect(component.shouldShowResult()).toBe(true);
+			expect(component.getResultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'prs']);
+		});
+
+		it('should show the description, prohibition issued and hide the anniversary date', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.shouldShowCreateModeDescription()).toBe(true);
+			expect(component.shouldShowProhibitionIssued()).toBe(true);
+			expect(component.shouldShowAnniversaryDate()).toBe(false);
+			expect(component.shouldShowExpiryDate()).toBe(false);
+		});
+
+		it.each([
+			[TestResults.PASS, true],
+			[TestResults.PRS, true],
+			[TestResults.FAIL, false],
+		])('should show issue documents centrally when the result is %s: %s', (testResult, expected) => {
+			setTestResult({ testResult });
+			expect(component.shouldShowCentralDocs()).toBe(expected);
+		});
+
+		it('should only show the reapplication date when the test has failed', () => {
+			setTestResult({ testResult: TestResults.FAIL });
+			expect(component.shouldShowReapplicationDate()).toBe(true);
+
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.shouldShowReapplicationDate()).toBe(false);
+		});
+
+		describe('shouldShowCertificateNumber', () => {
+			it('should be hidden when the test has failed', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				expect(component.shouldShowCertificateNumber()).toBe(false);
+			});
+
+			it.each([TestResults.PASS, TestResults.PRS])('should be shown when the result is %s', (testResult) => {
+				setTestResult({ testResult, centralDocs: { issueRequired: false } });
+				expect(component.shouldShowCertificateNumber()).toBe(true);
+			});
+
+			it('should be hidden when issuing documents centrally', () => {
+				setTestResult({ testResult: TestResults.PASS, centralDocs: { issueRequired: true } });
+				expect(component.shouldShowCertificateNumber()).toBe(false);
+			});
+
+			it.each(['hgv', 'trl'])('should be shown for a %s when issuing documents centrally', (vehicleType) => {
+				setTestResult(
+					{ testTypeId: '186', testResult: TestResults.PASS, centralDocs: { issueRequired: true } },
+					vehicleType
+				);
+				expect(component.shouldShowCertificateNumber()).toBe(true);
+			});
+		});
+
+		describe('testResult', () => {
+			const requiredStandard = { rsNumber: 1, prs: false } as never;
+
+			it.each([
+				[TestResults.PASS, [requiredStandard], 'Cannot pass test when required standards are present'],
+				[TestResults.FAIL, [], 'Cannot fail test when no required standards are present'],
+				[TestResults.PRS, [], 'Cannot mark test as PRS when no required standards are present'],
+			])(
+				'should be invalid when the result is %s and the required standards are %j',
+				(testResult, requiredStandards, error) => {
+					setTestResult({ testResult });
+					const testTypeGroup = component.form.controls.testTypes.at(0);
+					testTypeGroup.controls.requiredStandards.setValue(requiredStandards);
+					testTypeGroup.controls.testResult.setValue(testResult);
+
+					expect(testTypeGroup.controls.testResult.errors).toEqual({ invalidTestResult: { error } });
+				}
+			);
+
+			it.each([
+				[TestResults.PASS, []],
+				[TestResults.FAIL, [requiredStandard]],
+				[TestResults.PRS, [requiredStandard]],
+			])('should be valid when the result is %s and the required standards are %j', (testResult, requiredStandards) => {
+				setTestResult({ testResult });
+				const testTypeGroup = component.form.controls.testTypes.at(0);
+				testTypeGroup.controls.requiredStandards.setValue(requiredStandards);
+				testTypeGroup.controls.testResult.setValue(testResult);
+
+				expect(testTypeGroup.controls.testResult.valid).toBe(true);
+			});
+		});
+
+		describe('reapplicationDate', () => {
+			it('should be required when the test has failed', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue(null);
+				expect(control.errors).toHaveProperty('required');
+			});
+
+			it('should be invalid when not in the future', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue('2024-01-15');
+				expect(control.errors).toHaveProperty('futureDate');
+			});
+
+			it('should not be required when the test has passed', () => {
+				setTestResult({ testResult: TestResults.PASS });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue(null);
+				expect(control.valid).toBe(true);
+			});
+		});
+
+		it('should require prohibition issued', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			const control = component.form.controls.testTypes.at(0).controls.prohibitionIssued;
+			control.setValue(null);
+			expect(control.errors).toHaveProperty('required');
+		});
+
+		it('should not require an expiry or anniversary date when amending a passed test', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			fixture.componentRef.setInput('mode', Modes.AMEND);
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.testResult.setValue(TestResults.PASS);
+			testTypeGroup.controls.testExpiryDate.setValue(undefined);
+			testTypeGroup.controls.testAnniversaryDate.setValue(null);
+
+			expect(testTypeGroup.controls.testExpiryDate.valid).toBe(true);
+			expect(testTypeGroup.controls.testAnniversaryDate.valid).toBe(true);
+		});
+	});
+
 	describe('isLoadStatusRequired', () => {
 		it('should be required when creating a test that captures load status', () => {
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '94' }] } as TestResultSchema);

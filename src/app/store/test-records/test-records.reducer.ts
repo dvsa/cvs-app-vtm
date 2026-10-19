@@ -218,9 +218,8 @@ function createNewRequiredStandard(
 	}
 	const testResult = cloneDeep(testResultState);
 
-	if (!testResult.testTypes[0].requiredStandards) {
-		return;
-	}
+	// Saved test results drop an empty requiredStandards array, so it may need creating when amending
+	testResult.testTypes[0].requiredStandards ??= [];
 	testResult.testTypes[0].requiredStandards.push(requiredStandard);
 
 	return { ...testResult };
