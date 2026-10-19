@@ -141,6 +141,38 @@ describe('CommonValidatorsService', () => {
 		});
 	});
 
+	describe('futureDate', () => {
+		it('should return null if the control has a value of null', () => {
+			const control = new FormControl(null);
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return null if the control has a value that is a future date', () => {
+			const control = new FormControl('2025-01-01'); // current date mocked as 2024-01-01
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return an error object if the control has a value that is a past date', () => {
+			const control = new FormControl('2023-01-01'); // current date mocked as 2024-01-01
+			const result = service.futureDate('message')(control);
+			expect(result).toEqual({ futureDate: { error: 'message must be in the future', anchorLink: '', accordion: '' } });
+		});
+
+		it('should return null for dates with a non-four-digit year (skip validation)', () => {
+			const control = new FormControl('123-01-01');
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return null for invalid date strings', () => {
+			const control = new FormControl('abc');
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+	});
+
 	describe('invalidDate', () => {
 		it('should return null if the control has a value of null', () => {
 			const control = new FormControl(null);
