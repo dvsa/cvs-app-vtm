@@ -30,6 +30,7 @@
              inputmode="numeric"
              [maxlength]="maxLength.day"
              [(ngModel)]="day"
+             [ngModelOptions]="{ standalone: true }"
              [disabled]="disabled"
              (input)="onDateInput($event, 'day')"
              (ngModelChange)="onDayChange($event)"
@@ -52,6 +53,7 @@
              inputmode="numeric"
              [maxlength]="maxLength.month"
              [(ngModel)]="month"
+             [ngModelOptions]="{ standalone: true }"
              [disabled]="disabled"
              (input)="onDateInput($event, 'month')"
              (ngModelChange)="onMonthChange($event)"
@@ -75,6 +77,7 @@
              [min]="1000"
              [maxlength]="maxLength.year"
              [(ngModel)]="year"
+             [ngModelOptions]="{ standalone: true }"
              [disabled]="disabled"
              (input)="onDateInput($event, 'year')"
              (ngModelChange)="onYearChange($event)"
@@ -111,85 +114,89 @@
              name="{{ name() }}-day"
              type="number"
              inputmode="numeric"
-             [maxlength]="maxLength.day"
-             [(ngModel)]="day"
-             [disabled]="disabled"
-             (input)="onDateInput($event, 'day')"
-             (ngModelChange)="onDayChange($event)"
-             (blur)="onTouched(); handleEvent($event); validate()"
-             (focus)="handleEvent($event)"
-             />
-         </div>
-       </div>
-       <div class="govuk-date-input__item">
-         <div class="govuk-form-group">
-           <label class="govuk-label govuk-date-input__label" for="{{ name() }}-month"> Month </label>
-           <input
-             #monthEl="ngModel"
-             appNumberOnly
-             class="govuk-input govuk-date-input__input govuk-input--width-2"
-             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
-             [id]="monthId"
-             name="{{ name() }}-month"
-             type="number"
-             inputmode="numeric"
-             [maxlength]="maxLength.month"
-             [(ngModel)]="month"
-             [disabled]="disabled"
-             (input)="onDateInput($event, 'month')"
-             (ngModelChange)="onMonthChange($event)"
-             (blur)="onTouched(); handleEvent($event); validate()"
-             (focus)="handleEvent($event)"
-             />
-         </div>
-       </div>
-       <div class="govuk-date-input__item">
-         <div class="govuk-form-group">
-           <label class="govuk-label govuk-date-input__label" for="{{ name() }}-year"> Year </label>
-           <input
-             #yearEl="ngModel"
-             appNumberOnly
-             class="govuk-input govuk-date-input__input govuk-input--width-4"
-             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
-             [id]="yearId"
-             name="{{ name() }}-year"
-             type="number"
-             inputmode="numeric"
-             [min]="1000"
-             [maxlength]="maxLength.year"
-             [(ngModel)]="year"
-             [disabled]="disabled"
-             (input)="onDateInput($event, 'year')"
-             (ngModelChange)="onYearChange($event)"
-             (blur)="onTouched(); handleEvent($event); validate()"
-             (focus)="handleEvent($event)"
-             />
+              [maxlength]="maxLength.day"
+              [(ngModel)]="day"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="disabled"
+              (input)="onDateInput($event, 'day')"
+              (ngModelChange)="onDayChange($event)"
+              (blur)="onTouched(); handleEvent($event); validate()"
+              (focus)="handleEvent($event)"
+              />
+          </div>
         </div>
-      </div>
-      <div class="govuk-date-input__item">
-        <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name() }}-hour"> Hour </label>
-           <input
-             #hourEl="ngModel"
-             appNumberOnly
-             class="govuk-input govuk-date-input__input govuk-input--width-2"
-             [ngClass]="{
-               'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
-             }"
-             id="{{ name() }}-hour"
-             name="{{ name() }}-hour"
-             type="number"
-             inputmode="numeric"
-             [min]="0"
-             [max]="23"
-             [maxlength]="maxLength.hour"
-             [(ngModel)]="hour"
-             [disabled]="disabled"
-             (input)="onDateInput($event, 'hour')"
-             (ngModelChange)="onHourChange($event)"
-             (blur)="onTouched(); handleEvent($event)"
-             (focus)="handleEvent($event)"
-             />
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="{{ name() }}-month"> Month </label>
+            <input
+              #monthEl="ngModel"
+              appNumberOnly
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
+              [id]="monthId"
+              name="{{ name() }}-month"
+              type="number"
+              inputmode="numeric"
+              [maxlength]="maxLength.month"
+              [(ngModel)]="month"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="disabled"
+              (input)="onDateInput($event, 'month')"
+              (ngModelChange)="onMonthChange($event)"
+              (blur)="onTouched(); handleEvent($event); validate()"
+              (focus)="handleEvent($event)"
+              />
+          </div>
+        </div>
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="{{ name() }}-year"> Year </label>
+            <input
+              #yearEl="ngModel"
+              appNumberOnly
+              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
+              [id]="yearId"
+              name="{{ name() }}-year"
+              type="number"
+              inputmode="numeric"
+              [min]="1000"
+              [maxlength]="maxLength.year"
+              [(ngModel)]="year"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="disabled"
+              (input)="onDateInput($event, 'year')"
+              (ngModelChange)="onYearChange($event)"
+              (blur)="onTouched(); handleEvent($event); validate()"
+              (focus)="handleEvent($event)"
+              />
+         </div>
+       </div>
+       <div class="govuk-date-input__item">
+         <div class="govuk-form-group">
+           <label class="govuk-label govuk-date-input__label" for="{{ name() }}-hour"> Hour </label>
+            <input
+              #hourEl="ngModel"
+              appNumberOnly
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              [ngClass]="{
+                'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
+              }"
+              id="{{ name() }}-hour"
+              name="{{ name() }}-hour"
+              type="number"
+              inputmode="numeric"
+              [min]="0"
+              [max]="23"
+              [maxlength]="maxLength.hour"
+              [(ngModel)]="hour"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="disabled"
+              (input)="onDateInput($event, 'hour')"
+              (ngModelChange)="onHourChange($event)"
+              (blur)="onTouched(); handleEvent($event)"
+              (focus)="handleEvent($event)"
+              />
         </div>
       </div>
       <div class="govuk-date-input__item">
@@ -210,6 +217,7 @@
              [max]="59"
              [maxlength]="maxLength.minute"
              [(ngModel)]="minute"
+             [ngModelOptions]="{ standalone: true }"
              [disabled]="disabled"
              (input)="onDateInput($event, 'minute')"
              (ngModelChange)="onMinuteChange($event)"

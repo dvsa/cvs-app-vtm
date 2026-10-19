@@ -9,7 +9,6 @@ import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@/src/app/forms/utils/enum-map';
 import { PASS_FAIL_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
-import { TEST_TYPES_GROUP7 } from '@/src/app/models/testTypeId.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
@@ -17,7 +16,6 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { Component, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
-import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -63,12 +61,4 @@ export class TestCreateComponent {
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
-
-	shouldShowExpiryDate(): boolean {
-		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
-		if (!isGroup7) return false;
-		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
-		return true;
-	}
 }

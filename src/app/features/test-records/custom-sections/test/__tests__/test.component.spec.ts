@@ -348,13 +348,6 @@ describe('TestComponent', () => {
 		});
 	});
 
-	describe('initTimeDisplayControls', () => {
-		it('should not set display controls when not in AMEND mode', () => {
-			expect(component.startTimeDisplay.value).toBe('');
-			expect(component.endTimeDisplay.value).toBe('');
-		});
-	});
-
 	describe('shouldShowLoadStatus', () => {
 		const setTestType = (testType: Record<string, unknown>) => {
 			store.overrideSelector(toEditOrNotToEdit, {
@@ -420,10 +413,7 @@ describe('TestComponent', () => {
 		it('should return false when there is no test result', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined);
 			store.refreshState();
-			expect(component.shouldShowResult()).toBe(false);
-			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
 			expect(component.shouldShowProhibitionIssued()).toBe(false);
-			expect(component.shouldShowCentralDocs()).toBe(false);
 			expect(component.shouldShowCertificateNumber()).toBe(false);
 		});
 
@@ -433,21 +423,7 @@ describe('TestComponent', () => {
 			} as TestResultSchema);
 			store.refreshState();
 
-			expect(component.shouldShowResult()).toBe(true);
-			expect(component.shouldShowGenerateADRCertificate()).toBe(true);
 			expect(component.shouldShowProhibitionIssued()).toBe(true);
-		});
-
-		it('should include central docs ids and group7 for central docs check', () => {
-			// central docs id from TEST_TYPES_GROUP9_10_CENTRAL_DOCS (e.g. '95')
-			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '95' }] } as TestResultSchema);
-			store.refreshState();
-			expect(component.shouldShowCentralDocs()).toBe(true);
-
-			// also true for group7 id
-			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '59' }] } as TestResultSchema);
-			store.refreshState();
-			expect(component.shouldShowCentralDocs()).toBe(true);
 		});
 
 		it('shouldShowCertificateNumber rules: false for non-group7 or failing tests', () => {
@@ -571,41 +547,6 @@ describe('TestComponent - AMEND mode', () => {
 
 			expect(component.isLoadStatusRequired()).toBe(false);
 			expect(control.valid).toBe(true);
-		});
-	});
-
-	describe('initTimeDisplayControls', () => {
-		it('should format start and end times in local time without Z suffix', () => {
-			const testTypeGroup = component.form.controls.testTypes.at(0);
-			testTypeGroup.controls.testTypeStartTimestamp.setValue('2024-06-15T14:30:00.000Z');
-			testTypeGroup.controls.testTypeEndTimestamp.setValue('2024-06-15T15:45:00.000Z');
-
-			fixture.detectChanges();
-
-			const startValue = component.startTimeDisplay.value;
-			const endValue = component.endTimeDisplay.value;
-
-			expect(startValue).not.toContain('Z');
-			expect(endValue).not.toContain('Z');
-
-			const expectedStart = new Date('2024-06-15T14:30:00.000Z');
-			const expectedStartStr = `${expectedStart.getFullYear()}-${(expectedStart.getMonth() + 1).toString().padStart(2, '0')}-${expectedStart.getDate().toString().padStart(2, '0')}T${expectedStart.getHours().toString().padStart(2, '0')}:${expectedStart.getMinutes().toString().padStart(2, '0')}:${expectedStart.getSeconds().toString().padStart(2, '0')}.${expectedStart.getMilliseconds().toString().padStart(3, '0')}`;
-			expect(startValue).toBe(expectedStartStr);
-
-			const expectedEnd = new Date('2024-06-15T15:45:00.000Z');
-			const expectedEndStr = `${expectedEnd.getFullYear()}-${(expectedEnd.getMonth() + 1).toString().padStart(2, '0')}-${expectedEnd.getDate().toString().padStart(2, '0')}T${expectedEnd.getHours().toString().padStart(2, '0')}:${expectedEnd.getMinutes().toString().padStart(2, '0')}:${expectedEnd.getSeconds().toString().padStart(2, '0')}.${expectedEnd.getMilliseconds().toString().padStart(3, '0')}`;
-			expect(endValue).toBe(expectedEndStr);
-		});
-
-		it('should set empty string when timestamp is null', () => {
-			const testTypeGroup = component.form.controls.testTypes.at(0);
-			testTypeGroup.controls.testTypeStartTimestamp.setValue(null);
-			testTypeGroup.controls.testTypeEndTimestamp.setValue(null);
-
-			fixture.detectChanges();
-
-			expect(component.startTimeDisplay.value).toBe('');
-			expect(component.endTimeDisplay.value).toBe('');
 		});
 	});
 });

@@ -144,6 +144,15 @@ export class TestTypeService {
 		return TEST_TYPES_GROUP7.includes(testType.testTypeId);
 	}
 
+	shouldShowExpiryDate(testResult: TestResultSchema): boolean {
+		const isGroup7 = TEST_TYPES_GROUP7.includes(testResult?.testTypes[0].testTypeId ?? '');
+		const result = testResult?.testTypes[0].testResult;
+		if (result === TestResults.ABANDONED) return false;
+		if (!isGroup7) return false;
+		if (result === 'fail') return false;
+		return true;
+	}
+
 	isTestResultApplicable(testResult: TestResultSchema): boolean {
 		const testType = testResult.testTypes[0];
 		const hasTestResult = [...TEST_TYPES_GROUP7].includes(testType.testTypeId);

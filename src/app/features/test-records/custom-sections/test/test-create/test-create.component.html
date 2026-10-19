@@ -53,7 +53,7 @@
           ></govuk-form-group-input>
         }
 
-        @if (shouldShowExpiryDate()) {
+        @if (testTypeService.shouldShowExpiryDate(testResult)) {
           <!-- Expiry Date -->
           <govuk-form-group-date
             mode="iso-date"

@@ -10,7 +10,6 @@ import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@/src/app/forms/utils/enum-map';
 import { MultiOptions, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
-import { TEST_TYPES_GROUP7 } from '@/src/app/models/testTypeId.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
@@ -72,14 +71,5 @@ export class TestAmendComponent {
 		const resourceType = this.testTypeService.getAbandonReasonsResourceType(testResult);
 		const referenceData = this.store.selectSignal(selectAllReferenceDataByResourceType(resourceType))() || [];
 		return referenceData.map((reason) => ({ label: `${reason.description}`, value: `${reason.description}` }));
-	}
-
-	shouldShowExpiryDate(): boolean {
-		const testType = this.testResult()?.testTypes[0];
-		const isGroup7 = TEST_TYPES_GROUP7.includes(testType?.testTypeId ?? '');
-		if (testType?.testResult === TestResults.ABANDONED) return false;
-		if (!isGroup7) return false;
-		if (testType?.testResult === TestResults.FAIL) return false;
-		return true;
 	}
 }

@@ -55,6 +55,7 @@
               [attr.data-testid]="id"
               [class.govuk-radios__input--error]="hasError"
               [(ngModel)]="value"
+              [ngModelOptions]="{ standalone: true }"
               (ngModelChange)="onChange($event)"
               [disabled]="disabled()"
               (blur)="onTouched()"
