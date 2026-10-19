@@ -366,15 +366,19 @@ export class CommonValidatorsService {
 			// do the basic checks on the raw value parts first and return null (skip validation)
 			// if any of day/month/year are missing. This prevents dayjs from inferring values
 			// for partial dates.
-			const [d] = control.value.split('T');
-			const [yearStr, monthStr, dayStr] = (d || '').split('-');
+			const [date, time] = control.value.split('T');
+			const [yearStr, monthStr, dayStr] = (date || '').split('-');
+			const isMissingOrInvalid = (s?: string) => {
+				if (s == null) return true;
+				const v = s.trim().toLowerCase();
+				return v === '' || v === 'null' || v === 'undefined';
+			};
 			if (typeof control.value === 'string') {
-				const isMissingOrInvalid = (s?: string) => {
-					if (s == null) return true;
-					const v = s.trim().toLowerCase();
-					return v === '' || v === 'null' || v === 'undefined';
-				};
 				if (isMissingOrInvalid(yearStr) || isMissingOrInvalid(monthStr) || isMissingOrInvalid(dayStr)) return null;
+			}
+			if (time) {
+				const [minutesStr, secondsStr] = (time || '').split(':');
+				if (isMissingOrInvalid(minutesStr) || isMissingOrInvalid(secondsStr)) return null;
 			}
 			// return null if yearStr is defined but contains less than 4 characters
 			if (yearStr.length < 4) return null;
