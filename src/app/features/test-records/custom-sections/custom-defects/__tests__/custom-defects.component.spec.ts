@@ -89,7 +89,7 @@ describe('CustomDefectsComponent', () => {
 	});
 
 	describe('validation', () => {
-		it('should report the first invalid additional defect against the test result', () => {
+		it('should report every invalid field of the additional defects against the test result', () => {
 			createComponent(Modes.EDIT);
 			component.onAddCustomDefect();
 
@@ -97,7 +97,10 @@ describe('CustomDefectsComponent', () => {
 			customDefects.updateValueAndValidity();
 
 			expect(customDefects.errors).toEqual({
-				required: expect.objectContaining({ error: 'Defect Name is required', anchorLink: 'defectName-1' }),
+				customDefects: [
+					expect.objectContaining({ error: 'Defect Name is required', anchorLink: 'defectName-1' }),
+					expect.objectContaining({ error: 'Defect Notes is required', anchorLink: 'defectNotes-1' }),
+				],
 			});
 		});
 

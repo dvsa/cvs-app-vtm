@@ -22,7 +22,7 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
@@ -62,6 +62,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 	templateUrl: './test.component.html',
 	imports: [
 		DatePipe,
+		NgTemplateOutlet,
 		FormsModule,
 		ReactiveFormsModule,
 		ToUppercaseDirective,
@@ -190,8 +191,9 @@ export class TestComponent implements OnInit, OnDestroy {
 		]);
 
 		testTypeGroup.controls.testResult.setValidators([
+			// Applies when abandoning too, as it does in the dynamic form flow
 			this.commonValidators.applyWhen(
-				() => this.isSpecialistGroup1() && !this.testService.isAbandoning(),
+				() => this.isSpecialistGroup1(),
 				(control) => this.validateResultAgainstRequiredStandards(control)
 			),
 		]);
@@ -208,7 +210,9 @@ export class TestComponent implements OnInit, OnDestroy {
 				() =>
 					this.shouldShowCertificateNumber() &&
 					this.testResult()?.testTypes[0].testResult !== null &&
-					this.mode() !== Modes.ABANDON,
+					this.mode() !== Modes.ABANDON &&
+					// IVA/MSVA tests show the certificate number when abandoned, but do not require it
+					!(this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED),
 				this.commonValidators.requiredWith('Certificate Number', 'Result')
 			),
 			this.commonValidators.alphanumeric('Certificate Number must be alphanumeric'),
@@ -316,8 +320,12 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.form.controls.testTypes.at(0).controls.testCode.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 			this.form.controls.testTypes.at(0).controls.testNumber.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
+
+			// IVA/MSVA tests let the start and end times be amended
+			if (!this.isSpecialistGroup1()) {
+				this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
+				this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
+			}
 		}
 
 		if (this.isTestTypeGroup7() || this.isSpecialistGroup1()) {
@@ -402,13 +410,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		return true;
 	}
 
-	getAbandonNotesLabel(): string {
-		if (this.isTestTypeGroup7()) {
-			return 'Additional notes as to why this test was abandoned';
-		}
-		return 'Additional notes as to why this test was abandoned (optional)';
-	}
-
 	shouldShowCreateModeDescription(): boolean {
 		return (this.isTestTypeGroup7() || this.isSpecialistGroup1()) && this.mode() === Modes.EDIT;
 	}
@@ -441,6 +442,9 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	shouldShowCertificateNumber(): boolean {
 		if (this.isSpecialistGroup1()) {
+			// An abandoned test keeps its certificate number when it is amended
+			if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return this.mode() === Modes.AMEND;
+
 			if (!this.isPassOrPrs()) return false;
 
 			// HGV/TRL IVA tests still record a certificate number when documents are issued centrally

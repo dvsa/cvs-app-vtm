@@ -15,7 +15,8 @@ import {
 } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
@@ -27,6 +28,7 @@ import { Modes } from '@models/modes.enum';
 import { MultiOptions } from '@models/options.model';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
 	selector: 'app-test-vehicle',
@@ -50,6 +52,7 @@ export class VehicleComponent implements OnInit {
 	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
+	destroyRef = inject(DestroyRef);
 
 	mode = input.required<Modes>();
 
@@ -70,6 +73,7 @@ export class VehicleComponent implements OnInit {
 	ngOnInit(): void {
 		this.prepopulateHazardClassificationOptions();
 		this.addValidators();
+		this.watchOdometerReadingAndUnits();
 		this.handlePrepopulateEuVehicleCategory();
 
 		// Load reference data
@@ -109,16 +113,24 @@ export class VehicleComponent implements OnInit {
 		this.form.controls.euVehicleCategory.setValidators([this.commonValidators.required('EU Vehicle Category')]);
 		this.form.controls.odometerReading.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.isOdometerReadingRequired(),
+				() => this.isOdometerReadingRequired() && !this.isSpecialistGroup1(),
 				this.commonValidators.required('Odometer Reading')
+			),
+			this.commonValidators.applyWhen(
+				() => this.isOdometerReadingRequired() && this.isSpecialistGroup1(),
+				this.commonValidators.requiredWith('Odometer Reading', 'Odometer Reading Units')
 			),
 			this.commonValidators.applyWhen(() => this.hasOdometer(), this.commonValidators.max(9999999, 'Odometer Reading')),
 		]);
 
 		this.form.controls.odometerReadingUnits.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.isOdometerReadingUnitsRequired(),
+				() => this.isOdometerReadingUnitsRequired() && !this.isSpecialistGroup1(),
 				this.commonValidators.required('Odometer Reading Units')
+			),
+			this.commonValidators.applyWhen(
+				() => this.isOdometerReadingUnitsRequired() && this.isSpecialistGroup1(),
+				this.commonValidators.requiredWith('Odometer Reading Units', 'Odometer Reading')
 			),
 		]);
 		this.form.controls.vtg15.controls.vtg15Required.setValidators([
@@ -146,6 +158,23 @@ export class VehicleComponent implements OnInit {
 			),
 		]);
 	}
+
+	/**
+	 * For IVA/MSVA tests each odometer field is only required once the other is filled in, so a change to one
+	 * must revalidate the other. `distinctUntilChanged` stops the two revalidations triggering each other.
+	 */
+	watchOdometerReadingAndUnits(): void {
+		const { odometerReading, odometerReadingUnits } = this.form.controls;
+
+		odometerReading.valueChanges
+			.pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => odometerReadingUnits.updateValueAndValidity({ onlySelf: true }));
+
+		odometerReadingUnits.valueChanges
+			.pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => odometerReading.updateValueAndValidity({ onlySelf: true }));
+	}
+
 	isVTGRequiredMandatory(): boolean {
 		const techRecord = this.techRecord();
 		// not mandatory for amend mode
@@ -206,7 +235,9 @@ export class VehicleComponent implements OnInit {
 
 		if (!this.hasOdometer()) return false;
 
-		// Add test specific logic here
+		// IVA/MSVA tests only need a reading once its units have been given
+		if (this.isSpecialistGroup1()) return this.hasValue(this.form.controls.odometerReadingUnits.value);
+
 		return true;
 	}
 
@@ -218,8 +249,14 @@ export class VehicleComponent implements OnInit {
 
 		if (!this.hasOdometer()) return false;
 
-		// Add test specific logic here
+		// IVA/MSVA tests only need units once a reading has been given
+		if (this.isSpecialistGroup1()) return this.hasValue(this.form.controls.odometerReading.value);
+
 		return true;
+	}
+
+	private hasValue(value: unknown): boolean {
+		return value !== null && value !== undefined && value !== '';
 	}
 
 	protected readonly Modes = Modes;

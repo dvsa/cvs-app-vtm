@@ -65,7 +65,7 @@ export class CustomDefectsComponent implements OnInit {
 
 		const customDefects = this.form.controls.testTypes.at(0).controls.customDefects;
 		for (const customDefect of customDefects.value ?? []) {
-			this.customDefectsForm.push(this.createCustomDefectForm(customDefect));
+			this.addCustomDefectForm(customDefect);
 		}
 
 		this.customDefectsForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -83,7 +83,7 @@ export class CustomDefectsComponent implements OnInit {
 		customDefects.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.isSpecialistGroup1(),
-				() => this.getFirstCustomDefectError()
+				() => this.getCustomDefectErrors()
 			),
 		]);
 	}
@@ -101,20 +101,20 @@ export class CustomDefectsComponent implements OnInit {
 		});
 	}
 
-	getFirstCustomDefectError(): ValidationErrors | null {
+	/** Reports every invalid field of every additional defect, so they all appear in the global error summary. */
+	getCustomDefectErrors(): ValidationErrors | null {
+		const errors: GlobalError[] = [];
+
 		for (const [index, customDefect] of this.customDefectsForm.controls.entries()) {
 			for (const [key, control] of Object.entries(customDefect.controls)) {
-				// The common validators skip controls without a parent, so a newly added defect is only valid until revalidated
-				control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-
-				const [errorKey, error] = Object.entries(control.errors ?? {})[0] ?? [];
-				if (errorKey) {
-					return { [errorKey]: { ...(error as GlobalError), anchorLink: `${key}-${index}` } };
+				const error = Object.values(control.errors ?? {})[0] as GlobalError | undefined;
+				if (error) {
+					errors.push({ ...error, anchorLink: `${key}-${index}` });
 				}
 			}
 		}
 
-		return null;
+		return errors.length ? { customDefects: errors } : null;
 	}
 
 	isEditing(): boolean {
@@ -126,7 +126,20 @@ export class CustomDefectsComponent implements OnInit {
 	}
 
 	onAddCustomDefect(): void {
-		this.customDefectsForm.push(this.createCustomDefectForm());
+		this.addCustomDefectForm();
+	}
+
+	addCustomDefectForm(customDefect?: SpecialistCustomDefectsSchema): void {
+		const customDefectForm = this.createCustomDefectForm(customDefect);
+		this.customDefectsForm.push(customDefectForm);
+
+		// The common validators skip controls without a parent, so validate the fields again now they have one
+		for (const control of Object.values(customDefectForm.controls)) {
+			control.updateValueAndValidity();
+		}
+
+		// Touched events only fire on the first touch, so reset it for the next review to touch the new defect too
+		this.form.controls.testTypes.at(0).controls.customDefects.markAsUntouched();
 	}
 
 	onRemoveCustomDefect(index: number): void {
