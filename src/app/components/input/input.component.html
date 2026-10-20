@@ -1,0 +1,65 @@
+<div
+  class="govuk-form-group"
+  [class.govuk-form-group--error]="touched() && invalid() && showGroupErrors()"
+>
+  @if (label()) {
+    <div class="govuk-label-wrapper">
+      <label class="govuk-label" [id]="`${id()}-label`" [htmlFor]="id()">
+        {{ label() }}
+      </label>
+    </div>
+  }
+
+  @if (hint()) {
+    <div class="govuk-hint" [id]="`${id()}-hint`">{{ hint() }}</div>
+  }
+
+  @if (touched() && invalid() && showErrors()) {
+    <p class="govuk-error-message" [id]="`${id()}-error`">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ errors()[0]?.message }}</span>
+    </p>
+  }
+
+  <div class="govuk-input__wrapper">
+    <!-- Provide prefix via string input -->
+    @if (prefix()) {
+      <div
+        class="govuk-input__prefix"
+        [class.govuk-input__prefix-disabled]="disabled() || false"
+        aria-hidden="true"
+      >
+        {{ prefix() }}
+      </div>
+    }
+
+    <!-- Also allow providing of prefix via content projection for more complex suffixes -->
+    <ng-content select=".govuk-input__prefix"></ng-content>
+    @if (type() === 'text') {
+      <input
+        class="govuk-input"
+        [class.govuk-input--error]="invalid() && touched() && showErrors()"
+        [class]="inputClass()"
+        appNoEmojis
+        [id]="id()"
+        [(ngModel)]="value"
+        [disabled]="disabled() || false"
+        (blur)="touched.set(true)"
+      />
+    }
+
+    <!-- Provide suffix via string input -->
+    @if (suffix()) {
+      <div
+        class="govuk-input__suffix"
+        [class.govuk-input__suffix-disabled]="disabled() || false"
+        aria-hidden="true"
+      >
+        {{ suffix() }}
+      </div>
+    }
+
+    <!-- Also allow providing of suffix via content projection for more complex suffixes -->
+    <ng-content select=".govuk-input__suffix"></ng-content>
+  </div>
+</div>

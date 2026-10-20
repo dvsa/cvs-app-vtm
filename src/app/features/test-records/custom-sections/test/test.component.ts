@@ -1,3 +1,4 @@
+import { InputComponent } from '@/src/app/components/input/input.component';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
@@ -17,8 +18,20 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	effect,
+	inject,
+	input,
+	linkedSignal,
+	OnDestroy,
+	OnInit,
+	signal,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { apply, form, FormField, hidden, maxLength, minLength, required } from '@angular/forms/signals';
 import { ButtonComponent } from '@components/button/button.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
@@ -66,6 +79,8 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		ButtonComponent,
 		FieldErrorMessageComponent,
 		RetrieveDocumentDirective,
+		FormField,
+		InputComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -102,6 +117,39 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 	readonly adrCertificateFileName = signal<string | undefined>(undefined);
 	readonly adrCertificateError = signal<string | null | undefined>(undefined);
+
+	readonly draft = linkedSignal({
+		source: this.testResult,
+		computation: (testResult) => ({
+			contingencyTestNumber: testResult?.contingencyTestNumber || '',
+		}),
+	});
+	readonly testResultForm = form(this.draft, (schema) => {
+		// Contingency Test Number
+		apply(schema.contingencyTestNumber, (contingencyTestNumber) => {
+			hidden(contingencyTestNumber, {
+				when: () => this.initialMode() !== Modes.EDIT,
+			});
+			required(contingencyTestNumber, {
+				message: 'Contingency Test Number is required',
+				when: () => this.initialMode() === Modes.EDIT,
+			});
+			minLength(contingencyTestNumber, 6, {
+				message: 'Contingency Test Number must be at least 6 characters long',
+			});
+			maxLength(contingencyTestNumber, 8, {
+				message: 'Contingency Test Number must be at most 8 characters long',
+			});
+		});
+	});
+
+	constructor() {
+		// This syncs state
+		// @TODO: remove once everything is migrated to signal forms
+		effect(() => {
+			this.form.patchValue(this.draft());
+		});
+	}
 
 	ngOnInit(): void {
 		this.prepopulateVTG15Required();
@@ -166,15 +214,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	addValidators(): void {
 		const testTypeGroup = this.form.controls.testTypes.at(0);
-
-		this.form.controls.contingencyTestNumber.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.contingencyTestNumberIsRequired(),
-				this.commonValidators.required('Contingency Test Number')
-			),
-			this.commonValidators.minLength(6, 'Contingency Test Number'),
-			this.commonValidators.maxLength(8, 'Contingency Test Number'),
-		]);
 
 		testTypeGroup.controls.prohibitionIssued.setValidators([
 			this.commonValidators.applyWhen(
@@ -296,10 +335,6 @@ export class TestComponent implements OnInit, OnDestroy {
 			return RESULT_OPTIONS;
 		}
 		return PASS_FAIL_OPTIONS;
-	}
-
-	contingencyTestNumberIsRequired(): boolean {
-		return this.initialMode() === Modes.EDIT;
 	}
 
 	handleTestStartTimestampChange(): void {
