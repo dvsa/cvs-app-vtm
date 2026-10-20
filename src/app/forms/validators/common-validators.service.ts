@@ -361,12 +361,31 @@ export class CommonValidatorsService {
 		return (control) => {
 			// Ensure value exists
 			if (!control.value) return null;
-			// Parse value with dayjs and ensure it's valid
+
+			// If the control value is a string (expected format YYYY-MM-DD or YYYY-MM-DDTHH:MM)
+			// do the basic checks on the raw value parts first and return null (skip validation)
+			// if any of day/month/year are missing. This prevents dayjs from inferring values
+			// for partial dates.
+			const [date, time] = control.value.split('T');
+			const [yearStr, monthStr, dayStr] = (date || '').split('-');
+			const isMissingOrInvalid = (s?: string) => {
+				if (s == null) return true;
+				const v = s.trim().toLowerCase();
+				return v === '' || v === 'null' || v === 'undefined';
+			};
+			if (typeof control.value === 'string') {
+				if (isMissingOrInvalid(yearStr) || isMissingOrInvalid(monthStr) || isMissingOrInvalid(dayStr)) return null;
+			}
+			if (time) {
+				const [minutesStr, secondsStr] = (time || '').split(':');
+				if (isMissingOrInvalid(minutesStr) || isMissingOrInvalid(secondsStr)) return null;
+			}
+			// return null if yearStr is defined but contains less than 4 characters
+			if (yearStr.length < 4) return null;
+
+			// Parse value with dayjs and ensure it's valid (covers non-string values like Date)
 			const inputDate = dayjs(control.value);
 			if (!inputDate.isValid()) return null;
-			// Ensure year is a four-digit year (1000-9999). This avoids relying on the raw string format.
-			const year = inputDate.year();
-			if (year.toString().length < 4) return null;
 
 			// Determine future date (ignore seconds)
 			if (inputDate.startOf('minute').isBefore(dayjs().startOf('minute'))) {
