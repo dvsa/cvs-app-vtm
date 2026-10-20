@@ -15,6 +15,7 @@ import { LogsProvider } from '@services/logs/logs.service';
 import { id } from '@store/user/user-service.reducer';
 import { get } from 'lodash';
 import { Observable, catchError, map, throwError } from 'rxjs';
+import { version } from '../../../../package.json';
 
 @Injectable()
 export class ResponseLoggerInterceptor implements HttpInterceptor {
@@ -25,7 +26,12 @@ export class ResponseLoggerInterceptor implements HttpInterceptor {
 	intercept<T>(request: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		const start = Date.now();
 
-		let modifiedRequest: HttpRequest<T | string> = request;
+		let modifiedRequest: HttpRequest<T | string> = request.clone({
+			setHeaders: {
+				'app-version': version,
+				'app-source': 'VTM',
+			},
+		});
 
 		if (request.headers.get(CompressionHeaders.outbound.request) === CompressionHeaders.compressionValue) {
 			try {

@@ -6,7 +6,7 @@ import { clearAllSectionStates, clearScrollPosition } from '@/src/app/store/tech
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { SearchResultsV2Component } from '../../search-results-wrapper/search-results-v2/search-results-v2.component';
+import { SearchResultsComponent } from '../../search-results/search-results.component';
 import { SearchFormComponent } from '../search-form.component';
 
 const mockGlobalErrorService = {
@@ -26,7 +26,7 @@ describe('SearchFormComponent', () => {
 			imports: [SearchFormComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
-				provideRouter([{ path: 'search/results', component: SearchResultsV2Component }]),
+				provideRouter([{ path: 'search/results', component: SearchResultsComponent }]),
 				{ provide: GlobalErrorService, useValue: mockGlobalErrorService },
 			],
 		}).compileComponents();

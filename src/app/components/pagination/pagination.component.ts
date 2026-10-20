@@ -27,12 +27,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
 	readonly numberOfItems = input(0);
 	readonly itemsPerPage = input(5);
 
-	paginationOptions = model<{
-		currentPage: number;
-		itemsPerPage: number;
-		start: number;
-		end: number;
-	}>();
+	paginationOptions = model<PaginationOptions>();
 
 	currentPage = 1;
 	currentPageSubject = new ReplaySubject<number>(this.currentPage);
@@ -111,3 +106,10 @@ export class PaginationComponent implements OnInit, OnDestroy {
 		return this.pages.slice(Math.max(clampedPage - middle, 0), clampedPage + middle - 1);
 	}
 }
+
+export type PaginationOptions = {
+	currentPage: number;
+	itemsPerPage: number;
+	start: number;
+	end: number;
+};

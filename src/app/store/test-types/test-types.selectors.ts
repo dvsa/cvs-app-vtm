@@ -7,6 +7,9 @@ import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@
 import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
+import dayjs from 'dayjs';
+import { FeatureConfig } from '../feature-flags/feature-flags.feature';
+import { selectFeatureFlags } from '../feature-flags/feature-flags.selectors';
 import { testTypesAdapter, testTypesFeatureState } from './test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -30,11 +33,12 @@ export const selectTestTypesByVehicleType = createSelector(
 	toEditOrNotToEdit,
 	selectTechRecordHistory,
 	selectTechRecord,
-	(testTypes, testResult, techRecordHistory, techRecord) => {
+	selectFeatureFlags,
+	(testTypes, testResult, techRecordHistory, techRecord, featureFlags) => {
 		const hasCurrentRecordInHistory = techRecordHistory ? currentRecordInHistoryCheck(techRecordHistory) : false;
 
 		if (testResult && techRecord) {
-			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory, techRecord);
+			return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory, techRecord, featureFlags);
 		}
 		return [];
 	}
@@ -112,7 +116,8 @@ function filterTestTypes(
 	testTypes: TestTypesTaxonomy,
 	testResult: TestResultSchema,
 	hasCurrentRecordInHistory: boolean,
-	techRecord: V3TechRecordModel
+	techRecord: V3TechRecordModel,
+	featureFlags: FeatureConfig | null
 ): TestTypesTaxonomy {
 	const {
 		vehicleType,
@@ -184,15 +189,26 @@ function filterTestTypes(
 						? filterHgvFirstTestIds.includes(testType.id)
 						: filterAllFirstTestIds.includes(testType.id))
 			)
-			// only allow ADR tests on ADR vehicles which carry dangerous goods
+			// only allow ADR tests on ADR vehicles which carry dangerous goods and have a non-expired ADR application
 			.filter((testType) => {
 				const isAdrTest = adrTestIds.includes(testType.id);
 				const isHGV = techRecord.techRecord_vehicleType === VehicleTypes.HGV;
 				const isTRL = techRecord.techRecord_vehicleType === VehicleTypes.TRL;
 				const isLGV = techRecord.techRecord_vehicleType === VehicleTypes.LGV;
 				const isADRVehicle = isHGV || isTRL || isLGV;
+				if (!isAdrTest) return true;
+				if (!isADRVehicle) return true;
+				if (!techRecord.techRecord_adrDetails_dangerousGoods) return false;
 
-				return isAdrTest && isADRVehicle ? techRecord.techRecord_adrDetails_dangerousGoods : true;
+				const hideTestRestrictions = featureFlags?.['hide-test-restriction-functionality']?.enabled ?? true;
+				if (hideTestRestrictions) return true;
+				if (!techRecord.techRecord_adrDetails_approved) return false;
+				if (!techRecord.techRecord_adrDetails_receivedDate) return false;
+
+				// Ensure the application was received less than six months ago
+				const today = dayjs().endOf('day');
+				const expiryDate = dayjs(techRecord.techRecord_adrDetails_receivedDate).endOf('day').add(6, 'month');
+				return today.isBefore(expiryDate) || today.isSame(expiryDate);
 			})
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;
@@ -203,7 +219,8 @@ function filterTestTypes(
 						newTestType.nextTestTypesOrCategories!,
 						testResult,
 						hasCurrentRecordInHistory,
-						techRecord
+						techRecord,
+						featureFlags
 					);
 				}
 

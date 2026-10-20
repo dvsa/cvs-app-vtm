@@ -1,3 +1,4 @@
+import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,7 +16,7 @@ import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { changeVehicleType } from '@store/technical-records';
+import { changeVehicleType, techRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/technical-record-service.reducer';
 import { take } from 'rxjs';
 
@@ -31,6 +32,7 @@ import { take } from 'rxjs';
 		ButtonComponent,
 		UpperCasePipe,
 		DefaultNullOrEmpty,
+		ButtonGroupComponent,
 	],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
@@ -42,6 +44,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
 	readonly VehicleTypes = VehicleTypes;
 	techRecord?: V3TechRecordModel;
+	techRecord$ = this.store.select(techRecord);
 	makeAndModel?: string;
 
 	form = new FormGroup({
@@ -54,7 +57,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.globalErrorService.clearErrors();
-		this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
+		this.techRecord$.pipe(take(1)).subscribe((techRecord) => {
 			if (!techRecord) {
 				this.navigateBack();
 			} else {

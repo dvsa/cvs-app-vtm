@@ -8,3 +8,28 @@
 .add-link {
   cursor: pointer;
 }
+
+@media (max-width: 640px) {
+  .govuk-table__head {
+    display: none;
+  }
+
+  .govuk-table__body .govuk-table__row {
+    display: block;
+    margin-bottom: 1.5em;
+    border-bottom: 2px solid #b1b4b6;
+    padding-bottom: 1em;
+  }
+
+  .govuk-table__body .govuk-table__cell {
+    display: block;
+    text-align: left;
+    padding: 0.5em 0;
+
+    &::before {
+      content: attr(data-label);
+      font-weight: 700;
+      display: block;
+    }
+  }
+}

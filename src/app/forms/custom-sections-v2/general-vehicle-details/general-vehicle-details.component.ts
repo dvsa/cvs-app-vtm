@@ -1,11 +1,25 @@
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { NumberOnlyDirective } from '@/src/app/directives/app-number-only/app-number-only.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	DestroyRef,
+	OnDestroy,
+	OnInit,
+	computed,
+	effect,
+	inject,
+	input,
+	signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
@@ -29,21 +43,13 @@ import {
 	vehicleBodyTypeDescriptionMap,
 } from '@models/body-type-enum';
 import {
-	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
 	ALL_VEHICLE_CONFIGURATION_OPTIONS,
-	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
 	FRAME_DESCRIPTION_OPTIONS,
 	FUNCTION_CODE_OPTIONS,
-	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	HGV_PSV_VEHICLE_CONFIGURATION_OPTIONS,
-	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
 	MONTHS,
-	MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS,
 	MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS,
 	MultiOptions,
-	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
-	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
-	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
 	TRL_VEHICLE_CONFIGURATION_OPTIONS,
 	VEHICLE_SUBCLASS_OPTIONS,
 } from '@models/options.model';
@@ -55,10 +61,8 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
-import { ReplaySubject, combineLatest, map, of, skipWhile, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, map, of, skipWhile, switchMap, take } from 'rxjs';
 import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-group/govuk-checkbox-group.component';
-
-// type VehicleSectionForm = Partial<Record<keyof TechRecordType<'hgv' | 'car' | 'psv' | 'lgv' | 'trl'>, FormControl>>;
 
 @Component({
 	selector: 'app-general-vehicle-details',
@@ -75,9 +79,11 @@ import { GovukCheckboxGroupComponent } from '../../components/govuk-checkbox-gro
 		GovukCheckboxGroupComponent,
 		GovukFormGroupAutocompleteComponent,
 		TrimWhitespaceDirective,
+		NumberOnlyDirective,
 		NoSpaceDirective,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralVehicleDetailsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly Modes = Modes;
@@ -90,13 +96,14 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	protected readonly MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS = MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS;
 
 	optionsService = inject(MultiOptionsService);
+	destroyRef = inject(DestroyRef);
 	referenceDataService = inject(ReferenceDataService);
 	cdr = inject(ChangeDetectorRef);
 	axlesService = inject(AxlesService);
 	tcs = inject(TechnicalRecordChangesService);
 	adrValidators = inject(AdrValidatorsService);
 
-	bodyTypes: MultiOptions = [];
+	readonly bodyTypes = signal<MultiOptions>([]);
 	bodyMakes$ = of<MultiOptions | undefined>([]);
 	dtpNumbers$ = combineLatest([
 		this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
@@ -107,20 +114,19 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		map(([data]) => data?.map((option) => option.resourceKey) ?? [])
 	);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
-	isAxlesDisabled = false;
+	readonly isAxlesDisabled = this.axlesService.lockAxles$;
 
 	form = this.fb.group({});
 
 	constructor() {
 		super();
 
+		// isAxlesDisabled is the service signal itself, so this effect only carries the side effect
 		effect(() => {
-			this.isAxlesDisabled = this.axlesService.lockAxles$();
-			this.isAxlesDisabled
+			this.isAxlesDisabled()
 				? this.form.get('techRecord_noOfAxles')?.disable()
 				: this.form.get('techRecord_noOfAxles')?.enable();
 		});
@@ -137,19 +143,19 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleConfigurationControl = this.form.get('techRecord_vehicleConfiguration');
 		vehicleConfigurationControl?.valueChanges
-			.pipe(takeUntil(this.destroy$))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => this.handleVehicleConfigurationChange());
 
 		const bodyTypeControl = this.form.get('techRecord_bodyType_description');
 		bodyTypeControl?.valueChanges
-			.pipe(takeUntil(this.destroy$))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => this.handleBodyTypeDescriptionChange());
 
 		if (this.techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
 			this.form
 				.get('techRecord_brakes_dtpNumber')
 				?.valueChanges.pipe(
-					takeUntil(this.destroy$),
+					takeUntilDestroyed(this.destroyRef),
 					switchMap((value) => {
 						return this.store.select(
 							selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, value as string)
@@ -165,11 +171,25 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		const vehicleType = this.getVehicleType();
 		if (vehicleType === VehicleTypes.TRL) {
-			this.bodyTypes = getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat());
+			this.bodyTypes.set(getSortedOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()).flat()));
 		}
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
+
+		const manufactureYearControl = this.form.get('techRecord_manufactureYear');
+		manufactureYearControl?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((val) => {
+			let str = val == null ? '' : String(val);
+			// remove non-digits and limit to 4 chars
+			str = str.replace(/\D+/g, '').slice(0, 4);
+			const parsed = str === '' ? null : Number(str);
+			// only patch when different to avoid loop
+			if (manufactureYearControl.getRawValue() !== parsed) {
+				if (manufactureYearControl) {
+					(manufactureYearControl as unknown as FormControl<number | null>).patchValue(parsed, { emitEvent: false });
+				}
+			}
+		});
 	}
 
 	get controlsBasedOffVehicleType() {
@@ -204,16 +224,19 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
 					'general-vehicle-details',
 					'techRecord_manufactureYear'
 				),
-			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
 			]),
 			techRecord_make: this.fb.control<string | null>(null, [
 				this.commonValidators.maxLength(50, 'Body make', 'general-vehicle-details', 'techRecord_make'),
@@ -268,7 +291,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -341,7 +370,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -351,9 +386,6 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			]),
 			techRecord_firstUseDate: this.fb.control<string | null>(null, [
 				this.commonValidators.date('Date of first use', 'techRecord_firstUseDate', 'general-vehicle-details'),
-			]),
-			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
-				this.commonValidators.maxLength(6, 'DTp number', 'general-vehicle-details', 'techRecord_brakes_dtpNumber'),
 			]),
 			techRecord_vehicleConfiguration: this.fb.control<VehicleConfiguration | null>(null, [
 				this.commonValidators.required(
@@ -404,7 +436,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
 			]),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -434,7 +472,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.CAR, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -467,12 +511,15 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	get smallTrlFields(): Partial<Record<any, FormControl>> {
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.SMALL_TRL, disabled: true }),
-			techRecord_regnDate: this.fb.control<string | null>(null, [
-				this.commonValidators.date('Date of first registration', 'techRecord_regnDate', 'general-vehicle-details'),
-			]),
 			techRecord_manufactureMonth: this.fb.control<string | null>(null),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -495,7 +542,13 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 		return {
 			techRecord_vehicleType: this.fb.control<VehicleTypes | null>({ value: VehicleTypes.MOTORCYCLE, disabled: true }),
 			techRecord_manufactureYear: this.fb.control<number | null>(null, [
-				this.commonValidators.min(1000, 'Year of manufacture', 'general-vehicle-details', 'techRecord_manufactureYear'),
+				this.commonValidators.min(
+					1000,
+					'Year of manufacture',
+					'',
+					'general-vehicle-details',
+					'techRecord_manufactureYear'
+				),
 				this.commonValidators.xYearsAfterCurrent(
 					1,
 					'Year of manufacture',
@@ -564,31 +617,30 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
-	get dateOfFirstRegistrationFilterOptions() {
+	// Computed rather than getters: a getter hands the template a new array on every change
+	// detection pass, which re-writes the tagNames input and re-runs the filter directive's effect
+	// for no reason.
+	readonly dateOfFirstRegistrationFilterOptions = computed(() => {
 		switch (this.getVehicleType()) {
 			case VehicleTypes.TRL:
 				return [];
 			default:
 				return ['Plates'];
 		}
-	}
+	});
 
-	get euVehicleCategoryFilterOptions() {
+	readonly euVehicleCategoryFilterOptions = computed(() => {
 		switch (this.getVehicleType() as VehicleTypes) {
 			case VehicleTypes.SMALL_TRL:
 				return ['Required'];
 			default:
 				return [];
 		}
-	}
+	});
 
-	get bodyTypeFilterOptions() {
+	readonly bodyTypeFilterOptions = computed(() => {
 		switch (this.getVehicleType()) {
 			case VehicleTypes.HGV:
 			case VehicleTypes.TRL:
@@ -596,28 +648,7 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 			default:
 				return [];
 		}
-	}
-
-	get EUCategoryOptions() {
-		switch (this.getVehicleType()) {
-			case VehicleTypes.HGV:
-				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.PSV:
-				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.TRL:
-				return TRL_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.SMALL_TRL:
-				return SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.LGV:
-				return LGV_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.CAR:
-				return CAR_EU_VEHICLE_CATEGORY_OPTIONS;
-			case VehicleTypes.MOTORCYCLE:
-				return MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS;
-			default:
-				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
-		}
-	}
+	});
 
 	// Returns a local copy of the bodyMake options
 	loadBodyMakes() {
@@ -645,12 +676,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 		if (vehicleType === VehicleTypes.HGV) {
 			if (vehicleConfigurationValue === null) {
-				this.bodyTypes = [];
+				this.bodyTypes.set([]);
 			}
 
 			// When vehicle configuration is set to articulated, update the body type description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.ARTICULATED) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort());
+				this.bodyTypes.set(getOptionsFromEnum(Array.from(articulatedHgvBodyTypeCodeMap.values()).flat().sort()));
 
 				this.form.patchValue({
 					techRecord_bodyType_description: BodyTypeDescription.ARTICULATED,
@@ -660,12 +691,12 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 
 			// When vehicle configuration is rigid, clear artic body description and code
 			if (vehicleConfigurationValue === VehicleConfiguration.RIGID) {
-				this.bodyTypes = getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort());
+				this.bodyTypes.set(getOptionsFromEnum(Array.from(hgvBodyTypeCodeMap.values()).flat().sort()));
 
 				const bodyTypeCode = this.form.get('techRecord_bodyType_code')?.getRawValue();
 				const bodyTypeDescription = this.form.get('techRecord_bodyType_description')?.getRawValue();
 
-				if (bodyTypeCode === BodyTypeCode.A || bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
+				if (bodyTypeCode === BodyTypeCode.A && bodyTypeDescription === BodyTypeDescription.ARTICULATED) {
 					this.form.patchValue({
 						techRecord_bodyType_description: null,
 						techRecord_bodyType_code: null,

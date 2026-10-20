@@ -3,7 +3,18 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { Axle, FitmentCode, Tyre, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { ViewportScroller } from '@angular/common';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	Signal,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
@@ -25,7 +36,7 @@ import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-fo
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { updateScrollPosition } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
+import { filter } from 'rxjs';
 
 @Component({
 	selector: 'app-tyres',
@@ -39,6 +50,7 @@ import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TyresComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	readonly VehicleTypes = VehicleTypes;
@@ -46,6 +58,11 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	readonly TagType = TagType;
 	readonly TagTypeLabels = TagTypeLabels;
 	readonly Modes = Modes;
+	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;
+	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
+	protected readonly FormNodeWidth = FormNodeWidth;
+	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
+	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 
 	referenceDataService = inject(ReferenceDataService);
 	viewportScroller = inject(ViewportScroller);
@@ -56,14 +73,20 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
-	destroy$ = new ReplaySubject<boolean>(1);
-
 	form: FormGroup = this.fb.group({});
-	tyresReferenceData: ReferenceDataTyre[] = [];
-	tyreLoadIndexReferenceData: ReferenceDataTyreLoadIndex[] = [];
 	invalidAxles: Array<number> = [];
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
+
+	private readonly tyresReferenceData = toSignal(
+		this.referenceDataService.getAll$(ReferenceDataResourceType.Tyres).pipe(filter(Boolean)),
+		{ initialValue: [] }
+	) as Signal<ReferenceDataTyre[]>;
+
+	private readonly tyreLoadIndexReferenceData = toSignal(
+		this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex).pipe(filter(Boolean)),
+		{ initialValue: [] }
+	) as Signal<ReferenceDataTyreLoadIndex[]>;
 
 	addTyre(tyre: Tyre, axleNumber: number) {
 		const techRecord = this.techRecord();
@@ -123,7 +146,7 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		const lastAxle = axles[axleNumber - 1];
 
 		if (lastAxle?.tyres_tyreCode) {
-			const refData = this.tyresReferenceData.find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
+			const refData = this.tyresReferenceData().find((tyre) => tyre.code === String(lastAxle.tyres_tyreCode));
 
 			if (!refData) {
 				return;
@@ -161,18 +184,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 		return this.axlesService.allInvalidAxles;
 	}
 
-	loadReferenceData() {
-		combineLatest([
-			this.referenceDataService.getAll$(ReferenceDataResourceType.Tyres).pipe(filter(Boolean)),
-			this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex).pipe(filter(Boolean)),
-		])
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(([tyres, tyreLoadIndex]) => {
-				this.tyresReferenceData = tyres as ReferenceDataTyre[];
-				this.tyreLoadIndexReferenceData = tyreLoadIndex as ReferenceDataTyreLoadIndex[];
-			});
-	}
-
 	get techRecordAxles() {
 		return this.parent.get('techRecord_axles') as FormArray;
 	}
@@ -183,7 +194,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.loadReferenceData();
 
 		// Attach all form controls to parent
 		this.init(this.form);
@@ -209,10 +219,6 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	get hgvTrlControls() {
@@ -256,8 +262,9 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 				const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
 					axle.tyres_dataTrAxles?.toString(),
 					axle.tyres_fitmentCode,
-					this.tyreLoadIndexReferenceData
+					this.tyreLoadIndexReferenceData() ?? []
 				);
+
 				if (weightValue && axle.weights_gbWeight > weightValue) {
 					this.invalidAxles.push(axle.axleNumber);
 					this.axlesService.allInvalidAxles = this.invalidAxles;
@@ -282,10 +289,4 @@ export class TyresComponent extends EditBaseComponent implements OnInit, OnDestr
 			this.axlesService.addAxle(this.parent, type);
 		}
 	}
-
-	protected readonly FITMENT_CODE_OPTIONS = FITMENT_CODE_OPTIONS;
-	protected readonly SPEED_CATEGORY_SYMBOL_OPTIONS = SPEED_CATEGORY_SYMBOL_OPTIONS;
-	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly HGV_TYRE_USE_CODE_OPTIONS = HGV_TYRE_USE_CODE_OPTIONS;
-	protected readonly TRL_TYRE_USE_CODE_OPTIONS = TRL_TYRE_USE_CODE_OPTIONS;
 }

@@ -1,13 +1,13 @@
+import { DecimalOnlyDirective } from '@/src/app/directives/app-decimal-only/app-decimal-only.directive';
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
-import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { EMISSION_STANDARD_OPTIONS, EXEMPT_OR_NOT_OPTIONS } from '@/src/app/models/options.model';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ReplaySubject } from 'rxjs';
 import { GovukFormGroupInputComponent } from '../../components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-radio/govuk-form-group-radio.component';
 
@@ -15,12 +15,18 @@ import { GovukFormGroupRadioComponent } from '../../components/govuk-form-group-
 	selector: 'app-emissions-and-exemptions',
 	templateUrl: './emissions-and-exemptions.component.html',
 	styleUrls: ['./emissions-and-exemptions.component.scss'],
-	imports: [ReactiveFormsModule, GovukFormGroupRadioComponent, GovukFormGroupInputComponent, FilterByTagsDirective],
+	imports: [
+		ReactiveFormsModule,
+		GovukFormGroupRadioComponent,
+		GovukFormGroupInputComponent,
+		FilterByTagsDirective,
+		DecimalOnlyDirective,
+	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmissionsAndExemptionsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 
 	form = this.fb.group({});
@@ -50,7 +56,6 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 
 	get hgvFields() {
 		return {
-			techRecord_drawbarCouplingFitted: this.fb.control<boolean | null>(null),
 			techRecord_euroStandard: this.fb.control<string | null>(null),
 			techRecord_emissionsLimit: this.fb.control<number | null>(null, [
 				this.commonValidators.max(
@@ -107,15 +112,10 @@ export class EmissionsAndExemptionsComponent extends EditBaseComponent implement
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
-	protected readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	protected readonly EXEMPT_OR_NOT_OPTIONS = EXEMPT_OR_NOT_OPTIONS;
 	protected readonly EMISSION_STANDARD_OPTIONS = EMISSION_STANDARD_OPTIONS;
 	protected readonly Modes = Modes;

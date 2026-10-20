@@ -24,6 +24,7 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 @Component({
 	selector: 'app-batch-vehicle-template',
 	templateUrl: './batch-vehicle-template.component.html',
+	styleUrls: ['./batch-vehicle-template.component.scss'],
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
@@ -151,7 +152,11 @@ export class BatchVehicleTemplateComponent {
 						} else {
 							this.technicalRecordService.updateEditingTechRecord(cleansedVehicle);
 							this.store.dispatch(
-								updateTechRecord({ systemNumber: vehicle.systemNumber, createdTimestamp: vehicle.createdTimestamp })
+								updateTechRecord({
+									systemNumber: vehicle.systemNumber,
+									createdTimestamp: vehicle.createdTimestamp,
+									groupType: 'batch',
+								})
 							);
 						}
 					});

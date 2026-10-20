@@ -104,6 +104,37 @@ export class DateControlsComponent implements ControlValueAccessor, OnInit, OnDe
 		this.destroy.next(true);
 		this.destroy.complete();
 	}
+
+	readonly maxLength = {
+		day: 2,
+		month: 2,
+		year: 4,
+		hours: 2,
+		minutes: 2,
+	} as const;
+
+	onDateInput(event: Event, field: 'day' | 'month' | 'year' | 'hours' | 'minutes') {
+		const input = event.target as HTMLInputElement | null;
+		if (!input) return;
+		let val = input.value ?? '';
+
+		// Remove any non-digit characters
+		val = val.replace(/\D+/g, '');
+
+		const max = this.maxLength[field];
+		if (val.length > max) {
+			val = val.slice(0, max);
+			// Update the visible input value
+			input.value = val;
+		}
+
+		const parsed = val === '' ? null : Number(val);
+		// Update form control silently (don't emit valueChanges to avoid loop)
+		const control = this.form.get(field);
+		if (control) {
+			control.setValue(parsed, { emitEvent: true });
+		}
+	}
 }
 
 type Format = 'iso' | 'yyyy-mm-dd';

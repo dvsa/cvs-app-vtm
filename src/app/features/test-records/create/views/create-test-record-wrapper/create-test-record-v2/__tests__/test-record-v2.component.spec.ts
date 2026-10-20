@@ -1,0 +1,458 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
+import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
+import { UserService } from '@/src/app/services/user-service/user-service';
+import { initialAppState } from '@/src/app/store';
+import { techRecord } from '@/src/app/store/technical-records';
+import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test-records';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { Modes } from '@models/modes.enum';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { Actions } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { TestService } from '@services/test/test.service';
+import { Observable, ReplaySubject } from 'rxjs';
+import { TestRecordV2Component } from '../test-record-v2.component';
+
+const MockUserService = {
+	getUserName$: jest.fn().mockReturnValue(new Observable()),
+};
+
+describe('TestRecordV2Component', () => {
+	let fixture: ComponentFixture<TestRecordV2Component>;
+	let component: TestRecordV2Component;
+	let store: MockStore;
+	let globalWarningService: GlobalWarningService;
+	let actions$: ReplaySubject<Action>;
+	let testRecordsService: TestRecordsService;
+	let testService: TestService;
+
+	beforeEach(async () => {
+		actions$ = new ReplaySubject(1);
+
+		await TestBed.configureTestingModule({
+			imports: [TestRecordV2Component],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideRouter([]),
+				{ provide: Actions, useValue: actions$ },
+				{ provide: UserService, useValue: MockUserService },
+			],
+		}).compileComponents();
+
+		store = TestBed.inject(MockStore);
+		globalWarningService = TestBed.inject(GlobalWarningService);
+		testRecordsService = TestBed.inject(TestRecordsService);
+		testService = TestBed.inject(TestService);
+		testService.isAbandoning.set(false);
+		fixture = TestBed.createComponent(TestRecordV2Component);
+		component = fixture.componentInstance;
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+
+	it('should initialise the selected test type when the create page opens', () => {
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		const selectSpy = jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+
+		component.ngOnInit();
+
+		expect(selectSpy).toHaveBeenCalledTimes(1);
+		expect(selectSpy).toHaveBeenCalledWith('94');
+	});
+
+	it('should apply recalls prefetched by the v2 search flow when the create page opens', () => {
+		const vin = '12345678901234567';
+		const recalls = { hasRecall: true, manufacturer: 'Ford' };
+		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		jest.spyOn(component as never, 'testTypeId').mockReturnValue('94');
+		jest.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
+		store.overrideSelector(techRecord, { vin } as never);
+		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+		component.ngOnInit();
+
+		expect(component.form.controls.recalls.value).toEqual(recalls);
+		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
+	});
+
+	describe('amending a test because the test type was incorrect', () => {
+		const existingTest = {
+			testResultId: 'test-result-id',
+			vin: 'VIN00000001',
+			testTypes: [
+				{
+					testTypeId: '95',
+					testTypeName: 'First test',
+					testNumber: 'T12345678',
+					testCode: 'FFV2',
+					createdAt: '2026-09-01T09:00:00.000Z',
+				},
+			],
+		} as TestResultSchema;
+
+		beforeEach(() => {
+			fixture.componentRef.setInput('initialMode', Modes.AMEND);
+			jest.spyOn(component as never, 'testResult').mockReturnValue(existingTest as never);
+			jest.spyOn(component as never, 'testResultInEdit').mockReturnValue(existingTest as never);
+			jest.spyOn(component as never, 'testTypeId').mockReturnValue('65' as never);
+			jest.spyOn(component as never, 'testType').mockReturnValue({ id: '65', name: 'Paid first test retest' } as never);
+			// `testTypeIdChanged` blanks the shared form via an effect; emulate that side effect here.
+			jest.spyOn(testRecordsService, 'testTypeChange').mockImplementation(() => {
+				component.form.reset(undefined, { emitEvent: false });
+			});
+		});
+
+		it('should keep the existing test details once the shared form has been reset', () => {
+			component.ngOnInit();
+
+			const value = component.form.getRawValue();
+			expect(value.vin).toBe('VIN00000001');
+			expect(value.testTypes[0].testNumber).toBe('T12345678');
+			expect(value.testTypes[0].testCode).toBe('FFV2');
+			expect(value.testTypes[0].createdAt).toBe('2026-09-01T09:00:00.000Z');
+		});
+
+		it('should stamp the newly selected test type onto the form', () => {
+			component.ngOnInit();
+
+			const testType = component.form.controls.testTypes.at(0).getRawValue();
+			expect(testType.testTypeId).toBe('65');
+			expect(testType.testTypeName).toBe('Paid first test retest');
+			expect(testType.name).toBe('Paid first test retest');
+		});
+
+		it('should mirror the restored form into the store without waiting for the debounced sync', () => {
+			const updateSpy = jest.spyOn(testRecordsService, 'updateEditingTestResult');
+
+			component.ngOnInit();
+
+			expect(updateSpy).toHaveBeenCalledTimes(1);
+			expect(updateSpy.mock.calls[0][0].testTypes[0].testTypeId).toBe('65');
+			expect(updateSpy.mock.calls[0][0].vin).toBe('VIN00000001');
+		});
+	});
+
+	describe('onReview', () => {
+		it('should set mode to SUMMARY when form is valid', () => {
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
+			jest.spyOn(component.form, 'markAllAsTouched');
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			component.onReview();
+
+			expect(component.form.markAllAsTouched).toHaveBeenCalled();
+			expect(component.mode()).toBe(Modes.SUMMARY);
+		});
+
+		it('should set global errors when form has validation errors', () => {
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest
+				.spyOn(globalErrorService, 'extractGlobalErrors')
+				.mockReturnValue([{ error: 'Test error', anchorLink: 'testField' }]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+
+			component.onReview();
+
+			expect(setErrorsSpy).toHaveBeenCalled();
+		});
+
+		it('should set warning when tech record is provisional and test result is PASS for a first test', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('41');
+
+			component.onReview();
+
+			expect(setWarningsSpy).toHaveBeenCalledWith([
+				{
+					warning:
+						'This test will update the tech record to current, if the page is showing as provisional then refresh the page',
+				},
+			]);
+		});
+
+		it('should set warning when tech record is provisional and test result is PRS for a first test', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PRS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('95');
+
+			component.onReview();
+
+			expect(setWarningsSpy).toHaveBeenCalledWith([
+				{
+					warning:
+						'This test will update the tech record to current, if the page is showing as provisional then refresh the page',
+				},
+			]);
+		});
+
+		it('should set warning for notifiable alteration test type', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('38');
+
+			component.onReview();
+
+			expect(setWarningsSpy).toHaveBeenCalled();
+		});
+
+		it('should set warning for COIF test type', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('142');
+
+			component.onReview();
+
+			expect(setWarningsSpy).toHaveBeenCalled();
+		});
+
+		it('should set warning for IVA test type', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('133');
+
+			component.onReview();
+
+			expect(setWarningsSpy).toHaveBeenCalled();
+		});
+
+		it('should not set warning when tech record is CURRENT', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.CURRENT } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('41');
+
+			component.onReview();
+
+			expect(setWarningsSpy).not.toHaveBeenCalled();
+		});
+
+		it('should not set warning when test result is FAIL', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('41');
+
+			component.onReview();
+
+			expect(setWarningsSpy).not.toHaveBeenCalled();
+		});
+
+		it('should not set warning when test type does not qualify', () => {
+			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
+			store.refreshState();
+
+			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
+			Object.defineProperty(component.form, 'valid', { get: () => true });
+
+			const setWarningsSpy = jest.spyOn(globalWarningService, 'setWarnings');
+			jest.spyOn(component as any, 'testTypeId').mockReturnValue('94');
+
+			component.onReview();
+
+			expect(setWarningsSpy).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('onReview error sorting', () => {
+		it('should sort errors by DOM position regardless of form control declaration order', () => {
+			const container = document.createElement('div');
+			const elFirst = document.createElement('input');
+			elFirst.id = 'contingencyTestNumber';
+			const elSecond = document.createElement('input');
+			elSecond.id = 'testStationPNumber';
+			container.appendChild(elFirst);
+			container.appendChild(elSecond);
+			document.body.appendChild(container);
+
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
+				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
+			]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+
+			component.onReview();
+
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
+				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
+			]);
+
+			document.body.removeChild(container);
+		});
+
+		it('should place errors with no matching DOM element at the end', () => {
+			const container = document.createElement('div');
+			const el = document.createElement('input');
+			el.id = 'knownField';
+			container.appendChild(el);
+			document.body.appendChild(container);
+
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+				{ error: 'Unknown field error', anchorLink: 'unknownField' },
+				{ error: 'Known field error', anchorLink: 'knownField' },
+			]);
+			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+
+			component.onReview();
+
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{ error: 'Known field error', anchorLink: 'knownField' },
+				{ error: 'Unknown field error', anchorLink: 'unknownField' },
+			]);
+
+			document.body.removeChild(container);
+		});
+	});
+
+	describe('onCancel', () => {
+		it('should set mode back to EDIT', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.SUMMARY);
+			component.onCancel(component.initialMode());
+
+			expect(component.mode()).toBe(Modes.EDIT);
+		});
+
+		it('should clear warnings', () => {
+			const clearWarningsSpy = jest.spyOn(globalWarningService, 'clearWarnings');
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.onCancel(component.initialMode());
+
+			expect(clearWarningsSpy).toHaveBeenCalled();
+		});
+
+		it('should stop abandoning the test when backing out of the abandon flow', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.ABANDON);
+			testService.isAbandoning.set(true);
+
+			component.onCancel(component.initialMode());
+
+			expect(testService.isAbandoning()).toBe(false);
+		});
+
+		it('should clear errors', () => {
+			const clearErrorsSpy = jest.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			component.mode.set(Modes.ABANDON);
+
+			component.onCancel(component.initialMode());
+
+			expect(clearErrorsSpy).toHaveBeenCalled();
+		});
+	});
+
+	describe('onMarkAsAbandoned', () => {
+		it('should flag the test as being abandoned before validating the form', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockImplementation(() => {
+				// the sections read this flag while their validators run
+				expect(testService.isAbandoning()).toBe(true);
+				return [];
+			});
+
+			component.onMarkAsAbandoned();
+
+			expect(testService.isAbandoning()).toBe(true);
+			expect(component.mode()).toBe(Modes.ABANDON);
+		});
+
+		it('should stop abandoning the test when the form is invalid', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			jest
+				.spyOn(globalErrorService, 'extractGlobalErrors')
+				.mockReturnValue([{ error: 'Contingency Test Number is required', anchorLink: 'contingencyTestNumber' }]);
+
+			component.onMarkAsAbandoned();
+
+			expect(testService.isAbandoning()).toBe(false);
+			expect(component.mode()).toBe(Modes.EDIT);
+		});
+	});
+
+	describe('onAbandon', () => {
+		it('includes the selected reason and additional comments in the submitted test result', () => {
+			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			let storedTestResult = component.form.getRawValue() as TestResultSchema;
+			jest.spyOn(component as never, 'testResult').mockImplementation(() => storedTestResult);
+			jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation((testResult) => {
+				storedTestResult = testResult;
+			});
+			jest.spyOn(TestBed.inject(ResultOfTestService), 'toggleAbandoned').mockImplementation((result) => {
+				storedTestResult = {
+					...storedTestResult,
+					testTypes: [{ ...storedTestResult.testTypes[0], testResult: result }],
+				};
+			});
+			const createSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation();
+			jest.spyOn(TestBed.inject(GlobalErrorService), 'extractGlobalErrors').mockReturnValue([]);
+			component.form.controls.testTypes.at(0).patchValue({
+				testTypeId: '95',
+				reasonForAbandoning: ['Abandoned at presenter request'] as never,
+				additionalCommentsForAbandon: 'Presenter could not continue the test',
+			});
+
+			component.onAbandon();
+
+			expect(createSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					testTypes: [
+						expect.objectContaining({
+							testResult: TestResults.ABANDONED,
+							reasonForAbandoning: 'Abandoned at presenter request',
+							additionalCommentsForAbandon: 'Presenter could not continue the test',
+						}),
+					],
+				})
+			);
+		});
+	});
+});

@@ -108,20 +108,14 @@ describe('GeneralVehicleDetailsComponent', () => {
 
 			const vehicleType = component.getVehicleType();
 			if (vehicleType === VehicleTypes.TRL) {
-				component.bodyTypes = getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values()));
+				component.bodyTypes.set(getOptionsFromEnum(Array.from(trlBodyTypeCodeMap.values())));
 			}
 
-			expect(component.bodyTypes).toEqual(trailerOptions);
+			expect(component.bodyTypes()).toEqual(trailerOptions);
 		});
 	});
 
 	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
-
 		it('should detach its form from its parent form', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();

@@ -1,7 +1,16 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
 import {
 	type AbstractControl,
 	type FormControl,
@@ -23,7 +32,6 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { isEqual } from 'lodash';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-approval-type',
@@ -37,11 +45,11 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupDateComponent,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	trlApprovalTypes = getOptionsFromEnum(TRLApprovalTypes);
 	hgvAndPsvApprovalTypes = getOptionsFromEnum(HGVAndPSVApprovalTypes);
@@ -148,10 +156,6 @@ export class ApprovalTypeComponent extends EditBaseComponent implements OnInit, 
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	protected readonly VehicleTypes = VehicleTypes;

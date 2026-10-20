@@ -12,11 +12,12 @@ export class NoEmojisDirective implements OnInit {
 
 	ngOnInit() {
 		// Prevents emojis being kept in ngModel see: https://angular.love/angular-forms-why-is-ngmodelchange-late-when-updating-ngmodel-value
-		if (this.ngControl) {
-			const initialOnChange = (this.ngControl.valueAccessor as any).onChange;
-			(this.ngControl.valueAccessor as any).onChange = (value: string) =>
-				initialOnChange(value.replace(this.emojiRegex, ''));
-		}
+		const valueAccessor = this.ngControl?.valueAccessor as { onChange?: (value: unknown) => void } | null;
+		const initialOnChange = valueAccessor?.onChange;
+		if (!valueAccessor || !initialOnChange) return;
+
+		valueAccessor.onChange = (value: unknown) =>
+			initialOnChange(typeof value === 'string' ? value.replace(this.emojiRegex, '') : value);
 	}
 
 	@HostListener('input', ['$event'])

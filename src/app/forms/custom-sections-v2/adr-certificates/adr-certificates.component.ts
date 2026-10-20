@@ -8,10 +8,11 @@ import { StatusCodes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@/src/app/services/adr/adr.service';
 import { DatePipe, TitleCasePipe, ViewportScroller } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 
 @Component({
 	selector: 'app-adr-certificates',
@@ -26,6 +27,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 		RetrieveDocumentDirective,
 		TitleCasePipe,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdrCertificatesComponent {
 	cdr = inject(ChangeDetectorRef);
@@ -90,4 +92,6 @@ export class AdrCertificatesComponent {
 
 		this.router.navigate(['adr-certificate'], { relativeTo: this.route });
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

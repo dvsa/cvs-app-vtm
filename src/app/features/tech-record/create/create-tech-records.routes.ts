@@ -1,11 +1,12 @@
 import { AxlesService } from '@/src/app/services/axles/axles.service';
+import { FeatureFlags } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes, TechRecordCreateRoutes } from '@models/routes.enum';
-import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { techRecordDataResolver } from '@resolvers/tech-record-data/tech-record-data.resolver';
 
 export const routes: Routes = [
 	{
@@ -23,14 +24,12 @@ export const routes: Routes = [
 			{
 				path: '',
 				loadComponent: () =>
-					import('./create-wrapper/create-tech-record-wrapper.component').then(
-						(m) => m.CreateTechRecordWrapperComponent
-					),
+					import('./create-tech-record/create-tech-record.component').then((m) => m.CreateTechRecordComponent),
 				data: {
 					roles: Roles.TechRecordCreate,
 					backlink: {
 						url: RootRoutes.ROOT,
-						featureFlags: ['techrecordredesigncreate'],
+						featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE],
 					},
 				},
 				children: [],
@@ -45,13 +44,13 @@ export const routes: Routes = [
 								'./components/hydrate-new-vehicle-record-wrapper/hydrate-new-vehicle-record-wrapper.component'
 							).then((m) => m.HydrateNewVehicleRecordWrapperComponent),
 						data: {
-							title: 'New record details',
+							title: 'New technical record details',
 							roles: Roles.TechRecordCreate,
-							isCustomLayout: true,
+							isCustomLayout: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							isEditing: true,
 							backlink: {
 								url: RootRoutes.CREATE_TECHNICAL_RECORD,
-								featureFlags: ['techrecordredesigncreatedetails'],
+								featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							},
 						},
 					},
@@ -64,10 +63,10 @@ export const routes: Routes = [
 						data: {
 							roles: Roles.TechRecordCreate,
 							isEditing: true,
-							title: 'Are you sure you want to cancel creating this record?',
+							title: 'Cancel technical record reason',
 							backlink: {
 								url: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
-								featureFlags: ['techrecordredesigncreatedetails'],
+								featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS],
 							},
 						},
 					},
@@ -86,10 +85,11 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('../components/duplicate-vin/duplicate-vin.component').then((m) => m.DuplicateVinComponent),
 				data: {
+					title: 'Duplicate VIN found',
 					roles: Roles.TechRecordCreate,
 					backlink: {
 						url: RootRoutes.CREATE_TECHNICAL_RECORD,
-						featureFlags: ['techrecordredesigncreate'],
+						featureFlags: [FeatureFlags.TECH_RECORD_REDESIGN_CREATE],
 					},
 				},
 			},

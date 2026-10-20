@@ -1,15 +1,16 @@
 import { Routes } from '@angular/router';
+import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestRecordCreateRoutes } from '@models/routes.enum';
+import { contingencyTestResolver } from '@resolvers/contingency-test/contingency-test.resolver';
+import { defectsTaxonomyResolver } from '@resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { loadingResolver } from '@resolvers/loading/loading.resolver';
 import { recallsResolver } from '@resolvers/recalls/recalls.resolver';
-import { contingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
-import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
-import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';
-import { testCodeResolver } from 'src/app/resolvers/test-code/test-code.resolver';
-import { testStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
-import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { requiredStandardsResolver } from '@resolvers/required-standards/required-standards.resolver';
+import { testCodeResolver } from '@resolvers/test-code/test-code.resolver';
+import { testStationsResolver } from '@resolvers/test-stations/test-stations.resolver';
+import { testTypeTaxonomyResolver } from '@resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 
 export const routes: Routes = [
 	{
@@ -26,6 +27,7 @@ export const routes: Routes = [
 				path: TestRecordCreateRoutes.TYPE,
 				loadComponent: () =>
 					import('./views/create-test-type/create-test-type.component').then((m) => m.CreateTestTypeComponent),
+				data: { title: 'Select a test type' },
 				resolve: { testTypeTaxonomy: testTypeTaxonomyResolver, contingencyTest: contingencyTestResolver },
 			},
 			{
@@ -47,19 +49,20 @@ export const routes: Routes = [
 					mode: 'create',
 				},
 				canActivate: [RoleGuard],
+				canDeactivate: [CancelEditTestGuard],
 				children: [
 					{
 						path: '',
 						loadComponent: () =>
-							import('./views/create-test-record/create-test-record.component').then(
-								(m) => m.CreateTestRecordComponent
-							),
+							import(
+								'@features/test-records/create/views/create-test-record-wrapper/create-test-record-wrapper.component'
+							).then((m) => m.CreateTestRecordWrapperComponent),
 					},
 					{
 						path: TestRecordCreateRoutes.DEFECT,
 						loadComponent: () =>
-							import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-						data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
+							import('@forms/custom-sections/defect/defect-wrapper.component').then((m) => m.DefectWrapperComponent),
+						data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 						canActivate: [RoleGuard],
 					},
 					{
@@ -68,7 +71,7 @@ export const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						data: { title: 'Select defect', roles: Roles.TestResultCreateContingency },
+						data: { title: 'Select a defect', roles: Roles.TestResultCreateContingency },
 						children: [
 							{
 								path: '',
@@ -81,8 +84,10 @@ export const routes: Routes = [
 							{
 								path: TestRecordCreateRoutes.SELECT_DEFECT_REF,
 								loadComponent: () =>
-									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-								data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
+									import('@forms/custom-sections/defect/defect-wrapper.component').then(
+										(m) => m.DefectWrapperComponent
+									),
+								data: { title: 'Defect details', roles: Roles.TestResultCreateContingency, isEditing: true },
 								canActivate: [RoleGuard],
 							},
 						],

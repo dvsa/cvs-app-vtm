@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DOCUMENT, ElementRef, effect, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { addSectionStateFromGlobalError } from '@store/technical-records';
 import { GlobalError } from './global-error.interface';
@@ -14,8 +15,34 @@ export class GlobalErrorComponent {
 	globalErrorService = inject(GlobalErrorService);
 	store = inject(Store);
 	cdr = inject(ChangeDetectorRef);
+	document = inject(DOCUMENT);
+	titleService = inject(Title);
 
-	goto(error: GlobalError) {
+	links = viewChildren<ElementRef<HTMLAnchorElement>>('link');
+
+	constructor() {
+		effect(() => {
+			const links = this.links();
+			const title = this.titleService.getTitle();
+
+			// Remove 'Error: ' from title if there are no links
+			if (links.length === 0 && title.startsWith('Error: ')) {
+				this.titleService.setTitle(title.replace('Error: ', ''));
+			}
+
+			// Add 'Error: ' to title if there are links
+			if (links.length > 0 && !title.startsWith('Error: ')) {
+				this.titleService.setTitle(`Error: ${title}`);
+			}
+
+			// Bring first link into focus, scrolling it into view if needed
+			links[0]?.nativeElement?.focus({ preventScroll: false });
+		});
+	}
+
+	goto(event: MouseEvent, error: GlobalError) {
+		event.preventDefault();
+
 		if (error.anchorLink) {
 			if (error.accordion) {
 				this.cdr.markForCheck();
@@ -25,7 +52,7 @@ export class GlobalErrorComponent {
 			setTimeout(() => {
 				let focusCount = 0;
 
-				document
+				this.document
 					.querySelectorAll(`
           #${error.anchorLink},
           #${error.anchorLink} a[href]:not([tabindex='-1']),

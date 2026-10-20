@@ -1,3 +1,4 @@
+import { Vtg15Template } from '@forms/templates/test-records/section-templates/vtg15/vtg15.template';
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ValidatorNames } from '@models/validators.enum';
@@ -108,5 +109,6 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
 			editType: FormNodeEditTypes.HIDDEN,
 			viewType: FormNodeViewTypes.HIDDEN,
 		},
+		Vtg15Template,
 	],
 };

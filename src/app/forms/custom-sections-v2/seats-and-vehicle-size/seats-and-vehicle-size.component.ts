@@ -1,7 +1,7 @@
 import { FilterByTagsDirective } from '@/src/app/directives/filter-by-tags/filter-by-tags.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TagType } from '@components/tag/tag.component';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
@@ -12,7 +12,6 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { EXEMPT_OR_NOT_OPTIONS, VEHICLE_SIZE_OPTIONS } from '@models/options.model';
 import { V3TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-seats-and-vehicle-size',
@@ -25,11 +24,11 @@ import { ReplaySubject } from 'rxjs';
 		GovukFormGroupDateComponent,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -60,7 +59,7 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 			this.commonValidators.required('Vehicle class', 'seats-and-vehicle-size', 'techRecord_vehicleClass_description'),
 		]),
 		techRecord_vehicleSize: this.fb.control<string | null>(null, [
-			this.commonValidators.required('Vehicle size', 'vehicle-size', 'techRecord_vehicleSize'),
+			this.commonValidators.required('Vehicle size', 'seats-and-vehicle-size', 'techRecord_vehicleSize'),
 		]),
 		techRecord_numberOfSeatbelts: this.fb.control<string | null>(null, [
 			this.commonValidators.max(
@@ -122,10 +121,6 @@ export class SeatsAndVehicleSizeComponent extends EditBaseComponent implements O
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

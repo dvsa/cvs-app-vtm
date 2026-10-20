@@ -1,4 +1,3 @@
-
 <div class="govuk-form-group" id="{{ id }}">
   <fieldset class="govuk-fieldset">
     @if (controlTitle()) {
@@ -17,7 +16,7 @@
     }
 
     @if (controlHint() && !disabled()) {
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+      <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
     }
 
     @if (hasError) {
@@ -25,12 +24,18 @@
       @if (firstError) {
         <p class="govuk-error-message" [id]="errorId">
           <span class="govuk-visually-hidden">Error: </span>
-          <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+          <span>{{
+            typeof firstError === 'string' ? firstError : firstError.error
+          }}</span>
         </p>
       }
     }
 
-    <div class="govuk-checkboxes" [class.govuk-checkboxes--small]="size() === 'small'" data-module="govuk-checkboxes">
+    <div
+      class="govuk-checkboxes"
+      [class.govuk-checkboxes--small]="size() === 'small'"
+      data-module="govuk-checkboxes"
+    >
       <div class="govuk-checkboxes__item">
         <input
           [id]="`${id}-checkbox`"
@@ -42,7 +47,11 @@
           [attr.aria-labelledby]="`${controlId()}-label`"
           [disabled]="disabled()"
         />
-        <label class="govuk-label govuk-checkboxes__label" [id]="`${controlId()}-label`" [htmlFor]="`${id}-checkbox`">
+        <label
+          [id]="`${id}-${value()}-label`"
+          [for]="`${id}-${value()}-checkbox`"
+          [class]="`govuk-label govuk-checkboxes__label ${labelClass()}`"
+        >
           {{ controlLabel() }}
         </label>
       </div>

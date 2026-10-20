@@ -89,12 +89,6 @@ describe('WeightsComponent', () => {
 	});
 
 	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
-
 		it('should detach its form from its parent form', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
@@ -148,9 +142,11 @@ describe('WeightsComponent', () => {
 
 	describe('handleGrossKerbWeightChange', () => {
 		it('should call the updateBrakeForces function from the store', () => {
+			fixture.componentRef.setInput('mode', Modes.EDIT);
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
 			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
 			component.ngOnInit();
+			component.form.patchValue({ techRecord_grossKerbWeight: undefined }); // simulate form initialisation
 			component.form.patchValue({ techRecord_grossKerbWeight: 100 });
 
 			expect(updateBrakeForcesSpy).toHaveBeenCalled();
@@ -159,9 +155,11 @@ describe('WeightsComponent', () => {
 
 	describe('handleGrossLadenWeightChange', () => {
 		it('should call the updateBrakeForces function from the store', () => {
+			fixture.componentRef.setInput('mode', Modes.EDIT);
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
 			const updateBrakeForcesSpy = jest.spyOn(store, 'dispatch');
 			component.ngOnInit();
+			component.form.patchValue({ techRecord_grossLadenWeight: undefined }); // simulate form initialisation
 			component.form.patchValue({ techRecord_grossLadenWeight: 100 });
 
 			expect(updateBrakeForcesSpy).toHaveBeenCalled();

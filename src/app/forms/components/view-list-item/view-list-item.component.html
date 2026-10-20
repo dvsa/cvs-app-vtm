@@ -1,14 +1,14 @@
 @if (viewType() !== formNodeViewTypes.HIDDEN) {
   @if (link()) {
     @if (displayAsRow) {
-      <td class="govuk-table__cell" [style.width.%]="30">
+      <th class="govuk-table__header" scope="row" [style.width.%]="30">
         <a class="govuk-link--no-visited-state" target="_blank" [href]="link()">
         {{ label() }}</a>:
-      </td>
+      </th>
     }
   } @else {
     @if (displayAsRow) {
-      <td class="govuk-table__cell" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label() }}:</td>
+      <td class="govuk-table__header" scope="row" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label() }}:</td>
     }
   }
   @switch (viewType()) {

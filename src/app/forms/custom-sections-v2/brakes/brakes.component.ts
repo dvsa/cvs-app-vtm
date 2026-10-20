@@ -5,14 +5,15 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { selectBrakeByCode } from '@/src/app/store/reference-data';
 import { updateBrakeForces, updateEditingTechRecord } from '@/src/app/store/technical-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { Retarders, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { FieldWarningMessageComponent } from '../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupAutocompleteComponent } from '../../components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupCheckboxComponent } from '../../components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
@@ -35,6 +36,7 @@ import { getOptionsFromEnum } from '../../utils/enum-map';
 		FieldWarningMessageComponent,
 		FieldErrorMessageComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrakesComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
@@ -44,6 +46,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	protected readonly Modes = Modes;
 
 	tcs = inject(TechnicalRecordChangesService);
+	destroyRef = inject(DestroyRef);
 	optionsService = inject(MultiOptionsService);
 
 	techRecord = input.required<V3TechRecordModel>();
@@ -55,8 +58,6 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	brakeCodeOptions$ = this.optionsService
 		.getOptions(ReferenceDataResourceType.Brakes)
 		.pipe(map((options) => options?.map((option) => option.value) ?? []));
-
-	destroy$ = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {
 		this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
@@ -74,10 +75,6 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
@@ -142,15 +139,17 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 
 		brakeCode.valueChanges
 			.pipe(
-				takeUntil(this.destroy$),
-				switchMap((value) => this.store.select(selectBrakeByCode(value))),
-				withLatestFrom(brakeCode.valueChanges),
 				debounceTime(400),
-				distinctUntilChanged()
+				distinctUntilChanged(),
+				switchMap((value) => this.store.select(selectBrakeByCode(value))),
+				takeUntilDestroyed(this.destroyRef)
 			)
-			.subscribe(([selectedBrake, value]) => {
+			.subscribe((selectedBrake) => {
+				const mode = this.mode();
+				if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
+
 				// Set the brake details automatically based selection
-				if (selectedBrake && value) {
+				if (selectedBrake) {
 					const techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
 					const techRecord_brakes_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
 					const techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
@@ -177,7 +176,7 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 					this.form.patchValue(changes, { emitEvent: false });
 				}
 
-				if (value) {
+				if (selectedBrake) {
 					this.store.dispatch(updateBrakeForces({}));
 				}
 			});

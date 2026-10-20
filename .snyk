@@ -10,49 +10,39 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-AJV-15274295:
+  SNYK-JS-BRACEEXPANSION-18512280:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-03-20T08:30:00.000Z
-      created: 2026-02-20T08:30:00.000Z
-  SNYK-JS-MINIMATCH-15309438:
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256867:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-03-20T08:30:00.000Z
-      created: 2026-02-20T08:30:00.000Z
-  SNYK-JS-QS-15268416:
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256869:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-03-12T09:01:15.119Z
-      created: 2026-02-12T09:13:15.122Z
-  SNYK-JS-MINIMATCH-15353387:
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256871:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-03-20T08:30:00.000Z
-      created: 2026-02-20T08:30:00.000Z
-  SNYK-JS-MINIMATCH-15353389:
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-FASTURI-19256873:
     - '*':
-      reason: Remediation not yet available
-      expires: 2025-03-20T08:30:00.000Z
-      created: 2025-02-20T08:30:00.000Z
-  SNYK-JS-KOA-15353398:
+        reason: No direct upgrade path available
+        expires: 2026-10-10T00:00:00.000Z
+  SNYK-JS-DEEPMERGE-19964053:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-04-20T08:30:00.000Z
-      created: 2026-02-20T08:30:00.000Z
-  SNYK-JS-MULTER-15365916:
+        reason: No fix available
+        expires: 2027-01-14T00:00:00.000Z
+        created: 2026-09-14T00:00:00.000Z
+  SNYK-JS-ZOD-20510278:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-04-01T08:30:00.000Z
-      created: 2026-03-01T08:30:00.000Z
-  SNYK-JS-MULTER-15365918:
+        reason: No fix available
+        expires: 2026-11-06T00:00:00.000Z
+        created: 2026-10-06T00:00:00.000Z
+  SNYK-JS-QS-20943482:
     - '*':
-      reason: Remediation not yet available
-      expires: 2026-04-01T08:30:00.000Z
-      created: 2026-03-01T08:30:00.000Z
-  SNYK-JS-MULTER-15417528:
-    - '*':
-      reason: Remediation not yet available
-      expires: 2026-04-02T08:30:00.000Z
-      created: 2026-03-02T08:30:00.000Z
+        reason: No fix available
+        expires: 2027-01-16T00:00:00.000Z
+        created: 2026-10-16T00:00:00.000Z
 patch: {}

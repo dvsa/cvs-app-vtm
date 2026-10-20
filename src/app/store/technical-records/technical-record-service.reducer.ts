@@ -13,7 +13,9 @@ import { cloneDeep } from 'lodash';
 import {
 	clearBatch,
 	setApplicationId,
+	setBatchDetails,
 	setGenerateNumberFlag,
+	setTrailerFormType,
 	setVehicleStatus,
 	setVehicleType,
 	upsertVehicleBatch,
@@ -52,6 +54,8 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
+	getTechRecordV3,
+	getTechRecordV3Failure,
 	getTechRecordV3Success,
 	promoteTechRecord,
 	promoteTechRecordFailure,
@@ -116,6 +120,14 @@ export const vehicleTechRecordReducer = createReducer(
 	})),
 	on(getBySystemNumberFailure, (state) => ({ ...state, loading: false, techRecordHistory: [] })),
 
+	on(getTechRecordV3, (state) => ({ ...state, loading: true })),
+	on(getTechRecordV3Success, (state, action) => ({
+		...state,
+		vehicleTechRecord: action.vehicleTechRecord,
+		loading: false,
+	})),
+	on(getTechRecordV3Failure, (state) => ({ ...state, loading: false })),
+
 	on(updateTechRecord, defaultArgs),
 	on(updateTechRecordSuccess, successArgs),
 	on(updateTechRecordFailure, updateFailureArgs),
@@ -176,12 +188,18 @@ export const vehicleTechRecordReducer = createReducer(
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
 
 	on(
+		createVehicleRecord,
+		updateTechRecord,
 		upsertVehicleBatch,
 		createVehicleRecordSuccess,
 		updateTechRecordSuccess,
+		createVehicleRecordFailure,
+		updateTechRecordFailure,
 		setApplicationId,
 		setVehicleStatus,
 		setVehicleType,
+		setTrailerFormType,
+		setBatchDetails,
 		setGenerateNumberFlag,
 		clearBatch,
 		(state, action) => ({
@@ -189,8 +207,6 @@ export const vehicleTechRecordReducer = createReducer(
 			batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action),
 		})
 	),
-
-	on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord })),
 
 	on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
 	on(clearScrollPosition, (state) => ({ ...state, scrollPosition: [0, 0] as [number, number] })),
@@ -430,6 +446,9 @@ export function nullADRDetails(editingTechRecord: TechRecordType<'put'>) {
 				techRecord_adrDetails_adrTypeApprovalNo: null,
 				techRecord_adrDetails_adrCertificateNotes: null,
 				techRecord_adrDetails_newCertificateRequested: null,
+				techRecord_adrDetails_approved: null,
+				techRecord_adrDetails_receivedDate: null,
+				techRecord_adrDetails_applicationNumber: null,
 				...nulledTankDetails,
 				...nulledSubstancesPermittedUNNumber,
 			};

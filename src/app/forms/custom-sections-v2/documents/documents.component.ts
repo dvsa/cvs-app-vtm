@@ -1,7 +1,7 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
@@ -9,13 +9,14 @@ import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { DOCUMENT_TYPES } from '@forms/templates/general/document-types';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject, of } from 'rxjs';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-documents',
 	templateUrl: './documents.component.html',
 	styleUrls: ['./documents.component.scss'],
 	imports: [FormsModule, ReactiveFormsModule, GovukFormGroupInputComponent, GovukFormGroupAutocompleteComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentsComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	readonly VehicleTypes = VehicleTypes;
@@ -26,8 +27,6 @@ export class DocumentsComponent extends EditBaseComponent implements OnInit, OnD
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
-
-	destroy$ = new ReplaySubject<boolean>(1);
 
 	form: FormGroup = this.fb.group({});
 

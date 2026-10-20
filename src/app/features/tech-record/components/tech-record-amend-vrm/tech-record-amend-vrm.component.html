@@ -1,5 +1,6 @@
 @if (techRecord) {
   <div>
+    <h1 class="govuk-heading-l">Change VRM</h1>
     @if (showWarning) {
       <app-field-warning-message
     [warningMessage]="
@@ -17,16 +18,20 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VRM</dt>
-        @if (techRecord.primaryVrm) {
-          <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
-        }
+        <dd class="govuk-summary-list__value">
+          @if (techRecord.primaryVrm) {
+            <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
+          } @else {
+            <span>-</span>
+          }
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN/chassis number</dt>
         <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
       </div>
     </dl>
-    @if (!isCherishedTransfer) {
+    @if (!isCherishedTransfer()) {
       <form [formGroup]="correctingAnErrorForm">
         <app-text-input
           #newVrm
@@ -40,7 +45,7 @@
         ></app-text-input>
       </form>
     }
-    @if (isCherishedTransfer) {
+    @if (isCherishedTransfer()) {
       <form [formGroup]="cherishedTransferForm">
         <app-text-input
           appToUppercase

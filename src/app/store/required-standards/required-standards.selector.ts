@@ -1,22 +1,31 @@
 import { InspectionType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { createSelector } from '@ngrx/store';
-import { requiredStandardsFeatureState } from './required-standards.reducer';
+import { testResultInEdit } from '../test-records';
+import { requiredStandardsAdapter, requiredStandardsFeatureState } from './required-standards.reducer';
+
+const { selectEntities } = requiredStandardsAdapter.getSelectors();
+
+export const selectRequiredStandardEntities = createSelector(requiredStandardsFeatureState, selectEntities);
 
 export const getRequiredStandardsState = createSelector(
-	requiredStandardsFeatureState,
-	(state) => state.requiredStandards
+	selectRequiredStandardEntities,
+	testResultInEdit,
+	(manuals, editingTestResult) => {
+		return manuals[editingTestResult?.euVehicleCategory ?? ''] || { basic: [], normal: [], euVehicleCategories: [] };
+	}
 );
 
 export const getRequiredStandardFromTypeAndRef = (inspectionType: InspectionType, rsRefCalculation: string) =>
-	createSelector(requiredStandardsFeatureState, (state) => {
+	createSelector(getRequiredStandardsState, (state) => {
 		const deRefRsCalculation = rsRefCalculation.split('.');
 		const sectionNumber = deRefRsCalculation[0];
-		// eslint-disable-next-line security/detect-object-injection
-		const section = state.requiredStandards[inspectionType].find((sec) => sec.sectionNumber === sectionNumber);
+		const section = state[inspectionType].find((sec) => sec.sectionNumber === sectionNumber);
 		const requiredStandard = section?.requiredStandards.find((rs) => rs.refCalculation === rsRefCalculation);
 
-		if (requiredStandard && section)
+		if (requiredStandard && section) {
 			return { ...requiredStandard, sectionNumber, sectionDescription: section.sectionDescription };
+		}
+
 		return undefined;
 	});
 

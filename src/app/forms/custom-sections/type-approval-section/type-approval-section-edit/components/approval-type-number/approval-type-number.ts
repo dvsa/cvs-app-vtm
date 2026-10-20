@@ -1,5 +1,15 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, OnChanges, OnDestroy, SimpleChanges, forwardRef, inject, input, model } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	OnChanges,
+	OnDestroy,
+	SimpleChanges,
+	forwardRef,
+	inject,
+	input,
+	model,
+} from '@angular/core';
 import {
 	AbstractControl,
 	ControlContainer,
@@ -9,7 +19,6 @@ import {
 	NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { ApprovalTypeFocusNextDirective } from '@directives/approval-type-focus-next/approval-type-focus-next.directive';
 import { NoEmojisDirective } from '@directives/no-emojis/no-emojis.directive';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
@@ -27,14 +36,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 	selector: 'approval-type-number-input',
 	templateUrl: 'approval-type-number.html',
 	styleUrls: ['./approval-type-number.scss'],
-	imports: [
-		FormsModule,
-		KeyValuePipe,
-		ReactiveFormsModule,
-		ReactiveFormsModule,
-		ApprovalTypeFocusNextDirective,
-		NoEmojisDirective,
-	],
+	imports: [FormsModule, KeyValuePipe, ReactiveFormsModule, ReactiveFormsModule, NoEmojisDirective],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
@@ -62,6 +64,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	fb = inject(FormBuilder);
 	controlContainer = inject(ControlContainer);
 	commonValidators = inject(CommonValidatorsService);
+	cdr = inject(ChangeDetectorRef);
 	destroy = new ReplaySubject<boolean>(1);
 
 	form = this.fb.group({
@@ -109,6 +112,11 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	}
 
 	ngOnInit() {
+		// Touched/validity changes are applied to the control from outside this template (e.g.
+		// GlobalErrorService.markAllAsTouched on submit), so nothing tells Angular this view needs
+		// refreshing and the inline error never renders.
+		this.control?.events.pipe(takeUntil(this.destroy)).subscribe(() => this.cdr.markForCheck());
+
 		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
 			const approvalTypeNumber1 = this.form?.get('approvalTypeNumber1')?.value;
 			const approvalTypeNumber2 = this.form?.get('approvalTypeNumber2')?.value;

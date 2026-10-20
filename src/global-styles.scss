@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'node_modules/accessible-autocomplete';
+@use 'node_modules/accessible-autocomplete/dist/accessible-autocomplete.min.css';
 @use './styles';
 @import 'node_modules/govuk-frontend/govuk/all';
 
@@ -29,6 +29,10 @@
 .whitespace-pre-line {
   white-space: pre-line !important;
   text-wrap: wrap !important;
+}
+
+.overflow-anywhere {
+  overflow-wrap: anywhere;
 }
 
 .tags {
@@ -65,41 +69,74 @@
 
 .govuk-input__suffix-disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: text;
+}
+
+input:disabled,
+input[disabled],
+textarea:disabled,
+textarea[disabled] {
+  cursor: text !important;
+}
+
+input:disabled[type='checkbox'],
+input[disabled][type='checkbox'],
+input:disabled[type='radio'],
+input[disabled][type='radio'],
+input:disabled[type='button'],
+input[disabled][type='button'],
+input:disabled[type='submit'],
+input[disabled][type='submit'],
+select:disabled,
+select[disabled],
+button:disabled,
+button[disabled],
+fieldset:disabled,
+fieldset[disabled],
+[aria-disabled='true'] {
+  cursor: default !important;
+}
+
+// Autocomplete component (accessible-autocomplete) when disabled
+.autocomplete__input:disabled,
+.autocomplete__input[disabled] {
+  cursor: text !important;
 }
 
 // List of lists selector
 
 .list_container--wrapper {
   display: flex;
-  display: -webkit-box;
+  flex-wrap: wrap;
   width: 100%;
-  overflow: hidden;
-}
-.list_container {
-  overflow: hidden;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
 
   @include govuk-media-query($until: desktop) {
-    min-width: 100px;
+    flex-direction: column;
   }
 }
-.list_container:hover {
-  width: max-content;
+.list_container {
+  overflow: visible;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  min-width: 0;
+
+  @include govuk-media-query($until: desktop) {
+    width: 100%;
+  }
 }
 .list_container:last-child {
-  flex-basis: 100%;
+  flex: 2 1 0;
 }
 .list_container--shrink {
-  flex: 1 1 100px;
-}
-.list_container--shrink:focus-within,
-.list_container--shrink:hover {
-  flex-basis: auto;
+  flex: 1 1 0;
 }
 .list_container:not(:first-child) {
   border-left: 1px solid govuk-colour('mid-grey', $legacy: 'grey-2');
+
+  @include govuk-media-query($until: desktop) {
+    border-left: none;
+    border-top: 1px solid govuk-colour('mid-grey', $legacy: 'grey-2');
+  }
 }
 .list_container > h2 {
   padding-left: 1rem;
@@ -110,8 +147,8 @@
   margin: 0;
   padding: 0;
   background: govuk-colour('white');
-  width: fit-content;
-  max-width: 28em;
+  width: 100%;
+  max-width: none;
 }
 .list__item {
   font-family: 'GDS Transport', arial, sans-serif;
@@ -124,10 +161,10 @@
   position: relative;
   display: block;
   width: 100%;
-  min-width: 250px;
+  min-width: 0;
   padding: 15px 30px 20px 15px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
   color: $govuk-link-colour;
   background: inherit;
   border: none;
@@ -150,7 +187,7 @@
   color: govuk-colour('white');
 }
 .list__item--more:after {
-  content: '›'; 
+  content: '›';
   position: absolute;
   top: 50%;
   right: 10px;

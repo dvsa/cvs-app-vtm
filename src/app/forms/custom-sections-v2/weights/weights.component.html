@@ -10,6 +10,20 @@
   [class.govuk-!-padding-4]="!showNoAxlesWarning && !dimensionsWarning"
   [formGroup]="form"
 >
+  @if (shouldDisplayFormControl('techRecord_brakes_dtpNumber')) {
+    <govuk-form-group-input
+      type="text"
+      formControlName="techRecord_brakes_dtpNumber"
+      label="DTp number"
+      [width]="FormNodeWidth.L"
+      appTrimWhitespace
+      appNoSpace
+      appFilterByTags
+      [filters]="filters()"
+      [tagNames]="['Plates']"
+    />
+  }
+
   <div class="govuk-table__body" [formGroup]="parent">
     <ng-container formArrayName="techRecord_axles">
       @if (mode() === Modes.EDIT) {

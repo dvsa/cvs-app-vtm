@@ -4,12 +4,12 @@
   </dt>
   @for (tag of tags(); track $index) {
     <dd class="govuk-summary-list__value govuk-summary-list__value--filter">
-      @let active = value().includes(tag);
-      <a 
-        class="app-c-filter-summary__remove-filter" 
+      @let active = !!(value()?.includes(tag));
+      <a
+        class="app-c-filter-summary__remove-filter"
         [class.active-filter]="active"
-        href="javascript:void(0)" 
-        [id]="tag.toLowerCase()" 
+        href="javascript:void(0)"
+        [id]="tag.toLowerCase()"
         (click)="toggle(tag)"
       >
         <span class="app-c-filter-summary__remove-filter-text">

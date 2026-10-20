@@ -3,7 +3,8 @@
     Create a new technical record
   </h1>
 
-  @if (techRecord$(); as techRecord) {
+  @if (techRecord(); as techRecord) {
+    @let vm = vehicleMeta();
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
@@ -25,7 +26,7 @@
                 </span>
               </h2>
 
-              <app-accordion-control [sectionState]="sectionStates$()">
+              <app-accordion-control [sectionState]="sectionStates()">
                 <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
                 <ng-template #template>
                   <ng-container [formGroup]="form">
@@ -40,8 +41,8 @@
                       [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
                       [filters]="filters()"
                     >
-                      <app-general-vehicle-details 
-                        [techRecord]="techRecord" 
+                      <app-general-vehicle-details
+                        [techRecord]="techRecord"
                         [filters]="filters()"
                         [mode]="Modes.EDIT"
                       ></app-general-vehicle-details>
@@ -52,18 +53,37 @@
                       <app-accordion
                         [id]="'approval-type'"
                         [title]="'Approval type'"
-                        [description]="technicalRecordService.getApprovalTypeAccordionDescription(techRecord)"
+                        [description]="vm.approvalTypeDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-approval-type 
-                          [techRecord]="techRecord" 
+                        <app-approval-type
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-approval-type>
+                      </app-accordion>
+                    }
+
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                      <app-accordion
+                        [id]="'authorisation-into-service'"
+                        [title]="'Authorisation into service'"
+                        [description]="'COC date, authorisation date, rejected date.'"
+                        [type]="'condensed'"
+                        [isExpanded]="false"
+                        appFilterByTags
+                        [tagNames]="[]"
+                        [filters]="filters()"
+                      >
+                        <app-authorisation-into-service
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
+                          [mode]="Modes.EDIT"
+                        ></app-authorisation-into-service>
                       </app-accordion>
                     }
 
@@ -79,8 +99,8 @@
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-dimensions 
-                          [techRecord]="techRecord" 
+                        <app-dimensions
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-dimensions>
@@ -92,15 +112,15 @@
                       <app-accordion
                         [id]="'weights'"
                         [title]="'Weights'"
-                        [description]="technicalRecordService.getWeightsAccordionDescription(techRecord)"
+                        [description]="vm.weightsDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-weights 
-                          [techRecord]="techRecord" 
+                        <app-weights
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-weights>
@@ -112,15 +132,15 @@
                       <app-accordion
                         [id]="'tyres'"
                         [title]="'Tyres'"
-                        [description]="technicalRecordService.getTyresAccordionDescription(techRecord)"
+                        [description]="vm.tyresDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-tyres 
-                          [techRecord]="techRecord" 
+                        <app-tyres
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-tyres>
@@ -132,15 +152,15 @@
                       <app-accordion
                         [id]="'configuration'"
                         [title]="'Configuration'"
-                        [description]="technicalRecordService.getConfigAccordionDescription(techRecord)"
+                        [description]="vm.configDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-configuration 
-                          [techRecord]="techRecord" 
+                        <app-configuration
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-configuration>
@@ -159,8 +179,8 @@
                         [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-emissions-and-exemptions 
-                          [techRecord]="techRecord" 
+                        <app-emissions-and-exemptions
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-emissions-and-exemptions>
@@ -179,8 +199,8 @@
                         [tagNames]="['Required']"
                         [filters]="filters()"
                       >
-                        <app-seats-and-vehicle-size 
-                          [techRecord]="techRecord" 
+                        <app-seats-and-vehicle-size
+                          [techRecord]="techRecord"
                           [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-seats-and-vehicle-size>
@@ -192,16 +212,16 @@
                       <app-accordion
                         [id]="'brakes'"
                         [title]="'Brakes'"
-                        [description]="technicalRecordService.getBrakesAccordionDescription(techRecord)"
+                        [description]="vm.brakesDescription"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-brakes 
+                        <app-brakes
                           [techRecord]="techRecord"
-                          [filters]="filters()" 
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-brakes>
                       </app-accordion>
@@ -219,9 +239,9 @@
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-dda 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-dda
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-dda>
                       </app-accordion>
@@ -243,32 +263,34 @@
                         [tagNames]="['ADR']"
                         [filters]="filters()"
                       >
-                        <app-adr 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-adr
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-adr>
                       </app-accordion>
                     }
 
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (techRecord?.techRecord_vehicleType !== VehicleTypes.PSV) {
                       <app-accordion
-                        [id]="'authorisation-into-service'"
-                        [title]="'Authorisation into service'"
-                        [description]="'COC date, authorisation date, rejected date.'"
+                        [id]="'last-applicant'"
+                        [title]="'Last applicant'"
+                        [description]="'Contact details for the last applicant.'"
                         [type]="'condensed'"
                         [isExpanded]="false"
                         appFilterByTags
-                        [tagNames]="[]"
+                        [tagNames]="['Plates']"
                         [filters]="filters()"
                       >
-                        <app-authorisation-into-service 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-last-applicant
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
-                        ></app-authorisation-into-service>
+                        ></app-last-applicant>
                       </app-accordion>
+                    }
 
+                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
                       <app-accordion
                         [id]="'purchasers'"
                         [title]="'Purchasers'"
@@ -279,9 +301,9 @@
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-purchasers 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-purchasers
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-purchasers>
                       </app-accordion>
@@ -296,30 +318,11 @@
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-manufacturer 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-manufacturer
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-manufacturer>
-                      </app-accordion>
-                    }
-
-                    @if (techRecord$()?.techRecord_vehicleType !== VehicleTypes.PSV) {
-                      <app-accordion
-                        [id]="'last-applicant'"
-                        [title]="'Last applicant'"
-                        [description]="'Contact details for the last applicant.'"
-                        [type]="'condensed'"
-                        [isExpanded]="false"
-                        appFilterByTags
-                        [tagNames]="['Plates']"
-                        [filters]="filters()"
-                      >
-                        <app-last-applicant 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
-                          [mode]="Modes.EDIT"
-                        ></app-last-applicant>
                       </app-accordion>
                     }
 
@@ -334,9 +337,9 @@
                         [tagNames]="[]"
                         [filters]="filters()"
                       >
-                        <app-documents 
-                          [techRecord]="techRecord"                           
-                          [filters]="filters()" 
+                        <app-documents
+                          [techRecord]="techRecord"
+                          [filters]="filters()"
                           [mode]="Modes.EDIT"
                         ></app-documents>
                       </app-accordion>
@@ -349,12 +352,12 @@
                       [type]="'condensed'"
                       [isExpanded]="false"
                       appFilterByTags
-                      [tagNames]="[]"
+                      [tagNames]="['ADR']"
                       [filters]="filters()"
                     >
                       <app-notes
                         [techRecord]="techRecord"
-                        [filters]="filters()" 
+                        [filters]="filters()"
                         [mode]="Modes.EDIT"
                       ></app-notes>
                     </app-accordion>
@@ -369,9 +372,9 @@
                       [tagNames]="['Plates', 'Required', 'ADR']"
                       [filters]="filters()"
                     >
-                      <app-reason-for-creation 
+                      <app-reason-for-creation
                         [techRecord]="techRecord"
-                        [filters]="filters()" 
+                        [filters]="filters()"
                         [mode]="Modes.EDIT"
                       ></app-reason-for-creation>
                     </app-accordion>
@@ -380,7 +383,7 @@
               </app-accordion-control>
             </div>
 
-            <app-tech-record-filters [tags]="tags" [(ngModel)]="filters" />
+            <app-tech-record-filters [tags]="tags()" [(ngModel)]="filters" />
 
             <!-- Accordions appear here -->
             <ng-container [ngTemplateOutlet]="template"></ng-container>

@@ -10,6 +10,7 @@ import { RootRoutes } from '@models/routes.enum';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
+import { FeatureFlags } from './services/feature-toggle-service/feature-toggle-service';
 
 const routes: Routes = [
 	{
@@ -18,14 +19,14 @@ const routes: Routes = [
 		children: [
 			{
 				path: RootRoutes.ROOT,
-				data: { title: 'Home', roles: Roles.TechRecordView },
+				data: { title: 'Select activity', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				canDeactivate: [CancelEditTechGuard],
 				loadChildren: () => import('./features/home/home.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.SEARCH_TECHNICAL_RECORD,
-				data: { title: 'Technical record search', roles: Roles.TechRecordView },
+				data: { title: 'Search for a technical record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				canDeactivate: [CancelEditTechGuard],
 				loadChildren: () => import('./features/search/search.routes').then((m) => m.routes),
@@ -41,8 +42,15 @@ const routes: Routes = [
 				loadChildren: () => import('./features/tech-record/create/create-tech-records.routes').then((m) => m.routes),
 			},
 			{
+				path: RootRoutes.BATCH,
+				data: { title: 'Batch', roles: Roles.TechRecordCreate, featureToggleName: FeatureFlags.BATCH_REDESIGN },
+				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
+				providers: [AxlesService],
+				loadChildren: () => import('./features/tech-record/batch/batch.routes').then((m) => m.routes),
+			},
+			{
 				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
-				data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
+				data: { title: 'Select vehicle type', roles: Roles.TechRecordCreate },
 				canActivate: [MsalGuard, RoleGuard],
 				providers: [AxlesService],
 				loadChildren: () => import('./features/tech-record/create-batch/create-batch.routes').then((m) => m.routes),
@@ -64,17 +72,11 @@ const routes: Routes = [
 			{
 				path: RootRoutes.REFERENCE_DATA,
 				data: {
-					title: 'Select Reference Data Type',
+					title: 'Select reference data type',
 					roles: Roles.ReferenceDataView,
 				},
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () => import('./features/reference-data/reference-data.routes').then((m) => m.routes),
-			},
-			{
-				path: RootRoutes.FEATURE_TOGGLE,
-				data: { title: 'Feature Toggle', featureToggleName: 'testtoggle' },
-				canActivate: [MsalGuard, FeatureToggleGuard],
-				loadChildren: () => import('./features/feature-toggle/feature-toggle.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.BETAS,
@@ -106,7 +108,7 @@ const routes: Routes = [
 	},
 ];
 @NgModule({
-	imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

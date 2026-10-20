@@ -15,7 +15,6 @@ import { DocumentsService } from '@services/documents/documents.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { selectedTestResultState } from '@store/test-records';
-import JSZip from 'jszip';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -61,89 +60,6 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.formSubscription.unsubscribe();
-	}
-
-	hasMediaAvailable(): boolean {
-		if (!this.defectMediaService) {
-			return false;
-		}
-
-		// return true if one of the defects contains media which are images
-		for (const defect of this.testDefects) {
-			if (this.defectMediaService.hasImages(defect)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	async downloadAllMedia() {
-		try {
-			const testResult = this.testResult();
-			if (!testResult || !this.defectMediaService) {
-				return;
-			}
-
-			if (this.defectMediaService.hasCachedTestResultImages(testResult)) {
-				await this.downloadMediaFromCache();
-			} else {
-				await this.downloadMediaFromHttp();
-			}
-		} catch (error) {
-			console.log(error);
-			this.defectMediaService?.handleError(error);
-		}
-	}
-
-	async downloadMediaFromCache() {
-		const testResult = this.testResult();
-		if (!testResult || !this.defectMediaService) {
-			return;
-		}
-		const testResultId = testResult.testResultId;
-		// download images from cache
-		const zip = new JSZip();
-		for (const defect of testResult.testTypes[0].defects) {
-			const defectMedia = defect.media;
-			if (!defectMedia) {
-				return;
-			}
-			for (const image of defectMedia) {
-				const file = this.defectMediaService.images[image.path];
-				if (file) {
-					zip.file(image.path, file, { base64: true });
-				}
-			}
-		}
-		await this.defectMediaService.openDocumentFromZip(zip, testResultId);
-	}
-
-	async downloadMediaFromHttp() {
-		const testResult = this.testResult();
-		if (!testResult || !this.defectMediaService) {
-			return;
-		}
-		const testResultId = testResult.testResultId;
-
-		const zip = await this.defectMediaService.getDefectZip(testResultId);
-		const newZip = new JSZip();
-
-		for (const defect of testResult.testTypes[0].defects) {
-			const defectMedia = defect.media;
-			if (!defectMedia) {
-				return;
-			}
-			for (const image of defectMedia) {
-				const file = zip.files[image.path];
-				if (file) {
-					// if file exists add image to cache
-					this.defectMediaService.images[image.path] = await file.async('base64');
-					newZip.file(image.path, this.defectMediaService.images[image.path], { base64: true });
-				}
-			}
-		}
-
-		await this.defectMediaService.openDocumentFromZip(newZip, `${testResultId}`);
 	}
 
 	get defectsForm(): CustomFormArray {

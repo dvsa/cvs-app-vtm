@@ -1,5 +1,5 @@
 import { DatePipe, TitleCasePipe, ViewportScroller } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -30,6 +30,7 @@ interface TestField {
 	templateUrl: './test-records.component.html',
 	styleUrls: ['./test-records.component.scss'],
 	imports: [ButtonComponent, RoleRequiredDirective, DatePipe, PaginationComponent, RouterLink, TitleCasePipe],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestResultsComponent extends EditBaseComponent implements OnInit {
 	testResults = input<TestResultSchema[]>([]);
@@ -54,6 +55,8 @@ export class TestResultsComponent extends EditBaseComponent implements OnInit {
 			this.hasTestResultAmend = storedRoles?.some((role) => {
 				return Roles.TestResultAmend.split(',').includes(role);
 			});
+			// roles$ may resolve asynchronously; mark for check so OnPush picks up the update.
+			this.cdr.markForCheck();
 		});
 	}
 

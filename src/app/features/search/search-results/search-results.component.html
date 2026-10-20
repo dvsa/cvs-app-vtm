@@ -1,0 +1,39 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l govuk-!-font-weight-bold">
+      Search for a technical record
+    </h1>
+
+    @if (
+      technicalRecordService.searchResultsWithUniqueSystemNumbers$ | async;
+      as searchResults
+    ) {
+      @if (searchResults.length) {
+        @if (pagination.paginationOptions(); as page) {
+        <app-search-form
+          class="search-form"
+          [pagination]="page"
+          [searchResults]="searchResults.length"
+        ></app-search-form>
+
+          @for (
+            searchResult of searchResults.slice(page.start, page.end);
+            track searchResult.createdTimestamp
+          ) {
+            <app-search-result
+              [searchResult]="searchResult"
+              *appRoleRequired="roles.TechRecordView"
+            ></app-search-result>
+          }
+        }
+
+        <app-pagination
+          #pagination
+          tableName="search-results"
+          [numberOfItems]="searchResults.length"
+          [itemsPerPage]="4"
+        ></app-pagination>
+      }
+    }
+  </div>
+</div>

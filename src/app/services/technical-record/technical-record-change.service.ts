@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
 import { get, isEqual } from 'lodash';
 import { VehicleTypes } from '../../models/vehicle-tech-record.model';
-import { FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,6 +14,16 @@ export class TechnicalRecordChangesService {
 	featureToggleService = inject(FeatureToggleService);
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
+
+	// A change cache which resets when either the current or amended tech record changes. Reading
+	// both signals here is what ties the cache to them: computed hands back a new, empty map on the
+	// next read after either changes. An effect would clear it only after change detection had
+	// already read stale answers.
+	changeCache = computed(() => {
+		this.currentTechRecord();
+		this.amendedTechRecord();
+		return new Map<string, boolean>();
+	});
 
 	private _isNotEqual(a: unknown, b: unknown): boolean {
 		// Do not count the following edge cases as changes
@@ -42,6 +52,11 @@ export class TechnicalRecordChangesService {
 	}
 
 	private _hasChanged(property: string) {
+		// Use cached value instead of recomputing if available
+		const changeCache = this.changeCache();
+		const cachedValue = changeCache.get(property);
+		if (typeof cachedValue === 'boolean') return cachedValue;
+
 		const current = this.currentTechRecord();
 		const amended = this.amendedTechRecord();
 
@@ -50,7 +65,11 @@ export class TechnicalRecordChangesService {
 		const a = get(current, property);
 		const b = get(amended, property);
 
-		return this._isNotEqual(a, b);
+		// Cache result to avoid recomputing in future
+		const result = this._isNotEqual(a, b);
+		changeCache.set(property, result);
+
+		return result;
 	}
 
 	hasChanged(...properties: string[]) {
@@ -166,17 +185,29 @@ export class TechnicalRecordChangesService {
 		);
 	}
 
+	hasAxlesSpacingsChanged(): boolean {
+		const a = this.currentTechRecord();
+		const b = this.amendedTechRecord();
+
+		// Edge case 1: If we're going from a n-axle TRL to a 1-axle TRL ignore the spacings
+		if (a && b && a.techRecord_noOfAxles && a.techRecord_noOfAxles > 1 && b.techRecord_noOfAxles === 1) {
+			return false;
+		}
+
+		return this.hasChanged('techRecord_dimensions_axleSpacing', 'techRecord_frontAxleToRearAxle');
+	}
+
 	hasDimensionsSectionChanged(): boolean {
+		if (this.hasAxlesSpacingsChanged()) return true;
+
 		return this.hasChanged(
 			'techRecord_dimensions_length',
 			'techRecord_dimensions_width',
-			'techRecord_dimensions_axleSpacing',
-			'techRecord_frontAxleToRearAxle',
+			'techRecord_dimensions_height',
 			'techRecord_frontVehicleTo5thWheelCouplingMin',
 			'techRecord_frontVehicleTo5thWheelCouplingMax',
 			'techRecord_frontAxleTo5thWheelMin',
 			'techRecord_frontAxleTo5thWheelMax',
-			'techRecord_frontAxleToRearAxle',
 			'techRecord_rearAxleToRearTrl',
 			'techRecord_centreOfRearmostAxleToRearOfTrl',
 			'techRecord_couplingCenterToRearAxleMin',
@@ -268,7 +299,7 @@ export class TechnicalRecordChangesService {
 		// Edge case 1: Only detect tyre changes when axles are modified
 		if (this.hasAxleTyresChanged()) return true;
 
-		return this.featureToggleService.isFeatureEnabled('techrecordredesigncreatedetails')
+		return this.featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
 			? this.hasChanged('techRecord_tyreUseCode')
 			: this.hasChanged('techRecord_tyreUseCode', 'techRecord_speedRestriction');
 	}
@@ -276,6 +307,12 @@ export class TechnicalRecordChangesService {
 	hasWeightSectionChanged(): boolean {
 		// Edge case 1: Only detect weight changes when axles are modified
 		if (this.hasAxleWeightsChanged()) return true;
+
+		const amended = this.amendedTechRecord();
+		const isHgvOrTrl =
+			amended?.techRecord_vehicleType === VehicleTypes.HGV || amended?.techRecord_vehicleType === VehicleTypes.TRL;
+
+		if (isHgvOrTrl && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
 
 		return this.hasChanged(
 			'techRecord_grossGbWeight',
@@ -339,7 +376,10 @@ export class TechnicalRecordChangesService {
 			'techRecord_adrDetails_newCertificateRequested',
 			'techRecord_adrDetails_additionalExaminerNotes_note',
 			'techRecord_adrDetails_additionalExaminerNotes',
-			'techRecord_adrDetails_adrCertificateNotes'
+			'techRecord_adrDetails_adrCertificateNotes',
+			'techRecord_adrDetails_approved',
+			'techRecord_adrDetails_receivedDate',
+			'techRecord_adrDetails_applicationNumber'
 		);
 	}
 
@@ -540,12 +580,16 @@ export class TechnicalRecordChangesService {
 	}
 
 	hasGeneralVehicleDetailsSectionChanged(): boolean {
+		const amended = this.amendedTechRecord();
+		const isPsv = amended?.techRecord_vehicleType === VehicleTypes.PSV;
+
+		if (isPsv && this.hasChanged('techRecord_brakes_dtpNumber')) return true;
+
 		return this.hasChanged(
 			'techRecord_vehicleType',
 			'techRecord_vehicleClass_description',
 			'techRecord_regnDate',
 			'techRecord_manufactureYear',
-			'techRecord_brakes_dtpNumber',
 			'techRecord_make',
 			'techRecord_model',
 			'techRecord_vehicleConfiguration',
@@ -575,6 +619,7 @@ export class TechnicalRecordChangesService {
 			'techRecord_alterationMarker',
 			'techRecord_fuelPropulsionSystem',
 			'techRecord_roadFriendly',
+			'techRecord_drawbarCouplingFitted',
 			'techRecord_speedRestriction',
 			'techRecord_suspensionType'
 		);
@@ -582,7 +627,6 @@ export class TechnicalRecordChangesService {
 
 	hasEmissionsAndExemptionsSectionChanged(): boolean {
 		return this.hasChanged(
-			'techRecord_drawbarCouplingFitted',
 			'techRecord_euroStandard',
 			'techRecord_emissionsLimit',
 			'techRecord_speedLimiterMrk',

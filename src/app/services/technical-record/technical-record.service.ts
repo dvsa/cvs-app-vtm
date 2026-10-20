@@ -16,7 +16,6 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { Store, select } from '@ngrx/store';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
@@ -48,6 +47,17 @@ import {
 	tap,
 	throwError,
 } from 'rxjs';
+import {
+	ALL_EU_VEHICLE_CATEGORY_OPTIONS,
+	CAR_EU_VEHICLE_CATEGORY_OPTIONS,
+	HGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	LGV_EU_VEHICLE_CATEGORY_OPTIONS,
+	MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS,
+	MultiOptions,
+	PSV_EU_VEHICLE_CATEGORY_OPTIONS,
+	SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+	TRL_EU_VEHICLE_CATEGORY_OPTIONS,
+} from '../../models/options.model';
 import { nullADRDetails } from '../../store/technical-records/technical-record-service.reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -55,7 +65,6 @@ export class TechnicalRecordService {
 	private store = inject(Store);
 	private httpService = inject(HttpService);
 	private routerService = inject(RouterService);
-	private featureToggleService = inject(FeatureToggleService);
 
 	techRecord$ = combineLatest([
 		this.store.pipe(select(selectTechRecord)),
@@ -448,5 +457,34 @@ export class TechnicalRecordService {
 
 	getTyresAccordionDescription(techRecord: TechRecordType<'get' | 'put'>): string {
 		return techRecord.techRecord_vehicleType === VehicleTypes.PSV ? 'Tyre details.' : 'Tyre details, tyre use code.';
+	}
+
+	getEUVehicleCategoryOptions(techRecord: TechRecordType<'get' | 'put'>): MultiOptions {
+		const vehicleType = this.getVehicleTypeWithSmallTrl(techRecord);
+
+		switch (vehicleType) {
+			case VehicleTypes.HGV:
+				return HGV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.PSV:
+				return PSV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.TRL:
+				return TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.SMALL_TRL:
+				return SMALL_TRL_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.LGV:
+				return LGV_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.CAR:
+				return CAR_EU_VEHICLE_CATEGORY_OPTIONS;
+			case VehicleTypes.MOTORCYCLE:
+				return MOTORCYCLE_EU_VEHICLE_CATEGORY_OPTIONS;
+			default:
+				return ALL_EU_VEHICLE_CATEGORY_OPTIONS;
+		}
+	}
+
+	getDesignTotalAxleWeight(techRecord: TechRecordType<'get' | 'put'>): number | null {
+		if (techRecord.techRecord_vehicleType !== VehicleTypes.TRL) return null;
+		if (!Array.isArray(techRecord.techRecord_axles)) return null;
+		return techRecord.techRecord_axles.reduce((acc, axle) => acc + (axle.weights_designWeight || 0), 0);
 	}
 }

@@ -1,0 +1,263 @@
+<ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ data: form }" />
+
+<ng-template #viewDefect let-data="data">
+  @if (defect) {
+    <h1 class="govuk-heading-l">Defect details</h1>
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-m">{{ defect.imDescription }}</span>
+        <h2 class="govuk-heading-s">
+          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : ''
+          }}{{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }}{{ isDangerousAsterisk ? '*' : '' }} - {{ defect.itemDescription }}
+          {{ defect.deficiencyText }}
+        </h2>
+        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+        @if (defect.prs) {
+          <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
+        }
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m">Defect location</h2>
+        <dl class="govuk-summary-list">
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Vertical', data: defect.additionalInformation?.location?.vertical | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Horizontal', data: defect.additionalInformation?.location?.horizontal | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Lateral', data: defect.additionalInformation?.location?.lateral | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Longitudinal', data: defect.additionalInformation?.location?.longitudinal | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Row Number', data: defect.additionalInformation?.location?.rowNumber | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Seat Number', data: defect.additionalInformation?.location?.seatNumber | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Axle Number', data: defect.additionalInformation?.location?.axleNumber | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'Notes', data: defect.additionalInformation?.notes | defaultNullOrEmpty }"
+          ></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="viewDefectRow"
+            [ngTemplateOutletContext]="{ label: 'PRS?', data: !!defect.prs | defaultNullOrEmpty }"
+          ></ng-template>
+          @if (isDangerous) {
+            <ng-template
+              [ngTemplateOutlet]="viewDefectRow"
+              [ngTemplateOutletContext]="{ label: 'Prohibition Issued?', data: !!defect.prohibitionIssued | defaultNullOrEmpty }"
+            ></ng-template>
+          }
+        </dl>
+      </div>
+    </div>
+    @if (isDangerous || defect.imNumber) {
+      <div>
+        <h2 class="govuk-heading-m">Defect media</h2>
+        @if (defectMediaService) {
+          @if (loading) {
+            <div class="spinner-group">
+              <p class="govuk-body fetching-label">Fetching media</p>
+              <div class="govuk-box spinner-wrapper" aria-busy="true">
+                <div id="loader" class="govuk-c-loader" role="progressbar" aria-label="Loading, please wait." tabindex="0">
+                  <div class="spinner-container">
+                    <div class="spinner">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else if (testResult && defectMediaService.hasRententionPeriodExpired(testResult)) {
+              <p class="govuk-body">
+                No media available - media was deleted as the retention period had passed
+              </p>
+          } @else {
+            @if (testResult && defectMediaService.canDownloadMediaItems(defect) && defectMediaService.getMediaFetchError(testResult.testResultId) === undefined) {
+              <app-button [id]="'download-all-media-button'" (clicked)="defectMediaService.downloadMediaItems(testResult, defect)">
+                Download all media for this defect
+              </app-button>
+            }
+            @if (defectMediaService.hasMediaInCache(defect)) {
+              @let images = defectMediaService.getImages(defect);
+              @if (images.length > 0) {
+                <div class="govuk-heading-s underline">Photos</div>
+              }
+              @for (media of images; track media) {
+                @if (testResult && media.type === 'image' && defectMediaService.fileCache[media.path]) {
+                  <div style="display: inline-flex" class="defect-container">
+                    <img class="media-image" [src]="defectMediaService.fileCache[media.path]" [alt]="media.path" />
+                    <button class="link download-image-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
+                      Download photo
+                    </button>
+                  </div>
+                }
+              }
+              @let videos = defectMediaService.getVideos(defect);
+              @if (videos.length > 0) {
+                <div class="govuk-heading-s underline">Video</div>
+              }
+              @for (media of videos; track media) {
+                @if (testResult && media.type === 'video' && defectMediaService.fileCache[media.path]) {
+                  <div class="defect-container">
+                    @if (!isVideoPlaying) {
+                      <div class="video-wrapper">
+                        <video
+                          class="media-video"
+                          [src]="defectMediaService.fileCache[media.path]"
+                          [attr.data-media-path]="media.path">
+                        </video>
+                        <button class="video-play-btn" (click)="playVideo(media.path)" aria-label="Play video">
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor">
+                            <path d="M12 8v32l24-16z"/>
+                          </svg>
+                        </button>
+                      </div>
+                    }
+                    @if (isVideoPlaying) {
+                      <div class="video-wrapper">
+                        <video
+                          class="media-video"
+                          controls
+                          [src]="defectMediaService.fileCache[media.path]"
+                          [attr.data-media-path]="media.path">
+                        </video>
+                      </div>
+                    }
+                    <button class="link download-video-link" (click)="defectMediaService.downloadMediaItem(testResult, defect, media)">
+                      Download video
+                    </button>
+                  </div>
+                }
+              }
+            } @else {
+              <p class="govuk-body">
+                {{ getFailureToCaptureDefectMediaReason() }}
+              </p>
+            }
+          }
+        }
+      </div>
+    }
+  }
+</ng-template>
+
+<ng-template #viewDefectRow let-label="label" let-data="data">
+  <dl class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">{{ label }}</dt>
+    <dd class="govuk-summary-list__value">{{ data }}</dd>
+  </dl>
+</ng-template>
+
+<ng-template #editDefect>
+  @if (defect) {
+    <h1 class="govuk-heading-l">Defect details</h1>
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-m">{{ defect.imDescription }}</span>
+        <h2 class="govuk-heading-s">
+          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : ''
+          }}{{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }}{{ isDangerousAsterisk ? '*' : '' }} - {{ defect.itemDescription }}
+          {{ defect.deficiencyText }}
+        </h2>
+        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+        @if (defect.prs) {
+          <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
+        }
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-m">Defect details</h3>
+        <p class="govuk-hint">Fill any defect details that apply</p>
+      </div>
+    </div>
+    <ng-container [formGroup]="form">
+      <ng-container formGroupName="additionalInformation">
+        @if (!isAdvisory) {
+          <ng-container formGroupName="location">
+            @for (item of infoDictionary | keyvalue; track index; let index = $index) {
+              @if (item.value.length <= 4) {
+                <app-radio-group
+                  [name]="item.key + '-' + index"
+                  [label]="pascalCase(item.key)"
+                  [formControlName]="item.key"
+                  [options]="item.value"
+                  [inline]="item.value.length <= 2"
+                  />
+              }
+              @if (item.value.length >= 5) {
+                <app-select
+                  [name]="item.key + index"
+                  [label]="pascalCase(item.key)"
+                  [formControlName]="item.key"
+                  [options]="item.value"
+                  />
+              }
+            }
+          </ng-container>
+        }
+        <app-text-area name="notes" label="Notes" hint="Enter any notes for this defect" formControlName="notes" />
+      </ng-container>
+      @if (isDangerous) {
+        <app-radio-group
+          name="prohibitionIssued"
+          label="Prohibition issued in mobile compliance"
+          formControlName="prohibitionIssued"
+          [options]="booleanOptions"
+          hint="{{ isDangerousAsterisk ? '' : 'You must issue a prohibition notice in search before adding this defect' }}"
+          (change)="toggleDefectField('prohibitionIssued')"
+          />
+      }
+      @if (!isAdvisory) {
+        <div class="govuk-form-group">
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="prs" type="checkbox" [checked]="defect.prs" (change)="toggleDefectField('prs')" />
+              <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test</label>
+            </div>
+          </div>
+        </div>
+      }
+    </ng-container>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <app-button-group>
+          <app-button id="confirm-defect" (clicked)="handleSubmit()">Confirm</app-button>
+          @if (index || index === 0) {
+            <app-button id="remove-defect" design="warning" (clicked)="handleRemove()">Remove defect</app-button>
+          }
+          <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">{{
+            index || index === 0 ? 'Cancel changes' : 'Cancel'
+          }}</app-button>
+        </app-button-group>
+      </div>
+    </div>
+  }
+</ng-template>

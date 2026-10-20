@@ -77,7 +77,7 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
 		]).pipe(
 			map(([refDataItem, refDataItemAudit]) => {
 				if (!refDataItem) {
-					return refDataItemAudit?.[0].description ?? value;
+					return refDataItemAudit?.[0]?.description ?? value;
 				}
 				return refDataItem[decodeKey as keyof ReferenceDataModelBase] ?? value;
 			})

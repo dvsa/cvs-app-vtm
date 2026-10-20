@@ -161,7 +161,7 @@ describe('AdrSectionEditComponent', () => {
 			});
 
 			const options = getOptionsFromEnum(ADRDangerousGood);
-			expect(component.permittedDangerousGoodsOptions).toEqual(options);
+			expect(component.permittedDangerousGoodsOptions()).toEqual(options);
 
 			component.handleADRBodyTypeChange();
 
@@ -170,7 +170,7 @@ describe('AdrSectionEditComponent', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
 			});
 
-			expect(component.permittedDangerousGoodsOptions).toEqual(
+			expect(component.permittedDangerousGoodsOptions()).toEqual(
 				options.filter(
 					(option) =>
 						option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3

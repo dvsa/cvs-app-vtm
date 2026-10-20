@@ -1,9 +1,15 @@
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import {
 	DefectDetailsSchema,
+	LoadStatusSchema,
 	SpecialistCustomDefectsSchemaPut,
 	TestResultSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
@@ -68,6 +74,9 @@ interface Extras {
 	loading: boolean;
 	editingTestResult?: TestResultSchema;
 	sectionTemplates?: FormNode[];
+	recalls?: RecallsSchema;
+	recallsVin?: string;
+	recallsLoading: boolean;
 }
 
 export interface TestResultsState extends EntityState<TestResultSchema>, Extras {}
@@ -83,6 +92,7 @@ export const testResultAdapter: EntityAdapter<TestResultSchema> = createEntityAd
 export const initialTestResultsState: EntityState<TestResultSchema> & Extras = testResultAdapter.getInitialState({
 	error: '',
 	loading: false,
+	recallsLoading: false,
 });
 
 export const testResultsReducer = createReducer(
@@ -106,6 +116,25 @@ export const testResultsReducer = createReducer(
 		loading: false,
 	})),
 	on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
+
+	on(getRecalls, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: true,
+	})),
+	on(getRecallsSuccess, (state, action) => ({
+		...state,
+		recalls: action.recalls,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
+	on(getRecallsFailure, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
 
 	on(createTestResult, updateTestResult, (state) => ({ ...state, loading: true })),
 	on(updateTestResultSuccess, (state, action) => ({
@@ -175,8 +204,6 @@ export const testResultsReducer = createReducer(
 
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 
-	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
 	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
 );
 
@@ -199,7 +226,7 @@ function createNewRequiredStandard(
 	return { ...testResult };
 }
 
-function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
+export function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 	if (!testResult || !testResult.testTypes) {
 		return testResult;
 	}
@@ -209,14 +236,31 @@ function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 		testResult.model = null;
 	}
 
-	// Remove recalls from non HGV/PSV/TRL tests
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
 	const isPSV = vehicleType === VehicleTypes.PSV;
 	const isTRL = vehicleType === VehicleTypes.TRL;
+	const isLGV = vehicleType === VehicleTypes.LGV;
+	const isHeavyTRL =
+		isTRL &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O1 &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O2;
 
+	// Remove recalls from non HGV/PSV/TRL tests
 	if (!(isHGV || isPSV || isTRL)) {
 		delete testResult.recalls;
+	}
+
+	// Remove VTG15 from non HGV/LGV/TRL tests
+	if (!isHGV && !isLGV && !isHeavyTRL) {
+		delete testResult.vtg15;
+	}
+
+	if (!testResult.vtg15?.vtg15Required) {
+		delete testResult.vtg15?.primaryHazardClassification;
+		delete testResult.vtg15?.secondaryHazardClassification;
+		delete testResult.vtg15?.unNumber;
+		delete testResult.vtg15?.media;
 	}
 
 	const testTypes = testResult.testTypes.map((testType, index) => {
@@ -260,6 +304,10 @@ function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 			testType.customDefects = [];
 		}
 
+		// if (testType.defects.length > 0) {
+		//   testType.defects.forEach(defect => delete defect.metadata);
+		// }
+
 		// When abandoning a first test ensure certificate number is sent up
 		if (isAbandon && TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(testType.testTypeId)) {
 			testType.certificateNumber = '';
@@ -271,6 +319,48 @@ function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
 			testType.smokeTestKLimitApplied
 		) {
 			testType.smokeTestKLimitApplied = testType.smokeTestKLimitApplied.toString();
+		}
+
+		// If abandon reasons is an array, convert it to a string
+		if (Array.isArray(testType.reasonForAbandoning)) {
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('. ');
+		}
+
+		// If required standards is an empty array, convert it to undefined
+		if (Array.isArray(testType.requiredStandards) && testType.requiredStandards.length === 0) {
+			testType.requiredStandards = undefined;
+		}
+
+		if (testType.loadStatus) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status.
+			// The dynamic form initialises this control to null, the reactive form to undefined; both mean "not entered".
+			if (testType.loadStatus.vehicleLoadStatus === null || testType.loadStatus.vehicleLoadStatus === undefined) {
+				delete testType.loadStatus;
+			} else {
+				// Otherwise create a valid load status object
+				const loadStatus: LoadStatusSchema = {
+					vehicleLoadStatus: testType.loadStatus.vehicleLoadStatus,
+				};
+
+				if (testType.loadStatus.vehicleLoadStatus === VehicleLoadStatusType.UNLADEN) {
+					loadStatus.unladenBodyType = testType.loadStatus.unladenBodyType;
+					loadStatus.reasonForNotLoading = testType.loadStatus.reasonForNotLoading;
+
+					if (testType.loadStatus.unladenBodyType === UnladenBodyType.OTHER) {
+						loadStatus.otherUnladenBodyType = testType.loadStatus.otherUnladenBodyType;
+					}
+
+					if (testType.loadStatus.reasonForNotLoading === ReasonForNotLoading.OTHER) {
+						loadStatus.otherReasonForNotLoading = testType.loadStatus.otherReasonForNotLoading;
+					}
+				}
+
+				if (testType.loadStatus.vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN) {
+					loadStatus.partiallyLadenReason = testType.loadStatus.partiallyLadenReason;
+				}
+
+				testType.loadStatus = loadStatus;
+			}
 		}
 
 		return testType;

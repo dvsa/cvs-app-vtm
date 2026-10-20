@@ -6,18 +6,16 @@ import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-defini
 import { EUVehicleCategory as EUVehicleCategoryTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
-import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
 import {
@@ -30,6 +28,8 @@ import {
 	archiveTechRecordFailure,
 	archiveTechRecordSuccess,
 	changeVehicleType,
+	clearAllSectionStates,
+	clearScrollPosition,
 	createVehicle,
 	createVehicleRecord,
 	createVehicleRecordFailure,
@@ -69,7 +69,6 @@ export class TechnicalRecordServiceEffects {
 	private batchTechRecordService = inject(BatchTechnicalRecordService);
 	private userService = inject(UserService);
 	private store = inject<Store<State>>(Store);
-	private dfs = inject(DynamicFormService);
 	private router = inject(Router);
 
 	getTechnicalRecordHistory$ = createEffect(() =>
@@ -77,11 +76,8 @@ export class TechnicalRecordServiceEffects {
 			ofType(getBySystemNumber),
 			mergeMap((action) => {
 				const anchorLink = 'search-term';
-
 				return this.httpService.searchTechRecordBySystemNumber(action.systemNumber).pipe(
-					map((vehicleTechRecords) => {
-						return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
-					}),
+					map((vehicleTechRecords) => getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords })),
 					catchError(() =>
 						of(getBySystemNumberFailure({ error: 'could not find technical record history', anchorLink }))
 					)
@@ -117,14 +113,16 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(createVehicleRecord),
 			withLatestFrom(this.batchTechRecordService.applicationId$, this.userService.name$, this.userService.id$),
-			concatMap(([{ vehicle }, applicationId]) => {
+			concatMap(([{ batchRecordId, vehicle }, applicationId]) => {
 				const vehicleRecord = { ...vehicle, techRecord_applicationId: applicationId };
 
 				return this.httpService.createTechRecord(vehicleRecord).pipe(
-					map((response) => createVehicleRecordSuccess({ vehicleTechRecord: response })),
+					map((response) => createVehicleRecordSuccess({ batchRecordId, vehicleTechRecord: response })),
 					catchError((error) =>
 						of(
 							createVehicleRecordFailure({
+								batchRecordId,
+								vehicleRecord,
 								error: `Unable to create vehicle with VIN ${vehicle.vin}${
 									error.error?.errors
 										? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
@@ -142,17 +140,50 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(updateTechRecord),
 			withLatestFrom(this.store.pipe(select(editingTechRecord))),
-			concatMap(([{ systemNumber, createdTimestamp }, techRecord]) => {
+			concatMap(([{ batchRecordId, systemNumber, createdTimestamp, groupType }, techRecord]) => {
 				if (!techRecord) {
-					return of(updateTechRecordFailure({ error: 'There is not technical record in edit' }));
+					return of(
+						updateTechRecordFailure({
+							batchRecordId,
+							techRecord,
+							error: 'There is no technical record in edit',
+						})
+					);
 				}
 				return this.httpService.updateTechRecord(systemNumber, createdTimestamp, techRecord).pipe(
-					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord })),
+					map((vehicleTechRecord) => updateTechRecordSuccess({ batchRecordId, vehicleTechRecord, groupType })),
 					catchError((error) =>
-						of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
+						of(
+							updateTechRecordFailure({
+								batchRecordId,
+								techRecord,
+								error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord', `with VIN ${techRecord.vin}`),
+							})
+						)
 					)
 				);
 			})
+		)
+	);
+
+	updateSingleTechRecordSuccess = createEffect(() =>
+		this.actions$.pipe(
+			ofType(updateTechRecordSuccess),
+			filter(({ groupType }) => groupType !== 'batch'),
+			tap(({ vehicleTechRecord }) => {
+				this.router.navigate(
+					[`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`],
+					{
+						queryParams: { from: 'amend' },
+						queryParamsHandling: 'merge',
+					}
+				);
+			}),
+			switchMap(({ vehicleTechRecord }) => [
+				clearAllSectionStates(),
+				clearScrollPosition(),
+				getBySystemNumber({ systemNumber: vehicleTechRecord.systemNumber }),
+			])
 		)
 	);
 
@@ -219,18 +250,19 @@ export class TechnicalRecordServiceEffects {
 			this.actions$.pipe(
 				ofType(createVehicle),
 				withLatestFrom(this.store.pipe(select(editingTechRecord))),
-				concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
-					const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
-					const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
+				tap(([{ techRecord_vehicleType }, editableTechRecord]) => {
+					const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType } as TechRecordType<'put'>;
 
-					return of(
-						techRecordTemplate.reduce((mergedNodes, formNode) => {
-							const form = this.dfs.createForm(formNode, techRecord);
-							return merge(mergedNodes, form.getCleanValue(form));
-						}, {}) as TechRecordType<'put'>
-					);
-				}),
-				tap((mergedForms) => this.technicalRecordService.updateEditingTechRecord(mergedForms))
+					if (techRecord.techRecord_vehicleType === VehicleTypes.CAR) {
+						techRecord.techRecord_euVehicleCategory = EUVehicleCategoryCAR.M1;
+					}
+
+					if (techRecord.techRecord_vehicleType === VehicleTypes.LGV) {
+						techRecord.techRecord_euVehicleCategory = EUVehicleCategoryLGV.N1;
+					}
+
+					this.technicalRecordService.updateEditingTechRecord(techRecord);
+				})
 			),
 		{ dispatch: false }
 	);

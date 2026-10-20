@@ -7,7 +7,7 @@
       formControlName="techRecord_regnDate"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="dateOfFirstRegistrationFilterOptions"
+      [tagNames]="dateOfFirstRegistrationFilterOptions()"
     ></govuk-form-group-date>
   }
 
@@ -28,7 +28,10 @@
       label="Year of manufacture"
       formControlName="techRecord_manufactureYear"
       [width]="FormNodeWidth.XS"
-      type="number"
+      type="text"
+      inputmode="numeric"
+      maxlength="4"
+      appNumberOnly
       appFilterByTags
       [filters]="filters()"
       [tagNames]="['Plates']"
@@ -47,33 +50,19 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_brakes_dtpNumber')) {
-    @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
-      <govuk-form-group-autocomplete
-        type="text"
-        formControlName="techRecord_brakes_dtpNumber"
-        label="DTp number"
-        [width]="FormNodeWidth.XL"
-        [placeholder]="'Select DTp number'"
-        [options$]="dtpNumbers$"
-        appTrimWhitespace
-        appNoSpace
-        appFilterByTags
-        [filters]="filters()"
-        [tagNames]="['Required']"
-      />
-    } @else {
-      <govuk-form-group-input
-        type="text"
-        formControlName="techRecord_brakes_dtpNumber"
-        label="DTp number"
-        [width]="FormNodeWidth.L"
-        appTrimWhitespace
-        appNoSpace
-        appFilterByTags
-        [filters]="filters()"
-        [tagNames]="['Plates']"
-      />
-    }
+    <govuk-form-group-autocomplete
+      type="text"
+      formControlName="techRecord_brakes_dtpNumber"
+      label="DTp number"
+      [width]="FormNodeWidth.L"
+      [placeholder]="'Select DTp number'"
+      [options$]="dtpNumbers$"
+      appTrimWhitespace
+      appNoSpace
+      appFilterByTags
+      [filters]="filters()"
+      [tagNames]="['Required']"
+    />
   }
 
   @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
@@ -234,10 +223,10 @@
         label="Body type"
         [defaultOption]="'Select body type'"
         [width]="FormNodeWidth.L"
-        [options]="bodyTypes"
+        [options]="bodyTypes()"
         appFilterByTags
         [filters]="filters()"
-        [tagNames]="bodyTypeFilterOptions"
+        [tagNames]="bodyTypeFilterOptions()"
       >
       </govuk-form-group-select>
     }
@@ -290,10 +279,10 @@
       label="EU vehicle category"
       formControlName="techRecord_euVehicleCategory"
       [width]="FormNodeWidth.S"
-      [options]="EUCategoryOptions"
+      [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord())"
       appFilterByTags
       [filters]="filters()"
-      [tagNames]="euVehicleCategoryFilterOptions"
+      [tagNames]="euVehicleCategoryFilterOptions()"
     ></govuk-form-group-radio>
   }
 
@@ -316,7 +305,7 @@
           Number of axles
         </label>
       </h1>
-      
+
       @if (mode() === Modes.EDIT) {
         <div class="govuk-hint" [id]="'techRecord_noOfAxles-hint'"> This will affect how many axle-related fields appear in the record </div>
       }
@@ -330,7 +319,7 @@
         />
 
         @if (mode() === Modes.EDIT) {
-          @if (isAxlesDisabled) {
+          @if (isAxlesDisabled()) {
             <button
               type="button"
               class="govuk-button govuk-button--warning"
@@ -342,8 +331,8 @@
               Remove and clear all axles
             </button>
           }
-  
-          @if (!isAxlesDisabled) {
+
+          @if (!isAxlesDisabled()) {
             <button
               type="button"
               class="govuk-button"

@@ -1,3 +1,4 @@
+import { initialAppState } from '@/src/app/store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -6,6 +7,7 @@ import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enu
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AdrValidatorsService } from '../adr-validators.service';
 
 describe('AdrValidatorsService', () => {
@@ -14,7 +16,12 @@ describe('AdrValidatorsService', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [AdrValidatorsService, provideHttpClient(), provideHttpClientTesting()],
+			providers: [
+				AdrValidatorsService,
+				provideHttpClient(),
+				provideHttpClientTesting(),
+				provideMockStore({ initialState: initialAppState }),
+			],
 		});
 
 		service = TestBed.inject(AdrValidatorsService);
@@ -434,6 +441,22 @@ describe('AdrValidatorsService', () => {
 			});
 			expect(validator(control1)).toEqual({ required: 'message' });
 			expect(validator(control2)).toEqual({ required: 'message' });
+		});
+
+		it('should return an error when the first un number control is validated', () => {
+			const validator = service.requiresAUnNumberOrReferenceNumber('message');
+			const control = form.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo') as FormArray;
+			form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.CENTRE_AXLE_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null, null, null],
+			});
+
+			expect(validator(control.controls[0])).toEqual({ required: 'message' });
 		});
 	});
 });

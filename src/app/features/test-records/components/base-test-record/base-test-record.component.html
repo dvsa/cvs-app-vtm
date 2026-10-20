@@ -69,6 +69,17 @@
         @case ('vehicleSection') {
           @if (isEditing()) {
             <app-accordion [id]="template.name" [title]="template.label">
+              @if (techRecord(); as techRecord) {
+                @if (technicalRecordService.isAdrVehicle(techRecord)) {
+                  <app-vtg15
+                    [amend]="amendMode()"
+                    [edit]="isEditing()"
+                    [data]="testResult()"
+                    [isContingencyTest]="isContingencyTest()"
+                    (formChange)="handleFormChange($event)">
+                  </app-vtg15>
+                }
+              }
               <app-dynamic-form-group class="section"
                 [id]="template.name"
                 [template]="template"
@@ -106,6 +117,36 @@
             [edit]="isEditing()"
             (formChange)="handleFormChange($event)"
             />
+        }
+        @case ('weightsSection') {
+          <app-accordion [id]="template.name" [title]="template.label">
+            <app-weights
+              id="weights"
+              class="section"
+              [edit]="isEditing()"
+              [data]="testResult()"
+              [isContingencyTest]="isContingencyTest()"
+              (formChange)="handleFormChange($event)"
+            />
+          </app-accordion>
+        }
+        @case ('testSection') {
+          <app-accordion [id]="template.name" [title]="template.label">
+            <app-dynamic-form-group class="section"
+              [id]="template.name"
+              [template]="template"
+              [data]="testResult()"
+              [edit]="isEditing()"
+              (formChange)="handleFormChange($event)"
+              />
+
+              <app-load-status
+                [edit]="isEditing()"
+                [data]="testResult()"
+                [isContingencyTest]="isContingencyTest()"
+                (formChange)="handleFormChange($event)"
+              />
+          </app-accordion>
         }
         @default {
           <!-- skip `reasonForCreationSection` because its handled further down -->

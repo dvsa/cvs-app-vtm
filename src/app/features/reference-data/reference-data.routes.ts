@@ -18,7 +18,7 @@ export const routes: Routes = [
 					import('./reference-data-select-type/reference-data-select-type.component').then(
 						(m) => m.ReferenceDataSelectTypeComponent
 					),
-				data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
+				data: { title: 'Select reference data type', roles: Roles.ReferenceDataView },
 				canActivate: [MsalGuard, RoleGuard],
 			},
 			{

@@ -1,0 +1,10 @@
+<div [formGroup]="form">
+  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+    <!--  Reason for creation -->
+    <govuk-form-group-textarea
+      label="Reason for creation"
+      [maxLength]="100"
+      formControlName="reasonForCreation"
+    />
+  }
+</div>

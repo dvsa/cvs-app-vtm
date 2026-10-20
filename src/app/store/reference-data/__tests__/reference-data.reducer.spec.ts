@@ -484,7 +484,7 @@ describe('Reference Data Reducer', () => {
 				test: testItem,
 				test2: testItem2,
 			});
-			expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2', 'test']);
+			expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test', 'test2']);
 		});
 	});
 	describe('amendReferenceDataItemSuccess', () => {

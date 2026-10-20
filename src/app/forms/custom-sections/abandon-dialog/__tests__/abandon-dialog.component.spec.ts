@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { SPECIALIST_TEST_TYPE_IDS, TEST_TYPES_GROUP5_13 } from '@models/testTypeId.enum';
+import { SPECIALIST_TEST_TYPE_IDS, TEST_TYPES_GROUP5_13, TEST_TYPES_MSVA } from '@models/testTypeId.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
@@ -39,6 +39,12 @@ describe('AbandonDialogComponent', () => {
 	});
 
 	describe('template getter', () => {
+		it('should get the template with MSVA reasons for abandoning if the testType is a MSVA', () => {
+			const mockTestResult = { testTypes: [{ testTypeId: TEST_TYPES_MSVA[0] }] } as TestResultSchema;
+			fixture.componentRef.setInput('testResult', mockTestResult);
+			const ReasonsForAbandoning = component.getTemplate().children?.[0].children?.[0].children?.[0].referenceData;
+			expect(ReasonsForAbandoning).toEqual(ReferenceDataResourceType.MsvaReasonsForAbandoning);
+		});
 		it('should get the template with TIR reasons for abandoning if the testType is a TIR', () => {
 			const mockTestResult = { testTypes: [{ testTypeId: TEST_TYPES_GROUP5_13[0] }] } as TestResultSchema;
 			fixture.componentRef.setInput('testResult', mockTestResult);

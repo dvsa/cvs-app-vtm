@@ -1,0 +1,41 @@
+<div class="govuk-width-container">
+  <h1 class="govuk-heading-l">
+    Enter details for this batch
+  </h1>
+
+  <form [formGroup]="form">
+    <!-- Vehicle status -->
+    <govuk-form-group-radio
+      label="Vehicle status"
+      formControlName="vehicleStatus"
+      orientation="horizontal"
+      [options]="vehicleStatusOptions"
+    />
+
+    <!-- Vehicle type -->
+     <govuk-form-group-radio
+      label="Vehicle type"
+      formControlName="vehicleType"
+    >
+      <govuk-radio id="hgv" label="Heavy Goods Vehicle (HGV)" [value]="VehicleTypes.HGV" />
+      <govuk-radio id="trl" label="Trailer (TRL)" [value]="VehicleTypes.TRL">
+        <govuk-form-group-radio
+          id="trlFormType"
+          class="govuk-label govuk-label--s"
+          size="small"
+          errorMode="group"
+          label="Trailer form type" 
+          formControlName="trlFormType"
+          [hint]="trailerFormTypeHint()"
+          [options]="trailerFormTypeOptions"
+        />
+      </govuk-radio>
+      <govuk-radio id="psv" label="Public Service Vehicle (PSV)" [value]="VehicleTypes.PSV" />
+    </govuk-form-group-radio>
+  </form>
+
+  <app-button-group>
+    <app-button id="continue-btn" (clicked)="handleContinue()">Continue</app-button>
+    <app-button id="cancel-btn" design="link" (clicked)="handleCancel()">Cancel</app-button>
+  </app-button-group>
+</div>

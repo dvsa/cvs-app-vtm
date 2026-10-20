@@ -20,7 +20,7 @@
       ></app-home-button>
 
       <app-home-button
-        url="create-batch"
+        [url]="featureToggleService.isFeatureEnabled(FeatureFlags.BATCH_REDESIGN) ? 'batch/enter-details' : 'create-batch'"
         linkText="Create a batch of technical records"
         description="Create a batch of up to 40 PSV, HGV or trailer technical records"
         linkId="create-batch-technical-records-link"
@@ -36,19 +36,11 @@
       ></app-home-button>
 
       <app-home-button
-        url="feature-toggle"
-        linkText="Cannot see me in any environment but develop"
-        description="I exist to check the feature toggle is working. If you can see me in INT, pre prod or prod, there is an issue"
-        linkId="hidden-prod-button"
-        *featureToggleName="'testtoggle'"
-      ></app-home-button>
-
-      <app-home-button
         url="betas"
         linkText="Opt-in to betas"
         description="Manage which experimental features are enabled for this service. These will be changed based on your feedback."
         linkId="betas-opt-in-button"
-        *featureToggleName="'betas'"
+        *featureToggleName="FeatureFlags.BETAS"
       ></app-home-button>
     </div>
   </div>

@@ -84,7 +84,7 @@ export class GlobalErrorService {
 
 		// For each control in the form, determine its validity and collect form errors
 		Object.entries(form.controls).forEach(([key, control]) => {
-			control.updateValueAndValidity();
+			control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
 
 			// For nested form groups/arrays, collect the top level errors, then recusively collect errors from their children
 			if (control instanceof FormGroup || control instanceof FormArray) {
@@ -158,5 +158,17 @@ export class GlobalErrorService {
 		}
 
 		return errors;
+	}
+
+	markAllAsTouched(control: AbstractControl): void {
+		control.markAsTouched({ onlySelf: true });
+
+		if (control instanceof FormGroup || control instanceof FormArray) {
+			Object.values(control.controls).forEach((c) => {
+				this.markAllAsTouched(c);
+			});
+		}
+
+		control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
 	}
 }

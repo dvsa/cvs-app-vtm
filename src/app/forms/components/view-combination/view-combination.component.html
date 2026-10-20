@@ -1,4 +1,4 @@
-<dt class="govuk-summary-list__key">{{ label }}:</dt>
-<dd id="test-{{ leftComponent?.meta?.name }}" class="govuk-summary-list__value">
-  <span>{{ (leftComponent?.value | defaultNullOrEmpty) + separator + (rightComponent?.value | defaultNullOrEmpty) }}</span>
-</dd>
+<th class="govuk-table__header" scope="row">{{ label }}:</th>
+<td class="govuk-table__cell" id="test-{{ leftComponent?.meta?.name }}">
+  <span>{{ (leftValue() | defaultNullOrEmpty) + separator + (rightValue() | defaultNullOrEmpty) }}</span>
+</td>

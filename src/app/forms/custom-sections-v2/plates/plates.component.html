@@ -30,13 +30,14 @@
         <tbody class="govuk-table__body">
           @for (plate of plates; track i; let i = $index) {
             @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
-              <a 
+              <a
                 class="govuk-link govuk-table__row"
                 href="javascript:void(0)"
                 [id]="`plate-link${i}`"
                 appRetrieveDocument
                 [params]="documentParams"
                 [fileName]="fileName"
+                [documentType]="DocumentType.PLATE"
               >
                 <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}
@@ -53,8 +54,8 @@
                 <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
                   {{ plate.plateIssueDate | date : 'HH:mm' }}
                 </td>
-              </a> 
-            } @else {     
+              </a>
+            } @else {
               <tr class="govuk-table__row" [id]="`plate-link${i}`">
                 <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}

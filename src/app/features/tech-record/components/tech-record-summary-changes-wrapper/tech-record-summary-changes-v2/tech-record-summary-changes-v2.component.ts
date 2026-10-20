@@ -31,20 +31,17 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { UserService } from '@/src/app/services/user-service/user-service';
 import {
 	clearADRDetailsBeforeUpdate,
-	clearAllSectionStates,
-	clearScrollPosition,
 	editingTechRecord,
 	selectSectionState,
 	techRecord,
 	updateADRAdditionalExaminerNotes,
 	updateTechRecord,
-	updateTechRecordSuccess,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, combineLatest, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/tech-record-summary-card.component';
@@ -84,6 +81,7 @@ import { TechRecordSummaryCardComponent } from '../../tech-record-summary-card/t
 		ButtonComponent,
 		ButtonGroupComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewInit, OnDestroy {
 	store = inject(Store);
@@ -100,7 +98,21 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 
 	currentTechRecord = this.store.selectSignal(techRecord);
 	amendedTechRecord = this.store.selectSignal(editingTechRecord);
-	sectionStates$ = this.store.selectSignal(selectSectionState);
+	sectionStates = this.store.selectSignal(selectSectionState);
+
+	// Precompute accordion descriptions once per edited record change. Vehicle-type type-guard
+	// predicates stay inline in the template so their narrowing of `techRecord` is preserved.
+	vehicleMeta = computed(() => {
+		const record = this.amendedTechRecord();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: record ? svc.getApprovalTypeAccordionDescription(record) : '',
+			weightsDescription: record ? svc.getWeightsAccordionDescription(record) : '',
+			tyresDescription: record ? svc.getTyresAccordionDescription(record) : '',
+			configDescription: record ? svc.getConfigAccordionDescription(record) : '',
+			brakesDescription: record ? svc.getBrakesAccordionDescription(record) : '',
+		};
+	});
 
 	form = this.fb.group({});
 
@@ -111,8 +123,6 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 	readonly VehicleTypes = VehicleTypes;
 
 	ngOnInit(): void {
-		this.navigateUponSuccess();
-
 		this.userService.name$.pipe(takeUntil(this.destroy)).subscribe((name) => {
 			this.username = name;
 		});
@@ -157,18 +167,6 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 		this.destroy.complete();
 	}
 
-	// TODO: Move this into an effect
-	navigateUponSuccess(): void {
-		this.actions.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy)).subscribe(({ vehicleTechRecord }) => {
-			this.store.dispatch(clearAllSectionStates());
-			this.store.dispatch(clearScrollPosition());
-			this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`], {
-				queryParams: { from: 'amend' },
-				queryParamsHandling: 'merge',
-			});
-		});
-	}
-
 	submit(): void {
 		combineLatest([
 			this.routerService.getRouteNestedParam$('systemNumber'),
@@ -179,7 +177,7 @@ export class TechRecordSummaryChangesV2Component implements OnInit, AfterViewIni
 				if (systemNumber && createdTimestamp) {
 					this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
 					this.store.dispatch(clearADRDetailsBeforeUpdate());
-					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp, groupType: 'single' }));
 				}
 			});
 	}

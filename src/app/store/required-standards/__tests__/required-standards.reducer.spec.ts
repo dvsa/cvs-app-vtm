@@ -42,7 +42,10 @@ describe('Required Standards Reducer', () => {
 			it('should set all test result records', () => {
 				const newState: RequiredStandardState = {
 					...initialRequiredStandardsState,
-					requiredStandards: expectedRequiredStandards as unknown as DefectGETRequiredStandards,
+					ids: ['m1'],
+					entities: {
+						m1: expectedRequiredStandards as DefectGETRequiredStandards,
+					},
 				};
 				const action = getRequiredStandardsSuccess({
 					requiredStandards: expectedRequiredStandards as unknown as DefectGETRequiredStandards,

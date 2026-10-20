@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	DefectGETRequiredStandards,
@@ -23,11 +23,12 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	requiredStandardsStore = inject(Store<RequiredStandardState>);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+	cdr = inject(ChangeDetectorRef);
 
-	requiredStandards?: RequiredStandardTaxonomySection[];
-	normalAndBasic?: boolean;
+	readonly requiredStandards = signal<RequiredStandardTaxonomySection[] | undefined>(undefined);
+	readonly normalAndBasic = signal(false);
 	isEditing = false;
-	selectedInspectionType?: InspectionType;
+	readonly selectedInspectionType = signal<InspectionType | undefined>(undefined);
 	selectedSection?: RequiredStandardTaxonomySection;
 	selectedRequiredStandard?: RequiredStandard;
 	basicAndNormalRequiredStandards?: DefectGETRequiredStandards;
@@ -40,12 +41,14 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.onDestroy$))
 			.subscribe((requiredStandards) => {
 				if (requiredStandards.basic.length) {
-					this.normalAndBasic = true;
-					this.requiredStandards = [];
+					this.normalAndBasic.set(true);
+					this.requiredStandards.set([]);
 					this.basicAndNormalRequiredStandards = requiredStandards;
 				} else {
-					this.requiredStandards = requiredStandards.normal;
-					this.selectedInspectionType = 'normal';
+					this.normalAndBasic.set(false);
+					this.requiredStandards.set(requiredStandards.normal);
+					this.selectedInspectionType.set('normal');
+					this.basicAndNormalRequiredStandards = undefined;
 				}
 			});
 	}
@@ -56,17 +59,18 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 	}
 
 	handleSelectBasicOrNormal(inspectionType: InspectionType): void {
-		this.requiredStandards =
+		this.requiredStandards.set(
 			inspectionType === 'basic'
 				? this.basicAndNormalRequiredStandards?.basic
-				: this.basicAndNormalRequiredStandards?.normal;
+				: this.basicAndNormalRequiredStandards?.normal
+		);
 	}
 
 	handleSelect(selected?: InspectionType | RequiredStandardTaxonomySection | RequiredStandard, type?: Types): void {
 		switch (type) {
 			case Types.InspectionType:
 				this.handleSelectBasicOrNormal(selected as InspectionType);
-				this.selectedInspectionType = selected as InspectionType;
+				this.selectedInspectionType.set(selected as InspectionType);
 				this.selectedSection = undefined;
 				this.selectedRequiredStandard = undefined;
 				break;
@@ -78,7 +82,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 				this.selectedRequiredStandard = selected as RequiredStandard;
 				if (this.selectedRequiredStandard) {
 					void this.router.navigate(
-						[`${this.selectedInspectionType}/${this.selectedRequiredStandard.refCalculation}`],
+						[`${this.selectedInspectionType()}/${this.selectedRequiredStandard.refCalculation}`],
 						{
 							relativeTo: this.route,
 							queryParamsHandling: 'merge',

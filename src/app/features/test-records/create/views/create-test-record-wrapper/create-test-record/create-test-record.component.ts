@@ -1,0 +1,273 @@
+import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
+import { AsyncPipe } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { BannerComponent } from '@components/banner/banner.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
+import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import {
+	AbandonDialogComponent,
+	AbandonDialogComponent as AbandonDialogComponent_1,
+} from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
+import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@models/testTypeId.enum';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
+import { RouterService } from '@services/router/router.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { State } from '@store/index';
+import { selectTechRecord } from '@store/technical-records';
+import { createTestResultSuccess } from '@store/test-records';
+import cloneDeep from 'lodash.clonedeep';
+import { BehaviorSubject, Subject, filter, firstValueFrom, skipLast, take, takeUntil, tap } from 'rxjs';
+import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
+
+@Component({
+	selector: 'app-create-test-record',
+	templateUrl: './create-test-record.component.html',
+	imports: [
+		BannerComponent,
+		ButtonComponent,
+		RouterLink,
+		BaseTestRecordComponent,
+		ButtonGroupComponent,
+		AbandonDialogComponent_1,
+		AsyncPipe,
+	],
+})
+export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
+	actions$ = inject(Actions);
+	errorService = inject(GlobalErrorService);
+	route = inject(ActivatedRoute);
+	router = inject(Router);
+	routerService = inject(RouterService);
+	testRecordsService = inject(TestRecordsService);
+	cdr = inject(ChangeDetectorRef);
+	resultOfTestService = inject(ResultOfTestService);
+	store = inject<Store<State>>(Store<State>);
+	titleService = inject(Title);
+	warningService = inject(GlobalWarningService);
+	testTypeService = inject(TestTypeService);
+
+	baseTestRecordComponent = viewChild(BaseTestRecordComponent);
+	abandonDialog = viewChild(AbandonDialogComponent);
+
+	private destroy$ = new Subject<void>();
+
+	canCreate$ = new BehaviorSubject(false);
+	testMode = TestModeEnum.Edit;
+	testResult$ = this.testRecordsService.editingTestResult$;
+	testTypeId?: string;
+	techRecord: V3TechRecordModel | undefined = undefined;
+
+	ngOnInit(): void {
+		this.testRecordsService.editingTestResult$.pipe(
+			takeUntil(this.destroy$),
+			skipLast(1),
+			filter((editingTestResult) => !editingTestResult),
+			tap(() => this.backToTechRecord())
+		);
+
+		this.routerService
+			.getQueryParam$('testType')
+			.pipe(
+				take(1),
+				tap((testType) => !testType && this.backToTechRecord()),
+				filter((tt) => !!tt)
+			)
+			.subscribe((testTypeId) => {
+				this.testRecordsService.contingencyTestTypeSelected(testTypeId as string);
+				// @ts-ignore
+				this.testTypeId = testTypeId;
+			});
+
+		this.watchForCreateSuccess();
+
+		this.testRecordsService.canCreate$.pipe(take(1)).subscribe((val) => this.canCreate$.next(val));
+
+		this.store
+			.select(selectTechRecord)
+			.pipe(take(1))
+			.subscribe((techRecord) => {
+				this.techRecord = techRecord;
+			});
+	}
+
+	ngOnDestroy(): void {
+		this.errorService.clearErrors();
+
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
+
+	ngAfterViewInit(): void {
+		this.cdr.detectChanges();
+	}
+
+	backToTechRecord(): void {
+		void this.router.navigate(['../../..'], { relativeTo: this.route.parent });
+	}
+
+	/**
+	 * Merge all section form values into one testResult and trigger action to update testResult.
+	 * @returns void
+	 */
+	async handleSave(): Promise<void> {
+		if (this.isAnyFormInvalid()) {
+			return;
+		}
+
+		this.testRecordsService.cleanTestResult();
+
+		const testResult = await firstValueFrom(this.testResult$);
+		const testResultClone = cloneDeep(testResult) as TestResultSchema;
+
+		this.testRecordsService.createTestResult(testResultClone);
+	}
+
+	async handleReview() {
+		if (this.isAnyFormInvalid()) return;
+		if (this.techRecord == null) return;
+
+		this.errorService.clearErrors();
+		this.testMode = TestModeEnum.View;
+		this.titleService.setTitle('Check test details - Vehicle Testing Management');
+
+		const testResult = await firstValueFrom(this.testResult$);
+		if (
+			testResult &&
+			this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL &&
+			this.testTypeId &&
+			this.validateUpdateStatus(testResult.testTypes[0].testResult, this.testTypeId)
+		) {
+			const warnings: GlobalWarning[] = [];
+			warnings.push({
+				warning:
+					'This test will update the tech record to current, if the page is showing as provisional then refresh the page',
+			});
+			this.warningService.setWarnings(warnings);
+		}
+	}
+
+	handleCancel() {
+		this.testMode = TestModeEnum.Edit;
+		this.titleService.setTitle('Test details - Vehicle Testing Management');
+		this.warningService.clearWarnings();
+	}
+
+	watchForCreateSuccess() {
+		this.actions$.pipe(ofType(createTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+			this.backToTechRecord();
+		});
+	}
+
+	handleNewTestResult(testResult: TestResultSchema) {
+		this.testRecordsService.updateEditingTestResult(testResult);
+	}
+
+	isAnyFormInvalid() {
+		const errors: GlobalError[] = [];
+		const forms = [];
+
+		const baseTestRecordComponent = this.baseTestRecordComponent();
+
+		const sectionsbaseTestRecordComponent = baseTestRecordComponent?.sections();
+		if (sectionsbaseTestRecordComponent) {
+			sectionsbaseTestRecordComponent.forEach((section) => forms.push(section.form));
+		}
+
+		const defectsbaseTestRecordComponent = baseTestRecordComponent?.defects();
+		if (defectsbaseTestRecordComponent) {
+			forms.push(defectsbaseTestRecordComponent.form);
+		}
+
+		const customDefectsbaseTestRecordComponent = baseTestRecordComponent?.customDefects();
+		if (customDefectsbaseTestRecordComponent) {
+			forms.push(customDefectsbaseTestRecordComponent.form);
+		}
+
+		const abandonDialogDynamicFormGroup = this.abandonDialog();
+		const dynamicFormGroup = abandonDialogDynamicFormGroup?.dynamicFormGroup();
+		if (this.testMode === TestModeEnum.Abandon && dynamicFormGroup) {
+			forms.push(dynamicFormGroup.form);
+		}
+
+		forms.forEach((form) => {
+			DynamicFormService.validate(form, errors);
+		});
+
+		const customForms = [
+			baseTestRecordComponent?.loadStatus(),
+			baseTestRecordComponent?.weights(),
+			baseTestRecordComponent?.vtg15(),
+		];
+
+		customForms.forEach((form) => {
+			if (form) {
+				this.errorService.markAllAsTouched(form.form);
+				errors.push(...this.errorService.extractGlobalErrors(form.form));
+			}
+		});
+
+		if (errors.length) {
+			this.errorService.setErrors(errors);
+		}
+
+		return errors.length > 0;
+	}
+
+	abandon() {
+		this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
+
+		if (this.isAnyFormInvalid()) {
+			return;
+		}
+
+		this.testMode = TestModeEnum.Abandon;
+		this.titleService.setTitle('Test abandoned reason - Vehicle Testing Management');
+	}
+
+	async handleAbandonAction(event: string) {
+		switch (event) {
+			case 'yes':
+				await this.handleSave();
+				break;
+			case 'no':
+				this.abandonDialog()?.dynamicFormGroup()?.form.reset();
+				this.resultOfTestService.toggleAbandoned(TestResults.PASS);
+				this.testMode = TestModeEnum.Edit;
+				this.titleService.setTitle('Test details - Vehicle Testing Management');
+				break;
+			default:
+				console.error('Invalid action');
+		}
+	}
+
+	get shouldShowAbandonButton(): boolean {
+		const isDeskBasedOrLECTest = [...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(
+			this.testTypeId ?? ''
+		);
+		return !isDeskBasedOrLECTest;
+	}
+
+	public get TestModeEnum(): typeof TestModeEnum {
+		return TestModeEnum;
+	}
+
+	validateUpdateStatus = (testResult: TestResults | null, testTypeId: string): boolean =>
+		(testResult === TestResults.PASS || testResult === TestResults.PRS) &&
+		(this.testTypeService.isTestTypeFirstTest(testTypeId) ||
+			this.testTypeService.isTestTypeNotifiableAlteration(testTypeId) ||
+			this.testTypeService.isTestTypeCOIF(testTypeId) ||
+			this.testTypeService.isTestTypeIVA(testTypeId));
+}

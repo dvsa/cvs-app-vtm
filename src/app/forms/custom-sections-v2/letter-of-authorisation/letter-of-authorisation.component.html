@@ -1,11 +1,11 @@
 <div class="govuk-!-padding-left-4 govuk-!-padding-right-4">
   @if (techRecord(); as techRecord) {
     @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED && correctApprovalType && !currentTechRecord()) {
-      <app-button 
+      <app-button
         *appRoleRequired="Roles.TechRecordAmend"
-        id="generate-letters-link" 
+        id="generate-letters-link"
         design="secondary"
-        (clicked)="generateLetter()" 
+        (clicked)="generateLetter()"
       >
         Generate and send letter
       </app-button>
@@ -24,13 +24,14 @@
               {{ letter.letterType | defaultNullOrEmpty }}
             </dd>
             <dd id="letter-link" class="govuk-summary-list__value govuk-!-text-align-right">
-              <a 
+              <a
                 id="test-certificate-link"
                 class="govuk-link"
                 href="javascript:void(0)"
-                appRetrieveDocument 
-                [params]="documentParams" 
+                appRetrieveDocument
+                [params]="documentParams"
                 [fileName]="fileName"
+                [documentType]="DocumentType.LETTER"
               >
                 View letter
               </a>
@@ -61,24 +62,26 @@
             id="cannot-generate-letter-of-authorisation-on-non-current-warning"
             warningMessage="Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters."
           ></app-field-warning-message>
+        } @else {
+          <ng-container [ngTemplateOutlet]="incorrectApprovalType"></ng-container>
         }
-      }
-
-      @if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
+      } @else if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
         <app-field-warning-message
           id="cannot-generate-letter-of-authorisation-on-non-current-warning"
           warningMessage="Generating letters is not applicable to archived technical records."
         ></app-field-warning-message>
+      } @else {
+        <ng-container [ngTemplateOutlet]="incorrectApprovalType"></ng-container>
       }
 
-      @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT) {
+      <ng-template #incorrectApprovalType>
         @if (!correctApprovalType) {
           <app-field-warning-message
             id="cannot-generate-letter-of-authorisation-with-wrong-approval-type-warning"
             warningMessage="This trailer does not have the right approval type to be eligible for a letter of authorisation."
           ></app-field-warning-message>
         }
-      }
+      </ng-template>
     }
   }
 </div>

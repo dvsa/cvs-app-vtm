@@ -7,6 +7,7 @@ import { RoleRequiredDirective } from '@directives/app-role-required/app-role-re
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
@@ -97,4 +98,6 @@ export class AdrCertsSectionViewComponent {
 		this.pageEnd = event.end;
 		this.cdr.detectChanges();
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

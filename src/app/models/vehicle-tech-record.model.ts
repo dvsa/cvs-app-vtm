@@ -74,6 +74,7 @@ export enum FuelTypes {
 	CNG = 'CNG',
 	FUELCELL = 'Fuel cell',
 	LNG = 'LNG',
+	ETHANOL = 'Ethanol',
 	OTHER = 'Other',
 }
 

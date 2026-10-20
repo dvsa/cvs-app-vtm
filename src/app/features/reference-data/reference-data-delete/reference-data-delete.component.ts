@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -28,26 +29,29 @@ import {
 	fetchReferenceDataByKey,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, take } from 'rxjs';
+import { Observable, ReplaySubject, take } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-delete',
 	templateUrl: './reference-data-delete.component.html',
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
-export class ReferenceDataDeleteComponent implements OnInit {
+export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	referenceDataService = inject(ReferenceDataService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	key!: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	reasonForDeletion: any;
 	isFormDirty = false;
 	isFormInvalid = true;
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	reasonTemplate = {
 		name: 'reason-for-deletion',
@@ -84,6 +88,24 @@ export class ReferenceDataDeleteComponent implements OnInit {
 				this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
 			}
 		});
+
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(
+					`Delete this ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`
+				),
+			{ injector: this.injector }
+		);
+	}
+
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get roles(): typeof Roles {
@@ -93,13 +115,6 @@ export class ReferenceDataDeleteComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	get refData$(): Observable<any> {
 		return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
 	}
 
 	get widths(): typeof FormNodeWidth {

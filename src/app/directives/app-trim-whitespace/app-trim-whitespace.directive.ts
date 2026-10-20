@@ -2,16 +2,18 @@ import { Directive, HostListener } from '@angular/core';
 
 @Directive({ selector: '[appTrimWhitespace]' })
 export class TrimWhitespaceDirective {
-	@HostListener('focusout', ['$event.target'])
-	public onBlur(input: HTMLInputElement): void {
+	@HostListener('focusout', ['$event'])
+	public onBlur(event: FocusEvent): void {
+		const input = event.target as HTMLInputElement;
 		const oldValue = input.value;
 		input.value = input.value.trim();
 
 		if (input.value !== oldValue) input.dispatchEvent(new Event('input'));
 	}
 
-	@HostListener('input', ['$event.target'])
-	public onInput(input: HTMLInputElement): void {
+	@HostListener('input', ['$event'])
+	public onInput(event: Event): void {
+		const input = event.target as HTMLInputElement;
 		const oldValue = input.value;
 		input.value = input.value.trim();
 

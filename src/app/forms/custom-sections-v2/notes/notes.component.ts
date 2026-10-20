@@ -1,22 +1,21 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-notes',
 	templateUrl: './notes.component.html',
 	styleUrls: ['./notes.component.scss'],
 	imports: [GovukFormGroupTextareaComponent, ReactiveFormsModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotesComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<V3TechRecordModel>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -68,10 +67,6 @@ export class NotesComponent extends EditBaseComponent implements OnInit, OnDestr
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {

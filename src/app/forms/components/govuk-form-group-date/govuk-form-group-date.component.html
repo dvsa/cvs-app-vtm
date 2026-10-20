@@ -39,7 +39,9 @@
             type="number"
             inputmode="numeric"
             formControlName="day"
-            appFocusNext
+            (input)="onDateInput($event, 'day')"
+            [attr.maxlength]="maxLength.day"
+            (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
@@ -55,7 +57,9 @@
             type="number"
             inputmode="numeric"
             formControlName="month"
-            appFocusNext
+            (input)="onDateInput($event, 'month')"
+            [attr.maxlength]="maxLength.month"
+            (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
@@ -71,13 +75,60 @@
             type="number"
             inputmode="numeric"
             formControlName="year"
-            appFocusNext
+            (input)="onDateInput($event, 'year')"
+            [attr.maxlength]="maxLength.year"
+            (wheel)="$event.preventDefault()"
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
             />
         </div>
       </div>
+
+      @if (mode() === 'iso') {
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-hour`"> Hour </label>
+            <input
+              class="govuk-input--width-2 govuk-input govuk-date-input__input"
+              [id]="`${id}-hour`"
+              type="number"
+              inputmode="numeric"
+              formControlName="hours"
+              appFocusNext
+              (input)="onDateInput($event, 'hours')"
+              (wheel)="$event.preventDefault()"
+              appNumberOnly
+              [attr.maxlength]="maxLength.hours"
+              [min]="0"
+              [max]="23"
+              [disabled]="disabled()"
+              [class]="style"
+            />
+          </div>
+        </div>
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-minute`"> Minute </label>
+            <input
+              class="govuk-input--width-2 govuk-input govuk-date-input__input"
+              [id]="`${id}-minute`"
+              type="number"
+              inputmode="numeric"
+              formControlName="minutes"
+              appFocusNext
+              (input)="onDateInput($event, 'minutes')"
+              (wheel)="$event.preventDefault()"
+              appNumberOnly
+              [attr.maxlength]="maxLength.minutes"
+              [min]="0"
+              [max]="59"
+              [disabled]="disabled()"
+              [class]="style"
+              />
+          </div>
+        </div>
+      }
     </div>
   </fieldset>
 </div>

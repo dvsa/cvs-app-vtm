@@ -85,6 +85,11 @@ export class TestRecordsService {
 		this.store.dispatch(fetchTestResults());
 	}
 
+	isTestTypeFirstTest(testTypeId: string): boolean {
+		const firstTestIds = ['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'];
+		return firstTestIds.includes(testTypeId);
+	}
+
 	loadTestResultBySystemNumber(systemNumber: string): void {
 		this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
 	}

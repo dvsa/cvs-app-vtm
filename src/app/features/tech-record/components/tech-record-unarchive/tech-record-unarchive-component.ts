@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
@@ -41,7 +42,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	store = inject(Store<State>);
 	technicalRecordService = inject(TechnicalRecordService);
 
-	techRecord: TechRecordType<'get'> | undefined;
+	readonly techRecord = toSignal(this.technicalRecordService.techRecord$) as Signal<TechRecordType<'get'> | undefined>;
 	statusCodes: Array<FormNodeOption<string>> = [
 		{ label: 'Provisional', value: StatusCodes.PROVISIONAL },
 		{ label: 'Current', value: StatusCodes.CURRENT },
@@ -73,10 +74,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	destroy$ = new Subject<void>();
 
 	ngOnInit(): void {
-		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
-			this.techRecord = record as TechRecordType<'get'>;
-		});
-
 		this.actions$
 			.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$))
 			.subscribe(({ vehicleTechRecord }) => {
@@ -100,7 +97,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 	handleSubmit(form: { reason: string; newRecordStatus: string }): void {
 		this.form.markAllAsTouched();
 
-		if (!this.techRecord) {
+		const techRecord = this.techRecord();
+		if (!techRecord) {
 			return;
 		}
 
@@ -118,8 +116,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
 		this.store.dispatch(
 			unarchiveTechRecord({
-				systemNumber: this.techRecord.systemNumber,
-				createdTimestamp: this.techRecord.createdTimestamp,
+				systemNumber: techRecord.systemNumber,
+				createdTimestamp: techRecord.createdTimestamp,
 				reasonForUnarchiving: this.form.value.reason,
 				status: this.form.value.newRecordStatus,
 			})

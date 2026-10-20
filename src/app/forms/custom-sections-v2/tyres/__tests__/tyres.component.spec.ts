@@ -93,18 +93,5 @@ describe('TyresSectionEditComponent', () => {
 				'tyres_fitmentCode',
 			]);
 		});
-
-		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(completeSpy).toHaveBeenCalled();
-		});
-
-		it('should emit true to destroy$ subject', () => {
-			let emittedValue: boolean | undefined;
-			component.destroy$.subscribe((value) => (emittedValue = value));
-			component.ngOnDestroy();
-			expect(emittedValue).toBe(true);
-		});
 	});
 });

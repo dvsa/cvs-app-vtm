@@ -24,3 +24,8 @@
   @include govuk-font($size: 48, $weight: bold);
   margin-bottom: govuk-spacing(3);
 }
+
+:host(.govuk-label) .govuk-label {
+  font-weight: normal;
+}
+

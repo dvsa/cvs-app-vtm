@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestResultSchema, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
@@ -8,11 +9,12 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { AnalyticsService } from '@services/analytics/analytics.service';
+import { DTOLayer } from '@services/dto/dto.service';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { HttpService } from '@services/http/http.service';
@@ -20,13 +22,13 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.selectors';
-import { updateResultOfTest } from '@store/test-records/index';
+import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
-import { techRecord } from '../technical-records';
+import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -43,6 +45,7 @@ import {
 	getRecallsFailure,
 	getRecallsSuccess,
 	patchEditingTestResult,
+	setTestResultLoading,
 	templateSectionsChanged,
 	testTypeIdChanged,
 	updateTestResult,
@@ -65,9 +68,11 @@ export class TestResultsEffects {
 	private router = inject(Router);
 	private userService = inject(UserService);
 	private dfs = inject(DynamicFormService);
-	private featureToggleService = inject(FeatureToggleService);
 	private analyticsService = inject(AnalyticsService);
 	private globalErrorService = inject(GlobalErrorService);
+	private testService = inject(TestService);
+	private dtoLayer = inject(DTOLayer);
+	private featureToggleService = inject(FeatureToggleService);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -119,9 +124,22 @@ export class TestResultsEffects {
 			ofType(createTestResult),
 			switchMap((action) => {
 				const testResult = action.value;
-				return this.testRecordsService.postTestResult(testResult).pipe(
+				const cleanedTestResult = this.dtoLayer.transformPayload(testResult);
+
+				return this.testRecordsService.postTestResult(cleanedTestResult).pipe(
 					take(1),
-					map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
+					map(() => {
+						// if the test type is a failed first test, submit a different action so it does not wait for a current record since promotion doesnt happen
+						if (
+							this.testRecordsService.isTestTypeFirstTest(testResult.testTypes[0].testTypeId) &&
+							testResult.testTypes[0].testResult === TestResults.FAIL
+						) {
+							return createFailedFirstTestResultSuccess({
+								payload: { id: testResult.testResultId, changes: testResult },
+							});
+						}
+						return createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } });
+					}),
 					catchError((e) => {
 						const errors = this.globalErrorService.extractGlobalErrorsFromErrorResponse(e);
 						return of(createTestResultFailed({ errors }));
@@ -168,6 +186,26 @@ export class TestResultsEffects {
 					);
 			})
 		)
+	);
+
+	updateTestResultSuccess = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(updateTestResultSuccess),
+				concatLatestFrom(() => this.store.select(selectRouteNestedParams)),
+				tap(([_, routeParams]) => {
+					this.router.navigate([
+						'tech-records',
+						routeParams['systemNumber'],
+						routeParams['createdTimestamp'],
+						'test-records',
+						'test-result',
+						routeParams['testResultId'],
+						routeParams['testNumber'],
+					]);
+				})
+			),
+		{ dispatch: false }
 	);
 
 	generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>
@@ -304,17 +342,58 @@ export class TestResultsEffects {
 		)
 	);
 
+	// @TODO: find a cleaner solution for resetting the test record form before creating/amending a test record
+	onEnterTestCreateOrAmend = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(contingencyTestTypeSelected, editingTestResult, testTypeIdChanged),
+				tap(() => {
+					this.testService.form.reset(undefined, { emitEvent: false });
+					this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE, { emitEvent: false });
+				})
+			),
+		{ dispatch: false }
+	);
+
 	createTestResultSuccess$ = createEffect(
 		() =>
 			this.actions$.pipe(
 				ofType(createTestResultSuccess),
-				delay(3000),
-				map((action) => action.payload.changes.systemNumber as string),
-				switchMap((systemNumber) => this.httpService.searchTechRecordBySystemNumber(systemNumber)),
-				map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
+				map((action) => action.payload.changes),
+				switchMap((testResult) => {
+					const systemNumber = testResult.systemNumber as string;
+					const testType = testResult.testTypes?.[0];
+					const isV2Test = !!testType && this.featureToggleService.shouldUseV2TestResults(testType.testTypeId);
+
+					if (isV2Test) {
+						this.store.dispatch(setTestResultLoading({ loading: true }));
+					}
+
+					return this.httpService.waitForTechRecord(systemNumber).pipe(
+						filter(Boolean),
+						switchMap((techRecord) =>
+							this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
+						),
+						finalize(() => {
+							if (isV2Test) {
+								this.store.dispatch(setTestResultLoading({ loading: false }));
+							}
+						})
+					);
+				})
+			),
+		{ dispatch: false }
+	);
+
+	createFirstTestResultSuccess$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createFailedFirstTestResultSuccess),
+				map((action) => [action.payload.changes.systemNumber as string]),
+				switchMap(([systemNumber]) => this.httpService.waitForTechRecord(systemNumber)),
 				filter(Boolean),
 				switchMap((techRecord) =>
-					this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])
+					this.router.navigate([`/tech-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`])
 				)
 			),
 		{ dispatch: false }
@@ -343,11 +422,10 @@ export class TestResultsEffects {
 	onGetRecalls$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecalls),
-			concatLatestFrom(() => this.store.select(techRecord)),
-			switchMap(([_, techRecord]) =>
-				this.httpService.getRecalls(techRecord!.vin).pipe(
-					map((recalls) => getRecallsSuccess({ recalls })),
-					catchError((e) => of(getRecallsFailure({ error: e?.message })))
+			switchMap(({ vin }) =>
+				this.httpService.getRecalls(vin).pipe(
+					map((recalls) => getRecallsSuccess({ vin, recalls })),
+					catchError((e) => of(getRecallsFailure({ vin, error: e?.message })))
 				)
 			)
 		)
@@ -356,7 +434,10 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
-			map(({ recalls }) => patchEditingTestResult({ testResult: { recalls } }))
+			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
+			concatLatestFrom(() => this.store.select(testResultInEdit)),
+			filter(([_, editingTestResult]) => Boolean(editingTestResult)),
+			map(([{ recalls }]) => patchEditingTestResult({ testResult: { recalls } }))
 		)
 	);
 }

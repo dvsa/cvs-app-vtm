@@ -6,11 +6,12 @@ import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@/src/a
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectNonViewedCurrentTechRecordFromHistory, updateScrollPosition } from '@/src/app/store/technical-records';
-import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { DatePipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { DocumentType } from '@models/document-type.enum';
 import { Store } from '@ngrx/store';
 import { FieldWarningMessageComponent } from '../../components/field-warning-message/field-warning-message.component';
 
@@ -25,7 +26,9 @@ import { FieldWarningMessageComponent } from '../../components/field-warning-mes
 		RoleRequiredDirective,
 		ButtonComponent,
 		DatePipe,
+		NgTemplateOutlet,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LetterOfAuthorisationComponent {
 	store = inject(Store);
@@ -85,4 +88,6 @@ export class LetterOfAuthorisationComponent {
 		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 		this.router.navigate(['generate-letter'], { relativeTo: this.route });
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+    <!--  Notes -->
+    <ng-container formGroupName="testTypes">
+      <ng-container formGroupName="0">
+          <govuk-form-group-textarea
+            label='{{ getAdditionalNotesLabel() }}'
+            hint='{{ getAdditionalNotesHint() }}'
+            [maxLength]="500"
+            formControlName="additionalNotesRecorded"
+          />
+      </ng-container>
+    </ng-container>
+  } @else {
+    @if (testResult(); as testResult) {
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">
+              {{ getAdditionalNotesLabel() }}:
+            </td>
+            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-additionalNotesRecorded">
+              {{ testResult.testTypes[0].additionalNotesRecorded | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }
+  }
+</div>

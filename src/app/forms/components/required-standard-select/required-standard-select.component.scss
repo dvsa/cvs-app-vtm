@@ -2,11 +2,8 @@
   white-space: normal;
 }
 .list_container--shrink {
-  flex-basis: min-content;
+  flex: 1 1 0;
 }
-.list_container--shrink:hover {
-  flex-basis: auto;
-}
-.list_container:first-of-type .list__item {
-  min-width: 10rem;
+.list_container--small .list__item {
+  min-width: 0;
 }

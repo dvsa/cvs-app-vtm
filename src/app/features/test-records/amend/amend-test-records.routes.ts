@@ -4,11 +4,11 @@ import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.g
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestRecordAmendRoutes } from '@models/routes.enum';
+import { defectsTaxonomyResolver } from '@resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { loadingResolver } from '@resolvers/loading/loading.resolver';
-import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
-import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';
-import { testResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
-import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { requiredStandardsResolver } from '@resolvers/required-standards/required-standards.resolver';
+import { testResultResolver } from '@resolvers/test-result/test-result.resolver';
+import { testTypeTaxonomyResolver } from '@resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 
 export const routes: Routes = [
 	{
@@ -20,8 +20,11 @@ export const routes: Routes = [
 		children: [
 			{
 				path: '',
+				title: 'View test record - Vehicle Testing Management',
 				loadComponent: () =>
-					import('./views/test-result-summary/test-result-summary.component').then((m) => m.TestResultSummaryComponent),
+					import('./views/test-result-summary-wrapper/test-result-summary-wrapper.component').then(
+						(m) => m.TestResultSummaryWrapperComponent
+					),
 			},
 			{
 				path: TestRecordAmendRoutes.AMEND_TEST,
@@ -32,6 +35,7 @@ export const routes: Routes = [
 				children: [
 					{
 						path: '',
+						title: 'Amend test record reason - Vehicle Testing Management',
 						loadComponent: () =>
 							import('./views/test-amend-reason/test-amend-reason.component').then((m) => m.TestAmendReasonComponent),
 					},
@@ -60,7 +64,7 @@ export const routes: Routes = [
 							import('./views/test-router-outlet/test-router-outlet.component').then(
 								(m) => m.TestRouterOutletComponent
 							),
-						data: { title: 'Test details', roles: Roles.TestResultAmend, mode: 'amend' },
+						data: { title: 'Amend test details', roles: Roles.TestResultAmend, mode: 'amend' },
 						resolve: {
 							load: testResultResolver,
 							testTypeTaxonomy: testTypeTaxonomyResolver,
@@ -73,13 +77,17 @@ export const routes: Routes = [
 							{
 								path: '',
 								loadComponent: () =>
-									import('./views/test-record/test-record.component').then((m) => m.TestRecordComponent),
+									import('@features/test-records/amend/views/test-record-wrapper/test-record-wrapper.component').then(
+										(m) => m.TestRecordWrapperComponent
+									),
 							},
 							{
 								path: TestRecordAmendRoutes.DEFECT,
 								loadComponent: () =>
-									import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-								data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+									import('@forms/custom-sections/defect/defect-wrapper.component').then(
+										(m) => m.DefectWrapperComponent
+									),
+								data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 								canActivate: [RoleGuard],
 							},
 							{
@@ -88,7 +96,7 @@ export const routes: Routes = [
 									import('./views/test-router-outlet/test-router-outlet.component').then(
 										(m) => m.TestRouterOutletComponent
 									),
-								data: { title: 'Select defect', roles: Roles.TestResultAmend },
+								data: { title: 'Select a defect', roles: Roles.TestResultAmend },
 								canActivate: [RoleGuard],
 								children: [
 									{
@@ -102,8 +110,10 @@ export const routes: Routes = [
 									{
 										path: TestRecordAmendRoutes.SELECT_DEFECT_REFERENCE,
 										loadComponent: () =>
-											import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-										data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+											import('@forms/custom-sections/defect/defect-wrapper.component').then(
+												(m) => m.DefectWrapperComponent
+											),
+										data: { title: 'Defect details', roles: Roles.TestResultAmend, isEditing: true },
 										canActivate: [RoleGuard],
 									},
 								],
@@ -167,8 +177,9 @@ export const routes: Routes = [
 			},
 			{
 				path: TestRecordAmendRoutes.DEFECT,
-				loadComponent: () => import('@forms/custom-sections/defect/defect.component').then((m) => m.DefectComponent),
-				data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
+				loadComponent: () =>
+					import('@forms/custom-sections/defect/defect-wrapper.component').then((m) => m.DefectWrapperComponent),
+				data: { title: 'Defect details', roles: Roles.TestResultView, isEditing: false },
 				resolve: { load: testResultResolver },
 				canActivate: [RoleGuard],
 			},

@@ -3,9 +3,10 @@
     <td id="media-expired">
       Expired
     </td>
-  } @else if (canDownloadMedia()) {
+  } @else if (defectMediaService?.canDownloadMediaItems(defect)) {
     <td id="media-download-link">
-      <button class="link" (click)="downloadMedia()">
+      <!-- Ensure button does not act as a form submit when rendered inside a <form> -->
+      <button type="button" class="link" (click)="defectMediaService?.downloadMediaItems(testResult, defect)">
         Download media
       </button>
     </td>

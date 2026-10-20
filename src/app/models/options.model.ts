@@ -24,16 +24,29 @@ import {
 	VehicleSubclass,
 } from './vehicle-tech-record.model';
 
-export interface MultiOption<T = string | number | boolean> {
+export interface MultiOption<T = string | number | boolean | object> {
 	label: string;
 	value: T;
 	hint?: string;
+	optionalId?: string;
 }
 export type MultiOptions<T = string | number | boolean> = Array<MultiOption<T>>;
 
 export const YES_NO_OPTIONS: MultiOptions = [
 	{ value: true, label: 'Yes' },
 	{ value: false, label: 'No' },
+];
+
+export const PASS_FAIL_OPTIONS: MultiOptions = [
+	{ value: 'pass', label: 'Pass' },
+	{ value: 'fail', label: 'Fail' },
+];
+
+export const RESULT_OPTIONS: MultiOptions = [
+	{ value: 'pass', label: 'Pass' },
+	{ value: 'fail', label: 'Fail' },
+	{ value: 'prs', label: 'Prs' },
+	{ value: 'abandoned', label: 'Abandoned' },
 ];
 
 export const YES_NO_NULL_OPTIONS: MultiOptions<boolean | null> = [
@@ -109,6 +122,7 @@ export const MOTORCYCLE_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [
 	{ label: 'Motorcycles up to 200cc', value: 'motorbikes up to 200cc' },
 	{ label: 'Motorcycles over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
 	{ label: '3 wheelers', value: '3 wheelers' },
+	{ label: 'MOT class 4', value: 'MOT class 4' },
 ];
 
 export const ALL_VEHICLE_CLASS_DESCRIPTION_OPTIONS: MultiOptions = [

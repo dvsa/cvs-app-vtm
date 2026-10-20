@@ -1,8 +1,10 @@
 @if (radios) {
+  @let inputId = `${radios.id}-${id() || value()}-radio`;
+
   <div class="govuk-radios__item">
     <input
       class="govuk-radios__input"
-      [id]="`${radios.id}-${value()}-radio`"
+      [id]="inputId"
       [name]="`${ name() || radios.id }`"
       type="radio"
       [value]="value()"
@@ -14,10 +16,7 @@
     />
 
     @if (label()) {
-      <label
-        class="govuk-label govuk-radios__label"
-        [htmlFor]="`${radios.id}-${value()}-radio`"
-      >
+      <label class="govuk-label govuk-radios__label" [htmlFor]="inputId">
         {{ label() }}
       </label>
     }

@@ -1,6 +1,17 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	Injector,
+	OnDestroy,
+	OnInit,
+	Signal,
+	effect,
+	inject,
+	signal,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -50,9 +61,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	cdr = inject(ChangeDetectorRef);
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
-	disabled = true;
+	refDataAdminType!: Signal<ReferenceDataAdminType | undefined>;
+	private readonly injector = inject(Injector);
+	readonly disabled = signal(true);
 	pageStart?: number;
 	pageEnd?: number;
 	currentPage?: number;
@@ -98,7 +112,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 						map((array) =>
 							array.data.map((item) => {
 								if (item.reason !== undefined) {
-									this.disabled = false;
+									this.disabled.set(false);
 								}
 							})
 						)
@@ -106,7 +120,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				),
 				catchError((error) => {
 					if (error.status === 404) {
-						this.disabled = true;
+						this.disabled.set(true);
 						return of(true);
 					}
 					return of(false);
@@ -116,11 +130,15 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				next: (res) => of(!!res),
 			});
 		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-	}
-
-	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		) as Signal<ReferenceDataAdminType | undefined>;
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() => {
+				this.titleService.setTitle(`Search for ${this.refDataAdminType()?.label} - Vehicle Testing Management`);
+			},
+			{ injector: this.injector }
 		);
 	}
 
@@ -129,9 +147,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	}
 
 	addNew(): void {
-		void this.router.navigate(['create'], { relativeTo: this.route }).then(() => {
-			window.location.reload();
-		});
+		void this.router.navigate(['create'], { relativeTo: this.route });
 	}
 
 	navigateToDeletedItems(): void {
@@ -140,9 +156,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 
 	amend(item: ReferenceDataModelBase): void {
 		const key = encodeURIComponent(String(item.resourceKey));
-		void this.router.navigate([key], { relativeTo: this.route }).then(() => {
-			window.location.reload();
-		});
+		void this.router.navigate([key], { relativeTo: this.route });
 	}
 
 	delete(item: ReferenceDataModelBase): void {

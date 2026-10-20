@@ -1,8 +1,21 @@
+import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -14,7 +27,7 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { skip } from 'rxjs';
 
 @Component({
 	selector: 'app-weights',
@@ -27,17 +40,20 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		FieldErrorMessageComponent,
 		GovukFormGroupSelectComponent,
 		FilterByTagsDirective,
+		TrimWhitespaceDirective,
+		NoSpaceDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly Modes = Modes;
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	axlesService = inject(AxlesService);
+	destroyRef = inject(DestroyRef);
 	tcs = inject(TechnicalRecordChangesService);
 
 	form = this.fb.group({});
@@ -62,14 +78,13 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	get hgvControls() {
 		return {
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(6, 'DTp number', 'weights', 'techRecord_brakes_dtpNumber'),
+			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
@@ -188,6 +203,9 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	get trlControls() {
 		return {
+			techRecord_brakes_dtpNumber: this.fb.control<string | null>(null, [
+				this.commonValidators.maxLength(6, 'DTp number', 'weights', 'techRecord_brakes_dtpNumber'),
+			]),
 			techRecord_grossGbWeight: this.fb.control<number | null>(null, [
 				this.commonValidators.max(99999, 'Gross GB, EEC, Design Weight', 'kg', 'weights', 'techRecord_grossGbWeight'),
 			]),
@@ -251,32 +269,40 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	handleGrossKerbWeightChange() {
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
-		grossKerbWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value)
-				this.store.dispatch(
-					updateBrakeForces({
-						grossKerbWeight: value,
-						grossLadenWeight: this.form.get('techRecord_grossLadenWeight')?.value,
-					})
-				);
+		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+			if (!value) return;
+			const mode = this.mode();
+			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
+			this.store.dispatch(
+				updateBrakeForces({
+					grossKerbWeight: value,
+					grossLadenWeight: this.form.get('techRecord_grossLadenWeight')?.value,
+				})
+			);
 		});
 	}
 
 	handleGrossLadenWeightChange() {
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
+
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
-		grossLadenWeight?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-			if (value)
-				this.store.dispatch(
-					updateBrakeForces({
-						grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
-						grossLadenWeight: value,
-					})
-				);
+		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+			if (!value) return;
+			const mode = this.mode();
+			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
+			this.store.dispatch(
+				updateBrakeForces({
+					grossKerbWeight: this.form.get('techRecord_grossKerbWeight')?.value,
+					grossLadenWeight: value,
+				})
+			);
 		});
 	}
 
 	private handleVehicleTechRecordChange(changes: SimpleChanges): void {
+		const mode = this.mode();
+		if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
+
 		const { techRecord } = changes;
 		if (this.form && techRecord) {
 			const { currentValue, previousValue } = techRecord;
@@ -287,7 +313,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 					'techRecord_manufactureYear',
 					'techRecord_grossKerbWeight',
 					'techRecord_standingCapacity',
-				].some((field) => currentValue[`${field}`] !== previousValue?.[`${field}`]);
+				].some((field) => previousValue && currentValue[`${field}`] !== previousValue[`${field}`]);
 
 				if (fieldsChanged) {
 					const grossLadenWeight = this.calculateGrossLadenWeight();

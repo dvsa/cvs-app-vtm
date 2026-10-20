@@ -1,6 +1,7 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, output, viewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, output, signal, viewChildren } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -51,11 +52,12 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	globalErrorService = inject(GlobalErrorService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
+	titleService = inject(Title);
 	store = inject<Store<TechnicalRecordServiceState>>(Store<TechnicalRecordServiceState>);
 
 	techRecord?: VehiclesOtherThan<'trl'>;
 	makeAndModel?: string;
-	isCherishedTransfer = false;
+	readonly isCherishedTransfer = signal(false);
 	systemNumber?: string;
 	createdTimestamp?: string;
 	formValidity = false;
@@ -125,7 +127,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 		this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
 			this.systemNumber = params['systemNumber'];
 			this.createdTimestamp = params['createdTimestamp'];
-			this.isCherishedTransfer = params['reason'] === 'cherished-transfer';
+			this.isCherishedTransfer.set(params['reason'] === 'cherished-transfer');
 		});
 		this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
 			if (record?.techRecord_statusCode === 'archived' || !record) {
@@ -151,6 +153,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 		this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
 			this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
 		);
+		this.titleService.setTitle('Change VRM - Vehicle Testing Management');
 	}
 
 	ngOnDestroy(): void {
@@ -168,7 +171,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	}
 
 	handleFormChange() {
-		if (this.isCherishedTransfer) {
+		if (this.isCherishedTransfer()) {
 			this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
 		}
 	}
@@ -180,11 +183,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
 		this.store.dispatch(
 			amendVrm({
-				newVrm: this.isCherishedTransfer
+				newVrm: this.isCherishedTransfer()
 					? this.cherishedTransferForm.value.currentVrm
 					: this.correctingAnErrorForm.value.newVrm,
-				cherishedTransfer: this.isCherishedTransfer,
-				thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
+				cherishedTransfer: this.isCherishedTransfer(),
+				thirdMark: this.isCherishedTransfer() ? this.cherishedTransferForm.value.thirdMark : undefined,
 				systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber,
 				createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp,
 			})
@@ -196,7 +199,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
 		const errors: GlobalError[] = [];
 
-		if (this.isCherishedTransfer) {
+		if (this.isCherishedTransfer()) {
 			DynamicFormService.validate(this.cherishedTransferForm, errors, false);
 		} else {
 			DynamicFormService.validate(this.correctingAnErrorForm, errors, false);

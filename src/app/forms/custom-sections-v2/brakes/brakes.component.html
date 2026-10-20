@@ -47,7 +47,7 @@
                         <govuk-form-group-select
                           label="Spring brake parking"
                           id="brakes_springBrakeParking-{{ i + 1 }}"
-                          class="input-group select-width"
+                          class="select-width govuk-label"
                           formControlName="brakes_springBrakeParking"
                           [options]="booleanOptions"
                           [allowNull]="true"
@@ -149,7 +149,7 @@
         <div class="input-row">
           <govuk-form-group-input
             label="Service"
-            class="input-group"
+            class="govuk-label"
             [id]="'noWheelLockAddedServiceCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 45) / 100)"
@@ -158,7 +158,7 @@
           ></govuk-form-group-input>
           <govuk-form-group-input
             label="Secondary"
-            class="input-group"
+            class="govuk-label"
             [id]="'noWheelLockAddedSecondaryCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 22.5) / 100)"
@@ -167,7 +167,7 @@
           ></govuk-form-group-input>
           <govuk-form-group-input
             label="Parking"
-            class="input-group"
+            class="govuk-label"
             [id]="'noWheelLockAddedParkingCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 16) / 100)"
@@ -183,7 +183,7 @@
         <div class="input-row">
           <govuk-form-group-input
             label="Service"
-            class="input-group"
+            class="govuk-label"
             [id]="'halfWheelsLockedServiceCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 50) / 100)"
@@ -193,7 +193,7 @@
 
           <govuk-form-group-input
             label="Secondary"
-            class="input-group"
+            class="govuk-label"
             [id]="'halfWheelsLockedSecondaryCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 25) / 100)"
@@ -203,7 +203,7 @@
           
           <govuk-form-group-input
             label="Parking"
-            class="input-group"
+            class="govuk-label"
             [id]="'halfWheelsLockedParkingCell'"
             [disabled]="true"
             [value]="round(((tr.techRecord_grossKerbWeight ?? 0) * 16) / 100)"

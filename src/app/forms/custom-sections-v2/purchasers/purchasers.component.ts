@@ -1,26 +1,25 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'app-purchasers',
 	templateUrl: './purchasers.component.html',
 	styleUrls: ['./purchasers.component.scss'],
 	imports: [GovukFormGroupTextareaComponent, ReactiveFormsModule, GovukFormGroupInputComponent],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PurchasersComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;
 
 	tcs = inject(TechnicalRecordChangesService);
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'trl'>>();
 	filters = input<string[]>([]);
 	mode = input.required<Modes>();
@@ -89,9 +88,5 @@ export class PurchasersComponent extends EditBaseComponent implements OnInit, On
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 }

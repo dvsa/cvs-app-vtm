@@ -1,3 +1,4 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { Modes } from '@/src/app/models/modes.enum';
 import { PERMITTED_DANGEROUS_GOODS_OPTIONS } from '@/src/app/models/options.model';
 import { createMockHgv } from '@/src/mocks/hgv-record.mock';
@@ -8,6 +9,8 @@ import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveF
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TC3Details } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -67,12 +70,6 @@ describe('AdrComponent', () => {
 	});
 
 	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
-
 		it('should detach its form from its parent form', () => {
 			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
@@ -183,6 +180,31 @@ describe('AdrComponent', () => {
 			component.handleInitialiseUNNumbers();
 			expect(spy).toHaveBeenCalledTimes(2);
 		});
+
+		it('should keep the product list required error on UN number 1 after extracting global errors', () => {
+			const globalErrorService = TestBed.inject(GlobalErrorService);
+			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+			control.clear();
+			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = [];
+			component.handleInitialiseUNNumbers();
+
+			component.form.patchValue({
+				techRecord_adrDetails_dangerousGoods: true,
+				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted:
+					ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_select: ADRTankDetailsTankStatementSelect.PRODUCT_LIST,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+				techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: [null],
+			});
+
+			component.form.markAllAsTouched();
+			globalErrorService.extractGlobalErrors(component.form);
+
+			expect(control.at(0).errors?.['required']).toEqual(
+				'Reference number or UN number 1 is required when selecting Product list'
+			);
+		});
 	});
 
 	describe('handleADRBodyTypeChange', () => {
@@ -236,7 +258,7 @@ describe('AdrComponent', () => {
 			});
 
 			const options = PERMITTED_DANGEROUS_GOODS_OPTIONS;
-			expect(component.permittedDangerousGoodsOptions).toEqual(options);
+			expect(component.permittedDangerousGoodsOptions()).toEqual(options);
 
 			component.handleADRBodyTypeChange();
 
@@ -245,7 +267,7 @@ describe('AdrComponent', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
 			});
 
-			expect(component.permittedDangerousGoodsOptions).toEqual(
+			expect(component.permittedDangerousGoodsOptions()).toEqual(
 				options.filter(
 					(option) =>
 						option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3

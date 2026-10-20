@@ -8,6 +8,7 @@
     <h1 class="govuk-heading-xl">Review technical record</h1>
 
     @if (amendedTechRecord(); as techRecord) {
+      @let vm = vehicleMeta();
       <div class="govuk-grid-row">
         <!-- Summary card -->
         <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
@@ -30,7 +31,7 @@
                   </span>
                 </h2>
 
-                <app-accordion-control [sectionState]="sectionStates$()">
+                <app-accordion-control [sectionState]="sectionStates()">
                   <!-- Wrap accordions in ng-template so we can pipe them via ngTemplateOutlet below header -->
                   <ng-template #template>
                     <ng-container [formGroup]="form">
@@ -52,12 +53,26 @@
                         <app-accordion
                           [id]="'approval-type'"
                           [title]="'Approval type'"
-                          [description]="technicalRecordService.getApprovalTypeAccordionDescription(techRecord)"
+                          [description]="vm.approvalTypeDescription"
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
                           <app-approval-type [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-approval-type>
                         </app-accordion>
+                      }
+
+                      @if (technicalRecordService.isHeavyTrailer(techRecord)) {
+                        @if (tcs.hasAuthorisationIntoServiceSectionChanged()) {
+                          <app-accordion
+                            [id]="'authorisation-into-service'"
+                            [title]="'Authorisation into service'"
+                            [description]="'COC date, authorisation date, rejected date.'"
+                            [type]="'condensed'"
+                            [isExpanded]="true"
+                          >
+                            <app-authorisation-into-service [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-authorisation-into-service>
+                          </app-accordion>
+                        }
                       }
 
                       <!-- Dimensions section-->
@@ -78,7 +93,7 @@
                         <app-accordion
                           [id]="'weights'"
                           [title]="'Weights'"
-                          [description]="technicalRecordService.getWeightsAccordionDescription(techRecord)"
+                          [description]="vm.weightsDescription"
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
@@ -91,7 +106,7 @@
                         <app-accordion
                           [id]="'tyres'"
                           [title]="'Tyres'"
-                          [description]="technicalRecordService.getTyresAccordionDescription(techRecord)"
+                          [description]="vm.tyresDescription"
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
@@ -104,7 +119,7 @@
                         <app-accordion
                           [id]="'configuration'"
                           [title]="'Configuration'"
-                          [description]="technicalRecordService.getConfigAccordionDescription(techRecord)"
+                          [description]="vm.configDescription"
                           [type]="'condensed'"
                           [isExpanded]="true"                        
                         >
@@ -143,7 +158,7 @@
                         <app-accordion
                           [id]="'brakes'"
                           [title]="'Brakes'"
-                          [description]="technicalRecordService.getBrakesAccordionDescription(techRecord)"
+                          [description]="vm.brakesDescription"
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
@@ -177,19 +192,19 @@
                         </app-accordion>
                       }
 
-                      @if (technicalRecordService.isHeavyTrailer(techRecord)) {
-                        @if (tcs.hasAuthorisationIntoServiceSectionChanged()) {
-                          <app-accordion
-                            [id]="'authorisation-into-service'"
-                            [title]="'Authorisation into service'"
-                            [description]="'COC date, authorisation date, rejected date.'"
-                            [type]="'condensed'"
-                            [isExpanded]="true"
-                          >
-                            <app-authorisation-into-service [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-authorisation-into-service>
-                          </app-accordion>
-                        }
+                      @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV && tcs.hasLastApplicantSectionChanged()) {
+                        <app-accordion
+                          [id]="'last-applicant'"
+                          [title]="'Last applicant'"
+                          [description]="'Contact details for the last applicant.'"
+                          [type]="'condensed'"
+                          [isExpanded]="true"
+                        >
+                          <app-last-applicant [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-last-applicant>
+                        </app-accordion>
+                      }
 
+                      @if (technicalRecordService.isHeavyTrailer(techRecord)) {
                         @if (tcs.hasPurchaserSectionChanged()) {
                           <app-accordion
                             [id]="'purchasers'"
@@ -213,18 +228,6 @@
                             <app-manufacturer [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-manufacturer>
                           </app-accordion>
                         }
-                      }
-
-                      @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV && tcs.hasLastApplicantSectionChanged()) {
-                        <app-accordion
-                          [id]="'last-applicant'"
-                          [title]="'Last applicant'"
-                          [description]="'Contact details for the last applicant.'"
-                          [type]="'condensed'"
-                          [isExpanded]="true"
-                        >
-                          <app-last-applicant [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-last-applicant>
-                        </app-accordion>
                       }
 
                       @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasDocumentsSectionChanged()) {

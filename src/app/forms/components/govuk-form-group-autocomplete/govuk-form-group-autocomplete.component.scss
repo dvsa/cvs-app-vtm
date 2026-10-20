@@ -41,7 +41,6 @@
   .prefix {
     border: 2px solid #0b0c0c;
     border-right: 0;
-    height: fit-content;
   }
 
   @media (max-width: 640px) {
@@ -53,6 +52,10 @@
 
 .disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: text;
   pointer-events: none;
+
+  input {
+    cursor: text;
+  }
 }

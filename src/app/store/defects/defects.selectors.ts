@@ -7,6 +7,7 @@ import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
+import { Deficiency } from '../../models/defects/deficiency.model';
 import { defectsAdapter, defectsFeatureState } from './defects.reducer';
 
 const { selectAll } = defectsAdapter.getSelectors();
@@ -60,11 +61,11 @@ export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: Vehicl
 			if (!deficiency && isAdvisory && deRef[3]) {
 				item = items?.[+deRef[3]];
 			} else {
-				item = defect?.items.find((i) => i.itemNumber === +deRef[1]);
+				item ??= defect?.items.find((i) => i.itemNumber === +deRef[1]);
 			}
 		}
 
-		return [defect, item, deficiency];
+		return [defect, item, deficiency] as [DefectCategoryReferenceDataSchema, DefectItemReferenceDataSchema, Deficiency];
 	});
 
 export const psvDefects = filteredDefects(VehicleTypes.PSV);

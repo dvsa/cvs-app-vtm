@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -12,27 +13,32 @@ import {
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { ReplaySubject, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-add',
 	templateUrl: './reference-data-add.component.html',
 	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
 })
-export class ReferenceDataCreateComponent implements OnInit {
+export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
 	referenceDataService = inject(ReferenceDataService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store<ReferenceDataState>);
+	titleService = inject(Title);
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	newRefData: any;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,13 +53,21 @@ export class ReferenceDataCreateComponent implements OnInit {
 			this.type = params['type'];
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 		});
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(`Add a new ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`),
+			{ injector: this.injector }
+		);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get roles(): typeof Roles {
@@ -78,6 +92,15 @@ export class ReferenceDataCreateComponent implements OnInit {
 		this.checkForms();
 
 		if (this.isFormInvalid) return;
+
+		if (!this.newRefData) {
+			const sections = this.sections();
+			if (sections.length) {
+				this.newRefData = sections[0].form.value;
+			}
+		}
+
+		if (!this.newRefData) return;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const referenceData: any = {};

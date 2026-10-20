@@ -7,10 +7,17 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { environment } from '@environments/environment';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { CacheKeys } from '@models/cache-keys.enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { withCache } from '@ngneat/cashew';
 import { first, of } from 'rxjs';
 import { HttpService } from './http.service';
+
+// cashew does not export CACHE_CONTEXT, so recover the token from a context it builds
+const [CACHE_CONTEXT] = [...withCache({}).keys()];
 
 describe('HttpService', () => {
 	let httpService: HttpService;
@@ -421,6 +428,315 @@ describe('HttpService', () => {
 			});
 			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
 			req.flush('Not found', { status: 404, statusText: 'Not Found' });
+		});
+	});
+
+	describe('waitForTechRecord', () => {
+		beforeEach(() => {
+			jest.useFakeTimers();
+		});
+
+		afterEach(() => {
+			jest.runOnlyPendingTimers();
+			jest.useRealTimers();
+		});
+
+		it('should return a non-archived record with current status when available', (done) => {
+			const systemNumber = 'TEST-123';
+			const mockRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'current',
+			} as any;
+
+			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result).toEqual(mockRecord);
+				expect(spy).toHaveBeenCalled();
+				done();
+			});
+
+			// Advance initial 3s timer
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should prioritize current status records over provisional', (done) => {
+			const systemNumber = 'TEST-456';
+			const currentRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-02T00:00:00Z',
+				techRecord_statusCode: 'current',
+			} as any;
+			const provisionalRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'provisional',
+			} as any;
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord, currentRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result.techRecord_statusCode).toBe('current');
+				expect(result).toEqual(currentRecord);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should return provisional record when current is not available', (done) => {
+			const systemNumber = 'TEST-789';
+			const provisionalRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'provisional',
+			} as any;
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result.techRecord_statusCode).toBe('provisional');
+				expect(result).toEqual(provisionalRecord);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should return the most recently created record when no current or provisional status', (done) => {
+			const systemNumber = 'TEST-101';
+			const olderRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'archived',
+			} as any;
+			const newerRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-02T00:00:00Z',
+				techRecord_statusCode: 'archived',
+			} as any;
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([olderRecord, newerRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result).toEqual(newerRecord);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should return the first record as fallback', (done) => {
+			const systemNumber = 'TEST-202';
+			const firstRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'archived',
+			} as any;
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([firstRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result).toEqual(firstRecord);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should wait 3 seconds before first search attempt', (done) => {
+			const systemNumber = 'TEST-303';
+			const mockRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'current',
+			} as any;
+
+			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe(() => {
+				expect(spy).toHaveBeenCalled();
+				done();
+			});
+
+			// Should not be called before timer
+			expect(spy).not.toHaveBeenCalled();
+
+			// Should be called after 3 seconds
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+			expect(spy).toHaveBeenCalled();
+		});
+
+		it('should allow the first search attempt to run immediately', () => {
+			const systemNumber = 'TEST-IMMEDIATE';
+			const currentRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: StatusCodes.CURRENT,
+			} as any;
+			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([currentRecord]));
+			let result: unknown;
+
+			httpService.waitForTechRecord(systemNumber, { initialDelayMs: 0 }).subscribe((value) => (result = value));
+
+			expect(spy).toHaveBeenCalledTimes(1);
+			expect(result).toEqual(currentRecord);
+		});
+
+		it('should keep polling until the expected record status is available', () => {
+			const systemNumber = 'TEST-PROMOTION';
+			const provisionalRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: StatusCodes.PROVISIONAL,
+			} as any;
+			const currentRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-02T00:00:00Z',
+				techRecord_statusCode: StatusCodes.CURRENT,
+			} as any;
+			const spy = jest
+				.spyOn(httpService, 'searchTechRecordBySystemNumber')
+				.mockReturnValueOnce(of([provisionalRecord]))
+				.mockReturnValueOnce(of([provisionalRecord, currentRecord]));
+			let result: unknown;
+
+			httpService
+				.waitForTechRecord(systemNumber, {
+					expectedStatus: StatusCodes.CURRENT,
+					initialDelayMs: 0,
+				})
+				.subscribe((value) => (result = value));
+
+			expect(spy).toHaveBeenCalledTimes(1);
+			expect(result).toBeUndefined();
+
+			jest.advanceTimersByTime(500);
+
+			expect(spy).toHaveBeenCalledTimes(2);
+			expect(result).toEqual(currentRecord);
+		});
+
+		it('should stop retrying when a non-archived record is found', (done) => {
+			const systemNumber = 'TEST-505';
+			const provisionalRecord = {
+				systemNumber,
+				createdTimestamp: '2024-01-01T00:00:00Z',
+				techRecord_statusCode: 'provisional',
+			} as any;
+
+			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				expect(result.techRecord_statusCode).toBe('provisional');
+				expect(spy).toHaveBeenCalledTimes(1);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should handle multiple records and select based on priority', (done) => {
+			const systemNumber = 'TEST-707';
+			const records = [
+				{
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'archived',
+				},
+				{
+					systemNumber,
+					createdTimestamp: '2024-01-03T00:00:00Z',
+					techRecord_statusCode: 'archived',
+				},
+				{
+					systemNumber,
+					createdTimestamp: '2024-01-02T00:00:00Z',
+					techRecord_statusCode: 'provisional',
+				},
+			] as any[];
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				// Should select provisional over the newer archived record
+				expect(result.techRecord_statusCode).toBe('provisional');
+				expect(result.createdTimestamp).toBe('2024-01-02T00:00:00Z');
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+
+		it('should handle edge case where all records have same timestamp', (done) => {
+			const systemNumber = 'TEST-808';
+			const timestamp = '2024-01-01T00:00:00Z';
+			const records = [
+				{
+					systemNumber,
+					createdTimestamp: timestamp,
+					techRecord_statusCode: 'archived',
+				},
+				{
+					systemNumber,
+					createdTimestamp: timestamp,
+					techRecord_statusCode: 'archived',
+				},
+			] as any[];
+
+			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
+
+			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+				// Should return the first record when timestamps are identical
+				expect(result).toEqual(records[0]);
+				done();
+			});
+
+			jest.advanceTimersByTime(3000);
+			jest.runAllTimers();
+		});
+	});
+
+	describe('referenceResourceTypeResourceKeyGet', () => {
+		it('should cache admin type lookups, bucketed by resource type', () => {
+			httpService
+				.referenceResourceTypeResourceKeyGet(ReferenceDataResourceType.ReferenceDataAdminType, 'TYRES')
+				.subscribe();
+
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/reference/${ReferenceDataResourceType.ReferenceDataAdminType}/TYRES`
+			);
+
+			expect(req.request.context.get(CACHE_CONTEXT)).toEqual(
+				expect.objectContaining({
+					cache: true,
+					key: `${CacheKeys.REFERENCE_DATA}${ReferenceDataResourceType.ReferenceDataAdminType}TYRES`,
+					bucket: httpService.getRefDataBucket(ReferenceDataResourceType.ReferenceDataAdminType),
+				})
+			);
+
+			req.flush({});
+		});
+
+		it('should not cache any other single item lookup', () => {
+			httpService.referenceResourceTypeResourceKeyGet(ReferenceDataResourceType.Tyres, 'some-key').subscribe();
+
+			const req = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/reference/${ReferenceDataResourceType.Tyres}/some-key`
+			);
+
+			expect(req.request.context.get(CACHE_CONTEXT)).toEqual({});
+
+			req.flush({});
 		});
 	});
 });

@@ -7,6 +7,7 @@ import {
 	FormNodeWidth,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
+import { LoadStatusTemplate } from '../loadStatus/loadStatus.template';
 
 export const TestSectionGroup9And10: FormNode = {
 	name: 'testSection',
@@ -181,6 +182,7 @@ export const TestSectionGroup9And10: FormNode = {
 							label: 'End time',
 							viewType: FormNodeViewTypes.TIME,
 						},
+						LoadStatusTemplate,
 					],
 				},
 			],

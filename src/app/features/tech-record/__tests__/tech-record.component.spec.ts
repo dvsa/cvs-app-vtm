@@ -1,10 +1,11 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, provideRouter } from '@angular/router';
+import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { CustomRouteReuseStrategy } from '@services/router/custom-route-reuse-strategy';
 import { State, initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { TechRecordComponent } from '../tech-record.component';
@@ -22,6 +23,7 @@ describe('TechRecordComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
+				{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
 			],
 		}).compileComponents();
 	});
@@ -53,11 +55,9 @@ describe('TechRecordComponent', () => {
 		expect(expectedResult).toBe(expectedError);
 	});
 
-	it('reuse strategy should be set to false', () => {
-		const snapshot = {} as ActivatedRouteSnapshot;
+	it('should use CustomRouteReuseStrategy', () => {
+		const strategy = TestBed.inject(RouteReuseStrategy);
 
-		const expectedResult = component['router'].routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
-
-		expect(expectedResult).toBeFalsy();
+		expect(strategy).toBeInstanceOf(CustomRouteReuseStrategy);
 	});
 });

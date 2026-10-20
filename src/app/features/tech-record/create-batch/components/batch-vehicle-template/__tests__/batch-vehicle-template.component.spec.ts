@@ -157,6 +157,7 @@ describe('BatchVehicleTemplateComponent', () => {
 				updateTechRecord({
 					systemNumber: '1',
 					createdTimestamp: 'foobar',
+					groupType: 'batch',
 				})
 			);
 
@@ -165,6 +166,7 @@ describe('BatchVehicleTemplateComponent', () => {
 				updateTechRecord({
 					systemNumber: '2',
 					createdTimestamp: '2022',
+					groupType: 'batch',
 				})
 			);
 		}));
@@ -203,6 +205,7 @@ describe('BatchVehicleTemplateComponent', () => {
 				updateTechRecord({
 					systemNumber: '1',
 					createdTimestamp: '2022',
+					groupType: 'batch',
 				})
 			);
 			expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
@@ -211,6 +214,7 @@ describe('BatchVehicleTemplateComponent', () => {
 				updateTechRecord({
 					systemNumber: '3',
 					createdTimestamp: '2023',
+					groupType: 'batch',
 				})
 			);
 			expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));

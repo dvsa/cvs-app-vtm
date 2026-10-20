@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonComponent } from '@components/button/button.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
@@ -7,6 +7,7 @@ import {
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
+import { DocumentType } from '@models/document-type.enum';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { LoadingService } from '@services/loading/loading.service';
@@ -30,8 +31,8 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
 	techRecordService = inject(TechnicalRecordService);
 	actions$ = inject(Actions);
 	loading = inject(LoadingService);
-	fileName?: string;
-	errorString?: string | null;
+	readonly fileName = signal<string | undefined>(undefined);
+	readonly errorString = signal<string | null | undefined>(undefined);
 
 	private destroy$ = new Subject<void>();
 
@@ -42,14 +43,13 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
 		});
 
 		this.actions$.pipe(ofType(generateADRCertificateSuccess), takeUntil(this.destroy$)).subscribe(({ id }) => {
-			this.fileName = id;
-			this.cdr.detectChanges();
+			this.fileName.set(id);
 		});
 
 		this.actions$.pipe(ofType(retryInterceptorFailure), takeUntil(this.destroy$)).subscribe(() => {
-			this.errorString =
-				'Try link again or Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS';
-			this.cdr.detectChanges();
+			this.errorString.set(
+				'Try link again or Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS'
+			);
 		});
 	}
 
@@ -86,4 +86,6 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
 			})
 		);
 	}
+
+	protected readonly DocumentType = DocumentType;
 }

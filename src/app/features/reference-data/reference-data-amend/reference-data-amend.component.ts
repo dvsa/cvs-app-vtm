@@ -1,5 +1,7 @@
+import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -10,14 +12,13 @@ import {
 	DynamicFormGroupComponent,
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, first } from 'rxjs';
+import { Observable, ReplaySubject, first, skipWhile, take } from 'rxjs';
 import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
@@ -32,18 +33,23 @@ import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-hist
 		AsyncPipe,
 	],
 })
-export class ReferenceDataAmendComponent implements OnInit {
+export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
 	referenceDataService = inject(ReferenceDataService);
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store<ReferenceDataState>);
+	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	key!: string;
 	isFormDirty = false;
 	isFormInvalid = true;
+	destroy$ = new ReplaySubject<boolean>(1);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	amendedData: any;
@@ -65,17 +71,36 @@ export class ReferenceDataAmendComponent implements OnInit {
 				this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
 			}
 		});
+
+		// Initially set the amended data to the value of reference data item
+		this.data$
+			.pipe(
+				skipWhile((data) => !data),
+				take(1)
+			)
+			.subscribe((data) => {
+				this.amendedData = data;
+			});
+
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(`Amend this ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`),
+			{ injector: this.injector }
+		);
+	}
+
+	ngOnDestroy(): void {
+		// Clear subscriptions
+		this.destroy$.next(true);
+		this.destroy$.complete();
 	}
 
 	get roles(): typeof Roles {
 		return Roles;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -120,6 +145,16 @@ export class ReferenceDataAmendComponent implements OnInit {
 		this.checkForms();
 
 		if (this.isFormInvalid) return;
+
+		if (!this.isFormDirty) {
+			this.navigateBack();
+			return;
+		}
+
+		const sections = this.sections();
+		if (sections.length) {
+			this.amendedData = { ...this.amendedData, ...sections[0].form.getCleanValue(sections[0].form) };
+		}
 
 		this.store.dispatch(
 			amendReferenceDataItem({

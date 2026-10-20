@@ -64,7 +64,7 @@
       <govuk-checkbox-group
         label="Permitted dangerous goods"
         formControlName="techRecord_adrDetails_permittedDangerousGoods"
-        [options]="permittedDangerousGoodsOptions"
+        [options]="permittedDangerousGoodsOptions()"
       />
       <!-- Body declaration -->
       @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {

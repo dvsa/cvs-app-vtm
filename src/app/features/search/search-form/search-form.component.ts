@@ -1,4 +1,5 @@
 import { ButtonComponent } from '@/src/app/components/button/button.component';
+import { PaginationOptions } from '@/src/app/components/pagination/pagination.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
@@ -41,6 +42,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
 
 	searchResults = input<number>();
+	pagination = input<PaginationOptions>();
 
 	form = this.fb.group({
 		searchTerm: this.fb.control('', [
@@ -95,5 +97,19 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 			const queryParams = this.form.getRawValue();
 			this.router.navigate(['/search/results'], { queryParams, queryParamsHandling: 'merge' });
 		}
+	}
+
+	getSearchResultsCountHint(): string {
+		const pagination = this.pagination();
+		const searchResults = this.searchResults();
+		if (!pagination || !searchResults) return '';
+
+		const totalPages = Math.ceil(searchResults / pagination.itemsPerPage);
+		if (pagination.currentPage === totalPages) {
+			const remainder = searchResults - (pagination.currentPage - 1) * pagination.itemsPerPage;
+			return `Showing ${remainder} result${remainder === 1 ? '' : 's'} of ${searchResults}`;
+		}
+
+		return `Showing 4 results of ${searchResults}`;
 	}
 }

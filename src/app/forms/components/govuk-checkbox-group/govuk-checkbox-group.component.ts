@@ -20,6 +20,8 @@ import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-
 export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent implements ControlValueAccessor {
 	readonly blur = output<FocusEvent>();
 	readonly focus = output<FocusEvent>();
+	readonly regex = input<RegExp | string>();
+	readonly seperator = input<string>();
 
 	value = model<unknown[] | null>(null);
 	size = input<'small' | 'regular'>('regular');
@@ -33,8 +35,22 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 		>();
 
 	writeValue(obj: any): void {
-		this.value.set(obj);
-		this.onChange(obj);
+		if (typeof obj === 'string') {
+			const regex = this.regex();
+			const seperator = this.seperator();
+			const delimiter = regex ? new RegExp(regex) : seperator;
+			if (delimiter) {
+				const value = obj.split(delimiter);
+				this.value.set(value);
+				this.onChange(value);
+			} else {
+				this.value.set([obj]);
+				this.onChange([obj]);
+			}
+		} else {
+			this.value.set(obj);
+			this.onChange(obj);
+		}
 	}
 
 	toggle(option: any) {

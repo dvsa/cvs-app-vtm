@@ -1,0 +1,85 @@
+@if (techRecord(); as techRecord) {
+  <div [formGroup]="form">
+
+    @if (technicalRecordService.isAdrVehicle(techRecord)) {
+      <!-- VTG15 -->
+      <ng-container formGroupName="vtg15">
+        <govuk-form-group-radio label="VTG15 required?" formControlName="vtg15Required">
+          <govuk-radio id="vtg15RequiredTrue" label="Yes" [value]="true">
+            <!-- UN Number -->
+            <govuk-form-group-input
+              class="govuk-label govuk-label--s"
+              label="UN number"
+              prefix="UN"
+              formControlName="unNumber"
+              appNumberOnly
+              [width]="FORM_NODE_WIDTH.S"
+            />
+            <!-- Hazard classification numbers -->
+            <h1 class="govuk-label-wrapper">
+              <label class="govuk-label govuk-label--s">
+                Hazard classification numbers
+              </label>
+            </h1>
+            <govuk-form-group-select
+              class="govuk-label govuk-label--s vtg15-select"
+              label="Primary"
+              formControlName="primaryHazardClassification"
+              [options]="HAZARD_CLASSIFICATION_OPTIONS"
+              [width]="FORM_NODE_WIDTH.XXL"
+              [defaultOption]="'Select primary hazard classification'"
+            />
+            <govuk-form-group-select
+              class="govuk-label govuk-label--s vtg15-select"
+              label="Secondary (optional)"
+              formControlName="secondaryHazardClassification"
+              [options]="HAZARD_CLASSIFICATION_OPTIONS"
+              [width]="FORM_NODE_WIDTH.XXL"
+              [defaultOption]="'Select secondary hazard classification'"
+            />
+          </govuk-radio>
+          <govuk-radio id="vtg15RequiredFalse" label="No" [value]="false">
+          </govuk-radio>
+        </govuk-form-group-radio>
+      </ng-container>
+    }
+    <label class="govuk-label govuk-label--m">Vehicle Details</label>
+    <!-- Country Of Registration -->
+    <govuk-form-group-autocomplete
+      label="Country Of Registration"
+      [options$]="countryNames"
+      [width]="FormNodeWidth.XL"
+      formControlName="countryOfRegistration"
+    />
+
+    <!-- EU vehicle category -->
+    <govuk-form-group-select
+      label="EU Vehicle Category"
+      [defaultOption]="' '"
+      [options]="technicalRecordService.getEUVehicleCategoryOptions(techRecord)"
+      [width]="FormNodeWidth.S"
+      formControlName="euVehicleCategory"
+    />
+
+    @if (techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
+      <!-- Odometer reading -->
+      <govuk-form-group-input
+        label="Odometer Reading"
+        formControlName="odometerReading"
+        type="number"
+        [width]="FormNodeWidth.L"
+      />
+
+      <!-- Odometer reading units -->
+      <govuk-form-group-radio
+        label="Odometer Reading Units"
+        formControlName="odometerReadingUnits"
+        [width]="FormNodeWidth.L"
+        [options]="[
+          { value: 'kilometres', label: 'Kilometres' },
+          { value: 'miles', label: 'Miles' },
+        ]"
+      ></govuk-form-group-radio>
+    }
+  </div>
+}

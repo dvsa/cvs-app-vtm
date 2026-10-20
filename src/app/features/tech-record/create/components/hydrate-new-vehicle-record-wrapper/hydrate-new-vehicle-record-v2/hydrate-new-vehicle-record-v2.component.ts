@@ -18,7 +18,8 @@ import {
 	updateADRAdditionalExaminerNotes,
 } from '@/src/app/store/technical-records';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, model } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -41,7 +42,7 @@ import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { RouterService } from '@services/router/router.service';
 import { name } from '@store/user/user-service.reducer';
-import { ReplaySubject, map, skipWhile, take, takeUntil } from 'rxjs';
+import { ReplaySubject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 import { TechRecordFiltersComponent } from '../../../../components/tech-record-filters/tech-record-filters.component';
 import { TechRecordSummaryCardComponent } from '../../../../components/tech-record-summary-card/tech-record-summary-card.component';
 
@@ -79,6 +80,7 @@ import { TechRecordSummaryCardComponent } from '../../../../components/tech-reco
 		FormsModule,
 		FilterByTagsDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	store = inject(Store);
@@ -90,25 +92,35 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	axlesService = inject(AxlesService);
 	private routerService = inject(RouterService);
 
-	techRecord$ = this.store.selectSignal(selectTechRecord);
-	sectionStates$ = this.store.selectSignal(selectSectionState);
-	username$ = this.store.selectSignal(name);
+	techRecord = this.store.selectSignal(selectTechRecord);
+	sectionStates = this.store.selectSignal(selectSectionState);
+	username = this.store.selectSignal(name);
 
 	readonly Modes = Modes;
 	readonly VehicleTypes = VehicleTypes;
 
 	form = this.fb.group<Partial<Record<keyof TechRecordType<'put'>, FormControl>>>({});
 	destroy = new ReplaySubject<boolean>(1);
-	isEditing$ = this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
-
-	isEditing = false;
+	readonly isEditing = toSignal(
+		this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing)),
+		{ initialValue: false }
+	);
 	filters = model<string[]>([]);
 
-	ngOnInit(): void {
-		this.isEditing$.pipe(takeUntil(this.destroy)).subscribe((editing) => {
-			this.isEditing = editing;
-		});
+	// Precompute accordion descriptions once per record change instead of every change-detection cycle.
+	vehicleMeta = computed(() => {
+		const record = this.techRecord();
+		const svc = this.technicalRecordService;
+		return {
+			approvalTypeDescription: record ? svc.getApprovalTypeAccordionDescription(record) : '',
+			weightsDescription: record ? svc.getWeightsAccordionDescription(record) : '',
+			tyresDescription: record ? svc.getTyresAccordionDescription(record) : '',
+			configDescription: record ? svc.getConfigAccordionDescription(record) : '',
+			brakesDescription: record ? svc.getBrakesAccordionDescription(record) : '',
+		};
+	});
 
+	ngOnInit(): void {
 		this.handleFormChanges();
 		this.handleEmptyEditingTechRecord();
 
@@ -119,7 +131,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 				take(1)
 			)
 			.subscribe((techRecord) => {
-				if (this.isEditing && techRecord) {
+				if (this.isEditing() && techRecord) {
 					if (
 						techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
 						techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
@@ -147,7 +159,7 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 	}
 
 	onCreateNewRecord(): void {
-		this.form.markAllAsTouched();
+		this.globalErrorService.markAllAsTouched(this.form);
 
 		if (this.form.invalid) {
 			this.globalErrorService.setErrors(this.globalErrorService.extractGlobalErrors(this.form));
@@ -155,31 +167,36 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			this.globalErrorService.clearErrors();
+			this.syncFormToStore(); // flush pending debounced change so the ADR fix-up and create use the latest form value
 
 			// TODO: modify if new design is included in batch create
-			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username$() }));
+			this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username() }));
 			this.store.dispatch(clearADRDetailsBeforeUpdate());
 
-			const vehicle = this.technicalRecordService.fixTechRecord(this.techRecord$() as TechRecordType<'put'>);
-
+			const vehicle = this.technicalRecordService.fixTechRecord(this.techRecord() as TechRecordType<'put'>);
 			this.store.dispatch(createVehicleRecord({ vehicle }));
 		}
 	}
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
-			this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
-		});
+		// Debounce the live store mirror so rapid typing does not re-feed every section's techRecord
+		// input on every keystroke. onCreateNewRecord flushes synchronously before reading the store.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy)).subscribe(() => this.syncFormToStore());
+	}
+
+	/** Immediately mirror the form into the store editing record (flushes any pending debounced change). */
+	private syncFormToStore(): void {
+		this.techRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordType<'put'>);
 	}
 
 	private handleEmptyEditingTechRecord(): void {
-		if (!this.techRecord$()) {
+		if (!this.techRecord()) {
 			this.router.navigate([RootRoutes.CREATE_TECHNICAL_RECORD]);
 		}
 	}
 
-	get tags(): string[] {
-		switch (this.techRecord$()?.techRecord_vehicleType as VehicleTypes) {
+	tags = computed<string[]>(() => {
+		switch (this.techRecord()?.techRecord_vehicleType as VehicleTypes) {
 			case VehicleTypes.HGV:
 				return ['Plates', 'Required', 'ADR'];
 			case VehicleTypes.PSV:
@@ -197,5 +214,5 @@ export class HydrateNewVehicleRecordV2Component implements OnInit, OnDestroy {
 			default:
 				return [];
 		}
-	}
+	});
 }

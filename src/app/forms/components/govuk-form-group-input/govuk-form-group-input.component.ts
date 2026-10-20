@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, input, model, output } from '@angular/core';
+import { Component, computed, forwardRef, input, model, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
@@ -23,16 +23,15 @@ import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent implements ControlValueAccessor {
 	readonly blur = output<FocusEvent>();
 	readonly focus = output<FocusEvent>();
-
-	value = model<string | number | boolean | null | undefined>(null);
-
+	readonly value = model<string | number | boolean | null | undefined>(null);
 	readonly maxlength = input<string | number | null>(null);
-
 	readonly suffix = input<string>();
-
 	readonly nullIfEmpty = input<boolean>(false);
-
 	readonly showErrors = input<boolean>(true);
+	readonly showGroupError = input<boolean>(false);
+	readonly customScreenReaderLabelSuffix = input<string | null>(null);
+	readonly screenReaderLabelSuffix = computed(() => this.getScreenReaderLabelSuffix());
+	readonly FormNodeWidth = FormNodeWidth;
 
 	get style(): string {
 		const width = this.width();
@@ -53,5 +52,40 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 		this.onChange(obj);
 	}
 
-	protected readonly FormNodeWidth = FormNodeWidth;
+	onInput(event: Event) {
+		const input = event.target as HTMLInputElement | null;
+		if (!input) return;
+		let val = input.value ?? '';
+
+		const type = this.controlType ? this.controlType() : 'text';
+		if (type === 'number' || type === 'numericString') {
+			val = val.replace(/\D+/g, '');
+		}
+
+		const maxAttr = this.maxlength ? this.maxlength() : null;
+		const max = maxAttr != null && maxAttr !== '' ? Number(maxAttr) : null;
+		if (max && val.length > max) {
+			val = val.slice(0, max);
+			input.value = val;
+		}
+
+		const parsed = val === '' ? null : type === 'number' ? Number(val) : val;
+		this.value.set(parsed);
+		this.onChange(parsed);
+	}
+
+	getScreenReaderLabelSuffix(): string | null {
+		const customLabelSuffix = this.customScreenReaderLabelSuffix();
+		if (customLabelSuffix) return customLabelSuffix;
+		const suffix = this.suffix();
+		if (!suffix) return null;
+		return COMMON_LABEL_SUFFIXES[suffix.toLowerCase()] || null;
+	}
 }
+
+export const COMMON_LABEL_SUFFIXES: Record<string, string> = {
+	kg: 'in kilograms',
+	mm: 'in millimetres',
+	mph: 'in miles per hour',
+	tonnes: 'in tonnes',
+};

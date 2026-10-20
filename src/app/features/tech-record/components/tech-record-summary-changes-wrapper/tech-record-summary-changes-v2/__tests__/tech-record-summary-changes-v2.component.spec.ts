@@ -2,7 +2,7 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { RouterService } from '@/src/app/services/router/router.service';
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
-import { amendVrmSuccess } from '@/src/app/store/technical-records';
+import { amendVrmSuccess, updateTechRecord } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -64,11 +64,6 @@ describe('TechRecordSummaryChangesV2Component', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should call navigateOnSuccess', () => {
-			const navigateOnSuccessSpy = jest.spyOn(component, 'navigateUponSuccess');
-			component.ngOnInit();
-			expect(navigateOnSuccessSpy).toHaveBeenCalled();
-		});
 		it('should navigate when updateRecordSuccess dispatched', () => {
 			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
@@ -109,11 +104,13 @@ describe('TechRecordSummaryChangesV2Component', () => {
 			const dispatchSpy = jest.spyOn(store, 'dispatch');
 			component.submit();
 			expect(dispatchSpy).toHaveBeenCalled();
-			expect(dispatchSpy).toHaveBeenCalledWith({
-				systemNumber: '123456',
-				createdTimestamp: '123123123',
-				type: '[Technical Record Service] updateTechRecords',
-			});
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				updateTechRecord({
+					systemNumber: '123456',
+					createdTimestamp: '123123123',
+					groupType: 'single',
+				})
+			);
 		});
 	});
 

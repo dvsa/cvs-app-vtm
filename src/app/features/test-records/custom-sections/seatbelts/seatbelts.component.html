@@ -1,0 +1,53 @@
+<div [formGroup]="form">
+  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        <!-- Carried out during test -->
+        <govuk-form-group-radio
+          label="Carried out during test"
+          formControlName="seatbeltInstallationCheckDate"
+          [options]="YES_NO_OPTIONS"
+        ></govuk-form-group-radio>
+
+        <!-- Number of seatbelts fitted -->
+        <govuk-form-group-input
+          label="Number of seatbelts fitted"
+          formControlName="numberOfSeatbeltsFitted"
+          type="number"
+          [width]="FormNodeWidth.M"
+        ></govuk-form-group-input>
+
+        <!-- Most recent installation check -->
+        <govuk-form-group-date
+          label="Most recent installation check"
+          formControlName="lastSeatbeltInstallationCheckDate"
+        ></govuk-form-group-date>
+      </ng-container>
+    </ng-container>
+  } @else {
+    @if (testResult(); as testResult) {
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Carried out during test:</td>
+            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-seatbeltInstallationCheckDate">
+              {{ testResult.testTypes[0].seatbeltInstallationCheckDate | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Number of seatbelts fitted:</td>
+            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-numberOfSeatbeltsFitted">
+              {{ testResult.testTypes[0].numberOfSeatbeltsFitted | defaultNullOrEmpty }}
+            </td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__header" style="width: 30%">Most recent installation check:</td>
+            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-lastSeatbeltInstallationCheckDate">
+              {{ testResult.testTypes[0].lastSeatbeltInstallationCheckDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }
+  }
+</div>

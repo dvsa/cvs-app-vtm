@@ -1,3 +1,5 @@
+import { PlatformLocation } from '@angular/common';
+import { MockPlatformLocation } from '@angular/common/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -5,31 +7,46 @@ import { By } from '@angular/platform-browser';
 import { ToUppercaseDirective } from '../app-to-uppercase.directive';
 
 @Component({
-	template: ' <form [formGroup]="form"><input appToUppercase formControlName="foo" /></form>',
+	template: `
+		<form [formGroup]="form">
+			<input appToUppercase formControlName="foo" />
+			<input appToUppercase formControlName="bar" />
+		</form>
+	`,
 	imports: [FormsModule, ReactiveFormsModule, ToUppercaseDirective],
 })
 class TestComponent {
 	form = new FormGroup({
 		foo: new FormControl(),
+		bar: new FormControl(null, { updateOn: 'blur' }),
 	});
 }
 
 describe('ToUppercaseDirective', () => {
 	let fixture: ComponentFixture<TestComponent>;
 	let input: HTMLInputElement;
+	let blurInput: HTMLInputElement;
 	let component: TestComponent;
+
+	function type(target: HTMLInputElement, value: string) {
+		target.value = value;
+		target.dispatchEvent(new Event('input', { bubbles: true }));
+	}
 
 	beforeEach(() => {
 		fixture = TestBed.configureTestingModule({
 			imports: [TestComponent],
+			providers: [{ provide: PlatformLocation, useClass: MockPlatformLocation }],
 		}).createComponent(TestComponent);
 		fixture.detectChanges();
 
-		input = fixture.debugElement.query(By.directive(ToUppercaseDirective)).nativeElement;
+		[input, blurInput] = fixture.debugElement
+			.queryAll(By.directive(ToUppercaseDirective))
+			.map((element) => element.nativeElement);
 		component = fixture.componentInstance;
 	});
 
-	it('should make the text uppercase on input', () => {
+	it('should make the text uppercase on focusout', () => {
 		input.value = 'lowercase';
 		input.dispatchEvent(new Event('focusout'));
 

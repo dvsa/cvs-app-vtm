@@ -1,5 +1,6 @@
-@if (techRecord) {
+@if (techRecord(); as techRecord) {
   <div>
+    <h1 class="govuk-heading-l">Change VIN</h1>
     <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -10,9 +11,13 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VRM</dt>
-        @if (currentVrm) {
-          <app-number-plate [vrm]="currentVrm"></app-number-plate>
-        }
+        <dd class="govuk-summary-list__value">
+          @if (currentVrm) {
+            <app-number-plate [vrm]="currentVrm"></app-number-plate>
+          } @else {
+            <span>-</span>
+          }
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN/chassis number</dt>

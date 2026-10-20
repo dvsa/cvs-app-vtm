@@ -3,12 +3,14 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	DestroyRef,
 	Injector,
 	contentChild,
 	inject,
 	input,
 	model,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@directives/prefix/prefix.directive';
 import { SuffixDirective } from '@directives/suffix/suffix.directive';
@@ -25,6 +27,7 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
 	protected injector = inject(Injector);
 	protected cdr = inject(ChangeDetectorRef);
+	protected destroyRef = inject(DestroyRef);
 
 	readonly prefix = contentChild(PrefixDirective);
 	readonly suffix = contentChild(SuffixDirective);
@@ -59,6 +62,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 			if (this.control?.meta) {
 				this.control.meta.changeDetection = this.cdr;
 			}
+			// touched/validity changes are applied from outside the template (e.g. markAllAsTouched
+			// on submit), so mark dirty or the inline error never renders
+			this.control?.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.cdr.markForCheck());
 		} else {
 			throw new Error(`No control binding for ${this.name()}`);
 		}
@@ -107,6 +113,8 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
 	writeValue(obj: unknown): void {
 		this.value = obj;
+		// the form writes to us from outside the template, so mark dirty for OnPush
+		this.cdr.markForCheck();
 	}
 
 	registerOnChange(fn: (event: unknown) => void): void {
