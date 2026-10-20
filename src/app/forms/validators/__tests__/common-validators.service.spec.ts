@@ -171,6 +171,19 @@ describe('CommonValidatorsService', () => {
 			const result = service.futureDate('message')(control);
 			expect(result).toBeNull();
 		});
+
+		it('should return null when any date part is the string "null" or "undefined"', () => {
+			const control1 = new FormControl('2025-null-01');
+			const control2 = new FormControl('2025-01-undefined');
+			expect(service.futureDate('message')(control1)).toBeNull();
+			expect(service.futureDate('message')(control2)).toBeNull();
+		});
+
+		it('should return null for datetime strings missing time parts (skip validation)', () => {
+			const control = new FormControl('2025-01-01T12'); // missing minute/seconds
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
 	});
 
 	describe('invalidDate', () => {
