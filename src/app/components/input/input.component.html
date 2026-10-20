@@ -40,11 +40,11 @@
         class="govuk-input"
         [class.govuk-input--error]="invalid() && touched() && showErrors()"
         [class]="inputClass()"
-        appNoEmojis
         [id]="id()"
         [(ngModel)]="value"
-        [disabled]="disabled() || false"
+        [attr.disabled]="disabled() ? true : ''"
         (blur)="touched.set(true)"
+        appNoEmojis
       />
     }
 

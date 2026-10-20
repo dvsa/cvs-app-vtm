@@ -1,5 +1,6 @@
 import { InputComponent } from '@/src/app/components/input/input.component';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
+import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
@@ -30,8 +31,19 @@ import {
 	OnInit,
 	signal,
 } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { apply, form, FormField, hidden, maxLength, minLength, required } from '@angular/forms/signals';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+	apply,
+	applyEach,
+	disabled,
+	form,
+	FormField,
+	hidden,
+	maxLength,
+	minLength,
+	pattern,
+	required,
+} from '@angular/forms/signals';
 import { ButtonComponent } from '@components/button/button.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
@@ -81,6 +93,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		RetrieveDocumentDirective,
 		FormField,
 		InputComponent,
+		RoleRequiredDirective,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -106,9 +119,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	systemNumber?: string;
 	createdTimestamp?: string;
 
-	startTimeDisplay = new FormControl({ value: '', disabled: true });
-	endTimeDisplay = new FormControl({ value: '', disabled: true });
-
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly TestResults = TestResults;
 	readonly ABANDON_REASONS_REGEX = new RegExp('\\. (?<!\\..\\. )');
@@ -122,6 +132,30 @@ export class TestComponent implements OnInit, OnDestroy {
 		source: this.testResult,
 		computation: (testResult) => ({
 			contingencyTestNumber: testResult?.contingencyTestNumber || '',
+			testTypes: [
+				{
+					testCode: testResult?.testTypes?.[0]?.testCode || '',
+					testNumber: testResult?.testTypes?.[0]?.testNumber || '',
+					testResult: testResult?.testTypes?.[0]?.testResult ?? null,
+					description: testResult?.testTypes?.[0]?.testTypeName || '',
+					certificateNumber: testResult?.testTypes?.[0]?.certificateNumber || '',
+					testTypeStartTimestamp: testResult?.testTypes?.[0]?.testTypeStartTimestamp || '',
+					testTypeEndTimestamp: testResult?.testTypes?.[0]?.testTypeEndTimestamp || '',
+					centralDocs: testResult?.testTypes?.[0]?.centralDocs || {
+						issueRequired: false,
+						notes: ' ',
+						reasonsForIssue: [],
+					},
+					loadStatus: {
+						vehicleLoadStatus: testResult?.testTypes?.[0]?.loadStatus?.vehicleLoadStatus || null,
+						unladenBodyType: testResult?.testTypes?.[0]?.loadStatus?.unladenBodyType || null,
+						otherUnladenBodyType: testResult?.testTypes?.[0]?.loadStatus?.otherUnladenBodyType || '',
+						reasonForNotLoading: testResult?.testTypes?.[0]?.loadStatus?.reasonForNotLoading || null,
+						partiallyLadenReason: testResult?.testTypes?.[0]?.loadStatus?.partiallyLadenReason || '',
+						otherReasonForNotLoading: testResult?.testTypes?.[0]?.loadStatus?.otherReasonForNotLoading || '',
+					},
+				},
+			],
 		}),
 	});
 	readonly testResultForm = form(this.draft, (schema) => {
@@ -141,6 +175,66 @@ export class TestComponent implements OnInit, OnDestroy {
 				message: 'Contingency Test Number must be at most 8 characters long',
 			});
 		});
+
+		// Test types
+		applyEach(schema.testTypes, (testType) => {
+			// Test code
+			apply(testType.testCode, (testCode) => {
+				disabled(testCode, { when: () => this.initialMode() === Modes.AMEND });
+			});
+			// Description
+			apply(testType, (description) => {
+				hidden(description, { when: () => !(this.isTestTypeGroup7() && this.mode() === Modes.EDIT) });
+				disabled(description);
+			});
+			// Test number
+			apply(testType.testNumber, (testNumber) => {
+				hidden(testNumber, { when: () => this.initialMode() !== Modes.AMEND });
+				disabled(testNumber, { when: () => this.initialMode() === Modes.AMEND });
+			});
+			// Certificate number
+			apply(testType.certificateNumber, (certificateNumber) => {
+				hidden(certificateNumber, {
+					when: (ctx) => {
+						if (this.isTestTypeGroup7()) {
+							return (
+								ctx.valueOf(testType.testResult) !== TestResults.PASS ||
+								ctx.valueOf(testType.centralDocs.issueRequired) === true
+							);
+						}
+						return true;
+					},
+				});
+				required(certificateNumber, {
+					message: 'Certificate number is required is required with Result',
+					when: (ctx) => ctx.valueOf(testType.testResult) === null,
+				});
+				pattern(certificateNumber, /^[a-zA-Z0-9]+$/, {
+					message: 'Certificate number must be alphanumeric',
+				});
+			});
+			// Test start date and time
+			apply(testType.testTypeStartTimestamp, (testTypeStartTimestamp) => {
+				disabled(testTypeStartTimestamp, { when: () => this.initialMode() === Modes.AMEND });
+			});
+			// Test end date and time
+			apply(testType.testTypeEndTimestamp, (testTypeEndTimestamp) => {
+				disabled(testTypeEndTimestamp, { when: () => this.initialMode() === Modes.AMEND });
+			});
+			// Load status
+			apply(testType.loadStatus, (loadStatus) => {
+				hidden(loadStatus, { when: () => this.loadStatusService.isLoadStatusApplicable(this.testResult()) });
+				// Other unladen body type
+				apply(loadStatus.otherUnladenBodyType, (otherUnladenBodyType) => {
+					hidden(otherUnladenBodyType, {
+						when: (ctx) => ctx.valueOf(loadStatus.otherReasonForNotLoading) === UnladenBodyType.OTHER,
+					});
+					required(otherUnladenBodyType, {
+						message: 'Enter body type',
+					});
+				});
+			});
+		});
 	});
 
 	constructor() {
@@ -158,7 +252,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		this.disableFields();
 		this.handleTestStartTimestampChange();
 		this.handleTestEndTimestampChange();
-		this.initTimeDisplayControls();
 
 		this.techRecordService.techRecord$.pipe(takeUntil(this.destroy)).subscribe((record) => {
 			this.systemNumber = (record as TechRecordGETHGV).systemNumber;
@@ -220,17 +313,6 @@ export class TestComponent implements OnInit, OnDestroy {
 				() => this.shouldShowProhibitionIssued(),
 				this.commonValidators.required('Prohibition Issued')
 			),
-		]);
-
-		testTypeGroup.controls.certificateNumber.setValidators([
-			this.commonValidators.applyWhen(
-				() =>
-					this.shouldShowCertificateNumber() &&
-					this.testResult()?.testTypes[0].testResult !== null &&
-					this.mode() !== Modes.ABANDON,
-				this.commonValidators.requiredWith('Certificate Number', 'Result')
-			),
-			this.commonValidators.alphanumeric('Certificate Number must be alphanumeric'),
 		]);
 
 		testTypeGroup.controls.testExpiryDate.setValidators([
@@ -318,11 +400,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		if (this.initialMode() === Modes.AMEND) {
 			this.form.controls.testTypes.at(0).controls.createdAt.disable();
-			this.form.controls.testTypes.at(0).controls.testCode.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
-			this.form.controls.testTypes.at(0).controls.testNumber.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
 		}
 
 		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
@@ -381,10 +459,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
-	shouldShowCreateModeDescription(): boolean {
-		return this.isTestTypeGroup7() && this.mode() === Modes.EDIT;
-	}
-
 	shouldShowAnniversaryDate(): boolean {
 		return !this.isTestTypeGroup7();
 	}
@@ -404,16 +478,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		return (
 			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
 			this.testResult()?.testTypes[0].testResult === 'pass'
-		);
-	}
-
-	shouldShowCertificateNumber(): boolean {
-		if (!this.isTestTypeGroup7()) return false;
-		if (this.testResult()?.testTypes[0].testResult == 'fail') {
-			return false;
-		}
-		return !(
-			this.testResult()?.testTypes[0].testResult == 'pass' && this.testResult()?.testTypes[0].centralDocs?.issueRequired
 		);
 	}
 
@@ -452,28 +516,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
 		return reasonForNotLoading === ReasonForNotLoading.OTHER;
-	}
-
-	private formatDateTimeLocal(isoString: string | null | undefined): string {
-		if (!isoString) return '';
-		const date = new Date(isoString);
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, '0');
-		const day = date.getDate().toString().padStart(2, '0');
-		const hours = date.getHours().toString().padStart(2, '0');
-		const minutes = date.getMinutes().toString().padStart(2, '0');
-		const seconds = date.getSeconds().toString().padStart(2, '0');
-		const ms = date.getMilliseconds().toString().padStart(3, '0');
-		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${ms}`;
-	}
-
-	private initTimeDisplayControls(): void {
-		if (this.initialMode() !== Modes.AMEND) return;
-
-		const testTypeGroup = this.form.controls.testTypes.at(0);
-
-		this.startTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeStartTimestamp.value));
-		this.endTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeEndTimestamp.value));
 	}
 
 	getReasonsList(reasons: string | string[] | null): string[] {

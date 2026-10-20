@@ -3,6 +3,7 @@
     <!-- Contingency Test Number -->
     @if (!testResultForm.contingencyTestNumber().hidden()) {
       <app-input
+        id="contingencyTestNumber"
         label="Contingency Test Number"
         inputClass="govuk-input--width-10"
         appToUppercase
@@ -30,14 +31,17 @@
           ></govuk-form-group-date>
 
           <!-- Test code -->
-          <govuk-form-group-input
-            label="Test Code"
-            formControlName="testCode"
-            [width]="FormNodeWidth.XS"
-            appToUppercase
-            appNoSpace
-            appTrimWhitespace
-          ></govuk-form-group-input>
+          @if (!testResultForm.testTypes[0].testCode().hidden()) {
+            <app-input
+              id="testCode"
+              label="Test Code"
+              inputClass="govuk-input--width-10"
+              appToUppercase
+              appNoSpace
+              appTrimWhitespace
+              [formField]="testResultForm.testTypes[0].testCode"
+            ></app-input>
+          }
         }
         @if (shouldShowResult()) {
           <!-- Result -->
@@ -59,12 +63,12 @@
           </ng-container>
         }
 
-        @if (shouldShowCreateModeDescription()) {
-          <!-- Test description -->
-          <govuk-form-group-input
+        @if (testResultForm.testTypes[0].description().hidden()) {
+          <app-input
+            id="description"
             label="Description"
-            formControlName="testTypeName"
-          ></govuk-form-group-input>
+            [formField]="testResultForm.testTypes[0].description"
+          ></app-input>
         }
 
         @if (shouldShowGenerateADRCertificate()) {
@@ -108,16 +112,16 @@
           }
         }
 
-        @if (shouldShowCertificateNumber()) {
-          <!-- Certificate number -->
-          <govuk-form-group-input
+        @if (!testResultForm.testTypes[0].certificateNumber().hidden()) {
+          <app-input
+            id="certificateNumber"
             label="Certificate number"
-            formControlName="certificateNumber"
-            [width]="FormNodeWidth.XXL"
+            inputClass="govuk-input--width-30"
             appToUppercase
             appNoSpace
             appTrimWhitespace
-          ></govuk-form-group-input>
+            [formField]="testResultForm.testTypes[0].certificateNumber"
+          ></app-input>
         }
 
         @if (shouldShowExpiryDate()) {
@@ -130,12 +134,6 @@
         }
 
         @if (mode() === Modes.AMEND) {
-          <!-- Test description -->
-          <govuk-form-group-input
-            label="Description"
-            formControlName="testTypeName"
-          ></govuk-form-group-input>
-
           <!-- Expiry Date -->
           <govuk-form-group-date
             mode="iso-date"
@@ -143,11 +141,13 @@
             formControlName="testExpiryDate"
           ></govuk-form-group-date>
 
-          <!-- Test number -->
-          <govuk-form-group-input
-            label="Test Number"
-            formControlName="testNumber"
-          ></govuk-form-group-input>
+          @if (!testResultForm.testTypes[0].testNumber().hidden()) {
+            <app-input
+              id="testNumber"
+              label="Test Number"
+              [formField]="testResultForm.testTypes[0].testNumber"
+            ></app-input>
+          }
 
           @if (shouldShowAnniversaryDate()) {
             <!-- Anniversary date -->
@@ -178,16 +178,18 @@
           }
 
           <!-- Test start date and time -->
-          <govuk-form-group-input
+          <app-input
+            id="testTypeStartTimestamp"
             label="Start time"
-            [formControl]="startTimeDisplay"
-          ></govuk-form-group-input>
+            [formField]="testResultForm.testTypes[0].testTypeStartTimestamp"
+          ></app-input>
 
           <!-- Test end date and time -->
-          <govuk-form-group-input
+          <app-input
+            id="testTypeEndTimestamp"
             label="End time"
-            [formControl]="endTimeDisplay"
-          ></govuk-form-group-input>
+            [formField]="testResultForm.testTypes[0].testTypeEndTimestamp"
+          ></app-input>
         }
 
         @if (mode() === Modes.EDIT) {
@@ -233,14 +235,19 @@
                 />
 
                 @if (
-                  form.get('testTypes.0.loadStatus.unladenBodyType')?.value ===
-                  UNLADEN_BODY_TYPES.OTHER
+                  !testResultForm.testTypes[0].loadStatus
+                    .otherUnladenBodyType()
+                    .hidden()
                 ) {
-                  <govuk-form-group-input
+                  <app-input
+                    id="otherUnladenBodyType"
                     class="govuk-label govuk-label--s"
                     label="Enter body type"
-                    formControlName="otherUnladenBodyType"
-                    [width]="FORM_NODE_WIDTH.XL"
+                    inputClass="govuk-input--width-20"
+                    [formField]="
+                      testResultForm.testTypes[0].loadStatus
+                        .otherUnladenBodyType
+                    "
                   />
                 }
 
