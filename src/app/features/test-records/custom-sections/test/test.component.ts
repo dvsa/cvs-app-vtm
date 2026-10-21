@@ -1,4 +1,5 @@
 import { InputComponent } from '@/src/app/components/input/input.component';
+import { SelectComponent } from '@/src/app/components/select/select.component';
 import { TextareaComponent } from '@/src/app/components/textarea/textarea.component';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
@@ -56,7 +57,6 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
-import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
@@ -81,7 +81,6 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		GovukFormGroupRadioComponent,
 		GovukFormGroupDateComponent,
 		DefaultNullOrEmpty,
-		GovukFormGroupSelectComponent,
 		RadioComponent,
 		GovukCheckboxGroupComponent,
 		ButtonComponent,
@@ -90,6 +89,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		FormField,
 		InputComponent,
 		TextareaComponent,
+		SelectComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -222,6 +222,15 @@ export class TestComponent implements OnInit, OnDestroy {
 			// Load status
 			apply(testType.loadStatus, (loadStatus) => {
 				hidden(loadStatus, { when: () => this.loadStatusService.isLoadStatusApplicable(this.testResult()) });
+				// Unladen body type
+				apply(loadStatus.unladenBodyType, (unladenBodyType) => {
+					hidden(unladenBodyType, {
+						when: (ctx) => ctx.valueOf(loadStatus.vehicleLoadStatus) !== VehicleLoadStatusType.UNLADEN,
+					});
+					required(unladenBodyType, {
+						message: 'Body type is required',
+					});
+				});
 				// Other unladen body type
 				apply(loadStatus.otherUnladenBodyType, (otherUnladenBodyType) => {
 					hidden(otherUnladenBodyType, {
@@ -232,6 +241,15 @@ export class TestComponent implements OnInit, OnDestroy {
 					});
 				});
 				// Reason for not loading
+				apply(loadStatus.reasonForNotLoading, (reasonForNotLoading) => {
+					hidden(reasonForNotLoading, {
+						when: (ctx) => ctx.valueOf(loadStatus.vehicleLoadStatus) !== VehicleLoadStatusType.UNLADEN,
+					});
+					required(reasonForNotLoading, {
+						message: 'Reason for not loading is required',
+					});
+				});
+				// Other reason for not loading
 				apply(loadStatus.otherReasonForNotLoading, (otherReasonForNotLoading) => {
 					hidden(otherReasonForNotLoading, {
 						when: (ctx) => ctx.valueOf(loadStatus.reasonForNotLoading) !== ReasonForNotLoading.OTHER,
@@ -387,36 +405,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		loadStatusGroup.controls.vehicleLoadStatus.setValidators([
 			this.commonValidators.applyWhen(() => this.isLoadStatusRequired(), this.commonValidators.required('Load status')),
 		]);
-		loadStatusGroup.controls.unladenBodyType.setValidators([
-			this.commonValidators.applyWhen(() => this.isUnladenSelected(), this.commonValidators.required('Body type')),
-		]);
-		loadStatusGroup.controls.otherUnladenBodyType.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isOtherUnladenBodyTypeRequired(),
-				this.commonValidators.required('Enter body type'),
-				this.commonValidators.maxLength(200, 'Enter body type')
-			),
-		]);
-		loadStatusGroup.controls.reasonForNotLoading.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isUnladenSelected(),
-				this.commonValidators.required('Reason for not loading')
-			),
-		]);
-		loadStatusGroup.controls.partiallyLadenReason.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isPartiallyLadenSelected(),
-				this.commonValidators.required('Partially laden reason'),
-				this.commonValidators.maxLength(200, 'Partially laden reason')
-			),
-		]);
-		loadStatusGroup.controls.otherReasonForNotLoading.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isOtherReasonForNotLoadingRequired(),
-				this.commonValidators.required('Enter reason for not loading'),
-				this.commonValidators.maxLength(200, 'Enter reason for not loading')
-			),
-		]);
 	}
 
 	disableFields(): void {
@@ -425,11 +413,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		if (this.initialMode() === Modes.AMEND) {
 			this.form.controls.testTypes.at(0).controls.createdAt.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
-		}
-
-		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
-			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 		}
 	}
 
@@ -520,20 +503,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	isPartiallyLadenSelected(): boolean {
 		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
 		return vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN;
-	}
-
-	isOtherUnladenBodyTypeRequired(): boolean {
-		if (!this.isUnladenSelected()) return false;
-
-		const unladenBodyType = this.form.get('testTypes.0.loadStatus.unladenBodyType')?.getRawValue();
-		return unladenBodyType === UnladenBodyType.OTHER;
-	}
-
-	isOtherReasonForNotLoadingRequired(): boolean {
-		if (!this.isUnladenSelected()) return false;
-
-		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
-		return reasonForNotLoading === ReasonForNotLoading.OTHER;
 	}
 
 	getReasonsList(reasons: string | string[] | null): string[] {

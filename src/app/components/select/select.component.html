@@ -1,0 +1,41 @@
+<div
+  class="govuk-form-group"
+  [class.govuk-form-group--error]="touched() && invalid() && showErrors()"
+>
+  @if (label()) {
+    <div class="govuk-label-wrapper">
+      <label class="govuk-label" [id]="`${id()}-label`" [htmlFor]="id()">
+        {{ label() }}
+      </label>
+    </div>
+  }
+
+  @if (hint()) {
+    <div class="govuk-hint" [id]="`${id()}-hint`">{{ hint() }}</div>
+  }
+
+  @if (touched() && invalid() && showErrors()) {
+    <p class="govuk-error-message" [id]="`${id()}-error`">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ errors()[0].message }}</span>
+    </p>
+  }
+
+  <select
+    [id]="id()"
+    class="govuk-select"
+    [class]="selectClass()"
+    [class.govuk-radios__input--error]="touched() && invalid() && showErrors()"
+    [(ngModel)]="value"
+    (blur)="touched.set(true)"
+    [disabled]="disabled()"
+  >
+    @if (placeholder()) {
+      <option [selected]="true" [ngValue]="null">{{ placeholder() }}</option>
+    }
+
+    @for (option of options(); track option) {
+      <option [ngValue]="option.value">{{ option.label }}</option>
+    }
+  </select>
+</div>

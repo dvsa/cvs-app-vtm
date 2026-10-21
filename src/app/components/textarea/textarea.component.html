@@ -2,11 +2,13 @@
   class="govuk-form-group"
   [class.govuk-form-group--error]="touched() && invalid() && showErrors()"
 >
-  <div class="govuk-label-wrapper">
-    <label class="govuk-label tags" [id]="`${id()}-label`" [htmlFor]="id()">
-      {{ label() }}
-    </label>
-  </div>
+  @if (label()) {
+    <div class="govuk-label-wrapper">
+      <label class="govuk-label" [id]="`${id()}-label`" [htmlFor]="id()">
+        {{ label() }}
+      </label>
+    </div>
+  }
 
   @if (hint()) {
     <div class="govuk-hint" [id]="`${id()}-hint`">{{ hint() }}</div>

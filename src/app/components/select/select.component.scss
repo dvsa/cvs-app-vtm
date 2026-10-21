@@ -1,0 +1,67 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-label {
+  /* Default to .govuk-label--m */
+  @include govuk-font($size: 24, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+}
+
+:host-context(.govuk-label--s) .govuk-label {
+  @include govuk-font($size: 19, $weight: bold);
+}
+
+:host-context(.govuk-label--m) .govuk-label {
+  @include govuk-font($size: 24, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+}
+
+:host-context(.govuk-label--l) .govuk-label {
+  @include govuk-font($size: 36, $weight: bold);
+  margin-bottom: govuk-spacing(3);
+}
+
+:host-context(.govuk-label--xl) .govuk-label {
+  @include govuk-font($size: 48, $weight: bold);
+  margin-bottom: govuk-spacing(3);
+}
+
+:host(.govuk-label) .govuk-label {
+  font-weight: normal;
+}
+
+
+.govuk-input--width-30 {
+  max-width: 29.5em !important;
+}
+
+.govuk-input--width-20 {
+  max-width: 20.5em !important;
+}
+
+.govuk-input--width-10 {
+  max-width: 11.5em !important;
+}
+
+.govuk-input--width-5 {
+  max-width: 5.5em !important;
+  min-width: unset;
+}
+
+.govuk-input--width-4 {
+  max-width: 4.5em !important;
+  min-width: unset;
+}
+
+.govuk-input--width-3 {
+  max-width: 3.75em !important;
+  min-width: unset;
+}
+
+.govuk-input--width-2 {
+  max-width: 2.75em !important;
+  min-width: unset;
+}
+
+.govuk-input--width-unset {
+  min-width: unset;
+}
