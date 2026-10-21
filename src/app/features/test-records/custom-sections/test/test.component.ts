@@ -1,11 +1,10 @@
 import { InputComponent } from '@/src/app/components/input/input.component';
+import { TextareaComponent } from '@/src/app/components/textarea/textarea.component';
 import { NoSpaceDirective } from '@/src/app/directives/app-no-space/app-no-space.directive';
-import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
 import { ToUppercaseDirective } from '@/src/app/directives/app-to-uppercase/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from '@/src/app/directives/app-trim-whitespace/app-trim-whitespace.directive';
 import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-form-group-date/govuk-form-group-date.component';
-import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions, PASS_FAIL_OPTIONS, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
@@ -58,7 +57,6 @@ import {
 import { FieldErrorMessageComponent } from '@forms/components/field-error-message/field-error-message.component';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
 import { GovukFormGroupSelectComponent } from '@forms/components/govuk-form-group-select/govuk-form-group-select.component';
-import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
@@ -81,11 +79,9 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		NoSpaceDirective,
 		TrimWhitespaceDirective,
 		GovukFormGroupRadioComponent,
-		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,
 		DefaultNullOrEmpty,
 		GovukFormGroupSelectComponent,
-		GovukFormGroupTextareaComponent,
 		RadioComponent,
 		GovukCheckboxGroupComponent,
 		ButtonComponent,
@@ -93,7 +89,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		RetrieveDocumentDirective,
 		FormField,
 		InputComponent,
-		RoleRequiredDirective,
+		TextareaComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -154,6 +150,8 @@ export class TestComponent implements OnInit, OnDestroy {
 						partiallyLadenReason: testResult?.testTypes?.[0]?.loadStatus?.partiallyLadenReason || '',
 						otherReasonForNotLoading: testResult?.testTypes?.[0]?.loadStatus?.otherReasonForNotLoading || '',
 					},
+					reasonForAbandoning: testResult?.testTypes?.[0]?.reasonForAbandoning || '',
+					additionalCommentsForAbandon: testResult?.testTypes?.[0]?.additionalCommentsForAbandon || '',
 				},
 			],
 		}),
@@ -232,6 +230,39 @@ export class TestComponent implements OnInit, OnDestroy {
 					required(otherUnladenBodyType, {
 						message: 'Enter body type',
 					});
+				});
+				// Reason for not loading
+				apply(loadStatus.otherReasonForNotLoading, (otherReasonForNotLoading) => {
+					hidden(otherReasonForNotLoading, {
+						when: (ctx) => ctx.valueOf(loadStatus.reasonForNotLoading) !== ReasonForNotLoading.OTHER,
+					});
+					required(otherReasonForNotLoading, {
+						message: 'Enter reason for not loading',
+					});
+				});
+				// Partially laden reason
+				apply(loadStatus.partiallyLadenReason, (partiallyLadenReason) => {
+					hidden(partiallyLadenReason, {
+						when: (ctx) => ctx.valueOf(loadStatus.vehicleLoadStatus) !== VehicleLoadStatusType.PARTIALLY_LADEN,
+					});
+					required(partiallyLadenReason, {
+						message: 'Enter partially laden reason',
+					});
+					maxLength(partiallyLadenReason, 200, {
+						message: 'Partially laden reason must be less than or equal to 200 characters',
+					});
+				});
+			});
+			// Additional comments for abandoning
+			apply(testType.additionalCommentsForAbandon, (additionalCommentsForAbandon) => {
+				hidden(additionalCommentsForAbandon, {
+					when: (ctx) => ctx.valueOf(testType.testResult) !== TestResults.ABANDONED,
+				});
+				required(additionalCommentsForAbandon, {
+					message: 'Additional details for abandoning is required with Result',
+				});
+				maxLength(additionalCommentsForAbandon, 500, {
+					message: 'Additional comments for abandoning must be less than or equal to 500 characters',
 				});
 			});
 		});
@@ -386,12 +417,6 @@ export class TestComponent implements OnInit, OnDestroy {
 				this.commonValidators.maxLength(200, 'Enter reason for not loading')
 			),
 		]);
-		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.AMEND && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
-				this.commonValidators.requiredWith('Additional details for abandoning', 'Result')
-			),
-		]);
 	}
 
 	disableFields(): void {
@@ -450,13 +475,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		if (!isGroup7) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
-	}
-
-	getAbandonNotesLabel(): string {
-		if (this.isTestTypeGroup7()) {
-			return 'Additional notes as to why this test was abandoned';
-		}
-		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
 	shouldShowAnniversaryDate(): boolean {

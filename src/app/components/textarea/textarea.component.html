@@ -1,0 +1,55 @@
+<div
+  class="govuk-form-group"
+  [class.govuk-form-group--error]="touched() && invalid() && showErrors()"
+>
+  <div class="govuk-label-wrapper">
+    <label class="govuk-label tags" [id]="`${id()}-label`" [htmlFor]="id()">
+      {{ label() }}
+    </label>
+  </div>
+
+  @if (hint()) {
+    <div class="govuk-hint" [id]="`${id()}-hint`">{{ hint() }}</div>
+  }
+
+  @if (touched() && invalid() && showErrors()) {
+    <p class="govuk-error-message" [id]="`${id()}-error`">
+      <span class="govuk-visually-hidden">Error: </span>
+      <span>{{ errors()[0].message }}</span>
+    </p>
+  }
+
+  <textarea
+    appNoEmojis
+    appSanitiseUnicode
+    rows="5"
+    [id]="id()"
+    [attr.data-module]="'govuk-character-count'"
+    [attr.data-maxlength]="maxLength()"
+    [(ngModel)]="value"
+    [attr.disabled]="disabled() ? true : null"
+    (blur)="touched.set(true)"
+    [ngClass]="{
+      'govuk-textarea': true,
+      'govuk-!-margin-bottom-2 govuk-js-character-count': maxLength(),
+      'govuk-textarea--error': touched() && invalid() && showErrors(),
+    }"
+  ></textarea>
+
+  <!-- Character count message -->
+  @if (maxLength(); as maxLength) {
+    <div
+      [id]="
+        charactersRemaining() >= 0
+          ? `${id()}-max-length`
+          : `${id()}-max-length-error`
+      "
+      class="govuk-character-count__message"
+      aria-hidden="true"
+      [class.govuk-hint]="charactersRemaining() >= 0"
+      [class.govuk-error-message]="charactersRemaining() < 0"
+    >
+      {{ characterCountMessage() }}
+    </div>
+  }
+</div>

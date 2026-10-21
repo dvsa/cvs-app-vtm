@@ -168,13 +168,17 @@
               [options]="abandonReasons()"
               [seperator]="'. '"
             ></govuk-checkbox-group>
+          }
 
-            <!-- Addition details for abandoning -->
-            <govuk-form-group-textarea
-              [label]="getAbandonNotesLabel()"
-              formControlName="additionalCommentsForAbandon"
-              [maxLength]="500"
-            ></govuk-form-group-textarea>
+          @if (
+            !testResultForm.testTypes[0].additionalCommentsForAbandon().hidden()
+          ) {
+            <app-textarea
+              label="Additional notes as to why this test was abandoned"
+              [formField]="
+                testResultForm.testTypes[0].additionalCommentsForAbandon
+              "
+            ></app-textarea>
           }
 
           <!-- Test start date and time -->
@@ -260,15 +264,18 @@
                 />
 
                 @if (
-                  form.get('testTypes.0.loadStatus.reasonForNotLoading')
-                    ?.value === REASONS_FOR_NOT_LOADING.OTHER
+                  !testResultForm.testTypes[0].loadStatus
+                    .otherReasonForNotLoading()
+                    .hidden()
                 ) {
-                  <govuk-form-group-textarea
+                  <app-textarea
                     class="govuk-label govuk-label--s"
                     label="Enter reason for not loading"
-                    formControlName="otherReasonForNotLoading"
-                    [width]="FORM_NODE_WIDTH.XXL"
-                    [maxLength]="200"
+                    textareaClass="govuk-input--width-30"
+                    [formField]="
+                      testResultForm.testTypes[0].loadStatus
+                        .otherReasonForNotLoading
+                    "
                   />
                 }
               </govuk-radio>
@@ -278,12 +285,14 @@
                 label="Partially laden"
                 [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN"
               >
-                <govuk-form-group-textarea
+                <app-textarea
+                  id="partiallyLadenReason"
                   class="govuk-label govuk-label--s"
                   label="Why is the vehicle partially laden?"
-                  formControlName="partiallyLadenReason"
-                  [width]="FORM_NODE_WIDTH.XXL"
-                  [maxLength]="200"
+                  textareaClass="govuk-input--width-30"
+                  [formField]="
+                    testResultForm.testTypes[0].loadStatus.partiallyLadenReason
+                  "
                 />
               </govuk-radio>
               <govuk-radio
