@@ -7,9 +7,9 @@
             <h1 class="govuk-heading-l">
               <span id="test-name-full">
                 {{
-                test?.testTypeId ?? ''
-                | testTypeName : (selectAllTestTypes$ | async)
-                | defaultNullOrEmpty
+                  test?.testTypeId ?? ''
+                    | testTypeName: (selectAllTestTypes$ | async)
+                    | defaultNullOrEmpty
                 }}
                 {{ testCode | uppercase }}
               </span>
@@ -23,7 +23,8 @@
       <!-- Recalls warning -->
       @if ((recalls | async)?.hasRecall) {
         <app-field-warning-message
-          warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair." />
+          warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair."
+        />
       }
 
       <div class="govuk-grid-row">
@@ -32,12 +33,12 @@
           <dl class="govuk-summary-list">
             @switch (testResult.vehicleType) {
               @case (vehicleTypes.TRL) {
-                <div
-                  class="govuk-summary-list__row"
-                  >
+                <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Trailer ID</dt>
                   <dd id="test-testTypeId" class="govuk-summary-list__value">
-                    <app-number-plate [vrm]="testResult.trailerId | defaultNullOrEmpty" />
+                    <app-number-plate
+                      [vrm]="testResult.trailerId | defaultNullOrEmpty"
+                    />
                   </dd>
                 </div>
               }
@@ -58,14 +59,12 @@
             </div>
 
             @if (isADRTest) {
-              <div
-                class="govuk-summary-list__row guidance_notes_link"
-                >
+              <div class="govuk-summary-list__row guidance_notes_link">
                 <a
                   class="govuk-link--no-visited-state"
                   target="_blank"
                   href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx"
-                  >
+                >
                   Guidance notes
                 </a>
               </div>
@@ -80,16 +79,16 @@
           <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
             <span id="test-name-full">
               {{
-              test?.testTypeId ?? ''
-              | testTypeName : (selectAllTestTypes$ | async)
-              | defaultNullOrEmpty
+                test?.testTypeId ?? ''
+                  | testTypeName: (selectAllTestTypes$ | async)
+                  | defaultNullOrEmpty
               }}
               {{ testCode | uppercase }}
             </span>
           </h1>
           <div class="date_and_result">
             <span class="govuk-caption-l">{{
-              testResult.createdAt | date : 'dd MMM yyyy'
+              testResult.createdAt | date: 'dd MMM yyyy'
             }}</span>
             <app-tag [type]="tagType">{{
               resultOfTest | defaultNullOrEmpty
@@ -99,7 +98,8 @@
         <!-- Recalls warning -->
         @if ((recalls | async)?.hasRecall) {
           <app-field-warning-message
-            warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair.">
+            warningMessage="This vehicle has an outstanding vehicle recall. Tell the presenter to contact their nearest dealership to arrange for a free repair."
+          >
           </app-field-warning-message>
         }
         <div class="tester_and_location">
@@ -137,7 +137,9 @@
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Trailer ID</dt>
               <dd id="test-testTypeId" class="govuk-summary-list__value">
-                <app-number-plate [vrm]="testResult.trailerId | defaultNullOrEmpty" />
+                <app-number-plate
+                  [vrm]="testResult.trailerId | defaultNullOrEmpty"
+                />
               </dd>
             </div>
           }
@@ -160,9 +162,9 @@
           <dt class="govuk-summary-list__key">Vehicle type</dt>
           <dd id="test-vehicleType" class="govuk-summary-list__value">
             {{
-            (techRecord$ | async)?.techRecord_vehicleType
-            | defaultNullOrEmpty
-            | uppercase
+              (techRecord$ | async)?.techRecord_vehicleType
+                | defaultNullOrEmpty
+                | uppercase
             }}
           </dd>
         </div>
@@ -177,26 +179,37 @@
             </div>
 
             @if (testResult.vtg15?.vtg15Required) {
-              @if (!isReview() && ((testResult.vtg15?.media?.length ?? 0) > 0)) {
+              @if (!isReview() && (testResult.vtg15?.media?.length ?? 0) > 0) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Photo of VTG15</dt>
                   @if (hasVTG15Media()) {
                     @if (!hasVTG15RetentionPeriodPassed()) {
-                      <dd id="test-vtg15-document" class="govuk-summary-list__value">
+                      <dd
+                        id="test-vtg15-document"
+                        class="govuk-summary-list__value"
+                      >
                         <a
                           class="govuk-link"
                           (click)="downloadVTG15(testResult)"
-                          href="javascript:void(0)">
+                          href="javascript:void(0)"
+                        >
                           Download VTG15
                         </a>
                       </dd>
                     } @else {
-                      <dd id="test-vtg15-document" class="govuk-summary-list__value">
-                        No photo available - photo was deleted as the retention period had passed
+                      <dd
+                        id="test-vtg15-document"
+                        class="govuk-summary-list__value"
+                      >
+                        No photo available - photo was deleted as the retention
+                        period had passed
                       </dd>
                     }
                   } @else {
-                    <dd id="test-vtg15-document" class="govuk-summary-list__value">
+                    <dd
+                      id="test-vtg15-document"
+                      class="govuk-summary-list__value"
+                    >
                       {{ getFailureToCaptureVTG15MediaReason() }}
                     </dd>
                   }
@@ -209,12 +222,23 @@
                 </dd>
               </div>
               <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Hazard classification numbers</dt>
+                <dt class="govuk-summary-list__key">
+                  Hazard classification numbers
+                </dt>
                 <dd class="govuk-summary-list__value">
-                  Primary - Class {{ testResult.vtg15?.primaryHazardClassification?.code }}: {{ testResult.vtg15?.primaryHazardClassification?.description }}
+                  Primary - Class
+                  {{ testResult.vtg15?.primaryHazardClassification?.code }}:
+                  {{
+                    testResult.vtg15?.primaryHazardClassification?.description
+                  }}
                   <br />
                   @if (testResult.vtg15?.secondaryHazardClassification) {
-                    Secondary - Class {{ testResult.vtg15?.secondaryHazardClassification?.code }}: {{ testResult.vtg15?.secondaryHazardClassification?.description }}
+                    Secondary - Class
+                    {{ testResult.vtg15?.secondaryHazardClassification?.code }}:
+                    {{
+                      testResult.vtg15?.secondaryHazardClassification
+                        ?.description
+                    }}
                   }
                 </dd>
               </div>
@@ -226,11 +250,11 @@
           <dt class="govuk-summary-list__key">Country of registration</dt>
           <dd id="test-cor" class="govuk-summary-list__value">
             {{
-            testResult.countryOfRegistration ?? undefined
-            | refDataDecode$ : referenceDataType.CountryOfRegistration
-            | async
-            | defaultNullOrEmpty
-            | uppercase
+              testResult.countryOfRegistration ?? undefined
+                | refDataDecode$: referenceDataType.CountryOfRegistration
+                | async
+                | defaultNullOrEmpty
+                | uppercase
             }}
           </dd>
         </div>
@@ -241,16 +265,14 @@
           </dd>
         </div>
         @if (testResult.vehicleType !== vehicleTypes.TRL) {
-          <div
-            class="govuk-summary-list__row"
-            >
+          <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Odometer reading</dt>
             <dd id="test-odomReading" class="govuk-summary-list__value">
               {{
-              combinedOdometerReading(
-              testResult.odometerReading | digitGroupSeparator,
-              testResult.odometerReadingUnits
-              ) | defaultNullOrEmpty
+                combinedOdometerReading(
+                  testResult.odometerReading | digitGroupSeparator,
+                  testResult.odometerReadingUnits
+                ) | defaultNullOrEmpty
               }}
             </dd>
           </div>
@@ -281,7 +303,9 @@
 
         @if (shouldShowAbandonCert) {
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">{{ abandonCertDocName }} document</dt>
+            <dt class="govuk-summary-list__key">
+              {{ abandonCertDocName }} document
+            </dt>
             <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
               <a
                 id="test-vtg-vtp-document-link"

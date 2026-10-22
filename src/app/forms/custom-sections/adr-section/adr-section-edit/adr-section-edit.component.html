@@ -39,7 +39,7 @@
         formControlName="techRecord_adrDetails_applicantDetails_postcode"
       />
     </ng-container>
-<!--     ADR Details -->
+    <!--     ADR Details -->
     <ng-container>
       <span class="govuk-label govuk-label--m">ADR Details</span>
       <!-- ADR Body Type -->
@@ -67,7 +67,9 @@
         [options]="permittedDangerousGoodsOptions()"
       />
       <!-- Body declaration -->
-      @if (adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))) {
+      @if (
+        adrService.canDisplayBodyDeclarationSection($any(form.getRawValue()))
+      ) {
         <govuk-form-group-radio
           label="Body declaration"
           formControlName="techRecord_adrDetails_bodyDeclaration_type"
@@ -75,7 +77,11 @@
         />
       }
       <!-- Compatibility group J -->
-      @if (adrService.canDisplayCompatibilityGroupJSection($any(form.getRawValue()))) {
+      @if (
+        adrService.canDisplayCompatibilityGroupJSection(
+          $any(form.getRawValue())
+        )
+      ) {
         <govuk-form-group-radio
           label="Compatibility group J"
           formControlName="techRecord_adrDetails_compatibilityGroupJ"
@@ -95,7 +101,7 @@
         formControlName="techRecord_adrDetails_adrTypeApprovalNo"
       />
     </ng-container>
-<!--     When ADR body type contains the words 'tank' or 'battery' -->
+    <!--     When ADR body type contains the words 'tank' or 'battery' -->
     @if (adrService.canDisplayTankOrBatterySection($any(form.getRawValue()))) {
       <!-- Tank details section -->
       <span class="govuk-label govuk-label--m">Tank Details</span>
@@ -136,276 +142,383 @@
           formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
           [options]="tankStatementSubstancePermittedOptions"
         />
-      <!-- When tank statement (substances permitted) is 'Under UN Number' -->
-      @if (adrService.canDisplayTankStatementSelectSection($any(form.getRawValue()))) {
-        <!-- Tank statement select -->
-        <govuk-form-group-radio
-          label="Select"
-          formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
-          [options]="tankStatementSelectOptions"
-        />
-        <!-- When select is 'statement' -->
-        @if (adrService.canDisplayTankStatementStatementSection($any(form.getRawValue()))) {
-          <!-- Reference number -->
-          <govuk-form-group-input
-            label="Reference number"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
+        <!-- When tank statement (substances permitted) is 'Under UN Number' -->
+        @if (
+          adrService.canDisplayTankStatementSelectSection(
+            $any(form.getRawValue())
+          )
+        ) {
+          <!-- Tank statement select -->
+          <govuk-form-group-radio
+            label="Select"
+            formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+            [options]="tankStatementSelectOptions"
           />
-        }
-        <!-- When select is 'product '-->
-        @if (adrService.canDisplayTankStatementProductListSection($any(form.getRawValue()))) {
-          <!-- Reference number -->
-          <govuk-form-group-input
-            label="Reference number"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
-          />
-          <!-- UN numbers -->
-          <div class="govuk-form-group" formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo">
-            @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls; track inspection; let i = $index) {
-              <fieldset
-                class="govuk-fieldset"
-                >
-                <div class="govuk-form-group">
-                  <h1 class="govuk-label-wrapper">
-                    <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}">
-                      UN Number {{ i + 1 }}
-                    </label>
-                  </h1>
-                  @if (form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo.controls.length > 1) {
-                    <table class="govuk-table">
-                      <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                          <td class="govuk-table__cell">
-                            <govuk-form-group-input
-                              id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                              [width]="FormNodeWidth.XL"
-                              formControlName="{{ i }}"
-                            />
-                          </td>
-                          <td class="govuk-table__cell">
-                            <p class="govuk-body">
-                              <a class="govuk-link" href="javascript:void(0)" (click)="removeUNNumber(i)">Remove</a>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  } @else {
-                    <govuk-form-group-input
-                      id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i + 1 }}"
-                      [width]="FormNodeWidth.XL"
-                      formControlName="{{ i }}"
-                    />
-                  }
-                </div>
-              </fieldset>
-            }
-            <p class="govuk-body">
-              <a class="govuk-link" href="javascript:void(0)" (click)="addUNNumber()">Add UN Number</a>
-            </p>
-          </div>
-          <!-- Additional details -->
-          <govuk-form-group-textarea
-            label="Additional Details"
-            formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
-            [maxLength]="1500"
-          />
-
-        }
-      }
-    </ng-container>
-    <!-- Special provisions -->
-    <govuk-form-group-textarea
-      label="Special Provisions"
-      formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
-      [maxLength]="1024"
-    />
-    <!-- Tank Inspections section -->
-    <ng-container>
-      <span class="govuk-label govuk-label--m">Tank Inspections</span>
-      <!-- TC2: Certificate Number -->
-      <govuk-form-group-input
-        label="TC2: Certificate Number"
-        formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
-      />
-      <!-- TC2: Expiry Date -->
-      <govuk-form-group-date
-        label="TC2: Expiry Date"
-        formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
-      />
-      <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-      <!-- TC3: Inspections -->
-      <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
-        @for (inspection of form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details.controls; track inspection; let i = $index) {
-          <fieldset
-            class="govuk-fieldset"
-            formGroupName="{{ i }}"
-            >
-            <span class="govuk-label govuk-label--m">Subsequent {{ i + 1 }}</span>
-            <!-- TC3 Inspection Type -->
-            <govuk-form-group-select
-              label="TC3: Inspection Type"
-              formControlName="tc3Type"
-              [options]="tc3InspectionOptions"
-              [allowNull]="true"
-            />
-            <!-- TC3 Certificate Number -->
+          <!-- When select is 'statement' -->
+          @if (
+            adrService.canDisplayTankStatementStatementSection(
+              $any(form.getRawValue())
+            )
+          ) {
+            <!-- Reference number -->
             <govuk-form-group-input
-              label="TC3: Certificate Number"
-              formControlName="tc3PeriodicNumber"
+              label="Reference number"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
             />
-            <!-- TC3 Expiry Date -->
-            <govuk-form-group-date
-              [id]="'tc3PeriodicExpiryDate_' + i"
-              label="TC3: Expiry Date"
-              formControlName="tc3PeriodicExpiryDate"
+          }
+          <!-- When select is 'product '-->
+          @if (
+            adrService.canDisplayTankStatementProductListSection(
+              $any(form.getRawValue())
+            )
+          ) {
+            <!-- Reference number -->
+            <govuk-form-group-input
+              label="Reference number"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
             />
-            <!-- TC3 Footer -->
-            <p class="govuk-body govuk-!-text-align-right">
-              <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeTC3TankInspection(i)">Remove</a>
-            </p>
-            <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
-          </fieldset>
+            <!-- UN numbers -->
+            <div
+              class="govuk-form-group"
+              formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo"
+            >
+              @for (
+                inspection of form.controls
+                  .techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo
+                  .controls;
+                track inspection;
+                let i = $index
+              ) {
+                <fieldset class="govuk-fieldset">
+                  <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                      <label
+                        class="govuk-label govuk-label--m"
+                        for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{
+                          i + 1
+                        }}"
+                      >
+                        UN Number {{ i + 1 }}
+                      </label>
+                    </h1>
+                    @if (
+                      form.controls
+                        .techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo
+                        .controls.length > 1
+                    ) {
+                      <table class="govuk-table">
+                        <tbody class="govuk-table__body">
+                          <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                              <govuk-form-group-input
+                                id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{
+                                  i + 1
+                                }}"
+                                [width]="FormNodeWidth.XL"
+                                formControlName="{{ i }}"
+                              />
+                            </td>
+                            <td class="govuk-table__cell">
+                              <p class="govuk-body">
+                                <a
+                                  class="govuk-link"
+                                  href="javascript:void(0)"
+                                  (click)="removeUNNumber(i)"
+                                  >Remove</a
+                                >
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    } @else {
+                      <govuk-form-group-input
+                        id="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{
+                          i + 1
+                        }}"
+                        [width]="FormNodeWidth.XL"
+                        formControlName="{{ i }}"
+                      />
+                    }
+                  </div>
+                </fieldset>
+              }
+              <p class="govuk-body">
+                <a
+                  class="govuk-link"
+                  href="javascript:void(0)"
+                  (click)="addUNNumber()"
+                  >Add UN Number</a
+                >
+              </p>
+            </div>
+            <!-- Additional details -->
+            <govuk-form-group-textarea
+              label="Additional Details"
+              formControlName="techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
+              [maxLength]="1500"
+            />
+          }
         }
-      </div>
-      <p class="govuk-body">
-        <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addTC3TankInspection()">Add subsequent inspection</a>
-      </p>
-    </ng-container>
-    <!-- Memo 07/09 (3 month extension) can be applied -->
-    <govuk-checkbox-group
-      label="Memo 07/09 (3 month extension) can be applied"
-      formControlName="techRecord_adrDetails_memosApply"
-      [options]="memosApplyOptions"
-      [hint]="'Only applicable for vehicles used on national journeys'"
-    />
-<!-- M145 -->
-  <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_m145Statement">M145</label>
-    <govuk-form-group-checkbox
-      label="Yes"
-      formControlName="techRecord_adrDetails_m145Statement"
-      [value]="true"
-    />
-  }
-<!--   When ADR body type contains 'battery' -->
-  @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
-    <!-- Battery list applicable -->
-    <govuk-form-group-radio
-      label="Battery List Applicable"
-      formControlName="techRecord_adrDetails_listStatementApplicable"
-      [options]="YES_NO_OPTIONS"
-    />
-    <!-- When Battery list applicable is true -->
-    @if (adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))) {
-      <!-- Battery list reference number -->
-    <govuk-form-group-input
-      label="Reference number"
-      [width]="FormNodeWidth.L"
-      formControlName="techRecord_adrDetails_batteryListNumber"
-    />
+      </ng-container>
+      <!-- Special provisions -->
+      <govuk-form-group-textarea
+        label="Special Provisions"
+        formControlName="techRecord_adrDetails_tank_tankDetails_specialProvisions"
+        [maxLength]="1024"
+      />
+      <!-- Tank Inspections section -->
+      <ng-container>
+        <span class="govuk-label govuk-label--m">Tank Inspections</span>
+        <!-- TC2: Certificate Number -->
+        <govuk-form-group-input
+          label="TC2: Certificate Number"
+          formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
+        />
+        <!-- TC2: Expiry Date -->
+        <govuk-form-group-date
+          label="TC2: Expiry Date"
+          formControlName="techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
+        />
+        <div
+          class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"
+        ></div>
+        <!-- TC3: Inspections -->
+        <div formArrayName="techRecord_adrDetails_tank_tankDetails_tc3Details">
+          @for (
+            inspection of form.controls
+              .techRecord_adrDetails_tank_tankDetails_tc3Details.controls;
+            track inspection;
+            let i = $index
+          ) {
+            <fieldset class="govuk-fieldset" formGroupName="{{ i }}">
+              <span class="govuk-label govuk-label--m"
+                >Subsequent {{ i + 1 }}</span
+              >
+              <!-- TC3 Inspection Type -->
+              <govuk-form-group-select
+                label="TC3: Inspection Type"
+                formControlName="tc3Type"
+                [options]="tc3InspectionOptions"
+                [allowNull]="true"
+              />
+              <!-- TC3 Certificate Number -->
+              <govuk-form-group-input
+                label="TC3: Certificate Number"
+                formControlName="tc3PeriodicNumber"
+              />
+              <!-- TC3 Expiry Date -->
+              <govuk-form-group-date
+                [id]="'tc3PeriodicExpiryDate_' + i"
+                label="TC3: Expiry Date"
+                formControlName="tc3PeriodicExpiryDate"
+              />
+              <!-- TC3 Footer -->
+              <p class="govuk-body govuk-!-text-align-right">
+                <a
+                  class="govuk-link"
+                  role="button"
+                  href="javascript:void(0)"
+                  (click)="removeTC3TankInspection(i)"
+                  >Remove</a
+                >
+              </p>
+              <div
+                class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"
+              ></div>
+            </fieldset>
+          }
+        </div>
+        <p class="govuk-body">
+          <a
+            class="govuk-link"
+            role="button"
+            href="javascript:void(0)"
+            (click)="addTC3TankInspection()"
+            >Add subsequent inspection</a
+          >
+        </p>
+      </ng-container>
+      <!-- Memo 07/09 (3 month extension) can be applied -->
+      <govuk-checkbox-group
+        label="Memo 07/09 (3 month extension) can be applied"
+        formControlName="techRecord_adrDetails_memosApply"
+        [options]="memosApplyOptions"
+        [hint]="'Only applicable for vehicles used on national journeys'"
+      />
+      <!-- M145 -->
+      <label
+        class="govuk-label govuk-label--m"
+        for="techRecord_adrDetails_m145Statement"
+        >M145</label
+      >
+      <govuk-form-group-checkbox
+        label="Yes"
+        formControlName="techRecord_adrDetails_m145Statement"
+        [value]="true"
+      />
     }
-  }
-<!--   Declarations seen section -->
-  <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_brakeDeclarationsSeen">Declarations seen</label>
+    <!--   When ADR body type contains 'battery' -->
+    @if (adrService.canDisplayBatterySection($any(form.getRawValue()))) {
+      <!-- Battery list applicable -->
+      <govuk-form-group-radio
+        label="Battery List Applicable"
+        formControlName="techRecord_adrDetails_listStatementApplicable"
+        [options]="YES_NO_OPTIONS"
+      />
+      <!-- When Battery list applicable is true -->
+      @if (
+        adrService.canDisplayBatteryListNumberSection($any(form.getRawValue()))
+      ) {
+        <!-- Battery list reference number -->
+        <govuk-form-group-input
+          label="Reference number"
+          [width]="FormNodeWidth.L"
+          formControlName="techRecord_adrDetails_batteryListNumber"
+        />
+      }
+    }
+    <!--   Declarations seen section -->
+    <label
+      class="govuk-label govuk-label--m"
+      for="techRecord_adrDetails_brakeDeclarationsSeen"
+      >Declarations seen</label
+    >
     <govuk-form-group-checkbox
       label="Manufacturer brake declaration"
       formControlName="techRecord_adrDetails_brakeDeclarationsSeen"
       [value]="true"
     />
-  @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
-    <!-- Issuer -->
-    <govuk-form-group-textarea
-      label="Issuer"
-      formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
-      [maxLength]="500"
-    />
-    <!-- Brake endurance -->
-    <govuk-form-group-checkbox
-      label="Brake endurance"
-      formControlName="techRecord_adrDetails_brakeEndurance"
-      [value]="true"
-    />
-    <!-- Weight (tonnes) -->
-    @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
-      <govuk-form-group-input
-        label="Weight"
-        formControlName="techRecord_adrDetails_weight"
-        type="decimal"
-        suffix="Tonnes"
-        [width]="FormNodeWidth.M"
+    @if (adrService.canDisplayIssueSection($any(form.getRawValue()))) {
+      <!-- Issuer -->
+      <govuk-form-group-textarea
+        label="Issuer"
+        formControlName="techRecord_adrDetails_brakeDeclarationIssuer"
+        [maxLength]="500"
       />
+      <!-- Brake endurance -->
+      <govuk-form-group-checkbox
+        label="Brake endurance"
+        formControlName="techRecord_adrDetails_brakeEndurance"
+        [value]="true"
+      />
+      <!-- Weight (tonnes) -->
+      @if (adrService.canDisplayWeightSection($any(form.getRawValue()))) {
+        <govuk-form-group-input
+          label="Weight"
+          formControlName="techRecord_adrDetails_weight"
+          type="decimal"
+          suffix="Tonnes"
+          [width]="FormNodeWidth.M"
+        />
+      }
     }
-  }
-<!--   Delcarations seen (Owner/operator declaration )-->
+    <!--   Delcarations seen (Owner/operator declaration )-->
     <govuk-form-group-checkbox
       label="Owner/operator declaration"
       formControlName="techRecord_adrDetails_declarationsSeen"
       [value]="true"
     />
-<!--  &lt;!&ndash; New Certificate required &ndash;&gt;-->
-    <label class="govuk-label govuk-label--m" for="techRecord_adrDetails_newCertificateRequested">New Certificate required</label>
+    <!--  &lt;!&ndash; New Certificate required &ndash;&gt;-->
+    <label
+      class="govuk-label govuk-label--m"
+      for="techRecord_adrDetails_newCertificateRequested"
+      >New Certificate required</label
+    >
     <govuk-form-group-checkbox
       label="Yes"
       formControlName="techRecord_adrDetails_newCertificateRequested"
       [value]="true"
     />
-  <!-- ADR Additional Examiner Note -->
+    <!-- ADR Additional Examiner Note -->
     <govuk-form-group-textarea
       label="Additional Examiner Notes"
       formControlName="techRecord_adrDetails_additionalExaminerNotes_note"
       [maxLength]="1024"
       [hint]="'Will not be present on the ADR certificate'"
     />
-  <!-- ADR Additional Examiner Note History -->
-  <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
-  @if (form.controls.techRecord_adrDetails_additionalExaminerNotes.value; as notes) {
-    @if (notes?.length; as notesCount) {
-      <table class="govuk-table">
-        <tbody class="govuk-table__body">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Notes</th>
-            <th scope="col" class="govuk-table__header">Created By</th>
-            <th scope="col" class="govuk-table__header">Date</th>
-            <th scope="col" class="govuk-table__header"></th>
-          </tr>
-          @if (pagination.paginationOptions(); as page) {
-            @for (note of notes.slice(page.start, page.end); track note;  let index = $index) {
-              <tr class="govuk-table__row">
-                <td class="govuk-table__cell whitespace-pre-wrap">
-                  <span>{{ note.note | defaultNullOrEmpty }}</span>
-                </td>
-                <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
-                <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link" href="javascript:void(0)" (click)="getEditAdditionalExaminerNotePage(((page.currentPage - 1) * page.itemsPerPage) + index)">
-                    Edit
-                  </a>
-                </td>
-              </tr>
+    <!-- ADR Additional Examiner Note History -->
+    <h2 class="govuk-heading-m">Additional Examiner Notes History</h2>
+    @if (
+      form.controls.techRecord_adrDetails_additionalExaminerNotes.value;
+      as notes
+    ) {
+      @if (notes?.length; as notesCount) {
+        <table class="govuk-table">
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Notes</th>
+              <th scope="col" class="govuk-table__header">Created By</th>
+              <th scope="col" class="govuk-table__header">Date</th>
+              <th scope="col" class="govuk-table__header"></th>
+            </tr>
+            @if (pagination.paginationOptions(); as page) {
+              @for (
+                note of notes.slice(page.start, page.end);
+                track note;
+                let index = $index
+              ) {
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell whitespace-pre-wrap">
+                    <span>{{ note.note | defaultNullOrEmpty }}</span>
+                  </td>
+                  <td class="govuk-table__cell">
+                    {{ note.lastUpdatedBy | defaultNullOrEmpty }}
+                  </td>
+                  <td class="govuk-table__cell">
+                    {{
+                      note.createdAtDate
+                        | date: 'dd/MM/yyyy HH:mm'
+                        | defaultNullOrEmpty
+                    }}
+                  </td>
+                  <td class="govuk-table__cell">
+                    <a
+                      class="govuk-link"
+                      href="javascript:void(0)"
+                      (click)="
+                        getEditAdditionalExaminerNotePage(
+                          (page.currentPage - 1) * page.itemsPerPage + index
+                        )
+                      "
+                    >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+              }
             }
-          }
-        </tbody>
-      </table>
-      <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+          </tbody>
+        </table>
+        <app-pagination
+          #pagination
+          tableName="adr-notes-history"
+          [numberOfItems]="notesCount"
+          [itemsPerPage]="3"
+        />
+      } @else {
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row border-b-0">
+            <dt class="govuk-summary-list__key">
+              No additional examiner notes history available
+            </dt>
+          </div>
+        </dl>
+      }
     } @else {
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row border-b-0">
-          <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+          <dt class="govuk-summary-list__key">
+            No additional examiner notes history available
+          </dt>
         </div>
       </dl>
     }
-  } @else {
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row border-b-0">
-        <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
-      </div>
-    </dl>
-  }
-  <!-- ADR Certificate Notes -->
+    <!-- ADR Certificate Notes -->
     <govuk-form-group-textarea
       label="ADR Certificate Notes"
       formControlName="techRecord_adrDetails_adrCertificateNotes"
       [maxLength]="1500"
     />
-}
+  }
 </div>

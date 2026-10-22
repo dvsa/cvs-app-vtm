@@ -6,7 +6,13 @@
           <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
           <div class="parent-div">
             <td class="govuk-heading-s">Date</td>
-            <td class="table-value">{{ examinerNoteObj.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+            <td class="table-value">
+              {{
+                examinerNoteObj.createdAtDate
+                  | date: 'dd/MM/yyyy'
+                  | defaultNullOrEmpty
+              }}
+            </td>
             <td class="govuk-heading-s">Created by</td>
             <td class="table-value">{{ examinerNoteObj.lastUpdatedBy }}</td>
           </div>
@@ -18,7 +24,7 @@
                 name="AdditionalExaminerNote"
                 [width]="width.L"
                 (ngModelChange)="ngOnChanges(examinerNote.value)"
-                >
+              >
               </app-text-area>
             </form>
           </div>
@@ -26,8 +32,16 @@
       </div>
     </div>
     <app-button-group>
-      <app-button id="submit-examiner-note" (clicked)="handleSubmit()">Save</app-button>
-      <app-button id="cancel-amend-examiner-note" design="link" data-module="govuk-button" (clicked)="navigateBack()">Cancel</app-button>
+      <app-button id="submit-examiner-note" (clicked)="handleSubmit()"
+        >Save</app-button
+      >
+      <app-button
+        id="cancel-amend-examiner-note"
+        design="link"
+        data-module="govuk-button"
+        (clicked)="navigateBack()"
+        >Cancel</app-button
+      >
     </app-button-group>
   </div>
 }

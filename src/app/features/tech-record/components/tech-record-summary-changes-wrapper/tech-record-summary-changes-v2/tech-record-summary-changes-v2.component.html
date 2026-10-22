@@ -2,7 +2,10 @@
   <div class="govuk-grid-column-full">
     <app-banner>
       <ng-container title>Important</ng-container>
-      <ng-container content>Check your changes before you submit the technical record.</ng-container>
+      <ng-container content
+        >Check your changes before you submit the technical
+        record.</ng-container
+      >
     </app-banner>
 
     <h1 class="govuk-heading-xl">Review technical record</h1>
@@ -12,18 +15,27 @@
       <div class="govuk-grid-row">
         <!-- Summary card -->
         <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-          <app-tech-record-summary-card [mode]="Modes.SUMMARY" [techRecord]="techRecord" [mode]="Modes.SUMMARY" />
+          <app-tech-record-summary-card
+            [mode]="Modes.SUMMARY"
+            [techRecord]="techRecord"
+            [mode]="Modes.SUMMARY"
+          />
 
           <app-button-group>
             <app-button [id]="'submit'" (clicked)="submit()">Submit</app-button>
-            <app-button [id]="'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
+            <app-button [id]="'cancel'" design="link" (clicked)="cancel()"
+              >Cancel</app-button
+            >
           </app-button-group>
         </div>
 
         <!-- Accordion -->
         <div class="govuk-grid-column-two-thirds-from-desktop">
           <form>
-            <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+            <div
+              class="govuk-accordion govuk-accordion--vtm"
+              data-module="govuk-accordion"
+            >
               <div class="govuk-accordion__section-heading-top-container">
                 <h2 class="govuk-accordion__section-heading-top">
                   <span class="govuk-accordion-heading-vtm">
@@ -44,11 +56,17 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-general-vehicle-details [techRecord]="techRecord" [mode]="Modes.SUMMARY" ></app-general-vehicle-details>
+                          <app-general-vehicle-details
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-general-vehicle-details>
                         </app-accordion>
                       }
 
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasApprovalSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasApprovalSectionChanged()
+                      ) {
                         <!-- Approval type details section-->
                         <app-accordion
                           [id]="'approval-type'"
@@ -57,7 +75,10 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-approval-type [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-approval-type>
+                          <app-approval-type
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-approval-type>
                         </app-accordion>
                       }
 
@@ -70,13 +91,19 @@
                             [type]="'condensed'"
                             [isExpanded]="true"
                           >
-                            <app-authorisation-into-service [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-authorisation-into-service>
+                            <app-authorisation-into-service
+                              [techRecord]="techRecord"
+                              [mode]="Modes.SUMMARY"
+                            ></app-authorisation-into-service>
                           </app-accordion>
                         }
                       }
 
                       <!-- Dimensions section-->
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasDimensionsSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasDimensionsSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'dimensions'"
                           [title]="'Dimensions'"
@@ -84,12 +111,18 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-dimensions [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-dimensions>
+                          <app-dimensions
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-dimensions>
                         </app-accordion>
                       }
 
                       <!-- Weights section-->
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasWeightSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasWeightSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'weights'"
                           [title]="'Weights'"
@@ -97,12 +130,18 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-weights [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-weights>
+                          <app-weights
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-weights>
                         </app-accordion>
                       }
 
                       <!-- Tyres section-->
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasTyresSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasTyresSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'tyres'"
                           [title]="'Tyres'"
@@ -110,25 +149,40 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-tyres [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-tyres>
+                          <app-tyres
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-tyres>
                         </app-accordion>
                       }
 
                       <!-- configuration -->
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasConfigurationSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasConfigurationSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'configuration'"
                           [title]="'Configuration'"
                           [description]="vm.configDescription"
                           [type]="'condensed'"
-                          [isExpanded]="true"                        
+                          [isExpanded]="true"
                         >
-                          <app-configuration [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-configuration>
+                          <app-configuration
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-configuration>
                         </app-accordion>
                       }
 
                       <!-- Emissions and exemptions -->
-                      @if ((techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) && tcs.hasEmissionsAndExemptionsSectionChanged()) {
+                      @if (
+                        (techRecord.techRecord_vehicleType ===
+                          VehicleTypes.HGV ||
+                          techRecord.techRecord_vehicleType ===
+                            VehicleTypes.PSV) &&
+                        tcs.hasEmissionsAndExemptionsSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'emissions-and-exemptions'"
                           [title]="'Emissions and exemptions'"
@@ -136,12 +190,19 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-emissions-and-exemptions [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-emissions-and-exemptions>
+                          <app-emissions-and-exemptions
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-emissions-and-exemptions>
                         </app-accordion>
                       }
 
                       <!-- Seats and vehicle size -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasSeatsAndVehicleSizeSectionChanged()) {
+                      @if (
+                        techRecord.techRecord_vehicleType ===
+                          VehicleTypes.PSV &&
+                        tcs.hasSeatsAndVehicleSizeSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'seats-and-vehicle-size'"
                           [title]="'Seats and vehicle size'"
@@ -149,12 +210,20 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-seats-and-vehicle-size [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-seats-and-vehicle-size>
+                          <app-seats-and-vehicle-size
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-seats-and-vehicle-size>
                         </app-accordion>
                       }
 
                       <!-- Brakes -->
-                      @if ((techRecord.techRecord_vehicleType === VehicleTypes.PSV || technicalRecordService.isHeavyTrailer(techRecord)) && tcs.hasBrakesSectionChanged()) {
+                      @if (
+                        (techRecord.techRecord_vehicleType ===
+                          VehicleTypes.PSV ||
+                          technicalRecordService.isHeavyTrailer(techRecord)) &&
+                        tcs.hasBrakesSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'brakes'"
                           [title]="'Brakes'"
@@ -162,12 +231,18 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-brakes [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-brakes>
+                          <app-brakes
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-brakes>
                         </app-accordion>
                       }
 
                       <!-- Disability Discrimination Act (DDA) -->
-                      @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasDDASectionChanged()) {
+                      @if (
+                        techRecord.techRecord_vehicleType ===
+                          VehicleTypes.PSV && tcs.hasDDASectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'dda'"
                           [title]="'Disability Discrimination Act'"
@@ -175,12 +250,18 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-dda [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-dda>
+                          <app-dda
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-dda>
                         </app-accordion>
                       }
 
                       <!-- ADR -->
-                      @if (technicalRecordService.isAdrVehicle(techRecord) && tcs.hasADRSectionChanged()) {
+                      @if (
+                        technicalRecordService.isAdrVehicle(techRecord) &&
+                        tcs.hasADRSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'adr'"
                           [title]="'ADR'"
@@ -188,11 +269,18 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-adr [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-adr>
+                          <app-adr
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-adr>
                         </app-accordion>
                       }
 
-                      @if (techRecord.techRecord_vehicleType !== VehicleTypes.PSV && tcs.hasLastApplicantSectionChanged()) {
+                      @if (
+                        techRecord.techRecord_vehicleType !==
+                          VehicleTypes.PSV &&
+                        tcs.hasLastApplicantSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'last-applicant'"
                           [title]="'Last applicant'"
@@ -200,7 +288,10 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-last-applicant [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-last-applicant>
+                          <app-last-applicant
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-last-applicant>
                         </app-accordion>
                       }
 
@@ -213,7 +304,10 @@
                             [type]="'condensed'"
                             [isExpanded]="true"
                           >
-                            <app-purchasers [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-purchasers>
+                            <app-purchasers
+                              [techRecord]="techRecord"
+                              [mode]="Modes.SUMMARY"
+                            ></app-purchasers>
                           </app-accordion>
                         }
 
@@ -225,12 +319,18 @@
                             [type]="'condensed'"
                             [isExpanded]="true"
                           >
-                            <app-manufacturer [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-manufacturer>
+                            <app-manufacturer
+                              [techRecord]="techRecord"
+                              [mode]="Modes.SUMMARY"
+                            ></app-manufacturer>
                           </app-accordion>
                         }
                       }
 
-                      @if (technicalRecordService.isHeavyVehicle(techRecord) && tcs.hasDocumentsSectionChanged()) {
+                      @if (
+                        technicalRecordService.isHeavyVehicle(techRecord) &&
+                        tcs.hasDocumentsSectionChanged()
+                      ) {
                         <app-accordion
                           [id]="'documents'"
                           [title]="'Documents'"
@@ -238,7 +338,10 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-documents [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-documents>
+                          <app-documents
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-documents>
                         </app-accordion>
                       }
 
@@ -250,7 +353,10 @@
                           [type]="'condensed'"
                           [isExpanded]="true"
                         >
-                          <app-notes [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-notes>
+                          <app-notes
+                            [techRecord]="techRecord"
+                            [mode]="Modes.SUMMARY"
+                          ></app-notes>
                         </app-accordion>
                       }
 
@@ -261,7 +367,10 @@
                         [type]="'condensed'"
                         [isExpanded]="true"
                       >
-                        <app-reason-for-creation [techRecord]="techRecord" [mode]="Modes.SUMMARY"></app-reason-for-creation>
+                        <app-reason-for-creation
+                          [techRecord]="techRecord"
+                          [mode]="Modes.SUMMARY"
+                        ></app-reason-for-creation>
                       </app-accordion>
                     </ng-container>
                   </ng-template>

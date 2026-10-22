@@ -3,16 +3,25 @@
     @if (from() === 'create' || from() === 'amend') {
       <app-banner type="success">
         <ng-container title>Success</ng-container>
-        <ng-container content>You have {{ from() === 'create' ? 'created a' : 'amended the' }} technical record.</ng-container>
+        <ng-container content
+          >You have
+          {{ from() === 'create' ? 'created a' : 'amended the' }} technical
+          record.</ng-container
+        >
       </app-banner>
     }
 
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">{{ isEditing ? 'Amend' : 'View' }} technical record</h1>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">
+      {{ isEditing ? 'Amend' : 'View' }} technical record
+    </h1>
 
     @if (techRecord(); as techRecord) {
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-          <app-tech-record-summary-card [mode]="isEditing ? Modes.EDIT : Modes.VIEW" [techRecord]="techRecord" />
+          <app-tech-record-summary-card
+            [mode]="isEditing ? Modes.EDIT : Modes.VIEW"
+            [techRecord]="techRecord"
+          />
 
           <div class="govuk-button-group govuk-button-group-record">
             <app-edit-tech-record-button

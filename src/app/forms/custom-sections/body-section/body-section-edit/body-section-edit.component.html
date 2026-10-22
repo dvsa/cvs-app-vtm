@@ -1,7 +1,8 @@
 <div [formGroup]="form">
   @if (
     techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
-    techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
+    techRecord().techRecord_vehicleType === VehicleTypes.TRL
+  ) {
     <govuk-form-group-input
       appTrimWhitespace
       appNoSpace
@@ -20,7 +21,7 @@
         [allowNull]="true"
         [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-select>
       <govuk-form-group-input
         type="text"
@@ -29,7 +30,7 @@
         [tags]="[{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
         [width]="FormNodeWidth.L"
         [nullIfEmpty]="true"
-        >
+      >
       </govuk-form-group-input>
     </div>
     <govuk-form-group-select
@@ -40,7 +41,7 @@
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       [options]="bodyTypes()"
       [allowNull]="true"
-      >
+    >
     </govuk-form-group-select>
   }
   @if (techRecord().techRecord_vehicleType === VehicleTypes.PSV) {
@@ -59,14 +60,14 @@
         formControlName="techRecord_chassisMake"
         label="Chassis make"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_chassisModel"
         label="Chassis model"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
     </div>
     <div class="node-row">
@@ -75,14 +76,14 @@
         formControlName="techRecord_bodyMake"
         label="Body make"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_bodyModel"
         label="Body model"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
     </div>
     <div class="node-row">
@@ -91,14 +92,14 @@
         formControlName="techRecord_bodyType_description"
         label="Body type"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
       <govuk-form-group-input
         type="text"
         formControlName="techRecord_modelLiteral"
         label="Model literal"
         [width]="FormNodeWidth.L"
-        >
+      >
       </govuk-form-group-input>
     </div>
   }
@@ -108,9 +109,11 @@
     [options]="FUNCTION_CODE_OPTIONS"
     [width]="FormNodeWidth.XS"
     [tags]="
-    techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
-    techRecord().techRecord_vehicleType === VehicleTypes.TRL ?
-    [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+      techRecord().techRecord_vehicleType === VehicleTypes.HGV ||
+      techRecord().techRecord_vehicleType === VehicleTypes.TRL
+        ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]
+        : []
+    "
     [allowNull]="true"
   ></govuk-form-group-select>
   <govuk-form-group-input

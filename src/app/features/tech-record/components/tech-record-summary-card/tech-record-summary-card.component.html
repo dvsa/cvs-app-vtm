@@ -1,18 +1,30 @@
 @if (techRecord(); as techRecord) {
   <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
-      <h2 class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l">
+      <h2
+        class="govuk-summary-card__title govuk-summary-card__title-vtm govuk-heading-l"
+      >
         Summary
       </h2>
       @if (mode() === Modes.CREATE) {
         <ul class="govuk-summary-card__actions">
           <li class="govuk-summary-card__action">
-            <a id="change-link" class="govuk-link" href="javascript:void(0)" (click)="onChange()">
+            <a
+              id="change-link"
+              class="govuk-link"
+              href="javascript:void(0)"
+              (click)="onChange()"
+            >
               Change<span class="govuk-visually-hidden"></span>
             </a>
           </li>
           <li class="govuk-summary-card__action">
-            <a id="cancel-link" class="govuk-link" href="javascript:void(0)" (click)="onCancel()">
+            <a
+              id="cancel-link"
+              class="govuk-link"
+              href="javascript:void(0)"
+              (click)="onCancel()"
+            >
               Cancel<span class="govuk-visually-hidden"></span>
             </a>
           </li>
@@ -26,15 +38,30 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             Vehicle type
 
-            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
-              <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a href="javascript:void(0)" class="govuk-link summary-link" id="change-type-link" [routerLink]="['change-vehicle-type']">Change</a>
+            @if (
+              mode() === Modes.VIEW &&
+              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED
+            ) {
+              <div
+                class="summary-link-wrapper"
+                *appRoleRequired="Roles.TechRecordAmend"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="govuk-link summary-link"
+                  id="change-type-link"
+                  [routerLink]="['change-vehicle-type']"
+                  >Change</a
+                >
               </div>
             }
           </dt>
         </div>
         <div class="govuk-summary-list__row--value">
-          <dd class="govuk-summary-list__value govuk-summary-list__value--overflow" id="vehicleType">
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--overflow"
+            id="vehicleType"
+          >
             {{ getVehicleTypeLabel() | defaultNullOrEmpty | formatVehicleType }}
           </dd>
         </div>
@@ -43,15 +70,30 @@
           <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
             VIN
 
-            @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
-              <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                <a href="javascript:void(0)" class="govuk-link summary-link" id="change-vin-link" [routerLink]="['change-vin']">Change</a>
+            @if (
+              mode() === Modes.VIEW &&
+              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED
+            ) {
+              <div
+                class="summary-link-wrapper"
+                *appRoleRequired="Roles.TechRecordAmend"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="govuk-link summary-link"
+                  id="change-vin-link"
+                  [routerLink]="['change-vin']"
+                  >Change</a
+                >
               </div>
             }
           </dt>
         </div>
         <div class="govuk-summary-list__row--value">
-          <dd class="govuk-summary-list__value govuk-summary-list__value--vin" id="vin">
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--vin"
+            id="vin"
+          >
             {{ techRecord.vin | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -66,8 +108,13 @@
             </dt>
           </div>
           <div class="govuk-summary-list__row--value">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="trailer-id">
-              <app-number-plate [vrm]="$any(techRecord).trailerId | defaultNullOrEmpty" />
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--vrm"
+              id="trailer-id"
+            >
+              <app-number-plate
+                [vrm]="$any(techRecord).trailerId | defaultNullOrEmpty"
+              />
             </dd>
           </div>
         } @else {
@@ -76,23 +123,41 @@
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
               VRM
 
-              @if (mode() === Modes.VIEW && techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
-                <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a href="javascript:void(0)" class="govuk-link summary-link" id="change-vrm-link" [routerLink]="['change-vrm']">Change</a>
+              @if (
+                mode() === Modes.VIEW &&
+                techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED
+              ) {
+                <div
+                  class="summary-link-wrapper"
+                  *appRoleRequired="Roles.TechRecordAmend"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="govuk-link summary-link"
+                    id="change-vrm-link"
+                    [routerLink]="['change-vrm']"
+                    >Change</a
+                  >
                 </div>
               }
             </dt>
           </div>
           <div class="govuk-summary-list__row--value">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--vrm" id="current-vrm">
-              <app-number-plate [vrm]="techRecord.primaryVrm | defaultNullOrEmpty" />
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--vrm"
+              id="current-vrm"
+            >
+              <app-number-plate
+                [vrm]="techRecord.primaryVrm | defaultNullOrEmpty"
+              />
             </dd>
           </div>
         }
         <!-- Previous VRM not (TRL, Small TRL)-->
         @if (
           techRecord.techRecord_vehicleType !== VehicleTypes.TRL &&
-          technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) !== VehicleTypes.SMALL_TRL
+          technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) !==
+            VehicleTypes.SMALL_TRL
         ) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-summary-list__key-tech">
@@ -101,7 +166,11 @@
           </div>
           <div class="govuk-summary-list__row--value">
             @let otherVrms = techRecord.secondaryVrms || [];
-            <dd class="govuk-summary-list__value govuk-summary-list__value--vin" [class.govuk-summary-list__value--vrm]="otherVrms.length" id="previous-vrm">
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--vin"
+              [class.govuk-summary-list__value--vrm]="otherVrms.length"
+              id="previous-vrm"
+            >
               @if (otherVrms.length) {
                 <app-number-plate
                   class="govuk-body govuk-!margin-bottom-0"
@@ -109,7 +178,9 @@
                   [isSecondary]="true"
                 ></app-number-plate>
               } @else {
-                <span class="govuk-body govuk-!-margin-bottom-0">Not applicable</span>
+                <span class="govuk-body govuk-!-margin-bottom-0"
+                  >Not applicable</span
+                >
               }
             </dd>
           </div>
@@ -136,7 +207,10 @@
                   }
                   @case (StatusCodes.PROVISIONAL) {
                     <ul class="govuk-summary-list__actions-list">
-                      <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
+                      <li
+                        class="govuk-summary-list__actions-list-item"
+                        *appRoleRequired="Roles.TechRecordArchive"
+                      >
                         <a
                           class="govuk-link summary-link"
                           id="change-status-to-archive-link"
@@ -147,7 +221,10 @@
                           <span>Archive</span>
                         </a>
                       </li>
-                      <li class="govuk-summary-list__actions-list-item" *appRoleRequired="Roles.TechRecordArchive">
+                      <li
+                        class="govuk-summary-list__actions-list-item"
+                        *appRoleRequired="Roles.TechRecordArchive"
+                      >
                         <a
                           class="govuk-link summary-link"
                           id="promote-link"
@@ -176,9 +253,21 @@
             }
           </dt>
         </div>
-        <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() === Modes.CREATE">
-          <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="status-code">
-            <app-tag [type]="techRecord.techRecord_statusCode === StatusCodes.CURRENT ? TagType.GREEN :  TagType.RED">
+        <div
+          class="govuk-summary-list__row--value"
+          [class.govuk-summary-list__row--last]="mode() === Modes.CREATE"
+        >
+          <dd
+            class="govuk-summary-list__value govuk-summary-list__value--tag"
+            id="status-code"
+          >
+            <app-tag
+              [type]="
+                techRecord.techRecord_statusCode === StatusCodes.CURRENT
+                  ? TagType.GREEN
+                  : TagType.RED
+              "
+            >
               {{ techRecord.techRecord_statusCode | defaultNullOrEmpty }}
             </app-tag>
           </dd>
@@ -191,10 +280,22 @@
               Record status
             </dt>
           </div>
-          <div class="govuk-summary-list__row--value" [class.govuk-summary-list__row--last]="mode() !== Modes.VIEW">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-completeness">
+          <div
+            class="govuk-summary-list__row--value"
+            [class.govuk-summary-list__row--last]="mode() !== Modes.VIEW"
+          >
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--tag"
+              id="record-completeness"
+            >
               @let completeness = techRecord.techRecord_recordCompleteness;
-              <app-tag  [type]="completeness === 'complete' || completeness === 'testable' ? TagType.GREEN :  TagType.RED">
+              <app-tag
+                [type]="
+                  completeness === 'complete' || completeness === 'testable'
+                    ? TagType.GREEN
+                    : TagType.RED
+                "
+              >
                 {{ completeness }}
               </app-tag>
             </dd>
@@ -208,8 +309,16 @@
               Visibility in VTA
 
               @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED) {
-                <div class="summary-link-wrapper" *appRoleRequired="Roles.TechRecordAmend">
-                  <a href="javascript:void(0)" class="govuk-link summary-link" id="change-record-visibility-in-vta-link" [routerLink]="['change-vta-visibility']">
+                <div
+                  class="summary-link-wrapper"
+                  *appRoleRequired="Roles.TechRecordAmend"
+                >
+                  <a
+                    href="javascript:void(0)"
+                    class="govuk-link summary-link"
+                    id="change-record-visibility-in-vta-link"
+                    [routerLink]="['change-vta-visibility']"
+                  >
                     Change
                   </a>
                 </div>
@@ -217,8 +326,13 @@
             </dt>
           </div>
           <div class="govuk-summary-list__row--last">
-            <dd class="govuk-summary-list__value govuk-summary-list__value--tag" id="record-visibility">
-              <app-tag [type]="techRecord.techRecord_hiddenInVta ? 'red' : 'green'">
+            <dd
+              class="govuk-summary-list__value govuk-summary-list__value--tag"
+              id="record-visibility"
+            >
+              <app-tag
+                [type]="techRecord.techRecord_hiddenInVta ? 'red' : 'green'"
+              >
                 {{ techRecord.techRecord_hiddenInVta ? 'Hidden' : 'Visible' }}
               </app-tag>
             </dd>

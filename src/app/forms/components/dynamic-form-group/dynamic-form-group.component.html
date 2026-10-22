@@ -2,11 +2,19 @@
   <ng-template [ngTemplateOutlet]="templateHeading"></ng-template>
   <table *ngIf="!edit()" class="govuk-table">
     <tbody class="govuk-table__body">
-      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+      <ng-template
+        [ngTemplateOutlet]="nodeTemplateRef"
+        [ngTemplateOutletContext]="{ form: form }"
+      >
+      </ng-template>
     </tbody>
   </table>
   <ng-container *ngIf="edit()">
-    <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+    <ng-template
+      [ngTemplateOutlet]="nodeTemplateRef"
+      [ngTemplateOutletContext]="{ form: form }"
+    >
+    </ng-template>
   </ng-container>
 </div>
 
@@ -33,34 +41,61 @@
 </ng-template>
 
 <ng-template #nodeTemplateRef let-form="form">
-  <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
+  <ng-container
+    *ngFor="
+      let control of entriesOf(form.controls);
+      let i = index;
+      trackBy: trackByFn
+    "
+  >
     <ng-container [ngSwitch]="control.value.meta.type">
       <ng-container *ngSwitchCase="formNodeTypes.CONTROL">
-        <ng-template [ngTemplateOutlet]="controlTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }" />
+        <ng-template
+          [ngTemplateOutlet]="controlTemplate"
+          [ngTemplateOutletContext]="{ control: control, formGroup: form }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.GROUP">
-        <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }" />
+        <ng-template
+          [ngTemplateOutlet]="childNode"
+          [ngTemplateOutletContext]="{ form: form.controls[control.key] }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.ARRAY">
-        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }" />
+        <ng-template
+          [ngTemplateOutlet]="nodeTemplateRef"
+          [ngTemplateOutletContext]="{ form: form.controls[control.key] }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.SECTION">
-        <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }" />
+        <ng-template
+          [ngTemplateOutlet]="sectionTemplate"
+          [ngTemplateOutletContext]="{ control: control }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.TITLE">
-        <ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{ control: control }" />
+        <ng-template
+          [ngTemplateOutlet]="titleTemplate"
+          [ngTemplateOutletContext]="{ control: control }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.SUBTITLE">
-        <ng-template [ngTemplateOutlet]="subtitleTemplate" [ngTemplateOutletContext]="{ control: control }" />
+        <ng-template
+          [ngTemplateOutlet]="subtitleTemplate"
+          [ngTemplateOutletContext]="{ control: control }"
+        />
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.COMBINATION">
-        <ng-template [ngTemplateOutlet]="combinationTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }" />
+        <ng-template
+          [ngTemplateOutlet]="combinationTemplate"
+          [ngTemplateOutletContext]="{ control: control, formGroup: form }"
+        />
       </ng-container>
     </ng-container>
   </ng-container>
@@ -68,34 +103,41 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit()">
+    <ng-container
+      *ngIf="control.value.meta && !control.value.meta.hide"
+      [ngSwitch]="edit()"
+    >
       <ng-container *ngIf="control.value.meta.viewType !== 'hidden'">
-          <tr
-            *ngSwitchCase="false"
-            app-view-list-item
-            class="govuk-table__row"
-            [label]="control.value.meta.label"
-            [name]="control.value.meta.name"
-            [customId]="control.value.meta.customId ?? ''"
-            [viewType]="control.value.meta.viewType"
-            [formControlName]="control.key"
-            [link]="control.value.meta.link"
-          ></tr>
+        <tr
+          *ngSwitchCase="false"
+          app-view-list-item
+          class="govuk-table__row"
+          [label]="control.value.meta.label"
+          [name]="control.value.meta.name"
+          [customId]="control.value.meta.customId ?? ''"
+          [viewType]="control.value.meta.viewType"
+          [formControlName]="control.key"
+          [link]="control.value.meta.link"
+        ></tr>
       </ng-container>
-      <app-dynamic-form-field *ngSwitchCase="true"
+      <app-dynamic-form-field
+        *ngSwitchCase="true"
         [control]="control"
         [form]="formGroup"
         [parentForm]="parentForm()"
         [customId]="control.value.meta.customId"
         [ngClass]="control.value.meta.class"
-       />
+      />
     </ng-container>
   </ng-container>
 </ng-template>
 
 <ng-template #childNode let-form="form">
   <ng-container *ngIf="!(form.meta && form.meta.hide)">
-    <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }" />
+    <ng-template
+      [ngTemplateOutlet]="nodeTemplateRef"
+      [ngTemplateOutletContext]="{ form: form }"
+    />
   </ng-container>
 </ng-template>
 
@@ -105,7 +147,11 @@
   </div>
 </ng-template>
 
-<ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
+<ng-template
+  #combinationTemplate
+  let-control="control"
+  let-formGroup="formGroup"
+>
   <!-- check for editable here so that we don't render this template as well as the actual form fields -->
   <tr
     *ngIf="control.value.meta && !edit()"
@@ -126,14 +172,20 @@
       </tr>
     </ng-container>
     <div *ngIf="edit()">
-      <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
+      <span class="govuk-label govuk-label--m">{{
+        control.value.meta.label
+      }}</span>
     </div>
   </ng-container>
 </ng-template>
 
 <ng-template #subtitleTemplate let-control="control">
   <ng-container *ngIf="!(control.value.meta && control.value.meta.hide)">
-    <ng-container *ngIf="!edit() && control.value.meta.viewType !== formNodeViewTypes.HIDDEN">
+    <ng-container
+      *ngIf="
+        !edit() && control.value.meta.viewType !== formNodeViewTypes.HIDDEN
+      "
+    >
       <tr class="govuk-table__row">
         <td colspan="2" class="govuk-table__cell">
           <h4 class="govuk-heading-s mb-0">{{ control.value.meta.label }}</h4>
@@ -141,7 +193,9 @@
       </tr>
     </ng-container>
     <div *ngIf="edit()">
-      <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
+      <span class="govuk-label govuk-label--m">{{
+        control.value.meta.label
+      }}</span>
     </div>
   </ng-container>
 </ng-template>

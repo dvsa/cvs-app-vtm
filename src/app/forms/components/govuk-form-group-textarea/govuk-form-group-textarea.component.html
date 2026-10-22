@@ -1,6 +1,6 @@
 <div class="govuk-form-group">
   <div class="govuk-label-wrapper">
-    <label class="govuk-label tags" id="{{ labelId}}" for="{{ id }}">
+    <label class="govuk-label tags" id="{{ labelId }}" for="{{ id }}">
       {{ controlLabel() }}
       @if (tags().length) {
         <div class="tags">
@@ -13,7 +13,7 @@
   </div>
 
   @if (controlHint() && !disabled()) {
-    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
   }
 
   @if (hasError) {
@@ -21,7 +21,9 @@
     @if (firstError) {
       <p class="govuk-error-message" [id]="errorId">
         <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+        <span>{{
+          typeof firstError === 'string' ? firstError : firstError.error
+        }}</span>
       </p>
     }
   }
@@ -41,7 +43,7 @@
     [(ngModel)]="value"
     [disabled]="disabled()"
     (ngModelChange)="onChange($event)"
-    (blur)="onTouched();"
+    (blur)="onTouched()"
     [ngClass]="{ 'govuk-!-margin-bottom-2': max && !disabled() }"
     [class]="`govuk-textarea govuk-js-character-count govuk-input--width-${width()}`"
     [class.govuk-textarea--error]="hasError"
@@ -52,11 +54,19 @@
     @let diff = max - length;
 
     @if (diff >= 0) {
-      <div [id]="`${ id }-max-length`" class="govuk-character-count__message govuk-hint" aria-hidden="true">
+      <div
+        [id]="`${id}-max-length`"
+        class="govuk-character-count__message govuk-hint"
+        aria-hidden="true"
+      >
         {{ getCharacterCountMessage() }}
       </div>
     } @else {
-      <div [id]="`${ id }-max-length-error`" class="govuk-character-count__message govuk-error-message" aria-hidden="true">
+      <div
+        [id]="`${id}-max-length-error`"
+        class="govuk-character-count__message govuk-error-message"
+        aria-hidden="true"
+      >
         {{ getCharacterCountMessage() }}
       </div>
     }
@@ -64,7 +74,10 @@
 </div>
 
 <!-- Screen reader only -->
-<div [id]="`${ id }-max-length-sr`" class="govuk-character-count__sr-status govuk-visually-hidden" aria-live="polite">
+<div
+  [id]="`${id}-max-length-sr`"
+  class="govuk-character-count__sr-status govuk-visually-hidden"
+  aria-live="polite"
+>
   {{ screenReaderCharacterCountMessage | async }}
 </div>
-

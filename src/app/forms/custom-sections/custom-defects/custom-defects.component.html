@@ -8,7 +8,7 @@
         [index]="i"
         [templateName]="template().name"
         (removeCustomDefect)="handleRemoveDefect($event)"
-        />
+      />
     }
   </ng-container>
 } @else {
@@ -18,7 +18,8 @@
   }
 }
 
-
 @if (isEditing()) {
-  <app-button id="add-custom-defect" (clicked)="handleAddCustomDefect()">Add {{ defectNameType }}</app-button>
+  <app-button id="add-custom-defect" (clicked)="handleAddCustomDefect()"
+    >Add {{ defectNameType }}</app-button
+  >
 }

@@ -23,28 +23,56 @@
       @for (axle of vm.techRecord_axles; track axle) {
         @if (hasAxleChanged(axle)) {
           <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Axle {{ axle.axleNumber }}</th>
-            @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
-              <td class="govuk-table__cell">{{ axle.weights_gbWeight | defaultNullOrEmpty  }}</td>
-              <td class="govuk-table__cell">{{ $any(axle).weights_eecWeight | defaultNullOrEmpty  }}</td>
-              <td class="govuk-table__cell">{{ axle.weights_designWeight | defaultNullOrEmpty  }}</td>
+            <th scope="col" class="govuk-table__header">
+              Axle {{ axle.axleNumber }}
+            </th>
+            @if (
+              vm.techRecord_vehicleType === VehicleTypes.HGV ||
+              vm.techRecord_vehicleType === VehicleTypes.TRL
+            ) {
+              <td class="govuk-table__cell">
+                {{ axle.weights_gbWeight | defaultNullOrEmpty }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ $any(axle).weights_eecWeight | defaultNullOrEmpty }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ axle.weights_designWeight | defaultNullOrEmpty }}
+              </td>
             }
             @if (vm.techRecord_vehicleType === VehicleTypes.PSV) {
-              <td class="govuk-table__cell">{{ $any(axle).weights_kerbWeight | defaultNullOrEmpty  }}</td>
-              <td class="govuk-table__cell">{{ $any(axle).weights_ladenWeight | defaultNullOrEmpty  }}</td>
-              <td class="govuk-table__cell">{{ axle.weights_gbWeight | defaultNullOrEmpty  }}</td>
-              <td class="govuk-table__cell">{{ axle.weights_designWeight | defaultNullOrEmpty  }}</td>
+              <td class="govuk-table__cell">
+                {{ $any(axle).weights_kerbWeight | defaultNullOrEmpty }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ $any(axle).weights_ladenWeight | defaultNullOrEmpty }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ axle.weights_gbWeight | defaultNullOrEmpty }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ axle.weights_designWeight | defaultNullOrEmpty }}
+              </td>
             }
           </tr>
         }
       }
-      @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+      @if (
+        vm.techRecord_vehicleType === VehicleTypes.HGV ||
+        vm.techRecord_vehicleType === VehicleTypes.TRL
+      ) {
         @if (hasHGVOrTRLGrossAxleChanged()) {
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Gross</th>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossEecWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossGbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossEecWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty }}
+            </td>
           </tr>
         }
       }
@@ -52,10 +80,18 @@
         @if (hasPsvGrossAxleChanged()) {
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Gross</th>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossKerbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossLadenWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossGbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossKerbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossLadenWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossGbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_grossDesignWeight | defaultNullOrEmpty }}
+            </td>
           </tr>
         }
       }
@@ -63,9 +99,15 @@
         @if (hasHgvTrainAxleChanged()) {
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Train</th>
-            <td class="govuk-table__cell">{{ vm.techRecord_trainGbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_trainEecWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_trainGbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_trainEecWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty }}
+            </td>
           </tr>
         }
       }
@@ -75,8 +117,12 @@
             <th scope="col" class="govuk-table__header">Train</th>
             <td class="govuk-table__cell"></td>
             <td class="govuk-table__cell"></td>
-            <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_trainDesignWeight | defaultNullOrEmpty }}
+            </td>
           </tr>
         }
       }
@@ -84,9 +130,15 @@
         @if (hasMaxTrainAxleChanged()) {
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Max train</th>
-            <td class="govuk-table__cell">{{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_maxTrainEecWeight | defaultNullOrEmpty  }}</td>
-            <td class="govuk-table__cell">{{ vm.techRecord_maxTrainDesignWeight | defaultNullOrEmpty  }}</td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_maxTrainGbWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_maxTrainEecWeight | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell">
+              {{ vm.techRecord_maxTrainDesignWeight | defaultNullOrEmpty }}
+            </td>
           </tr>
         }
       }
@@ -96,11 +148,9 @@
     @if (tcs.hasChanged('techRecord_unladenWeight')) {
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">
-            Unladen weight
-          </dt>
+          <dt class="govuk-summary-list__key">Unladen weight</dt>
           <dd class="govuk-summary-list__value">
-            {{ vm.techRecord_unladenWeight | defaultNullOrEmpty:'kg' }}
+            {{ vm.techRecord_unladenWeight | defaultNullOrEmpty: 'kg' }}
           </dd>
         </div>
       </dl>

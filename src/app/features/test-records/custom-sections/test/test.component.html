@@ -15,7 +15,6 @@
 
     <ng-container formArrayName="testTypes">
       <ng-container formGroupName="0">
-
         @if (mode() === Modes.AMEND) {
           <!-- Created -->
           <govuk-form-group-date
@@ -71,30 +70,43 @@
 
         @if (shouldShowGenerateADRCertificate()) {
           <!-- Generate ADR Certificate -->
-          <label class="govuk-label govuk-label--m">Generate ADR Certificate</label>
-          <label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
+          <label class="govuk-label govuk-label--m"
+            >Generate ADR Certificate</label
+          >
+          <label class="govuk-label govuk-label--s">{{
+            lastCertificateDate
+          }}</label>
           <ng-container>
             <div class="govuk-hint" for="generate-cert">
-              Only press this button if you wish to generate a new certificate, otherwise fill in previous certificate details below
+              Only press this button if you wish to generate a new certificate,
+              otherwise fill in previous certificate details below
             </div>
 
-            <app-button id="submit-adr-cert-form" (clicked)="handleGenerateADRCertificateSubmit()">Generate certificate</app-button>
+            <app-button
+              id="submit-adr-cert-form"
+              (clicked)="handleGenerateADRCertificateSubmit()"
+              >Generate certificate</app-button
+            >
           </ng-container>
           @if (adrCertificateFileName(); as fileName) {
-          <div id="link-div">
-            <app-field-error-message for="view-button" [error]="adrCertificateError()"></app-field-error-message>
-            <app-button
-              id="view-button"
-              [params]="documentParams(fileName)"
-              [fileName]="fileName"
-              [documentType]="DocumentType.ADR_CERTIFICATE"
-              appRetrieveDocument
-              [loading]="true"
-              type="link"
-              design="link"
-            >View certificate</app-button
-            >
-          </div>}
+            <div id="link-div">
+              <app-field-error-message
+                for="view-button"
+                [error]="adrCertificateError()"
+              ></app-field-error-message>
+              <app-button
+                id="view-button"
+                [params]="documentParams(fileName)"
+                [fileName]="fileName"
+                [documentType]="DocumentType.ADR_CERTIFICATE"
+                appRetrieveDocument
+                [loading]="true"
+                type="link"
+                design="link"
+                >View certificate</app-button
+              >
+            </div>
+          }
         }
 
         @if (shouldShowCertificateNumber()) {
@@ -147,7 +159,9 @@
             ></govuk-form-group-date>
           }
 
-          @if (testResult()?.testTypes?.[0]?.testResult === TestResults.ABANDONED) {
+          @if (
+            testResult()?.testTypes?.[0]?.testResult === TestResults.ABANDONED
+          ) {
             <!-- Reason for abandoning -->
             <govuk-checkbox-group
               label="Reason for abandoning"
@@ -202,74 +216,93 @@
         }
         @if (shouldShowLoadStatus()) {
           <ng-container formGroupName="loadStatus">
-          <govuk-form-group-radio label="Load status" formControlName="vehicleLoadStatus">
-            <govuk-radio id="unladen" label="Unladen" [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN">
-              <govuk-form-group-select
-                class="govuk-label govuk-label--s"
-                label="Body type"
-                formControlName="unladenBodyType"
-                [width]="FORM_NODE_WIDTH.L"
-                [options]="UNLADEN_BODY_TYPES_OPTIONS"
-              />
-
-              @if (form.get('testTypes.0.loadStatus.unladenBodyType')?.value === UNLADEN_BODY_TYPES.OTHER) {
-                <govuk-form-group-input
+            <govuk-form-group-radio
+              label="Load status"
+              formControlName="vehicleLoadStatus"
+            >
+              <govuk-radio
+                id="unladen"
+                label="Unladen"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.UNLADEN"
+              >
+                <govuk-form-group-select
                   class="govuk-label govuk-label--s"
-                  label="Enter body type"
-                  formControlName="otherUnladenBodyType"
-                  [width]="FORM_NODE_WIDTH.XL"
+                  label="Body type"
+                  formControlName="unladenBodyType"
+                  [width]="FORM_NODE_WIDTH.L"
+                  [options]="UNLADEN_BODY_TYPES_OPTIONS"
                 />
-              }
 
-              <govuk-form-group-select
-                class="govuk-label govuk-label--s"
-                label="Reason for not loading"
-                formControlName="reasonForNotLoading"
-                [width]="FORM_NODE_WIDTH.L"
-                [options]="REASON_FOR_NOT_LOADING_OPTIONS"
-              />
+                @if (
+                  form.get('testTypes.0.loadStatus.unladenBodyType')?.value ===
+                  UNLADEN_BODY_TYPES.OTHER
+                ) {
+                  <govuk-form-group-input
+                    class="govuk-label govuk-label--s"
+                    label="Enter body type"
+                    formControlName="otherUnladenBodyType"
+                    [width]="FORM_NODE_WIDTH.XL"
+                  />
+                }
 
-              @if (form.get('testTypes.0.loadStatus.reasonForNotLoading')?.value === REASONS_FOR_NOT_LOADING.OTHER) {
+                <govuk-form-group-select
+                  class="govuk-label govuk-label--s"
+                  label="Reason for not loading"
+                  formControlName="reasonForNotLoading"
+                  [width]="FORM_NODE_WIDTH.L"
+                  [options]="REASON_FOR_NOT_LOADING_OPTIONS"
+                />
+
+                @if (
+                  form.get('testTypes.0.loadStatus.reasonForNotLoading')
+                    ?.value === REASONS_FOR_NOT_LOADING.OTHER
+                ) {
+                  <govuk-form-group-textarea
+                    class="govuk-label govuk-label--s"
+                    label="Enter reason for not loading"
+                    formControlName="otherReasonForNotLoading"
+                    [width]="FORM_NODE_WIDTH.XXL"
+                    [maxLength]="200"
+                  />
+                }
+              </govuk-radio>
+
+              <govuk-radio
+                id="partially-laden"
+                label="Partially laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN"
+              >
                 <govuk-form-group-textarea
                   class="govuk-label govuk-label--s"
-                  label="Enter reason for not loading"
-                  formControlName="otherReasonForNotLoading"
+                  label="Why is the vehicle partially laden?"
+                  formControlName="partiallyLadenReason"
                   [width]="FORM_NODE_WIDTH.XXL"
                   [maxLength]="200"
                 />
-              }
-            </govuk-radio>
-
-            <govuk-radio id="partially-laden" label="Partially laden" [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN">
-              <govuk-form-group-textarea
-                class="govuk-label govuk-label--s"
-                label="Why is the vehicle partially laden?"
-                formControlName="partiallyLadenReason"
-                [width]="FORM_NODE_WIDTH.XXL"
-                [maxLength]="200"
+              </govuk-radio>
+              <govuk-radio
+                id="partially-laden-50-to-65"
+                label="Partially laden 50% to 65%"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65"
               />
-            </govuk-radio>
-            <govuk-radio
-              id="partially-laden-50-to-65"
-              label="Partially laden 50% to 65%"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.PARTIALLY_LADEN_50_TO_65"
-            />
-            <govuk-radio
-              id="fully-laden"
-              label="Fully laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN"
-            />
-            <govuk-radio
-              id="load-simulated-partially-laden"
-              label="Load simulated partially laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN"
-            />
-            <govuk-radio
-              id="load-simulated-fully-laden"
-              label="Load simulated fully laden"
-              [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN"
-            />
-          </govuk-form-group-radio>
+              <govuk-radio
+                id="fully-laden"
+                label="Fully laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.FULLY_LADEN"
+              />
+              <govuk-radio
+                id="load-simulated-partially-laden"
+                label="Load simulated partially laden"
+                [value]="
+                  VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_PARTIALLY_LADEN
+                "
+              />
+              <govuk-radio
+                id="load-simulated-fully-laden"
+                label="Load simulated fully laden"
+                [value]="VEHICLE_LOAD_STATUS_TYPES.LOAD_SIMULATED_FULLY_LADEN"
+              />
+            </govuk-form-group-radio>
           </ng-container>
         }
       </ng-container>
@@ -278,134 +311,290 @@
     @if (testResult(); as testResult) {
       <table class="govuk-table">
         <tbody class="govuk-table__body">
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
+          @if (
+            mode() === Modes.VIEW ||
+            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)
+          ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Created:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-createdAt">
-                {{ testResult.createdAt | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-createdAt"
+              >
+                {{
+                  testResult.createdAt
+                    | date: 'dd/MM/yyyy' : 'UTC'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
-                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty }}
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeStartTimestamp"
+              >
+                {{
+                  testResult.testTypes[0].testTypeStartTimestamp
+                    | date: 'dd/MM/yyyy' : 'UTC'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Test Code:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testCode">
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testCode"
+              >
                 {{ testResult.testTypes[0].testCode | defaultNullOrEmpty }}
               </td>
             </tr>
           }
           @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Contingency Test Number:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-contingencyTestNumber">
-                {{ testResult.contingencyTestNumber| defaultNullOrEmpty  }}
+              <td class="govuk-table__header" style="width: 30%">
+                Contingency Test Number:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-contingencyTestNumber"
+              >
+                {{ testResult.contingencyTestNumber | defaultNullOrEmpty }}
               </td>
             </tr>
           }
-          @if ((mode() === Modes.VIEW || (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) && shouldShowCentralDocs()) {
+          @if (
+            (mode() === Modes.VIEW ||
+              (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) &&
+            shouldShowCentralDocs()
+          ) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Issue documents centrally:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-issueRequired">
-                {{ testResult.testTypes[0].centralDocs?.issueRequired ? 'Yes' : 'No' }}
+              <td class="govuk-table__header" style="width: 30%">
+                Issue documents centrally:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-issueRequired"
+              >
+                {{
+                  testResult.testTypes[0].centralDocs?.issueRequired
+                    ? 'Yes'
+                    : 'No'
+                }}
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) || (isTestTypeGroup7() && mode() === Modes.SUMMARY)) {
+          @if (
+            mode() === Modes.VIEW ||
+            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) ||
+            (isTestTypeGroup7() && mode() === Modes.SUMMARY)
+          ) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Description:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeName">
+              <td class="govuk-table__header" style="width: 30%">
+                Description:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeName"
+              >
                 {{ testResult.testTypes[0].testTypeName | defaultNullOrEmpty }}
               </td>
             </tr>
           }
           @if (isTestTypeGroup7() && mode() === Modes.SUMMARY) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Certificate number:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-certificateNumber">
-                {{ testResult.testTypes[0].certificateNumber | defaultNullOrEmpty }}
+              <td class="govuk-table__header" style="width: 30%">
+                Certificate number:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-certificateNumber"
+              >
+                {{
+                  testResult.testTypes[0].certificateNumber | defaultNullOrEmpty
+                }}
               </td>
             </tr>
           }
-          @if (isTestTypeGroup7() && mode() === Modes.SUMMARY && initialMode() === Modes.EDIT) {
+          @if (
+            isTestTypeGroup7() &&
+            mode() === Modes.SUMMARY &&
+            initialMode() === Modes.EDIT
+          ) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
-                {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+              <td class="govuk-table__header" style="width: 30%">
+                Expiry Date:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testExpiryDate"
+              >
+                {{
+                  testResult.testTypes[0].testExpiryDate
+                    | date: 'dd/MM/yyyy' : 'UTC'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
           }
-          @if (mode() === Modes.VIEW || (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)) {
+          @if (
+            mode() === Modes.VIEW ||
+            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)
+          ) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Test Number:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testNumber">
+              <td class="govuk-table__header" style="width: 30%">
+                Test Number:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testNumber"
+              >
                 {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
               </td>
             </tr>
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Expiry Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testExpiryDate">
-                {{ testResult.testTypes[0].testExpiryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+              <td class="govuk-table__header" style="width: 30%">
+                Expiry Date:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testExpiryDate"
+              >
+                {{
+                  testResult.testTypes[0].testExpiryDate
+                    | date: 'dd/MM/yyyy' : 'UTC'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Anniversary Date:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testAnniversaryDate">
-                {{ testResult.testTypes[0].testAnniversaryDate | date: 'dd/MM/yyyy': 'UTC' | defaultNullOrEmpty  }}
+              <td class="govuk-table__header" style="width: 30%">
+                Anniversary Date:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testAnniversaryDate"
+              >
+                {{
+                  testResult.testTypes[0].testAnniversaryDate
+                    | date: 'dd/MM/yyyy' : 'UTC'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             @if (testResult.testTypes[0].testResult === TestResults.ABANDONED) {
               <tr class="govuk-table__row">
-                <td class="govuk-table__header" style="width: 30%">Reason for abandoning:</td>
-                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-reasonForAbandoning">
-                  @for (reason of getReasonsList(testResult.testTypes[0].reasonForAbandoning); track reason) {
-                   <p class="govuk-body" [id]="`test-reasonForAbandoning-${$index}`">{{ reason }}</p>
+                <td class="govuk-table__header" style="width: 30%">
+                  Reason for abandoning:
+                </td>
+                <td
+                  class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                  id="test-reasonForAbandoning"
+                >
+                  @for (
+                    reason of getReasonsList(
+                      testResult.testTypes[0].reasonForAbandoning
+                    );
+                    track reason
+                  ) {
+                    <p
+                      class="govuk-body"
+                      [id]="`test-reasonForAbandoning-${$index}`"
+                    >
+                      {{ reason }}
+                    </p>
                   }
                 </td>
               </tr>
               <tr class="govuk-table__row">
-                <td class="govuk-table__header" style="width: 30%">Additional details for abandoning:</td>
-                <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-additionalCommentsForAbandon">
-                  {{ testResult.testTypes[0].additionalCommentsForAbandon | defaultNullOrEmpty }}
+                <td class="govuk-table__header" style="width: 30%">
+                  Additional details for abandoning:
+                </td>
+                <td
+                  class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                  id="test-additionalCommentsForAbandon"
+                >
+                  {{
+                    testResult.testTypes[0].additionalCommentsForAbandon
+                      | defaultNullOrEmpty
+                  }}
                 </td>
               </tr>
             }
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Start time:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
-                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
+              <td class="govuk-table__header" style="width: 30%">
+                Start time:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeStartTimestamp"
+              >
+                {{
+                  testResult.testTypes[0].testTypeStartTimestamp
+                    | date: 'HH:mm'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">End time:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
-                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'HH:mm' | defaultNullOrEmpty }}
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeEndTimestamp"
+              >
+                {{
+                  testResult.testTypes[0].testTypeEndTimestamp
+                    | date: 'HH:mm'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
           }
           @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Test start date and time:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeStartTimestamp">
-                {{ testResult.testTypes[0].testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+              <td class="govuk-table__header" style="width: 30%">
+                Test start date and time:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeStartTimestamp"
+              >
+                {{
+                  testResult.testTypes[0].testTypeStartTimestamp
+                    | date: 'dd/MM/yyyy HH:mm'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Test end date and time:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testTypeEndTimestamp">
-                {{ testResult.testTypes[0].testTypeEndTimestamp | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+              <td class="govuk-table__header" style="width: 30%">
+                Test end date and time:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-testTypeEndTimestamp"
+              >
+                {{
+                  testResult.testTypes[0].testTypeEndTimestamp
+                    | date: 'dd/MM/yyyy HH:mm'
+                    | defaultNullOrEmpty
+                }}
               </td>
             </tr>
           }
           @if (isTestTypeGroup7()) {
-
             <tr class="govuk-table__row">
-              <td class="govuk-table__header" style="width: 30%">Prohibition issued:</td>
-              <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-prohibitionIssued">
-                {{ testResult.testTypes[0].prohibitionIssued | defaultNullOrEmpty }}
+              <td class="govuk-table__header" style="width: 30%">
+                Prohibition issued:
+              </td>
+              <td
+                class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+                id="test-prohibitionIssued"
+              >
+                {{
+                  testResult.testTypes[0].prohibitionIssued | defaultNullOrEmpty
+                }}
               </td>
             </tr>
           }
@@ -419,13 +608,18 @@
                 {{ loadStatus?.vehicleLoadStatus | defaultNullOrEmpty }}
               </td>
             </tr>
-            @if (loadStatus?.vehicleLoadStatus === VEHICLE_LOAD_STATUS_TYPES.UNLADEN) {
+            @if (
+              loadStatus?.vehicleLoadStatus ===
+              VEHICLE_LOAD_STATUS_TYPES.UNLADEN
+            ) {
               <tr class="govuk-table__row">
                 <td scope="row" class="govuk-table__header" style="width: 30%">
                   Body type:
                 </td>
                 <td class="govuk-table__cell" id="test-unladenBodyType">
-                  @if (loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER) {
+                  @if (
+                    loadStatus?.unladenBodyType === UNLADEN_BODY_TYPES.OTHER
+                  ) {
                     {{ loadStatus?.otherUnladenBodyType | defaultNullOrEmpty }}
                   } @else {
                     {{ loadStatus?.unladenBodyType | defaultNullOrEmpty }}
@@ -437,8 +631,13 @@
                   Reason for not loading:
                 </td>
                 <td class="govuk-table__cell" id="test-reasonForNotLoading">
-                  @if (loadStatus?.reasonForNotLoading === REASONS_FOR_NOT_LOADING.OTHER) {
-                    {{ loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty }}
+                  @if (
+                    loadStatus?.reasonForNotLoading ===
+                    REASONS_FOR_NOT_LOADING.OTHER
+                  ) {
+                    {{
+                      loadStatus?.otherReasonForNotLoading | defaultNullOrEmpty
+                    }}
                   } @else {
                     {{ loadStatus?.reasonForNotLoading | defaultNullOrEmpty }}
                   }

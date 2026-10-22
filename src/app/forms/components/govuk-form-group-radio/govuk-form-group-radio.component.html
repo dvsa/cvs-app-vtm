@@ -1,4 +1,10 @@
-<div [id]="id" [ngClass]="{ 'govuk-form-group': true, 'govuk-form-group--error': hasError && errorMode() === 'group' }">
+<div
+  [id]="id"
+  [ngClass]="{
+    'govuk-form-group': true,
+    'govuk-form-group--error': hasError && errorMode() === 'group',
+  }"
+>
   <fieldset class="govuk-fieldset" role="group">
     <legend class="govuk-fieldset__legend">
       <div class="govuk-fieldset__heading tags">
@@ -61,14 +67,16 @@
             />
             <label
               class="govuk-radios__label govuk-label"
-              id="{{getId(option)}}-label"
-              for="{{getId(option)}}-radio"
+              id="{{ getId(option) }}-label"
+              for="{{ getId(option) }}-radio"
             >
               {{ option.label }}
             </label>
 
             @if (option.hint) {
-              <div class="govuk--radios__hint govuk-hint govuk-!-padding-left-3">
+              <div
+                class="govuk--radios__hint govuk-hint govuk-!-padding-left-3"
+              >
                 {{ option.hint }}
               </div>
             }

@@ -10,11 +10,11 @@
     ) {
       @if (searchResults.length) {
         @if (pagination.paginationOptions(); as page) {
-        <app-search-form
-          class="search-form"
-          [pagination]="page"
-          [searchResults]="searchResults.length"
-        ></app-search-form>
+          <app-search-form
+            class="search-form"
+            [pagination]="page"
+            [searchResults]="searchResults.length"
+          ></app-search-form>
 
           @for (
             searchResult of searchResults.slice(page.start, page.end);

@@ -1,4 +1,8 @@
-<ng-container *ngIf="isEditing(); else view" [ngSwitch]="type()" [formGroup]="form()">
+<ng-container
+  *ngIf="isEditing(); else view"
+  [ngSwitch]="type()"
+  [formGroup]="form()"
+>
   <app-autocomplete
     *ngSwitchCase="types.AUTOCOMPLETE"
     [formControlName]="name()"
@@ -12,15 +16,17 @@
     <ng-template *ngIf="prefix()" appPrefix>{{ prefix() }}</ng-template>
   </app-autocomplete>
 
-  <app-checkbox *ngSwitchCase="types.CHECKBOX"
+  <app-checkbox
+    *ngSwitchCase="types.CHECKBOX"
     [formControlName]="name()"
     [name]="name()"
     [label]="label()"
     [customId]="customId()"
     [noBottomMargin]="true"
-   />
+  />
 
-  <app-checkbox-group *ngSwitchCase="types.CHECKBOXGROUP"
+  <app-checkbox-group
+    *ngSwitchCase="types.CHECKBOXGROUP"
     [formControlName]="name()"
     [name]="name()"
     [label]="label()"
@@ -28,20 +34,21 @@
     [options]="options()!"
     [delimited]="delimiter"
     [noBottomMargin]="true"
-   />
+  />
 
   <ng-template *ngSwitchCase="types.DATE" [ngTemplateOutlet]="date" />
 
   <ng-template *ngSwitchCase="types.DATETIME" [ngTemplateOutlet]="date" />
 
   <ng-template #date>
-    <app-date [formControlName]="name()"
+    <app-date
+      [formControlName]="name()"
       [name]="name()"
       [label]="label()"
       [width]="width()"
       [displayTime]="type() === types.DATETIME"
       [noBottomMargin]="true"
-     />
+    />
   </ng-template>
 
   <app-number-input
@@ -57,16 +64,18 @@
     <ng-template *ngIf="suffix()" appSuffix>{{ suffix() }}</ng-template>
   </app-number-input>
 
-  <app-radio-group *ngSwitchCase="types.RADIO"
+  <app-radio-group
+    *ngSwitchCase="types.RADIO"
     [formControlName]="name()"
     [name]="name()"
     [label]="label()"
     [width]="width()"
     [options]="options()!"
     [noBottomMargin]="true"
-   />
+  />
 
-  <app-select *ngSwitchCase="types.DROPDOWN"
+  <app-select
+    *ngSwitchCase="types.DROPDOWN"
     [formControlName]="name()"
     [name]="name()"
     [label]="label()"
@@ -74,15 +83,16 @@
     [options]="options()!"
     [noBottomMargin]="true"
     [customId]="customId()"
-   />
+  />
 
-  <app-text-area *ngSwitchCase="types.TEXTAREA"
+  <app-text-area
+    *ngSwitchCase="types.TEXTAREA"
     [formControlName]="name()"
     [name]="name()"
     [label]="label()"
     [width]="width()"
     [noBottomMargin]="true"
-   />
+  />
 
   <app-text-input
     *ngSwitchDefault
@@ -99,10 +109,11 @@
 </ng-container>
 
 <ng-template #view [formGroup]="form()">
-  <app-read-only [formControlName]="name()"
+  <app-read-only
+    [formControlName]="name()"
     [label]="label()"
     [name]="idExtension() ? name() + '-' + idExtension() : name()"
     [readOnlySuffix]="suffix()"
     [date]="readOnlyDate()"
-   />
+  />
 </ng-template>

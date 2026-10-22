@@ -10,8 +10,14 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-error-message
+    [error]="warning()"
+    [name]="name()"
+  ></app-field-error-message>
   <div [class]="innerStyle">
     @if (prefix(); as prefix) {
       <div class="govuk-input__suffix prefix" aria-hidden="true">
@@ -22,7 +28,12 @@
     <select [id]="name()">
       <option value=""></option>
       @for (option of options; track option) {
-        <option [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
+        <option
+          [value]="option.value"
+          [selected]="option.value === control?.value"
+        >
+          {{ option.label }}
+        </option>
       }
     </select>
   </div>

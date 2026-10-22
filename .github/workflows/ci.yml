@@ -69,6 +69,9 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: 📝 Check formatting
+        run: npm run format:check
+
   audit:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

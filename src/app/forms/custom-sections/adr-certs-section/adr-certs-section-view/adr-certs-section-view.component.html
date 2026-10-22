@@ -4,26 +4,38 @@
       ADR Certificates History
     </caption>
     <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Time Generated</th>
-      <th scope="col" class="govuk-table__header">Created By</th>
-      <th scope="col" class="govuk-table__header">Certificate Type</th>
-      <th scope="col" class="govuk-table__header">Certificate Link</th>
-    </tr>
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Time Generated</th>
+        <th scope="col" class="govuk-table__header">Created By</th>
+        <th scope="col" class="govuk-table__header">Certificate Type</th>
+        <th scope="col" class="govuk-table__header">Certificate Link</th>
+      </tr>
     </thead>
     <tbody class="govuk-table__body">
       @for (certificate of adrCertificateHistory; track i; let i = $index) {
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-generated-timestamp-' + i">
-            {{ certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+          <td
+            class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line"
+            [id]="'adr-generated-timestamp-' + i"
+          >
+            {{ certificate.generatedTimestamp | date: 'dd/MM/yyyy HH:mm' }}
           </td>
-          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-created-by-name-' + i">
+          <td
+            class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line"
+            [id]="'adr-created-by-name-' + i"
+          >
             {{ certificate.createdByName }}
           </td>
-          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-certificate-type-' + i">
+          <td
+            class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line"
+            [id]="'adr-certificate-type-' + i"
+          >
             {{ certificate.certificateType }}
           </td>
-          <td class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line" [id]="'adr-view-certificate-link-' + i">
+          <td
+            class="govuk-table__cell govuk-!-text-break-word whitespace-pre-line"
+            [id]="'adr-view-certificate-link-' + i"
+          >
             <a
               href="javascript:void(0)"
               class="govuk-link govuk-link--no-visited-state"
@@ -56,10 +68,13 @@
   <div class="govuk-button-group">
     <a
       id="generate-adr-cert"
-      *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
+      *appRoleRequired="[
+        roles.TestResultCreateContingency,
+        roles.TestResultCreateDeskAssessment,
+      ]"
       class="govuk-button"
       (click)="validateADRDetailsAndNavigate()"
-    >Generate an ADR Certificate for this vehicle</a
+      >Generate an ADR Certificate for this vehicle</a
     >
   </div>
 }

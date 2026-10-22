@@ -3,27 +3,52 @@
     @if (mode() === Modes.SUMMARY) {
       <app-banner>
         <ng-container title>Important</ng-container>
-        <ng-container content>Check your answers before submitting the test</ng-container>
+        <ng-container content
+          >Check your answers before submitting the test</ng-container
+        >
       </app-banner>
     }
 
-    @if (mode() === Modes.EDIT || mode() === Modes.VIEW || mode() === Modes.SUMMARY || mode() === Modes.AMEND) {
+    @if (
+      mode() === Modes.EDIT ||
+      mode() === Modes.VIEW ||
+      mode() === Modes.SUMMARY ||
+      mode() === Modes.AMEND
+    ) {
       <app-vehicle-header
         [isEditing]="mode() === Modes.EDIT || mode() === Modes.AMEND"
         [isReview]="mode() === Modes.SUMMARY"
         [testResult]="testResult()"
         [testNumber]="testNumber()"
       >
-        @if (testResult()?.testStatus !== statuses.CANCELLED && mode() === Modes.VIEW) {
+        @if (
+          testResult()?.testStatus !== statuses.CANCELLED &&
+          mode() === Modes.VIEW
+        ) {
           <app-button-group class="page-actions">
             <ng-container *appRoleRequired="roles.TestResultAmend">
               @if (isTestTypeGroupEditable$ | async) {
-                <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
-                <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
+                <app-button
+                  id="amend-test"
+                  type="link"
+                  design="secondary"
+                  [routerLink]="['amend-test']"
+                  >Amend</app-button
+                >
+                <app-button
+                  id="cancel-test"
+                  type="link"
+                  design="warning"
+                  [routerLink]="['cancel-test']"
+                  >Cancel</app-button
+                >
               } @else {
                 <app-banner>
                   <ng-container title>Important</ng-container>
-                  <ng-container content>Editing this record is not currently supported</ng-container>
+                  <ng-container content
+                    >Editing this record is not currently
+                    supported</ng-container
+                  >
                 </app-banner>
               }
             </ng-container>
@@ -31,7 +56,9 @@
         }
       </app-vehicle-header>
 
-      <app-accordion-control [isExpanded]="!(mode() === Modes.AMEND || mode() === Modes.VIEW)">
+      <app-accordion-control
+        [isExpanded]="!(mode() === Modes.AMEND || mode() === Modes.VIEW)"
+      >
         <ng-template #template>
           @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
@@ -44,13 +71,12 @@
               </form>
             </app-accordion>
           }
-          <app-accordion
-            [id]="'test'"
-            [title]="'Test'"
-            [description]="''"
-          >
+          <app-accordion [id]="'test'" [title]="'Test'" [description]="''">
             <form ngNoForm>
-              <app-test [mode]="mode()" [initialMode]="initialMode()"></app-test>
+              <app-test
+                [mode]="mode()"
+                [initialMode]="initialMode()"
+              ></app-test>
             </form>
           </app-accordion>
           @if (shouldShowSeatbeltSection()) {
@@ -64,20 +90,12 @@
               </form>
             </app-accordion>
           }
-          <app-accordion
-            [id]="'visit'"
-            [title]="'Visit'"
-            [description]="''"
-          >
+          <app-accordion [id]="'visit'" [title]="'Visit'" [description]="''">
             <form ngNoForm>
               <app-test-visit [mode]="mode()"></app-test-visit>
             </form>
           </app-accordion>
-          <app-accordion
-            [id]="'notes'"
-            [title]="'Notes'"
-            [description]="''"
-          >
+          <app-accordion [id]="'notes'" [title]="'Notes'" [description]="''">
             <form ngNoForm>
               <app-test-notes [mode]="mode()"></app-test-notes>
             </form>
@@ -94,7 +112,10 @@
             </app-accordion>
           }
           @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
-            <app-test-amendment-history class="section" [testRecord]="testResult()" />
+            <app-test-amendment-history
+              class="section"
+              [testRecord]="testResult()"
+            />
           }
           @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
             <app-accordion
@@ -103,7 +124,9 @@
               [description]="''"
             >
               <form ngNoForm>
-                <app-test-reason-for-creation [mode]="mode()"></app-test-reason-for-creation>
+                <app-test-reason-for-creation
+                  [mode]="mode()"
+                ></app-test-reason-for-creation>
               </form>
             </app-accordion>
           }
@@ -119,41 +142,87 @@
     }
 
     @if (mode() === Modes.CANCEL) {
-      <app-vehicle-header [isEditing]="true" [testResult]="testResult()" [testNumber]="testNumber()" />
-      <h1 class="govuk-heading-l">Are you sure you want to cancel these changes?</h1>
-      <p class="govuk-heading-s">You will lose all the changes you made to the technical record in this session.</p>
+      <app-vehicle-header
+        [isEditing]="true"
+        [testResult]="testResult()"
+        [testNumber]="testNumber()"
+      />
+      <h1 class="govuk-heading-l">
+        Are you sure you want to cancel these changes?
+      </h1>
+      <p class="govuk-heading-s">
+        You will lose all the changes you made to the technical record in this
+        session.
+      </p>
     }
 
     @if (initialMode() === Modes.EDIT) {
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+      <hr
+        class="govuk-section-break govuk-section-break--l govuk-section-break--visible"
+      />
     }
 
     <app-button-group>
       @if (mode() === Modes.EDIT) {
-        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
+        <app-button id="review-test-result" (clicked)="onReview()"
+          >Review</app-button
+        >
         @if (testTypeService.isTestTypeAbandonable(testTypeId())) {
-          <app-button id="abandon-test-result" [design]="'secondary'" (clicked)="onMarkAsAbandoned()">Mark as abandoned</app-button>
+          <app-button
+            id="abandon-test-result"
+            [design]="'secondary'"
+            (clicked)="onMarkAsAbandoned()"
+            >Mark as abandoned</app-button
+          >
         }
       }
 
       @if (mode() === Modes.AMEND) {
-        <app-button id="review-test-result" (clicked)="onReview()">Review</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel(Modes.CANCEL)">Cancel</app-button>
+        <app-button id="review-test-result" (clicked)="onReview()"
+          >Review</app-button
+        >
+        <app-button id="cancel" design="link" (clicked)="onCancel(Modes.CANCEL)"
+          >Cancel</app-button
+        >
       }
 
       @if (mode() === Modes.SUMMARY) {
-        <app-button id="save-test-result" (clicked)="onSubmit()">Accept and send</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
+        <app-button id="save-test-result" (clicked)="onSubmit()"
+          >Accept and send</app-button
+        >
+        <app-button
+          id="cancel"
+          design="link"
+          (clicked)="onCancel(initialMode())"
+          >Cancel</app-button
+        >
       }
 
       @if (mode() === Modes.ABANDON) {
-        <app-button id="abandon-test-result" (clicked)="onAbandon()">Confirm and save</app-button>
-        <app-button id="cancel" design="link" (clicked)="onCancel(initialMode())">Cancel</app-button>
+        <app-button id="abandon-test-result" (clicked)="onAbandon()"
+          >Confirm and save</app-button
+        >
+        <app-button
+          id="cancel"
+          design="link"
+          (clicked)="onCancel(initialMode())"
+          >Cancel</app-button
+        >
       }
 
       @if (mode() === Modes.CANCEL) {
-        <app-button id="confirm-cancel-amend" design="warning" (clicked)="onConfirmCancel()">Cancel changes</app-button>
-        <app-button id="retract-cancel-amend" design="link" (clicked)="onCancel(initialMode())">Back</app-button>
+        <app-button
+          id="confirm-cancel-amend"
+          design="warning"
+          (clicked)="onConfirmCancel()"
+          >Cancel changes</app-button
+        >
+        <app-button
+          id="retract-cancel-amend"
+          design="link"
+          (clicked)="onCancel(initialMode())"
+          >Back</app-button
+        >
       }
     </app-button-group>
   </div>
