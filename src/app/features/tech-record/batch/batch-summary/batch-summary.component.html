@@ -32,9 +32,7 @@
           {{ batchVehicleTypeDescriptor() }} technical records.
         </h3>
         <p class="govuk-body">
-          {{
-            (batchSize - batchPendingCount()) / batchSize | percent
-          }}
+          {{ (batchSize - batchPendingCount()) / batchSize | percent }}
           complete.
         </p>
       </ng-container>
