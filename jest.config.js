@@ -16,7 +16,7 @@ module.exports = {
 	testMatch: ['**/+(*.)+(spec).+(ts)'],
 	setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
 	collectCoverage: true,
-	transformIgnorePatterns: ['node_modules/(?!(uuid|.*\\.mjs$))'],
+	transformIgnorePatterns: ['node_modules/(?!(uuid|lodash-es|.*\\.mjs$))'],
 	coverageDirectory: 'coverage/cvs-app-vtm',
 	testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/', ...fileListToExclude],
 	coveragePathIgnorePatterns: ['/src/mocks/', '/src/app/api/', ...fileListToExclude],
@@ -26,6 +26,5 @@ module.exports = {
 		...pathsToModuleNameMapper(compilerOptions.paths || {}, {
 			prefix: '<rootDir>/',
 		}),
-		'@sentry/angular-ivy': '<rootDir>/node_modules/@sentry/angular-ivy/bundles/sentry-angular-ivy.umd.js',
 	},
 };

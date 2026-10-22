@@ -18,7 +18,7 @@ import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';

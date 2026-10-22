@@ -2,7 +2,7 @@ import { Injectable, computed, inject } from '@angular/core';
 import { TechRecordType as TechRecordTypeVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { Store } from '@ngrx/store';
 import { editingTechRecord, techRecord } from '@store/technical-records';
-import { get, isEqual } from 'lodash';
+import { get, isEqual } from 'lodash-es';
 import { VehicleTypes } from '../../models/vehicle-tech-record.model';
 import { FeatureFlags, FeatureToggleService } from '../feature-toggle-service/feature-toggle-service';
 

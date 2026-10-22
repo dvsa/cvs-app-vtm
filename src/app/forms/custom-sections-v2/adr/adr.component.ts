@@ -50,7 +50,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
-import _ from 'lodash';
+import { indexOf } from 'lodash-es';
 import { getOptionsFromEnum } from '../../utils/enum-map';
 
 @Component({
@@ -566,7 +566,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 			arr.push(
 				this.fb.control<string | null>(null, [
 					this.commonValidators.maxLength(1500, (control) => {
-						const index = _.indexOf(arr.controls, control);
+						const index = indexOf(arr.controls, control);
 						return {
 							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,

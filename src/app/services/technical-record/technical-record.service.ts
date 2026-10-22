@@ -33,7 +33,7 @@ import {
 	updateEditingTechRecord,
 	updateEditingTechRecordCancel,
 } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import {
 	Observable,
 	catchError,

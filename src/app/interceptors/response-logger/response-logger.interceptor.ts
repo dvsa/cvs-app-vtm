@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { CompressionService } from '@services/compression/compression.service';
 import { LogsProvider } from '@services/logs/logs.service';
 import { id } from '@store/user/user-service.reducer';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { version } from '../../../../package.json';
 

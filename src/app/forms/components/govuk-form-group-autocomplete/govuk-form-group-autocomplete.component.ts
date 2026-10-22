@@ -12,12 +12,10 @@ import {
 	output,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { loadAccessibleAutocomplete } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOptions } from '@models/options.model';
-import {
-	AutocompleteEnhanceParams,
-	enhanceSelectElement,
-} from 'accessible-autocomplete/dist/accessible-autocomplete.min';
+import type { AutocompleteEnhanceParams } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
 import { TagComponent } from '../../../components/tag/tag.component';
 @Component({
@@ -54,12 +52,13 @@ export class GovukFormGroupAutocompleteComponent
 	multiOptions: MultiOptions = [];
 
 	destroy = new ReplaySubject<boolean>(1);
+	private isDestroyed = false;
 	valueSub = new BehaviorSubject<unknown>(null);
 
 	ngAfterViewInit(): void {
 		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
 			.pipe(takeUntil(this.destroy))
-			.subscribe(([options, latest]) => {
+			.subscribe(async ([options, latest]) => {
 				this.multiOptions = Array.isArray(options)
 					? options.map((option) => (typeof option === 'string' ? { label: option, value: option } : option))
 					: [];
@@ -88,6 +87,9 @@ export class GovukFormGroupAutocompleteComponent
 
 				const selectEl = enhanceParams.selectElement as HTMLSelectElement | null;
 				if (this.multiOptions.length > 0 && selectEl?.options?.length) {
+					const { enhanceSelectElement } = await loadAccessibleAutocomplete();
+					// the component may have been destroyed while the library was loading
+					if (this.isDestroyed) return;
 					enhanceSelectElement(enhanceParams);
 				}
 
@@ -103,6 +105,7 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	ngOnDestroy(): void {
+		this.isDestroyed = true;
 		this.destroy.next(true);
 		this.destroy.complete();
 	}
