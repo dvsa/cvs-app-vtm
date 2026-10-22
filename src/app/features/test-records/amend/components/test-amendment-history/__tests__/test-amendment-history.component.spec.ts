@@ -95,7 +95,9 @@ describe('TestAmendmentHistoryComponent', () => {
 				const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
 				expect(rows[0]).toBeTruthy();
 				const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-				expect(cells[0].nativeElement.innerHTML.trim()).toBe(pipe.transform(component.testRecord()?.reasonForCreation).trim());
+				expect(cells[0].nativeElement.innerHTML.trim()).toBe(
+					pipe.transform(component.testRecord()?.reasonForCreation).trim()
+				);
 				expect(cells[1].nativeElement.innerHTML.trim()).toBe(component.testRecord()?.createdByName?.trim());
 				expect(cells[2].nativeElement.innerHTML.trim()).toBe(
 					formatDate(component.testRecord()?.createdAt as string, 'MMM d, yyyy', 'en').trim()
