@@ -4,8 +4,8 @@
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
-    "node": "24.15.*",
-    "npm": "11.12.*"
+    "node": "24.22.*",
+    "npm": "11.19.*"
   },
   "scripts": {
     "ng": "ng",
@@ -17,6 +17,8 @@
     "build": "ng build --optimization --progress --aot",
     "watch": "ng build --watch",
     "security-checks": "git secrets --scan && git secrets --register-aws && git log -p --diff-filter=d -- . ':!*.json' -n 100 | scanrepo",
+    "format": "bun fmt \"src/**/*.html\"",
+    "format:check": "bun fmt --check \"src/**/*.html\"",
     "lint": "biome check src",
     "lint:fix": "npm run lint -- --write",
     "test": "jest --colors --maxWorkers=50% --coverage",
@@ -83,7 +85,7 @@
     "@dvsa/biome-config": "0.2.0",
     "@ngrx/schematics": "^22.0.0",
     "@sentry/cli": "^2.32.2",
-    "@types/bun": "^1.4.2",
+    "@types/bun": "^1.4.3",
     "@types/jest": "^29.5.14",
     "@types/json-server": "^0.14.7",
     "@types/lodash.clonedeep": "^4.5.9",
@@ -91,7 +93,7 @@
     "@types/node": "^24.13.1",
     "@types/uuid": "^9.0.8",
     "babel-loader": "^9.1.3",
-    "bun": "^1.4.2",
+    "bun": "^1.4.4",
     "commitlint-plugin-function-rules": "^3.1.0",
     "husky": "^9.0.11",
     "jest": "^30.3.0",
@@ -122,13 +124,14 @@
       "@ngrx/store": "$@ngrx/store"
     },
     "qs": "^6.16.0",
-    "fast-uri": "^4.1.4",
+    "fast-uri": "^4.2.3",
     "multer": "^2.3.0",
     "brace-expansion": "^5.0.9",
     "js-yaml": "^4.2.0"
   },
   "lint-staged": {
-    "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched"
+    "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched",
+    "src/**/*.html": "npm run format:check"
   },
   "jestSonar": {
     "reportPath": "./coverage",

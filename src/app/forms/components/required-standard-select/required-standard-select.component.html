@@ -15,7 +15,7 @@
                 [attr.aria-expanded]="selected"
                 [ngClass]="{ 'list__item--active': selected }"
                 (click)="handleSelect(type, types.InspectionType)"
-                >
+              >
                 {{ type | defaultNullOrEmpty }}
               </a>
             </li>
@@ -23,7 +23,14 @@
         </ol>
       </div>
     }
-    <div class="list_container" [ngClass]="{ 'list_container--shrink': normalAndBasic() ? selectedInspectionType() : selectedSection }">
+    <div
+      class="list_container"
+      [ngClass]="{
+        'list_container--shrink': normalAndBasic()
+          ? selectedInspectionType()
+          : selectedSection,
+      }"
+    >
       <ol class="list">
         @for (section of requiredStandards(); track section; let i = $index) {
           @let selected = section === selectedSection;
@@ -31,12 +38,14 @@
             <a
               href="javascript:void(0)"
               [id]="'section-list-item-' + i"
-              [attr.data-testid]=" section.sectionNumber + '. ' + section.sectionDescription"
+              [attr.data-testid]="
+                section.sectionNumber + '. ' + section.sectionDescription
+              "
               class="list__item list__item--more"
               [attr.aria-expanded]="selected"
               [ngClass]="{ 'list__item--active': selected }"
               (click)="handleSelect(section, types.Section)"
-              >
+            >
               {{ section.sectionNumber }}. {{ section.sectionDescription }}
             </a>
           </li>
@@ -45,7 +54,11 @@
     </div>
     <div class="list_container">
       <ol class="list">
-        @for (rs of selectedSection?.requiredStandards; track rs; let i = $index) {
+        @for (
+          rs of selectedSection?.requiredStandards;
+          track rs;
+          let i = $index
+        ) {
           @let selected = rs === selectedRequiredStandard;
           <li>
             <a
@@ -55,7 +68,7 @@
               class="list__item"
               [ngClass]="{ 'browse__normal-link--active': selected }"
               (click)="handleSelect(rs, types.RequiredStandard)"
-              >
+            >
               {{ rs.refCalculation }} {{ rs.requiredStandard }}
             </a>
           </li>
@@ -65,6 +78,8 @@
   </div>
 } @else {
   <h1 class="govuk-heading-l">No Required Standards Found</h1>
-  <p class="govuk-body">No required standards were found. Check the information on the technical record is correct, or try to refresh the page.</p>
+  <p class="govuk-body">
+    No required standards were found. Check the information on the technical
+    record is correct, or try to refresh the page.
+  </p>
 }
-

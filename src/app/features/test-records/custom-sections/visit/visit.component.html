@@ -5,7 +5,6 @@
       label="Test Station Details"
       [options$]="testStations$"
       [width]="FormNodeWidth.XXL"
-
       formControlName="testStationPNumber"
     />
 
@@ -28,26 +27,42 @@
       <table class="govuk-table">
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" style="width: 30%">Test facility name/number:</td>
+            <td class="govuk-table__header" style="width: 30%">
+              Test facility name/number:
+            </td>
             <td class="govuk-table__cell" id="test-testStationName">
-              {{ testResult.testStationName | defaultNullOrEmpty }} / {{ testResult.testStationPNumber | defaultNullOrEmpty }}
+              {{ testResult.testStationName | defaultNullOrEmpty }} /
+              {{ testResult.testStationPNumber | defaultNullOrEmpty }}
             </td>
           </tr>
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" style="width: 30%">Type of test facility:</td>
-            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testStationType">
+            <td class="govuk-table__header" style="width: 30%">
+              Type of test facility:
+            </td>
+            <td
+              class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+              id="test-testStationType"
+            >
               {{ testResult.testStationType | defaultNullOrEmpty }}
             </td>
           </tr>
           <tr class="govuk-table__row">
             <td class="govuk-table__header" style="width: 30%">Tester name:</td>
-            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testerName">
+            <td
+              class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+              id="test-testerName"
+            >
               {{ testResult.testerName | defaultNullOrEmpty }}
             </td>
           </tr>
           <tr class="govuk-table__row">
-            <td class="govuk-table__header" style="width: 30%">Tester email address:</td>
-            <td class="govuk-table__cell whitespace-pre-line overflow-anywhere" id="test-testerEmailAddress">
+            <td class="govuk-table__header" style="width: 30%">
+              Tester email address:
+            </td>
+            <td
+              class="govuk-table__cell whitespace-pre-line overflow-anywhere"
+              id="test-testerEmailAddress"
+            >
               {{ testResult.testerEmailAddress | defaultNullOrEmpty }}
             </td>
           </tr>

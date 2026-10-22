@@ -1,4 +1,10 @@
-<div class="govuk-form-group" [ngClass]="{ 'govuk-form-group' : true, 'govuk-form-group--error' : hasError && showGroupError() }">
+<div
+  class="govuk-form-group"
+  [ngClass]="{
+    'govuk-form-group': true,
+    'govuk-form-group--error': hasError && showGroupError(),
+  }"
+>
   @if (controlLabel()) {
     <div class="govuk-label-wrapper">
       <label class="govuk-label tags" [id]="labelId" [htmlFor]="id" [for]="id">
@@ -18,7 +24,7 @@
   }
 
   @if (controlHint()) {
-    <div class="govuk-hint" [id]="hintId"> {{ controlHint() }} </div>
+    <div class="govuk-hint" [id]="hintId">{{ controlHint() }}</div>
   }
 
   @if (hasError && showErrors()) {
@@ -26,7 +32,9 @@
     @if (firstError) {
       <p class="govuk-error-message" [id]="errorId">
         <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+        <span>{{
+          typeof firstError === 'string' ? firstError : firstError.error
+        }}</span>
       </p>
     }
   }
@@ -36,8 +44,11 @@
     @if (prefix()) {
       <div
         class="govuk-input__prefix"
-        [class.govuk-input__prefix-disabled]="control?.disabled || disabled() || false"
-        aria-hidden="true">
+        [class.govuk-input__prefix-disabled]="
+          control?.disabled || disabled() || false
+        "
+        aria-hidden="true"
+      >
         {{ prefix() }}
       </div>
     }
@@ -60,7 +71,7 @@
         [class]="style"
         [disabled]="control?.disabled || disabled() || false"
         [maxlength]="maxlength()"
-        />
+      />
     }
 
     @if (controlType() === 'number') {
@@ -80,7 +91,7 @@
         (wheel)="$event.preventDefault()"
         [class]="style"
         [disabled]="control?.disabled || disabled() || false"
-        />
+      />
     }
 
     @if (controlType() === 'numericString') {
@@ -98,7 +109,7 @@
         (blur)="onTouched(); onBlur($event)"
         [class]="style"
         [disabled]="control?.disabled || disabled() || false"
-        />
+      />
     }
 
     @if (controlType() === 'decimal') {
@@ -118,15 +129,18 @@
         (wheel)="$event.preventDefault()"
         [class]="style"
         [disabled]="control?.disabled || disabled() || false"
-        />
+      />
     }
 
     <!-- Provide suffix via string input -->
     @if (suffix()) {
       <div
         class="govuk-input__suffix"
-        [class.govuk-input__suffix-disabled]="control?.disabled || disabled() || false"
-        aria-hidden="true">
+        [class.govuk-input__suffix-disabled]="
+          control?.disabled || disabled() || false
+        "
+        aria-hidden="true"
+      >
         {{ suffix() }}
       </div>
     }

@@ -1,6 +1,12 @@
-<form [formGroup]="form" class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
+<form
+  [formGroup]="form"
+  class="govuk-grid-row search-page"
+  *appRoleRequired="roles.ReferenceDataView"
+>
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Select a reference data type</h1>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">
+      Select a reference data type
+    </h1>
   </div>
 
   <div class="govuk-grid-column-full">
@@ -13,9 +19,13 @@
     ></app-radio-group>
 
     <app-button-group>
-      <app-button id="submit" (clicked)="navigateTo(type.value)">Continue</app-button>
+      <app-button id="submit" (clicked)="navigateTo(type.value)"
+        >Continue</app-button
+      >
 
-      <app-button id="cancel" design="link" (clicked)="cancel()">Cancel</app-button>
+      <app-button id="cancel" design="link" (clicked)="cancel()"
+        >Cancel</app-button
+      >
     </app-button-group>
   </div>
 </form>

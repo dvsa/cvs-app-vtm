@@ -24,15 +24,19 @@ describe('Tech Record Search Selectors', () => {
 				results: [
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 				],
 			},
@@ -41,15 +45,19 @@ describe('Tech Record Search Selectors', () => {
 				results: [
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '7545677',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '12',
+						techRecord_statusCode: 'current',
 					},
 				],
 			},
@@ -58,15 +66,19 @@ describe('Tech Record Search Selectors', () => {
 				results: [
 					{
 						systemNumber: '4444',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '4444',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '123456',
+						techRecord_statusCode: 'current',
 					},
 					{
 						systemNumber: '12',
+						techRecord_statusCode: 'current',
 					},
 				],
 			},

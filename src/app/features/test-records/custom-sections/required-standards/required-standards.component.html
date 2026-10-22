@@ -1,7 +1,9 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     @if (requiredStandards().length) {
-      <p class="govuk-hint">Any unresolved required standards will result in failed test.</p>
+      <p class="govuk-hint">
+        Any unresolved required standards will result in failed test.
+      </p>
       <table class="govuk-table">
         <caption class="govuk-table__caption govuk-table__caption--m">
           Required Standards
@@ -24,13 +26,16 @@
                   queryParamsHandling="preserve"
                   class="govuk-link govuk-link--no-visited-state"
                   [id]="`required-standard-${$index}`"
-                >{{ requiredStandard.refCalculation }}</a>
+                  >{{ requiredStandard.refCalculation }}</a
+                >
               </td>
               <td class="govuk-table__cell">
-                {{ requiredStandard.requiredStandard | truncate : 250 }}
+                {{ requiredStandard.requiredStandard | truncate: 250 }}
               </td>
               <td class="govuk-table__cell">
-                <app-tag [type]="requiredStandard.prs ? 'green' : 'red'">{{ requiredStandard.prs ? 'Yes' : 'No' }}</app-tag>
+                <app-tag [type]="requiredStandard.prs ? 'green' : 'red'">{{
+                  requiredStandard.prs ? 'Yes' : 'No'
+                }}</app-tag>
               </td>
             </tr>
           }
@@ -44,5 +49,11 @@
 </div>
 
 @if (isEditing()) {
-  <app-button type="link" design="secondary" id="add-rs-button" (click)="onAddRequiredStandard()">Add Required Standard</app-button>
+  <app-button
+    type="link"
+    design="secondary"
+    id="add-rs-button"
+    (click)="onAddRequiredStandard()"
+    >Add Required Standard</app-button
+  >
 }

@@ -1,24 +1,32 @@
 <div class="govuk-width-container">
-  <h1 class="govuk-heading-l">
-    Create a new technical record
-  </h1>
+  <h1 class="govuk-heading-l">Create a new technical record</h1>
 
   @if (techRecord(); as techRecord) {
     @let vm = vehicleMeta();
     <div class="govuk-grid-row">
       <!-- Summary card -->
       <div class="govuk-grid-column-one-third-from-desktop vehicle-summary">
-        <app-tech-record-summary-card [mode]="Modes.CREATE" [techRecord]="techRecord" />
+        <app-tech-record-summary-card
+          [mode]="Modes.CREATE"
+          [techRecord]="techRecord"
+        />
 
         <div class="govuk-button-group govuk-button-group-record">
-          <app-button [id]="'submit-record-continue'" (clicked)="onCreateNewRecord()">Create new record</app-button>
+          <app-button
+            [id]="'submit-record-continue'"
+            (clicked)="onCreateNewRecord()"
+            >Create new record</app-button
+          >
         </div>
       </div>
 
       <!-- Accordion -->
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <form>
-          <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+          <div
+            class="govuk-accordion govuk-accordion--vtm"
+            data-module="govuk-accordion"
+          >
             <div class="govuk-accordion__section-heading-top-container">
               <h2 class="govuk-accordion__section-heading-top">
                 <span class="govuk-accordion-heading-vtm">
@@ -38,7 +46,11 @@
                       [type]="'condensed'"
                       [isExpanded]="false"
                       appFilterByTags
-                      [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
+                      [tagNames]="
+                        techRecord.techRecord_vehicleType === VehicleTypes.LGV
+                          ? ['Required']
+                          : ['Plates', 'Required', 'ADR']
+                      "
                       [filters]="filters()"
                     >
                       <app-general-vehicle-details
@@ -48,7 +60,11 @@
                       ></app-general-vehicle-details>
                     </app-accordion>
 
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <!-- Approval type details section-->
                       <app-accordion
                         [id]="'approval-type'"
@@ -68,7 +84,9 @@
                       </app-accordion>
                     }
 
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'authorisation-into-service'"
                         [title]="'Authorisation into service'"
@@ -88,7 +106,11 @@
                     }
 
                     <!-- Dimensions section-->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'dimensions'"
                         [title]="'Dimensions'"
@@ -108,7 +130,11 @@
                     }
 
                     <!-- Weights section-->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'weights'"
                         [title]="'Weights'"
@@ -128,7 +154,11 @@
                     }
 
                     <!-- Tyres section-->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'tyres'"
                         [title]="'Tyres'"
@@ -148,7 +178,11 @@
                     }
 
                     <!-- configuration -->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV
+                    ) {
                       <app-accordion
                         [id]="'configuration'"
                         [title]="'Configuration'"
@@ -168,7 +202,10 @@
                     }
 
                     <!-- Emissions and exemptions (immediately above ADR) -->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV
+                    ) {
                       <app-accordion
                         [id]="'emissions-and-exemptions'"
                         [title]="'Emissions and exemptions'"
@@ -188,7 +225,9 @@
                     }
 
                     <!-- Seats and vehicle size -->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV
+                    ) {
                       <app-accordion
                         [id]="'seats-and-vehicle-size'"
                         [title]="'Seats and vehicle size'"
@@ -208,7 +247,10 @@
                     }
 
                     <!-- Brakes -->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'brakes'"
                         [title]="'Brakes'"
@@ -228,7 +270,9 @@
                     }
 
                     <!-- Disability Discrimination Act (DDA) -->
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV
+                    ) {
                       <app-accordion
                         [id]="'dda'"
                         [title]="'Disability Discrimination Act'"
@@ -252,7 +296,7 @@
                       techRecord.techRecord_vehicleType === 'hgv' ||
                       techRecord.techRecord_vehicleType === 'trl' ||
                       techRecord.techRecord_vehicleType === 'lgv'
-                      ) {
+                    ) {
                       <app-accordion
                         [id]="'adr'"
                         [title]="'ADR'"
@@ -271,7 +315,9 @@
                       </app-accordion>
                     }
 
-                    @if (techRecord?.techRecord_vehicleType !== VehicleTypes.PSV) {
+                    @if (
+                      techRecord?.techRecord_vehicleType !== VehicleTypes.PSV
+                    ) {
                       <app-accordion
                         [id]="'last-applicant'"
                         [title]="'Last applicant'"
@@ -290,7 +336,9 @@
                       </app-accordion>
                     }
 
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'purchasers'"
                         [title]="'Purchasers'"
@@ -326,7 +374,11 @@
                       </app-accordion>
                     }
 
-                    @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+                    @if (
+                      techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+                      techRecord.techRecord_vehicleType === VehicleTypes.TRL
+                    ) {
                       <app-accordion
                         [id]="'documents'"
                         [title]="'Documents'"

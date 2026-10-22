@@ -3,9 +3,7 @@
     <h1 class="govuk-heading-l">Change VRM</h1>
     @if (showWarning) {
       <app-field-warning-message
-    [warningMessage]="
-      'Cherished transfers will update the VRM on the most recent test record for HGVs and PSVs, where an annual test certificate has been generated'
-    "
+        [warningMessage]="'Cherished transfers will update the VRM on the most recent test record for HGVs and PSVs, where an annual test certificate has been generated'"
       ></app-field-warning-message>
     }
     <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
@@ -28,7 +26,9 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-        <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
+        <dd id="vehicleType" class="govuk-summary-list__value">
+          {{ techRecord.vin | defaultNullOrEmpty }}
+        </dd>
       </div>
     </dl>
     @if (!isCherishedTransfer()) {
@@ -83,7 +83,13 @@
     }
     <app-button-group>
       <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
-      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      <app-button
+        id="cancel-amend-vrm"
+        design="link"
+        data-module="govuk-button"
+        (clicked)="navigateBack()"
+        >Back</app-button
+      >
     </app-button-group>
   </div>
 }

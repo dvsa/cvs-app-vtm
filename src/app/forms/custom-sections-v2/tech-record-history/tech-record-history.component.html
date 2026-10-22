@@ -1,42 +1,59 @@
 @if (techRecordHistory()) {
   <div class="govuk-!-padding-4">
     <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-!-margin-bottom-4">Technical records history</caption>
+      <caption class="govuk-table__caption govuk-!-margin-bottom-4">
+        Technical records history
+      </caption>
 
       <thead class="govuk-table__head">
-
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Status</th>
-        <th scope="col" class="govuk-table__header">Reason for creation</th>
-        <th scope="col" class="govuk-table__header">Created By</th>
-        <th scope="col" class="govuk-table__header">Date</th>
-        <th scope="col" class="govuk-table__header">Time</th>
-      </tr>
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Status</th>
+          <th scope="col" class="govuk-table__header">Reason for creation</th>
+          <th scope="col" class="govuk-table__header">Created By</th>
+          <th scope="col" class="govuk-table__header">Date</th>
+          <th scope="col" class="govuk-table__header">Time</th>
+        </tr>
       </thead>
 
       <tbody class="govuk-table__body">
-        @for (searchResult of techRecordHistoryPage(); track i; let i = $index) {
-          @if (searchResult.createdTimestamp === techRecord().createdTimestamp) {
+        @for (
+          searchResult of techRecordHistoryPage();
+          track i;
+          let i = $index
+        ) {
+          @if (
+            searchResult.createdTimestamp === techRecord().createdTimestamp
+          ) {
             <tr class="govuk-table__row">
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-status-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-status-${i}`"
+              >
                 {{ searchResult.techRecord_statusCode | titlecase }}
               </td>
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-reason-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-reason-${i}`"
+              >
                 <span>{{ searchResult.techRecord_reasonForCreation }}</span>
               </td>
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-created-by-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-created-by-${i}`"
+              >
                 {{ searchResult.techRecord_createdByName | titlecase }}
               </td>
-              <td class="govuk-table__cell whitespace-pre-line"
-                  [id]="`tech-record-history-created-at-date-${i}`">
-                {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}
+              <td
+                class="govuk-table__cell whitespace-pre-line"
+                [id]="`tech-record-history-created-at-date-${i}`"
+              >
+                {{ searchResult.createdTimestamp | date: 'dd/MM/yyyy' }}
               </td>
-              <td class="govuk-table__cell whitespace-pre-line"
-                  [id]="`tech-record-history-created-at-time-${i}`">
-                {{ searchResult.createdTimestamp | date : 'HH:mm' }}
+              <td
+                class="govuk-table__cell whitespace-pre-line"
+                [id]="`tech-record-history-created-at-time-${i}`"
+              >
+                {{ searchResult.createdTimestamp | date: 'HH:mm' }}
               </td>
             </tr>
           } @else {
@@ -46,38 +63,49 @@
               class="govuk-link govuk-table__row"
               [routerLink]="[summaryLinkUrl(searchResult)]"
             >
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-status-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-status-${i}`"
+              >
                 {{ searchResult.techRecord_statusCode | titlecase }}
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-reason-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-reason-${i}`"
+              >
                 <span>{{ searchResult.techRecord_reasonForCreation }}</span>
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
-                  [id]="`tech-record-history-created-by-${i}`">
+              <td
+                class="govuk-table__cell whitespace-pre-line govuk-!-text-break-word"
+                [id]="`tech-record-history-created-by-${i}`"
+              >
                 {{ searchResult.techRecord_createdByName | titlecase }}
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line"
-                  [id]="`tech-record-history-created-at-date-${i}`">
-                {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy' }}
+              <td
+                class="govuk-table__cell whitespace-pre-line"
+                [id]="`tech-record-history-created-at-date-${i}`"
+              >
+                {{ searchResult.createdTimestamp | date: 'dd/MM/yyyy' }}
               </td>
 
-              <td class="govuk-table__cell whitespace-pre-line"
-                  [id]="`tech-record-history-created-at-time-${i}`">
-                {{ searchResult.createdTimestamp | date : 'HH:mm' }}
+              <td
+                class="govuk-table__cell whitespace-pre-line"
+                [id]="`tech-record-history-created-at-time-${i}`"
+              >
+                {{ searchResult.createdTimestamp | date: 'HH:mm' }}
               </td>
             </a>
           }
         }
       </tbody>
     </table>
-    <app-pagination tableName="tech-history"
-                    [numberOfItems]="numberOfRecords()"
-                    (paginationOptionsChange)="handlePaginationChange($event)"
+    <app-pagination
+      tableName="tech-history"
+      [numberOfItems]="numberOfRecords()"
+      (paginationOptionsChange)="handlePaginationChange($event)"
     />
   </div>
 }

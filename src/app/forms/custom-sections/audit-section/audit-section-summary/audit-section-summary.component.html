@@ -4,8 +4,13 @@
     @if (tcs.hasChanged('techRecord_reasonForCreation')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Reason for creation</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_reasonForCreation">
-          <p class="whitespace-pre-line">{{ vm.techRecord_reasonForCreation }}</p>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_reasonForCreation"
+        >
+          <p class="whitespace-pre-line">
+            {{ vm.techRecord_reasonForCreation }}
+          </p>
         </dd>
       </div>
     }
@@ -14,7 +19,11 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Created at</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_createdAt">
-          {{ vm.techRecord_createdAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+          {{
+            vm.techRecord_createdAt
+              | date: 'dd/MM/yyyy HH:mm'
+              | defaultNullOrEmpty
+          }}
         </dd>
       </div>
     }
@@ -22,7 +31,10 @@
     @if (tcs.hasChanged('techRecord_createdByName')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Created by</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_createdByName">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_createdByName"
+        >
           {{ vm.techRecord_createdByName | defaultNullOrEmpty }}
         </dd>
       </div>
@@ -40,8 +52,15 @@
     @if (tcs.hasChanged('techRecord_lastUpdatedAt')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Last updated at</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedAt">
-          {{ vm.techRecord_lastUpdatedAt | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_lastUpdatedAt"
+        >
+          {{
+            vm.techRecord_lastUpdatedAt
+              | date: 'dd/MM/yyyy HH:mm'
+              | defaultNullOrEmpty
+          }}
         </dd>
       </div>
     }
@@ -49,7 +68,10 @@
     @if (tcs.hasChanged('techRecord_lastUpdatedByName')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Last updated by</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedByName">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_lastUpdatedByName"
+        >
           {{ vm.techRecord_lastUpdatedByName | defaultNullOrEmpty }}
         </dd>
       </div>
@@ -58,7 +80,10 @@
     @if (tcs.hasChanged('techRecord_lastUpdatedById')) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Last updated by ID</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_lastUpdatedById">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_lastUpdatedById"
+        >
           {{ vm.techRecord_lastUpdatedById | defaultNullOrEmpty }}
         </dd>
       </div>

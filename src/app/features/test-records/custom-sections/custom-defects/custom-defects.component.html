@@ -2,13 +2,22 @@
   @if (customDefectsForm.length) {
     <h2 class="govuk-heading-m">Additional Defects</h2>
   }
-  @for (customDefectForm of customDefectsForm.controls; track customDefectForm; let i = $index) {
+  @for (
+    customDefectForm of customDefectsForm.controls;
+    track customDefectForm;
+    let i = $index
+  ) {
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h3 class="govuk-heading-m">Defect {{ i + 1 }}</h3>
       </div>
       <div class="govuk-grid-column-one-third">
-        <app-button [id]="`remove-defect-${i}`" design="link" class="float-right" (clicked)="onRemoveCustomDefect(i)">
+        <app-button
+          [id]="`remove-defect-${i}`"
+          design="link"
+          class="float-right"
+          (clicked)="onRemoveCustomDefect(i)"
+        >
           Remove defect
         </app-button>
       </div>
@@ -28,7 +37,9 @@
       ></govuk-form-group-textarea>
     </ng-container>
   }
-  <app-button id="add-custom-defect" (clicked)="onAddCustomDefect()">Add Additional Defect</app-button>
+  <app-button id="add-custom-defect" (clicked)="onAddCustomDefect()"
+    >Add Additional Defect</app-button
+  >
 } @else {
   <h2 class="govuk-heading-m">Additional Defects</h2>
   @for (customDefect of customDefects; track $index) {
@@ -36,11 +47,15 @@
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Defect name</dt>
-        <dd class="govuk-summary-list__value" [id]="`defectName-${$index}`">{{ customDefect.defectName | defaultNullOrEmpty }}</dd>
+        <dd class="govuk-summary-list__value" [id]="`defectName-${$index}`">
+          {{ customDefect.defectName | defaultNullOrEmpty }}
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Defect notes</dt>
-        <dd class="govuk-summary-list__value" [id]="`defectNotes-${$index}`">{{ customDefect.defectNotes | defaultNullOrEmpty }}</dd>
+        <dd class="govuk-summary-list__value" [id]="`defectNotes-${$index}`">
+          {{ customDefect.defectNotes | defaultNullOrEmpty }}
+        </dd>
       </div>
     </dl>
   } @empty {

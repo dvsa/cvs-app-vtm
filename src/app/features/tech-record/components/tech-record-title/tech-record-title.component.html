@@ -2,15 +2,22 @@
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
       <span>{{ customTitle() || vehicleMakeAndModel() }}</span>
-      <app-icon [icon]="editableTechRecord.techRecord_vehicleType || ''"></app-icon>
+      <app-icon
+        [icon]="editableTechRecord.techRecord_vehicleType || ''"
+      ></app-icon>
     </h1>
   </div>
 
-  <dl *ngIf="currentTechRecord() as currentTechRecord" class="govuk-summary-list">
+  <dl
+    *ngIf="currentTechRecord() as currentTechRecord"
+    class="govuk-summary-list"
+  >
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ getVehicleType(editableTechRecord) | uppercase | defaultNullOrEmpty }}
+        {{
+          getVehicleType(editableTechRecord) | uppercase | defaultNullOrEmpty
+        }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">
         <dd *ngIf="!hideActions()" class="govuk-summary-list__actions">
@@ -18,7 +25,8 @@
             <app-button
               *ngIf="
                 currentTechRecord.techRecord_statusCode !== 'archived' &&
-                currentTechRecord.techRecord_vehicleType === editableTechRecord.techRecord_vehicleType
+                currentTechRecord.techRecord_vehicleType ===
+                  editableTechRecord.techRecord_vehicleType
               "
               design="link"
               id="change-type-link"
@@ -31,7 +39,9 @@
     </div>
 
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+      <dt class="govuk-summary-list__key">
+        Vehicle identification number (VIN)
+      </dt>
       <dd id="vin" class="govuk-summary-list__value">
         {{ vehicle()?.vin | defaultNullOrEmpty }}
       </dd>
@@ -41,7 +51,8 @@
             <app-button
               *ngIf="
                 currentTechRecord.techRecord_statusCode !== 'archived' &&
-                currentTechRecord.techRecord_vehicleType === editableTechRecord.techRecord_vehicleType
+                currentTechRecord.techRecord_vehicleType ===
+                  editableTechRecord.techRecord_vehicleType
               "
               design="link"
               id="change-vin-link"
@@ -74,15 +85,26 @@
             )
           "
         >
-          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
+          <dd
+            *appRoleRequired="roles.TechRecordAmend"
+            class="govuk-summary-list__actions"
+          >
             <div class="govuk-summary-list__actions--flex">
-              <app-button design="link" id="change-vrm-link" (clicked)="navigateTo('change-vrm')">Change</app-button>
+              <app-button
+                design="link"
+                id="change-vrm-link"
+                (clicked)="navigateTo('change-vrm')"
+                >Change</app-button
+              >
             </div>
           </dd>
         </ng-container>
       </div>
 
-      <div class="govuk-summary-list__row" *ngIf="getVehicleType(currentTechRecord) !== 'small trl'">
+      <div
+        class="govuk-summary-list__row"
+        *ngIf="getVehicleType(currentTechRecord) !== 'small trl'"
+      >
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
@@ -98,10 +120,15 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Record type</dt>
       <dd id="status-code" class="govuk-summary-list__value">
-        <strong class="govuk-tag govuk-phase-banner__content__tag">{{ currentTechRecord.techRecord_statusCode | defaultNullOrEmpty }}</strong>
+        <strong class="govuk-tag govuk-phase-banner__content__tag">{{
+          currentTechRecord.techRecord_statusCode | defaultNullOrEmpty
+        }}</strong>
       </dd>
       <ng-container *ngIf="!hideActions()">
-        <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
+        <dd
+          *appRoleRequired="roles.TechRecordArchive"
+          class="govuk-summary-list__actions"
+        >
           <div class="govuk-summary-list__actions--flex">
             <app-button
               *ngIf="queryableActions().includes('archive')"
@@ -120,22 +147,37 @@
           </div>
         </dd>
         <ng-container *ngIf="queryableActions().includes('unarchive')">
-          <dd *appRoleRequired="roles.TechRecordUnarchive" class="govuk-summary-list__actions">
+          <dd
+            *appRoleRequired="roles.TechRecordUnarchive"
+            class="govuk-summary-list__actions"
+          >
             <div class="govuk-summary-list__actions--flex">
-              <app-button design="link" id="unarchive-link" (clicked)="navigateTo('unarchive-record')"> Unarchive </app-button>
+              <app-button
+                design="link"
+                id="unarchive-link"
+                (clicked)="navigateTo('unarchive-record')"
+              >
+                Unarchive
+              </app-button>
             </div>
           </dd>
         </ng-container>
       </ng-container>
     </div>
 
-    <ng-container *ngIf="currentTechRecord.techRecord_statusCode !== statuses.ARCHIVED">
+    <ng-container
+      *ngIf="currentTechRecord.techRecord_statusCode !== statuses.ARCHIVED"
+    >
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Record status</dt>
         <dd id="record-completeness" class="govuk-summary-list__value">
           <app-tag
             *ngIf="currentTechRecord.techRecord_recordCompleteness"
-            [type]="getCompletenessColor(currentTechRecord.techRecord_recordCompleteness)"
+            [type]="
+              getCompletenessColor(
+                currentTechRecord.techRecord_recordCompleteness
+              )
+            "
           >
             {{ currentTechRecord.techRecord_recordCompleteness | uppercase }}
           </app-tag>
@@ -145,14 +187,26 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Record visibility in VTA</dt>
         <dd id="record-visibility" class="govuk-summary-list__value">
-          <app-tag [type]="currentTechRecord.techRecord_hiddenInVta ? 'red' : 'green'">
-            {{ currentTechRecord.techRecord_hiddenInVta ? 'HIDDEN' : 'VISIBLE' }}
+          <app-tag
+            [type]="currentTechRecord.techRecord_hiddenInVta ? 'red' : 'green'"
+          >
+            {{
+              currentTechRecord.techRecord_hiddenInVta ? 'HIDDEN' : 'VISIBLE'
+            }}
           </app-tag>
         </dd>
         <ng-container *ngIf="!hideActions()">
-          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
+          <dd
+            *appRoleRequired="roles.TechRecordAmend"
+            class="govuk-summary-list__actions"
+          >
             <div class="govuk-summary-list__actions--flex">
-              <app-button design="link" id="change-record-visibility-in-vta-link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
+              <app-button
+                design="link"
+                id="change-record-visibility-in-vta-link"
+                (clicked)="navigateTo('change-vta-visibility')"
+                >Change</app-button
+              >
             </div>
           </dd>
         </ng-container>

@@ -7,7 +7,9 @@
     (click)="toggle()"
   >
     <span [class]="iconStyle"></span>
-    <span class="govuk-accordion__show-all-text">{{ isExpanded() ? 'Hide' : 'Show' }} all sections</span>
+    <span class="govuk-accordion__show-all-text"
+      >{{ isExpanded() ? 'Hide' : 'Show' }} all sections</span
+    >
   </button>
 </div>
 <div [ngClass]="layout() || ''">

@@ -16,7 +16,7 @@
     }
 
     @if (controlHint() && !disabled()) {
-      <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+      <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
     }
 
     @if (hasError) {
@@ -24,7 +24,9 @@
       @if (firstError) {
         <p class="govuk-error-message" [id]="errorId">
           <span class="govuk-visually-hidden">Error: </span>
-          <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+          <span>{{
+            typeof firstError === 'string' ? firstError : firstError.error
+          }}</span>
         </p>
       }
     }
@@ -32,7 +34,9 @@
     <div [formGroup]="form" id="{{ id }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ id }}-day"> Day </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ id }}-day">
+            Day
+          </label>
           <input
             class="govuk-input--width-2 govuk-input govuk-date-input__input"
             id="{{ id }}-day"
@@ -45,12 +49,17 @@
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
-            />
+          />
         </div>
       </div>
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ id }}-month"> Month </label>
+          <label
+            class="govuk-label govuk-date-input__label"
+            for="{{ id }}-month"
+          >
+            Month
+          </label>
           <input
             class="govuk-input--width-2 govuk-input govuk-date-input__input"
             id="{{ id }}-month"
@@ -63,12 +72,17 @@
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
-            />
+          />
         </div>
       </div>
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ id }}-year"> Year </label>
+          <label
+            class="govuk-label govuk-date-input__label"
+            for="{{ id }}-year"
+          >
+            Year
+          </label>
           <input
             class="govuk-input--width-4 govuk-input govuk-date-input__input"
             id="{{ id }}-year"
@@ -81,14 +95,19 @@
             appNumberOnly
             [disabled]="disabled()"
             [class]="style"
-            />
+          />
         </div>
       </div>
 
       @if (mode() === 'iso') {
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-hour`"> Hour </label>
+            <label
+              class="govuk-label govuk-date-input__label"
+              [htmlFor]="`${id}-hour`"
+            >
+              Hour
+            </label>
             <input
               class="govuk-input--width-2 govuk-input govuk-date-input__input"
               [id]="`${id}-hour`"
@@ -109,7 +128,12 @@
         </div>
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-date-input__label" [htmlFor]="`${id}-minute`"> Minute </label>
+            <label
+              class="govuk-label govuk-date-input__label"
+              [htmlFor]="`${id}-minute`"
+            >
+              Minute
+            </label>
             <input
               class="govuk-input--width-2 govuk-input govuk-date-input__input"
               [id]="`${id}-minute`"
@@ -125,7 +149,7 @@
               [max]="59"
               [disabled]="disabled()"
               [class]="style"
-              />
+            />
           </div>
         </div>
       }

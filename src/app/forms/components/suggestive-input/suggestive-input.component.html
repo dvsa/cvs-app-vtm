@@ -1,14 +1,22 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
   @if (label()) {
-    <label class="govuk-label govuk-label--m" for="{{ name() }}">{{ label() }}</label>
+    <label class="govuk-label govuk-label--m" for="{{ name() }}">{{
+      label()
+    }}</label>
   }
 
   @if (hint()) {
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-error-message
+    [error]="warning()"
+    [name]="name()"
+  ></app-field-error-message>
 
   <div class="govuk-input__wrapper">
     @if (prefix(); as prefix) {
@@ -30,8 +38,8 @@
       (ngModelChange)="handleChangeForOption($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
-      onfocus="select();"
-      />
+      onfocus="select()"
+    />
     <datalist [id]="name() + '-datalist'" role="listbox">
       @for (option of options$() | async; track i; let i = $index) {
         <option [ngValue]="option">{{ option.label }}</option>
