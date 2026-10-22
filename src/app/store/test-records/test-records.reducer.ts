@@ -235,6 +235,14 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		testResult.model = null;
 	}
 
+	// The v2 form defaults these to empty strings, which the BE rejects for vehicles without them (e.g. cars)
+	for (const key of ['vehicleClass', 'bodyType'] as const) {
+		const value = testResult[key] as { code?: string | null; description?: string | null } | null | undefined;
+		if (value?.code === '' && value.description === '') {
+			testResult[key] = { code: null, description: null } as any;
+		}
+	}
+
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
 	const isPSV = vehicleType === VehicleTypes.PSV;

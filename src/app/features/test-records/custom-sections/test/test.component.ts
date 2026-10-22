@@ -306,7 +306,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.mode() === Modes.AMEND && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
-				this.commonValidators.requiredWith('Additional details for abandoning', 'Result')
+				this.commonValidators.requiredWith('Additional details for abandoning', 'Result', 'test')
 			),
 		]);
 	}
