@@ -31,13 +31,16 @@ export const selectTechRecordSearchResultsBySystemNumber = createSelector(
 							Math.max(...recordsWithSameSystemNumber.map((rec) => new Date(rec.createdTimestamp).getTime()))
 					) ??
 					records[0];
-				records.push(mostCurrentRecord);
-			}
 
-			if (state.includeArchived && result.techRecord_statusCode === 'archived') {
-				records.push(result);
+				if (mostCurrentRecord) {
+					records.push(mostCurrentRecord);
+				}
 			}
 		});
-		return records;
+
+		return records.filter((record) => {
+			if (state.includeArchived) return true;
+			return record.techRecord_statusCode !== 'archived';
+		});
 	}
 );
