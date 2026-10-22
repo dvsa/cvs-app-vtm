@@ -1,34 +1,68 @@
-<a [href]="skipLinkHref()" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+<a [href]="skipLinkHref()" class="govuk-skip-link" data-module="govuk-skip-link"
+  >Skip to main content</a
+>
 
 @if (
-  featureToggleService.isFeatureEnabled(FeatureFlags.BETAS) && 
-  featureToggleService.isFeatureEnabled(FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS)
+  featureToggleService.isFeatureEnabled(FeatureFlags.BETAS) &&
+  featureToggleService.isFeatureEnabled(
+    FeatureFlags.TECH_RECORD_REDESIGN_CREATE_DETAILS
+  )
 ) {
   <header class="govuk-header header" role="banner" data-module="govuk-header">
-    <div class="govuk-header__container header-container govuk-!-padding-top-4 govuk-!-padding-bottom-2">
+    <div
+      class="govuk-header__container header-container govuk-!-padding-top-4 govuk-!-padding-bottom-2"
+    >
       <div class="govuk-grid-row govuk-width-container">
         <div class="govuk-grid-column-one-half">
-          <a href="/" id="header-home-link" class="govuk-header__link govuk-header__link--homepage">Vehicle testing management</a>
+          <a
+            href="/"
+            id="header-home-link"
+            class="govuk-header__link govuk-header__link--homepage"
+            >Vehicle testing management</a
+          >
           <span id="appversion">v{{ version }}</span>
         </div>
-        <div class="govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19">
+        <div
+          class="govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19"
+        >
           <span id="username">{{ username() }}</span>
-          <a href="javascript:void(0)" id="sign-out" class="govuk-link govuk-link--inverse govuk-!-font-weight-bold" (click)="logout()">Sign out</a>
+          <a
+            href="javascript:void(0)"
+            id="sign-out"
+            class="govuk-link govuk-link--inverse govuk-!-font-weight-bold"
+            (click)="logout()"
+            >Sign out</a
+          >
         </div>
       </div>
     </div>
   </header>
 } @else {
   <header class="govuk-header" role="banner" data-module="govuk-header">
-    <div class="govuk-header__container govuk-!-padding-top-4 govuk-!-padding-bottom-2">
+    <div
+      class="govuk-header__container govuk-!-padding-top-4 govuk-!-padding-bottom-2"
+    >
       <div class="govuk-grid-row govuk-width-container">
         <div class="govuk-grid-column-one-half">
-          <a href="/" id="header-home-link" class="govuk-header__link govuk-header__link--homepage">Vehicle testing management</a>
+          <a
+            href="/"
+            id="header-home-link"
+            class="govuk-header__link govuk-header__link--homepage"
+            >Vehicle testing management</a
+          >
           <span id="appversion">v{{ version }}</span>
         </div>
-        <div class="govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19">
+        <div
+          class="govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19"
+        >
           <span id="username">{{ username() }}</span>
-          <a href="javascript:void(0)" id="sign-out" class="govuk-link govuk-link--inverse govuk-!-font-weight-bold" (click)="logout()">Sign out</a>
+          <a
+            href="javascript:void(0)"
+            id="sign-out"
+            class="govuk-link govuk-link--inverse govuk-!-font-weight-bold"
+            (click)="logout()"
+            >Sign out</a
+          >
         </div>
       </div>
     </div>

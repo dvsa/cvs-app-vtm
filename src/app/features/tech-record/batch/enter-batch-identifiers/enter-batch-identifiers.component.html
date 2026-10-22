@@ -4,12 +4,21 @@
   </h1>
   <p class="govuk-body">You can:</p>
   <ul class="govuk-list govuk-list--bullet">
-    <li> enter only the VIN to create a new record</li>
-    <li>enter the VIN and {{ savedBatchDetails().vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM' }} to update an existing record</li>
+    <li>enter only the VIN to create a new record</li>
+    <li>
+      enter the VIN and
+      {{
+        savedBatchDetails().vehicleType === VehicleTypes.TRL
+          ? 'Trailer ID'
+          : 'VRM'
+      }}
+      to update an existing record
+    </li>
     <li>add up to 41 vehicles</li>
   </ul>
   <p class="govuk-body">
-    Make sure you leave any unused fields blank so that they are not added to the batch.
+    Make sure you leave any unused fields blank so that they are not added to
+    the batch.
   </p>
 
   <form class="govuk-!-margin-top-7" [formGroup]="form">
@@ -17,7 +26,8 @@
       @for (vehicle of form.controls.vehicles.controls; track $index) {
         @let vin = vehicle.controls.vin.value;
         @let trailerIdOrVrm = vehicle.controls.trailerIdOrVrm.value;
-        @let vinIsDuplicate = !trailerIdOrVrm && vin && duplicateVins.includes(vin);
+        @let vinIsDuplicate =
+          !trailerIdOrVrm && vin && duplicateVins.includes(vin);
         <div class="vehicle">
           <h2 class="govuk-heading-m">
             Vehicle {{ $index + 1 }}
@@ -35,7 +45,7 @@
           </h2>
 
           <ng-container [formGroupName]="$index">
-            <govuk-form-group-input 
+            <govuk-form-group-input
               [id]="`vin-${$index}`"
               [showErrors]="false"
               [showGroupError]="true"
@@ -47,11 +57,15 @@
               appTrimWhitespace
             />
 
-            <govuk-form-group-input 
+            <govuk-form-group-input
               [id]="`trailerIdOrVrm-${$index}`"
               [showErrors]="false"
               [showGroupError]="true"
-              [label]="vehicle.value.vehicleType === VehicleTypes.TRL ? 'Trailer ID' : 'VRM'"
+              [label]="
+                vehicle.value.vehicleType === VehicleTypes.TRL
+                  ? 'Trailer ID'
+                  : 'VRM'
+              "
               class="govuk-label govuk-label--s"
               formControlName="trailerIdOrVrm"
               appToUppercase
@@ -60,7 +74,9 @@
             />
 
             @if (vinIsDuplicate) {
-              <p class="govuk-hint">Matches existing VIN so duplicate will be created.</p>
+              <p class="govuk-hint">
+                Matches existing VIN so duplicate will be created.
+              </p>
             }
           </ng-container>
         </div>
@@ -69,13 +85,21 @@
   </form>
 
   @if (form.controls.vehicles.controls.length < 41) {
-    <app-button id="add-vehicle-btn" design="secondary" (clicked)="handleAddVehicle()">
+    <app-button
+      id="add-vehicle-btn"
+      design="secondary"
+      (clicked)="handleAddVehicle()"
+    >
       Add another vehicle
     </app-button>
   }
 
   <app-button-group>
-    <app-button id="continue-btn" (clicked)="handleConfirm()">Confirm</app-button>
-    <app-button id="cancel-btn" design="link" (clicked)="handleCancel()">Cancel</app-button>
+    <app-button id="continue-btn" (clicked)="handleConfirm()"
+      >Confirm</app-button
+    >
+    <app-button id="cancel-btn" design="link" (clicked)="handleCancel()"
+      >Cancel</app-button
+    >
   </app-button-group>
 </div>

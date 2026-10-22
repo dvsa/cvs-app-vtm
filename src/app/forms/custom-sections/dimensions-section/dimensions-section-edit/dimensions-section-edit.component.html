@@ -1,5 +1,9 @@
 @if (techRecord(); as tr) {
-  @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+  @if (
+    tr.techRecord_vehicleType === VehicleTypes.HGV ||
+    tr.techRecord_vehicleType === VehicleTypes.PSV ||
+    tr.techRecord_vehicleType === VehicleTypes.TRL
+  ) {
     <div class="main-dimensions" [formGroup]="form">
       <!-- Height (PSV only)-->
       @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
@@ -13,37 +17,51 @@
       }
       <!-- Length-->
       <div>
-        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-          <app-field-warning-message [warningMessage]="lengthWarning"></app-field-warning-message>
+        @if (
+          tr.techRecord_vehicleType === VehicleTypes.HGV ||
+          tr.techRecord_vehicleType === VehicleTypes.TRL
+        ) {
+          <app-field-warning-message
+            [warningMessage]="lengthWarning"
+          ></app-field-warning-message>
         }
-  
+
         <govuk-form-group-input
           formControlName="techRecord_dimensions_length"
           label="Length"
           [width]="Widths.XS"
           suffix="mm"
           type="number"
-          [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
-            ? []
-            : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+          [tags]="
+            tr.techRecord_vehicleType === VehicleTypes.PSV
+              ? []
+              : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+          "
         ></govuk-form-group-input>
       </div>
 
       <!-- Width-->
       <div>
-        @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
-          <app-field-warning-message [warningMessage]="widthWarning"></app-field-warning-message>
+        @if (
+          tr.techRecord_vehicleType === VehicleTypes.HGV ||
+          tr.techRecord_vehicleType === VehicleTypes.TRL
+        ) {
+          <app-field-warning-message
+            [warningMessage]="widthWarning"
+          ></app-field-warning-message>
         }
-  
+
         <govuk-form-group-input
           formControlName="techRecord_dimensions_width"
           label="Width"
           [width]="Widths.XS"
           suffix="mm"
           type="number"
-          [tags]="tr.techRecord_vehicleType === VehicleTypes.PSV
-            ? []
-            : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+          [tags]="
+            tr.techRecord_vehicleType === VehicleTypes.PSV
+              ? []
+              : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+          "
         ></govuk-form-group-input>
       </div>
 
@@ -66,7 +84,10 @@
         ></govuk-form-group-input>
       }
       <!-- Axles spacings (HGV and TRL) -->
-      @if (tr.techRecord_vehicleType !== VehicleTypes.PSV && parent.get('techRecord_dimensions_axleSpacing')) {
+      @if (
+        tr.techRecord_vehicleType !== VehicleTypes.PSV &&
+        parent.get('techRecord_dimensions_axleSpacing')
+      ) {
         <ng-container [formGroup]="parent">
           <ng-container formArrayName="techRecord_dimensions_axleSpacing">
             @for (axle of axleSpacings?.controls; track axle; let i = $index) {
@@ -113,8 +134,12 @@
           <span class="govuk-label govuk-label--m govuk-!-margin-bottom-4">
             Coupling centre to rear of trailer
           </span>
-          <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMinWarning"></app-field-warning-message>
-          <app-field-warning-message [warningMessage]="couplingCenterToRearTrlMaxWarning"></app-field-warning-message>
+          <app-field-warning-message
+            [warningMessage]="couplingCenterToRearTrlMinWarning"
+          ></app-field-warning-message>
+          <app-field-warning-message
+            [warningMessage]="couplingCenterToRearTrlMaxWarning"
+          ></app-field-warning-message>
           <div class="min-max">
             <!-- Coupling centre to rear of trailer minimum -->
             <govuk-form-group-input
@@ -123,9 +148,11 @@
               [width]="Widths.XS"
               suffix="mm"
               type="number"
-              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
-                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
-                : []"
+              [tags]="
+                tr.techRecord_vehicleType === VehicleTypes.TRL
+                  ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+                  : []
+              "
             ></govuk-form-group-input>
             <!-- Coupling centre to rear of trailer maximum -->
             <govuk-form-group-input
@@ -134,9 +161,11 @@
               [width]="Widths.XS"
               suffix="mm"
               type="number"
-              [tags]="tr.techRecord_vehicleType === VehicleTypes.TRL
-                ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
-                : []"
+              [tags]="
+                tr.techRecord_vehicleType === VehicleTypes.TRL
+                  ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+                  : []
+              "
             ></govuk-form-group-input>
           </div>
         </div>

@@ -1,4 +1,7 @@
-<div class="autocomplete autocomplete__wrapper" [class.extra-margin]="!noBottomMargin()">
+<div
+  class="autocomplete autocomplete__wrapper"
+  [class.extra-margin]="!noBottomMargin()"
+>
   <label for="{{ id }}" [id]="labelId" class="govuk-label govuk-label--m tags">
     {{ controlLabel() }}
     @if (tags().length) {
@@ -11,7 +14,7 @@
   </label>
 
   @if (controlHint() && !disabled()) {
-    <div class="govuk-hint" id="{{ hintId }}"> {{ controlHint() }} </div>
+    <div class="govuk-hint" id="{{ hintId }}">{{ controlHint() }}</div>
   }
 
   @if (hasError) {
@@ -19,20 +22,32 @@
     @if (firstError) {
       <p class="govuk-error-message" [id]="errorId">
         <span class="govuk-visually-hidden">Error: </span>
-        <span>{{ (typeof firstError === 'string' ? firstError : firstError.error) }}</span>
+        <span>{{
+          typeof firstError === 'string' ? firstError : firstError.error
+        }}</span>
       </p>
     }
   }
 
-  <div class="govuk-input--width-{{ width() }} internal-wrapper" [class.disabled]="disabled()">
+  <div
+    class="govuk-input--width-{{ width() }} internal-wrapper"
+    [class.disabled]="disabled()"
+  >
     @if (prefix()) {
-      <div class="govuk-input__prefix prefix" aria-hidden="true">{{ prefix() }}</div>
+      <div class="govuk-input__prefix prefix" aria-hidden="true">
+        {{ prefix() }}
+      </div>
     }
 
     <select [id]="id">
       <option value=""></option>
       @for (option of multiOptions; track option) {
-        <option [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
+        <option
+          [value]="option.value"
+          [selected]="option.value === control?.value"
+        >
+          {{ option.label }}
+        </option>
       }
     </select>
   </div>

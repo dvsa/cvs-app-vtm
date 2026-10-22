@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s"  [formGroup]="form">
+<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!-- Upper Deck -->
   @if (shouldDisplayFormControl('techRecord_seatsUpperDeck')) {
     <govuk-form-group-input
@@ -31,7 +31,7 @@
   @if (shouldDisplayFormControl('techRecord_standingCapacity')) {
     <govuk-form-group-input
       label="Standing capacity"
-      formControlName = 'techRecord_standingCapacity'
+      formControlName="techRecord_standingCapacity"
       type="number"
       [width]="FormNodeWidth.XXS"
       class="govuk-label--s"
@@ -98,7 +98,9 @@
   }
 
   <!-- Seatbelt installation approval date -->
-  @if (shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')) {
+  @if (
+    shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')
+  ) {
     <govuk-form-group-date
       label="Seatbelt installation approval date"
       formControlName="techRecord_seatbeltInstallationApprovalDate"

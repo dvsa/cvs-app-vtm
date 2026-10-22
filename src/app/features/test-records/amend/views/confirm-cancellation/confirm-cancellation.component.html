@@ -1,7 +1,26 @@
 <form [formGroup]="form" (submit)="handleSubmit()">
-  <app-vehicle-header [isEditing]="true" [testResult]="testResult$ | async" [testNumber]="testNumber$ | async"></app-vehicle-header>
+  <app-vehicle-header
+    [isEditing]="true"
+    [testResult]="testResult$ | async"
+    [testNumber]="testNumber$ | async"
+  ></app-vehicle-header>
 
-  <app-text-area formControlName="reason" name="reason" label="Why do you want to cancel this test?"></app-text-area>
-  <app-button id="submit" (clicked)="handleSubmit()" data-prevent-double-click="true">Cancel Test</app-button>
-  <app-button design="link" class="govuk-link" id="confirm-cancellation-back-link" (clicked)="navigateBack()">Back</app-button>
+  <app-text-area
+    formControlName="reason"
+    name="reason"
+    label="Why do you want to cancel this test?"
+  ></app-text-area>
+  <app-button
+    id="submit"
+    (clicked)="handleSubmit()"
+    data-prevent-double-click="true"
+    >Cancel Test</app-button
+  >
+  <app-button
+    design="link"
+    class="govuk-link"
+    id="confirm-cancellation-back-link"
+    (clicked)="navigateBack()"
+    >Back</app-button
+  >
 </form>

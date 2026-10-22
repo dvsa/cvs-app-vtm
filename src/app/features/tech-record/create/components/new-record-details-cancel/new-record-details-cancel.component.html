@@ -9,11 +9,18 @@
         This will delete any data in the record and return you to the homepage.
       </p>
 
-      <hr class="govuk-section-break govuk-section-break--m">
+      <hr class="govuk-section-break govuk-section-break--m" />
 
       <app-button-group>
-        <app-button id="cancel-record" design="warning" (clicked)="cancelRecord()">Cancel record</app-button>
-        <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
+        <app-button
+          id="cancel-record"
+          design="warning"
+          (clicked)="cancelRecord()"
+          >Cancel record</app-button
+        >
+        <app-button id="cancel" design="link" (clicked)="back()"
+          >Back</app-button
+        >
       </app-button-group>
     </div>
   </div>

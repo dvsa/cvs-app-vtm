@@ -3,23 +3,37 @@
     @if (displayAsRow) {
       <th class="govuk-table__header" scope="row" [style.width.%]="30">
         <a class="govuk-link--no-visited-state" target="_blank" [href]="link()">
-        {{ label() }}</a>:
+          {{ label() }}</a
+        >:
       </th>
     }
   } @else {
     @if (displayAsRow) {
-      <td class="govuk-table__header" scope="row" [ngClass]="control?.meta?.labelClass ?? ''" [style.width.%]="30">{{ label() }}:</td>
+      <td
+        class="govuk-table__header"
+        scope="row"
+        [ngClass]="control?.meta?.labelClass ?? ''"
+        [style.width.%]="30"
+      >
+        {{ label() }}:
+      </td>
     }
   }
   @switch (viewType()) {
     @case (formNodeViewTypes.DATE) {
-      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name() }}" class="govuk-table__cell">
+        {{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+      </td>
     }
     @case (formNodeViewTypes.DATETIME) {
-      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name() }}" class="govuk-table__cell">
+        {{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+      </td>
     }
     @case (formNodeViewTypes.TIME) {
-      <td id="test-{{ name() }}" class="govuk-table__cell">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name() }}" class="govuk-table__cell">
+        {{ value | date: 'HH:mm' | defaultNullOrEmpty }}
+      </td>
     }
     @case (formNodeViewTypes.VRM) {
       <td id="test-{{ name() }}" class="govuk-table__cell">
@@ -28,22 +42,50 @@
     }
     @case (formNodeViewTypes.CUSTOM) {
       @if (control && control.meta && control.meta.viewComponent) {
-        <ng-container [ngComponentOutlet]="control.meta.viewComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
+        <ng-container
+          [ngComponentOutlet]="control.meta.viewComponent"
+          [ngComponentOutletInjector]="customFormControlInjector"
+        ></ng-container>
       }
     }
     @default {
       @if (name() === 'reasonForAbandoning') {
         @let reasons = value?.split(ABANDON_REASONS_REGEX) || [];
-        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-line">
-          @for (reason of reasons; track reason;let index = $index;) {
-            <tr [id]="customId() ? 'test-' + customId() + index : 'test-' + name() + index" class="break-all whitespace-pre-line padding-vertical-half">
-              {{ reason | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}.
+        <td
+          [id]="customId() ? 'test-' + customId() : 'test-' + name()"
+          class="govuk-table__cell break-all whitespace-pre-line"
+        >
+          @for (reason of reasons; track reason; let index = $index) {
+            <tr
+              [id]="
+                customId()
+                  ? 'test-' + customId() + index
+                  : 'test-' + name() + index
+              "
+              class="break-all whitespace-pre-line padding-vertical-half"
+            >
+              {{
+                reason
+                  | refDataDecode$: control?.meta?.referenceData
+                  | async
+                  | getControlLabel: control?.meta?.options
+                  | defaultNullOrEmpty
+              }}.
             </tr>
           }
         </td>
       } @else {
-        <td [id]="customId() ? 'test-' + customId() : 'test-' + name()" class="govuk-table__cell break-all whitespace-pre-line">
-          {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
+        <td
+          [id]="customId() ? 'test-' + customId() : 'test-' + name()"
+          class="govuk-table__cell break-all whitespace-pre-line"
+        >
+          {{
+            value
+              | refDataDecode$: control?.meta?.referenceData
+              | async
+              | getControlLabel: control?.meta?.options
+              | defaultNullOrEmpty
+          }}
         </td>
       }
     }

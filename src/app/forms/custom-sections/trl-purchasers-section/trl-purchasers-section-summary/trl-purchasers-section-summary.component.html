@@ -5,7 +5,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_name')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Name or company</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_name">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_name"
+          >
             {{ vm.techRecord_purchaserDetails_name | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -14,7 +17,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_address1')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 1</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address1">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_address1"
+          >
             {{ vm.techRecord_purchaserDetails_address1 | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -23,7 +29,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_address2')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Address line 2</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address2">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_address2"
+          >
             {{ vm.techRecord_purchaserDetails_address2 | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -32,7 +41,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_postTown')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Town or city</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_postTown">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_postTown"
+          >
             {{ vm.techRecord_purchaserDetails_postTown | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -41,7 +53,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_address3')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">County</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_address3">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_address3"
+          >
             {{ vm.techRecord_purchaserDetails_address3 | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -50,7 +65,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_postCode')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Postcode</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_postCode">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_postCode"
+          >
             {{ vm.techRecord_purchaserDetails_postCode | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -59,8 +77,14 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_telephoneNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Telephone number</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_telephoneNumber">
-            {{ vm.techRecord_purchaserDetails_telephoneNumber | defaultNullOrEmpty }}
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_telephoneNumber"
+          >
+            {{
+              vm.techRecord_purchaserDetails_telephoneNumber
+                | defaultNullOrEmpty
+            }}
           </dd>
         </div>
       }
@@ -68,8 +92,13 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_emailAddress')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Email address</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_emailAddress">
-            {{ vm.techRecord_purchaserDetails_emailAddress | defaultNullOrEmpty }}
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_emailAddress"
+          >
+            {{
+              vm.techRecord_purchaserDetails_emailAddress | defaultNullOrEmpty
+            }}
           </dd>
         </div>
       }
@@ -77,7 +106,10 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_faxNumber')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Fax number</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_purchaserDetails_faxNumber">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_purchaserDetails_faxNumber"
+          >
             {{ vm.techRecord_purchaserDetails_faxNumber | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -86,8 +118,13 @@
       @if (tcs.hasChanged('techRecord_purchaserDetails_purchaserNotes')) {
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Purchaser notes</dt>
-          <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_purchaserDetails_purchaserNotes">
-            {{ vm.techRecord_purchaserDetails_purchaserNotes | defaultNullOrEmpty }}
+          <dd
+            class="govuk-summary-list__value whitespace-pre-wrap"
+            id="test-techRecord_purchaserDetails_purchaserNotes"
+          >
+            {{
+              vm.techRecord_purchaserDetails_purchaserNotes | defaultNullOrEmpty
+            }}
           </dd>
         </div>
       }

@@ -15,7 +15,9 @@
         <dd class="govuk-summary-list__value"></dd>
       </div>
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+        <dt class="govuk-summary-list__key">
+          Vehicle identification number (VIN)
+        </dt>
         <dd id="vin" class="govuk-summary-list__value">
           {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
         </dd>
@@ -43,7 +45,7 @@
     type="text"
     class="govuk-input govuk-!-width-two-thirds"
     (keyup.enter)="handleSearch(searchFilter.value, searchTerm.value)"
-    />
+  />
   <button
     class="govuk-button margin-right search-btn"
     type="submit"
@@ -52,7 +54,7 @@
     data-gem-track-click-module-started="true"
     aria-label="search button"
     (click)="handleSearch(searchFilter.value, searchTerm.value)"
-    >
+  >
     <svg
       class="gem-c-search__icon"
       width="25"
@@ -62,9 +64,22 @@
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
-      >
-      <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
-      <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+    >
+      <circle
+        cx="12.0161"
+        cy="11.0161"
+        r="8.51613"
+        stroke="currentColor"
+        stroke-width="3"
+      ></circle>
+      <line
+        x1="17.8668"
+        y1="17.3587"
+        x2="26.4475"
+        y2="25.9393"
+        stroke="currentColor"
+        stroke-width="3"
+      ></line>
     </svg>
   </button>
 </div>
@@ -75,17 +90,27 @@
 }
 
 @if (searchResults() && searchResults()!.length >= 1) {
-  <h3 class="govuk-heading-m">{{ searchResults()!.length }} search result{{ searchResults()!.length > 1 ? 's' : '' }}</h3>
+  <h3 class="govuk-heading-m">
+    {{ searchResults()!.length }} search result{{
+      searchResults()!.length > 1 ? 's' : ''
+    }}
+  </h3>
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-rable__row">
         <th scope="col" class="govuk-table__header">Code</th>
-        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Size</th>
+        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+          Size
+        </th>
         <th scope="col" class="govuk-table__header">Ply</th>
         <th scope="col" class="govuk-table__header">Single load index</th>
         <th scope="col" class="govuk-table__header">Double load index</th>
-        <th scope="col" class="govuk-table__header">Axle load single fitting</th>
-        <th scope="col" class="govuk-table__header">Axle load double fitting</th>
+        <th scope="col" class="govuk-table__header">
+          Axle load single fitting
+        </th>
+        <th scope="col" class="govuk-table__header">
+          Axle load double fitting
+        </th>
         <th scope="col" class="govuk-table__header"></th>
       </tr>
     </thead>
@@ -93,28 +118,64 @@
       @for (tyre of paginatedFields; track $index) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell" data-label="Code">{{ tyre.code }}</td>
-          <td class="govuk-table__cell" data-label="Size">{{ tyre.tyreSize }}</td>
-          <td class="govuk-table__cell" data-label="Ply">{{ tyre.plyRating }}</td>
-          <td class="govuk-table__cell" data-label="Single load index">{{ tyre.loadIndexSingleLoad }}</td>
-          <td class="govuk-table__cell" data-label="Double load index">{{ tyre.loadIndexTwinLoad }}</td>
+          <td class="govuk-table__cell" data-label="Size">
+            {{ tyre.tyreSize }}
+          </td>
+          <td class="govuk-table__cell" data-label="Ply">
+            {{ tyre.plyRating }}
+          </td>
+          <td class="govuk-table__cell" data-label="Single load index">
+            {{ tyre.loadIndexSingleLoad }}
+          </td>
+          <td class="govuk-table__cell" data-label="Double load index">
+            {{ tyre.loadIndexTwinLoad }}
+          </td>
           <td class="govuk-table__cell" data-label="Axle load single fitting">
-            {{ tyre.axleLoadSingle | tyreAxleLoad : tyre.loadIndexSingleLoad : 2 : (loadIndex$ | async) | defaultNullOrEmpty }}
+            {{
+              tyre.axleLoadSingle
+                | tyreAxleLoad
+                  : tyre.loadIndexSingleLoad
+                  : 2
+                  : (loadIndex$ | async)
+                | defaultNullOrEmpty
+            }}
           </td>
           <td class="govuk-table__cell" data-label="Axle load double fitting">
-            {{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : (loadIndex$ | async) | defaultNullOrEmpty }}
+            {{
+              tyre.axleLoadDouble
+                | tyreAxleLoad
+                  : tyre.loadIndexTwinLoad
+                  : 4
+                  : (loadIndex$ | async)
+                | defaultNullOrEmpty
+            }}
           </td>
           <td class="govuk-table__cell">
-            <a href="javascript:void(0)" id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
+            <a
+              href="javascript:void(0)"
+              id="add"
+              class="govuk-link add-link"
+              (click)="handleAddTyreToRecord(tyre)"
+              >Add</a
+            >
           </td>
         </tr>
       }
     </tbody>
   </table>
-  <app-pagination tableName="search-results"
+  <app-pagination
+    tableName="search-results"
     [numberOfItems]="numberOfResults"
     [itemsPerPage]="itemsPerPage"
     (paginationOptionsChange)="handlePaginationChange($event)"
-    />
+  />
 }
 
-<button id="cancel" class="govuk-button govuk-button--secondary margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>
+<button
+  id="cancel"
+  class="govuk-button govuk-button--secondary margin-right"
+  data-module="govuk-button"
+  (click)="cancel()"
+>
+  Cancel
+</button>

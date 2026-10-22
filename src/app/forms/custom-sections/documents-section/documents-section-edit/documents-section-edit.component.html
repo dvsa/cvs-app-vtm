@@ -1,6 +1,10 @@
 <div [formGroup]="form">
   @if (techRecord(); as tr) {
-    @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+    @if (
+      tr.techRecord_vehicleType === VehicleTypes.HGV ||
+      tr.techRecord_vehicleType === VehicleTypes.PSV ||
+      tr.techRecord_vehicleType === VehicleTypes.TRL
+    ) {
       <govuk-form-group-autocomplete
         formControlName="techRecord_microfilm_microfilmDocumentType"
         label="Microfilm document type"
@@ -8,7 +12,7 @@
         [width]="FormNodeWidth.XL"
         [allowEmpty]="true"
       ></govuk-form-group-autocomplete>
-        
+
       <govuk-form-group-input
         formControlName="techRecord_microfilm_microfilmRollNumber"
         label="Microfilm roll number"

@@ -17,14 +17,26 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-        <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
+        <dd id="vehicleType" class="govuk-summary-list__value">
+          {{ techRecord.vin | defaultNullOrEmpty }}
+        </dd>
       </div>
     </dl>
     <form [formGroup]="form">
-      <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="Reason for change"></app-radio-group>
+      <app-radio-group
+        formControlName="isCherishedTransfer"
+        [options]="reasons"
+        label="Reason for change"
+      ></app-radio-group>
       <app-button-group>
         <app-button id="submit-vrm" (clicked)="submit()">Continue</app-button>
-        <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+        <app-button
+          id="cancel-amend-vrm"
+          design="link"
+          data-module="govuk-button"
+          (clicked)="navigateBack()"
+          >Back</app-button
+        >
       </app-button-group>
     </form>
   </div>
