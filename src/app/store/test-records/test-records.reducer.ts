@@ -217,9 +217,8 @@ function createNewRequiredStandard(
 	}
 	const testResult = cloneDeep(testResultState);
 
-	if (!testResult.testTypes[0].requiredStandards) {
-		return;
-	}
+	// Saved test results drop an empty requiredStandards array, so it may need creating when amending
+	testResult.testTypes[0].requiredStandards ??= [];
 	testResult.testTypes[0].requiredStandards.push(requiredStandard);
 
 	return { ...testResult };
@@ -233,6 +232,14 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 	// Ensure body model is null when empty, so it doesn't affect downstream services
 	if (testResult.model === '') {
 		testResult.model = null;
+	}
+
+	// The v2 form defaults these to empty strings, which the BE rejects for vehicles without them (e.g. cars)
+	for (const key of ['vehicleClass', 'bodyType'] as const) {
+		const value = testResult[key] as { code?: string | null; description?: string | null } | null | undefined;
+		if (value?.code === '' && value.description === '') {
+			testResult[key] = { code: null, description: null } as any;
+		}
 	}
 
 	const vehicleType = testResult.vehicleType;

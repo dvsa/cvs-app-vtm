@@ -1,16 +1,24 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { TestService } from '@/src/app/services/test/test.service';
 import { initialAppState } from '@/src/app/store';
+import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
-import { provideMockStore } from '@ngrx/store/testing';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SeatbeltsComponent } from '../seatbelts.component';
 
 describe('SeatbeltsComponent', () => {
 	let fixture: ComponentFixture<SeatbeltsComponent>;
 	let component: SeatbeltsComponent;
 	let testService: TestService;
+	let store: MockStore;
 	let formGroupDirective: FormGroupDirective;
+
+	const setTestResult = (vehicleType: string, testTypeId: string) => {
+		store.overrideSelector(toEditOrNotToEdit, { vehicleType, testTypes: [{ testTypeId }] } as TestResultSchema);
+		store.refreshState();
+	};
 
 	/** Mirrors what `extractGlobalErrors` does on review, so sibling-dependent validators re-run. */
 	const revalidate = (control: { updateValueAndValidity(): void }) => control.updateValueAndValidity();
@@ -29,6 +37,8 @@ describe('SeatbeltsComponent', () => {
 
 		testService = TestBed.inject(TestService);
 		testService.isAbandoning.set(false);
+		store = TestBed.inject(MockStore);
+		setTestResult('psv', '1');
 		fixture = TestBed.createComponent(SeatbeltsComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.EDIT);
@@ -69,6 +79,22 @@ describe('SeatbeltsComponent', () => {
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
 				control.setValue(null);
 				control.markAsTouched();
+				revalidate(control);
+				expect(control.valid).toBe(true);
+			});
+
+			it('should be valid when unanswered for a specialist group 1 (IVA/MSVA) test', () => {
+				setTestResult('psv', '126');
+				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
+				control.setValue(null);
+				revalidate(control);
+				expect(control.valid).toBe(true);
+			});
+
+			it('should be valid when unanswered for a non-PSV test', () => {
+				setTestResult('hgv', '94');
+				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
+				control.setValue(null);
 				revalidate(control);
 				expect(control.valid).toBe(true);
 			});
