@@ -1,7 +1,7 @@
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import {
 	addSearchInformation,
 	amendReferenceDataItemSuccess,

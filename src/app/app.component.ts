@@ -1,8 +1,9 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, afterNextRender, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { prefetchAccessibleAutocomplete } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { Store } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
@@ -56,6 +57,11 @@ export class AppComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
+
+	constructor() {
+		// warm the lazily loaded autocomplete library in the background once the app has rendered
+		afterNextRender(() => prefetchAccessibleAutocomplete());
+	}
 
 	isCustomLayout$ = combineLatest([this.store.select(selectRouteData), this.store.select(selectFeatureFlags)]).pipe(
 		map(([routeData]) => {

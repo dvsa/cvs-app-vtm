@@ -28,7 +28,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { State } from '@store/index';
 import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, Subject, filter, firstValueFrom, skipLast, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
 

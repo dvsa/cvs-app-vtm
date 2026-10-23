@@ -6,7 +6,7 @@ import { ValidatorNames } from '@models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import merge from 'lodash.merge';
+import { merge } from 'lodash-es';
 import { BaseDialogComponent } from '../../../components/base-dialog/base-dialog.component';
 import { ButtonGroupComponent } from '../../../components/button-group/button-group.component';
 import { ButtonComponent } from '../../../components/button/button.component';

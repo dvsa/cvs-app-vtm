@@ -25,7 +25,7 @@ import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.
 import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
-import merge from 'lodash.merge';
+import { merge } from 'lodash-es';
 import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
