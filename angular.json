@@ -52,9 +52,8 @@
             "allowedCommonJsDependencies": [
               "govuk-frontend",
               "validate-govuk-date",
-              "lodash",
-              "lodash.merge",
-              "lodash.clonedeep",
+              "dayjs",
+              "jszip",
               "deepmerge",
               "accessible-autocomplete",
               "@dvsa/cvs-type-definitions",

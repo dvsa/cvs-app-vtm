@@ -7,7 +7,7 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordChangesService } from '@services/technical-record/technical-record-change.service';
 import { editingTechRecord, techRecord } from '@store/technical-records';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 type ADRTechRecord = TechRecordType<'hgv' | 'trl' | 'lgv'> & {
 	techRecord_adrDetails_additionalExaminerNotes_note: string;

@@ -29,8 +29,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
+import { cloneDeep, merge } from 'lodash-es';
 import {
 	cancelEditingTestResult,
 	cleanTestResult,

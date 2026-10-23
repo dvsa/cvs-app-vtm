@@ -31,7 +31,7 @@ import { ApprovalTypeNumber } from '@forms/custom-sections/type-approval-section
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 @Component({
 	selector: 'app-approval-type',

@@ -15,7 +15,7 @@ import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
 import {

@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
 	selector: 'app-adr-certs-section-view',

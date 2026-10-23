@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { AdrService } from '@services/adr/adr.service';
 import { techRecord } from '@store/technical-records';
-import _ from 'lodash';
+import { orderBy } from 'lodash-es';
 
 @Component({
 	selector: 'app-adr-section-view',
@@ -23,6 +23,6 @@ export class AdrSectionViewComponent {
 	sortAdditionalExaminerNotes(notes?: AdditionalExaminerNotes[] | null) {
 		if (!notes) return [];
 
-		return _.orderBy(notes, ['createdAtDate'], ['desc']);
+		return orderBy(notes, ['createdAtDate'], ['desc']);
 	}
 }

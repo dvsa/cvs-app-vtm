@@ -14,31 +14,6 @@ Prerequisites:
 - NPM 9.8.1 or higher
 - Git Secrets
 
-### Using Make
-
-To get setup on the project you can run: `make init`, `make install` and `make run`.
-
-Then to run tests run:
-`make all`
-
-To just run the application run:
-`make run`
-
-To run the mock api run:
-`make api`
-
-To get different responses use custom VINs/IDs. Also see `mock-api/mock-api-server.ts` for more details about custom endpoints.
-
-| Argument           | Tech Record API | Test Record API |
-| ------------------ | --------------- | --------------- |
-| `.*`               | 200             | 200             |
-| `notfound`         | 400             | 400             |
-| `servererror`      | 500             | 500             |
-| `delayok`          | 200             | -               |
-| `delayservererror` | 500             | -               |
-| `HGV`              | 200             | -               |
-| `TRL`              | 200             | -               |
-
 ### Using Node commands
 
 1. Run `npm install`
@@ -91,16 +66,6 @@ cvs-svc-test-results
 # Debugging Locally
 
 There is a `Launch Chrome` vscode debug configuration that will run `ng serve` and launch an instance of chrome. Initially you will get `This site can’t be reached`, but this will automatically refresh once the backgraound processes have finished starting up. Break points set within vscode will be hit while using this instance of chrome.
-
-# Running storybook
-
-Storybook lets you view components without the rest of the application.
-
-To run storybook:
-
-`npm run storybook`
-
-Then view it on `localhost:6006`.
 
 # Atomic Design
 

@@ -54,6 +54,15 @@ describe('AutocompleteComponent', () => {
 		fixture.detectChanges();
 	});
 
+	it('should render option text exactly as the labels, as accessible-autocomplete matches on it', async () => {
+		await new Promise((resolve) => setTimeout(resolve));
+		fixture.detectChanges();
+
+		const select: HTMLSelectElement = fixture.debugElement.query(By.css(`#${component.name}`)).nativeElement;
+
+		expect(Array.from(select.options).map((option) => option.textContent)).toEqual(['', 'option1', 'option2']);
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});

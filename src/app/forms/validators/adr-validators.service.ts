@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { FormArray, ValidatorFn } from '@angular/forms';
 import { AdrService } from '@services/adr/adr.service';
 import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
-import _ from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class AdrValidatorsService {
@@ -284,10 +284,10 @@ export class AdrValidatorsService {
 
 				// If reference number or the first UN number are populated, and the control is valid, then clear required error
 				const { required: refNoRequired, ...otherRefNoErrors } = refNo.errors || {};
-				refNo.setErrors(_.isEmpty(otherRefNoErrors) ? null : otherRefNoErrors);
+				refNo.setErrors(isEmpty(otherRefNoErrors) ? null : otherRefNoErrors);
 
 				const { required: unNumberRequired, ...otherUNNumberErrors } = unNumbers.controls[0].errors || {};
-				unNumbers.controls[0].setErrors(_.isEmpty(otherUNNumberErrors) ? null : otherUNNumberErrors);
+				unNumbers.controls[0].setErrors(isEmpty(otherUNNumberErrors) ? null : otherUNNumberErrors);
 			}
 
 			return null;

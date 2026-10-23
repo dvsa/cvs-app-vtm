@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import {
 	TEST_TYPES_GROUP1,
 	TEST_TYPES_GROUP1_SPEC_TEST,

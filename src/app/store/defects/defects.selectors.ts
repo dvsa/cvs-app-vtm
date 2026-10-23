@@ -6,7 +6,7 @@ import {
 import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { Deficiency } from '../../models/defects/deficiency.model';
 import { defectsAdapter, defectsFeatureState } from './defects.reducer';
 
