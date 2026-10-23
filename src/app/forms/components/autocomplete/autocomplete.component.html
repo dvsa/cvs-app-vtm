@@ -28,12 +28,12 @@
     <select [id]="name()">
       <option value=""></option>
       @for (option of options; track option) {
+        <!-- textContent binding: accessible-autocomplete matches on option text, so it must not pick up template whitespace -->
         <option
           [value]="option.value"
           [selected]="option.value === control?.value"
-        >
-          {{ option.label }}
-        </option>
+          [textContent]="option.label"
+        ></option>
       }
     </select>
   </div>

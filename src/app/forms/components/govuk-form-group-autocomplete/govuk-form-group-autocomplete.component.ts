@@ -52,13 +52,22 @@ export class GovukFormGroupAutocompleteComponent
 	multiOptions: MultiOptions = [];
 
 	destroy = new ReplaySubject<boolean>(1);
-	private isDestroyed = false;
 	valueSub = new BehaviorSubject<unknown>(null);
 
 	ngAfterViewInit(): void {
+		// Load the library before subscribing so each emission below runs synchronously. If the library can't be
+		// loaded, carry on without it so the plain select still works.
+		loadAccessibleAutocomplete()
+			.then(({ enhanceSelectElement }) => enhanceSelectElement)
+			.catch(() => undefined)
+			.then((enhanceSelectElement) => this.watchOptions(enhanceSelectElement));
+	}
+
+	private watchOptions(enhanceSelectElement: ((params: AutocompleteEnhanceParams) => void) | undefined): void {
+		// takeUntil(destroy) also covers the component being destroyed while the library was loading
 		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
 			.pipe(takeUntil(this.destroy))
-			.subscribe(async ([options, latest]) => {
+			.subscribe(([options, latest]) => {
 				this.multiOptions = Array.isArray(options)
 					? options.map((option) => (typeof option === 'string' ? { label: option, value: option } : option))
 					: [];
@@ -86,10 +95,7 @@ export class GovukFormGroupAutocompleteComponent
 				}
 
 				const selectEl = enhanceParams.selectElement as HTMLSelectElement | null;
-				if (this.multiOptions.length > 0 && selectEl?.options?.length) {
-					const { enhanceSelectElement } = await loadAccessibleAutocomplete();
-					// the component may have been destroyed while the library was loading
-					if (this.isDestroyed) return;
+				if (enhanceSelectElement && this.multiOptions.length > 0 && selectEl?.options?.length) {
 					enhanceSelectElement(enhanceParams);
 				}
 
@@ -105,7 +111,6 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	ngOnDestroy(): void {
-		this.isDestroyed = true;
 		this.destroy.next(true);
 		this.destroy.complete();
 	}
