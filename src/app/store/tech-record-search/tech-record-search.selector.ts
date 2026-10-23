@@ -1,4 +1,4 @@
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { StatusCodes } from '@/src/app/models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { techSearchResultAdapter, techSearchResultFeatureState } from './tech-record-search.reducer';
 
@@ -10,37 +10,32 @@ export const selectTechRecordSearchLoadingState = createSelector(
 );
 export const selectTechRecordSearchResults = createSelector(techSearchResultFeatureState, (state) => selectAll(state));
 
-export const selectTechRecordSearchResultsBySystemNumber = createSelector(
+export const selectTechRecordSearchResultsForDisplay = createSelector(
 	techSearchResultFeatureState,
 	selectTechRecordSearchResults,
-	(state, searchResults) => {
-		const records: TechRecordSearchSchema[] = [];
-		const visitedSystemNumbers = new Set<string>();
-		searchResults.forEach((result) => {
-			if (!visitedSystemNumbers.has(result.systemNumber)) {
-				visitedSystemNumbers.add(result.systemNumber);
-				const recordsWithSameSystemNumber = searchResults.filter(
-					(record) => record.systemNumber === result.systemNumber
-				);
-				const mostCurrentRecord =
-					recordsWithSameSystemNumber.find((r) => r.techRecord_statusCode === 'current') ??
-					recordsWithSameSystemNumber.find((r) => r.techRecord_statusCode === 'provisional') ??
-					recordsWithSameSystemNumber.find(
-						(r) =>
-							new Date(r.createdTimestamp).getTime() ===
-							Math.max(...recordsWithSameSystemNumber.map((rec) => new Date(rec.createdTimestamp).getTime()))
-					) ??
-					records[0];
+	(state, searchResults) =>
+		searchResults
+			.filter(
+				(record) =>
+					record.techRecord_statusCode === StatusCodes.CURRENT ||
+					record.techRecord_statusCode === StatusCodes.PROVISIONAL ||
+					(state.includeArchived && record.techRecord_statusCode === StatusCodes.ARCHIVED)
+			)
+			.sort(
+				(a, b) =>
+					Number(a.techRecord_statusCode === StatusCodes.ARCHIVED) -
+					Number(b.techRecord_statusCode === StatusCodes.ARCHIVED)
+			)
+);
 
-				if (mostCurrentRecord) {
-					records.push(mostCurrentRecord);
-				}
-			}
-		});
-
-		return records.filter((record) => {
-			if (state.includeArchived) return true;
-			return record.techRecord_statusCode !== 'archived';
-		});
-	}
+export const selectTechRecordSearchView = createSelector(
+	techSearchResultFeatureState,
+	selectTechRecordSearchResults,
+	selectTechRecordSearchResultsForDisplay,
+	(state, allResults, results) => ({
+		results,
+		showNoRecords: state.hasSearched && !state.loading && !state.error && results.length === 0,
+		hasArchivedRecords:
+			!state.includeArchived && allResults.some((record) => record.techRecord_statusCode === StatusCodes.ARCHIVED),
+	})
 );

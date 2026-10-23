@@ -4,21 +4,20 @@
       Search for a technical record
     </h1>
 
-    @if (
-      technicalRecordService.searchResultsWithUniqueSystemNumbers$ | async;
-      as searchResults
-    ) {
-      @if (searchResults.length) {
-        @if (pagination.paginationOptions(); as page) {
-          <app-search-form
-            class="search-form"
-            [pagination]="page"
-            [searchResults]="searchResults.length"
-          ></app-search-form>
+    @if (searchView$ | async; as view) {
+      <app-search-form
+        class="search-form"
+        [pagination]="pagination.paginationOptions()"
+        [searchResults]="view.results.length"
+      ></app-search-form>
 
+      @if (view.results.length) {
+        @if (pagination.paginationOptions(); as page) {
           @for (
-            searchResult of searchResults.slice(page.start, page.end);
-            track searchResult.createdTimestamp
+            searchResult of view.results.slice(page.start, page.end);
+            track searchResult.systemNumber +
+              '#' +
+              searchResult.createdTimestamp
           ) {
             <app-search-result
               [searchResult]="searchResult"
@@ -26,14 +25,42 @@
             ></app-search-result>
           }
         }
-
-        <app-pagination
-          #pagination
-          tableName="search-results"
-          [numberOfItems]="searchResults.length"
-          [itemsPerPage]="4"
-        ></app-pagination>
+      } @else if (view.showNoRecords) {
+        <h2 class="govuk-heading-m" id="no-records-found">No Records Found</h2>
+        @if (view.hasArchivedRecords) {
+          <p class="govuk-body">
+            There are
+            <a
+              class="govuk-link"
+              id="archived-records-link"
+              [routerLink]="[]"
+              [queryParams]="{
+                includeArchived: true,
+                'search-results-page': 1,
+              }"
+              queryParamsHandling="merge"
+              >archived records matching your search</a
+            >.
+          </p>
+        }
+        <p class="govuk-body" *appRoleRequired="roles.TechRecordCreate">
+          You can
+          <a
+            class="govuk-link"
+            id="create-technical-record-link"
+            routerLink="/create"
+            >create a new technical record</a
+          >.
+        </p>
       }
+
+      <app-pagination
+        #pagination
+        tableName="search-results"
+        [numberOfItems]="view.results.length"
+        [itemsPerPage]="4"
+        [hidden]="!view.results.length"
+      ></app-pagination>
     }
   </div>
 </div>

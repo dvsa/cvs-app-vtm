@@ -28,6 +28,18 @@ The framework used is Jest.
 
 To run the test coverage run `npm run test`
 
+### Technical record search
+
+Search results show all matching current and provisional records. Selecting
+**Include archived records** also shows matching archived versions, below all
+current and provisional results.
+
+When no visible records match, the search page displays **No Records Found**.
+If archived matches are available but excluded, the **archived records matching
+your search** link enables the archive filter and reruns the same search.
+Users with permission to create records can also follow **create a new technical
+record** to the creation page.
+
 ### Backend Requirements
 
 This talks to the following backends:
