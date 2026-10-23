@@ -31,6 +31,7 @@ export const id = createSelector(getUserState, (state) => state.oid);
 export const employeeId = createSelector(getUserState, (state) => state.employeeId);
 export const roles = createSelector(getUserState, (state) => state.roles);
 export const user = createSelector(getUserState, (state) => state);
+export const jobTitle = createSelector(getUserState, (state) => state.jobTitle);
 
 export const userServiceReducer = createReducer(
 	initialState,

@@ -30,6 +30,7 @@ export class UserService implements OnDestroy {
 	roles = this.store.selectSignal(UserServiceState.roles);
 	userEmail = this.store.selectSignal(UserServiceState.userEmail);
 	employeeId = this.store.selectSignal(UserServiceState.employeeId);
+	jobTitle = this.store.selectSignal(UserServiceState.jobTitle);
 
 	constructor() {
 		this.id$.pipe(takeUntil(this.destroying$)).subscribe((oid) => {
