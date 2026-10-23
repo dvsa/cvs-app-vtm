@@ -5,16 +5,19 @@
   border-collapse: collapse;
 }
 
-.govuk-table th, .govuk-table td {
+.govuk-table th,
+.govuk-table td {
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-.govuk-table th:first-child, .govuk-table td:first-child {
+.govuk-table th:first-child,
+.govuk-table td:first-child {
   padding-left: 10px;
 }
 
-.govuk-table th:not(:first-child), .govuk-table td {
+.govuk-table th:not(:first-child),
+.govuk-table td {
   width: auto !important;
 }
 
@@ -22,11 +25,13 @@
   padding-right: 90px;
 }
 
-.govuk-table td:nth-child(4), .govuk-table th:nth-child(4) {
+.govuk-table td:nth-child(4),
+.govuk-table th:nth-child(4) {
   padding-right: 10px;
 }
 
-.govuk-table td:nth-child(5), .govuk-table th:nth-child(5) {
+.govuk-table td:nth-child(5),
+.govuk-table th:nth-child(5) {
   text-align: right;
   padding-right: 10px;
 }

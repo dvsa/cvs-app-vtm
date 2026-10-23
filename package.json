@@ -17,8 +17,8 @@
     "build": "ng build --optimization --progress --aot",
     "watch": "ng build --watch",
     "security-checks": "git secrets --scan && git secrets --register-aws && git log -p --diff-filter=d -- . ':!*.json' -n 100 | scanrepo",
-    "format": "bun fmt \"src/**/*.html\"",
-    "format:check": "bun fmt --check \"src/**/*.html\"",
+    "format": "bun fmt \"src/**/*.{html,scss}\"",
+    "format:check": "bun fmt --check \"src/**/*.{html,scss}\"",
     "lint": "biome check src",
     "lint:fix": "npm run lint -- --write",
     "test": "jest --colors --maxWorkers=50% --coverage",
@@ -130,8 +130,8 @@
     "js-yaml": "^4.2.0"
   },
   "lint-staged": {
-    "*.{js,ts,mjs,css,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched",
-    "src/**/*.html": "npm run format:check"
+    "*.{js,ts,mjs,md,ts,json}": "npm run lint:fix -- --no-errors-on-unmatched",
+    "src/**/*.{html,scss}": "npm run format:check"
   },
   "jestSonar": {
     "reportPath": "./coverage",
