@@ -418,6 +418,15 @@ export class TestRecordV2Component implements OnInit {
 		return this.isSpecialistGroup1();
 	}
 
+	shouldShowSpecialistSectionsAfterTest(): boolean {
+		// Matches the original DFS template order, where LGV/car/motorcycle show Required Standards
+		// and Additional Defects straight after Test, and PSV/HGV/TRL show them after Notes.
+		const vehicleType = this.testResult()?.vehicleType;
+		return (
+			vehicleType === VehicleTypes.LGV || vehicleType === VehicleTypes.CAR || vehicleType === VehicleTypes.MOTORCYCLE
+		);
+	}
+
 	isSpecialistGroup1(): boolean {
 		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}

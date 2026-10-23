@@ -79,6 +79,11 @@
               ></app-test>
             </form>
           </app-accordion>
+          @if (shouldShowSpecialistSectionsAfterTest()) {
+            <ng-container
+              [ngTemplateOutlet]="specialistSections"
+            ></ng-container>
+          }
           @if (shouldShowSeatbeltSection()) {
             <app-accordion
               [id]="'seatbelts'"
@@ -111,6 +116,32 @@
               </form>
             </app-accordion>
           }
+          @if (!shouldShowSpecialistSectionsAfterTest()) {
+            <ng-container
+              [ngTemplateOutlet]="specialistSections"
+            ></ng-container>
+          }
+          @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
+            <app-test-amendment-history
+              class="section"
+              [testRecord]="testResult()"
+            />
+          }
+          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+            <app-accordion
+              [id]="'reason-for-creation'"
+              [title]="'Reason for creation'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-reason-for-creation
+                  [mode]="mode()"
+                ></app-test-reason-for-creation>
+              </form>
+            </app-accordion>
+          }
+        </ng-template>
+        <ng-template #specialistSections>
           @if (shouldShowRequiredStandardsSection()) {
             <app-accordion
               [id]="'requiredStandards'"
@@ -134,25 +165,6 @@
                 <app-test-custom-defects
                   [mode]="mode()"
                 ></app-test-custom-defects>
-              </form>
-            </app-accordion>
-          }
-          @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
-            <app-test-amendment-history
-              class="section"
-              [testRecord]="testResult()"
-            />
-          }
-          @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
-            <app-accordion
-              [id]="'reason-for-creation'"
-              [title]="'Reason for creation'"
-              [description]="''"
-            >
-              <form ngNoForm>
-                <app-test-reason-for-creation
-                  [mode]="mode()"
-                ></app-test-reason-for-creation>
               </form>
             </app-accordion>
           }
