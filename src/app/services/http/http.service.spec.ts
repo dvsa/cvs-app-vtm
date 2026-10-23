@@ -41,14 +41,14 @@ describe('HttpService', () => {
 	});
 
 	describe('amendTechRecordVrm', () => {
-		it('should call v3/technical-records/updateVrm', () => {
+		it('should call tech-records/v4/updateVrm', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
 			httpService
 				.amendTechRecordVrm('new vrm', false, technicalRecord.systemNumber, technicalRecord.createdTimestamp)
 				.subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/updateVrm/HGV/${technicalRecord.createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/updateVrm/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('newVrm');
@@ -60,7 +60,7 @@ describe('HttpService', () => {
 		it('should return a new tech record with status archived', () => {
 			httpService.archiveTechRecord('foo', 'bar', 'foobar').subscribe();
 
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/archive/foo/bar`);
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/archive/foo/bar`);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForArchiving');
 		});
@@ -78,7 +78,7 @@ describe('HttpService', () => {
 
 			httpService.createTechRecord(expectedVehicle).subscribe();
 
-			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
+			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4`);
 
 			expect(request.request.method).toBe('POST');
 			expect(request.request.body).toEqual(expectedVehicle);
@@ -102,7 +102,7 @@ describe('HttpService', () => {
 					expect(response).toEqual(expectedVehicle);
 				});
 
-			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
+			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4`);
 			request.flush(expectedVehicle);
 		});
 	});
@@ -283,12 +283,12 @@ describe('HttpService', () => {
 	});
 
 	describe('generateLetter', () => {
-		it('should call v3/technical-records/letter', () => {
+		it('should call tech-records/v4/letter', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
 			httpService.generateLetter(technicalRecord, 'test', 123, {}).subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/letter/HGV/${technicalRecord.createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/letter/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('POST');
 			expect(req.request.body).toHaveProperty('vtmUsername');
@@ -299,12 +299,12 @@ describe('HttpService', () => {
 	});
 
 	describe('generatePlate', () => {
-		it('should call v3/technical-records/plate', () => {
+		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
 			httpService.generatePlate(technicalRecord, 'reason', {}).subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/plate/HGV/${technicalRecord.createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/plate/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('POST');
 			expect(req.request.body).toHaveProperty('vtmUsername');
@@ -314,26 +314,28 @@ describe('HttpService', () => {
 	});
 
 	describe('getTechRecordV3', () => {
-		it('should call v3/technical-records/plate/HGV', () => {
+		it('should call tech-records/v4/plate/HGV', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService.getTechRecordV3(technicalRecord.systemNumber, technicalRecord.createdTimestamp).subscribe();
+			httpService
+				.getTechRecordBySysNumberAndTimestamp(technicalRecord.systemNumber, technicalRecord.createdTimestamp)
+				.subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/HGV/${technicalRecord.createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('GET');
 		});
 	});
 
 	describe('promoteTechRecord', () => {
-		it('should call v3/technical-records/plate', () => {
+		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
 			httpService
 				.promoteTechRecord(technicalRecord.systemNumber, technicalRecord.createdTimestamp, 'reason')
 				.subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/promote/HGV/${technicalRecord.createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/promote/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForPromoting');
@@ -350,11 +352,11 @@ describe('HttpService', () => {
 	});
 
 	describe('searchTechRecords', () => {
-		it('should call v3/technical-records/search', () => {
+		it('should call tech-records/v4/search', () => {
 			httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
 
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/search/term?searchCriteria=${SEARCH_TYPES.ALL}&additionalInfo=true`
+				`${environment.VTM_API_URI}/tech-records/v4/search/term?searchCriteria=${SEARCH_TYPES.ALL}&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
 		});
@@ -378,7 +380,7 @@ describe('HttpService', () => {
 
 			// Check for correct requests: should have made one request to the PUT URL
 			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`
+				`${environment.VTM_API_URI}/tech-records/v4/${systemNumber}/${createdTimestamp}`
 			);
 			expect(req.request.method).toBe('PATCH');
 
@@ -404,7 +406,7 @@ describe('HttpService', () => {
 		it('should call the correct endpoint with the provided VIN and use 30s timeout in production', () => {
 			(environment as any).production = true;
 			httpService.getRecalls('VIN123').subscribe();
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN123`);
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/recalls/VIN123`);
 			expect(req.request.method).toBe('GET');
 			req.flush({});
 		});
@@ -412,7 +414,7 @@ describe('HttpService', () => {
 		it('should call the correct endpoint with the provided VIN and use 10s timeout in non-production', () => {
 			(environment as any).production = true;
 			httpService.getRecalls('VIN456').subscribe();
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN456`);
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/recalls/VIN456`);
 			expect(req.request.method).toBe('GET');
 			req.flush({});
 		});
@@ -426,7 +428,7 @@ describe('HttpService', () => {
 					done();
 				},
 			});
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
+			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/recalls/VIN789`);
 			req.flush('Not found', { status: 404, statusText: 'Not Found' });
 		});
 	});
