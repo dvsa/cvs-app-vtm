@@ -89,7 +89,7 @@ describe('SearchFormComponent', () => {
 			component.form.patchValue({ searchTerm: 'foo', searchCriteria: SEARCH_TYPES.ALL });
 			component.search();
 			expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], {
-				queryParams: { searchTerm: 'foo', searchCriteria: 'all', includeArchived: false },
+				queryParams: { searchTerm: 'foo', searchCriteria: 'all', includeArchived: false, 'search-results-page': 1 },
 				queryParamsHandling: 'merge',
 			});
 		});
