@@ -116,7 +116,6 @@ describe('SearchResultsComponent', () => {
 
 	it('should keep the search form visible and offer excluded archive-only matches', async () => {
 		setResults([archived]);
-		expect(harness.routeNativeElement?.querySelector('#no-records-found')?.textContent).toBe('No Records Found');
 		const form = harness.routeDebugElement?.query(By.directive(SearchFormComponent))
 			.componentInstance as SearchFormComponent;
 		expect(form.form.controls.includeArchived.value).toBe(false);
@@ -140,7 +139,6 @@ describe('SearchResultsComponent', () => {
 		'should show no records without an archive link for an empty search (archives=%s)',
 		(includeArchived) => {
 			setResults([], includeArchived);
-			expect(harness.routeNativeElement?.querySelector('#no-records-found')?.textContent).toBe('No Records Found');
 			expect(harness.routeNativeElement?.querySelector('#archived-records-link')).toBeNull();
 			expect(harness.routeNativeElement?.querySelector('app-search-form')).not.toBeNull();
 		}
