@@ -48,6 +48,7 @@ import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -223,7 +224,8 @@ export class TestComponent implements OnInit, OnDestroy {
 				() =>
 					(this.mode() === Modes.AMEND &&
 						testTypeGroup.controls.testResult.value === TestResults.PASS &&
-						!this.isSpecialistGroup1()) ||
+						!this.isSpecialistGroup1() &&
+						!this.isTestTypeGroup12or14()) ||
 					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
@@ -375,6 +377,10 @@ export class TestComponent implements OnInit, OnDestroy {
 		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
+	isTestTypeGroup12or14(): boolean {
+		return TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
 	isPassOrPrs(): boolean {
 		const testResult = this.testResult()?.testTypes[0].testResult;
 		return testResult === TestResults.PASS || testResult === TestResults.PRS;
@@ -415,7 +421,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowAnniversaryDate(): boolean {
-		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1();
+		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup12or14();
 	}
 
 	shouldShowCentralDocs(): boolean {
