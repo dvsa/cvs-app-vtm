@@ -459,6 +459,15 @@ describe('Test Results Reducer', () => {
 
 			expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(2);
 		});
+
+		it('should create the required standards array when the test result does not have one', () => {
+			const requiredStandard = { sectionNumber: 2 } as unknown as SpecialistCustomDefectsSchemaPut;
+			const testResult = { testTypes: [{}] } as unknown as TestResultSchema;
+			const action = createRequiredStandard({ requiredStandard });
+			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+			expect(newState.editingTestResult?.testTypes[0].requiredStandards).toEqual([requiredStandard]);
+		});
 	});
 
 	describe('updateRequiredStandard', () => {

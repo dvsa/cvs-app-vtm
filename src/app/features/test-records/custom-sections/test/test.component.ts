@@ -6,7 +6,13 @@ import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-fo
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { MultiOptions, PASS_FAIL_OPTIONS, RESULT_OPTIONS, YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import {
+	MultiOptions,
+	PASS_FAIL_OPTIONS,
+	PASS_FAIL_PRS_OPTIONS,
+	RESULT_OPTIONS,
+	YES_NO_OPTIONS,
+} from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
@@ -16,9 +22,10 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ButtonComponent } from '@components/button/button.component';
 import { RetrieveDocumentDirective } from '@directives/retrieve-document/retrieve-document.directive';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
@@ -37,7 +44,12 @@ import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-gr
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
-import { TEST_TYPES_GROUP7, TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
+import {
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+} from '@models/testTypeId.enum';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -50,6 +62,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 	templateUrl: './test.component.html',
 	imports: [
 		DatePipe,
+		NgTemplateOutlet,
 		FormsModule,
 		ReactiveFormsModule,
 		ToUppercaseDirective,
@@ -66,6 +79,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 		ButtonComponent,
 		FieldErrorMessageComponent,
 		RetrieveDocumentDirective,
+		ApprovalMediaDownloadComponent,
 	],
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -176,6 +190,14 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.maxLength(8, 'Contingency Test Number'),
 		]);
 
+		testTypeGroup.controls.testResult.setValidators([
+			// Applies when abandoning too, as it does in the dynamic form flow
+			this.commonValidators.applyWhen(
+				() => this.isSpecialistGroup1(),
+				(control) => this.validateResultAgainstRequiredStandards(control)
+			),
+		]);
+
 		testTypeGroup.controls.prohibitionIssued.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.shouldShowProhibitionIssued(),
@@ -188,7 +210,9 @@ export class TestComponent implements OnInit, OnDestroy {
 				() =>
 					this.shouldShowCertificateNumber() &&
 					this.testResult()?.testTypes[0].testResult !== null &&
-					this.mode() !== Modes.ABANDON,
+					this.mode() !== Modes.ABANDON &&
+					// IVA/MSVA tests show the certificate number when abandoned, but do not require it
+					!(this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED),
 				this.commonValidators.requiredWith('Certificate Number', 'Result')
 			),
 			this.commonValidators.alphanumeric('Certificate Number must be alphanumeric'),
@@ -197,7 +221,9 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.testExpiryDate.setValidators([
 			this.commonValidators.applyWhen(
 				() =>
-					(this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS) ||
+					(this.mode() === Modes.AMEND &&
+						testTypeGroup.controls.testResult.value === TestResults.PASS &&
+						!this.isSpecialistGroup1()) ||
 					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
@@ -211,11 +237,23 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		testTypeGroup.controls.testAnniversaryDate.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.AMEND && testTypeGroup.controls.testResult.value === TestResults.PASS,
+				() =>
+					this.mode() === Modes.AMEND &&
+					testTypeGroup.controls.testResult.value === TestResults.PASS &&
+					this.shouldShowAnniversaryDate(),
 				this.commonValidators.required('Anniversary date')
 			),
 			this.commonValidators.date('Anniversary date'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Anniversary date', 'Start Time'),
+		]);
+
+		testTypeGroup.controls.reapplicationDate.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.shouldShowReapplicationDate(),
+				this.commonValidators.required('Reapplication date'),
+				this.commonValidators.date('Reapplication date'),
+				this.commonValidators.futureDate('Reapplication date')
+			),
 		]);
 
 		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
@@ -268,7 +306,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.mode() === Modes.AMEND && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
-				this.commonValidators.requiredWith('Additional details for abandoning', 'Result')
+				this.commonValidators.requiredWith('Additional details for abandoning', 'Result', 'test')
 			),
 		]);
 	}
@@ -282,11 +320,15 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.form.controls.testTypes.at(0).controls.testCode.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 			this.form.controls.testTypes.at(0).controls.testNumber.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
+
+			// IVA/MSVA tests let the start and end times be amended
+			if (!this.isSpecialistGroup1()) {
+				this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
+				this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
+			}
 		}
 
-		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+		if (this.isTestTypeGroup7() || this.isSpecialistGroup1()) {
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 		}
 	}
@@ -294,6 +336,9 @@ export class TestComponent implements OnInit, OnDestroy {
 	getResultOptions() {
 		if (this.mode() === Modes.AMEND) {
 			return RESULT_OPTIONS;
+		}
+		if (this.isSpecialistGroup1()) {
+			return PASS_FAIL_PRS_OPTIONS;
 		}
 		return PASS_FAIL_OPTIONS;
 	}
@@ -326,8 +371,34 @@ export class TestComponent implements OnInit, OnDestroy {
 		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
+	isSpecialistGroup1(): boolean {
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+	}
+
+	isPassOrPrs(): boolean {
+		const testResult = this.testResult()?.testTypes[0].testResult;
+		return testResult === TestResults.PASS || testResult === TestResults.PRS;
+	}
+
 	shouldShowResult(): boolean {
-		return this.isTestTypeGroup7();
+		return this.isTestTypeGroup7() || this.isSpecialistGroup1();
+	}
+
+	/** Mirrors the `resultDependantOnRequiredStandards` async validator used by the dynamic form service. */
+	validateResultAgainstRequiredStandards(control: AbstractControl): ValidationErrors | null {
+		const hasRequiredStandards = !!this.form.controls.testTypes.at(0).controls.requiredStandards.value?.length;
+
+		if (control.value === TestResults.PASS && hasRequiredStandards) {
+			return { invalidTestResult: { error: 'Cannot pass test when required standards are present' } };
+		}
+		if (control.value === TestResults.FAIL && !hasRequiredStandards) {
+			return { invalidTestResult: { error: 'Cannot fail test when no required standards are present' } };
+		}
+		if (control.value === TestResults.PRS && !hasRequiredStandards) {
+			return { invalidTestResult: { error: 'Cannot mark test as PRS when no required standards are present' } };
+		}
+
+		return null;
 	}
 
 	shouldShowExpiryDate(): boolean {
@@ -339,22 +410,19 @@ export class TestComponent implements OnInit, OnDestroy {
 		return true;
 	}
 
-	getAbandonNotesLabel(): string {
-		if (this.isTestTypeGroup7()) {
-			return 'Additional notes as to why this test was abandoned';
-		}
-		return 'Additional notes as to why this test was abandoned (optional)';
-	}
-
 	shouldShowCreateModeDescription(): boolean {
-		return this.isTestTypeGroup7() && this.mode() === Modes.EDIT;
+		return (this.isTestTypeGroup7() || this.isSpecialistGroup1()) && this.mode() === Modes.EDIT;
 	}
 
 	shouldShowAnniversaryDate(): boolean {
-		return !this.isTestTypeGroup7();
+		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1();
 	}
 
 	shouldShowCentralDocs(): boolean {
+		if (this.isSpecialistGroup1()) {
+			return this.isPassOrPrs();
+		}
+
 		return (
 			[...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
 				this.testResult()?.testTypes[0].testTypeId ?? ''
@@ -373,6 +441,19 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowCertificateNumber(): boolean {
+		if (this.isSpecialistGroup1()) {
+			// An abandoned test keeps its certificate number when it is amended
+			if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return this.mode() === Modes.AMEND;
+
+			if (!this.isPassOrPrs()) return false;
+
+			// HGV/TRL IVA tests still record a certificate number when documents are issued centrally
+			const vehicleType = this.testResult()?.vehicleType;
+			if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) return true;
+
+			return !this.testResult()?.testTypes[0].centralDocs?.issueRequired;
+		}
+
 		if (!this.isTestTypeGroup7()) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
@@ -383,7 +464,18 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	shouldShowProhibitionIssued(): boolean {
-		return this.isTestTypeGroup7();
+		return this.isTestTypeGroup7() || this.isSpecialistGroup1();
+	}
+
+	shouldShowReapplicationDate(): boolean {
+		return this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL;
+	}
+
+	shouldShowApprovalsMedia(): boolean {
+		return (
+			this.isSpecialistGroup1() &&
+			(this.mode() === Modes.VIEW || (this.initialMode() === Modes.AMEND && this.mode() === Modes.SUMMARY))
+		);
 	}
 
 	shouldShowLoadStatus(): boolean {

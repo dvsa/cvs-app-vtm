@@ -44,8 +44,9 @@
           </govuk-radio>
         </govuk-form-group-radio>
       </ng-container>
+      <!-- Separates the VTG15 questions from the vehicle details below -->
+      <label class="govuk-label govuk-label--m">Vehicle Details</label>
     }
-    <label class="govuk-label govuk-label--m">Vehicle Details</label>
     <!-- Country Of Registration -->
     <govuk-form-group-autocomplete
       label="Country Of Registration"
@@ -73,15 +74,21 @@
       />
 
       <!-- Odometer reading units -->
-      <govuk-form-group-radio
-        label="Odometer Reading Units"
-        formControlName="odometerReadingUnits"
-        [width]="FormNodeWidth.L"
-        [options]="[
-          { value: 'kilometres', label: 'Kilometres' },
-          { value: 'miles', label: 'Miles' },
-        ]"
-      ></govuk-form-group-radio>
+      @if (isSpecialistGroup1()) {
+        <govuk-form-group-select
+          label="Odometer Reading Units"
+          formControlName="odometerReadingUnits"
+          [allowNull]="true"
+          [options]="ODOMETER_READING_UNITS_OPTIONS"
+        />
+      } @else {
+        <govuk-form-group-radio
+          label="Odometer Reading Units"
+          formControlName="odometerReadingUnits"
+          [width]="FormNodeWidth.L"
+          [options]="ODOMETER_READING_UNITS_OPTIONS"
+        ></govuk-form-group-radio>
+      }
     }
   </div>
 }

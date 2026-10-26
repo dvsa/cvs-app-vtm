@@ -3,6 +3,8 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST } from '@/src/app/models/testTypeId.enum';
+import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
@@ -104,7 +106,18 @@ export class SeatbeltsComponent implements OnInit {
 		// The seatbelt check is not needed to abandon a test
 		if (this.testService.isAbandoning()) return false;
 
+		// The validators stay on the shared form after this section is gone, so skip tests without a seatbelt check
+		if (!this.isSeatbeltCheckApplicable()) return false;
+
 		return !this.hasAnsweredSeatbeltCheck();
+	}
+
+	isSeatbeltCheckApplicable(): boolean {
+		const testResult = this.testResult();
+		return (
+			testResult?.vehicleType === VehicleTypes.PSV &&
+			!TEST_TYPES_GROUP1_SPEC_TEST.includes(testResult.testTypes[0].testTypeId)
+		);
 	}
 
 	hasAnsweredSeatbeltCheck(): boolean {
