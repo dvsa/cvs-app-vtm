@@ -3,7 +3,7 @@ import { GlobalWarningService } from '@/src/app/core/components/global-warning/g
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
-import { patchEditingTestResult, selectRecallsState } from '@/src/app/store/test-records';
+import { patchEditingTestResult, selectRecallsState, toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -454,5 +454,33 @@ describe('TestRecordV2Component', () => {
 				})
 			);
 		});
+	});
+
+	describe('section visibility', () => {
+		const setTestResult = (vehicleType: string, testTypeId: string) => {
+			store.overrideSelector(toEditOrNotToEdit, { vehicleType, testTypes: [{ testTypeId }] } as TestResultSchema);
+			store.refreshState();
+		};
+
+		it('should show seatbelts and defects for a PSV annual test', () => {
+			setTestResult('psv', '1');
+
+			expect(component.shouldShowSeatbeltSection()).toBe(true);
+			expect(component.shouldShowDefectSection()).toBe(true);
+			expect(component.shouldShowRequiredStandardsSection()).toBe(false);
+			expect(component.shouldShowAdditionalDefectsSection()).toBe(false);
+		});
+
+		it.each(['psv', 'hgv', 'trl', 'car', 'lgv', 'motorcycle'])(
+			'should show required standards and additional defects instead of seatbelts and defects for a %s IVA/MSVA test',
+			(vehicleType) => {
+				setTestResult(vehicleType, '130');
+
+				expect(component.shouldShowSeatbeltSection()).toBe(false);
+				expect(component.shouldShowDefectSection()).toBe(false);
+				expect(component.shouldShowRequiredStandardsSection()).toBe(true);
+				expect(component.shouldShowAdditionalDefectsSection()).toBe(true);
+			}
+		);
 	});
 });

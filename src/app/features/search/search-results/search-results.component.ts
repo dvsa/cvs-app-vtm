@@ -4,9 +4,10 @@ import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/ap
 import { Roles } from '@/src/app/models/roles.enum';
 import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { selectTechRecordSearchView } from '@/src/app/store/tech-record-search/tech-record-search.selector';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { SearchFormComponent } from '../search-form/search-form.component';
@@ -16,7 +17,14 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	selector: 'app-search-results',
 	templateUrl: './search-results.component.html',
 	styleUrls: ['./search-results.component.scss'],
-	imports: [SearchFormComponent, SearchResultComponent, RoleRequiredDirective, AsyncPipe, PaginationComponent],
+	imports: [
+		SearchFormComponent,
+		SearchResultComponent,
+		RoleRequiredDirective,
+		AsyncPipe,
+		PaginationComponent,
+		RouterLink,
+	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
@@ -26,6 +34,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 	technicalRecordService = inject(TechnicalRecordService);
 
 	roles = Roles;
+	searchView$ = this.store.select(selectTechRecordSearchView);
 	destroy = new ReplaySubject<boolean>(1);
 
 	ngOnInit(): void {

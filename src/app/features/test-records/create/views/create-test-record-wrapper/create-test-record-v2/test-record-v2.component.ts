@@ -44,16 +44,18 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestAmendmentHistoryComponent } from '@features/test-records/amend/components/test-amendment-history/test-amendment-history.component';
+import { CustomDefectsComponent } from '@features/test-records/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
+import { RequiredStandardsComponent } from '@features/test-records/custom-sections/required-standards/required-standards.component';
 import { SeatbeltsComponent } from '@features/test-records/custom-sections/seatbelts/seatbelts.component';
 import { TestComponent } from '@features/test-records/custom-sections/test/test.component';
 import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
-import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -86,6 +88,8 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
 		SeatbeltsComponent,
+		RequiredStandardsComponent,
+		CustomDefectsComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -399,11 +403,32 @@ export class TestRecordV2Component implements OnInit {
 	shouldShowSeatbeltSection(): boolean {
 		// Sourced from the test result rather than the tech record, as the tech record is not
 		// guaranteed to be loaded when amending or viewing an existing test.
-		return this.testResult()?.vehicleType === VehicleTypes.PSV;
+		return this.testResult()?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1();
 	}
 
 	shouldShowDefectSection(): boolean {
-		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
+		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') && !this.isSpecialistGroup1();
+	}
+
+	shouldShowRequiredStandardsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowAdditionalDefectsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowSpecialistSectionsAfterTest(): boolean {
+		// Matches the original DFS template order, where LGV/car/motorcycle show Required Standards
+		// and Additional Defects straight after Test, and PSV/HGV/TRL show them after Notes.
+		const vehicleType = this.testResult()?.vehicleType;
+		return (
+			vehicleType === VehicleTypes.LGV || vehicleType === VehicleTypes.CAR || vehicleType === VehicleTypes.MOTORCYCLE
+		);
+	}
+
+	isSpecialistGroup1(): boolean {
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	protected readonly Modes = Modes;

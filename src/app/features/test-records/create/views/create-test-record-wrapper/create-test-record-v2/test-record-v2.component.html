@@ -79,6 +79,11 @@
               ></app-test>
             </form>
           </app-accordion>
+          @if (shouldShowSpecialistSectionsAfterTest()) {
+            <ng-container
+              [ngTemplateOutlet]="specialistSections"
+            ></ng-container>
+          }
           @if (shouldShowSeatbeltSection()) {
             <app-accordion
               [id]="'seatbelts'"
@@ -111,6 +116,11 @@
               </form>
             </app-accordion>
           }
+          @if (!shouldShowSpecialistSectionsAfterTest()) {
+            <ng-container
+              [ngTemplateOutlet]="specialistSections"
+            ></ng-container>
+          }
           @if (mode() === Modes.VIEW && initialMode() !== Modes.EDIT) {
             <app-test-amendment-history
               class="section"
@@ -127,6 +137,34 @@
                 <app-test-reason-for-creation
                   [mode]="mode()"
                 ></app-test-reason-for-creation>
+              </form>
+            </app-accordion>
+          }
+        </ng-template>
+        <ng-template #specialistSections>
+          @if (shouldShowRequiredStandardsSection()) {
+            <app-accordion
+              [id]="'requiredStandards'"
+              [title]="'Required Standards'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-required-standards
+                  [mode]="mode()"
+                ></app-test-required-standards>
+              </form>
+            </app-accordion>
+          }
+          @if (shouldShowAdditionalDefectsSection()) {
+            <app-accordion
+              [id]="'additionalDefects'"
+              [title]="'Additional Defects'"
+              [description]="''"
+            >
+              <form ngNoForm>
+                <app-test-custom-defects
+                  [mode]="mode()"
+                ></app-test-custom-defects>
               </form>
             </app-accordion>
           }
