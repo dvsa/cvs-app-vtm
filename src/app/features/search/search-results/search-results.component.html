@@ -26,7 +26,12 @@
           }
         }
       } @else if (view.showNoRecords) {
-        <h2 class="govuk-heading-m" id="no-records-found">No Records Found</h2>
+        <h2
+          class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-5"
+          id="no-records-found"
+        >
+          No Records Found
+        </h2>
         @if (view.hasArchivedRecords) {
           <p class="govuk-body">
             There are
@@ -42,6 +47,8 @@
               >archived records matching your search</a
             >.
           </p>
+        } @else {
+          <p class="govuk-body">Check the VIN, VRM or Trailer ID.</p>
         }
         <p class="govuk-body" *appRoleRequired="roles.TechRecordCreate">
           You can
@@ -50,7 +57,8 @@
             id="create-technical-record-link"
             routerLink="/create"
             >create a new technical record</a
-          >.
+          >
+          if the vehicle does not have one.
         </p>
       }
 
