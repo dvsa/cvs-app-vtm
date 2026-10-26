@@ -224,7 +224,8 @@ export class TestComponent implements OnInit, OnDestroy {
 				() =>
 					(this.mode() === Modes.AMEND &&
 						testTypeGroup.controls.testResult.value === TestResults.PASS &&
-						!this.isSpecialistGroup1()) ||
+						!this.isSpecialistGroup1() &&
+						!this.isTestTypeGroup12or14()) ||
 					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
