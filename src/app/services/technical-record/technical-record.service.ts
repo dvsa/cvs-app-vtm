@@ -19,10 +19,7 @@ import { Store, select } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { RouterService } from '@services/router/router.service';
 import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
-import {
-	selectTechRecordSearchResults,
-	selectTechRecordSearchResultsBySystemNumber,
-} from '@store/tech-record-search/tech-record-search.selector';
+import { selectTechRecordSearchResults } from '@store/tech-record-search/tech-record-search.selector';
 import {
 	clearAllSectionStates,
 	createVehicle,
@@ -81,7 +78,6 @@ export class TechnicalRecordService {
 		)
 	);
 	searchResults$ = this.store.pipe(select(selectTechRecordSearchResults));
-	searchResultsWithUniqueSystemNumbers$ = this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
 	techRecordStatus$ = this.techRecord$.pipe(
 		map((technicalRecord) => technicalRecord?.techRecord_statusCode as StatusCodes | undefined)
 	);
