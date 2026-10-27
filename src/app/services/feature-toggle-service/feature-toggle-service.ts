@@ -8,6 +8,7 @@ import {
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
 } from '../../models/testTypeId.enum';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
 
@@ -27,6 +28,7 @@ export class FeatureToggleService {
 	shouldUseV2TestResults(testTypeId?: string): boolean {
 		if (!testTypeId) return false;
 		const allowList = [
+			...TEST_TYPES_GROUP12_14,
 			...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 			...TEST_TYPES_GROUP9_10,
 			...TEST_TYPES_GROUP1,

@@ -26,7 +26,7 @@ import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/r
 import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
 import { Modes } from '@models/modes.enum';
 import { MultiOptions } from '@models/options.model';
-import { TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP12_14 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged } from 'rxjs';
 
@@ -230,6 +230,14 @@ export class VehicleComponent implements OnInit {
 	isOdometerReadingRequired(): boolean {
 		// The odometer reading is not needed to abandon a test
 		if (this.testService.isAbandoning()) return false;
+
+		// Mandatory when amending abandoned tests for group 12 & 14
+		if (
+			TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
+			this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED
+		) {
+			return true;
+		}
 
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
 

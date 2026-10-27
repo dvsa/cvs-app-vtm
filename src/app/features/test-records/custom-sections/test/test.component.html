@@ -179,12 +179,14 @@
               formControlName="testTypeName"
             ></govuk-form-group-input>
 
-            <!-- Expiry Date -->
-            <govuk-form-group-date
-              mode="iso-date"
-              label="Expiry Date"
-              formControlName="testExpiryDate"
-            ></govuk-form-group-date>
+            @if (!isTestTypeGroup12or14()) {
+              <!-- Expiry Date -->
+              <govuk-form-group-date
+                mode="iso-date"
+                label="Expiry Date"
+                formControlName="testExpiryDate"
+              ></govuk-form-group-date>
+            }
 
             <!-- Test number -->
             <govuk-form-group-input
