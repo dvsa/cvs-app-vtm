@@ -202,7 +202,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.prohibitionIssued.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.shouldShowProhibitionIssued(),
-				this.commonValidators.required('Prohibition Issued')
+				this.commonValidators.required('Prohibition issued')
 			),
 		]);
 
@@ -214,9 +214,13 @@ export class TestComponent implements OnInit, OnDestroy {
 					this.mode() !== Modes.ABANDON &&
 					// IVA/MSVA tests show the certificate number when abandoned, but do not require it
 					!(this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED),
-				this.commonValidators.requiredWith('Certificate Number', 'Result')
+				this.commonValidators.requiredWith('Certificate number', 'Result')
 			),
-			this.commonValidators.alphanumeric('Certificate Number must be alphanumeric'),
+			// A hidden certificate number (e.g. once the result is changed to a fail) must not block the user
+			this.commonValidators.applyWhen(
+				() => this.shouldShowCertificateNumber(),
+				this.commonValidators.alphanumeric('Certificate number must be alphanumeric')
+			),
 		]);
 
 		testTypeGroup.controls.testExpiryDate.setValidators([
