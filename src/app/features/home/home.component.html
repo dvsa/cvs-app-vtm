@@ -20,7 +20,11 @@
       ></app-home-button>
 
       <app-home-button
-        [url]="featureToggleService.isFeatureEnabled(FeatureFlags.BATCH_REDESIGN) ? 'batch/enter-details' : 'create-batch'"
+        [url]="
+          featureToggleService.isFeatureEnabled(FeatureFlags.BATCH_REDESIGN)
+            ? 'batch/enter-details'
+            : 'create-batch'
+        "
         linkText="Create a batch of technical records"
         description="Create a batch of up to 40 PSV, HGV or trailer technical records"
         linkId="create-batch-technical-records-link"

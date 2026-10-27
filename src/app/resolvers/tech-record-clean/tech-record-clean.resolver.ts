@@ -6,7 +6,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
-import _ from 'lodash';
+import { orderBy } from 'lodash-es';
 import { Observable, map, take, tap } from 'rxjs';
 
 export const techRecordCleanResolver: ResolveFn<Observable<boolean>> = (route) => {
@@ -29,7 +29,7 @@ const sortAdditionalExaminerNotes = (record: TechRecordType<'put'>, route: Activ
 	const type = record.techRecord_vehicleType;
 	if (type === VehicleTypes.HGV || type === VehicleTypes.LGV || type === VehicleTypes.TRL) {
 		if (Array.isArray(record.techRecord_adrDetails_additionalExaminerNotes)) {
-			record.techRecord_adrDetails_additionalExaminerNotes = _.orderBy(
+			record.techRecord_adrDetails_additionalExaminerNotes = orderBy(
 				record.techRecord_adrDetails_additionalExaminerNotes,
 				['createdAtDate'],
 				['desc']

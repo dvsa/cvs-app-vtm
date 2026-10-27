@@ -1,9 +1,10 @@
-@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/govuk-frontend/govuk/base';
 
 :host {
   govuk-form-group-textarea::ng-deep {
     .govuk-form-group {
-      .govuk-hint, label {
+      .govuk-hint,
+      label {
         margin-bottom: 5px;
       }
     }

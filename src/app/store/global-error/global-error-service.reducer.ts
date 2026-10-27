@@ -4,7 +4,7 @@ import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/
 import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/tech-record-search.actions';
 // eslint-disable-next-line import/no-cycle
 import * as TestResultActions from '@store/test-records';
-import _ from 'lodash';
+import { isEqual, uniqWith } from 'lodash-es';
 import * as ReferenceDataActions from '../reference-data/reference-data.actions';
 import * as TechnicalRecordServiceActions from '../technical-records/technical-record-service.actions';
 import { createVehicleRecordFailure } from '../technical-records/technical-record-service.actions';
@@ -61,7 +61,7 @@ export const globalErrorReducer = createReducer(
 		TestResultActions.createTestResultFailed,
 		(state, { errors }) => ({
 			...state,
-			errors: [..._.uniqWith(errors, (a, b) => _.isEqual(a.error, b.error))],
+			errors: [...uniqWith(errors, (a, b) => isEqual(a.error, b.error))],
 		})
 	),
 	on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] })),

@@ -12,7 +12,7 @@ import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service
 import { CustomFormArray, CustomFormGroup, FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { testResultInEdit } from '@store/test-records';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { Subject, Subscription, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 @Component({

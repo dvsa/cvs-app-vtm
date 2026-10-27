@@ -77,7 +77,7 @@ describe('NoSpaceDirective', () => {
 
 		describe('it should dispatch the appropriate number of input events', () => {
 			it('if the value has changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('focusout'));
 
@@ -85,7 +85,7 @@ describe('NoSpaceDirective', () => {
 			});
 
 			it('if the value has not changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'thishasspaces';
 				input1.dispatchEvent(new Event('focusout'));
 
@@ -112,7 +112,7 @@ describe('NoSpaceDirective', () => {
 
 		describe('it should dispatch the appropriate number of input events', () => {
 			it('if the value has changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('input'));
 
@@ -120,7 +120,7 @@ describe('NoSpaceDirective', () => {
 			});
 
 			it('if the value has not changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'thishasspaces';
 				input1.dispatchEvent(new Event('input'));
 
@@ -130,49 +130,44 @@ describe('NoSpaceDirective', () => {
 	});
 
 	describe('should remove all whitespaces on paste', () => {
-		it('with form', () => {
+		it('with form', async () => {
 			input1.value = 'this has spaces   ';
 
 			input1.dispatchEvent(new Event('paste'));
 
-			setTimeout(() => {
-				expect(input1.value).toBe('thishasspaces');
-				expect(component.form.get('foo')?.value).toBe('thishasspaces');
-			}, 0);
+			await new Promise((resolve) => setTimeout(resolve, 0));
+			expect(input1.value).toBe('thishasspaces');
+			expect(component.form.get('foo')?.value).toBe('thishasspaces');
 		});
 
-		it('without form', () => {
+		it('without form', async () => {
 			input2.value = 'this has spaces   ';
 			input2.dispatchEvent(new Event('paste'));
 
-			setTimeout(() => {
-				expect(input2.value).toBe('thishasspaces');
-			}, 0);
+			await new Promise((resolve) => setTimeout(resolve, 0));
+			expect(input2.value).toBe('thishasspaces');
 		});
 
 		describe('it should dispatch the appropriate number of input events', () => {
-			it('with form', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+			it('with form', async () => {
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('paste'));
 
-				setTimeout(() => {
-					expect(input1.value).toBe('thishasspaces');
-					expect(component.form.get('foo')?.value).toBe('thishasspaces');
-					expect(input1.value).toBe('thishasspaces');
-					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
-				}, 0);
+				await new Promise((resolve) => setTimeout(resolve, 0));
+				expect(input1.value).toBe('thishasspaces');
+				expect(component.form.get('foo')?.value).toBe('thishasspaces');
+				expect(dispatchEventSpy.mock.calls.filter(([event]) => event.type === 'input')).toHaveLength(1);
 			});
 
-			it('without form', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+			it('without form', async () => {
+				const dispatchEventSpy = vi.spyOn(input2, 'dispatchEvent');
 				input2.value = 'this has spaces   ';
 				input2.dispatchEvent(new Event('paste'));
 
-				setTimeout(() => {
-					expect(input2.value).toBe('thishasspaces');
-					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
-				});
+				await new Promise((resolve) => setTimeout(resolve, 0));
+				expect(input2.value).toBe('thishasspaces');
+				expect(dispatchEventSpy.mock.calls.filter(([event]) => event.type === 'input')).toHaveLength(1);
 			});
 		});
 	});

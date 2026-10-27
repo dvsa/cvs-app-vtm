@@ -1,5 +1,10 @@
 {
   "compileOnSave": false,
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
+  ],
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -39,9 +44,7 @@
       "@shared/*": ["./src/app/shared/*"],
       "@store/*": ["./src/app/store/*"],
       "@mocks/*": ["./src/mocks/*"],
-      "govuk-frontend/*": ["./node_modules/govuk-frontend/*"],
-      "stream": ["./node_modules/stream-browserify"],
-      "zlib": ["./node_modules/browserify-zlib"]
+      "govuk-frontend/*": ["./node_modules/govuk-frontend/*"]
     }
   },
   "angularCompilerOptions": {

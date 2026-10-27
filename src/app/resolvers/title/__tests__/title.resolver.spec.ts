@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
+import { selectRouteData } from '@store/router/router.selectors';
 import { titleResolver } from '../title.resolver';
 
 describe('TitleResolver', () => {
@@ -26,42 +27,13 @@ describe('TitleResolver', () => {
 		expect(resolver).toBeTruthy();
 	});
 
-	it('should set title using Title service', () => {
-		const titleServiceSpy = jest.spyOn(titleService, 'setTitle');
-		const result = TestBed.runInInjectionContext(() =>
+	it('should set title using Title service', async () => {
+		const titleServiceSpy = vi.spyOn(titleService, 'setTitle');
+		store.overrideSelector(selectRouteData, { title: 'Test Results' });
+		const resolved = (await TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
-		) as Promise<boolean>;
-		store.setState({
-			...initialAppState,
-			router: {
-				state: {
-					root: {
-						params: {
-							systemNumber: 'SYS0001',
-						},
-						data: {
-							title: 'Test Results',
-						},
-						url: [
-							{
-								path: 'SYS0001',
-								parameters: {},
-							},
-						],
-						outlet: 'primary',
-						routeConfig: {
-							path: ':systemNumber',
-						},
-						queryParams: {},
-						fragment: null,
-						children: [],
-					},
-				},
-				navigationId: 1,
-			},
-		});
-		const resolved = result;
-		expect(resolved).toBeTruthy();
+		)) as Promise<boolean>;
+		expect(resolved).toBe(true);
 		expect(titleServiceSpy).toHaveBeenCalledWith('Test Results - Vehicle Testing Management');
 	});
 });

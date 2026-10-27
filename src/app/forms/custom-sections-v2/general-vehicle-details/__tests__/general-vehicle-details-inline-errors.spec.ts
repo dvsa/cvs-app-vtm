@@ -26,8 +26,8 @@ import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 
 const mockRefDataService = {
-	getAll$: jest.fn(() => of([])),
-	getReferencePsvMakeDataLoading$: jest.fn(() => of(false)),
+	getAll$: vi.fn(() => of([])),
+	getReferencePsvMakeDataLoading$: vi.fn(() => of(false)),
 };
 
 /**
@@ -55,7 +55,7 @@ describe('GeneralVehicleDetailsComponent inline errors on submit', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 				TechnicalRecordService,
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(() => of([])), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(() => of([])), loadOptions: vi.fn() } },
 				{ provide: ReferenceDataService, useValue: mockRefDataService },
 				AxlesService,
 			],

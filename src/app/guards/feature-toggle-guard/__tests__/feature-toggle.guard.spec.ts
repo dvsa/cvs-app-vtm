@@ -24,7 +24,7 @@ describe('feature toggle guard', () => {
 		const next = new ActivatedRouteSnapshot();
 		next.data = { featureToggleName: 'testToggle' };
 
-		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
+		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
 
 		const guardResponse = guard.canActivate(next);
 
@@ -35,7 +35,7 @@ describe('feature toggle guard', () => {
 		const next = new ActivatedRouteSnapshot();
 		next.data = { featureToggleName: 'testToggle' };
 
-		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(false);
+		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(false);
 
 		const guardResponse = guard.canActivate(next);
 
@@ -46,7 +46,7 @@ describe('feature toggle guard', () => {
 		const next = new ActivatedRouteSnapshot();
 		next.data = {};
 
-		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
+		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
 
 		const guardResponse = guard.canActivate(next);
 

@@ -1,15 +1,32 @@
 <div class="govuk-grid-row">
   <h1 class="govuk-heading-l">{{ getTitleText() }}</h1>
   <div class="govuk-grid-column-full">
-    <app-tech-record-title [vehicle]="techRecord() || undefined" [hideActions]="true"></app-tech-record-title>
+    <app-tech-record-title
+      [vehicle]="techRecord() || undefined"
+      [hideActions]="true"
+    ></app-tech-record-title>
 
     <form [formGroup]="form">
-      <app-text-area [id]="'reasonForAmend'" name="reason" [label]="label" formControlName="reason"></app-text-area>
+      <app-text-area
+        [id]="'reasonForAmend'"
+        name="reason"
+        [label]="label"
+        formControlName="reason"
+      ></app-text-area>
 
-      <app-button id="submit-change-status" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
+      <app-button
+        id="submit-change-status"
+        data-prevent-double-click="true"
+        (clicked)="handleSubmit(form.value)"
+      >
         {{ buttonLabel }} record
       </app-button>
-      <app-button design="link" id="tech-record-back-link" (clicked)="navigateBack()">Back</app-button>
+      <app-button
+        design="link"
+        id="tech-record-back-link"
+        (clicked)="navigateBack()"
+        >Back</app-button
+      >
     </form>
   </div>
 </div>

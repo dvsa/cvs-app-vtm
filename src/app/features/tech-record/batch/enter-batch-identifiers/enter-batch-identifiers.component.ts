@@ -12,14 +12,11 @@ import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { HttpService } from '@/src/app/services/http/http.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
-import { setBatchDetails, upsertVehicleBatch } from '@/src/app/store/technical-records/batch-create.actions';
-import { BatchRecord } from '@/src/app/store/technical-records/batch-create.reducer';
-import {
-	selectBatchDetails,
-	selectBatchVehicleTypeDescriptor,
-} from '@/src/app/store/technical-records/batch-create.selectors';
+import { updateBatch, upsertBatchVehicles } from '@/src/app/store/batch/batch.actions';
+import { BatchRecord } from '@/src/app/store/batch/batch.models';
+import { selectBatchDetails, selectBatchVehicleTypeDescriptor } from '@/src/app/store/batch/batch.selectors';
 import { Component, DestroyRef, OnInit, computed, effect, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
 	AbstractControl,
 	AsyncValidatorFn,
@@ -32,7 +29,7 @@ import {
 	ValidatorFn,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, filter, map, of, take } from 'rxjs';
@@ -62,7 +59,10 @@ export class EnterBatchIdentifiers implements OnInit {
 	readonly httpService = inject(HttpService);
 	readonly technicalRecordService = inject(TechnicalRecordService);
 	readonly destroyRef = inject(DestroyRef);
+	readonly activatedRoute = inject(ActivatedRoute);
 
+	readonly queryParamMap = toSignal(this.activatedRoute.queryParamMap);
+	readonly redirectUrl = computed(() => this.queryParamMap()?.get('redirectUrl'));
 	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
 	readonly vehicleTypeDescriptor = this.store.selectSignal(selectBatchVehicleTypeDescriptor);
 	readonly pageTitle = computed(() => this.computePageTitle());
@@ -90,7 +90,7 @@ export class EnterBatchIdentifiers implements OnInit {
 		const { vehicleType, batchSize, vehicles } = this.savedBatchDetails();
 		if (!vehicleType || !batchSize) return;
 
-		this.addVehicles(vehicleType, batchSize);
+		this.addVehicles(vehicleType, Math.max(batchSize, vehicles.length));
 
 		// Restore batch details if returning to this page
 		this.form.patchValue({ vehicles });
@@ -105,6 +105,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 	addVehicle(vehicleType: VehicleTypes, index: number) {
 		const form = this.fb.group<VehicleForm>({
+			id: this.fb.nonNullable.control<number>(index),
 			systemNumber: this.fb.control<string | null>(''),
 			createdTimestamp: this.fb.control<string | null>(''),
 			vehicleType: this.fb.nonNullable.control<string>(vehicleType),
@@ -112,19 +113,19 @@ export class EnterBatchIdentifiers implements OnInit {
 				updateOn: 'blur',
 				validators: [
 					this.validators.alphanumeric(() => ({
-						error: `Vehicle ${index + 1} VIN must be alphanumeric`,
+						error: `Vehicle ${index + 1} - VIN must be alphanumeric`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.minLength(3, () => ({
-						error: `Vehicle ${index + 1} VIN must be greater than or equal to 3 characters`,
+						error: `Vehicle ${index + 1} - VIN must be greater than or equal to 3 characters`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.maxLength(21, () => ({
-						error: `Vehicle ${index + 1} VIN must be less than or equal to 21 characters`,
+						error: `Vehicle ${index + 1} - VIN must be less than or equal to 21 characters`,
 						anchorLink: `vin-${index}`,
 					})),
 					this.validators.pattern('^(?!.*[OIQoij]).*$', () => ({
-						error: `Vehicle ${index + 1} VIN should not contain O, I or Q`,
+						error: `Vehicle ${index + 1} - VIN should not contain O, I or Q`,
 						anchorLink: `vin-${index}`,
 					})),
 					// Checked last so that a badly formatted VIN reports its format error first
@@ -138,30 +139,30 @@ export class EnterBatchIdentifiers implements OnInit {
 					this.validators.applyWhen(
 						() => vehicleType === VehicleTypes.TRL,
 						this.validators.alphanumeric(() => ({
-							error: `Vehicle ${index + 1} Trailer ID must be alphanumeric`,
+							error: `Vehicle ${index + 1} - Trailer ID must be alphanumeric`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.minLength(7, () => ({
-							error: `Vehicle ${index + 1} Trailer ID must be greater than or equal to 7 characters`,
+							error: `Vehicle ${index + 1} - Trailer ID must be greater than or equal to 7 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.maxLength(8, () => ({
-							error: `Vehicle ${index + 1} Trailer ID must be less than or equal to 8 characters`,
+							error: `Vehicle ${index + 1} - Trailer ID must be less than or equal to 8 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						}))
 					),
 					this.validators.applyWhen(
 						() => vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV,
 						this.validators.alphanumeric(() => ({
-							error: `Vehicle ${index + 1} VRM must be alphanumeric`,
+							error: `Vehicle ${index + 1} - VRM must be alphanumeric`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.minLength(1, () => ({
-							error: `Vehicle ${index + 1} VRM must be greater than or equal to 1 character`,
+							error: `Vehicle ${index + 1} - VRM must be greater than or equal to 1 character`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						})),
 						this.validators.maxLength(9, () => ({
-							error: `Vehicle ${index + 1} VRM must be less than or equal to 9 characters`,
+							error: `Vehicle ${index + 1} - VRM must be less than or equal to 9 characters`,
 							anchorLink: `trailerIdOrVrm-${index}`,
 						}))
 					),
@@ -188,7 +189,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 			if (!isDuplicate) return null;
 
-			return { duplicateVin: { error: `Vehicle ${index + 1} - remove duplicate VIN`, anchorLink: `vin-${index}` } };
+			return { duplicateVin: { error: `Vehicle ${index + 1} - Remove duplicate VIN`, anchorLink: `vin-${index}` } };
 		};
 	}
 
@@ -245,7 +246,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				if (matches.length === 0) {
 					const error = {
 						vehicle: {
-							error: `Vehicle ${index + 1} - could not find a record with matching VIN and ${identifier}`,
+							error: `Vehicle ${index + 1} - Could not find a record with matching VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
@@ -261,7 +262,7 @@ export class EnterBatchIdentifiers implements OnInit {
 				if (uniqueRecords.size > 1) {
 					const error = {
 						vehicle: {
-							error: `Vehicle ${index + 1} - more than one vehicle has this VIN and ${identifier}`,
+							error: `Vehicle ${index + 1} - More than one vehicle has this VIN and ${identifier}`,
 							anchorLink,
 						},
 					};
@@ -301,7 +302,7 @@ export class EnterBatchIdentifiers implements OnInit {
 			catchError(() =>
 				of({
 					vehicle: {
-						error: `Vehicle ${index + 1} - could not find a record with matching VIN`,
+						error: `Vehicle ${index + 1} - Could not find a record with matching VIN`,
 						anchorLink: `vin-${index}`,
 					},
 				})
@@ -318,7 +319,7 @@ export class EnterBatchIdentifiers implements OnInit {
 
 			if (vehicle.trailerIdOrVrm) {
 				if (!vehicle.vin) {
-					return of({ vin: { error: `Vehicle ${index + 1} VIN is required`, anchorLink: `vin-${index}` } });
+					return of({ vin: { error: `Vehicle ${index + 1} - VIN is required`, anchorLink: `vin-${index}` } });
 				}
 
 				return this.validateVehicleForUpdate(form, index, vehicleType);
@@ -391,22 +392,29 @@ export class EnterBatchIdentifiers implements OnInit {
 				savedBatchDetails.vehicleType as VehicleTypes
 			);
 			this.technicalRecordService.clearSectionTemplateStates();
-			this.store.dispatch(setBatchDetails({ batchSize: vins.length }));
-			this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
-			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
+			this.store.dispatch(updateBatch({ changes: { batchSize: value.vehicles.length } }));
+			this.store.dispatch(upsertBatchVehicles({ vehicles: value.vehicles as BatchRecord[] }));
+
+			const redirectUrl = this.redirectUrl();
+			if (redirectUrl) {
+				return void this.router.navigate([redirectUrl]);
+			}
+
+			return void this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_TECH_RECORD_DETAILS]);
 		}
 	}
 
 	handleCancel(): void {
 		// Save unsaved changes before leaving the page
 		const value = this.form.getRawValue();
-		this.store.dispatch(upsertVehicleBatch({ vehicles: value.vehicles as BatchRecord[] }));
+		this.store.dispatch(upsertBatchVehicles({ vehicles: value.vehicles as BatchRecord[] }));
 
 		this.router.navigate([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 	}
 }
 
 export type VehicleForm = {
+	id: FormControl<number | null>;
 	vin: FormControl<string | null>;
 	trailerIdOrVrm: FormControl<string | null>;
 	vehicleType: FormControl<string>;

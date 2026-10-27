@@ -1,16 +1,34 @@
-<h1 class="govuk-heading-l title">Add batch of {{ vehicleType | formatVehicleType }}s</h1>
+<h1 class="govuk-heading-l title">
+  Add batch of {{ vehicleType | formatVehicleType }}s
+</h1>
 <form [formGroup]="form">
-  <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
+  <app-text-input
+    formControlName="applicationId"
+    name="applicationId"
+    label="Application ID"
+    [width]="width.XL"
+  ></app-text-input>
   <div class="govuk-inset-text">
-    For creating {{ vehicleType | formatVehicleType }}, populate the <strong>VIN field only</strong>.
+    For creating {{ vehicleType | formatVehicleType }}, populate the
+    <strong>VIN field only</strong>.
     <br />
     For updating existing {{ vehicleType | formatVehicleType }}, populate the
-    <strong>VIN field and the {{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }} field</strong>.
+    <strong
+      >VIN field and the
+      {{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }} field</strong
+    >.
   </div>
 
-  <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
+  <div
+    class="flex flex--wrap flex_gap--7 justify--flex-start"
+    formArrayName="vehicles"
+  >
     @for (group of vehicles.controls; track group; let i = $index) {
-      <fieldset [formGroupName]="i" id="batch-vehicle-details" class="govuk-fieldset">
+      <fieldset
+        [formGroupName]="i"
+        id="batch-vehicle-details"
+        class="govuk-fieldset"
+      >
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
           <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
         </legend>
@@ -24,16 +42,19 @@
           label="VIN"
           [width]="width.L"
           [warning]="getVinControl(group)?.meta?.warning"
-          role='status'
+          role="status"
           aria-live="polite"
-          >
+        >
           @if (
             getVinControl(group)?.dirty &&
             getVinControl(group)?.value &&
-            (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')
-            ) {
+            (getVinControl(group)?.status === 'VALID' ||
+              getVinControl(group)?.status === 'PENDING')
+          ) {
             <ng-template appSuffix>
-              <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
+              <app-input-spinner
+                [isValid]="getVinControl(group)?.status || 'PENDING'"
+              ></app-input-spinner>
             </ng-template>
           }
         </app-text-input>
@@ -53,6 +74,8 @@
 </form>
 
 <app-button-group>
-  <app-button id="add-vehicles" (clicked)="handleSubmit()">Add vehicles</app-button>
+  <app-button id="add-vehicles" (clicked)="handleSubmit()"
+    >Add vehicles</app-button
+  >
   <app-button id="back" design="link" (clicked)="back()">Back</app-button>
 </app-button-group>

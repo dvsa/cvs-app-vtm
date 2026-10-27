@@ -366,10 +366,8 @@ describe('customPattern', () => {
 			const {
 				customPattern: { message },
 			} = validation;
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(message).toEqual(msg);
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(validation).toBeNull();
 		}
 	});
@@ -389,12 +387,12 @@ describe('invalidOption', () => {
 });
 
 describe('pastDate', () => {
-	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+	beforeEach(() => {
+		vi.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	it.each([
@@ -408,12 +406,12 @@ describe('pastDate', () => {
 });
 
 describe('futureDate', () => {
-	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+	beforeEach(() => {
+		vi.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	it.each([
@@ -427,12 +425,12 @@ describe('futureDate', () => {
 });
 
 describe('pastYear', () => {
-	beforeAll(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+	beforeEach(() => {
+		vi.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
 	});
 
 	afterAll(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	it.each([
@@ -2152,7 +2150,7 @@ describe('xYearsAfterCurrent', () => {
 
 	beforeEach(() => {
 		// Set current year to 2024
-		jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
+		vi.useFakeTimers().setSystemTime(new Date('2024-01-01'));
 
 		control = new CustomFormControl({
 			type: FormNodeTypes.CONTROL,
@@ -2163,7 +2161,7 @@ describe('xYearsAfterCurrent', () => {
 	});
 
 	afterEach(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	it('should allow the current year', () => {

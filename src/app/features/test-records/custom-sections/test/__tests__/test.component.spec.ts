@@ -1,12 +1,19 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { initialAppState } from '@/src/app/store';
+import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { Actions } from '@ngrx/effects';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { selectAllTestResults } from '@store/test-records';
+import { ReplaySubject } from 'rxjs';
 
 import { TestComponent } from '../test.component';
 
@@ -21,11 +28,12 @@ describe('TestComponent', () => {
 		formGroupDirective.form = new FormGroup({});
 
 		await TestBed.configureTestingModule({
-			imports: [TestComponent],
+			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
+				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 
@@ -45,9 +53,85 @@ describe('TestComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	describe('prepopulateVTG15Required', () => {
+		it.each([
+			['hgv', true, null],
+			['lgv', true, null],
+			['trl', true, null],
+			['hgv', false, false],
+			['lgv', false, false],
+			['trl', false, false],
+		] as const)(
+			'should default VTG15 required for vehicle type %s with dangerous goods %s to %s',
+			(vehicleType, dangerousGoods, expected) => {
+				store.overrideSelector(techRecord, {
+					techRecord_vehicleType: vehicleType,
+					techRecord_adrDetails_dangerousGoods: dangerousGoods,
+				} as V3TechRecordModel);
+				store.refreshState();
+				fixture = TestBed.createComponent(TestComponent);
+				component = fixture.componentInstance;
+				fixture.componentRef.setInput('mode', Modes.EDIT);
+				fixture.componentRef.setInput('initialMode', Modes.EDIT);
+				const control = component.form.controls.vtg15.controls.vtg15Required;
+				control.setValue(undefined);
+
+				fixture.detectChanges();
+
+				expect(control.value).toBe(expected);
+			}
+		);
+
+		it.each([true, false])('should preserve an existing VTG15 required value of %s', (value) => {
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: false,
+			} as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(value);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBe(value);
+		});
+
+		it.each([Modes.AMEND, Modes.VIEW])('should not default VTG15 required in initial mode %s', (initialMode) => {
+			fixture.componentRef.setInput('initialMode', initialMode);
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: false,
+			} as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(null);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBeNull();
+		});
+
+		it('should not default VTG15 required for a vehicle without ADR details', () => {
+			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as V3TechRecordModel);
+			store.refreshState();
+			const control = component.form.controls.vtg15.controls.vtg15Required;
+			control.setValue(null);
+
+			component.prepopulateVTG15Required();
+
+			expect(control.value).toBeNull();
+		});
+	});
+
 	describe('addValidators', () => {
 		describe('contingencyTestNumber', () => {
 			it('should be invalid when empty', () => {
+				// Ensure the test result is a group7 PASS with no centralDocs.issueRequired so certificate number is shown
+				store.overrideSelector(toEditOrNotToEdit, {
+					testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: false } }],
+				} as TestResultSchema);
+				store.refreshState();
+
 				const control = component.form.controls.contingencyTestNumber;
 				control.setValue(null);
 				control.markAsTouched();
@@ -273,7 +357,21 @@ describe('TestComponent', () => {
 
 	describe('shouldShowLoadStatus', () => {
 		const setTestType = (testType: Record<string, unknown>) => {
-			store.overrideSelector(toEditOrNotToEdit, { testTypes: [testType] } as TestResultSchema);
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
+				testTypes: [{ testTypeStartTimestamp: '2026-09-28T10:00:00.000Z', ...testType }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		// The annual test being retested
+		const setTestHistory = (testType: Record<string, unknown>) => {
+			store.overrideSelector(selectAllTestResults, [
+				{
+					testStatus: TestStatus.SUBMITTED,
+					testTypes: [{ testTypeStartTimestamp: '2026-09-23T09:00:00.000Z', ...testType }],
+				} as TestResultSchema,
+			]);
 			store.refreshState();
 		};
 
@@ -294,19 +392,258 @@ describe('TestComponent', () => {
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be false for a retest that did not fail', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
+		it('should be false for a retest when the vehicle has no test history', () => {
+			setTestType({ testTypeId: '53' });
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be false for a failed retest without a qualifying defect', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
+		it('should be false for a retest of an annual test that did not fail', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be true for a failed retest with a qualifying defect', () => {
-			setTestType({ testTypeId: '53', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
+		it('should be false for a retest of an annual test without a qualifying defect', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
+			expect(component.shouldShowLoadStatus()).toBe(false);
+		});
+
+		it('should be true for a retest of an annual test failed on a qualifying defect', () => {
+			setTestType({ testTypeId: '53' });
+			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
 			expect(component.shouldShowLoadStatus()).toBe(true);
+		});
+	});
+
+	describe('visibility helpers (ADR / central docs)', () => {
+		it('should return false when there is no test result', () => {
+			store.overrideSelector(toEditOrNotToEdit, undefined);
+			store.refreshState();
+			expect(component.shouldShowResult()).toBe(false);
+			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
+			expect(component.shouldShowProhibitionIssued()).toBe(false);
+			expect(component.shouldShowCentralDocs()).toBe(false);
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+
+		it('should be true for group 7 test types', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS }],
+			} as TestResultSchema);
+			store.refreshState();
+
+			expect(component.shouldShowResult()).toBe(true);
+			expect(component.shouldShowGenerateADRCertificate()).toBe(true);
+			expect(component.shouldShowProhibitionIssued()).toBe(true);
+		});
+
+		it('should include central docs ids and group7 for central docs check', () => {
+			// central docs id from TEST_TYPES_GROUP9_10_CENTRAL_DOCS (e.g. '95')
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '95' }] } as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCentralDocs()).toBe(true);
+
+			// also true for group7 id
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '59' }] } as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCentralDocs()).toBe(true);
+		});
+
+		it('shouldShowCertificateNumber rules: false for non-group7 or failing tests', () => {
+			// non-group7 -> false
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '1', testResult: TestResults.PASS }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+
+			// group7 but failed -> false
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.FAIL }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+
+		it('shouldShowCertificateNumber: pass and no centralDocs.issueRequired => true', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: false } }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(true);
+		});
+
+		it('shouldShowCertificateNumber: pass but centralDocs.issueRequired true => false', () => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: true } }],
+			} as TestResultSchema);
+			store.refreshState();
+			expect(component.shouldShowCertificateNumber()).toBe(false);
+		});
+	});
+
+	describe('specialist group 1 (IVA/MSVA)', () => {
+		const setTestResult = (testType: Partial<TestResultSchema['testTypes'][0]>, vehicleType = 'psv') => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType,
+				testTypes: [{ testTypeId: '126', ...testType }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		it('should show the result with pass, fail and PRS options when creating', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.isSpecialistGroup1()).toBe(true);
+			expect(component.shouldShowResult()).toBe(true);
+			expect(component.getResultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'prs']);
+		});
+
+		it('should show the description, prohibition issued and hide the anniversary date', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.shouldShowCreateModeDescription()).toBe(true);
+			expect(component.shouldShowProhibitionIssued()).toBe(true);
+			expect(component.shouldShowAnniversaryDate()).toBe(false);
+			expect(component.shouldShowExpiryDate()).toBe(false);
+		});
+
+		it.each([
+			[TestResults.PASS, true],
+			[TestResults.PRS, true],
+			[TestResults.FAIL, false],
+		])('should show issue documents centrally when the result is %s: %s', (testResult, expected) => {
+			setTestResult({ testResult });
+			expect(component.shouldShowCentralDocs()).toBe(expected);
+		});
+
+		it('should only show the reapplication date when the test has failed', () => {
+			setTestResult({ testResult: TestResults.FAIL });
+			expect(component.shouldShowReapplicationDate()).toBe(true);
+
+			setTestResult({ testResult: TestResults.PASS });
+			expect(component.shouldShowReapplicationDate()).toBe(false);
+		});
+
+		describe('shouldShowCertificateNumber', () => {
+			it('should be hidden when the test has failed', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				expect(component.shouldShowCertificateNumber()).toBe(false);
+			});
+
+			it.each([TestResults.PASS, TestResults.PRS])('should be shown when the result is %s', (testResult) => {
+				setTestResult({ testResult, centralDocs: { issueRequired: false } });
+				expect(component.shouldShowCertificateNumber()).toBe(true);
+			});
+
+			it('should be hidden when issuing documents centrally', () => {
+				setTestResult({ testResult: TestResults.PASS, centralDocs: { issueRequired: true } });
+				expect(component.shouldShowCertificateNumber()).toBe(false);
+			});
+
+			it.each(['hgv', 'trl'])('should be shown for a %s when issuing documents centrally', (vehicleType) => {
+				setTestResult(
+					{ testTypeId: '186', testResult: TestResults.PASS, centralDocs: { issueRequired: true } },
+					vehicleType
+				);
+				expect(component.shouldShowCertificateNumber()).toBe(true);
+			});
+		});
+
+		describe('testResult', () => {
+			const requiredStandard = { rsNumber: 1, prs: false } as never;
+
+			it.each([
+				[TestResults.PASS, [requiredStandard], 'Cannot pass test when required standards are present'],
+				[TestResults.FAIL, [], 'Cannot fail test when no required standards are present'],
+				[TestResults.PRS, [], 'Cannot mark test as PRS when no required standards are present'],
+			])(
+				'should be invalid when the result is %s and the required standards are %j',
+				(testResult, requiredStandards, error) => {
+					setTestResult({ testResult });
+					const testTypeGroup = component.form.controls.testTypes.at(0);
+					testTypeGroup.controls.requiredStandards.setValue(requiredStandards);
+					testTypeGroup.controls.testResult.setValue(testResult);
+
+					expect(testTypeGroup.controls.testResult.errors).toEqual({ invalidTestResult: { error } });
+				}
+			);
+
+			it.each([
+				[TestResults.PASS, []],
+				[TestResults.FAIL, [requiredStandard]],
+				[TestResults.PRS, [requiredStandard]],
+			])('should be valid when the result is %s and the required standards are %j', (testResult, requiredStandards) => {
+				setTestResult({ testResult });
+				const testTypeGroup = component.form.controls.testTypes.at(0);
+				testTypeGroup.controls.requiredStandards.setValue(requiredStandards);
+				testTypeGroup.controls.testResult.setValue(testResult);
+
+				expect(testTypeGroup.controls.testResult.valid).toBe(true);
+			});
+		});
+
+		describe('reapplicationDate', () => {
+			it('should be required when the test has failed', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue(null);
+				expect(control.errors).toHaveProperty('required');
+			});
+
+			it('should be invalid when not in the future', () => {
+				setTestResult({ testResult: TestResults.FAIL });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue('2024-01-15');
+				expect(control.errors).toHaveProperty('futureDate');
+			});
+
+			it('should not be required when the test has passed', () => {
+				setTestResult({ testResult: TestResults.PASS });
+				const control = component.form.controls.testTypes.at(0).controls.reapplicationDate;
+				control.setValue(null);
+				expect(control.valid).toBe(true);
+			});
+		});
+
+		it('should require prohibition issued', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			const control = component.form.controls.testTypes.at(0).controls.prohibitionIssued;
+			control.setValue(null);
+			expect(control.errors).toHaveProperty('required');
+		});
+
+		it('should not require an expiry or anniversary date when amending a passed test', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			fixture.componentRef.setInput('mode', Modes.AMEND);
+			const testTypeGroup = component.form.controls.testTypes.at(0);
+			testTypeGroup.controls.testResult.setValue(TestResults.PASS);
+			testTypeGroup.controls.testExpiryDate.setValue(undefined);
+			testTypeGroup.controls.testAnniversaryDate.setValue(null);
+
+			expect(testTypeGroup.controls.testExpiryDate.valid).toBe(true);
+			expect(testTypeGroup.controls.testAnniversaryDate.valid).toBe(true);
+		});
+	});
+
+	describe('isLoadStatusRequired', () => {
+		it('should be required when creating a test that captures load status', () => {
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '94' }] } as TestResultSchema);
+			store.refreshState();
+
+			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
+			control.setValue(null);
+			control.markAsTouched();
+
+			expect(component.isLoadStatusRequired()).toBe(true);
+			expect(control.valid).toBe(false);
+			expect(control.errors).toHaveProperty('required');
+		});
+
+		it('should not be required when the test does not capture load status', () => {
+			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '1' }] } as TestResultSchema);
+			store.refreshState();
+
+			expect(component.isLoadStatusRequired()).toBe(false);
 		});
 	});
 });
@@ -315,24 +652,68 @@ describe('TestComponent - AMEND mode', () => {
 	let fixture: ComponentFixture<TestComponent>;
 	let component: TestComponent;
 	let formGroupDirective: FormGroupDirective;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup({});
 
 		await TestBed.configureTestingModule({
-			imports: [TestComponent],
+			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
+				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
 		fixture.componentRef.setInput('mode', Modes.AMEND);
 		fixture.componentRef.setInput('initialMode', Modes.AMEND);
+	});
+
+	afterEach(() => {
+		store.resetSelectors();
+	});
+
+	describe('load status', () => {
+		beforeEach(() => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
+				testTypes: [{ testTypeId: '53', testTypeStartTimestamp: '2026-09-28T10:00:00.000Z' }],
+			} as TestResultSchema);
+			store.overrideSelector(selectAllTestResults, [
+				{
+					testStatus: TestStatus.SUBMITTED,
+					testTypes: [
+						{
+							testTypeId: '94',
+							testResult: TestResults.FAIL,
+							testTypeStartTimestamp: '2026-09-23T09:00:00.000Z',
+							defects: [{ imNumber: 59 }],
+						},
+					],
+				} as TestResultSchema,
+			]);
+			store.refreshState();
+			fixture.detectChanges();
+		});
+
+		it('should be displayed when the annual test being retested failed on a qualifying defect', () => {
+			expect(component.shouldShowLoadStatus()).toBe(true);
+		});
+
+		it('should not be mandatory, so an amendment can be saved with it left blank', () => {
+			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
+			control.setValue(null);
+			control.markAsTouched();
+
+			expect(component.isLoadStatusRequired()).toBe(false);
+			expect(control.valid).toBe(true);
+		});
 	});
 
 	describe('initTimeDisplayControls', () => {

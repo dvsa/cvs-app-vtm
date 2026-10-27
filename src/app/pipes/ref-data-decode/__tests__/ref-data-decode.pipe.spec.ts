@@ -60,81 +60,108 @@ describe('RefDataDecodePipe', () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		store.refreshState();
 	});
 
-	it('should return description', (done) => {
-		pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
-			expect(val).toBe('Great Britain');
-			done();
+	it('should return description', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
+				expect(val).toBe('Great Britain');
+				done();
+			});
 		});
 	});
 
-	it('should return description of deleted item', (done) => {
-		pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
-			expect(val).toBe('Austria');
-			done();
+	it('should return description of deleted item', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
+				expect(val).toBe('Austria');
+				done();
+			});
 		});
 	});
 
-	it('should return tyreSize', (done) => {
-		pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
-			expect(val).toBe('235/75-17.5');
-			done();
+	it('should return tyreSize', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
+				expect(val).toBe('235/75-17.5');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when description is undefined', (done) => {
-		pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe((val) => {
-			expect(val).toBe('101');
-			done();
+	it('should return untransformed value when description is undefined', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe((val) => {
+				expect(val).toBe('101');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when value is not a known resourceKey', (done) => {
-		pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
-			expect(val).toBe('foo');
-			done();
+	it('should return untransformed value when value is not a known resourceKey', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
+				expect(val).toBe('foo');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when value is falsy', (done) => {
-		pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
-			expect(val).toBe('');
-			done();
+	it('should return untransformed value when value is falsy', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
+				expect(val).toBe('');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when resourceType is falsy', (done) => {
-		pipe.transform('101', '', 'tyreSize').subscribe((val) => {
-			expect(val).toBe('101');
-			done();
+	it('should return untransformed value when resourceType is falsy', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('101', '', 'tyreSize').subscribe((val) => {
+				expect(val).toBe('101');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when the audit search returned no results', (done) => {
-		store.setState({
-			...initialAppState,
-			[STORE_FEATURE_REFERENCE_DATA_KEY]: {
-				...initialReferenceDataState,
-				[`${ReferenceDataResourceType.CountryOfRegistration}#AUDIT` as ReferenceDataResourceType]: {
-					searchReturn: [],
-					loading: false,
+	it('should return untransformed value when the audit search returned no results', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			store.setState({
+				...initialAppState,
+				[STORE_FEATURE_REFERENCE_DATA_KEY]: {
+					...initialReferenceDataState,
+					[`${ReferenceDataResourceType.CountryOfRegistration}#AUDIT` as ReferenceDataResourceType]: {
+						searchReturn: [],
+						loading: false,
+					},
 				},
-			},
-		});
+			});
 
-		pipe.transform('zz', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
-			expect(val).toBe('zz');
-			done();
+			pipe.transform('zz', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
+				expect(val).toBe('zz');
+				done();
+			});
 		});
 	});
 
-	it('should return untransformed value when data not in state', (done) => {
-		pipe.transform('bar', 'baz').subscribe((val) => {
-			expect(val).toBe('bar');
-			done();
+	it('should return untransformed value when data not in state', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			pipe.transform('bar', 'baz').subscribe((val) => {
+				expect(val).toBe('bar');
+				done();
+			});
 		});
 	});
 });

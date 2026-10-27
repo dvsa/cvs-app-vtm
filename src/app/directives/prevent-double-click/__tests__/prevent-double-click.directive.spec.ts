@@ -29,7 +29,7 @@ describe('PreventDoubleClickDirective', () => {
 	});
 
 	it('should emit clicked once', () => {
-		const emitSpy = jest.spyOn(component.clicked, 'emit');
+		const emitSpy = vi.spyOn(component.clicked, 'emit');
 		const button: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
 
 		button.click();
@@ -39,7 +39,7 @@ describe('PreventDoubleClickDirective', () => {
 	});
 
 	it('should emit clicked twice', async () => {
-		const emitSpy = jest.spyOn(component.clicked, 'emit');
+		const emitSpy = vi.spyOn(component.clicked, 'emit');
 		const button: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
 
 		button.click();

@@ -1,8 +1,9 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, afterNextRender, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { prefetchAccessibleAutocomplete } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { Store } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import { AnalyticsService } from '@services/analytics/analytics.service';
@@ -57,6 +58,11 @@ export class AppComponent implements OnInit, OnDestroy {
 	protected readonly version = packageInfo.version;
 	private sentryInitialized: boolean | undefined;
 
+	constructor() {
+		// warm the lazily loaded autocomplete library in the background once the app has rendered
+		afterNextRender(() => prefetchAccessibleAutocomplete());
+	}
+
 	isCustomLayout$ = combineLatest([this.store.select(selectRouteData), this.store.select(selectFeatureFlags)]).pipe(
 		map(([routeData]) => {
 			// Use the standard (condensed) layout by default, only use full-width when specified by route data
@@ -96,7 +102,10 @@ export class AppComponent implements OnInit, OnDestroy {
 		});
 
 		await this.gtmService.addGtmToDom();
-		this.analyticsService.pushToDataLayer({ AppVersionDataLayer: packageInfo.version });
+		this.analyticsService.pushToDataLayer({
+			StaffRole: this.userService.jobTitle(),
+			AppVersionDataLayer: packageInfo.version,
+		});
 		await this.analyticsService.setUserId();
 		initAll();
 	}

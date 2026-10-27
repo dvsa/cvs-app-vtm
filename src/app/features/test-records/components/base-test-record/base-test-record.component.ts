@@ -41,7 +41,7 @@ import { CustomFormControl, FormNode } from '@services/dynamic-forms/dynamic-for
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
-import merge from 'lodash.merge';
+import { merge } from 'lodash-es';
 import { Observable, map } from 'rxjs';
 import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
 

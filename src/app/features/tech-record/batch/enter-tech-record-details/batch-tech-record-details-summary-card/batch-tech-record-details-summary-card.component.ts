@@ -2,7 +2,7 @@ import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';

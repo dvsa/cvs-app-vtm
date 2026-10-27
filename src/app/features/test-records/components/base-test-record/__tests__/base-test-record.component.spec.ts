@@ -9,6 +9,7 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { Vtg15Component } from '@forms/components/vtg15/vtg15.component';
 import { LoadStatusComponent } from '@forms/custom-sections/load-status/load-status.component';
 import { Roles } from '@models/roles.enum';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
@@ -37,6 +38,7 @@ describe('BaseTestRecordComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => of()),
 				TestTypesService,
 				TechnicalRecordService,
 				HttpService,
@@ -57,7 +59,7 @@ describe('BaseTestRecordComponent', () => {
 			vin: 'ABC002',
 			testTypes: [{ testResult: TestResults.FAIL }],
 		} as TestResultSchema);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		fixture.detectChanges();
 	});
 
@@ -66,45 +68,51 @@ describe('BaseTestRecordComponent', () => {
 	});
 
 	describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
-		it('should emit the new test result', (done) => {
-			const event = { vin: 'ABC001' } as TestResultSchema;
-			const expectedValue = { vin: 'ABC001' };
+		it('should emit the new test result', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const event = { vin: 'ABC001' } as TestResultSchema;
+				const expectedValue = { vin: 'ABC001' };
 
-			component.newTestResult.subscribe((testResult) => {
-				expect(testResult).toEqual(expectedValue);
-				done();
+				component.newTestResult.subscribe((testResult) => {
+					expect(testResult).toEqual(expectedValue);
+					done();
+				});
+
+				component.handleFormChange(event);
 			});
-
-			component.handleFormChange(event);
 		});
 
-		it('should keep the load status and vtg15 values when another section emits', (done) => {
-			const loadStatus = { testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }] };
-			const vtg15 = { vtg15: { vtg15Required: true, unNumber: 1234 } };
+		it('should keep the load status and vtg15 values when another section emits', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const loadStatus = { testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }] };
+				const vtg15 = { vtg15: { vtg15Required: true, unNumber: 1234 } };
 
-			jest.spyOn(component, 'loadStatus').mockReturnValue({
-				form: { getRawValue: () => loadStatus },
-			} as unknown as LoadStatusComponent);
-			jest.spyOn(component, 'vtg15').mockReturnValue({
-				form: { getRawValue: () => vtg15 },
-			} as unknown as Vtg15Component);
+				vi.spyOn(component, 'loadStatus').mockReturnValue({
+					form: { getRawValue: () => loadStatus },
+				} as unknown as LoadStatusComponent);
+				vi.spyOn(component, 'vtg15').mockReturnValue({
+					form: { getRawValue: () => vtg15 },
+				} as unknown as Vtg15Component);
 
-			component.newTestResult.subscribe((testResult) => {
-				expect(testResult).toEqual({
-					vin: 'ABC001',
-					testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }],
-					vtg15: { vtg15Required: true, unNumber: 1234 },
+				component.newTestResult.subscribe((testResult) => {
+					expect(testResult).toEqual({
+						vin: 'ABC001',
+						testTypes: [{ loadStatus: { vehicleLoadStatus: 'unladen' } }],
+						vtg15: { vtg15Required: true, unNumber: 1234 },
+					});
+					done();
 				});
-				done();
-			});
 
-			component.handleFormChange({ vin: 'ABC001' } as TestResultSchema);
+				component.handleFormChange({ vin: 'ABC001' } as TestResultSchema);
+			});
 		});
 	});
 
 	describe('validateEuVehicleCategory', () => {
 		it('should call the validate function of eu vehicle category', () => {
-			jest.spyOn(component, 'sections').mockReturnValue([
+			vi.spyOn(component, 'sections').mockReturnValue([
 				{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
 				{
 					form: new CustomFormGroup(
@@ -118,7 +126,7 @@ describe('BaseTestRecordComponent', () => {
 				},
 			] as unknown as DynamicFormGroupComponent[]);
 
-			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			const spy = vi.spyOn(DynamicFormService, 'validateControl');
 			spy.mockImplementation(() => undefined);
 
 			component.validateEuVehicleCategory('test');
@@ -127,7 +135,7 @@ describe('BaseTestRecordComponent', () => {
 		});
 
 		it('should not call the validate function of eu vehicle category', () => {
-			jest.spyOn(component, 'sections').mockReturnValue([
+			vi.spyOn(component, 'sections').mockReturnValue([
 				{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
 				{
 					form: new CustomFormGroup(
@@ -141,7 +149,7 @@ describe('BaseTestRecordComponent', () => {
 				},
 			] as unknown as DynamicFormGroupComponent[]);
 
-			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			const spy = vi.spyOn(DynamicFormService, 'validateControl');
 			spy.mockImplementation(() => undefined);
 
 			component.validateEuVehicleCategory('test');

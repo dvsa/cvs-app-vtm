@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventMessage, EventType } from '@azure/msal-browser';
+import { AuthenticationResult, EventMessage, EventType, IdTokenClaims } from '@azure/msal-browser';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular';
 import * as UserServiceActions from '@store/user/user-service.actions';
@@ -30,6 +30,7 @@ export class UserService implements OnDestroy {
 	roles = this.store.selectSignal(UserServiceState.roles);
 	userEmail = this.store.selectSignal(UserServiceState.userEmail);
 	employeeId = this.store.selectSignal(UserServiceState.employeeId);
+	jobTitle = this.store.selectSignal(UserServiceState.jobTitle);
 
 	constructor() {
 		this.id$.pipe(takeUntil(this.destroying$)).subscribe((oid) => {
@@ -41,23 +42,16 @@ export class UserService implements OnDestroy {
 				filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
 				takeUntil(this.destroying$)
 			)
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			.subscribe((result: any) => {
-				const {
-					payload: {
-						account: {
-							name,
-							idTokenClaims: { oid, preferred_username, email },
-						},
-						accessToken,
-					},
-				} = result;
-				const userEmail = email || preferred_username;
+			.subscribe((result) => {
+				const { accessToken, account } = result.payload as AuthenticationResult;
+				const { oid, preferred_username, email, JobTitle } = account.idTokenClaims as IdTokenClaims & CustomClaims;
+
 				this.logIn({
-					name,
-					userEmail,
+					name: account.name || '',
+					userEmail: email || preferred_username,
 					oid,
 					accessToken,
+					jobTitle: JobTitle,
 				});
 			});
 	}
@@ -72,7 +66,8 @@ export class UserService implements OnDestroy {
 		userEmail,
 		oid,
 		accessToken,
-	}: { name: string; userEmail: string; oid: string; accessToken: string }): void {
+		jobTitle,
+	}: { name: string; userEmail: string; oid: string; accessToken: string; jobTitle?: string }): void {
 		window.localStorage.setItem('accessToken', accessToken);
 		const decodedJWT = jwtDecode(accessToken);
 		const { roles, employeeid } = decodedJWT as { roles?: string[]; employeeid?: string };
@@ -83,6 +78,7 @@ export class UserService implements OnDestroy {
 				oid,
 				employeeId: employeeid ?? null,
 				roles,
+				jobTitle: jobTitle,
 			})
 		);
 	}
@@ -92,3 +88,10 @@ export class UserService implements OnDestroy {
 		this.msal.logout();
 	}
 }
+
+export type CustomClaims = {
+	oid: string;
+	email: string;
+	preferred_username: string;
+	JobTitle?: string;
+};

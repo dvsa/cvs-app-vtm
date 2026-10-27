@@ -13,7 +13,7 @@ describe('NoEditGuard', () => {
 			providers: [
 				CancelEditTestGuard,
 				provideMockStore({}),
-				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+				{ provide: RouterStateSnapshot, useValue: vi.fn().mockReturnValue({ url: '', toString: vi.fn() }) },
 			],
 		});
 

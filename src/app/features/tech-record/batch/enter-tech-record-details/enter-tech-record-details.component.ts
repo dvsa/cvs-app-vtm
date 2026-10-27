@@ -4,8 +4,8 @@ import { GlobalErrorService } from '@/src/app/core/components/global-error/globa
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { BatchUpdateVehicleModel, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
 import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
 import { Component, inject, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -53,7 +53,7 @@ export class EnterTechRecordDetailsComponent {
 
 		if (errors.length === 0) {
 			const savedBatchDetails = this.savedBatchDetails();
-			for (const vehicle of savedBatchDetails.vehicles) {
+			for (const [index, vehicle] of savedBatchDetails.vehicles.entries()) {
 				// Skip empty vehicles
 				if (!vehicle.vin) continue;
 
@@ -81,13 +81,13 @@ export class EnterTechRecordDetailsComponent {
 							systemNumber: record.systemNumber,
 							createdTimestamp: record.createdTimestamp,
 							groupType: 'batch',
-							vin: record.vin,
+							batchRecordId: vehicle.id,
 						})
 					);
 				}
 
 				if (!record.systemNumber) {
-					this.store.dispatch(createVehicleRecord({ vehicle: cleansedRecord }));
+					this.store.dispatch(createVehicleRecord({ batchRecordId: vehicle.id, vehicle: cleansedRecord }));
 				}
 
 				this.technicalRecordService.clearSectionTemplateStates();

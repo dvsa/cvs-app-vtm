@@ -19,7 +19,7 @@ import { Actions } from '@ngrx/effects';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { ReplaySubject, combineLatest, filter, takeUntil } from 'rxjs';
 import { FieldWarningMessageComponent } from '../../../components/field-warning-message/field-warning-message.component';
 import { GovukFormGroupInputComponent } from '../../../components/govuk-form-group-input/govuk-form-group-input.component';

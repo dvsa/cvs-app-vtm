@@ -61,7 +61,7 @@ describe('SeatsAndVehicleSizeComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 
 			expect(parentFormSpy).toHaveBeenCalled();
@@ -70,7 +70,7 @@ describe('SeatsAndVehicleSizeComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});

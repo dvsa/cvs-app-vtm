@@ -9,7 +9,7 @@ import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import {
 	clearBatch,
 	setApplicationId,

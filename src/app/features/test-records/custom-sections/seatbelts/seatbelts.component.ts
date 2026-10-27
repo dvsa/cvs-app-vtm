@@ -3,12 +3,15 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { YES_NO_OPTIONS } from '@/src/app/models/options.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST } from '@/src/app/models/testTypeId.enum';
+import { VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
@@ -32,6 +35,7 @@ export class SeatbeltsComponent implements OnInit {
 	store = inject(Store);
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
+	destroyRef = inject(DestroyRef);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -43,16 +47,35 @@ export class SeatbeltsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.addValidators();
+		this.watchSeatbeltCheck();
+	}
+
+	/**
+	 * Angular only revalidates a control when its own value changes, so the two fields that are
+	 * required off the back of "Carried out during test" keep whatever validity they last had when
+	 * that answer changes: their errors linger after switching to No, and never appear after
+	 * switching to Yes until the fields themselves are edited. Revalidate them with their sibling.
+	 */
+	watchSeatbeltCheck(): void {
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+
+		testTypeGroup.controls.seatbeltInstallationCheckDate.valueChanges
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => {
+				// `onlySelf` keeps this off the parent form, so it does not loop back through valueChanges
+				testTypeGroup.controls.numberOfSeatbeltsFitted.updateValueAndValidity({ onlySelf: true });
+				testTypeGroup.controls.lastSeatbeltInstallationCheckDate.updateValueAndValidity({ onlySelf: true });
+			});
 	}
 
 	addValidators(): void {
 		const testTypeGroup = this.form.controls.testTypes.at(0);
 
 		// `required` treats a falsy value as empty, so a legitimate "No" answer would fail it.
-		// Only apply it while the question is genuinely unanswered.
+		// Only apply it while the question is genuinely unanswered, and never when abandoning the test.
 		testTypeGroup.controls.seatbeltInstallationCheckDate.setValidators([
 			this.commonValidators.applyWhen(
-				() => !this.hasAnsweredSeatbeltCheck(),
+				() => this.isSeatbeltCheckRequired(),
 				this.commonValidators.required('Carried out during test')
 			),
 		]);
@@ -77,6 +100,24 @@ export class SeatbeltsComponent implements OnInit {
 			this.commonValidators.date('Most recent installation check'),
 			this.commonValidators.pastDate('Most recent installation check'),
 		]);
+	}
+
+	isSeatbeltCheckRequired(): boolean {
+		// The seatbelt check is not needed to abandon a test
+		if (this.testService.isAbandoning()) return false;
+
+		// The validators stay on the shared form after this section is gone, so skip tests without a seatbelt check
+		if (!this.isSeatbeltCheckApplicable()) return false;
+
+		return !this.hasAnsweredSeatbeltCheck();
+	}
+
+	isSeatbeltCheckApplicable(): boolean {
+		const testResult = this.testResult();
+		return (
+			testResult?.vehicleType === VehicleTypes.PSV &&
+			!TEST_TYPES_GROUP1_SPEC_TEST.includes(testResult.testTypes[0].testTypeId)
+		);
 	}
 
 	hasAnsweredSeatbeltCheck(): boolean {

@@ -12,8 +12,13 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-warning-message [warningMessage]="getWarningMessage"></app-field-warning-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-warning-message
+    [warningMessage]="getWarningMessage"
+  ></app-field-warning-message>
   <div class="govuk-input__wrapper">
     @if (prefix(); as prefix) {
       <div class="govuk-input__suffix prefix" aria-hidden="true">
@@ -32,7 +37,7 @@
         (blur)="onTouched(); handleEvent($event)"
         (focus)="handleEvent($event)"
         appNumberOnly
-        />
+      />
     }
     @if (enableDecimals()) {
       <input
@@ -46,7 +51,7 @@
         (blur)="onTouched(); handleEvent($event)"
         (focus)="handleEvent($event)"
         appDecimalOnly
-        />
+      />
     }
 
     @if (suffix(); as suffix) {

@@ -1,7 +1,7 @@
 import { ButtonGroupComponent } from '@/src/app/components/button-group/button-group.component';
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { RootRoutes } from '@/src/app/models/routes.enum';
-import { clearBatch } from '@/src/app/store/technical-records/batch-create.actions';
+import { cancelBatch } from '@/src/app/store/batch/batch.actions';
 import { Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class CancelBatchComponent {
 	}
 
 	handleCancelBatch(): void {
-		this.store.dispatch(clearBatch());
+		this.store.dispatch(cancelBatch());
 		this.router.navigate([RootRoutes.ROOT]);
 	}
 }

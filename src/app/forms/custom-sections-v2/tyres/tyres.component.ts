@@ -35,7 +35,7 @@ import { AxlesService } from '@services/axles/axles.service';
 import { FormNodeWidth, TagTypeLabels } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { filter } from 'rxjs';
 
 @Component({

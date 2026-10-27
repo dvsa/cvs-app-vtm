@@ -25,7 +25,7 @@ import { TestTypesTaxonomy } from '@models/test-types/testTypesTaxonomy';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { CacheBucket, withCache } from '@ngneat/cashew';
 import { FeatureConfig } from '@store/feature-flags/feature-flags.feature';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { EMPTY, defer, expand, last, lastValueFrom, map, switchMap, takeWhile, timeout, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

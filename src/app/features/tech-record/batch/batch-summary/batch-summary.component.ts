@@ -4,7 +4,7 @@ import { TagComponent, TagType } from '@/src/app/components/tag/tag.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { BatchUpdateVehicleModel, StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
+import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import {
 	selectBatchCreatedCount,
 	selectBatchCreatedSuccessCount,
@@ -18,7 +18,9 @@ import {
 	selectBatchUpdatedCount,
 	selectBatchUpdatedSuccessCount,
 	selectBatchVehicleTypeDescriptor,
-} from '@/src/app/store/technical-records/batch-create.selectors';
+	selectCompleteBatchVehicles,
+} from '@/src/app/store/batch/batch.selectors';
+import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
 import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
 import { PercentPipe, UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -36,8 +38,10 @@ export class BatchSummaryComponent {
 	readonly store = inject(Store);
 	readonly router = inject(Router);
 	readonly errorService = inject(GlobalErrorService);
+	readonly technicalRecordService = inject(TechnicalRecordService);
 
 	readonly techRecord = this.store.selectSignal(editingTechRecord);
+	readonly completeBatchVehicles = this.store.selectSignal(selectCompleteBatchVehicles);
 	readonly batchDetails = this.store.selectSignal(selectBatchDetails);
 	readonly batchPending = this.store.selectSignal(selectBatchPending);
 	readonly batchPendingCount = this.store.selectSignal(selectBatchPendingCount);
@@ -74,28 +78,30 @@ export class BatchSummaryComponent {
 				createdTimestamp: vehicle.createdTimestamp,
 			} as BatchUpdateVehicleModel;
 
-			if (record.techRecord_vehicleType === VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
-				record.trailerId = vehicle.trailerIdOrVrm;
+			// Do not set trailer id to null if trailerIdOrVrm is not populated as it fails backend validation
+			if (record.techRecord_vehicleType === VehicleTypes.TRL) {
+				record.trailerId = vehicle.trailerIdOrVrm ?? '';
 			}
 
-			if (record.techRecord_vehicleType !== VehicleTypes.TRL && vehicle.trailerIdOrVrm) {
+			if (record.techRecord_vehicleType !== VehicleTypes.TRL) {
 				record.primaryVrm = vehicle.trailerIdOrVrm;
 			}
 
 			if (record.systemNumber) {
+				this.technicalRecordService.updateEditingTechRecord(record);
 				this.store.dispatch(
 					updateTechRecord({
 						systemNumber: record.systemNumber,
 						createdTimestamp: record.createdTimestamp,
 						groupType: 'batch',
-						vin: record.vin,
+						batchRecordId: vehicle.id,
 					})
 				);
 			}
 
 			if (!record.systemNumber) {
 				const cleansedRecord = nullADRDetails(record as TechRecordType<'put'>);
-				this.store.dispatch(createVehicleRecord({ vehicle: cleansedRecord }));
+				this.store.dispatch(createVehicleRecord({ batchRecordId: vehicle.id, vehicle: cleansedRecord }));
 			}
 		}
 	}

@@ -17,7 +17,7 @@ import {
 	updateTechRecord,
 	updateTechRecordSuccess,
 } from '@store/technical-records';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 

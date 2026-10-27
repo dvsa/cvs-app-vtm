@@ -1,8 +1,15 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3">Search for {{ refDataAdminType()?.label }}</h1>
+    <h1
+      class="govuk-heading-xl govuk-!-font-weight-bold govuk-!-margin-bottom-3"
+    >
+      Search for {{ refDataAdminType()?.label }}
+    </h1>
 
-    <div id="buttonsAndSearch" class="buttons-and-search govuk-!-margin-bottom-7">
+    <div
+      id="buttonsAndSearch"
+      class="buttons-and-search govuk-!-margin-bottom-7"
+    >
       @if (refDataAdminType()?.searchOptions; as searchOptions) {
         <div [formGroup]="form" class="search-form" id="searchForm">
           <div id="filterSelect">
@@ -29,7 +36,7 @@
                 type="text"
                 (keyup.enter)="search(searchTerm.value, searchFilter.value)"
                 class="govuk-input govuk-!-width-two-thirds ref-search"
-                />
+              />
               <button
                 class="govuk-button margin-right search-btn"
                 type="submit"
@@ -38,7 +45,7 @@
                 data-gem-track-click-module-started="true"
                 aria-label="search button"
                 (click)="search(searchTerm.value, searchFilter.value)"
-                >
+              >
                 <svg
                   class="gem-c-search__icon"
                   width="20"
@@ -48,9 +55,22 @@
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                   focusable="false"
-                  >
-                  <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
-                  <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+                >
+                  <circle
+                    cx="12.0161"
+                    cy="11.0161"
+                    r="8.51613"
+                    stroke="currentColor"
+                    stroke-width="3"
+                  ></circle>
+                  <line
+                    x1="17.8668"
+                    y1="17.3587"
+                    x2="26.4475"
+                    y2="25.9393"
+                    stroke="currentColor"
+                    stroke-width="3"
+                  ></line>
                 </svg>
               </button>
             </div>
@@ -58,9 +78,20 @@
         </div>
       }
       <div class="add-delete-buttons">
-        <app-button id="searchCancel" type="button" design="secondary" (clicked)="clear()">Clear filters</app-button>
+        <app-button
+          id="searchCancel"
+          type="button"
+          design="secondary"
+          (clicked)="clear()"
+          >Clear filters</app-button
+        >
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>
-        <app-button id="submit" [disabled]="disabled()" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
+        <app-button
+          id="submit"
+          [disabled]="disabled()"
+          (clicked)="navigateToDeletedItems()"
+          >Deleted Items</app-button
+        >
       </div>
     </div>
 
@@ -68,7 +99,9 @@
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           @for (column of refDataAdminType()?.columns; track column) {
-            <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
+            <th scope="col" class="govuk-table__header">
+              {{ column.heading }}
+            </th>
           }
           <th scope="col" class="govuk-table__header"></th>
         </tr>
@@ -82,8 +115,12 @@
             }
             <td class="govuk-table__cell buttons">
               <app-button-group>
-                <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
-                <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
+                <app-button id="amend" design="link" (clicked)="amend(item)"
+                  >Amend</app-button
+                >
+                <app-button id="delete" design="link" (clicked)="delete(item)"
+                  >Delete</app-button
+                >
               </app-button-group>
             </td>
           </tr>

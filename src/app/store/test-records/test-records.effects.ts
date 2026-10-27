@@ -5,7 +5,7 @@ import { TestResultSchema, TestStationTypes } from '@dvsa/cvs-type-definitions/t
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { masterTpl } from '@forms/templates/test-records/master.template';
+import { MASTER_TEST_TEMPLATE } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
@@ -25,7 +25,7 @@ import { selectQueryParam, selectRouteNestedParams } from '@store/router/router.
 import { createFailedFirstTestResultSuccess, updateResultOfTest } from '@store/test-records/index';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/test-types.selectors';
-import merge from 'lodash.merge';
+import { merge } from 'lodash-es';
 import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
 import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
@@ -73,6 +73,7 @@ export class TestResultsEffects {
 	private testService = inject(TestService);
 	private dtoLayer = inject(DTOLayer);
 	private featureToggleService = inject(FeatureToggleService);
+	private masterTpl = inject(MASTER_TEST_TEMPLATE);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -226,7 +227,7 @@ export class TestResultsEffects {
 
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				const { vehicleType } = selectedTestResult!;
-				if (!vehicleType || !Object.prototype.hasOwnProperty.call(masterTpl, vehicleType)) {
+				if (!vehicleType || !Object.prototype.hasOwnProperty.call(this.masterTpl, vehicleType)) {
 					return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
 				}
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
@@ -234,7 +235,7 @@ export class TestResultsEffects {
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
-				const vehicleTpl = masterTpl[`${vehicleType}`];
+				const vehicleTpl = this.masterTpl[`${vehicleType}`];
 				const testTypeGroupString =
 					isOldIVAorMSVAtest && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
@@ -348,8 +349,8 @@ export class TestResultsEffects {
 			this.actions$.pipe(
 				ofType(contingencyTestTypeSelected, editingTestResult, testTypeIdChanged),
 				tap(() => {
-					this.testService.form.reset();
-					this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE);
+					this.testService.form.reset(undefined, { emitEvent: false });
+					this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE, { emitEvent: false });
 				})
 			),
 		{ dispatch: false }

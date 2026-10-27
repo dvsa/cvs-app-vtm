@@ -30,7 +30,7 @@ describe('SearchResultComponent', () => {
 	});
 
 	it('should start fetching recalls when the technical record is selected', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		component.prefetchRecalls();
 

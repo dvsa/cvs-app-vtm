@@ -7,8 +7,8 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { createVehicleRecord, editingTechRecord, updateTechRecord } from '@/src/app/store/technical-records';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
 import { AxlesServiceMock } from '@/src/mocks/axles-service.mock';
 import { GlobalErrorServiceMock } from '@/src/mocks/global-error-service.mock';
 import { MultiOptionsServiceMock } from '@/src/mocks/multi-options-service.mock';
@@ -23,11 +23,12 @@ import { EnterTechRecordDetailsComponent } from '../enter-tech-record-details.co
 
 const mockSavedBatchDetails = {
 	batchSize: 1,
-	trlFormType: undefined,
+	trlFormType: null,
 	vehicleStatus: StatusCodes.CURRENT,
 	vehicleType: VehicleTypes.HGV,
 	vehicles: [
 		{
+			id: 0,
 			vin: '123456',
 			systemNumber: '123456',
 			createdTimestamp: '2022-01-01T00:00:00.000Z',
@@ -50,7 +51,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 				provideRouter([
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.BATCH_SUMMARY}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 				provideMockStore({ initialState: initialAppState }),
@@ -80,13 +81,15 @@ describe('EnterTechRecordDetailsComponent', () => {
 	describe('handleSave', () => {
 		beforeEach(() => {
 			store.overrideSelector(editingTechRecord, mockTechRecord);
+			store.refreshState();
+			fixture.detectChanges();
 		});
 
 		it('should call set error if there are errors', () => {
 			const errors = [{ error: 'some error', anchorLink: 'expected' }];
 
-			jest.spyOn(errorService, 'setErrors');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue(errors);
+			vi.spyOn(errorService, 'setErrors');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue(errors);
 
 			store.refreshState();
 
@@ -96,13 +99,14 @@ describe('EnterTechRecordDetailsComponent', () => {
 		});
 
 		it('should dispatch updateTechRecord for each vehicle if the form is valid, and each vehicle has a VRM/Trailer ID', () => {
-			jest.spyOn(store, 'dispatch');
-			jest.spyOn(router, 'navigate');
-			jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			jest.spyOn(technicalRecordService, 'clearSectionTemplateStates');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
+			vi.spyOn(store, 'dispatch');
+			vi.spyOn(router, 'navigate');
+			vi.spyOn(technicalRecordService, 'updateEditingTechRecord');
+			vi.spyOn(technicalRecordService, 'clearSectionTemplateStates');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
 
 			store.overrideSelector(selectBatchDetails, mockSavedBatchDetails);
+			store.refreshState();
 
 			component.handleSave();
 
@@ -168,10 +172,10 @@ describe('EnterTechRecordDetailsComponent', () => {
 
 			expect(store.dispatch).toHaveBeenCalledWith(
 				updateTechRecord({
+					batchRecordId: 0,
 					systemNumber: '123456',
 					createdTimestamp: '2022-01-01T00:00:00.000Z',
 					groupType: 'batch',
-					vin: '123456',
 				})
 			);
 
@@ -180,24 +184,27 @@ describe('EnterTechRecordDetailsComponent', () => {
 		});
 
 		it('should dispatch createVehicleRecord for each vehicle if the form is valid, and each vehicle does not have a VRM/Trailer ID', () => {
-			jest.spyOn(store, 'dispatch');
-			jest.spyOn(router, 'navigate');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
+			vi.spyOn(store, 'dispatch');
+			vi.spyOn(router, 'navigate');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
 
 			store.overrideSelector(selectBatchDetails, {
 				...mockSavedBatchDetails,
 				vehicles: [
 					{
+						id: 0,
 						vin: '123456',
 						trailerIdOrVrm: undefined,
 					},
 				],
 			});
+			store.refreshState();
 
 			component.handleSave();
 
 			expect(store.dispatch).toHaveBeenCalledWith(
 				createVehicleRecord({
+					batchRecordId: 0,
 					vehicle: {
 						createdTimestamp: undefined,
 						systemNumber: undefined,

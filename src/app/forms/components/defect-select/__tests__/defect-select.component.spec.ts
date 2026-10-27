@@ -14,7 +14,7 @@ import { DefectSelectComponent } from '../defect-select.component';
 describe('DefectSelectComponent', () => {
 	let component: DefectSelectComponent;
 	let fixture: ComponentFixture<DefectSelectComponent>;
-	const viewportScroller = { scrollToPosition: jest.fn() };
+	const viewportScroller = { scrollToPosition: vi.fn() };
 
 	const defect: DefectCategoryReferenceDataSchema = {
 		additionalInfo: {
@@ -127,13 +127,13 @@ describe('DefectSelectComponent', () => {
 
 	describe('navigation', () => {
 		it('selectDeficiency should navigate to the deficiency ref', () => {
-			const spy = jest.spyOn(component.router, 'navigate').mockResolvedValue(true);
+			const spy = vi.spyOn(component.router, 'navigate').mockResolvedValue(true);
 			component.selectDeficiency(defect.items[0].deficiencies![0]);
 			expect(spy).toHaveBeenCalledWith(['some ref'], expect.anything());
 		});
 
 		it('selectAdvisory should navigate to the advisory route', () => {
-			const spy = jest.spyOn(component.router, 'navigate').mockResolvedValue(true);
+			const spy = vi.spyOn(component.router, 'navigate').mockResolvedValue(true);
 			component.selectAdvisory(defect, defect.items[0]);
 			expect(spy).toHaveBeenCalledWith(['1.2.advisory'], expect.anything());
 		});

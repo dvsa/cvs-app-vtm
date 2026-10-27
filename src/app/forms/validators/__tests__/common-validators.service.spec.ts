@@ -14,7 +14,7 @@ describe('CommonValidatorsService', () => {
 
 		service = TestBed.inject(CommonValidatorsService);
 
-		jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
+		vi.useFakeTimers().setSystemTime(new Date('2024-01-01'));
 	});
 
 	describe('max', () => {
@@ -138,6 +138,51 @@ describe('CommonValidatorsService', () => {
 			const control = new FormControl('2025-01-01'); // current date mocked as 2024-01-01
 			const result = service.pastDate('message')(control);
 			expect(result).toEqual({ pastDate: { error: 'message must be in the past', anchorLink: '', accordion: '' } });
+		});
+	});
+
+	describe('futureDate', () => {
+		it('should return null if the control has a value of null', () => {
+			const control = new FormControl(null);
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return null if the control has a value that is a future date', () => {
+			const control = new FormControl('2025-01-01'); // current date mocked as 2024-01-01
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return an error object if the control has a value that is a past date', () => {
+			const control = new FormControl('2023-01-01'); // current date mocked as 2024-01-01
+			const result = service.futureDate('message')(control);
+			expect(result).toEqual({ futureDate: { error: 'message must be in the future', anchorLink: '', accordion: '' } });
+		});
+
+		it('should return null for dates with a non-four-digit year (skip validation)', () => {
+			const control = new FormControl('123-01-01');
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return null for invalid date strings', () => {
+			const control = new FormControl('abc');
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
+		});
+
+		it('should return null when any date part is the string "null" or "undefined"', () => {
+			const control1 = new FormControl('2025-null-01');
+			const control2 = new FormControl('2025-01-undefined');
+			expect(service.futureDate('message')(control1)).toBeNull();
+			expect(service.futureDate('message')(control2)).toBeNull();
+		});
+
+		it('should return null for datetime strings missing time parts (skip validation)', () => {
+			const control = new FormControl('2025-01-01T12'); // missing minute/seconds
+			const result = service.futureDate('message')(control);
+			expect(result).toBeNull();
 		});
 	});
 

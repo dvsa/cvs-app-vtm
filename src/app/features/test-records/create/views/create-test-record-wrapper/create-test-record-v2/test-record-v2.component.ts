@@ -44,15 +44,18 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestAmendmentHistoryComponent } from '@features/test-records/amend/components/test-amendment-history/test-amendment-history.component';
+import { CustomDefectsComponent } from '@features/test-records/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
+import { RequiredStandardsComponent } from '@features/test-records/custom-sections/required-standards/required-standards.component';
 import { SeatbeltsComponent } from '@features/test-records/custom-sections/seatbelts/seatbelts.component';
 import { TestComponent } from '@features/test-records/custom-sections/test/test.component';
 import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -85,6 +88,8 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
 		SeatbeltsComponent,
+		RequiredStandardsComponent,
+		CustomDefectsComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -161,10 +166,23 @@ export class TestRecordV2Component implements OnInit {
 
 		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
 			this.testRecordService.testTypeChange(testTypeId);
+			this.applyTestTypeChange(testResult, testTypeId);
 		}
 	}
 
+	private applyTestTypeChange(testResult: TestResultSchema | undefined, testTypeId: string): void {
+		if (!testResult) return;
+
+		this.form.patchValue(testResult as any);
+		const testTypeName = this.testType()?.name;
+		this.form.controls.testTypes
+			.at(0)
+			.patchValue(testTypeName ? { testTypeId, testTypeName, name: testTypeName } : { testTypeId });
+		this.flushFormToStore();
+	}
+
 	ngOnInit(): void {
+		this.testService.isAbandoning.set(false); // the flag is held on a root service, so clear it per test
 		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
 			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
 		}
@@ -244,9 +262,12 @@ export class TestRecordV2Component implements OnInit {
 	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
-		if (mode === Modes.ABANDON) {
-			const testTypeGroup = this.form.controls.testTypes.at(0);
-			testTypeGroup.controls.reasonForAbandoning.setValidators([]);
+		// The errors belong to the page being left behind, so they must not follow the user back.
+		this.globalErrorService.clearErrors();
+		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
+		// The abandon-only validation is dropped by the abandon page as it is destroyed.
+		if (this.mode() === Modes.ABANDON) {
+			this.testService.isAbandoning.set(false);
 		}
 		this.mode.set(mode);
 	}
@@ -327,6 +348,10 @@ export class TestRecordV2Component implements OnInit {
 		this.form.markAllAsTouched();
 		this.flushFormToStore(); // capture any pending debounced change before leaving edit mode
 
+		// Flag the abandonment before validating, so the sections skip the validation that only applies
+		// to a test that is being completed (e.g. country of registration, odometer, seatbelt check).
+		this.testService.isAbandoning.set(true);
+
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
@@ -337,11 +362,15 @@ export class TestRecordV2Component implements OnInit {
 			return;
 		}
 
+		// The user stays in edit mode to fix the errors, so they are no longer abandoning the test.
+		this.testService.isAbandoning.set(false);
 		this.setGlobalErrors(errors);
 	}
 
 	onAbandon(): void {
-		this.form.markAllAsTouched();
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+		testTypeGroup.controls.reasonForAbandoning.markAsTouched();
+		testTypeGroup.controls.additionalCommentsForAbandon.markAsTouched();
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
@@ -374,7 +403,32 @@ export class TestRecordV2Component implements OnInit {
 	shouldShowSeatbeltSection(): boolean {
 		// Sourced from the test result rather than the tech record, as the tech record is not
 		// guaranteed to be loaded when amending or viewing an existing test.
-		return this.testResult()?.vehicleType === VehicleTypes.PSV;
+		return this.testResult()?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1();
+	}
+
+	shouldShowDefectSection(): boolean {
+		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') && !this.isSpecialistGroup1();
+	}
+
+	shouldShowRequiredStandardsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowAdditionalDefectsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowSpecialistSectionsAfterTest(): boolean {
+		// Matches the original DFS template order, where LGV/car/motorcycle show Required Standards
+		// and Additional Defects straight after Test, and PSV/HGV/TRL show them after Notes.
+		const vehicleType = this.testResult()?.vehicleType;
+		return (
+			vehicleType === VehicleTypes.LGV || vehicleType === VehicleTypes.CAR || vehicleType === VehicleTypes.MOTORCYCLE
+		);
+	}
+
+	isSpecialistGroup1(): boolean {
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	protected readonly Modes = Modes;

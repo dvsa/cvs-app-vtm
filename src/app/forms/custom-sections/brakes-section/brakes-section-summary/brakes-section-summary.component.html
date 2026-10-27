@@ -10,31 +10,46 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Service</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeOne">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_dataTrBrakeOne"
+        >
           {{ vm.techRecord_brakes_dataTrBrakeOne | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Secondary</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeTwo">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_dataTrBrakeTwo"
+        >
           {{ vm.techRecord_brakes_dataTrBrakeTwo | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Parking</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dataTrBrakeThree">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_dataTrBrakeThree"
+        >
           {{ vm.techRecord_brakes_dataTrBrakeThree | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Retarder 1</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_retarderBrakeOne">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_retarderBrakeOne"
+        >
           {{ vm.techRecord_brakes_retarderBrakeOne | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Retarder 2</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_retarderBrakeTwo">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_retarderBrakeTwo"
+        >
           {{ vm.techRecord_brakes_retarderBrakeTwo | defaultNullOrEmpty }}
         </dd>
       </div>
@@ -48,7 +63,9 @@
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header"></th>
           <th scope="col" class="govuk-table__header">No wheels locked</th>
-          <th scope="col" class="govuk-table__header">Up to and including half wheels locked</th>
+          <th scope="col" class="govuk-table__header">
+            Up to and including half wheels locked
+          </th>
         </tr>
       </thead>
 
@@ -101,14 +118,22 @@
       <tbody class="govuk-table__body">
         @for (axle of vm.techRecord_axles; track $index) {
           <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">Axle {{ axle.axleNumber }}</th>
-            <td class="govuk-table__cell" id="brakes_brakeActuator-{{ $index }}">
+            <th scope="row" class="govuk-table__header">
+              Axle {{ axle.axleNumber }}
+            </th>
+            <td
+              class="govuk-table__cell"
+              id="brakes_brakeActuator-{{ $index }}"
+            >
               {{ axle.brakes_brakeActuator | defaultNullOrEmpty }}
             </td>
             <td class="govuk-table__cell" id="brakes_leverLength-{{ $index }}">
               {{ axle.brakes_leverLength | defaultNullOrEmpty }}
             </td>
-            <td class="govuk-table__cell" id="brakes_springBrakeParking-{{ $index }}">
+            <td
+              class="govuk-table__cell"
+              id="brakes_springBrakeParking-{{ $index }}"
+            >
               {{ axle.brakes_springBrakeParking | defaultNullOrEmpty }}
             </td>
           </tr>
@@ -122,13 +147,19 @@
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Load sensing valve</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_loadSensingValve">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_loadSensingValve"
+        >
           {{ vm.techRecord_brakes_loadSensingValve | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Antilock braking system</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_antilockBrakingSystem">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_antilockBrakingSystem"
+        >
           {{ vm.techRecord_brakes_antilockBrakingSystem | defaultNullOrEmpty }}
         </dd>
       </div>
@@ -136,7 +167,10 @@
   }
 
   <!-- Parking brake states -->
-  @if (vm.techRecord_vehicleType === VehicleTypes.PSV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+  @if (
+    vm.techRecord_vehicleType === VehicleTypes.PSV ||
+    vm.techRecord_vehicleType === VehicleTypes.TRL
+  ) {
     @if (vm.techRecord_axles?.length) {
       <h3 class="govuk-heading-m govuk-!-margin-bottom-4">Parking brake</h3>
 
@@ -144,7 +178,10 @@
         @for (axle of vm.techRecord_axles; track $index) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Axle {{ axle.axleNumber }}</dt>
-            <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk-{{ $index }}">
+            <dd
+              class="govuk-summary-list__value"
+              id="test-parkingBrakeMrk-{{ $index }}"
+            >
               {{ axle.parkingBrakeMrk | defaultNullOrEmpty }}
             </dd>
           </div>

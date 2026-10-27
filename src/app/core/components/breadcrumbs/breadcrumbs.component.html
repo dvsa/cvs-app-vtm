@@ -4,43 +4,84 @@
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        @if (backlink.url != null) {
-          <a id="back-button" href="javascript:void(0)" [routerLink]="backlink.url" class="govuk-back-link govuk-breadcrumbs__link">
+        <!-- If the previous page provides a redirectUrl, return to the page via that -->
+        @if (redirectUrl(); as redirectUrl) {
+          <a
+            id="back-button"
+            href="javascript:void(0)"
+            [routerLink]="redirectUrl"
+            class="govuk-back-link govuk-breadcrumbs__link"
+          >
             {{ backlink.label || 'Back' }}
           </a>
         } @else {
-          <a id="back-button" href="javascript:void(0)" class="govuk-back-link govuk-breadcrumbs__link" (click)="location.back()">
-            {{ backlink.label || 'Back' }}
-          </a>
+          <!-- Othwerwise use the standard back url -->
+          @if (backlink.url != null) {
+            <a
+              id="back-button"
+              href="javascript:void(0)"
+              [routerLink]="backlink.url"
+              class="govuk-back-link govuk-breadcrumbs__link"
+            >
+              {{ backlink.label || 'Back' }}
+            </a>
+          } @else {
+            <!-- If no URL is provided, use location history to determine the previous page -->
+            <a
+              id="back-button"
+              href="javascript:void(0)"
+              class="govuk-back-link govuk-breadcrumbs__link"
+              (click)="location.back()"
+            >
+              {{ backlink.label || 'Back' }}
+            </a>
+          }
         }
       </li>
     </ol>
   </div>
-}
-@else if (breadcrumbs$ | async; as breadcrumbs) {
+} @else if (breadcrumbs$ | async; as breadcrumbs) {
   @if (breadcrumbs.length) {
     <div class="govuk-breadcrumbs">
       <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-          <a class="govuk-breadcrumbs__link" href="javascript:void(0)" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
+          <a
+            class="govuk-breadcrumbs__link"
+            href="javascript:void(0)"
+            id="breadcrumb-home-link"
+            [routerLink]="['']"
+            >Home</a
+          >
         </li>
-        @for (breadcrumb of breadcrumbs; track indexOfLink; let last = $last; let indexOfLink = $index) {
+        @for (
+          breadcrumb of breadcrumbs;
+          track indexOfLink;
+          let last = $last;
+          let indexOfLink = $index
+        ) {
           <li class="govuk-breadcrumbs__list-item">
             @if (!last) {
               <a
                 [id]="'breadcrumb-link-' + indexOfLink"
                 class="govuk-breadcrumbs__link"
                 [routerLink]="'/' + breadcrumb.path"
-                [queryParamsHandling]="breadcrumb.preserveQueryParams ? 'preserve' : ''"
+                [queryParamsHandling]="
+                  breadcrumb.preserveQueryParams ? 'preserve' : ''
+                "
                 href="javascript:void(0)"
-              >{{ breadcrumb.label }}</a
-                >
-              } @else {
-                <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current" href="javascript:void(0)" id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
-              }
-            </li>
-          }
-        </ol>
-      </div>
-    }
+                >{{ breadcrumb.label }}</a
+              >
+            } @else {
+              <a
+                class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current"
+                href="javascript:void(0)"
+                id="breadcrumb-current-link"
+                >{{ breadcrumb.label }}</a
+              >
+            }
+          </li>
+        }
+      </ol>
+    </div>
   }
+}

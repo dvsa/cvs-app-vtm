@@ -1,7 +1,7 @@
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { initialAppState } from '@/src/app/store';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -21,11 +21,11 @@ describe('EnterBatchDetailsComponent', () => {
 				provideRouter([
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_DETAILS}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 			],
@@ -40,7 +40,7 @@ describe('EnterBatchDetailsComponent', () => {
 
 	describe('handleContinue', () => {
 		it('should navigate the user to the batch size page if the form is valid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				vehicleType: VehicleTypes.PSV,
 				vehicleStatus: StatusCodes.CURRENT,
@@ -50,7 +50,7 @@ describe('EnterBatchDetailsComponent', () => {
 		});
 
 		it('should not navigate the user to the batch size page if the form is invalid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				vehicleType: null,
 				vehicleStatus: null,
@@ -62,7 +62,7 @@ describe('EnterBatchDetailsComponent', () => {
 
 	describe('handleCancel', () => {
 		it('should navigate the user to the cancel batch page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.handleCancel();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 		});
@@ -74,11 +74,17 @@ describe('EnterBatchDetailsComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				vehicleStatus: StatusCodes.CURRENT,
 				trlFormType: TrailerFormType.TES1,
+				batchSize: null,
+				vehicles: [],
 			};
 			store.overrideSelector(selectBatchDetails, savedBatchDetails);
 			store.refreshState();
 			component.handlePopulateForm();
-			expect(component.form.getRawValue()).toEqual(savedBatchDetails);
+			expect(component.form.getRawValue()).toEqual({
+				vehicleType: VehicleTypes.PSV,
+				vehicleStatus: StatusCodes.CURRENT,
+				trlFormType: TrailerFormType.TES1,
+			});
 		});
 
 		it('should disable the vehicle type field when the vehicle type is saved', () => {
@@ -86,6 +92,8 @@ describe('EnterBatchDetailsComponent', () => {
 				vehicleType: VehicleTypes.PSV,
 				vehicleStatus: StatusCodes.CURRENT,
 				trlFormType: TrailerFormType.TES1,
+				batchSize: 10,
+				vehicles: new Array(10).fill(null),
 			};
 			store.overrideSelector(selectBatchDetails, savedBatchDetails);
 			store.refreshState();

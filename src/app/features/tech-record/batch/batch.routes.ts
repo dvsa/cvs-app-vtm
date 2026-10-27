@@ -29,7 +29,7 @@ export const routes: Routes = [
 					title: 'Cancel batch - Vehicle Testing Management',
 					roles: Roles.TechRecordCreate,
 					featureToggleName: FeatureFlags.BATCH_REDESIGN,
-					backlink: { url: RootRoutes.ROOT },
+					backlink: {},
 				},
 				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
 				loadComponent: () => import('./cancel-batch/cancel-batch.component').then((m) => m.CancelBatchComponent),

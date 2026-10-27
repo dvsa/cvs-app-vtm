@@ -357,6 +357,54 @@ export class CommonValidatorsService {
 		};
 	}
 
+	futureDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
+		return (control) => {
+			// Ensure value exists
+			if (!control.value) return null;
+
+			// If the control value is a string (expected format YYYY-MM-DD or YYYY-MM-DDTHH:MM)
+			// do the basic checks on the raw value parts first and return null (skip validation)
+			// if any of day/month/year are missing. This prevents dayjs from inferring values
+			// for partial dates.
+			const [date, time] = control.value.split('T');
+			const [yearStr, monthStr, dayStr] = (date || '').split('-');
+			const isMissingOrInvalid = (s?: string) => {
+				if (s == null) return true;
+				const v = s.trim().toLowerCase();
+				return v === '' || v === 'null' || v === 'undefined';
+			};
+			if (typeof control.value === 'string') {
+				if (isMissingOrInvalid(yearStr) || isMissingOrInvalid(monthStr) || isMissingOrInvalid(dayStr)) return null;
+			}
+			if (time) {
+				const [minutesStr, secondsStr] = (time || '').split(':');
+				if (isMissingOrInvalid(minutesStr) || isMissingOrInvalid(secondsStr)) return null;
+			}
+			// return null if yearStr is defined but contains less than 4 characters
+			if (yearStr.length < 4) return null;
+
+			// Parse value with dayjs and ensure it's valid (covers non-string values like Date)
+			const inputDate = dayjs(control.value);
+			if (!inputDate.isValid()) return null;
+
+			// Determine future date (ignore seconds)
+			if (inputDate.startOf('minute').isBefore(dayjs().startOf('minute'))) {
+				const globalError = {
+					futureDate: { error: `${message} must be in the future`, anchorLink: '', accordion: '' },
+				};
+				if (anchorLink) {
+					globalError.futureDate.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.futureDate.accordion = accordion;
+				}
+				return globalError;
+			}
+
+			return null;
+		};
+	}
+
 	pastOrCurrentDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
@@ -545,6 +593,43 @@ export class CommonValidatorsService {
 		};
 	}
 
+	requiredWith(
+		message: string | ((control: AbstractControl) => GlobalError),
+		message2: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// If array has an element it satisfies the required condition
+			if (Array.isArray(control.value) && control.value.length > 0) return null;
+
+			// If the value is truthy or 0 it satisfies the required condition
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
+
+			const globalError: GlobalError = {
+				error: `${message} is required with ${message2}`,
+				anchorLink: '',
+				accordion: '',
+			};
+
+			if (typeof message !== 'string') {
+				return { required: message(control) };
+			}
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { required: globalError };
+		};
+	}
+
 	required(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
 	required(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
 	required(
@@ -576,6 +661,37 @@ export class CommonValidatorsService {
 			}
 
 			return { required: globalError };
+		};
+	}
+
+	requiredTrue(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// Only an explicit answer of `false` fails here, a missing answer is left to the required condition
+			if (control.value !== false) return null;
+
+			if (typeof message !== 'string') {
+				return { requiredTrue: message(control) };
+			}
+
+			const globalError: GlobalError = { error: message, anchorLink: '', accordion: '' };
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { requiredTrue: globalError };
 		};
 	}
 

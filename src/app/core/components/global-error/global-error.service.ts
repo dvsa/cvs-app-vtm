@@ -104,12 +104,15 @@ export class GlobalErrorService {
 				const controlErrors = Object.values(control.errors);
 
 				if (controlErrors.length > 0) {
-					const error = controlErrors[0];
-					errors.push({
-						error: typeof error === 'string' ? error : error.error,
-						anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
-						accordion: error.accordion ?? undefined,
-					});
+					// A control holding a list (e.g. additional defects) can report an error for each of its items
+					const firstError = controlErrors[0];
+					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
+						errors.push({
+							error: typeof error === 'string' ? error : error.error,
+							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
+							accordion: error.accordion ?? undefined,
+						});
+					}
 				}
 			}
 		});

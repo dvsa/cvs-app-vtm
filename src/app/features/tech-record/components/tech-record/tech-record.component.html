@@ -1,12 +1,13 @@
 @if (techRecord(); as techRecord) {
   @let vm = vehicleMeta();
   <!-- Accordion -->
-  <div class="govuk-accordion govuk-accordion--vtm" data-module="govuk-accordion">
+  <div
+    class="govuk-accordion govuk-accordion--vtm"
+    data-module="govuk-accordion"
+  >
     <div class="govuk-accordion__section-heading-top-container">
       <h2 class="govuk-accordion__section-heading-top">
-        <span class="govuk-accordion-heading-vtm">
-          Technical record
-        </span>
+        <span class="govuk-accordion-heading-vtm"> Technical record </span>
       </h2>
 
       <app-accordion-control [sectionState]="sectionStates$()">
@@ -21,7 +22,11 @@
               [type]="'condensed'"
               [isExpanded]="false"
               appFilterByTags
-              [tagNames]="techRecord.techRecord_vehicleType === VehicleTypes.LGV ? ['Required'] : ['Plates', 'Required', 'ADR']"
+              [tagNames]="
+                techRecord.techRecord_vehicleType === VehicleTypes.LGV
+                  ? ['Required']
+                  : ['Plates', 'Required', 'ADR']
+              "
               [filters]="filters()"
             >
               <form ngNoForm>
@@ -165,7 +170,10 @@
             }
 
             <!-- Emissions and exemptions -->
-            @if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+            @if (
+              techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+              techRecord.techRecord_vehicleType === VehicleTypes.PSV
+            ) {
               <app-accordion
                 [id]="'emissions-and-exemptions'"
                 [title]="'Emissions and exemptions'"
@@ -209,7 +217,10 @@
             }
 
             <!-- Brakes -->
-            @if (techRecord.techRecord_vehicleType === VehicleTypes.PSV || technicalRecordService.isHeavyTrailer(techRecord)) {
+            @if (
+              techRecord.techRecord_vehicleType === VehicleTypes.PSV ||
+              technicalRecordService.isHeavyTrailer(techRecord)
+            ) {
               <app-accordion
                 [id]="'brakes'"
                 [title]="'Brakes'"
@@ -253,7 +264,11 @@
             }
 
             <!-- Plates -->
-            @if ((techRecord.techRecord_vehicleType === VehicleTypes.HGV || technicalRecordService.isHeavyTrailer(techRecord)) && !isEditing()) {
+            @if (
+              (techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+                technicalRecordService.isHeavyTrailer(techRecord)) &&
+              !isEditing()
+            ) {
               <app-accordion
                 [id]="'plates'"
                 [title]="'Plates'"
@@ -291,7 +306,9 @@
             }
 
             <!-- ADR certificates -->
-            @if (technicalRecordService.isAdrVehicle(techRecord) && !isEditing()) {
+            @if (
+              technicalRecordService.isAdrVehicle(techRecord) && !isEditing()
+            ) {
               <app-accordion
                 [id]="'adr-certs'"
                 [title]="'ADR certificates'"
@@ -302,7 +319,9 @@
                 [tagNames]="['ADR']"
                 [filters]="filters()"
               >
-                <app-adr-certificates [techRecord]="techRecord"></app-adr-certificates>
+                <app-adr-certificates
+                  [techRecord]="techRecord"
+                ></app-adr-certificates>
               </app-accordion>
             }
 
@@ -365,19 +384,22 @@
                   ></app-manufacturer>
                 </form>
               </app-accordion>
-
-              <app-accordion
-                [id]="'letter-of-authorisation'"
-                [title]="'Letter of authorisation'"
-                [description]="'Generate and send a letter of authorisation.'"
-                [type]="'condensed'"
-                [isExpanded]="false"
-                appFilterByTags
-                [tagNames]="[]"
-                [filters]="filters()"
-              >
-                <app-letter-of-authorisation [techRecord]="$any(techRecord)"></app-letter-of-authorisation>
-              </app-accordion>
+              @if (!isEditing()) {
+                <app-accordion
+                  [id]="'letter-of-authorisation'"
+                  [title]="'Letter of authorisation'"
+                  [description]="'Generate and send a letter of authorisation.'"
+                  [type]="'condensed'"
+                  [isExpanded]="false"
+                  appFilterByTags
+                  [tagNames]="[]"
+                  [filters]="filters()"
+                >
+                  <app-letter-of-authorisation
+                    [techRecord]="$any(techRecord)"
+                  ></app-letter-of-authorisation>
+                </app-accordion>
+              }
             }
 
             @if (technicalRecordService.isHeavyVehicle(techRecord)) {
@@ -412,7 +434,9 @@
                 [tagNames]="['Records']"
                 [filters]="filters()"
               >
-                <app-technical-record-history [techRecord]="$any(techRecord)"></app-technical-record-history>
+                <app-technical-record-history
+                  [techRecord]="$any(techRecord)"
+                ></app-technical-record-history>
               </app-accordion>
             }
 
@@ -427,7 +451,10 @@
                 [tagNames]="['Records']"
                 [filters]="filters()"
               >
-                <app-test-records [testResults]="(testResults$ | async) || []" [techRecord]="techRecord"></app-test-records>
+                <app-test-records
+                  [testResults]="(testResults$ | async) || []"
+                  [techRecord]="techRecord"
+                ></app-test-records>
               </app-accordion>
             }
 

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -50,6 +51,29 @@ describe('DefectsEffects', () => {
 	});
 
 	describe('fetchSearchResults$', () => {
+		it('should treat a not-found response as a successful empty search', () => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a--', { a: fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: 'foo' }) });
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#', {}, new HttpErrorResponse({ status: 404 })));
+				expectObservable(effects.fetchSearchResults$).toBe('---b', {
+					b: fetchSearchResultSuccess({ payload: [] }),
+				});
+			});
+		});
+
+		it.each([400, 401, 403, 500])('should preserve API errors with status %s', (status) => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a--', { a: fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: 'foo' }) });
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#', {}, new HttpErrorResponse({ status })));
+				expectObservable(effects.fetchSearchResults$).toBe('---b', {
+					b: fetchSearchResultFailed({
+						error: 'There was a problem getting the Tech Record by primaryVrm',
+						anchorLink: 'search-term',
+					}),
+				});
+			});
+		});
+
 		it.each(testCases)('should return fetchSearchResultsSuccess action on successfull API call', (value) => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				const { payload } = value;
@@ -58,7 +82,7 @@ describe('DefectsEffects', () => {
 				actions$ = hot('-a--', { a: fetchSearchResult });
 
 				// mock service call
-				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--a|', { a: payload }));
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--a|', { a: payload }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
@@ -73,7 +97,7 @@ describe('DefectsEffects', () => {
 
 				const expectedError = new Error('Oopsi');
 
-				jest.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'searchTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchSearchResults$).toBe('---b', {
 					b: fetchSearchResultFailed({

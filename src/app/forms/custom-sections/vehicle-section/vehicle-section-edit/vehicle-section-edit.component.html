@@ -3,7 +3,11 @@
   @if (shouldDisplayFormControl('techRecord_vehicleType')) {
     <govuk-form-group-input
       label="Vehicle type"
-      [width]="getVehicleType() === VehicleTypes.MOTORCYCLE ? FormNodeWidth.M : FormNodeWidth.XS"
+      [width]="
+        getVehicleType() === VehicleTypes.MOTORCYCLE
+          ? FormNodeWidth.M
+          : FormNodeWidth.XS
+      "
       [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]"
       formControlName="techRecord_vehicleType"
     ></govuk-form-group-input>
@@ -13,7 +17,11 @@
   @if (shouldDisplayFormControl('techRecord_regnDate')) {
     <govuk-form-group-date
       label="Date of first registration"
-      [tags]="shouldShowPlatesHgv ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+      [tags]="
+        shouldShowPlatesHgv
+          ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]
+          : []
+      "
       formControlName="techRecord_regnDate"
     ></govuk-form-group-date>
   }
@@ -35,7 +43,11 @@
       formControlName="techRecord_manufactureYear"
       [width]="FormNodeWidth.XS"
       type="number"
-      [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }] : []"
+      [tags]="
+        shouldShowPlatesHgv || shouldShowPlatesTrl
+          ? [{ label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]
+          : []
+      "
     ></govuk-form-group-input>
   }
 
@@ -57,7 +69,10 @@
     formControlName="techRecord_noOfAxles"
   ></govuk-form-group-input>
 
-  @if (getVehicleType() === VehicleTypes.HGV || getVehicleType() === VehicleTypes.PSV) {
+  @if (
+    getVehicleType() === VehicleTypes.HGV ||
+    getVehicleType() === VehicleTypes.PSV
+  ) {
     <div class="flex-row">
       <!-- Speed limiter exempt for HGV (required to generate plates) -->
       @if (techRecord().techRecord_vehicleType === VehicleTypes.HGV) {
@@ -65,7 +80,11 @@
           label="Speed limiter exempt"
           formControlName="techRecord_speedLimiterMrk"
           [options]="EXEMPT_OR_NOT_OPTIONS"
-          [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
+          [tags]="
+            shouldShowPlatesHgv || shouldShowPlatesTrl
+              ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+              : []
+          "
         ></govuk-form-group-radio>
       }
       <!-- Speed limiter exempt for PSV -->
@@ -102,7 +121,11 @@
       label="Road friendly suspension"
       formControlName="techRecord_roadFriendly"
       [options]="YES_NO_OPTIONS"
-      [tags]="shouldShowPlatesHgv || shouldShowPlatesTrl ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }] : []"
+      [tags]="
+        shouldShowPlatesHgv || shouldShowPlatesTrl
+          ? [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+          : []
+      "
     ></govuk-form-group-radio>
   }
 
@@ -147,12 +170,18 @@
   }
 
   <!-- Vehicle Subclass (LGV/CAR/Small TRL only) -->
-  @if (shouldShowSubclass && shouldDisplayFormControl('techRecord_vehicleSubclass')) {
+  @if (
+    shouldShowSubclass && shouldDisplayFormControl('techRecord_vehicleSubclass')
+  ) {
     <govuk-checkbox-group
       label="Vehicle subclass"
       formControlName="techRecord_vehicleSubclass"
       [options]="VEHICLE_SUBCLASS_OPTIONS"
-      [tags]="getVehicleType() !== VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
+      [tags]="
+        getVehicleType() !== VehicleTypes.SMALL_TRL
+          ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]
+          : []
+      "
     ></govuk-checkbox-group>
   }
 
@@ -179,10 +208,13 @@
 
   <!-- Vehicle configuration-->
   @if (shouldDisplayFormControl('techRecord_vehicleConfiguration')) {
-    @if ((shouldShowPlatesHgv || shouldShowPlatesTrl)) {
+    @if (shouldShowPlatesHgv || shouldShowPlatesTrl) {
       <govuk-form-group-select
         label="Vehicle configuration"
-        [tags]="[{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }, { label: TagTypeLabels.PLATES, colour: TagType.PURPLE }]"
+        [tags]="[
+          { label: TagTypeLabels.REQUIRED, colour: TagType.RED },
+          { label: TagTypeLabels.PLATES, colour: TagType.PURPLE },
+        ]"
         [options]="vehicleConfigurationOptions"
         formControlName="techRecord_vehicleConfiguration"
         [allowNull]="true"
@@ -218,8 +250,10 @@
   }
 
   <!-- Number of wheels (Motorcycle only) -->
-  @if (getVehicleType() === VehicleTypes.MOTORCYCLE &&
-    shouldDisplayFormControl('techRecord_numberOfWheelsDriven')) {
+  @if (
+    getVehicleType() === VehicleTypes.MOTORCYCLE &&
+    shouldDisplayFormControl('techRecord_numberOfWheelsDriven')
+  ) {
     <govuk-form-group-input
       type="number"
       label="Number of wheels"
@@ -266,7 +300,7 @@
       <!-- Standing Capacity -->
       <govuk-form-group-input
         label="Standing capacity"
-        formControlName = 'techRecord_standingCapacity'
+        formControlName="techRecord_standingCapacity"
         type="number"
         [width]="FormNodeWidth.XXS"
       ></govuk-form-group-input>
@@ -283,7 +317,7 @@
           [options]="VEHICLE_SIZE_OPTIONS"
           [tags]="[{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]"
           [hint]="'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to'"
-          >
+        >
         </govuk-form-group-radio>
       }
       <!--  Number of Seatbelts -->
@@ -294,7 +328,9 @@
         [width]="FormNodeWidth.XXS"
       ></govuk-form-group-input>
       <!-- Seatbelt installation approval date / type approved -->
-      @if (shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')) {
+      @if (
+        shouldDisplayFormControl('techRecord_seatbeltInstallationApprovalDate')
+      ) {
         <govuk-form-group-date
           label="Seatbelt installation approval date / type approved"
           formControlName="techRecord_seatbeltInstallationApprovalDate"
@@ -329,7 +365,11 @@
         formControlName="techRecord_euVehicleCategory"
         [width]="FormNodeWidth.S"
         [options]="EUCategoryOptions"
-        [tags]="getVehicleType() === VehicleTypes.SMALL_TRL ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }] : []"
+        [tags]="
+          getVehicleType() === VehicleTypes.SMALL_TRL
+            ? [{ label: TagTypeLabels.REQUIRED, colour: TagType.RED }]
+            : []
+        "
         [allowNull]="true"
       ></govuk-form-group-select>
     }

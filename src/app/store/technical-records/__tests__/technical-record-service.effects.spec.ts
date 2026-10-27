@@ -31,7 +31,7 @@ import {
 	updateTechRecordSuccess,
 } from '../technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from '../technical-record-service.effects';
-import { editingTechRecord } from '../technical-record-service.selectors';
+import { editingTechRecord, techRecord } from '../technical-record-service.selectors';
 
 describe('TechnicalRecordServiceEffects', () => {
 	let actions$ = new Observable<Action>();
@@ -49,7 +49,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
-				{ provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
+				{ provide: TechnicalRecordService, useValue: { updateEditingTechRecord: vi.fn() } },
 			],
 		});
 		effects = TestBed.inject(TechnicalRecordServiceEffects);
@@ -81,7 +81,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				});
 
 				// mock service call
-				jest.spyOn(httpService, 'createTechRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
+				vi.spyOn(httpService, 'createTechRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
 
 				// expect effect to return success action
 				expectObservable(effects.createVehicleRecord$).toBe('---b', {
@@ -106,7 +106,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				// mock service call
 				const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
 
-				jest.spyOn(httpService, 'createTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'createTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.createVehicleRecord$).toBe('---b', {
 					b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin', vehicleRecord: vehicle }),
@@ -133,9 +133,9 @@ describe('TechnicalRecordServiceEffects', () => {
 				actions$ = hot('-a--', { a: updateTechRecord(technicalRecord) });
 
 				// mock service call
-				jest
-					.spyOn(httpService, 'updateTechRecord')
-					.mockReturnValue(cold('--a|', { a: technicalRecord as unknown as TechRecordType<'get'> }));
+				vi.spyOn(httpService, 'updateTechRecord').mockReturnValue(
+					cold('--a|', { a: technicalRecord as unknown as TechRecordType<'get'> })
+				);
 
 				// expect effect to return success action
 				expectObservable(effects.updateTechRecord$).toBe('---b', {
@@ -154,12 +154,12 @@ describe('TechnicalRecordServiceEffects', () => {
 
 				// mock service call
 				const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-				jest.spyOn(httpService, 'updateTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'updateTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.updateTechRecord$).toBe('---b', {
 					b: updateTechRecordFailure({
 						techRecord: {} as TechRecordType<'put'>,
-						error: 'Unable to update technical record null',
+						error: 'Unable to update technical record with VIN undefined',
 					}),
 				});
 			});
@@ -179,7 +179,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				actions$ = hot('-a--', { a: archiveTechRecord });
 
 				// mock service call
-				jest.spyOn(httpService, 'archiveTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
+				vi.spyOn(httpService, 'archiveTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
 				// expect effect to return success action
 				expectObservable(effects.archiveTechRecord$).toBe('---b', {
@@ -198,7 +198,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
 				// mock service call
 				const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-				jest.spyOn(httpService, 'archiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'archiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.archiveTechRecord$).toBe('---b', {
 					b: archiveTechRecordFailure({
@@ -222,7 +222,7 @@ describe('TechnicalRecordServiceEffects', () => {
 				actions$ = hot('-a--', { a: unarchiveTechRecord });
 
 				// mock service call
-				jest.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
+				vi.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
 				// expect effect to return success action
 				expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
@@ -241,7 +241,7 @@ describe('TechnicalRecordServiceEffects', () => {
 					status: 400,
 					statusText: 'Cannot archive a record with unarchived records',
 				});
-				jest.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
 					b: unarchiveTechRecordFailure({
@@ -258,7 +258,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
 				// mock service call
 				const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Failed to unarchive record' });
-				jest.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(httpService, 'unarchiveTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
 					b: unarchiveTechRecordFailure({
@@ -273,12 +273,12 @@ describe('TechnicalRecordServiceEffects', () => {
 		beforeEach(() => {
 			store = TestBed.inject(MockStore);
 			store.resetSelectors();
-			jest.resetModules();
+			vi.resetModules();
 		});
 
 		// TODO: move test logic into tech-record-summary component once other section templates are removed
 		it('should generate new techRecord based on vehicle type', fakeAsync(() => {
-			const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+			const techRecordServiceSpy = vi.spyOn(technicalRecordService, 'updateEditingTechRecord');
 
 			const oldTechRecord = {
 				vin: 'foo',
@@ -295,6 +295,7 @@ describe('TechnicalRecordServiceEffects', () => {
 			};
 
 			store.overrideSelector(editingTechRecord, oldTechRecord);
+			store.overrideSelector(techRecord, undefined);
 
 			actions$ = of(
 				changeVehicleType({

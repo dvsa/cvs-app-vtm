@@ -43,7 +43,7 @@ describe('GlobalWarningComponent', () => {
 		});
 
 		it('should do nothing if no anchor link is provided', () => {
-			const spy = jest.spyOn(document, 'getElementById');
+			const spy = vi.spyOn(document, 'getElementById');
 			component.goto({ warning: 'navigate', anchorLink: undefined });
 			expect(spy).not.toHaveBeenCalled();
 		});

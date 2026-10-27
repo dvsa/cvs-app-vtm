@@ -1,4 +1,7 @@
-<ng-template [ngTemplateOutlet]="isEditing() ? editCustomDefect : viewCustomDefect" [ngTemplateOutletContext]="{ data: form() }" />
+<ng-template
+  [ngTemplateOutlet]="isEditing() ? editCustomDefect : viewCustomDefect"
+  [ngTemplateOutletContext]="{ data: form() }"
+/>
 
 <ng-template #viewCustomDefect let-data="data">
   <h3 class="govuk-heading-m">Defect {{ index() + 1 }}</h3>
@@ -7,16 +10,25 @@
       @if (templateName() === 'customDefectsSection') {
         <ng-template
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Reference number', data: customDefect?.referenceNumber | defaultNullOrEmpty }"
+          [ngTemplateOutletContext]="{
+            label: 'Reference number',
+            data: customDefect?.referenceNumber | defaultNullOrEmpty,
+          }"
         ></ng-template>
       }
       <ng-template
         [ngTemplateOutlet]="viewDefectRow"
-        [ngTemplateOutletContext]="{ label: 'Defect name', data: customDefect?.defectName | defaultNullOrEmpty }"
+        [ngTemplateOutletContext]="{
+          label: 'Defect name',
+          data: customDefect?.defectName | defaultNullOrEmpty,
+        }"
       ></ng-template>
       <ng-template
         [ngTemplateOutlet]="viewDefectRow"
-        [ngTemplateOutletContext]="{ label: 'Defect notes', data: customDefect?.defectNotes | defaultNullOrEmpty }"
+        [ngTemplateOutletContext]="{
+          label: 'Defect notes',
+          data: customDefect?.defectNotes | defaultNullOrEmpty,
+        }"
       ></ng-template>
     </dl>
   }
@@ -35,7 +47,13 @@
       <h3 class="govuk-heading-m">Defect {{ index() + 1 }}</h3>
     </div>
     <div class="govuk-grid-column-one-third">
-      <app-button id="remove-defect" type="button" design="link" class="float-right" (clicked)="removeCustomDefect.emit(index())">
+      <app-button
+        id="remove-defect"
+        type="button"
+        design="link"
+        class="float-right"
+        (clicked)="removeCustomDefect.emit(index())"
+      >
         Remove defect
       </app-button>
     </div>
@@ -50,7 +68,18 @@
         name="referenceNumber_{{ index() + 1 }}"
       ></app-text-input>
     }
-    <app-text-input formControlName="defectName" label="Defect Name" [width]="30" name="defectName_{{ index() + 1 }}" customId="defectName"></app-text-input>
-    <app-text-area formControlName="defectNotes" label="Defect Notes" name="defectNotes{{ index() + 1 }}"  customId="defectNotes"></app-text-area>
+    <app-text-input
+      formControlName="defectName"
+      label="Defect Name"
+      [width]="30"
+      name="defectName_{{ index() + 1 }}"
+      customId="defectName"
+    ></app-text-input>
+    <app-text-area
+      formControlName="defectNotes"
+      label="Defect Notes"
+      name="defectNotes{{ index() + 1 }}"
+      customId="defectNotes"
+    ></app-text-area>
   </ng-container>
 </ng-template>

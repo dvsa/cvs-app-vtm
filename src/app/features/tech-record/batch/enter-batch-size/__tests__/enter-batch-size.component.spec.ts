@@ -1,7 +1,7 @@
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@/src/app/models/vehicle-tech-record.model';
 import { initialAppState } from '@/src/app/store';
-import { selectBatchDetails, selectVehicleType } from '@/src/app/store/technical-records/batch-create.selectors';
+import { selectBatchDetails, selectBatchVehicleTypeDescriptor } from '@/src/app/store/batch/batch.selectors';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -21,11 +21,11 @@ describe('EnterBatchSizeComponent', () => {
 				provideRouter([
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 			],
@@ -48,19 +48,19 @@ describe('EnterBatchSizeComponent', () => {
 
 	describe('computePageTitle', () => {
 		it('should return the correct title when HGV is selected', () => {
-			store.overrideSelector(selectVehicleType, VehicleTypes.HGV);
+			store.overrideSelector(selectBatchVehicleTypeDescriptor, 'HGV');
 			store.refreshState();
 			expect(component.computePageTitle()).toBe('Enter number of HGVs in this batch');
 		});
 
 		it('should return the correct title when PSV is selected', () => {
-			store.overrideSelector(selectVehicleType, VehicleTypes.PSV);
+			store.overrideSelector(selectBatchVehicleTypeDescriptor, 'PSV');
 			store.refreshState();
 			expect(component.computePageTitle()).toBe('Enter number of PSVs in this batch');
 		});
 
 		it('should return the correct title when trailer is selected', () => {
-			store.overrideSelector(selectVehicleType, VehicleTypes.TRL);
+			store.overrideSelector(selectBatchVehicleTypeDescriptor, 'trailer');
 			store.refreshState();
 			expect(component.computePageTitle()).toBe('Enter number of trailers in this batch');
 		});
@@ -73,6 +73,7 @@ describe('EnterBatchSizeComponent', () => {
 				vehicleStatus: StatusCodes.CURRENT,
 				trlFormType: TrailerFormType.TES1,
 				batchSize: 10,
+				vehicles: [],
 			};
 			store.overrideSelector(selectBatchDetails, savedBatchDetails);
 			store.refreshState();
@@ -83,7 +84,7 @@ describe('EnterBatchSizeComponent', () => {
 
 	describe('handleContinue', () => {
 		it('should navigate the user to the batch identifiers page if the form is valid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				batchSize: 10,
 			});
@@ -92,7 +93,7 @@ describe('EnterBatchSizeComponent', () => {
 		});
 
 		it('should not navigate the user to the batch identifiers page if the form is invalid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				batchSize: null,
 			});
@@ -103,7 +104,7 @@ describe('EnterBatchSizeComponent', () => {
 
 	describe('handleCancel', () => {
 		it('should navigate the user to the cancel batch page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.handleCancel();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 		});

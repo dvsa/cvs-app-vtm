@@ -56,8 +56,8 @@ describe('BrakesComponent', () => {
 				{
 					provide: MultiOptionsService,
 					useValue: {
-						getOptions: jest.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
-						loadOptions: jest.fn(),
+						getOptions: vi.fn().mockImplementation(() => of([{ value: 'brake1', label: 'brake1' }])),
+						loadOptions: vi.fn(),
 					},
 				},
 				{
@@ -99,13 +99,13 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should call loadOptions', () => {
-			const loadOptionsSpy = jest.spyOn(optionsService, 'loadOptions');
+			const loadOptionsSpy = vi.spyOn(optionsService, 'loadOptions');
 			component.ngOnInit();
 			expect(loadOptionsSpy).toHaveBeenCalled();
 		});
 
 		it('should call handleBrakeCodeChange', () => {
-			const handleBrakeCodeChangeSpy = jest.spyOn(component, 'handleBrakeCodeChange');
+			const handleBrakeCodeChangeSpy = vi.spyOn(component, 'handleBrakeCodeChange');
 			component.ngOnInit();
 			expect(handleBrakeCodeChangeSpy).toHaveBeenCalled();
 		});
@@ -171,7 +171,7 @@ describe('BrakesComponent', () => {
 			store
 				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
 				.subscribe((value: ReferenceDataModelBase) => {
-					const spy = jest.spyOn(component.form, 'get');
+					const spy = vi.spyOn(component.form, 'get');
 					fixture.componentRef.setInput('techRecord', mockTRL);
 					component.handleBrakeCodeChange();
 					expect(spy).not.toHaveBeenCalled();
@@ -179,7 +179,7 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const brakesData = {
 				resourceKey: '123',
@@ -197,7 +197,7 @@ describe('BrakesComponent', () => {
 				techRecord_brakes_dataTrBrakeThree: brakesData.parking,
 			};
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			store.setState({
 				...initialAppState,
@@ -219,7 +219,7 @@ describe('BrakesComponent', () => {
 						techRecord_brakes_brakeCodeOriginal: '123',
 					});
 
-					jest.advanceTimersByTime(401);
+					vi.advanceTimersByTime(401);
 
 					expect(dispatchSpy).toHaveBeenNthCalledWith(
 						1,

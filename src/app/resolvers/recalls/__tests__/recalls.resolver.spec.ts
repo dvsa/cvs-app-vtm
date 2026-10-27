@@ -19,7 +19,7 @@ describe('recallsResolver', () => {
 	const vin = '12345678901234567';
 	let actions$: ReplaySubject<Action>;
 	let store: MockStore<State>;
-	const featureToggleService = { shouldUseV2TestResults: jest.fn().mockReturnValue(true) };
+	const featureToggleService = { shouldUseV2TestResults: vi.fn().mockReturnValue(true) };
 
 	beforeEach(() => {
 		actions$ = new ReplaySubject<Action>(1);
@@ -41,7 +41,7 @@ describe('recallsResolver', () => {
 			techRecord_vehicleType: VehicleTypes.HGV,
 		} as never);
 		store.overrideSelector(selectRecallsState, { recalls: undefined, vin: undefined, loading: false });
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
@@ -62,7 +62,7 @@ describe('recallsResolver', () => {
 			techRecord_vehicleType: VehicleTypes.HGV,
 		} as never);
 		store.overrideSelector(selectRecallsState, { recalls, vin, loading: false });
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
@@ -78,7 +78,7 @@ describe('recallsResolver', () => {
 			techRecord_vehicleType: VehicleTypes.HGV,
 		} as never);
 		featureToggleService.shouldUseV2TestResults.mockReturnValue(false);
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)
@@ -93,7 +93,7 @@ describe('recallsResolver', () => {
 			vin,
 			techRecord_vehicleType: VehicleTypes.CAR,
 		} as never);
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		const result = TestBed.runInInjectionContext(() =>
 			recallsResolver(activatedRouteSnapshot, routerStateSnapshot)

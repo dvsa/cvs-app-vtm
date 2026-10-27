@@ -7,8 +7,9 @@ import { TestTypeService } from '@/src/app/services/test-type/test-type.service'
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { testResultInEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -18,7 +19,7 @@ import { Store } from '@ngrx/store';
 	imports: [FormsModule, ReactiveFormsModule, GovukCheckboxGroupComponent, GovukFormGroupTextareaComponent],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AbandonComponent implements OnInit {
+export class AbandonComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	testService = inject(TestService);
 	testTypeService = inject(TestTypeService);
@@ -32,6 +33,17 @@ export class AbandonComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadOptions();
 		this.addValidators();
+	}
+
+	ngOnDestroy(): void {
+		this.removeValidators();
+	}
+
+	getAbandonNotesLabel(): string {
+		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+			return 'Additional notes as to why this test was abandoned';
+		}
+		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
 	getAbandonReasonsList(): MultiOptions {
@@ -57,5 +69,16 @@ export class AbandonComponent implements OnInit {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.maxLength(500, 'Additional notes as to why this test was abandoned (optional)'),
 		]);
+	}
+
+	removeValidators(): void {
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+		for (const control of [
+			testTypeGroup.controls.reasonForAbandoning,
+			testTypeGroup.controls.additionalCommentsForAbandon,
+		]) {
+			control.clearValidators();
+			control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+		}
 	}
 }

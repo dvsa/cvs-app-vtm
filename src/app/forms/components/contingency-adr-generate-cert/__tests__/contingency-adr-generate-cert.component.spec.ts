@@ -102,7 +102,7 @@ describe('AdrGenerateCertTestComponent', () => {
 			techRecordService.techRecord$ = of(mockRecord);
 		});
 		it('should dispatch the correct action with correct params', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
 			component.handleSubmit();
 

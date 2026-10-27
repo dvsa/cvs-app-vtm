@@ -114,20 +114,34 @@ describe('Reference Data Selectors', () => {
 	});
 
 	it('should return true if any feature is loading state', () => {
-		const state: ReferenceDataState = { ...initialReferenceDataState };
-		state.HGV_MAKE.loading = true;
+		const state: ReferenceDataState = {
+			...initialReferenceDataState,
+			HGV_MAKE: { ...initialReferenceDataState.HGV_MAKE, loading: true },
+		};
 		const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
 		expect(selectedState).toBe(true);
+		expect(initialReferenceDataState.HGV_MAKE.loading).toBe(false);
+		expect(referenceDataSelectors.referenceDataLoadingState.projector(initialReferenceDataState)).toBe(false);
 	});
 
 	it('should return the reasons for abandoning for the right vehicle type', () => {
-		const selectorSpy = jest.spyOn(referenceDataSelectors, 'selectAllReferenceDataByResourceType');
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningPsv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+		const cases = [
+			[VehicleTypes.PSV, ReferenceDataResourceType.ReasonsForAbandoningPsv],
+			[VehicleTypes.HGV, ReferenceDataResourceType.ReasonsForAbandoningHgv],
+			[VehicleTypes.TRL, ReferenceDataResourceType.ReasonsForAbandoningTrl],
+		] as const;
+
+		for (const [vehicleType, resourceType] of cases) {
+			const reason = { resourceKey: vehicleType, resourceType };
+			const resourceState = {
+				...initialReferenceDataState[resourceType],
+				ids: [reason.resourceKey],
+				entities: { [reason.resourceKey]: reason },
+			};
+			const selector = referenceDataSelectors.selectReasonsForAbandoning(vehicleType);
+
+			expect(selector.projector(resourceState)).toEqual([reason]);
+		}
 	});
 
 	describe('selectRefDataBySearchTerm', () => {

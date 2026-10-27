@@ -1,10 +1,15 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
   @if (hint()) {
-    <div id="{{ customId() ?? name() }}-hint" class="govuk-hint">{{ hint() }}</div>
+    <div id="{{ customId() ?? name() }}-hint" class="govuk-hint">
+      {{ hint() }}
+    </div>
   }
 
   @if (error) {
-    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
+    <app-field-error-message
+      [error]="error"
+      [name]="name()"
+    ></app-field-error-message>
   }
 
   <div class="govuk-checkboxes__item">
@@ -24,9 +29,13 @@
       (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
-      />
+    />
 
-    <label class="govuk-label govuk-checkboxes__label" [for]="customId() ?? name()">{{ label() }}</label>
+    <label
+      class="govuk-label govuk-checkboxes__label"
+      [for]="customId() ?? name()"
+      >{{ label() }}</label
+    >
 
     @if (suffix(); as suffix) {
       <div class="govuk-input__suffix" aria-hidden="true">

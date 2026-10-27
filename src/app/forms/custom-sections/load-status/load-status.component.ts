@@ -1,10 +1,10 @@
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
+import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, OnDestroy, OnInit, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
-import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -37,6 +37,7 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 	store = inject(Store);
 	fb = inject(FormBuilder);
 	commonValidators = inject(CommonValidatorsService);
+	loadStatusService = inject(LoadStatusService);
 
 	edit = input(false);
 	isContingencyTest = input(true);
@@ -105,7 +106,7 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 
 	constructor() {
 		effect(() => {
-			// Re-compute load status applicability when test type changes in case applicable defects are added
+			// Re-compute load status applicability when the test type, or the vehicle's test history, changes
 			this.loadStatusApplicable = this.isLoadStatusApplicable();
 		});
 	}
@@ -134,23 +135,7 @@ export class LoadStatusComponent implements OnInit, OnDestroy {
 	}
 
 	isLoadStatusApplicable(): boolean {
-		const testType = this.data()?.testTypes?.[0];
-		if (!testType) return false;
-
-		// Applicable for HGV/TRL annual tests, or full prohibition tests
-		const loadStatusTestIds = ['94', '40', '70', '107'];
-		if (loadStatusTestIds.includes(testType.testTypeId)) return true;
-
-		// Also applicable for HGV/TRL annual test retests
-		const loadStatusRetestIds = ['53', '98'];
-		if (!loadStatusRetestIds.includes(testType.testTypeId)) return false;
-
-		if (testType.testResult !== TestResults.FAIL) return false;
-		if (!Array.isArray(testType.defects)) return false;
-
-		return testType.defects.some((defect) => {
-			return [59, 71, 72, 73].includes(defect.imNumber);
-		});
+		return this.loadStatusService.isLoadStatusApplicable(this.data());
 	}
 
 	isUnladenSelected(): boolean {

@@ -6,9 +6,10 @@ import { RadioComponent } from '@/src/app/forms/components/govuk-form-group-radi
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { BatchRoutes, RootRoutes } from '@/src/app/models/routes.enum';
-import { setBatchDetails } from '@/src/app/store/technical-records/batch-create.actions';
-import { selectBatchDetails } from '@/src/app/store/technical-records/batch-create.selectors';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { updateBatch } from '@/src/app/store/batch/batch.actions';
+import { selectBatchDetails } from '@/src/app/store/batch/batch.selectors';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -36,6 +37,8 @@ export class EnterBatchDetailsComponent implements OnInit {
 	readonly validators = inject(CommonValidatorsService);
 	readonly errorService = inject(GlobalErrorService);
 
+	readonly queryParamMap = toSignal(this.activatedRoute.queryParamMap);
+	readonly redirectUrl = computed(() => this.queryParamMap()?.get('redirectUrl'));
 	readonly savedBatchDetails = this.store.selectSignal(selectBatchDetails);
 
 	readonly form = this.fb.group({
@@ -116,13 +119,21 @@ export class EnterBatchDetailsComponent implements OnInit {
 		if (errors.length === 0) {
 			const value = this.form.getRawValue();
 			this.store.dispatch(
-				setBatchDetails({
-					vehicleType: value.vehicleType as VehicleTypes,
-					vehicleStatus: value.vehicleStatus as StatusCodes,
-					trlFormType: value.trlFormType as TrailerFormType,
+				updateBatch({
+					changes: {
+						vehicleType: value.vehicleType as VehicleTypes,
+						vehicleStatus: value.vehicleStatus as StatusCodes,
+						trlFormType: value.trlFormType as TrailerFormType,
+					},
 				})
 			);
-			this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
+
+			const redirectUrl = this.redirectUrl();
+			if (redirectUrl) {
+				return void this.router.navigate([redirectUrl]);
+			}
+
+			return void this.router.navigate([RootRoutes.BATCH, BatchRoutes.ENTER_BATCH_SIZE]);
 		}
 	}
 

@@ -16,7 +16,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { map, take } from 'rxjs';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {

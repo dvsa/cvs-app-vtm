@@ -1,7 +1,10 @@
 @if (defects().length) {
   <h1 class="govuk-heading-l">Select a defect</h1>
   <div class="govuk-form-group defect-search">
-    <label class="govuk-label govuk-!-font-weight-bold" for="defect-search-input">
+    <label
+      class="govuk-label govuk-!-font-weight-bold"
+      for="defect-search-input"
+    >
       Search for a defect category or IM number
     </label>
     <div class="defect-search__row">
@@ -14,7 +17,7 @@
         [(ngModel)]="searchFilter"
         (ngModelChange)="onSearchInput()"
         (keyup.enter)="search()"
-        />
+      />
       <app-button
         class="search-button"
         [id]="'defect-search-button'"
@@ -39,15 +42,29 @@
             [attr.data-testid]="defect.imDescription"
             [attr.aria-expanded]="hasChildren ? defectOpen : null"
             (click)="toggleDefect(defect)"
-            >
+          >
             @if (hasChildren) {
-              <span class="defect-tree__chevron" [class.defect-tree__chevron--open]="defectOpen" aria-hidden="true"></span>
+              <span
+                class="defect-tree__chevron"
+                [class.defect-tree__chevron--open]="defectOpen"
+                aria-hidden="true"
+              ></span>
             }
-            <span class="defect-tree__label" [innerHTML]="defect.imNumber + '. ' + defect.imDescription | highlight: searchTerm"></span>
+            <span
+              class="defect-tree__label"
+              [innerHTML]="
+                defect.imNumber + '. ' + defect.imDescription
+                  | highlight: searchTerm
+              "
+            ></span>
           </button>
           @if (hasChildren && defectOpen) {
             <ul class="defect-tree__children">
-              @for (item of sortDefectItems(defect.items); track item; let j = $index) {
+              @for (
+                item of sortDefectItems(defect.items);
+                track item;
+                let j = $index
+              ) {
                 @let itemOpen = isSearching || isItemOpen(defect, item);
                 <li class="defect-tree__node defect-tree__node--item">
                   <button
@@ -57,26 +74,61 @@
                     [attr.data-testid]="item.itemDescription"
                     [attr.aria-expanded]="itemOpen"
                     (click)="toggleItem(defect, item)"
-                    >
-                    <span class="defect-tree__chevron" [class.defect-tree__chevron--open]="itemOpen" aria-hidden="true"></span>
-                    <span class="defect-tree__label" [innerHTML]="defect.imNumber + '.' + item.itemNumber + ' ' + item.itemDescription | highlight: searchTerm"></span>
+                  >
+                    <span
+                      class="defect-tree__chevron"
+                      [class.defect-tree__chevron--open]="itemOpen"
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      class="defect-tree__label"
+                      [innerHTML]="
+                        defect.imNumber +
+                          '.' +
+                          item.itemNumber +
+                          ' ' +
+                          item.itemDescription | highlight: searchTerm
+                      "
+                    ></span>
                   </button>
                   @if (itemOpen) {
-                    <ul class="defect-tree__children defect-tree__children--leaves">
-                      @for (deficiency of sortDeficiencyItems(item.deficiencies || []); track deficiency) {
+                    <ul
+                      class="defect-tree__children defect-tree__children--leaves"
+                    >
+                      @for (
+                        deficiency of sortDeficiencyItems(
+                          item.deficiencies || []
+                        );
+                        track deficiency
+                      ) {
                         <li class="defect-tree__leaf">
                           <a
                             href="javascript:void(0)"
                             class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold"
-                            [id]="'selectedDefect-' + getDeficiencyId(deficiency)"
+                            [id]="
+                              'selectedDefect-' + getDeficiencyId(deficiency)
+                            "
                             [attr.data-testid]="getDeficiencyId(deficiency)"
                             (click)="selectDeficiency(deficiency)"
-                            [innerHTML]="deficiencyRefLabel(defect, item, deficiency) | highlight: searchTerm"
-                            ></a>
+                            [innerHTML]="
+                              deficiencyRefLabel(defect, item, deficiency)
+                                | highlight: searchTerm
+                            "
+                          ></a>
                           <span class="govuk-!-margin-left-3">
-                            <app-tag [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+                            <app-tag
+                              [type]="
+                                categoryColor(deficiency.deficiencyCategory)
+                              "
+                              >{{ deficiency.deficiencyCategory }}</app-tag
+                            >
                           </span>
-                          <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2" [innerHTML]="deficiency.deficiencyText | highlight: searchTerm"></p>
+                          <p
+                            class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2"
+                            [innerHTML]="
+                              deficiency.deficiencyText | highlight: searchTerm
+                            "
+                          ></p>
                         </li>
                       }
                       @if (!isSearching) {
@@ -85,15 +137,23 @@
                             href="javascript:void(0)"
                             class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold"
                             id="selected-defect-advisory"
-                            [attr.data-testid]="defect.imNumber + '.' + item.itemNumber"
+                            [attr.data-testid]="
+                              defect.imNumber + '.' + item.itemNumber
+                            "
                             (click)="selectAdvisory(defect, item)"
-                            >
+                          >
                             {{ defect.imNumber }}.{{ item.itemNumber }}
                           </a>
                           <span class="govuk-!-margin-left-3">
-                            <app-tag [type]="categoryColor('advisory')">advisory</app-tag>
+                            <app-tag [type]="categoryColor('advisory')"
+                              >advisory</app-tag
+                            >
                           </span>
-                          <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2">Advisory defect.</p>
+                          <p
+                            class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2"
+                          >
+                            Advisory defect.
+                          </p>
                         </li>
                       }
                     </ul>
@@ -106,10 +166,14 @@
       }
     </ul>
   } @else {
-    <p class="govuk-body" id="no-defect-search-results">No defects match “{{ searchTerm }}”.</p>
+    <p class="govuk-body" id="no-defect-search-results">
+      No defects match “{{ searchTerm }}”.
+    </p>
   }
 } @else {
   <h1 class="govuk-heading-l">No defects found</h1>
-  <p class="govuk-body">No defects were found. Check the information on the technical record is correct, or try to refresh the page.</p>
+  <p class="govuk-body">
+    No defects were found. Check the information on the technical record is
+    correct, or try to refresh the page.
+  </p>
 }
-
