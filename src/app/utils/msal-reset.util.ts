@@ -4,11 +4,7 @@ export function resetMsalState(): void {
 		// Clear MSAL's interaction state from localStorage
 		const keys = Object.keys(localStorage);
 		keys.forEach((key) => {
-			if (
-				key.includes('interaction') ||
-				key.includes('msal') ||
-				key.includes('AuthenticationRequest')
-			) {
+			if (key.includes('interaction') || key.includes('msal') || key.includes('AuthenticationRequest')) {
 				localStorage.removeItem(key);
 			}
 		});

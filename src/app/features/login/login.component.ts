@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalBroadcastService } from '@azure/msal-angular';
 import { AuthService } from '@services/auth/auth.service';
-import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-login',
