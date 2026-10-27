@@ -44,12 +44,15 @@ describe('TestRecordsService', () => {
 
 	describe('API', () => {
 		describe('fetchTestResultbyServiceId', () => {
-			it('should throw error when systemNumber is empty', (done) => {
-				service.fetchTestResultbySystemNumber('').subscribe({
-					error: (e) => {
-						expect(e.message).toBe('systemNumber is required');
-						done();
-					},
+			it('should throw error when systemNumber is empty', async () => {
+				await new Promise<void>((resolve) => {
+					const done = resolve;
+					service.fetchTestResultbySystemNumber('').subscribe({
+						error: (e) => {
+							expect(e.message).toBe('systemNumber is required');
+							done();
+						},
+					});
 				});
 			});
 
@@ -95,7 +98,7 @@ describe('TestRecordsService', () => {
 
 	describe('TestRecordsService.prototype.loadTestResults.name', () => {
 		it('should dispatch fetchTestResults action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.loadTestResults();
 			expect(dispatchSpy).toHaveBeenCalledWith(fetchTestResults());
 		});
@@ -103,7 +106,7 @@ describe('TestRecordsService', () => {
 
 	describe('TestRecordsService.prototype.loadTestResultBySystemNumber.name', () => {
 		it('should dispatch fetchTestResultsBySystemNumber action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const systemNumber = 'SYS0001';
 			service.loadTestResultBySystemNumber(systemNumber);
 			expect(dispatchSpy).toHaveBeenCalledWith(fetchTestResultsBySystemNumber({ systemNumber }));
@@ -112,7 +115,7 @@ describe('TestRecordsService', () => {
 
 	describe('TestRecordsService.prototype.updateTestResult.name', () => {
 		it('should dispatch updateTestResultState action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.updateTestResult({} as TestResultSchema);
 			expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultSchema }));
 		});
@@ -120,7 +123,7 @@ describe('TestRecordsService', () => {
 
 	describe('TestRecordsService.prototype.createTestResult.name', () => {
 		it('should dispatch createTestResult action', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.createTestResult({} as TestResultSchema);
 			expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultSchema }));
 		});
@@ -141,44 +144,56 @@ describe('TestRecordsService', () => {
 			store.resetSelectors();
 		});
 
-		it('should return true if the test type id is in a valid test type group and the test type group is in the master template', (done) => {
-			store.overrideSelector(toEditOrNotToEdit, {
-				vehicleType: 'psv',
-				testTypes: [{ testTypeId: '1' }],
-			} as TestResultSchema);
-			service.isTestTypeGroupEditable$.subscribe((isValid) => {
-				expect(isValid).toBe(true);
-				done();
+		it('should return true if the test type id is in a valid test type group and the test type group is in the master template', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(toEditOrNotToEdit, {
+					vehicleType: 'psv',
+					testTypes: [{ testTypeId: '1' }],
+				} as TestResultSchema);
+				service.isTestTypeGroupEditable$.subscribe((isValid) => {
+					expect(isValid).toBe(true);
+					done();
+				});
 			});
 		});
 
-		it('should return false if the test type id is not in a test type gorup', (done) => {
-			store.overrideSelector(toEditOrNotToEdit, {
-				vehicleType: 'psv',
-				testTypes: [{ testTypeId: 'foo' }],
-			} as TestResultSchema);
-			service.isTestTypeGroupEditable$.subscribe((isValid) => {
-				expect(isValid).toBe(false);
-				done();
+		it('should return false if the test type id is not in a test type gorup', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(toEditOrNotToEdit, {
+					vehicleType: 'psv',
+					testTypes: [{ testTypeId: 'foo' }],
+				} as TestResultSchema);
+				service.isTestTypeGroupEditable$.subscribe((isValid) => {
+					expect(isValid).toBe(false);
+					done();
+				});
 			});
 		});
 
-		it('should return false if the test type group is not in the master template', (done) => {
-			store.overrideSelector(toEditOrNotToEdit, {
-				vehicleType: 'psv',
-				testTypes: [{ testTypeId: 'foo' }],
-			} as TestResultSchema);
-			service.isTestTypeGroupEditable$.subscribe((isValid) => {
-				expect(isValid).toBe(false);
-				done();
+		it('should return false if the test type group is not in the master template', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(toEditOrNotToEdit, {
+					vehicleType: 'psv',
+					testTypes: [{ testTypeId: 'foo' }],
+				} as TestResultSchema);
+				service.isTestTypeGroupEditable$.subscribe((isValid) => {
+					expect(isValid).toBe(false);
+					done();
+				});
 			});
 		});
 
-		it('should return false if the testResult is undefined', (done) => {
-			store.overrideSelector(toEditOrNotToEdit, undefined);
-			service.isTestTypeGroupEditable$.subscribe((isValid) => {
-				expect(isValid).toBe(false);
-				done();
+		it('should return false if the testResult is undefined', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(toEditOrNotToEdit, undefined);
+				service.isTestTypeGroupEditable$.subscribe((isValid) => {
+					expect(isValid).toBe(false);
+					done();
+				});
 			});
 		});
 	});

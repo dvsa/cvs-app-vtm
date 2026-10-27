@@ -20,14 +20,14 @@ describe('GlobalWarningService', () => {
 
 	it('should dispatch action setWarnings', () => {
 		const expectedWarning: GlobalWarning = { warning: 'warn 2', anchorLink: '' };
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.setWarnings([expectedWarning]);
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(setWarnings({ warnings: [expectedWarning] }));
 	});
 
 	it('should dispatch action clearError', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.clearWarnings();
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(clearWarning());

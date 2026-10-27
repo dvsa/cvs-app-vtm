@@ -17,9 +17,11 @@ export const getRequiredStandardsState = createSelector(
 
 export const getRequiredStandardFromTypeAndRef = (inspectionType: InspectionType, rsRefCalculation: string) =>
 	createSelector(getRequiredStandardsState, (state) => {
+		if (!rsRefCalculation) return undefined;
+
 		const deRefRsCalculation = rsRefCalculation.split('.');
 		const sectionNumber = deRefRsCalculation[0];
-		const section = state[inspectionType].find((sec) => sec.sectionNumber === sectionNumber);
+		const section = state[inspectionType]?.find((sec) => sec.sectionNumber === sectionNumber);
 		const requiredStandard = section?.requiredStandards.find((rs) => rs.refCalculation === rsRefCalculation);
 
 		if (requiredStandard && section) {

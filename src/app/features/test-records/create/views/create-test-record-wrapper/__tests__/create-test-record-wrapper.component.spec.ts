@@ -16,7 +16,7 @@ class TestRecordV1StubComponent {}
 
 describe('CreateTestRecordWrapperComponent', () => {
 	let fixture: ComponentFixture<CreateTestRecordWrapperComponent>;
-	const featureToggleService = { shouldUseV2TestResults: jest.fn().mockReturnValue(true) };
+	const featureToggleService = { shouldUseV2TestResults: vi.fn().mockReturnValue(true) };
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({

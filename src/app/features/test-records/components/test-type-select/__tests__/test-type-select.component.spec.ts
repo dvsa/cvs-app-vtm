@@ -54,13 +54,16 @@ describe('TestTypeSelectComponent', () => {
 	});
 
 	describe('TestTypeSelectComponent.prototype.handleCategory.name', () => {
-		it('should emit selected testType through testTypeSelected', (done) => {
-			component.testTypeSelected.subscribe((val) => {
-				expect(val.id).toBe('1');
-				done();
+		it('should emit selected testType through testTypeSelected', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				component.testTypeSelected.subscribe((val) => {
+					expect(val.id).toBe('1');
+					done();
+				});
+				component.categories = new Array(3).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
+				component.handleCategory(createMockTestTypeCategory({ id: '1' }), 0);
 			});
-			component.categories = new Array(3).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
-			component.handleCategory(createMockTestTypeCategory({ id: '1' }), 0);
 		});
 
 		it('should push a new category into categories', () => {

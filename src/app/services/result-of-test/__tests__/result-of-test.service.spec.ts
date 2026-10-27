@@ -22,16 +22,19 @@ describe('ResultOfTestService', () => {
 	});
 
 	it('should dispatch the action to update the result of the test', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.updateResultOfTest();
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 	});
 
-	it('should get the result from the selector', (done) => {
-		store.overrideSelector(resultOfTestSelector, TestResults.PASS);
-		service.resultOfTest.subscribe((result) => {
-			expect(result).toBe(TestResults.PASS);
-			done();
+	it('should get the result from the selector', async () => {
+		await new Promise<void>((resolve) => {
+			const done = resolve;
+			store.overrideSelector(resultOfTestSelector, TestResults.PASS);
+			service.resultOfTest.subscribe((result) => {
+				expect(result).toBe(TestResults.PASS);
+				done();
+			});
 		});
 	});
 });

@@ -10,22 +10,22 @@ describe('DefectMediaDownloadComponent', () => {
 	let component: DefectMediaDownloadComponent;
 	let fixture: ComponentFixture<DefectMediaDownloadComponent>;
 	let defectMediaService: {
-		openDocumentFromZip: jest.Mock;
-		handleError: jest.Mock;
-		hasRententionPeriodExpired: jest.Mock;
-		formatMediaFailureReason: jest.Mock;
-		canDownloadMediaItems: jest.Mock;
+		openDocumentFromZip: Mock;
+		handleError: Mock;
+		hasRententionPeriodExpired: Mock;
+		formatMediaFailureReason: Mock;
+		canDownloadMediaItems: Mock;
 	};
 
 	beforeEach(async () => {
 		defectMediaService = {
-			openDocumentFromZip: jest.fn(),
-			handleError: jest.fn(),
-			hasRententionPeriodExpired: jest.fn(),
-			formatMediaFailureReason: jest.fn(
+			openDocumentFromZip: vi.fn(),
+			handleError: vi.fn(),
+			hasRententionPeriodExpired: vi.fn(),
+			formatMediaFailureReason: vi.fn(
 				(reason?: string) => reason ?? 'Reason for failure to capture media not available'
 			),
-			canDownloadMediaItems: jest.fn(),
+			canDownloadMediaItems: vi.fn(),
 		};
 
 		await TestBed.configureTestingModule({

@@ -24,7 +24,7 @@ Prerequisites:
 
 The test coverage requirement for this project is 80% and automation tests can be found in a java project named `cvs-vtm-auto`
 
-The framework used is Jest.
+The framework used is Vitest.
 
 To run the test coverage run `npm run test`
 

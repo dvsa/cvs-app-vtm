@@ -1,3 +1,4 @@
+import { InjectionToken } from '@angular/core';
 import { TEST_TYPES } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
@@ -754,3 +755,8 @@ export const masterTpl: Record<
 		},
 	},
 };
+
+export const MASTER_TEST_TEMPLATE = new InjectionToken<typeof masterTpl>('Master test template', {
+	providedIn: 'root',
+	factory: () => masterTpl,
+});

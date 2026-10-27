@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +46,7 @@ describe('DateComponent', () => {
 	});
 
 	it('should add validators', () => {
-		const addValidatorsSpy = jest.spyOn(dateComponent, 'addValidators');
+		const addValidatorsSpy = vi.spyOn(dateComponent, 'addValidators');
 		fixture.detectChanges();
 
 		expect(addValidatorsSpy).toHaveBeenCalledTimes(1);
@@ -74,7 +73,7 @@ describe('DateComponent', () => {
 				displayTime = false
 			) => {
 				dateComponent.originalDate = '2022-01-01T01:06:00.000';
-				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				vi.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
 
 				fixture.detectChanges();
 
@@ -112,8 +111,8 @@ describe('DateComponent', () => {
 				displayTime = false
 			) => {
 				dateComponent.originalDate = '2022-01-01T01:06:00.000';
-				jest.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
-				jest.spyOn(dateComponent, 'isoDate').mockReturnValue(false);
+				vi.spyOn(dateComponent, 'displayTime').mockReturnValue(displayTime);
+				vi.spyOn(dateComponent, 'isoDate').mockReturnValue(false);
 
 				fixture.detectChanges();
 
@@ -201,7 +200,7 @@ describe('DateComponent', () => {
 			['GMT', '2025-02-09T13:45:00.000Z'],
 			['BST', '2025-07-09T13:45:00.000Z'],
 		])('should show local time and write it back unchanged for a date and time field (%s)', (_, value) => {
-			jest.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
+			vi.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
 			component.form.get('foo')?.setValue(value);
 			fixture.detectChanges();
 
@@ -213,7 +212,7 @@ describe('DateComponent', () => {
 		});
 
 		it('should convert an entered local date and time to UTC', () => {
-			jest.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
+			vi.spyOn(dateComponent, 'displayTime').mockReturnValue(true);
 			fixture.detectChanges();
 
 			dateComponent.onDayChange(9);

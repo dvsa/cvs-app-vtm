@@ -71,8 +71,8 @@ describe('VehicleSectionEditComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
-			const handleUpdateVehicleConfiguration = jest.spyOn(component, 'handleUpdateVehicleConfiguration');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const handleUpdateVehicleConfiguration = vi.spyOn(component, 'handleUpdateVehicleConfiguration');
 			component.ngOnInit();
 			expect(parentFormSpy).toHaveBeenCalled();
 			expect(handleUpdateVehicleConfiguration).toHaveBeenCalled();
@@ -81,13 +81,13 @@ describe('VehicleSectionEditComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
+			const spy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -96,7 +96,7 @@ describe('VehicleSectionEditComponent', () => {
 	describe('getVehicleType', () => {
 		it('should return the vehicle type', () => {
 			const mockTechRecord = { techRecord_vehicleType: VehicleTypes.HGV } as V3TechRecordModel;
-			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
 		});
@@ -106,7 +106,7 @@ describe('VehicleSectionEditComponent', () => {
 				techRecord_vehicleType: VehicleTypes.TRL,
 				techRecord_euVehicleCategory: EUVehicleCategory.O1,
 			} as V3TechRecordModel;
-			jest.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component.technicalRecordService, 'getVehicleTypeWithSmallTrl').mockReturnValue(VehicleTypes.HGV);
 			componentRef.setInput('techRecord', mockTechRecord);
 			expect(component.getVehicleType()).toBe(VehicleTypes.HGV);
 		});
@@ -138,24 +138,24 @@ describe('VehicleSectionEditComponent', () => {
 
 	describe('get shouldShowSubclass', () => {
 		it('should return true if vehicle is either small trl/lgv/car', () => {
-			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.LGV);
+			vi.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.LGV);
 			expect(component.shouldShowSubclass).toBe(true);
 		});
 
 		it('should return false if vehicle is not either small trl/lgv/car', () => {
-			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.HGV);
 			expect(component.shouldShowSubclass).toBe(false);
 		});
 	});
 
 	describe('get shouldShowClass', () => {
 		it('should return true if vehicle is either small trl/hgv/trl/motorcycle', () => {
-			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.HGV);
+			vi.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.HGV);
 			expect(component.shouldShowClass).toBe(true);
 		});
 
 		it('should return false if vehicle is not either small trl/hgv/trl/motorcycle', () => {
-			jest.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.LGV);
+			vi.spyOn(component, 'getVehicleType').mockReturnValue(VehicleTypes.LGV);
 			expect(component.shouldShowClass).toBe(false);
 		});
 	});
@@ -206,7 +206,7 @@ describe('VehicleSectionEditComponent', () => {
 
 	describe('handleUpdateVehicleConfiguration', () => {
 		it('should dispatch the updateVehicleConfiguration action after an option is selected', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);
 			component.handleUpdateVehicleConfiguration();

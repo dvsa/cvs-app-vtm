@@ -43,7 +43,7 @@ describe('RequiredStandardComponent', () => {
 		resultService = TestBed.inject(ResultOfTestService);
 		dfs = TestBed.inject(DynamicFormService);
 		component = fixture.componentInstance;
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should create', () => {
@@ -54,7 +54,7 @@ describe('RequiredStandardComponent', () => {
 		it('should init and navigate back if no test result', () => {
 			component.isEditing = true;
 			store.overrideSelector(testResultInEdit, undefined);
-			const spy = jest.spyOn(component, 'navigateBack');
+			const spy = vi.spyOn(component, 'navigateBack');
 
 			component.ngOnInit();
 
@@ -100,7 +100,7 @@ describe('RequiredStandardComponent', () => {
 			});
 
 			store.overrideSelector(getRequiredStandardFromTypeAndRef('basic', '1.1'), undefined);
-			const spy = jest.spyOn(component, 'navigateBack');
+			const spy = vi.spyOn(component, 'navigateBack');
 
 			component.ngOnInit();
 
@@ -110,9 +110,9 @@ describe('RequiredStandardComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should navigate back two levels if in amend mode', () => {
-			jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
+			vi.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
 			component.amendingRs = true;
-			const spy = jest.spyOn(router, 'navigate');
+			const spy = vi.spyOn(router, 'navigate');
 
 			component.navigateBack();
 
@@ -120,9 +120,9 @@ describe('RequiredStandardComponent', () => {
 		});
 
 		it('should navigate back three levels if not in amend mode', () => {
-			jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
+			vi.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
 			component.amendingRs = false;
-			const spy = jest.spyOn(router, 'navigate');
+			const spy = vi.spyOn(router, 'navigate');
 
 			component.navigateBack();
 
@@ -159,7 +159,7 @@ describe('RequiredStandardComponent', () => {
 			) as CustomFormGroup;
 		});
 		it('should return if the form is invalid', () => {
-			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			vi.spyOn(DynamicFormService, 'validate').mockImplementation();
 			component.form.controls['prs'].setErrors({ incorrect: true });
 
 			const res = component.handleSubmit();
@@ -168,9 +168,9 @@ describe('RequiredStandardComponent', () => {
 		});
 
 		it('should call update RS if in amend mode', () => {
-			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			vi.spyOn(DynamicFormService, 'validate').mockImplementation();
 			component.index = 1;
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 
@@ -180,8 +180,8 @@ describe('RequiredStandardComponent', () => {
 		});
 
 		it('should call create RS if not in amend mode', () => {
-			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			vi.spyOn(DynamicFormService, 'validate').mockImplementation();
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 

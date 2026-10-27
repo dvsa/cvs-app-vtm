@@ -1,3 +1,3 @@
 export const AxlesServiceMock = {
-	lockAxles$: jest.fn(),
+	lockAxles$: vi.fn(),
 };

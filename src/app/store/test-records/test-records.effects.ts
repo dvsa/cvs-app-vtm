@@ -5,7 +5,7 @@ import { TestResultSchema, TestStationTypes } from '@dvsa/cvs-type-definitions/t
 import { EUVehicleCategory as EUVehicleCategoryCAR } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryLGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { masterTpl } from '@forms/templates/test-records/master.template';
+import { MASTER_TEST_TEMPLATE } from '@forms/templates/test-records/master.template';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { TEST_TYPES } from '@models/testTypeId.enum';
@@ -73,6 +73,7 @@ export class TestResultsEffects {
 	private testService = inject(TestService);
 	private dtoLayer = inject(DTOLayer);
 	private featureToggleService = inject(FeatureToggleService);
+	private masterTpl = inject(MASTER_TEST_TEMPLATE);
 
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
@@ -226,7 +227,7 @@ export class TestResultsEffects {
 
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				const { vehicleType } = selectedTestResult!;
-				if (!vehicleType || !Object.prototype.hasOwnProperty.call(masterTpl, vehicleType)) {
+				if (!vehicleType || !Object.prototype.hasOwnProperty.call(this.masterTpl, vehicleType)) {
 					return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
 				}
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
@@ -234,7 +235,7 @@ export class TestResultsEffects {
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
-				const vehicleTpl = masterTpl[`${vehicleType}`];
+				const vehicleTpl = this.masterTpl[`${vehicleType}`];
 				const testTypeGroupString =
 					isOldIVAorMSVAtest && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 

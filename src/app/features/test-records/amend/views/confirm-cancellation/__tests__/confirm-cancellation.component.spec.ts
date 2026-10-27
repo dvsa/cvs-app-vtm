@@ -6,10 +6,12 @@ import { provideRouter } from '@angular/router';
 
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 
+import { mockTestResult } from '@mocks/mock-test-result';
 import { initialAppState } from '@store/index';
+import { selectedTestResultState } from '@store/test-records';
 import { ReplaySubject, of } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { ConfirmCancellationComponent } from '../confirm-cancellation.component';
@@ -17,6 +19,7 @@ import { ConfirmCancellationComponent } from '../confirm-cancellation.component'
 describe('ConfirmCancellationComponent', () => {
 	let component: ConfirmCancellationComponent;
 	let fixture: ComponentFixture<ConfirmCancellationComponent>;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -39,6 +42,8 @@ describe('ConfirmCancellationComponent', () => {
 	});
 
 	beforeEach(() => {
+		store = TestBed.inject(MockStore);
+		store.overrideSelector(selectedTestResultState, mockTestResult());
 		fixture = TestBed.createComponent(ConfirmCancellationComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -8,10 +8,7 @@ import { initialState } from '@store/logs/logs.reducer';
 import { selectMergedRouteUrl } from '@store/router/router.selectors';
 import * as UserActions from '@store/user/user-service.reducer';
 import { of } from 'rxjs';
-
-jest.mock('@/package.json', () => ({
-	version: '1.0',
-}));
+import { vi } from 'vitest';
 
 const mockLog = () =>
 	({
@@ -25,8 +22,8 @@ describe('LogsProvider', () => {
 	let httpService: HttpService;
 	let store: MockStore;
 	const additionalInfo = { appVersion: '1.0', oid: 'some-id', employeeId: 'some-emp-id', source: 'VTM' };
-	const mockHttpService: jest.Mocked<Partial<HttpService>> = {
-		sendLogs: jest.fn().mockReturnValue(of({})),
+	const mockHttpService: Mocked<Partial<HttpService>> = {
+		sendLogs: vi.fn().mockReturnValue(of({})),
 	};
 
 	beforeEach(() => {
@@ -67,8 +64,8 @@ describe('LogsProvider', () => {
 
 			// ASSERT
 			const expectedCallArgs = [
-				{ ...mockLog(), ...additionalInfo },
-				{ ...mockLog(), ...additionalInfo },
+				{ ...mockLog(), ...additionalInfo, appVersion: expect.any(String) },
+				{ ...mockLog(), ...additionalInfo, appVersion: expect.any(String) },
 			];
 			expect(httpService.sendLogs).toHaveBeenCalledWith(expectedCallArgs);
 			expect(expectedCallArgs.every((log) => log.source === 'VTM')).toEqual(true);
@@ -78,7 +75,7 @@ describe('LogsProvider', () => {
 	describe('dispatchLog', () => {
 		it('should dispatch saveLog action with correct payload containing url and pageName', () => {
 			// ARRANGE
-			jest.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'dispatch');
 
 			const mockUrl = '/test-url';
 

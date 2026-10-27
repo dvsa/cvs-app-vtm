@@ -19,7 +19,7 @@ import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title.component';
 
 const MockUserService = {
-	getUserName$: jest.fn().mockReturnValue(new Observable()),
+	getUserName$: vi.fn().mockReturnValue(new Observable()),
 	roles$: of([Roles.TestResultAmend, Roles.TestResultView]),
 };
 

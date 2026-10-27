@@ -20,7 +20,7 @@
     "target": "ES2023",
     "module": "ES2022",
     "lib": ["ES2024", "dom"],
-    "types": ["bun", "node", "jest"],
+    "types": ["bun", "node"],
     "paths": {
       "@/*": ["./*"],
       "@api/*": ["./src/app/api/*"],

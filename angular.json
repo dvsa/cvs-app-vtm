@@ -31,7 +31,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -75,6 +75,12 @@
             }
           },
           "configurations": {
+            "development": {
+              "aot": false,
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -128,6 +134,23 @@
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "runnerConfig": "vitest.config.ts",
+            "setupFiles": [
+              "setup-vitest.ts"
+            ],
+            "include": [
+              "src/**/*.spec.ts"
+            ],
+            "exclude": [
+              "**/archive/**",
+              "**/dist/**"
             ]
           }
         }

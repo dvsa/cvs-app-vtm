@@ -121,13 +121,23 @@ describe('Reference Data Selectors', () => {
 	});
 
 	it('should return the reasons for abandoning for the right vehicle type', () => {
-		const selectorSpy = jest.spyOn(referenceDataSelectors, 'selectAllReferenceDataByResourceType');
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningPsv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
-		referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
-		expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+		const cases = [
+			[VehicleTypes.PSV, ReferenceDataResourceType.ReasonsForAbandoningPsv],
+			[VehicleTypes.HGV, ReferenceDataResourceType.ReasonsForAbandoningHgv],
+			[VehicleTypes.TRL, ReferenceDataResourceType.ReasonsForAbandoningTrl],
+		] as const;
+
+		for (const [vehicleType, resourceType] of cases) {
+			const reason = { resourceKey: vehicleType, resourceType };
+			const resourceState = {
+				...initialReferenceDataState[resourceType],
+				ids: [reason.resourceKey],
+				entities: { [reason.resourceKey]: reason },
+			};
+			const selector = referenceDataSelectors.selectReasonsForAbandoning(vehicleType);
+
+			expect(selector.projector(resourceState)).toEqual([reason]);
+		}
 	});
 
 	describe('selectRefDataBySearchTerm', () => {

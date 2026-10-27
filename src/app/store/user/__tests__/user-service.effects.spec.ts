@@ -9,10 +9,10 @@ import { UserServiceEffects } from '../user-service.effects';
 describe('UserServiceEffects', () => {
 	let effects: UserServiceEffects;
 	let actions$: Observable<Action>;
-	let analyticsService: Pick<jest.Mocked<AnalyticsService>, 'pushToDataLayer'>;
+	let analyticsService: Pick<Mocked<AnalyticsService>, 'pushToDataLayer'>;
 
 	beforeEach(() => {
-		analyticsService = { pushToDataLayer: jest.fn() };
+		analyticsService = { pushToDataLayer: vi.fn() };
 
 		TestBed.configureTestingModule({
 			providers: [

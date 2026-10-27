@@ -94,8 +94,8 @@ describe('SearchResultsComponent', () => {
 	});
 
 	it('should clear errors and search using query parameters, including the archive toggle', async () => {
-		const searchSpy = jest.spyOn(techRecordService, 'searchBy');
-		const clearErrorsSpy = jest.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
+		const searchSpy = vi.spyOn(techRecordService, 'searchBy');
+		const clearErrorsSpy = vi.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
 		await router.navigate(['/search/results'], {
 			queryParams: { searchTerm: 'foo', searchCriteria: SEARCH_TYPES.ALL, includeArchived: true },
 		});
@@ -120,7 +120,7 @@ describe('SearchResultsComponent', () => {
 			.componentInstance as SearchFormComponent;
 		expect(form.form.controls.includeArchived.value).toBe(false);
 
-		const searchSpy = jest.spyOn(techRecordService, 'searchBy');
+		const searchSpy = vi.spyOn(techRecordService, 'searchBy');
 		const link = harness.routeNativeElement?.querySelector<HTMLAnchorElement>('#archived-records-link');
 		expect(link?.textContent).toBe('archived records matching your search');
 		link?.click();

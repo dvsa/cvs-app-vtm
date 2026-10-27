@@ -51,7 +51,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 				provideRouter([
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.BATCH_SUMMARY}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 				provideMockStore({ initialState: initialAppState }),
@@ -86,8 +86,8 @@ describe('EnterTechRecordDetailsComponent', () => {
 		it('should call set error if there are errors', () => {
 			const errors = [{ error: 'some error', anchorLink: 'expected' }];
 
-			jest.spyOn(errorService, 'setErrors');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue(errors);
+			vi.spyOn(errorService, 'setErrors');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue(errors);
 
 			store.refreshState();
 
@@ -97,11 +97,11 @@ describe('EnterTechRecordDetailsComponent', () => {
 		});
 
 		it('should dispatch updateTechRecord for each vehicle if the form is valid, and each vehicle has a VRM/Trailer ID', () => {
-			jest.spyOn(store, 'dispatch');
-			jest.spyOn(router, 'navigate');
-			jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-			jest.spyOn(technicalRecordService, 'clearSectionTemplateStates');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
+			vi.spyOn(store, 'dispatch');
+			vi.spyOn(router, 'navigate');
+			vi.spyOn(technicalRecordService, 'updateEditingTechRecord');
+			vi.spyOn(technicalRecordService, 'clearSectionTemplateStates');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
 
 			store.overrideSelector(selectBatchDetails, mockSavedBatchDetails);
 
@@ -181,9 +181,9 @@ describe('EnterTechRecordDetailsComponent', () => {
 		});
 
 		it('should dispatch createVehicleRecord for each vehicle if the form is valid, and each vehicle does not have a VRM/Trailer ID', () => {
-			jest.spyOn(store, 'dispatch');
-			jest.spyOn(router, 'navigate');
-			jest.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
+			vi.spyOn(store, 'dispatch');
+			vi.spyOn(router, 'navigate');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
 
 			store.overrideSelector(selectBatchDetails, {
 				...mockSavedBatchDetails,

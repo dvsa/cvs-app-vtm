@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TrimWhitespaceDirective } from '../app-trim-whitespace.directive';
@@ -52,7 +52,7 @@ describe('TrimWhitespaceDirective', () => {
 
 		describe('it should dispatch the appropriate number of events', () => {
 			it('if the value has changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('focusout'));
 
@@ -60,7 +60,7 @@ describe('TrimWhitespaceDirective', () => {
 			});
 
 			it('if the value has not changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces';
 				input1.dispatchEvent(new Event('focusout'));
 
@@ -87,7 +87,7 @@ describe('TrimWhitespaceDirective', () => {
 
 		describe('it should dispatch the appropriate number of input events', () => {
 			it('if the value has changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('input'));
 
@@ -95,7 +95,7 @@ describe('TrimWhitespaceDirective', () => {
 			});
 
 			it('if the value has not changed', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces';
 				input1.dispatchEvent(new Event('input'));
 
@@ -105,50 +105,45 @@ describe('TrimWhitespaceDirective', () => {
 	});
 
 	describe('should trim whitespaces on paste', () => {
-		it('with form', () => {
+		it('with form', fakeAsync(() => {
 			input1.value = 'this has spaces   ';
 			input1.dispatchEvent(new Event('paste'));
 
-			setTimeout(() => {
-				expect(input1.value).toBe('this has spaces');
-				expect(component.form.get('foo')?.value).toBe('this has spaces');
-				expect(input1.value).toBe('this has spaces');
-			}, 0);
-		});
+			tick();
+			expect(input1.value).toBe('this has spaces');
+			expect(component.form.get('foo')?.value).toBe('this has spaces');
+			expect(input1.value).toBe('this has spaces');
+		}));
 
-		it('without form', () => {
+		it('without form', fakeAsync(() => {
 			input2.value = 'this has spaces   ';
 			input2.dispatchEvent(new Event('paste'));
 
-			setTimeout(() => {
-				expect(input2.value).toBe('this has spaces');
-			}, 0);
-		});
+			tick();
+			expect(input2.value).toBe('this has spaces');
+		}));
 
 		describe('it should dispatch the appropriate number of input events', () => {
-			it('with form', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+			it('with form', fakeAsync(() => {
+				const dispatchEventSpy = vi.spyOn(input1, 'dispatchEvent');
 				input1.value = 'this has spaces   ';
 				input1.dispatchEvent(new Event('paste'));
 
-				setTimeout(() => {
-					expect(input1.value).toBe('this has spaces');
-					expect(component.form.get('foo')?.value).toBe('this has spaces');
-					expect(input1.value).toBe('this has spaces');
-					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
-				}, 0);
-			});
+				tick();
+				expect(input1.value).toBe('this has spaces');
+				expect(component.form.get('foo')?.value).toBe('this has spaces');
+				expect(dispatchEventSpy.mock.calls.filter(([event]) => event.type === 'input')).toHaveLength(1);
+			}));
 
-			it('without form', () => {
-				const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+			it('without form', fakeAsync(() => {
+				const dispatchEventSpy = vi.spyOn(input2, 'dispatchEvent');
 				input2.value = 'this has spaces   ';
 				input2.dispatchEvent(new Event('paste'));
 
-				setTimeout(() => {
-					expect(input2.value).toBe('this has spaces');
-					expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
-				}, 0);
-			});
+				tick();
+				expect(input2.value).toBe('this has spaces');
+				expect(dispatchEventSpy.mock.calls.filter(([event]) => event.type === 'input')).toHaveLength(1);
+			}));
 		});
 	});
 });

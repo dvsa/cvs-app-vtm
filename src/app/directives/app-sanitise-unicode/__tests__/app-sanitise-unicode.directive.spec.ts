@@ -147,17 +147,16 @@ describe('SanitiseUnicodeDirective', () => {
 			expect(textarea.value).toBe('test value');
 		});
 
-		it('triggers on paste (after setTimeout)', (done) => {
+		it('triggers on paste (after setTimeout)', async () => {
 			textarea.value = 'test value';
 			textarea.dispatchEvent(new Event('paste'));
-			setTimeout(() => {
-				expect(textarea.value).toBe('test value');
-				done();
-			}, 0);
+
+			await new Promise((resolve) => setTimeout(resolve, 0));
+			expect(textarea.value).toBe('test value');
 		});
 
 		it('dispatches synthetic input event when value changes', () => {
-			const spy = jest.spyOn(textarea, 'dispatchEvent');
+			const spy = vi.spyOn(textarea, 'dispatchEvent');
 			textarea.value = 'test value';
 			textarea.dispatchEvent(new Event('blur'));
 
@@ -166,7 +165,7 @@ describe('SanitiseUnicodeDirective', () => {
 		});
 
 		it('does not dispatch input event when value unchanged', () => {
-			const spy = jest.spyOn(textarea, 'dispatchEvent');
+			const spy = vi.spyOn(textarea, 'dispatchEvent');
 			textarea.value = 'clean value';
 			textarea.dispatchEvent(new Event('blur'));
 

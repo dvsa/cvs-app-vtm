@@ -1,4 +1,15 @@
+import { InjectionToken } from '@angular/core';
+
 type AccessibleAutocomplete = typeof import('accessible-autocomplete/dist/accessible-autocomplete.min');
+export type AccessibleAutocompleteLoader = () => Promise<Pick<AccessibleAutocomplete, 'enhanceSelectElement'>>;
+
+export const ACCESSIBLE_AUTOCOMPLETE_LOADER = new InjectionToken<AccessibleAutocompleteLoader>(
+	'Accessible autocomplete loader',
+	{
+		providedIn: 'root',
+		factory: () => loadAccessibleAutocomplete,
+	}
+);
 
 /**
  * accessible-autocomplete is loaded on demand so it stays out of the initial bundle.
@@ -7,7 +18,7 @@ type AccessibleAutocomplete = typeof import('accessible-autocomplete/dist/access
 export async function loadAccessibleAutocomplete(): Promise<AccessibleAutocomplete> {
 	const module = await import('accessible-autocomplete/dist/accessible-autocomplete.min');
 	// The package is a CommonJS (UMD) bundle. In the browser build its lazy chunk only exports `default`
-	// (module.exports, which carries enhanceSelectElement); elsewhere (e.g. Jest) the functions are on the module itself.
+	// (module.exports, which carries enhanceSelectElement); elsewhere the functions may be on the module itself.
 	const loaded: { enhanceSelectElement?: unknown; default?: unknown } = module;
 	return (loaded.enhanceSelectElement ? loaded : loaded.default) as AccessibleAutocomplete;
 }

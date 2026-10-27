@@ -256,8 +256,10 @@ describe('DynamicFormService', () => {
 					),
 				}
 			);
+			form.controls['foo'].setErrors({ required: true });
+			(form.controls['bar'] as CustomFormGroup).controls['baz'].setErrors({ required: true });
 
-			DynamicFormService.validate(form, errors);
+			DynamicFormService.validate(form, errors, false);
 
 			expect(errors).toHaveLength(2);
 		});

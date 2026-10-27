@@ -6,12 +6,10 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { createSelector } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
-import * as refSelectors from '@store/reference-data/reference-data.selectors';
 import { of } from 'rxjs';
 import { ReferenceDataListComponent } from '../reference-data-list.component';
 
@@ -21,6 +19,7 @@ describe('DataTypeListComponent', () => {
 	let router: Router;
 	let errorService: GlobalErrorService;
 	let route: ActivatedRoute;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -43,6 +42,7 @@ describe('DataTypeListComponent', () => {
 		route = TestBed.inject(ActivatedRoute);
 		router = TestBed.inject(Router);
 		errorService = TestBed.inject(GlobalErrorService);
+		store = TestBed.inject(MockStore);
 		fixture.detectChanges();
 	});
 
@@ -52,7 +52,7 @@ describe('DataTypeListComponent', () => {
 	describe('amend', () => {
 		it('should navigate to the selected items key', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 
 				component.amend({ resourceKey: 'foo', resourceType: ReferenceDataResourceType.CountryOfRegistration });
 
@@ -63,7 +63,7 @@ describe('DataTypeListComponent', () => {
 	describe('delete', () => {
 		it('should navigate to the selected items :key/delete', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 
 				component.delete({ resourceKey: 'foo', resourceType: ReferenceDataResourceType.CountryOfRegistration });
 
@@ -74,7 +74,7 @@ describe('DataTypeListComponent', () => {
 	describe('addNew', () => {
 		it('should navigate to the selected items create', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 
 				component.addNew();
 
@@ -85,7 +85,7 @@ describe('DataTypeListComponent', () => {
 	describe('navigateToDeletedItems', () => {
 		it('should navigate to the selected items create', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 
 				component.navigateToDeletedItems();
 
@@ -111,7 +111,7 @@ describe('DataTypeListComponent', () => {
 		});
 		it('should navigate to page 1 of pagination', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 				component.type = ReferenceDataResourceType.Tyres;
 				component.searchReturned = true;
 				component.clear();
@@ -126,19 +126,19 @@ describe('DataTypeListComponent', () => {
 
 	describe('search', () => {
 		it('should call add error if there is no search term', () => {
-			const errorSpy = jest.spyOn(errorService, 'addError');
+			const errorSpy = vi.spyOn(errorService, 'addError');
 			component.search('', 'tyreCode' as keyof ReferenceDataModelBase);
 
 			expect(errorSpy).toHaveBeenCalled();
 		});
 		it('should call add error if there is no filter', () => {
-			const errorSpy = jest.spyOn(errorService, 'addError');
+			const errorSpy = vi.spyOn(errorService, 'addError');
 			component.search('term', '' as keyof ReferenceDataModelBase);
 
 			expect(errorSpy).toHaveBeenCalled();
 		});
 		it('should call add error if there are no items returned', () => {
-			const errorSpy = jest.spyOn(errorService, 'addError');
+			const errorSpy = vi.spyOn(errorService, 'addError');
 			component.type = ReferenceDataResourceType.Tyres;
 
 			component.search('term', 'brakeCode' as keyof ReferenceDataModelBase);
@@ -147,14 +147,11 @@ describe('DataTypeListComponent', () => {
 		});
 		it('should navigate to page 1 of pagination', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 				component.type = ReferenceDataResourceType.Tyres;
 				component.searchReturned = true;
-				jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
-					createSelector(
-						(v) => v,
-						() => [{ resourceKey: 'foo', resourceType: 'bar' } as unknown as ReferenceDataModelBase]
-					)
+				vi.spyOn(store, 'pipe').mockReturnValue(
+					of([{ resourceKey: 'foo', resourceType: 'bar' } as unknown as ReferenceDataModelBase]) as never
 				);
 				component.search('foo', 'bar' as keyof ReferenceDataModelBase);
 

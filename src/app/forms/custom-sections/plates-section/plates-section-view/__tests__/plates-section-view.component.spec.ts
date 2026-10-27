@@ -20,7 +20,7 @@ import { State, initialAppState } from '@store/index';
 import { canGeneratePlate } from '@store/technical-records';
 import { of } from 'rxjs';
 
-global.scrollTo = jest.fn();
+global.scrollTo = vi.fn();
 
 describe('PlatesComponent', () => {
 	let component: PlatesSectionViewComponent;
@@ -197,20 +197,20 @@ describe('PlatesComponent', () => {
 		it('should show an error if tech record is not valid for plates', () => {
 			component.techRecord().vin = '';
 			const plateFieldsErrorMessage = 'All fields marked plate are mandatory to generate a plate.';
-			const errorSpy = jest.spyOn(errorService, 'addError');
+			const errorSpy = vi.spyOn(errorService, 'addError');
 			component.validateTechRecordPlates();
 			expect(errorSpy).toHaveBeenCalledWith({ error: plateFieldsErrorMessage });
 		});
 		it('should dispatch the canGeneratePlate action if the record is valid', () => {
 			fixture.ngZone?.run(() => {
-				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				const dispatchSpy = vi.spyOn(store, 'dispatch');
 				component.validateTechRecordPlates();
 				expect(dispatchSpy).toHaveBeenCalledWith(canGeneratePlate());
 			});
 		});
 		it('should call router.navigate on a valid record', () => {
 			fixture.ngZone?.run(() => {
-				const navigateSpy = jest.spyOn(router, 'navigate');
+				const navigateSpy = vi.spyOn(router, 'navigate');
 				component.validateTechRecordPlates();
 				expect(navigateSpy).toHaveBeenCalledWith(['generate-plate'], { relativeTo: expect.anything() });
 			});
