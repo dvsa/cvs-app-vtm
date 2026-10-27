@@ -84,7 +84,14 @@ export class GlobalErrorService {
 
 		// For each control in the form, determine its validity and collect form errors
 		Object.entries(form.controls).forEach(([key, control]) => {
+			const previousStatus = control.status;
 			control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+
+			// Validity can change without the value changing (e.g. validation skipped while abandoning a test), so
+			// re-emit just the status (not the value) for the inline error of an OnPush section to be refreshed
+			if (control.status !== previousStatus) {
+				control.setErrors(control.errors);
+			}
 
 			// For nested form groups/arrays, collect the top level errors, then recusively collect errors from their children
 			if (control instanceof FormGroup || control instanceof FormArray) {
