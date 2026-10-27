@@ -21,11 +21,11 @@ describe('EnterBatchSizeComponent', () => {
 				provideRouter([
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.CANCEL_BATCH}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 					{
 						path: `${RootRoutes.BATCH}/${BatchRoutes.ENTER_BATCH_IDENTIFIERS}`,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 			],
@@ -84,7 +84,7 @@ describe('EnterBatchSizeComponent', () => {
 
 	describe('handleContinue', () => {
 		it('should navigate the user to the batch identifiers page if the form is valid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				batchSize: 10,
 			});
@@ -93,7 +93,7 @@ describe('EnterBatchSizeComponent', () => {
 		});
 
 		it('should not navigate the user to the batch identifiers page if the form is invalid', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({
 				batchSize: null,
 			});
@@ -104,7 +104,7 @@ describe('EnterBatchSizeComponent', () => {
 
 	describe('handleCancel', () => {
 		it('should navigate the user to the cancel batch page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.handleCancel();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.BATCH, BatchRoutes.CANCEL_BATCH]);
 		});

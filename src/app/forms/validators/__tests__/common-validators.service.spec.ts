@@ -14,7 +14,7 @@ describe('CommonValidatorsService', () => {
 
 		service = TestBed.inject(CommonValidatorsService);
 
-		jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
+		vi.useFakeTimers().setSystemTime(new Date('2024-01-01'));
 	});
 
 	describe('max', () => {

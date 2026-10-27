@@ -11,11 +11,11 @@ import { DefectMediaService } from '../defect-media-service.service';
 describe('DefectMediaService', () => {
 	let service: DefectMediaService;
 
-	let httpMock: jest.Mocked<HttpClient>;
-	let documentsServiceMock: jest.Mocked<DocumentsService>;
-	let globalErrorServiceMock: jest.Mocked<GlobalErrorService>;
-	let featureToggleServiceMock: jest.Mocked<FeatureToggleService>;
-	let routerMock: jest.Mocked<Router>;
+	let httpMock: Mocked<HttpClient>;
+	let documentsServiceMock: Mocked<DocumentsService>;
+	let globalErrorServiceMock: Mocked<GlobalErrorService>;
+	let featureToggleServiceMock: Mocked<FeatureToggleService>;
+	let routerMock: Mocked<Router>;
 
 	const mockTestResult: any = {
 		testResultId: '123',
@@ -36,24 +36,24 @@ describe('DefectMediaService', () => {
 
 	beforeEach(() => {
 		httpMock = {
-			get: jest.fn(),
+			get: vi.fn(),
 		} as any;
 
 		documentsServiceMock = {
-			createFileLink: jest.fn().mockReturnValue(document.createElement('a')),
-			simulateClick: jest.fn(),
+			createFileLink: vi.fn().mockReturnValue(document.createElement('a')),
+			simulateClick: vi.fn(),
 		} as any;
 
 		globalErrorServiceMock = {
-			setErrors: jest.fn(),
+			setErrors: vi.fn(),
 		} as any;
 
 		featureToggleServiceMock = {
-			isFeatureEnabled: jest.fn(),
+			isFeatureEnabled: vi.fn(),
 		} as any;
 
 		routerMock = {
-			navigate: jest.fn(),
+			navigate: vi.fn(),
 		} as any;
 
 		TestBed.configureTestingModule({
@@ -71,7 +71,7 @@ describe('DefectMediaService', () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	// =============================
@@ -134,7 +134,7 @@ describe('DefectMediaService', () => {
 	});
 
 	it('should cache ZIP after first fetch', async () => {
-		const jszipSpy = jest.spyOn(JSZip.prototype, 'loadAsync');
+		const jszipSpy = vi.spyOn(JSZip.prototype, 'loadAsync');
 		jszipSpy.mockResolvedValue(new JSZip());
 
 		httpMock.get.mockReturnValueOnce(of('signed-url')).mockReturnValueOnce(of(new Blob(['zip'])));
@@ -159,7 +159,7 @@ describe('DefectMediaService', () => {
 	});
 
 	it('should return empty string if file not found', async () => {
-		jest.spyOn(service, 'getDefectZip').mockResolvedValue(new JSZip());
+		vi.spyOn(service, 'getDefectZip').mockResolvedValue(new JSZip());
 
 		const result = await service.loadMediaItemAsBase64(mockTestResult, mockDefect, { path: 'missing.jpg' } as any);
 
@@ -172,10 +172,10 @@ describe('DefectMediaService', () => {
 
 	it('should download media and trigger document opening', async () => {
 		const zip = new JSZip();
-		jest.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
-		jest.spyOn(service, 'getDefectZip').mockResolvedValue(zip);
-		jest.spyOn(service, 'getAdasZip').mockResolvedValue(null);
-		const openSpy = jest.spyOn(service, 'openDocumentFromZip').mockResolvedValue();
+		vi.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
+		vi.spyOn(service, 'getDefectZip').mockResolvedValue(zip);
+		vi.spyOn(service, 'getAdasZip').mockResolvedValue(null);
+		const openSpy = vi.spyOn(service, 'openDocumentFromZip').mockResolvedValue();
 
 		await service.downloadMedia(mockTestResult);
 
@@ -183,10 +183,10 @@ describe('DefectMediaService', () => {
 	});
 
 	it('should handle download errors', async () => {
-		jest.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
-		jest.spyOn(service, 'getDefectZip').mockRejectedValue(new Error('fail'));
+		vi.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
+		vi.spyOn(service, 'getDefectZip').mockRejectedValue(new Error('fail'));
 
-		const handleSpy = jest.spyOn(service, 'handleError');
+		const handleSpy = vi.spyOn(service, 'handleError');
 
 		await service.downloadMedia(mockTestResult);
 

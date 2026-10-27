@@ -4,20 +4,24 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noCheck": true,
     "outDir": "./out-tsc/spec",
-    "module": "CommonJs",
+    "module": "ES2022",
     "allowJs": true,
     "types": [
       "node",
-      "jest"
+      "vitest/globals"
     ],
     "esModuleInterop": true
   },
   "files": [
-    "./setup-jest.ts",
-    "./jest-global-mocks.ts",
-    "./src/polyfills.ts"
+    "./setup-vitest.ts",
+    "./test-providers.ts",
+    "./vitest-globals.d.ts"
   ],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  },
   "include": [
     "./src/**/*.spec.ts",
     "./src/**/*.d.ts"

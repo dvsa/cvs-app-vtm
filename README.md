@@ -24,9 +24,16 @@ Prerequisites:
 
 The test coverage requirement for this project is 80% and automation tests can be found in a java project named `cvs-vtm-auto`
 
-The framework used is Jest.
+The framework used is Vitest.
 
 To run the test coverage run `npm run test`
+
+Test files share an environment (`isolate: false`) for faster execution.
+`test-providers.ts` refreshes each MockStore's state reference to invalidate
+downstream selector caches and resets selector overrides on test injector
+destruction, but this does not undo mutations to imported state fixtures.
+Never mutate exported initial state in tests: copy every nested object being
+changed, or use `cloneDeep` for a fresh mutable fixture in `beforeEach`.
 
 ### Backend Requirements
 

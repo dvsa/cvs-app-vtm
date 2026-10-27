@@ -1,10 +1,12 @@
+import { vi } from 'vitest';
 import { loadAccessibleAutocomplete } from '../load-accessible-autocomplete';
 
-const enhanceSelectElement = jest.fn();
+const { enhanceSelectElement } = vi.hoisted(() => ({ enhanceSelectElement: vi.fn() }));
 
 // mirror the browser build, where the lazily loaded chunk of this CommonJS package only exports `default`
-jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => ({
+vi.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => ({
 	__esModule: true,
+	enhanceSelectElement: undefined,
 	default: { enhanceSelectElement },
 }));
 

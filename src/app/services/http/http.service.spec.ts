@@ -120,23 +120,26 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
-			httpService.fetchDefects().subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.error).toBe('Deliberate 500 error');
-					expect(e.status).toBe(500);
-					expect(e.statusText).toBe('Server Error');
-					done();
-				},
+		it('should handle errors', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				httpService.fetchDefects().subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.error).toBe('Deliberate 500 error');
+						expect(e.status).toBe(500);
+						expect(e.statusText).toBe('Server Error');
+						done();
+					},
+				});
+
+				// Check for correct requests: should have made one request to search from expected URL
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects`);
+				expect(req.request.method).toBe('GET');
+
+				// Respond with mock error
+				req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 			});
-
-			// Check for correct requests: should have made one request to search from expected URL
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects`);
-			expect(req.request.method).toBe('GET');
-
-			// Respond with mock error
-			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 		});
 	});
 
@@ -154,24 +157,27 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
-			const expectedId = 1;
-			httpService.fetchDefect(expectedId).subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.error).toBe('Deliberate 500 error');
-					expect(e.status).toBe(500);
-					expect(e.statusText).toBe('Server Error');
-					done();
-				},
+		it('should handle errors', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const expectedId = 1;
+				httpService.fetchDefect(expectedId).subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.error).toBe('Deliberate 500 error');
+						expect(e.status).toBe(500);
+						expect(e.statusText).toBe('Server Error');
+						done();
+					},
+				});
+
+				// Check for correct requests: should have made one request to search from expected URL
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);
+				expect(req.request.method).toBe('GET');
+
+				// Respond with mock error
+				req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 			});
-
-			// Check for correct requests: should have made one request to search from expected URL
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);
-			expect(req.request.method).toBe('GET');
-
-			// Respond with mock error
-			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 		});
 	});
 
@@ -192,25 +198,28 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
-			httpService.fetchRequiredStandards(EuVehicleCategory.M1).subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.error).toBe('Deliberate 500 error');
-					expect(e.status).toBe(500);
-					expect(e.statusText).toBe('Server Error');
-					done();
-				},
+		it('should handle errors', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				httpService.fetchRequiredStandards(EuVehicleCategory.M1).subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.error).toBe('Deliberate 500 error');
+						expect(e.status).toBe(500);
+						expect(e.statusText).toBe('Server Error');
+						done();
+					},
+				});
+
+				// Check for correct requests: should have made one request to search from expected URL
+				const req = httpTestingController.expectOne(
+					`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=m1`
+				);
+				expect(req.request.method).toBe('GET');
+
+				// Respond with mock error
+				req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 			});
-
-			// Check for correct requests: should have made one request to search from expected URL
-			const req = httpTestingController.expectOne(
-				`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=m1`
-			);
-			expect(req.request.method).toBe('GET');
-
-			// Respond with mock error
-			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 		});
 	});
 
@@ -227,23 +236,26 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
-			httpService.fetchTestStations().subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.error).toBe('Deliberate 500 error');
-					expect(e.status).toBe(500);
-					expect(e.statusText).toBe('Server Error');
-					done();
-				},
+		it('should handle errors', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				httpService.fetchTestStations().subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.error).toBe('Deliberate 500 error');
+						expect(e.status).toBe(500);
+						expect(e.statusText).toBe('Server Error');
+						done();
+					},
+				});
+
+				// Check for correct requests: should have made one request to search from expected URL
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations`);
+				expect(req.request.method).toBe('GET');
+
+				// Respond with mock error
+				req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 			});
-
-			// Check for correct requests: should have made one request to search from expected URL
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations`);
-			expect(req.request.method).toBe('GET');
-
-			// Respond with mock error
-			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 		});
 	});
 
@@ -261,24 +273,27 @@ describe('HttpService', () => {
 			req.flush(expectedResult);
 		});
 
-		it('should handle errors', (done) => {
-			const expectedId = 'some ID';
-			httpService.fetchTestStation(expectedId).subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.error).toBe('Deliberate 500 error');
-					expect(e.status).toBe(500);
-					expect(e.statusText).toBe('Server Error');
-					done();
-				},
+		it('should handle errors', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const expectedId = 'some ID';
+				httpService.fetchTestStation(expectedId).subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.error).toBe('Deliberate 500 error');
+						expect(e.status).toBe(500);
+						expect(e.statusText).toBe('Server Error');
+						done();
+					},
+				});
+
+				// Check for correct requests: should have made one request to search from expected URL
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations/${expectedId}`);
+				expect(req.request.method).toBe('GET');
+
+				// Respond with mock error
+				req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 			});
-
-			// Check for correct requests: should have made one request to search from expected URL
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations/${expectedId}`);
-			expect(req.request.method).toBe('GET');
-
-			// Respond with mock error
-			req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
 		});
 	});
 
@@ -343,7 +358,7 @@ describe('HttpService', () => {
 	describe('searchTechRecordBySystemNumber', () => {
 		it('should call service.searchTechRecords', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of());
+			const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of());
 			httpService.searchTechRecordBySystemNumber(technicalRecord.systemNumber).subscribe();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -417,161 +432,182 @@ describe('HttpService', () => {
 			req.flush({});
 		});
 
-		it('should emit an error if the request fails', (done) => {
-			httpService.getRecalls('VIN789').subscribe({
-				next: () => {},
-				error: (e) => {
-					expect(e.status).toBe(404);
-					expect(e.statusText).toBe('Not Found');
-					done();
-				},
+		it('should emit an error if the request fails', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				httpService.getRecalls('VIN789').subscribe({
+					next: () => {},
+					error: (e) => {
+						expect(e.status).toBe(404);
+						expect(e.statusText).toBe('Not Found');
+						done();
+					},
+				});
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
+				req.flush('Not found', { status: 404, statusText: 'Not Found' });
 			});
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
-			req.flush('Not found', { status: 404, statusText: 'Not Found' });
 		});
 	});
 
 	describe('waitForTechRecord', () => {
 		beforeEach(() => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 		});
 
 		afterEach(() => {
-			jest.runOnlyPendingTimers();
-			jest.useRealTimers();
+			vi.runOnlyPendingTimers();
+			vi.useRealTimers();
 		});
 
-		it('should return a non-archived record with current status when available', (done) => {
-			const systemNumber = 'TEST-123';
-			const mockRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'current',
-			} as any;
+		it('should return a non-archived record with current status when available', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-123';
+				const mockRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'current',
+				} as any;
 
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
+				const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
 
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result).toEqual(mockRecord);
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result).toEqual(mockRecord);
+					expect(spy).toHaveBeenCalled();
+					done();
+				});
+
+				// Advance initial 3s timer
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
+		});
+
+		it('should prioritize current status records over provisional', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-456';
+				const currentRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-02T00:00:00Z',
+					techRecord_statusCode: 'current',
+				} as any;
+				const provisionalRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'provisional',
+				} as any;
+
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord, currentRecord]));
+
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result.techRecord_statusCode).toBe('current');
+					expect(result).toEqual(currentRecord);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
+		});
+
+		it('should return provisional record when current is not available', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-789';
+				const provisionalRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'provisional',
+				} as any;
+
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
+
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result.techRecord_statusCode).toBe('provisional');
+					expect(result).toEqual(provisionalRecord);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
+		});
+
+		it('should return the most recently created record when no current or provisional status', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-101';
+				const olderRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'archived',
+				} as any;
+				const newerRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-02T00:00:00Z',
+					techRecord_statusCode: 'archived',
+				} as any;
+
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([olderRecord, newerRecord]));
+
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result).toEqual(newerRecord);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
+		});
+
+		it('should return the first record as fallback', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-202';
+				const firstRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'archived',
+				} as any;
+
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([firstRecord]));
+
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result).toEqual(firstRecord);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
+		});
+
+		it('should wait 3 seconds before first search attempt', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-303';
+				const mockRecord = {
+					systemNumber,
+					createdTimestamp: '2024-01-01T00:00:00Z',
+					techRecord_statusCode: 'current',
+				} as any;
+
+				const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
+
+				httpService.waitForTechRecord(systemNumber).subscribe(() => {
+					expect(spy).toHaveBeenCalled();
+					done();
+				});
+
+				// Should not be called before timer
+				expect(spy).not.toHaveBeenCalled();
+
+				// Should be called after 3 seconds
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
 				expect(spy).toHaveBeenCalled();
-				done();
 			});
-
-			// Advance initial 3s timer
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should prioritize current status records over provisional', (done) => {
-			const systemNumber = 'TEST-456';
-			const currentRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-02T00:00:00Z',
-				techRecord_statusCode: 'current',
-			} as any;
-			const provisionalRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'provisional',
-			} as any;
-
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord, currentRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result.techRecord_statusCode).toBe('current');
-				expect(result).toEqual(currentRecord);
-				done();
-			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should return provisional record when current is not available', (done) => {
-			const systemNumber = 'TEST-789';
-			const provisionalRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'provisional',
-			} as any;
-
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result.techRecord_statusCode).toBe('provisional');
-				expect(result).toEqual(provisionalRecord);
-				done();
-			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should return the most recently created record when no current or provisional status', (done) => {
-			const systemNumber = 'TEST-101';
-			const olderRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'archived',
-			} as any;
-			const newerRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-02T00:00:00Z',
-				techRecord_statusCode: 'archived',
-			} as any;
-
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([olderRecord, newerRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result).toEqual(newerRecord);
-				done();
-			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should return the first record as fallback', (done) => {
-			const systemNumber = 'TEST-202';
-			const firstRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'archived',
-			} as any;
-
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([firstRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result).toEqual(firstRecord);
-				done();
-			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should wait 3 seconds before first search attempt', (done) => {
-			const systemNumber = 'TEST-303';
-			const mockRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'current',
-			} as any;
-
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([mockRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe(() => {
-				expect(spy).toHaveBeenCalled();
-				done();
-			});
-
-			// Should not be called before timer
-			expect(spy).not.toHaveBeenCalled();
-
-			// Should be called after 3 seconds
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-			expect(spy).toHaveBeenCalled();
 		});
 
 		it('should allow the first search attempt to run immediately', () => {
@@ -581,7 +617,7 @@ describe('HttpService', () => {
 				createdTimestamp: '2024-01-01T00:00:00Z',
 				techRecord_statusCode: StatusCodes.CURRENT,
 			} as any;
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([currentRecord]));
+			const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([currentRecord]));
 			let result: unknown;
 
 			httpService.waitForTechRecord(systemNumber, { initialDelayMs: 0 }).subscribe((value) => (result = value));
@@ -602,7 +638,7 @@ describe('HttpService', () => {
 				createdTimestamp: '2024-01-02T00:00:00Z',
 				techRecord_statusCode: StatusCodes.CURRENT,
 			} as any;
-			const spy = jest
+			const spy = vi
 				.spyOn(httpService, 'searchTechRecordBySystemNumber')
 				.mockReturnValueOnce(of([provisionalRecord]))
 				.mockReturnValueOnce(of([provisionalRecord, currentRecord]));
@@ -618,91 +654,100 @@ describe('HttpService', () => {
 			expect(spy).toHaveBeenCalledTimes(1);
 			expect(result).toBeUndefined();
 
-			jest.advanceTimersByTime(500);
+			vi.advanceTimersByTime(500);
 
 			expect(spy).toHaveBeenCalledTimes(2);
 			expect(result).toEqual(currentRecord);
 		});
 
-		it('should stop retrying when a non-archived record is found', (done) => {
-			const systemNumber = 'TEST-505';
-			const provisionalRecord = {
-				systemNumber,
-				createdTimestamp: '2024-01-01T00:00:00Z',
-				techRecord_statusCode: 'provisional',
-			} as any;
-
-			const spy = jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
-
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				expect(result.techRecord_statusCode).toBe('provisional');
-				expect(spy).toHaveBeenCalledTimes(1);
-				done();
-			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
-		});
-
-		it('should handle multiple records and select based on priority', (done) => {
-			const systemNumber = 'TEST-707';
-			const records = [
-				{
+		it('should stop retrying when a non-archived record is found', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-505';
+				const provisionalRecord = {
 					systemNumber,
 					createdTimestamp: '2024-01-01T00:00:00Z',
-					techRecord_statusCode: 'archived',
-				},
-				{
-					systemNumber,
-					createdTimestamp: '2024-01-03T00:00:00Z',
-					techRecord_statusCode: 'archived',
-				},
-				{
-					systemNumber,
-					createdTimestamp: '2024-01-02T00:00:00Z',
 					techRecord_statusCode: 'provisional',
-				},
-			] as any[];
+				} as any;
 
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
+				const spy = vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of([provisionalRecord]));
 
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				// Should select provisional over the newer archived record
-				expect(result.techRecord_statusCode).toBe('provisional');
-				expect(result.createdTimestamp).toBe('2024-01-02T00:00:00Z');
-				done();
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					expect(result.techRecord_statusCode).toBe('provisional');
+					expect(spy).toHaveBeenCalledTimes(1);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
 			});
-
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
 		});
 
-		it('should handle edge case where all records have same timestamp', (done) => {
-			const systemNumber = 'TEST-808';
-			const timestamp = '2024-01-01T00:00:00Z';
-			const records = [
-				{
-					systemNumber,
-					createdTimestamp: timestamp,
-					techRecord_statusCode: 'archived',
-				},
-				{
-					systemNumber,
-					createdTimestamp: timestamp,
-					techRecord_statusCode: 'archived',
-				},
-			] as any[];
+		it('should handle multiple records and select based on priority', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-707';
+				const records = [
+					{
+						systemNumber,
+						createdTimestamp: '2024-01-01T00:00:00Z',
+						techRecord_statusCode: 'archived',
+					},
+					{
+						systemNumber,
+						createdTimestamp: '2024-01-03T00:00:00Z',
+						techRecord_statusCode: 'archived',
+					},
+					{
+						systemNumber,
+						createdTimestamp: '2024-01-02T00:00:00Z',
+						techRecord_statusCode: 'provisional',
+					},
+				] as any[];
 
-			jest.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
 
-			httpService.waitForTechRecord(systemNumber).subscribe((result) => {
-				// Should return the first record when timestamps are identical
-				expect(result).toEqual(records[0]);
-				done();
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					// Should select provisional over the newer archived record
+					expect(result.techRecord_statusCode).toBe('provisional');
+					expect(result.createdTimestamp).toBe('2024-01-02T00:00:00Z');
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
 			});
+		});
 
-			jest.advanceTimersByTime(3000);
-			jest.runAllTimers();
+		it('should handle edge case where all records have same timestamp', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const systemNumber = 'TEST-808';
+				const timestamp = '2024-01-01T00:00:00Z';
+				const records = [
+					{
+						systemNumber,
+						createdTimestamp: timestamp,
+						techRecord_statusCode: 'archived',
+					},
+					{
+						systemNumber,
+						createdTimestamp: timestamp,
+						techRecord_statusCode: 'archived',
+					},
+				] as any[];
+
+				vi.spyOn(httpService, 'searchTechRecordBySystemNumber').mockReturnValue(of(records));
+
+				httpService.waitForTechRecord(systemNumber).subscribe((result) => {
+					// Should return the first record when timestamps are identical
+					expect(result).toEqual(records[0]);
+					done();
+				});
+
+				vi.advanceTimersByTime(3000);
+				vi.runAllTimers();
+			});
 		});
 	});
 

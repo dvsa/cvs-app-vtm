@@ -25,9 +25,9 @@ import { Observable, of } from 'rxjs';
 import { TyresSectionEditComponent } from '../tyres-section-edit.component';
 
 const mockReferenceDataService = {
-	fetchReferenceDataByKey: jest.fn(),
-	loadReferenceData: jest.fn(),
-	getAll$: jest.fn().mockReturnValue(of([])),
+	fetchReferenceDataByKey: vi.fn(),
+	loadReferenceData: vi.fn(),
+	getAll$: vi.fn().mockReturnValue(of([])),
 };
 
 describe('TyresSectionEditComponent', () => {
@@ -90,7 +90,7 @@ describe('TyresSectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});

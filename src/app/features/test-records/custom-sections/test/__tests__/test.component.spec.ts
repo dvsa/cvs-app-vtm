@@ -31,7 +31,7 @@ describe('TestComponent', () => {
 			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
@@ -662,7 +662,7 @@ describe('TestComponent - AMEND mode', () => {
 			imports: [TestComponent, RouterTestingModule],
 			providers: [
 				{ provide: ControlContainer, useValue: formGroupDirective },
-				{ provide: MultiOptionsService, useValue: { getOptions: jest.fn(), loadOptions: jest.fn() } },
+				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],

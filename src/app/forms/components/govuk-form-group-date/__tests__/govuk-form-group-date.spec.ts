@@ -8,7 +8,7 @@ import { GovukFormGroupDateComponent } from '../govuk-form-group-date.component'
 describe('GovukFormGroupDateComponent', () => {
 	let component: GovukFormGroupDateComponent;
 	let fixture: ComponentFixture<GovukFormGroupDateComponent>;
-	let onChange: jest.Mock;
+	let onChange: Mock;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('GovukFormGroupDateComponent', () => {
 
 		fixture = TestBed.createComponent(GovukFormGroupDateComponent);
 		component = fixture.componentInstance;
-		onChange = jest.fn();
+		onChange = vi.fn();
 		component.registerOnChange(onChange);
 	});
 

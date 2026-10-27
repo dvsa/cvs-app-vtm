@@ -68,18 +68,21 @@ describe('DelayedRetryInterceptor', () => {
 			flush();
 		}));
 
-		it('should cascade errors not in the retry list', (done) => {
-			client.get(DUMMY_ENDPOINT).subscribe({
-				error: (e) => {
-					const { error, status, statusText } = e;
-					expect(error).toBe('Deliberate 401 error');
-					expect(status).toBe(401);
-					expect(statusText).toBe('401 Unauthorized');
-					done();
-				},
+		it('should cascade errors not in the retry list', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				client.get(DUMMY_ENDPOINT).subscribe({
+					error: (e) => {
+						const { error, status, statusText } = e;
+						expect(error).toBe('Deliberate 401 error');
+						expect(status).toBe(401);
+						expect(statusText).toBe('401 Unauthorized');
+						done();
+					},
+				});
+				const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
+				req.flush('Deliberate 401 error', { status: 401, statusText: '401 Unauthorized' });
 			});
-			const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
-			req.flush('Deliberate 401 error', { status: 401, statusText: '401 Unauthorized' });
 		});
 	});
 

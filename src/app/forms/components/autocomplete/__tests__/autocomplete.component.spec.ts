@@ -6,16 +6,10 @@ import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { of } from 'rxjs';
+import { vi } from 'vitest';
 import { FieldErrorMessageComponent } from '../../field-error-message/field-error-message.component';
 import { AutocompleteComponent } from '../autocomplete.component';
-
-jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
-	return {
-		__esModule: true,
-		default: jest.fn(),
-		enhanceSelectElement: () => {},
-	};
-});
+import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '../load-accessible-autocomplete';
 
 @Component({
 	selector: 'app-host-component',
@@ -43,7 +37,13 @@ describe('AutocompleteComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [HostComponent],
-			providers: [provideMockStore({ initialState: initialAppState })],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				{
+					provide: ACCESSIBLE_AUTOCOMPLETE_LOADER,
+					useValue: () => Promise.resolve({ enhanceSelectElement: () => {} }),
+				},
+			],
 		}).compileComponents();
 	});
 
@@ -55,7 +55,7 @@ describe('AutocompleteComponent', () => {
 	});
 
 	it('should render option text exactly as the labels, as accessible-autocomplete matches on it', async () => {
-		await new Promise((resolve) => setTimeout(resolve));
+		await fixture.whenStable();
 		fixture.detectChanges();
 
 		const select: HTMLSelectElement = fixture.debugElement.query(By.css(`#${component.name}`)).nativeElement;
@@ -76,8 +76,11 @@ describe('AutocompleteComponent', () => {
 		expect(autocompleteComponent.findOptionValue(label)).toBe(expected);
 	});
 
-	it('should call handleChange when input value changes', () => {
-		const handleChangeSpy = jest.spyOn(autocompleteComponent, 'handleChange');
+	it('should call handleChange when input value changes', async () => {
+		await fixture.whenStable();
+		fixture.detectChanges();
+
+		const handleChangeSpy = vi.spyOn(autocompleteComponent, 'handleChange');
 		const autocompleteInput: HTMLInputElement = fixture.debugElement.query(By.css(`#${component.name}`)).nativeElement;
 
 		autocompleteInput.dispatchEvent(new Event('change'));
@@ -86,7 +89,7 @@ describe('AutocompleteComponent', () => {
 	});
 
 	it('should find option value by label and propagate to form control', () => {
-		const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+		const findOptionValueSpy = vi.spyOn(autocompleteComponent, 'findOptionValue');
 		const control = component.form.get('foo');
 
 		autocompleteComponent.handleChange({ target: { value: 'option2' } } as unknown as Event);
@@ -97,7 +100,7 @@ describe('AutocompleteComponent', () => {
 	});
 
 	it('should propagate null and reset to form control when input is cleared', () => {
-		const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+		const findOptionValueSpy = vi.spyOn(autocompleteComponent, 'findOptionValue');
 		const control = component.form.get('foo');
 
 		autocompleteComponent.handleChange({ target: { value: '' } } as unknown as Event);
@@ -108,7 +111,7 @@ describe('AutocompleteComponent', () => {
 	});
 
 	it('should propagate "[INVALID_OPTION]" to form control when value is not an option', () => {
-		const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+		const findOptionValueSpy = vi.spyOn(autocompleteComponent, 'findOptionValue');
 		const control = component.form.get('foo');
 
 		autocompleteComponent.handleChange({ target: { value: 'option3' } } as unknown as Event);

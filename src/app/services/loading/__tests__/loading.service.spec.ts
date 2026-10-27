@@ -2,16 +2,31 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { SpinnerComponent } from '@core/components/spinner/spinner.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { defectsLoadingState } from '@store/defects';
 import { State, initialAppState } from '@store/index';
+import { referenceDataLoadingState } from '@store/reference-data';
+import { requiredStandardsLoadingState } from '@store/required-standards/required-standards.selector';
 import { getSpinner } from '@store/spinner/spinner.selectors';
+import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/tech-record-search.selector';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
 import { testStationsLoadingState } from '@store/test-stations';
 import { selectTestTypesLoadingState } from '@store/test-types/test-types.selectors';
-import { firstValueFrom, take } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { LoadingService } from '../loading.service';
 
 describe('Spinner-Service', () => {
+	const loadingSources = [
+		{ name: 'global spinner', selector: getSpinner },
+		{ name: 'test results', selector: testResultLoadingState },
+		{ name: 'technical records', selector: technicalRecordsLoadingState },
+		{ name: 'test types', selector: selectTestTypesLoadingState },
+		{ name: 'test stations', selector: testStationsLoadingState },
+		{ name: 'defects', selector: defectsLoadingState },
+		{ name: 'reference data', selector: referenceDataLoadingState },
+		{ name: 'technical record search', selector: selectTechRecordSearchLoadingState },
+		{ name: 'required standards', selector: requiredStandardsLoadingState },
+	];
 	let service: LoadingService;
 	let mockStore: MockStore<State>;
 
@@ -31,39 +46,21 @@ describe('Spinner-Service', () => {
 
 	describe('showSpinner$', () => {
 		beforeEach(() => {
-			mockStore.resetSelectors();
+			for (const { selector } of loadingSources) {
+				mockStore.overrideSelector(selector, false);
+			}
+			mockStore.refreshState();
 		});
 
-		it('Should return false when global spinner, testResult and technicalRecords loading state is false', async () => {
-			mockStore.overrideSelector(getSpinner, false);
-			mockStore.overrideSelector(testResultLoadingState, false);
-			mockStore.overrideSelector(technicalRecordsLoadingState, false);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeFalsy();
+		it('should return false when all loading sources are false', async () => {
+			expect(await firstValueFrom(service.showSpinner$)).toBe(false);
 		});
 
-		it('Should return true when global spinner state is true', async () => {
-			mockStore.overrideSelector(getSpinner, true);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
-		});
+		it.each(loadingSources)('should return true when $name is loading', async ({ selector }) => {
+			mockStore.overrideSelector(selector, true);
+			mockStore.refreshState();
 
-		it('Should return true when testResult loading state is true', async () => {
-			mockStore.overrideSelector(testResultLoadingState, true);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
-		});
-
-		it('Should return true when TechnicalRecords loading state is true', async () => {
-			mockStore.overrideSelector(technicalRecordsLoadingState, true);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
-		});
-
-		it('Should return true when testTypes loading state is true', async () => {
-			mockStore.overrideSelector(selectTestTypesLoadingState, true);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
-		});
-
-		it('Should return true when test stations loading state is true', async () => {
-			mockStore.overrideSelector(testStationsLoadingState, true);
-			expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+			expect(await firstValueFrom(service.showSpinner$)).toBe(true);
 		});
 	});
 });

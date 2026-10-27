@@ -42,7 +42,7 @@ describe('RequiredStandardsComponent', () => {
 		store = TestBed.inject(MockStore);
 		testService = TestBed.inject(TestService);
 		testService.form.reset();
-		jest.spyOn(store, 'dispatch');
+		vi.spyOn(store, 'dispatch');
 	});
 
 	afterEach(() => {
@@ -96,8 +96,8 @@ describe('RequiredStandardsComponent', () => {
 			createComponent(Modes.EDIT, { testTypes: [{}] } as TestResultSchema);
 			const router = TestBed.inject(Router);
 			const errorService = TestBed.inject(GlobalErrorService);
-			jest.spyOn(router, 'navigate');
-			jest.spyOn(errorService, 'setErrors');
+			vi.spyOn(router, 'navigate');
+			vi.spyOn(errorService, 'setErrors');
 
 			component.onAddRequiredStandard();
 
@@ -110,7 +110,7 @@ describe('RequiredStandardsComponent', () => {
 		it('should navigate to select a required standard', () => {
 			createComponent(Modes.EDIT, { testTypes: [{}] } as TestResultSchema);
 			const router = TestBed.inject(Router);
-			jest.spyOn(router, 'navigate').mockResolvedValue(true);
+			vi.spyOn(router, 'navigate').mockResolvedValue(true);
 			testService.form.controls.euVehicleCategory.setValue('m1' as never);
 
 			component.onAddRequiredStandard();

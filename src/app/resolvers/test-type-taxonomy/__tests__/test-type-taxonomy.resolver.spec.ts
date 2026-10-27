@@ -24,7 +24,7 @@ describe('TestTypeTaxonomyResolver', () => {
 	});
 
 	it('should dispatch the fetchTestTypes action', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
 		expect(dispatchSpy).toHaveBeenCalledWith(fetchTestTypes());
@@ -32,7 +32,7 @@ describe('TestTypeTaxonomyResolver', () => {
 
 	it('should not fetch test types again when they are already loaded', () => {
 		store.overrideSelector(selectTestTypesTotal, 1);
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 

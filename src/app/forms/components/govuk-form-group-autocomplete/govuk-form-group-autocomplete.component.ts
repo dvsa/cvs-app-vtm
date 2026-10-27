@@ -12,7 +12,7 @@ import {
 	output,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { loadAccessibleAutocomplete } from '@forms/components/autocomplete/load-accessible-autocomplete';
+import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOptions } from '@models/options.model';
 import type { AutocompleteEnhanceParams } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
@@ -54,10 +54,12 @@ export class GovukFormGroupAutocompleteComponent
 	destroy = new ReplaySubject<boolean>(1);
 	valueSub = new BehaviorSubject<unknown>(null);
 
+	private loadAccessibleAutocomplete = inject(ACCESSIBLE_AUTOCOMPLETE_LOADER);
+
 	ngAfterViewInit(): void {
 		// Load the library before subscribing so each emission below runs synchronously. If the library can't be
 		// loaded, carry on without it so the plain select still works.
-		loadAccessibleAutocomplete()
+		this.loadAccessibleAutocomplete()
 			.then(({ enhanceSelectElement }) => enhanceSelectElement)
 			.catch(() => undefined)
 			.then((enhanceSelectElement) => this.watchOptions(enhanceSelectElement));

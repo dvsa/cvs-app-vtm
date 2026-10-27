@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, combineLatest, lastValueFrom, takeWhile } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
-import { loadAccessibleAutocomplete } from './load-accessible-autocomplete';
+import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from './load-accessible-autocomplete';
 
 @Component({
 	selector: 'app-autocomplete',
@@ -26,6 +26,7 @@ import { loadAccessibleAutocomplete } from './load-accessible-autocomplete';
 export class AutocompleteComponent extends BaseControlComponent implements AfterViewInit, AfterContentInit {
 	store = inject(Store);
 	document = inject(DOCUMENT);
+	private loadAccessibleAutocomplete = inject(ACCESSIBLE_AUTOCOMPLETE_LOADER);
 
 	refDataLoading = this.store.select(referenceDataLoadingState);
 
@@ -53,7 +54,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 				this.options = options;
 				this.cdr.detectChanges();
 
-				const { enhanceSelectElement } = await loadAccessibleAutocomplete();
+				const { enhanceSelectElement } = await this.loadAccessibleAutocomplete();
 
 				const name = this.name();
 				enhanceSelectElement({

@@ -51,8 +51,8 @@ describe('AccordionComponent', () => {
 	});
 
 	it('should set expanded value to true', () => {
-		const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const markForCheckSpy = vi.spyOn(component['cdr'], 'markForCheck');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		component.open('TEST_SECTION');
 		expect(component.isExpanded).toBeTruthy();
@@ -62,8 +62,8 @@ describe('AccordionComponent', () => {
 	});
 
 	it('should set expanded value to false', () => {
-		const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const markForCheckSpy = vi.spyOn(component['cdr'], 'markForCheck');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 		component.isExpanded.set(true);
 		component.close('TEST_SECTION');

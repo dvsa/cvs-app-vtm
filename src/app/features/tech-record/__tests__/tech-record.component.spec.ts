@@ -2,12 +2,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CustomRouteReuseStrategy } from '@services/router/custom-route-reuse-strategy';
 import { State, initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
+import { of } from 'rxjs';
 import { TechRecordComponent } from '../tech-record.component';
 
 describe('TechRecordComponent', () => {
@@ -24,6 +26,8 @@ describe('TechRecordComponent', () => {
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+				{ provide: MsalBroadcastService, useValue: { msalSubject$: of(), inProgress$: of('none') } },
+				{ provide: MsalService, useValue: { logout: () => of() } },
 			],
 		}).compileComponents();
 	});

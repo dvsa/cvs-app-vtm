@@ -18,12 +18,12 @@ describe('CancelBatchComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [CancelBatchComponent],
 			providers: [
-				{ provide: Location, useValue: { back: jest.fn() } },
+				{ provide: Location, useValue: { back: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
 				provideRouter([
 					{
 						path: RootRoutes.ROOT,
-						component: jest.fn(),
+						component: vi.fn(),
 					},
 				]),
 			],
@@ -39,7 +39,7 @@ describe('CancelBatchComponent', () => {
 
 	describe('handleBack', () => {
 		it('should call return the user back to their previous route', () => {
-			const backSpy = jest.spyOn(location, 'back');
+			const backSpy = vi.spyOn(location, 'back');
 			component.handleBack();
 			expect(backSpy).toHaveBeenCalledTimes(1);
 		});
@@ -47,8 +47,8 @@ describe('CancelBatchComponent', () => {
 
 	describe('handleCancelBatch', () => {
 		it('should clear the batch and navigate the user to the home page', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.handleCancelBatch();
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ROOT]);
 			expect(dispatchSpy).toHaveBeenCalledWith(cancelBatch());

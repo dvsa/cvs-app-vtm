@@ -31,7 +31,7 @@ describe('VehicleComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{
 					provide: MultiOptionsService,
-					useValue: { getOptions: jest.fn(), loadOptions: jest.fn() },
+					useValue: { getOptions: vi.fn(), loadOptions: vi.fn() },
 				},
 				provideMockStore({ initialState: initialAppState }),
 			],
@@ -284,7 +284,7 @@ describe('VehicleComponent', () => {
 			vtg15.controls.primaryHazardClassification.setValue(undefined);
 			vtg15.controls.secondaryHazardClassification.setValue(undefined);
 
-			const patchSpy = jest.spyOn(vtg15, 'patchValue');
+			const patchSpy = vi.spyOn(vtg15, 'patchValue');
 			component.prepopulateHazardClassificationOptions();
 
 			expect(patchSpy).toHaveBeenCalledWith(
@@ -304,7 +304,7 @@ describe('VehicleComponent', () => {
 			vtg15.controls.primaryHazardClassification.setValue(unknownPrimary);
 			vtg15.controls.secondaryHazardClassification.setValue(unknownSecondary);
 
-			const patchSpy = jest.spyOn(vtg15, 'patchValue');
+			const patchSpy = vi.spyOn(vtg15, 'patchValue');
 			component.prepopulateHazardClassificationOptions();
 
 			expect(patchSpy).not.toHaveBeenCalled();
@@ -326,7 +326,7 @@ describe('VehicleComponent', () => {
 			vtg15.controls.primaryHazardClassification.setValue(plainPrimary);
 			vtg15.controls.secondaryHazardClassification.setValue(plainSecondary);
 
-			const patchSpy = jest.spyOn(vtg15, 'patchValue');
+			const patchSpy = vi.spyOn(vtg15, 'patchValue');
 			component.prepopulateHazardClassificationOptions();
 
 			expect(patchSpy).toHaveBeenCalledWith(

@@ -50,22 +50,28 @@ describe('RouterService', () => {
 	});
 
 	describe('get routeNestedParams$', () => {
-		it('should return an Observable route Params', (done) => {
-			store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
-			store.refreshState();
-			service.routeNestedParams$.subscribe((value) => {
-				expect(value).toEqual({ foo: 'bar' });
-				done();
+		it('should return an Observable route Params', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
+				store.refreshState();
+				service.routeNestedParams$.subscribe((value) => {
+					expect(value).toEqual({ foo: 'bar' });
+					done();
+				});
 			});
 		});
 	});
 
 	describe('getRouteNestedParam', () => {
-		it('should return the correct value', (done) => {
-			service.routeNestedParams$ = of({ foo: 'bar' });
-			service.getRouteNestedParam$('foo').subscribe((value) => {
-				expect(value).toBe('bar');
-				done();
+		it('should return the correct value', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				service.routeNestedParams$ = of({ foo: 'bar' });
+				service.getRouteNestedParam$('foo').subscribe((value) => {
+					expect(value).toBe('bar');
+					done();
+				});
 			});
 		});
 	});

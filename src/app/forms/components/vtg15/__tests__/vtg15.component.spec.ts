@@ -100,7 +100,8 @@ describe('VTG15Component', () => {
 	describe('initForm', () => {
 		it('should return early when testResult is undefined', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined as any);
-			const patchValueSpy = jest.spyOn(component.form, 'patchValue');
+			store.overrideSelector(techRecord, undefined as any);
+			const patchValueSpy = vi.spyOn(component.form, 'patchValue');
 			component.initForm();
 			expect(patchValueSpy).not.toHaveBeenCalled();
 		});
@@ -136,7 +137,7 @@ describe('VTG15Component', () => {
 
 		it('should call detectChanges after patching', () => {
 			store.overrideSelector(toEditOrNotToEdit, { vtg15: { vtg15Required: true } } as any);
-			const detectSpy = jest.spyOn(component.cdr, 'detectChanges');
+			const detectSpy = vi.spyOn(component.cdr, 'detectChanges');
 			component.initForm();
 			expect(detectSpy).toHaveBeenCalled();
 		});

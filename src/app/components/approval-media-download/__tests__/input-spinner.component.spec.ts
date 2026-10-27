@@ -8,7 +8,9 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { provideMockStore } from '@ngrx/store/testing';
+import { mockTestResult } from '@mocks/mock-test-result';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { selectedTestResultState } from '@store/test-records';
 import { of, throwError } from 'rxjs';
 import { ApprovalMediaDownloadComponent } from '../approval-media-download.component';
 
@@ -19,6 +21,7 @@ describe('MediaDownloadComponent', () => {
 	let httpService: HttpService;
 	let globalErrorService: GlobalErrorService;
 	let documentService: DocumentsService;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -27,13 +30,15 @@ describe('MediaDownloadComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 				provideHttpClient(),
 				provideHttpClientTesting(),
-				provideRouter([{ path: RootRoutes.ERROR, component: jest.fn() }]),
-				{ provide: HttpService, useValue: { getTestResultMedia: jest.fn() } },
-				{ provide: GlobalErrorService, useValue: { clearErrors: jest.fn(), setErrors: jest.fn() } },
-				{ provide: DocumentsService, useValue: { openDocumentFromResponse: jest.fn() } },
+				provideRouter([{ path: RootRoutes.ERROR, component: vi.fn() }]),
+				{ provide: HttpService, useValue: { getTestResultMedia: vi.fn() } },
+				{ provide: GlobalErrorService, useValue: { clearErrors: vi.fn(), setErrors: vi.fn() } },
+				{ provide: DocumentsService, useValue: { openDocumentFromResponse: vi.fn() } },
 			],
 		}).compileComponents();
 
+		store = TestBed.inject(MockStore);
+		store.overrideSelector(selectedTestResultState, mockTestResult());
 		fixture = TestBed.createComponent(ApprovalMediaDownloadComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
@@ -121,7 +126,7 @@ describe('MediaDownloadComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should call clearErrors', () => {
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
 			component.ngOnDestroy();
 			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
 		});
@@ -129,21 +134,21 @@ describe('MediaDownloadComponent', () => {
 
 	describe('downloadMedia', () => {
 		it('should call openDocumentFromResponse upon receiving a 200 response', () => {
-			jest
-				.spyOn(httpService, 'getTestResultMedia')
-				.mockReturnValue(of({ type: HttpEventType.Response } as HttpEvent<string>));
+			vi.spyOn(httpService, 'getTestResultMedia').mockReturnValue(
+				of({ type: HttpEventType.Response } as HttpEvent<string>)
+			);
 
-			const openDocumentFromResponseSpy = jest.spyOn(documentService, 'openDocumentFromResponse');
+			const openDocumentFromResponseSpy = vi.spyOn(documentService, 'openDocumentFromResponse');
 			component.downloadMedia({} as TestResultSchema);
 			expect(openDocumentFromResponseSpy).toHaveBeenCalledTimes(1);
 		});
 
 		it('should call setErrors upon receiving a 404 response', () => {
-			jest
-				.spyOn(httpService, 'getTestResultMedia')
-				.mockReturnValue(throwError(() => new HttpErrorResponse({ status: HttpStatusCode.NotFound })));
+			vi.spyOn(httpService, 'getTestResultMedia').mockReturnValue(
+				throwError(() => new HttpErrorResponse({ status: HttpStatusCode.NotFound }))
+			);
 
-			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+			const setErrorsSpy = vi.spyOn(globalErrorService, 'setErrors');
 			component.downloadMedia({} as TestResultSchema);
 			expect(setErrorsSpy).toHaveBeenCalledWith([
 				{
@@ -155,11 +160,11 @@ describe('MediaDownloadComponent', () => {
 		});
 
 		it('should redirect to error page upon receiving a 500 response', () => {
-			jest
-				.spyOn(httpService, 'getTestResultMedia')
-				.mockReturnValue(throwError(() => new HttpErrorResponse({ status: HttpStatusCode.InternalServerError })));
+			vi.spyOn(httpService, 'getTestResultMedia').mockReturnValue(
+				throwError(() => new HttpErrorResponse({ status: HttpStatusCode.InternalServerError }))
+			);
 
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.downloadMedia({} as TestResultSchema);
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ERROR]);
 		});

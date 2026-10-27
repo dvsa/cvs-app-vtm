@@ -80,7 +80,7 @@ describe('EditBaseComponent', () => {
 
 	describe('addControls', () => {
 		it('should add controls to the form', () => {
-			jest.spyOn(form, 'addControl');
+			vi.spyOn(form, 'addControl');
 			const vehicleControls: Record<string, AbstractControl> = {
 				control1: fb.control('value1'),
 				control2: fb.control('value2'),

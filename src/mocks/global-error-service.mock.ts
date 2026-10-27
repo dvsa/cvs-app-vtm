@@ -1,5 +1,5 @@
 export const GlobalErrorServiceMock = {
-	clearErrors: jest.fn(),
-	setErrors: jest.fn(),
-	extractGlobalErrors: jest.fn(),
+	clearErrors: vi.fn(),
+	setErrors: vi.fn(),
+	extractGlobalErrors: vi.fn(),
 };

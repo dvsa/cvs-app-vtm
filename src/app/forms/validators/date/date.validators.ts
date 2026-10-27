@@ -28,8 +28,8 @@ export class DateValidators {
 		};
 	}
 
-	private static validateTime(time: string, label: string | undefined) {
-		const [hours, minutes] = time.split(':');
+	private static validateTime(time: string | undefined, label: string | undefined) {
+		const [hours, minutes] = time?.split(':') ?? [];
 
 		if (!hours || !minutes) {
 			return { invalidDate: { error: true, reason: `'${label || 'Date'}' must include time` } };

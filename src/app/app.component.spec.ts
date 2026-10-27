@@ -21,7 +21,8 @@ import { State, initialAppState } from './store';
 
 describe('AppComponent', () => {
 	const MockUserService = {
-		getUserName$: jest.fn().mockReturnValue(new Observable()),
+		getUserName$: vi.fn().mockReturnValue(new Observable()),
+		jobTitle: () => '',
 	};
 	let router: Router;
 
@@ -45,7 +46,7 @@ describe('AppComponent', () => {
 				{ provide: RoleGuard, useValue: { canActivate: () => of(true) } },
 				PageNotFoundComponent,
 				{ provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
-				{ provide: AnalyticsService, useValue: { pushToDataLayer: jest.fn(), setUserId: jest.fn() } },
+				{ provide: AnalyticsService, useValue: { pushToDataLayer: vi.fn(), setUserId: vi.fn() } },
 			],
 		}).compileComponents();
 		router = TestBed.inject(Router);
@@ -67,28 +68,28 @@ describe('AppComponent', () => {
 
 	describe('router.navigateByUrl', () => {
 		it('should navigate to search page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/search');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/search');
 		});
 
 		it('should navigate to create page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/create');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/create');
 		});
 
 		it('should navigate to create-batch page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/create-batch');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/create-batch');
 		});
 
 		it('should navigate to test-records/:systemNumber/test-result/:testResultId/:testNumber', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			const systemNumber = '123';
 			const testResultId = '456';
 			const testNumber = '789';
@@ -101,7 +102,7 @@ describe('AppComponent', () => {
 		});
 
 		it('should navigate to tech-records/:systemNumber/:createdTimestamp', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			const systemNumber = '123';
 			const createdTimestamp = '2024-02-23T09:56:12.872Z';
 
@@ -111,28 +112,28 @@ describe('AppComponent', () => {
 		});
 
 		it('should navigate to reference-data page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/reference-data');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/reference-data');
 		});
 
 		it('should navigate to feature-toggle page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/feature-toggle');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/feature-toggle');
 		});
 
 		it('should navigate to error page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			void router.navigateByUrl('/error');
 
 			expect(navigateSpy).toHaveBeenCalledWith('/error');
 		});
 
 		it('should navigate to PageNotFoundComponent page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+			const navigateSpy = vi.spyOn(router, 'navigateByUrl');
 			const invalidRoute = 'invalid-url';
 			void router.navigateByUrl(invalidRoute);
 

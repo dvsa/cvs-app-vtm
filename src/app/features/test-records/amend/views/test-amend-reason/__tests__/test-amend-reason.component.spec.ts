@@ -34,7 +34,7 @@ describe('TestAmendReasonComponent', () => {
 		['incorrect-test-type', 1],
 		['amend-test-details', 2],
 	])('should navigate to %s on submit when reason is %n', (path, reason) => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 		component.form.setValue({ reason });
 		component.handleSubmit();
 		expect(navigateSpy).toHaveBeenCalledWith([path], { relativeTo: route });
