@@ -114,10 +114,14 @@ describe('Reference Data Selectors', () => {
 	});
 
 	it('should return true if any feature is loading state', () => {
-		const state: ReferenceDataState = { ...initialReferenceDataState };
-		state.HGV_MAKE.loading = true;
+		const state: ReferenceDataState = {
+			...initialReferenceDataState,
+			HGV_MAKE: { ...initialReferenceDataState.HGV_MAKE, loading: true },
+		};
 		const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
 		expect(selectedState).toBe(true);
+		expect(initialReferenceDataState.HGV_MAKE.loading).toBe(false);
+		expect(referenceDataSelectors.referenceDataLoadingState.projector(initialReferenceDataState)).toBe(false);
 	});
 
 	it('should return the reasons for abandoning for the right vehicle type', () => {

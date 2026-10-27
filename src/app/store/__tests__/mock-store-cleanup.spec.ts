@@ -57,4 +57,20 @@ describe('MockStore selector cleanup', () => {
 		expect(TestBed.inject(MockStore, null)).toBeNull();
 		expect(() => TestBed.resetTestingModule()).not.toThrow();
 	});
+
+	it('should recompute downstream selectors when a new store reuses the initial state', async () => {
+		TestBed.configureTestingModule({
+			providers: [provideMockStore({ initialState: state })],
+		});
+		const store = TestBed.inject(MockStore);
+		store.overrideSelector(selectValue, 'overridden');
+		expect(await firstValueFrom(store.select(selectDerivedValue))).toBe('derived overridden');
+
+		TestBed.resetTestingModule();
+		TestBed.configureTestingModule({
+			providers: [provideMockStore({ initialState: state })],
+		});
+
+		expect(await firstValueFrom(TestBed.inject(Store).select(selectDerivedValue))).toBe('derived original');
+	});
 });

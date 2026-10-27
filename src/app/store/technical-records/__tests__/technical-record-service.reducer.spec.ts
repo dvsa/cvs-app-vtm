@@ -14,6 +14,7 @@ import { createMockTrl } from '@mocks/trl-record.mock';
 import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { cloneDeep } from 'lodash-es';
 import {
 	addSectionState,
 	archiveTechRecord,
@@ -45,11 +46,17 @@ import {
 } from '../technical-record-service.actions';
 import {
 	TechnicalRecordServiceState,
-	initialState,
+	initialState as initialTechnicalRecordState,
 	vehicleTechRecordReducer,
 } from '../technical-record-service.reducer';
 
 describe('Vehicle Technical Record Reducer', () => {
+	let initialState: TechnicalRecordServiceState;
+
+	beforeEach(() => {
+		initialState = cloneDeep(initialTechnicalRecordState);
+	});
+
 	describe('unknown action', () => {
 		it('should return the default state', () => {
 			const action = {
