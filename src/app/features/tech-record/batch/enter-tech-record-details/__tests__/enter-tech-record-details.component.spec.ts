@@ -81,6 +81,8 @@ describe('EnterTechRecordDetailsComponent', () => {
 	describe('handleSave', () => {
 		beforeEach(() => {
 			store.overrideSelector(editingTechRecord, mockTechRecord);
+			store.refreshState();
+			fixture.detectChanges();
 		});
 
 		it('should call set error if there are errors', () => {
@@ -104,6 +106,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
 
 			store.overrideSelector(selectBatchDetails, mockSavedBatchDetails);
+			store.refreshState();
 
 			component.handleSave();
 
@@ -195,6 +198,7 @@ describe('EnterTechRecordDetailsComponent', () => {
 					},
 				],
 			});
+			store.refreshState();
 
 			component.handleSave();
 

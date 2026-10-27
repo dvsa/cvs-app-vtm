@@ -142,6 +142,7 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "runnerConfig": "vitest.config.ts",
+            "providersFile": "test-providers.ts",
             "setupFiles": [
               "setup-vitest.ts"
             ],
