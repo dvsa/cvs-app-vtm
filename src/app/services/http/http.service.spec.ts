@@ -445,11 +445,9 @@ describe('HttpService', () => {
 						done();
 					},
 				});
-				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/v3/technical-records/recalls/VIN789`);
+				const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/recalls/VIN789`);
 				req.flush('Not found', { status: 404, statusText: 'Not Found' });
 			});
-			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/recalls/VIN789`);
-			req.flush('Not found', { status: 404, statusText: 'Not Found' });
 		});
 	});
 
