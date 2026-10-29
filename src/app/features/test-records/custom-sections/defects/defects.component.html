@@ -1,7 +1,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     @if (testResult(); as testResult) {
-      @if (testResult?.testTypes?.[0]?.defects?.length) {
+      @if (testResult.testTypes[0].defects.length) {
         <p class="govuk-hint">
           Any unresolved major or dangerous defects will result in failed test.
         </p>
