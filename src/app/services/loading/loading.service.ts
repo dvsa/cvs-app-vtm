@@ -1,4 +1,12 @@
 import { Injectable, inject } from '@angular/core';
+import {
+	NavigationCancel,
+	NavigationEnd,
+	NavigationError,
+	NavigationSkipped,
+	NavigationStart,
+	Router,
+} from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { defectsLoadingState } from '@store/defects';
 import { referenceDataLoadingState } from '@store/reference-data';
@@ -9,13 +17,28 @@ import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
 import { testStationsLoadingState } from '@store/test-stations';
 import { selectTestTypesLoadingState } from '@store/test-types/test-types.selectors';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, distinctUntilChanged, filter, map, startWith } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class LoadingService {
 	private store = inject(Store);
+	private router = inject(Router);
+
+	navigationLoadingState$ = this.router.events.pipe(
+		filter(
+			(event) =>
+				event instanceof NavigationStart ||
+				event instanceof NavigationEnd ||
+				event instanceof NavigationCancel ||
+				event instanceof NavigationError ||
+				event instanceof NavigationSkipped
+		),
+		map((event) => event instanceof NavigationStart),
+		startWith(this.router.currentNavigation() !== null),
+		distinctUntilChanged()
+	);
 
 	globalLoadingState$ = this.store.pipe(select(getSpinner));
 	testResultLoadingState$ = this.store.pipe(select(testResultLoadingState));
@@ -28,6 +51,7 @@ export class LoadingService {
 	requiredStandardsLoadingState$ = this.store.pipe(select(requiredStandardsLoadingState));
 
 	showSpinner$ = combineLatest([
+		this.navigationLoadingState$,
 		this.globalLoadingState$,
 		this.testResultLoadingState$,
 		this.techRecordsLoadingState$,

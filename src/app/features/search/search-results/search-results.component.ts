@@ -6,7 +6,7 @@ import { SEARCH_TYPES } from '@/src/app/models/search-types-enum';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectTechRecordSearchView } from '@/src/app/store/tech-record-search/tech-record-search.selector';
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ReplaySubject, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -27,7 +27,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchResultsComponent implements OnInit, OnDestroy {
+export class SearchResultsComponent implements OnDestroy {
 	store = inject(Store);
 	activatedRoute = inject(ActivatedRoute);
 	globalErrorService = inject(GlobalErrorService);
@@ -37,7 +37,8 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 	searchView$ = this.store.select(selectTechRecordSearchView);
 	destroy = new ReplaySubject<boolean>(1);
 
-	ngOnInit(): void {
+	constructor() {
+		// Start loading during route activation, before navigation finishes and the view is checked.
 		this.activatedRoute.queryParamMap
 			.pipe(
 				distinctUntilChanged(
