@@ -7,12 +7,17 @@ import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
+import { LoginComponent } from './features/login/login.component';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
 import { FeatureFlags } from './services/feature-toggle-service/feature-toggle-service';
 
 const routes: Routes = [
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
 	{
 		path: RootRoutes.ROOT,
 		resolve: { title: titleResolver },

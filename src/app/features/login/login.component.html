@@ -1,0 +1,9 @@
+<div class="login-container">
+  <div class="login-box">
+    <h1>Login</h1>
+    <p>Sign in to continue</p>
+    <button (click)="login()" [disabled]="isLoading" class="login-button">
+      {{ isLoading ? 'Signing in...' : 'Sign In' }}
+    </button>
+  </div>
+</div>
