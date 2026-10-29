@@ -1,5 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import {
+	Event,
+	NavigationCancel,
+	NavigationEnd,
+	NavigationError,
+	NavigationSkipped,
+	NavigationSkippedCode,
+	NavigationStart,
+	Router,
+	provideRouter,
+} from '@angular/router';
 import { SpinnerComponent } from '@core/components/spinner/spinner.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { defectsLoadingState } from '@store/defects';
@@ -12,7 +22,7 @@ import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
 import { testStationsLoadingState } from '@store/test-stations';
 import { selectTestTypesLoadingState } from '@store/test-types/test-types.selectors';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { LoadingService } from '../loading.service';
 
 describe('Spinner-Service', () => {
@@ -61,6 +71,35 @@ describe('Spinner-Service', () => {
 			mockStore.refreshState();
 
 			expect(await firstValueFrom(service.showSpinner$)).toBe(true);
+		});
+
+		it.each([
+			new NavigationEnd(1, '/search/results', '/search/results'),
+			new NavigationCancel(1, '/search/results', 'Guard rejected navigation'),
+			new NavigationError(1, '/search/results', new Error('Unable to load results page')),
+			new NavigationSkipped(1, '/search/results', 'Same URL', NavigationSkippedCode.IgnoredSameUrlNavigation),
+		])('should stop navigation loading on $constructor.name without hiding a pending search', (event) => {
+			const events = new Subject<Event>();
+			vi.spyOn(TestBed.inject(Router), 'events', 'get').mockReturnValue(events);
+			const loading = TestBed.runInInjectionContext(() => new LoadingService());
+			const states: boolean[] = [];
+			const subscription = loading.showSpinner$.subscribe((state) => states.push(state));
+
+			events.next(new NavigationStart(1, '/search/results'));
+			expect(states.at(-1)).toBe(true);
+			events.next(event);
+			expect(states.at(-1)).toBe(false);
+
+			events.next(new NavigationStart(2, '/search/results'));
+			mockStore.overrideSelector(selectTechRecordSearchLoadingState, true);
+			mockStore.refreshState();
+			events.next(event);
+			expect(states.at(-1)).toBe(true);
+
+			mockStore.overrideSelector(selectTechRecordSearchLoadingState, false);
+			mockStore.refreshState();
+			expect(states.at(-1)).toBe(false);
+			subscription.unsubscribe();
 		});
 	});
 });
