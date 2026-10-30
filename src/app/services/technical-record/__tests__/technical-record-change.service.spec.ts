@@ -1,9 +1,9 @@
 import { initialAppState } from '@/src/app/store';
 import { TestBed } from '@angular/core/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { editingTechRecord, techRecord } from '@store/technical-records';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { editingTechRecord, techRecord } from '@store/technical-records';
 import { TechnicalRecordChangesService } from '../technical-record-change.service';
 
 describe('TechnicalRecordChangesService', () => {
@@ -188,11 +188,14 @@ describe('TechnicalRecordChangesService', () => {
 			expect(spy).toHaveBeenCalled();
 		});
 
-		it.each(['psvBrakesSection', 'trlBrakesSection'])('should delegate to hasBrakesSectionChanged for %s', (section) => {
-			const spy = vi.spyOn(service, 'hasBrakesSectionChanged').mockReturnValue(true);
-			expect(service.hasSectionChanged(section)).toBe(true);
-			expect(spy).toHaveBeenCalled();
-		});
+		it.each(['psvBrakesSection', 'trlBrakesSection'])(
+			'should delegate to hasBrakesSectionChanged for %s',
+			(section) => {
+				const spy = vi.spyOn(service, 'hasBrakesSectionChanged').mockReturnValue(true);
+				expect(service.hasSectionChanged(section)).toBe(true);
+				expect(spy).toHaveBeenCalled();
+			}
+		);
 
 		it('should delegate to hasDDASectionChanged for dda', () => {
 			const spy = vi.spyOn(service, 'hasDDASectionChanged').mockReturnValue(true);
@@ -293,10 +296,7 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('hasPurchaserSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_purchaserDetails_name: 'A' },
-				{ techRecord_purchaserDetails_name: 'B' }
-			);
+			setRecords({ techRecord_purchaserDetails_name: 'A' }, { techRecord_purchaserDetails_name: 'B' });
 			TestBed.tick();
 			expect(service.hasPurchaserSectionChanged()).toBe(true);
 		});
@@ -314,19 +314,13 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('hasLastApplicantSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_applicantDetails_name: 'A' },
-				{ techRecord_applicantDetails_name: 'B' }
-			);
+			setRecords({ techRecord_applicantDetails_name: 'A' }, { techRecord_applicantDetails_name: 'B' });
 			TestBed.tick();
 			expect(service.hasLastApplicantSectionChanged()).toBe(true);
 		});
 
 		it('hasDocumentsSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_microfilm_microfilmRollNumber: '1' },
-				{ techRecord_microfilm_microfilmRollNumber: '2' }
-			);
+			setRecords({ techRecord_microfilm_microfilmRollNumber: '1' }, { techRecord_microfilm_microfilmRollNumber: '2' });
 			TestBed.tick();
 			expect(service.hasDocumentsSectionChanged()).toBe(true);
 		});
@@ -347,28 +341,19 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('hasLettersSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_letterOfAuth_letterIssuer: 'A' },
-				{ techRecord_letterOfAuth_letterIssuer: 'B' }
-			);
+			setRecords({ techRecord_letterOfAuth_letterIssuer: 'A' }, { techRecord_letterOfAuth_letterIssuer: 'B' });
 			TestBed.tick();
 			expect(service.hasLettersSectionChanged()).toBe(true);
 		});
 
 		it('hasAuthorisationIntoServiceSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_authIntoService_dateReceived: 'A' },
-				{ techRecord_authIntoService_dateReceived: 'B' }
-			);
+			setRecords({ techRecord_authIntoService_dateReceived: 'A' }, { techRecord_authIntoService_dateReceived: 'B' });
 			TestBed.tick();
 			expect(service.hasAuthorisationIntoServiceSectionChanged()).toBe(true);
 		});
 
 		it('hasManufacturerSectionChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_manufacturerDetails_name: 'A' },
-				{ techRecord_manufacturerDetails_name: 'B' }
-			);
+			setRecords({ techRecord_manufacturerDetails_name: 'A' }, { techRecord_manufacturerDetails_name: 'B' });
 			TestBed.tick();
 			expect(service.hasManufacturerSectionChanged()).toBe(true);
 		});
@@ -431,10 +416,7 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('haveAnyBatteryListItemsChanged should detect a change', () => {
-			setRecords(
-				{ techRecord_adrDetails_batteryListNumber: 'A' },
-				{ techRecord_adrDetails_batteryListNumber: 'B' }
-			);
+			setRecords({ techRecord_adrDetails_batteryListNumber: 'A' }, { techRecord_adrDetails_batteryListNumber: 'B' });
 			TestBed.tick();
 			expect(service.haveAnyBatteryListItemsChanged()).toBe(true);
 		});
@@ -526,10 +508,7 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('should return true when an axle parking brake marker has changed', () => {
-			setRecords(
-				{ techRecord_axles: [{ parkingBrakeMrk: true }] },
-				{ techRecord_axles: [{ parkingBrakeMrk: false }] }
-			);
+			setRecords({ techRecord_axles: [{ parkingBrakeMrk: true }] }, { techRecord_axles: [{ parkingBrakeMrk: false }] });
 			TestBed.tick();
 			expect(service.hasParkingBrakesSectionChanged()).toBe(true);
 		});
@@ -564,10 +543,7 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('should return true when an axle tyre has changed', () => {
-			setRecords(
-				{ techRecord_axles: [{ tyres_tyreCode: 'A' }] },
-				{ techRecord_axles: [{ tyres_tyreCode: 'B' }] }
-			);
+			setRecords({ techRecord_axles: [{ tyres_tyreCode: 'A' }] }, { techRecord_axles: [{ tyres_tyreCode: 'B' }] });
 			TestBed.tick();
 			expect(service.hasTyresSectionChanged()).toBe(true);
 		});
@@ -575,10 +551,7 @@ describe('TechnicalRecordChangesService', () => {
 
 	describe('hasWeightSectionChanged', () => {
 		it('should return true when an axle weight has changed', () => {
-			setRecords(
-				{ techRecord_axles: [{ weights_gbWeight: 100 }] },
-				{ techRecord_axles: [{ weights_gbWeight: 200 }] }
-			);
+			setRecords({ techRecord_axles: [{ weights_gbWeight: 100 }] }, { techRecord_axles: [{ weights_gbWeight: 200 }] });
 			TestBed.tick();
 			expect(service.hasWeightSectionChanged()).toBe(true);
 		});
@@ -610,10 +583,7 @@ describe('TechnicalRecordChangesService', () => {
 
 	describe('hasADRSectionChanged / hasUNNumbersChanged', () => {
 		it('should return true when an ADR property has changed', () => {
-			setRecords(
-				{ techRecord_adrDetails_dangerousGoods: false },
-				{ techRecord_adrDetails_dangerousGoods: true }
-			);
+			setRecords({ techRecord_adrDetails_dangerousGoods: false }, { techRecord_adrDetails_dangerousGoods: true });
 			TestBed.tick();
 			expect(service.hasADRSectionChanged()).toBe(true);
 		});
@@ -716,10 +686,7 @@ describe('TechnicalRecordChangesService', () => {
 		});
 
 		it('hasWeightChanged should detect a change at the given axle index', () => {
-			setRecords(
-				{ techRecord_axles: [{ weights_gbWeight: 1 }] },
-				{ techRecord_axles: [{ weights_gbWeight: 2 }] }
-			);
+			setRecords({ techRecord_axles: [{ weights_gbWeight: 1 }] }, { techRecord_axles: [{ weights_gbWeight: 2 }] });
 			TestBed.tick();
 			expect(service.hasWeightChanged(0)).toBe(true);
 		});

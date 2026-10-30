@@ -40,5 +40,3 @@ describe('AdrCertsSectionEditComponent', () => {
 		expect(keys).toEqual([]);
 	});
 });
-
-
