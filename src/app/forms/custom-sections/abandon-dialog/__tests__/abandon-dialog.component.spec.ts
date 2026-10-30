@@ -38,6 +38,20 @@ describe('AbandonDialogComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	describe('ngOnInit', () => {
+		it('should set the template property on init', () => {
+			expect(component.template).toBeTruthy();
+			expect(component.template?.name).toBe('abandonSection');
+		});
+
+		it('should call getTemplate when ngOnInit is invoked', () => {
+			const spy = vi.spyOn(component, 'getTemplate');
+			component.ngOnInit();
+			expect(spy).toHaveBeenCalled();
+			expect(component.template).toBe(spy.mock.results[0].value);
+		});
+	});
+
 	describe('template getter', () => {
 		it('should get the template with MSVA reasons for abandoning if the testType is a MSVA', () => {
 			const mockTestResult = { testTypes: [{ testTypeId: TEST_TYPES_MSVA[0] }] } as TestResultSchema;
@@ -63,5 +77,67 @@ describe('AbandonDialogComponent', () => {
 			const ReasonsForAbandoning = component.getTemplate().children?.[0].children?.[0].children?.[0].referenceData;
 			expect(ReasonsForAbandoning).toEqual(SpecialRefData.ReasonsForAbandoning);
 		});
+		it('should default to regular reasons for abandoning when there is no testResult', () => {
+			const ReasonsForAbandoning = component.getTemplate().children?.[0].children?.[0].children?.[0].referenceData;
+			expect(ReasonsForAbandoning).toEqual(SpecialRefData.ReasonsForAbandoning);
+		});
+		it('should build the reasonForAbandoning control with the expected shape', () => {
+			const mockTestResult = { testTypes: [{ testTypeId: 'foobar' }] } as TestResultSchema;
+			fixture.componentRef.setInput('testResult', mockTestResult);
+			const reasonControl = component.getTemplate().children?.[0].children?.[0].children?.[0];
+			expect(reasonControl?.name).toBe('reasonForAbandoning');
+			expect(reasonControl?.required).toBe(true);
+		});
+	});
+
+	describe('handleFormChange', () => {
+		it('should emit the merged test result when the event has keys', () => {
+			const mockTestResult = { vin: 'ABC123', testTypes: [{ testTypeId: 'foobar' }] } as TestResultSchema;
+			fixture.componentRef.setInput('testResult', mockTestResult);
+
+			const emitSpy = vi.spyOn(component.newTestResult, 'emit');
+			component.handleFormChange({ abandonSection: { testTypes: [{ reasonForAbandoning: 'foo' }] } });
+
+			expect(emitSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					vin: 'ABC123',
+					abandonSection: { testTypes: [{ reasonForAbandoning: 'foo' }] },
+				})
+			);
+		});
+
+		it('should not emit when the merged result has no keys', () => {
+			fixture.componentRef.setInput('testResult', undefined);
+
+			const emitSpy = vi.spyOn(component.newTestResult, 'emit');
+			component.handleFormChange({});
+
+			expect(emitSpy).not.toHaveBeenCalled();
+		});
+
+		it('should emit even if testResult is undefined, provided the event has keys', () => {
+			fixture.componentRef.setInput('testResult', undefined);
+
+			const emitSpy = vi.spyOn(component.newTestResult, 'emit');
+			component.handleFormChange({ foo: 'bar' });
+
+			expect(emitSpy).toHaveBeenCalledWith(expect.objectContaining({ foo: 'bar' }));
+		});
+	});
+
+	describe('inherited BaseDialogComponent behaviour', () => {
+		it('should emit the action output when handleAction is called', () => {
+			const actionSpy = vi.spyOn(component.action, 'emit');
+			component.handleAction('cancel');
+			expect(actionSpy).toHaveBeenCalledWith('cancel');
+		});
+	});
+
+	describe('dynamicFormGroup view child', () => {
+		it('should resolve the DynamicFormGroupComponent view child', () => {
+			expect(component.dynamicFormGroup()).toBeTruthy();
+		});
 	});
 });
+
+
