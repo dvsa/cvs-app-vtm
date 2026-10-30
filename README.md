@@ -35,6 +35,31 @@ destruction, but this does not undo mutations to imported state fixtures.
 Never mutate exported initial state in tests: copy every nested object being
 changed, or use `cloneDeep` for a fresh mutable fixture in `beforeEach`.
 
+### Playwright E2E tests
+
+Playwright runs browser tests separately from the Vitest unit tests. Install the
+project dependencies and Chromium, then run the suite:
+
+```sh
+npm ci
+npx playwright install chromium
+npm run test:e2e
+```
+
+On Linux CI, install browser system dependencies with
+`npx playwright install --with-deps chromium`.
+
+The runner starts and stops an Angular development server at
+`http://127.0.0.1:4201`. Keep that port free. It uses the checked-in development
+environment rather than `npm start`, so no `.env` file, Azure credentials, or
+backend services are required for the single login-page smoke test. The test
+does not attempt Azure sign-in or exercise authenticated workflows.
+
+Use `npm run test:e2e:ui` for Playwright's interactive runner, or
+`npm run test:e2e -- --headed` to see the browser. After a run, use
+`npx playwright show-report` to open the HTML report. Reports, failure
+screenshots, and traces are ignored by Git.
+
 ### Backend Requirements
 
 This talks to the following backends:
