@@ -87,7 +87,7 @@ describe('Search loading', () => {
 			loadResults(SearchResultsComponent);
 			await navigation;
 			fixture.detectChanges();
-			const request = http.expectOne((req) => req.url.endsWith('/technical-records/search/ABC123'));
+			const request = http.expectOne((req) => req.url.endsWith('/tech-records/v4/search/ABC123'));
 			store.dispatch(setSpinnerState({ showSpinner: false }));
 			fixture.detectChanges();
 			expect(fixture.nativeElement.querySelector('[role="progressbar"]')).not.toBeNull();
