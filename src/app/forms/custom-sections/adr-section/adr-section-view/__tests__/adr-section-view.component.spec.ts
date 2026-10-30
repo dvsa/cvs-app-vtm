@@ -74,6 +74,3 @@ describe('AdrSectionViewComponent', () => {
 		});
 	});
 });
-
-
-
