@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -35,6 +35,7 @@ import { ViewListItemComponent } from '../view-list-item/view-list-item.componen
 		NgIf,
 		NgSwitch,
 		NgSwitchCase,
+		NgSwitchDefault,
 		RouterLink,
 		NgFor,
 		FormsModule,

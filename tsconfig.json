@@ -52,7 +52,13 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictStandalone": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "warning"
+      },
+      "defaultCategory": "error"
+    }
   },
   "exclude": ["./node_modules"]
 }

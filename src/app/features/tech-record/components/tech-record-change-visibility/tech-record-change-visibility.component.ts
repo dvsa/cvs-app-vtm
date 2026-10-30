@@ -5,7 +5,6 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TextAreaComponent } from '@forms/components/text-area/text-area.component';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
@@ -25,13 +24,7 @@ import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title
 	selector: 'app-tech-record-change-visibility',
 	templateUrl: './tech-record-change-visibility.component.html',
 	styleUrls: ['./tech-record-change-visibility.component.scss'],
-	imports: [
-		TechRecordTitleComponent,
-		FormsModule,
-		ReactiveFormsModule,
-		TextAreaComponent,
-		GovukFormGroupTextareaComponent,
-	],
+	imports: [TechRecordTitleComponent, FormsModule, ReactiveFormsModule, GovukFormGroupTextareaComponent],
 })
 export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 	private store = inject(Store<State>);
