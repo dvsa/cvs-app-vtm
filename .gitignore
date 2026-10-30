@@ -60,3 +60,12 @@ report.json
 
 # Generated files
 scripts/test-type-groupings.json
+
+vtm-automation
+
+# E2E credentials and authenticated browser state
+/e2e/creds/app-credential.json
+/e2e/creds/api-credential.json
+/e2e/creds/login-auth.json
+/e2e/creds/.auth/*
+!/e2e/creds/.auth/.gitkeep

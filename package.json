@@ -14,7 +14,6 @@
     "start-no-cache": "rm -rf .angular && bun run ./setenv.ts --environment=dev && ng serve",
     "start:dev1": "bun --env-file=.env.dev1 run ./setenv.ts && ng serve",
     "start:dev2": "bun --env-file=.env.dev2 run ./setenv.ts && ng serve",
-    "start:e2e": "ng serve --build-target cvs-app-vtm:build:development --host 127.0.0.1 --port 4201",
     "build": "ng build --optimization --progress --aot",
     "watch": "ng build --watch",
     "security-checks": "git secrets --scan && git secrets --register-aws && git log -p --diff-filter=d -- . ':!*.json' -n 100 | scanrepo",

@@ -1,7 +1,7 @@
 {
   "extends": ["@dvsa/biome-config/biome"],
   "files": {
-    "ignore": ["src/app/api/**"]
+    "ignore": ["src/app/api/**", "e2e/creds/**"]
   },
   "overrides": [
     {

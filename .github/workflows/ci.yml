@@ -70,7 +70,21 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
-        run: npm run test:e2e
+        env:
+          ENVIRONMENT: develop
+          VTM_APP_CREDENTIALS: ${{ secrets.VTM_APP_CREDENTIALS }}
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const credentials = process.env.VTM_APP_CREDENTIALS;
+          if (!credentials) {
+            throw new Error('Configure the VTM_APP_CREDENTIALS Actions secret to run authenticated E2E tests.');
+          }
+          fs.mkdirSync('e2e/creds', { recursive: true });
+          fs.writeFileSync('e2e/creds/app-credential.json', credentials, { mode: 0o600 });
+          NODE
+          npm run test:e2e
 
       - name: Upload Playwright results
         if: ${{ !cancelled() }}

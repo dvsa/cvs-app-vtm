@@ -43,17 +43,43 @@ project dependencies and Chromium, then run the suite:
 ```sh
 npm ci
 npx playwright install chromium
-npm run test:e2e
+cp e2e/creds/app-credential-dummy.json e2e/creds/app-credential.json
 ```
+
+Populate the ignored `e2e/creds/app-credential.json` with the same
+`Environment.<environment>.fullAccess` structure used by `vtm-automation`.
+Set `userName`, `password`, and optionally `name` for the test account. Never
+commit actual credentials or authenticated browser state.
+
+```sh
+npm run test:e2e
+ENVIRONMENT=integration npm run test:e2e
+ENVIRONMENT=develop BASE_URL=http://localhost:4200 npm run test:e2e
+```
+
+`ENVIRONMENT` defaults to `develop` and selects both the deployed URL and the
+credential entry. Built-in URLs are provided for `develop`, `integration`,
+`dev1`, and `dev2`. `BASE_URL` overrides the URL, including for localhost; keep
+`ENVIRONMENT` set to the credential environment you want to use. Variables must
+be exported or passed with the command; the runner does not load `.env` files.
+For localhost, start the app separately with its normal environment
+configuration before running the tests. Playwright does not start a server.
+
+The `setup` project visits `/`, follows the Azure redirect, enters the
+credentials using `e2e/page-objects/login-page.ts`, and saves the authenticated
+session to `e2e/creds/.auth/fullAccess.json`. The single Chromium login test
+depends on setup and verifies the saved session opens the home page with the
+technical record search link and sign-out control. It does not sign out, so the
+session remains reusable by subsequent tests.
 
 On Linux CI, install browser system dependencies with
 `npx playwright install --with-deps chromium`.
 
-The runner starts and stops an Angular development server at
-`http://127.0.0.1:4201`. Keep that port free. It uses the checked-in development
-environment rather than `npm start`, so no `.env` file, Azure credentials, or
-backend services are required for the single login-page smoke test. The test
-does not attempt Azure sign-in or exercise authenticated workflows.
+The CI job requires the repository Actions secret `VTM_APP_CREDENTIALS`, containing
+the credential JSON for `develop`. It writes this to the ignored credential
+file without printing it. Authentication setup has tracing, screenshots, and
+video disabled to avoid recording credentials. Do not upload the credentials
+directory or saved browser state.
 
 Use `npm run test:e2e:ui` for Playwright's interactive runner, or
 `npm run test:e2e -- --headed` to see the browser. After a run, use
