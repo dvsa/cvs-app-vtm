@@ -18,7 +18,7 @@ import {
 	updateDefect,
 	updateResultOfTest,
 } from '@/src/app/store/test-records';
-import { DecimalPipe, KeyValuePipe } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
 	ChangeDetectionStrategy,
@@ -60,7 +60,6 @@ import { CommonValidatorsService } from '../../../validators/common-validators.s
 		GovukFormGroupRadioComponent,
 		GovukFormGroupCheckboxComponent,
 		DefaultNullOrEmpty,
-		DecimalPipe,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +22,7 @@ import { ReplaySubject, catchError, filter, of, switchMap, take, throwError } fr
 @Component({
 	selector: 'app-reference-data-add',
 	templateUrl: './reference-data-add.component.html',
-	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
+	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent],
 })
 export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);

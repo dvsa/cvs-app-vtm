@@ -2,7 +2,6 @@ import { selectQueryParam } from '@/src/app/store/router/router.selectors';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, computed, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent } from '@components/button/button.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -13,7 +12,7 @@ import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-rec
 	selector: 'app-technical-record-history',
 	templateUrl: './tech-record-history.component.html',
 	styleUrls: ['./tech-record-history.component.scss'],
-	imports: [ButtonComponent, DatePipe, PaginationComponent, RouterLink, TitleCasePipe],
+	imports: [DatePipe, PaginationComponent, RouterLink, TitleCasePipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnicalRecordsHistoryComponent extends EditBaseComponent implements OnInit {
