@@ -54,6 +54,9 @@ jobs:
   e2e:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
 
@@ -69,9 +72,21 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
+      - name: Get AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTM-E2E-Config
+
+      - name: Get develop app config
+        run: aws secretsmanager get-secret-value --secret-id develop/vtm/config --query SecretString --region eu-west-1 --output text > src/environments/environment.deploy.ts
+
       - name: Run E2E tests
         env:
           ENVIRONMENT: develop
+          BASE_URL: http://localhost:4200
+          E2E_START_SERVER: 'true'
           VTM_APP_CREDENTIALS: ${{ secrets.VTM_APP_CREDENTIALS }}
         shell: bash
         run: |

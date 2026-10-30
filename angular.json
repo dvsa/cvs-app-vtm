@@ -75,6 +75,17 @@
             }
           },
           "configurations": {
+            "e2e": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.e2e.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "development": {
               "aot": false,
               "optimization": false,
@@ -113,6 +124,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
+            "e2e": {
+              "buildTarget": "cvs-app-vtm:build:e2e"
+            },
             "production": {
               "buildTarget": "cvs-app-vtm:build:production"
             },

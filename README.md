@@ -63,7 +63,18 @@ credential entry. Built-in URLs are provided for `develop`, `integration`,
 `ENVIRONMENT` set to the credential environment you want to use. Variables must
 be exported or passed with the command; the runner does not load `.env` files.
 For localhost, start the app separately with its normal environment
-configuration before running the tests. Playwright does not start a server.
+configuration before running the tests. Alternatively, let Playwright start
+and stop the checked-out app:
+
+```sh
+ENVIRONMENT=develop BASE_URL=http://localhost:4200 E2E_START_SERVER=true npm run test:e2e
+```
+
+This uses Angular's `e2e` configuration and the existing ignored
+`src/environments/environment.deploy.ts` (prepare it with `npm run config` if
+needed). The E2E environment overrides the Azure redirect URI to
+`http://localhost:4200/`, which must be allowed by the Azure app registration.
+Port 4200 must be free; the runner never reuses an existing server in this mode.
 
 The `setup` project visits `/`, follows the Azure redirect, enters the
 credentials using `e2e/page-objects/login-page.ts`, and saves the authenticated
@@ -77,7 +88,17 @@ On Linux CI, install browser system dependencies with
 
 The CI job requires the repository Actions secret `VTM_APP_CREDENTIALS`, containing
 the credential JSON for `develop`. It writes this to the ignored credential
-file without printing it. Authentication setup has tracing, screenshots, and
+file without printing it. CI checks out the PR merge commit, uses
+`AWS_MGMT_ROLE` to retrieve `develop/vtm/config` from AWS Secrets Manager (as
+the deployment workflow does), and starts the checked-out Angular app at
+`http://localhost:4200`. Playwright waits for that server before authenticating.
+The frontend under test is the PR code, not the deployed develop frontend;
+authentication and backend services still use the develop configuration.
+The role's OIDC trust policy must allow this repository's pull-request jobs,
+and its permissions must allow reading that secret. Missing credentials or
+configuration fail the job rather than falling back to a deployed frontend.
+
+Authentication setup has tracing, screenshots, and
 video disabled to avoid recording credentials. Do not upload the credentials
 directory or saved browser state.
 
