@@ -6,9 +6,20 @@ import {
 	VehicleConfiguration,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/small trl/complete';
 import { TechRecordPUTSmallTRLSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/small trl/skeleton';
+import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';
 
 export class SmallTrlBuilder extends VehicleBuilder<TechRecordPUTSmallTRLSkeleton | TechRecordPUTSmallTRLComplete> {
+	withLastApplicant(): this {
+		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
+		return this;
+	}
+
+	withEUVehicleCategory(): this {
+		this.vehicle.techRecord_euVehicleCategory = EUVehicleCategory.O2;
+		return this;
+	}
+
 	skeleton(): this {
 		const skeleton: TechRecordPUTSmallTRLSkeleton = {
 			...this.vehicle,
@@ -28,6 +39,7 @@ export class SmallTrlBuilder extends VehicleBuilder<TechRecordPUTSmallTRLSkeleto
 
 	complete(): this {
 		const complete: TechRecordPUTSmallTRLComplete = {
+			...createLastApplicant(),
 			...this.vehicle,
 
 			// Skeleton fields

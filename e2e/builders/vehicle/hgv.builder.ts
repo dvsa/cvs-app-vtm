@@ -9,9 +9,27 @@ import {
 import { TechRecordPUTHGVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/skeleton';
 import { TechRecordPUTHGVTestable } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/testable';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { createHGVAxle } from '../helpers/axles';
+import { createDocuments } from '../helpers/documents';
+import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
+	withDocuments(): this {
+		this.vehicle = { ...this.vehicle, ...createDocuments() };
+		return this;
+	}
+
+	withLastApplicant(): this {
+		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
+		return this;
+	}
+
+	withEUVehicleCategory(): this {
+		this.vehicle.techRecord_euVehicleCategory = EUVehicleCategory.N3;
+		return this;
+	}
+
 	skeleton(): this {
 		const skeleton: TechRecordPUTHGVSkeleton = {
 			...this.vehicle,
@@ -56,7 +74,9 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 
 	complete(): this {
 		const complete: TechRecordPUTHGVComplete = {
+			...createDocuments(),
 			...this.vehicle,
+			...createLastApplicant(),
 
 			// Skeleton fields
 			vin: generateVin(RUN_SEED),
@@ -98,28 +118,7 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 			techRecord_roadFriendly: false,
 			techRecord_drawbarCouplingFitted: false,
 			techRecord_offRoad: false,
-			techRecord_applicantDetails_name: 'Test Applicant',
-			techRecord_applicantDetails_address1: '1 Test Street',
-			techRecord_applicantDetails_address2: 'Test Estate',
-			techRecord_applicantDetails_postTown: 'Swansea',
-			techRecord_axles: [
-				{
-					axleNumber: 1,
-					weights_gbWeight: 8000,
-					weights_designWeight: 8000,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'single',
-				},
-				{
-					axleNumber: 2,
-					weights_gbWeight: 10000,
-					weights_designWeight: 11500,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'double',
-				},
-			],
+			techRecord_axles: [createHGVAxle(1), createHGVAxle(2)],
 		};
 		this.vehicle = complete;
 

@@ -8,9 +8,39 @@ import {
 import { TechRecordPUTTRLSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/trl/skeleton';
 import { TechRecordPUTTRLTestable } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/trl/testable';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { createTRLAxle } from '../helpers/axles';
+import { createDocuments } from '../helpers/documents';
+import { createLastApplicant } from '../helpers/last-applicant';
+import { createManufacturer } from '../helpers/manufacturer';
+import { createPurchaser } from '../helpers/purchaser';
 import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';
 
 export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
+	withDocuments(): this {
+		this.vehicle = { ...this.vehicle, ...createDocuments() };
+		return this;
+	}
+
+	withManufacturer(): this {
+		this.vehicle = { ...this.vehicle, ...createManufacturer() };
+		return this;
+	}
+
+	withPurchasers(): this {
+		this.vehicle = { ...this.vehicle, ...createPurchaser() };
+		return this;
+	}
+
+	withLastApplicant(): this {
+		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
+		return this;
+	}
+
+	withEUVehicleCategory(): this {
+		this.vehicle.techRecord_euVehicleCategory = EUVehicleCategory.O4;
+		return this;
+	}
+
 	skeleton(): this {
 		const skeleton: TechRecordPUTTRLSkeleton = {
 			...this.vehicle,
@@ -60,6 +90,10 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 
 	complete(): this {
 		const complete: TechRecordPUTTRLComplete = {
+			...createDocuments(),
+			...createLastApplicant(),
+			...createManufacturer(),
+			...createPurchaser(),
 			...this.vehicle,
 
 			// Skeleton fields
@@ -93,30 +127,7 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			techRecord_suspensionType: 'air',
 			techRecord_tyreUseCode: TyreUseCode._2B,
 			techRecord_notes: '',
-			techRecord_axles: [
-				{
-					axleNumber: 1,
-					parkingBrakeMrk: true,
-					brakes_brakeActuator: 20,
-					brakes_leverLength: 150,
-					weights_gbWeight: 9000,
-					weights_designWeight: 9000,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'single',
-				},
-				{
-					axleNumber: 2,
-					parkingBrakeMrk: true,
-					brakes_brakeActuator: 20,
-					brakes_leverLength: 150,
-					weights_gbWeight: 9000,
-					weights_designWeight: 9000,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'single',
-				},
-			],
+			techRecord_axles: [createTRLAxle(1), createTRLAxle(2)],
 		};
 		this.vehicle = complete;
 

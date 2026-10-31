@@ -1,5 +1,6 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
 import {
+	EUVehicleCategory,
 	TechRecordPUTPSVComplete,
 	VehicleClassDescription,
 	VehicleConfiguration,
@@ -7,9 +8,21 @@ import {
 import { TechRecordPUTPSVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/psv/skeleton';
 import { TechRecordPUTPSVTestable } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/psv/testable';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { createPSVAxle } from '../helpers/axles';
+import { createDocuments } from '../helpers/documents';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
+	withDocuments(): this {
+		this.vehicle = { ...this.vehicle, ...createDocuments() };
+		return this;
+	}
+
+	withEUVehicleCategory(): this {
+		this.vehicle.techRecord_euVehicleCategory = EUVehicleCategory.M3;
+		return this;
+	}
+
 	skeleton(): this {
 		const skeleton: TechRecordPUTPSVSkeleton = {
 			...this.vehicle,
@@ -65,6 +78,7 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 
 	complete(): this {
 		const complete: TechRecordPUTPSVComplete = {
+			...createDocuments(),
 			...this.vehicle,
 
 			// Skeleton fields
@@ -105,32 +119,7 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 			techRecord_brakes_brakeForceWheelsUpToHalfLocked_parkingBrakeForceB: 1000,
 			techRecord_brakes_brakeForceWheelsUpToHalfLocked_secondaryBrakeForceB: 1000,
 			techRecord_brakes_brakeForceWheelsUpToHalfLocked_serviceBrakeForceB: 2000,
-			techRecord_axles: [
-				{
-					axleNumber: 1,
-					parkingBrakeMrk: false,
-					weights_gbWeight: 6000,
-					weights_designWeight: 6000,
-					weights_kerbWeight: 4000,
-					weights_ladenWeight: 6000,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'single',
-					tyres_speedCategorySymbol: 'j',
-				},
-				{
-					axleNumber: 2,
-					parkingBrakeMrk: true,
-					weights_gbWeight: 6000,
-					weights_designWeight: 6000,
-					weights_kerbWeight: 4000,
-					weights_ladenWeight: 6000,
-					tyres_tyreCode: 428,
-					tyres_tyreSize: '315/80-22.5',
-					tyres_fitmentCode: 'double',
-					tyres_speedCategorySymbol: 'j',
-				},
-			],
+			techRecord_axles: [createPSVAxle(1), { ...createPSVAxle(2), parkingBrakeMrk: true, tyres_fitmentCode: 'double' }],
 		};
 		this.vehicle = complete;
 

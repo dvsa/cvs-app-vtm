@@ -1,13 +1,25 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
 import {
+	EUVehicleCategory,
 	TechRecordPUTLGVComplete,
 	VehicleConfiguration,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/complete';
 import { TechRecordPUTLGVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class LgvBuilder extends VehicleBuilder<TechRecordType<'lgv', 'put'>> {
+	withLastApplicant(): this {
+		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
+		return this;
+	}
+
+	withEUVehicleCategory(): this {
+		this.vehicle.techRecord_euVehicleCategory = EUVehicleCategory.N1;
+		return this;
+	}
+
 	skeleton(): this {
 		const skeleton: TechRecordPUTLGVSkeleton = {
 			...this.vehicle,
@@ -24,6 +36,7 @@ export class LgvBuilder extends VehicleBuilder<TechRecordType<'lgv', 'put'>> {
 
 	complete(): this {
 		const complete: TechRecordPUTLGVComplete = {
+			...createLastApplicant(),
 			...this.vehicle,
 
 			// Skeleton fields
