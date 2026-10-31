@@ -1,4 +1,4 @@
-import { BasePage } from './base.page';
+import { BasePage } from '../base.page';
 
 export class SearchTechRecordPage extends BasePage {
 	readonly techRecordSearchLink = this.page.getByRole('link', { name: 'Search for a technical record' });
