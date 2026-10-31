@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { LoginPage } from './page-objects/login-page';
+import { LoginPage } from './page-objects/login.page';
 
 test('restores the authenticated session created by login setup', async ({ page }) => {
 	const loginPage = new LoginPage(page);
