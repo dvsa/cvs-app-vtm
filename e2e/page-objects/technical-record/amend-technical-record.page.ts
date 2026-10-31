@@ -1,3 +1,3 @@
-import { BasePage } from '../base.page';
+import { TechnicalRecordPage } from './technical-record.page';
 
-export class AmendTechnicalRecordPage extends BasePage {}
+export class AmendTechnicalRecordPage extends TechnicalRecordPage {}

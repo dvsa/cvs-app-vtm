@@ -1,0 +1,42 @@
+import { AccordionGroup } from '../../components/accordion-group.component';
+import { BasePage } from '../base.page';
+import { AdrSection } from './sections/adr.section';
+import { ApprovalTypeSection } from './sections/approval-type.section';
+import { AuthorisationIntoServiceSection } from './sections/authorisation-into-service.section';
+import { BrakesSection } from './sections/brakes.section';
+import { ConfigurationSection } from './sections/configuration.section';
+import { DdaSection } from './sections/dda.section';
+import { DimensionsSection } from './sections/dimensions.section';
+import { DocumentsSection } from './sections/documents.section';
+import { EmissionsAndExemptionsSection } from './sections/emissions-and-exemptions.section';
+import { GeneralVehicleDetailsSection } from './sections/general-vehicle-details.section';
+import { LastApplicantSection } from './sections/last-applicant.section';
+import { ManufacturerSection } from './sections/manufacturer.section';
+import { NotesSection } from './sections/notes.section';
+import { PurchasersSection } from './sections/purchasers.section';
+import { ReasonForCreationSection } from './sections/reason-for-creation.section';
+import { SeatsAndVehicleSizeSection } from './sections/seats-and-vehicle-size.section';
+import { TyresSection } from './sections/tyres.section';
+import { WeightsSection } from './sections/weights.section';
+
+export abstract class TechnicalRecordPage extends BasePage {
+	readonly accordions = new AccordionGroup(this.page, 'accordian-show-all-button');
+	readonly generalVehicleDetails = new GeneralVehicleDetailsSection(this.page);
+	readonly approvalType = new ApprovalTypeSection(this.page);
+	readonly authorisationIntoService = new AuthorisationIntoServiceSection(this.page);
+	readonly dimensions = new DimensionsSection(this.page);
+	readonly weights = new WeightsSection(this.page);
+	readonly tyres = new TyresSection(this.page);
+	readonly configuration = new ConfigurationSection(this.page);
+	readonly emissionsAndExemptions = new EmissionsAndExemptionsSection(this.page);
+	readonly seatsAndVehicleSize = new SeatsAndVehicleSizeSection(this.page);
+	readonly dda = new DdaSection(this.page);
+	readonly brakes = new BrakesSection(this.page);
+	readonly adr = new AdrSection(this.page);
+	readonly lastApplicant = new LastApplicantSection(this.page);
+	readonly purchasers = new PurchasersSection(this.page);
+	readonly manufacturer = new ManufacturerSection(this.page);
+	readonly documents = new DocumentsSection(this.page);
+	readonly notes = new NotesSection(this.page);
+	readonly reasonForCreation = new ReasonForCreationSection(this.page);
+}
