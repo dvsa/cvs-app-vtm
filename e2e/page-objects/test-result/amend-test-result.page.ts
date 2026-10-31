@@ -1,3 +1,3 @@
-import { BasePage } from '../base.page';
+import { TestResultPage } from './test-result.page';
 
-export class AmendTestResultPage extends BasePage {}
+export class AmendTestResultPage extends TestResultPage {}
