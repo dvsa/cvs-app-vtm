@@ -1,10 +1,8 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
-import {
-	EUVehicleCategory,
-	TechRecordPUTSmallTRLComplete,
-	VehicleClassDescription,
-	VehicleConfiguration,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/small trl/complete';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategorySmallTrl.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
+import type { TechRecordPUTSmallTRLComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/small trl/complete';
 import { TechRecordPUTSmallTRLSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/small trl/skeleton';
 import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';

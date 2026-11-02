@@ -1,10 +1,8 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
-import {
-	EUVehicleCategory,
-	TechRecordPUTMotorcycleComplete,
-	VehicleClassDescription,
-	VehicleConfiguration,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/motorcycle/complete';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
+import type { TechRecordPUTMotorcycleComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/motorcycle/complete';
 import { TechRecordPUTMotorcycleSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/motorcycle/skeleton';
 import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';

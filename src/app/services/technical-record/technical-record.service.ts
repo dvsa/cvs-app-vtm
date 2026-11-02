@@ -387,7 +387,7 @@ export class TechnicalRecordService {
 	 */
 	fixTechRecord(techRecord: TechRecordType<'put'>): TechRecordType<'put'> {
 		// Null ADR fields for HGV/TRL/LGV that would be hidden given the ADR options selected
-		techRecord = nullADRDetails(techRecord);
+		techRecord = { ...nullADRDetails(techRecord) };
 
 		// Set no of axles to null if it is 0, so it correctly saves as a skeleton record (for heavy vehicles)
 		techRecord.techRecord_noOfAxles = techRecord.techRecord_noOfAxles === 0 ? null : techRecord.techRecord_noOfAxles;

@@ -939,6 +939,32 @@ describe('TechnicalRecordService', () => {
 	});
 
 	describe('fixTechRecord', () => {
+		it.each(['hgv', 'psv', 'trl', 'lgv', 'car', 'motorcycle'] as const)(
+			'should normalise a frozen %s record without mutating it',
+			(vehicleType) => {
+				const record = Object.freeze({
+					techRecord_vehicleType: vehicleType,
+					techRecord_noOfAxles: 0,
+				} as TechRecordType<'put'>);
+
+				const result = service.fixTechRecord(record);
+
+				expect(result).not.toBe(record);
+				expect(result.techRecord_noOfAxles).toBeNull();
+				expect(record.techRecord_noOfAxles).toBe(0);
+			}
+		);
+
+		it.each([2, null, undefined])('should preserve an axle count of %s on a frozen record', (axles) => {
+			const record = Object.freeze({
+				techRecord_vehicleType: 'car',
+				techRecord_noOfAxles: axles,
+			} as TechRecordType<'put'>);
+
+			expect(service.fixTechRecord(record).techRecord_noOfAxles).toBe(axles);
+			expect(record.techRecord_noOfAxles).toBe(axles);
+		});
+
 		it('should convert 0 noOfAxles to null', () => {
 			expect(
 				service.fixTechRecord({
@@ -969,21 +995,23 @@ describe('TechnicalRecordService', () => {
 		});
 
 		it('should wipe ramp/lift present information when no lift/ramp is present', () => {
-			expect(
-				service.fixTechRecord({
-					techRecord_vehicleType: 'psv',
-					techRecord_dda_wheelchairLiftPresent: false,
-					techRecord_dda_wheelchairLiftInformation: 'test',
-					techRecord_dda_wheelchairRampPresent: false,
-					techRecord_dda_wheelchairRampInformation: 'test',
-				} as TechRecordType<'put'>)
-			).toEqual({
+			const record = Object.freeze({
+				techRecord_vehicleType: 'psv',
+				techRecord_dda_wheelchairLiftPresent: false,
+				techRecord_dda_wheelchairLiftInformation: 'test',
+				techRecord_dda_wheelchairRampPresent: false,
+				techRecord_dda_wheelchairRampInformation: 'test',
+			} satisfies Partial<TechRecordTypeVehicle<'psv', 'put'>>);
+
+			expect(service.fixTechRecord(record as TechRecordTypeVehicle<'psv', 'put'>)).toEqual({
 				techRecord_vehicleType: 'psv',
 				techRecord_dda_wheelchairLiftPresent: false,
 				techRecord_dda_wheelchairLiftInformation: null,
 				techRecord_dda_wheelchairRampPresent: false,
 				techRecord_dda_wheelchairRampInformation: null,
 			});
+			expect(record.techRecord_dda_wheelchairLiftInformation).toBe('test');
+			expect(record.techRecord_dda_wheelchairRampInformation).toBe('test');
 		});
 	});
 

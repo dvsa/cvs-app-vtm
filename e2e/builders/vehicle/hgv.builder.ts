@@ -1,11 +1,9 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
-import {
-	ApprovalType,
-	EUVehicleCategory,
-	TechRecordPUTHGVComplete,
-	TyreUseCode,
-	VehicleConfiguration,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/complete';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
+import type { TechRecordPUTHGVComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/complete';
 import { TechRecordPUTHGVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/skeleton';
 import { TechRecordPUTHGVTestable } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/hgv/testable';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';

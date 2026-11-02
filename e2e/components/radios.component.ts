@@ -2,6 +2,11 @@ import { BaseComponent } from './base.component';
 
 export class Radios extends BaseComponent {
 	async fill(value: string | number | boolean): Promise<void> {
-		await this.locator.locator(`input[type="radio"][value=${JSON.stringify(String(value))}]`).check();
+		const id = await this.locator.getAttribute('id');
+		await this.locator
+			.locator(
+				`input[type="radio"]:is([value=${JSON.stringify(String(value))}], [id=${JSON.stringify(`${id}-${value}-radio`)}])`
+			)
+			.check();
 	}
 }

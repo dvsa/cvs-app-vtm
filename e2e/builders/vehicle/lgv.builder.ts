@@ -1,9 +1,7 @@
 import { RUN_SEED } from '@/e2e/constants/seed';
-import {
-	EUVehicleCategory,
-	TechRecordPUTLGVComplete,
-	VehicleConfiguration,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/complete';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryLgv.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
+import type { TechRecordPUTLGVComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/complete';
 import { TechRecordPUTLGVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { createLastApplicant } from '../helpers/last-applicant';
