@@ -45,4 +45,9 @@ ignore:
         reason: No fix available
         expires: 2027-01-16T00:00:00.000Z
         created: 2026-10-16T00:00:00.000Z
+  SNYK-JS-MINIMATCH-22111072:
+    - '*':
+        reason: Remediation deferred to downstream dependency update
+        expires: 2027-01-31T00:00:00.000Z
+        created: 2026-11-02T00:00:00.000Z
 patch: {}

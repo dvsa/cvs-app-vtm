@@ -10,6 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { Actions } from '@ngrx/effects';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
@@ -409,10 +410,24 @@ describe('TestComponent', () => {
 			expect(component.shouldShowLoadStatus()).toBe(false);
 		});
 
-		it('should be true for a retest of an annual test failed on a qualifying defect', () => {
+		it.each([
+			{ deficiencyCategory: DeficiencyCategoryEnum.Dangerous, expected: true },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Major, expected: true },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Minor, expected: false },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Advisory, expected: false },
+		])('should return $expected for a $deficiencyCategory brake defect', ({ deficiencyCategory, expected }) => {
 			setTestType({ testTypeId: '53' });
-			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
-			expect(component.shouldShowLoadStatus()).toBe(true);
+			setTestHistory({
+				testTypeId: '94',
+				testResult: TestResults.FAIL,
+				defects: [{ imNumber: 59, deficiencyCategory }],
+			});
+			expect(component.shouldShowLoadStatus()).toBe(expected);
+			expect(component.isLoadStatusRequired()).toBe(expected);
+
+			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
+			control.updateValueAndValidity();
+			expect(control.hasError('required')).toBe(expected);
 		});
 	});
 
@@ -693,7 +708,7 @@ describe('TestComponent - AMEND mode', () => {
 							testTypeId: '94',
 							testResult: TestResults.FAIL,
 							testTypeStartTimestamp: '2026-09-23T09:00:00.000Z',
-							defects: [{ imNumber: 59 }],
+							defects: [{ imNumber: 59, deficiencyCategory: DeficiencyCategoryEnum.Major }],
 						},
 					],
 				} as TestResultSchema,
