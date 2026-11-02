@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DeficiencyCategoryEnum, DeficiencyCategoryStringEnum } from '@models/test-results/test-result-defect.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
 import dayjs from 'dayjs';
@@ -14,6 +15,7 @@ function annualTest(overrides: {
 	testTypeId?: string;
 	testResult?: TestResults;
 	imNumbers?: number[];
+	deficiencyCategory?: DeficiencyCategoryStringEnum;
 	testTypeStartTimestamp?: string;
 	testStatus?: TestStatus;
 	testResultId?: string;
@@ -22,6 +24,7 @@ function annualTest(overrides: {
 		testTypeId = '94',
 		testResult = TestResults.FAIL,
 		imNumbers = [59],
+		deficiencyCategory = DeficiencyCategoryEnum.Major,
 		testTypeStartTimestamp = '2026-09-23T09:00:00.000Z',
 		testStatus = TestStatus.SUBMITTED,
 		testResultId = 'annual-test-id',
@@ -35,7 +38,7 @@ function annualTest(overrides: {
 				testTypeId,
 				testResult,
 				testTypeStartTimestamp,
-				defects: imNumbers.map((imNumber) => ({ imNumber })),
+				defects: imNumbers.map((imNumber) => ({ imNumber, deficiencyCategory })),
 			},
 		],
 	} as TestResultSchema;
@@ -94,9 +97,42 @@ describe('LoadStatusService', () => {
 		});
 
 		describe('annual test retests', () => {
-			it.each([59, 71, 72, 73])('should be true when the annual test being retested failed on IM %i', (imNumber) => {
-				setTestHistory([annualTest({ imNumbers: [imNumber] })]);
-				expect(service.isLoadStatusApplicable(retest())).toBe(true);
+			describe.each([
+				{ vehicleType: 'hgv', testTypeId: '53', annualTestTypeId: '94' },
+				{ vehicleType: 'trl', testTypeId: '98', annualTestTypeId: '40' },
+			] as const)('$vehicleType retest $testTypeId', ({ vehicleType, testTypeId, annualTestTypeId }) => {
+				describe.each([
+					{ deficiencyCategory: DeficiencyCategoryEnum.Dangerous, expected: true },
+					{ deficiencyCategory: DeficiencyCategoryEnum.Major, expected: true },
+					{ deficiencyCategory: DeficiencyCategoryEnum.Minor, expected: false },
+					{ deficiencyCategory: DeficiencyCategoryEnum.Advisory, expected: false },
+				])('$deficiencyCategory defects', ({ deficiencyCategory, expected }) => {
+					it.each([59, 71, 72, 73])('should return the correct applicability for IM %i', (imNumber) => {
+						setTestHistory([annualTest({ testTypeId: annualTestTypeId, imNumbers: [imNumber], deficiencyCategory })]);
+
+						expect(service.isLoadStatusApplicable(retest({ testTypeId, vehicleType }))).toBe(expected);
+					});
+				});
+			});
+
+			it('should be false when only a non-brake defect is Major or Dangerous', () => {
+				const test = annualTest({ imNumbers: [59, 71, 72, 73], deficiencyCategory: DeficiencyCategoryEnum.Minor });
+				test.testTypes?.[0].defects?.push(
+					...(annualTest({ imNumbers: [1], deficiencyCategory: DeficiencyCategoryEnum.Dangerous }).testTypes?.[0]
+						.defects ?? [])
+				);
+				setTestHistory([test]);
+
+				expect(service.isLoadStatusApplicable(retest())).toBe(false);
+			});
+
+			it('should not fall back to an older annual test with a qualifying category', () => {
+				setTestHistory([
+					annualTest({ testResultId: 'older', testTypeStartTimestamp: '2026-09-20T09:00:00.000Z' }),
+					annualTest({ testResultId: 'newer', deficiencyCategory: DeficiencyCategoryEnum.Advisory }),
+				]);
+
+				expect(service.isLoadStatusApplicable(retest())).toBe(false);
 			});
 
 			it('should be true for a TRL annual test retest', () => {
@@ -209,7 +245,7 @@ describe('LoadStatusService', () => {
 								testTypeId: '94',
 								testResult: TestResults.FAIL,
 								testTypeStartTimestamp: null,
-								defects: [{ imNumber: 59 }],
+								defects: [{ imNumber: 59, deficiencyCategory: DeficiencyCategoryEnum.Major }],
 							},
 						],
 					} as unknown as TestResultSchema,
@@ -224,7 +260,13 @@ describe('LoadStatusService', () => {
 						testResultId: 'annual-test-id',
 						testStatus: TestStatus.SUBMITTED,
 						testStartTimestamp: '2026-09-23T09:00:00.000Z',
-						testTypes: [{ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 72 }] }],
+						testTypes: [
+							{
+								testTypeId: '94',
+								testResult: TestResults.FAIL,
+								defects: [{ imNumber: 72, deficiencyCategory: DeficiencyCategoryEnum.Major }],
+							},
+						],
 					} as TestResultSchema,
 				]);
 
