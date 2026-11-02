@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategorySmallTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
@@ -8,6 +7,11 @@ import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';
 
 export class SmallTrlBuilder extends VehicleBuilder<TechRecordPUTSmallTRLSkeleton | TechRecordPUTSmallTRLComplete> {
+	withTrailerId(trailerId = generateTrailerId()): this {
+		this.vehicle.trailerId = trailerId;
+		return this;
+	}
+
 	withLastApplicant(): this {
 		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
 		return this;
@@ -21,10 +25,9 @@ export class SmallTrlBuilder extends VehicleBuilder<TechRecordPUTSmallTRLSkeleto
 	skeleton(): this {
 		const skeleton: TechRecordPUTSmallTRLSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			trailerId: generateTrailerId(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'trl',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.Trailer,
 			techRecord_euVehicleCategory: EUVehicleCategory.O2,
@@ -41,10 +44,9 @@ export class SmallTrlBuilder extends VehicleBuilder<TechRecordPUTSmallTRLSkeleto
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			trailerId: generateTrailerId(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'trl',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.Trailer,
 			techRecord_euVehicleCategory: EUVehicleCategory.O2,

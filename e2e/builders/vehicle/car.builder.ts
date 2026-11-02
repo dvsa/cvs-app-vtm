@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryCar.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
 import type { TechRecordPUTCarComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/car/complete';
@@ -8,6 +7,11 @@ import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class CarBuilder extends VehicleBuilder<TechRecordType<'car', 'put'>> {
+	withVrm(vrm = generateVrm()): this {
+		this.vehicle.primaryVrm = vrm;
+		return this;
+	}
+
 	withLastApplicant(): this {
 		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
 		return this;
@@ -21,10 +25,10 @@ export class CarBuilder extends VehicleBuilder<TechRecordType<'car', 'put'>> {
 	skeleton(): this {
 		const skeleton: TechRecordPUTCarSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			primaryVrm: this.vehicle.primaryVrm ?? undefined,
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'car',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 		};
 		this.vehicle = skeleton;
@@ -38,10 +42,9 @@ export class CarBuilder extends VehicleBuilder<TechRecordType<'car', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'car',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 
 			// Complete fields

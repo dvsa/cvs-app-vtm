@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
@@ -11,6 +10,11 @@ import { createDocuments } from '../helpers/documents';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
+	withVrm(vrm = generateVrm()): this {
+		this.vehicle.primaryVrm = vrm;
+		return this;
+	}
+
 	withDocuments(): this {
 		this.vehicle = { ...this.vehicle, ...createDocuments() };
 		return this;
@@ -24,10 +28,9 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 	skeleton(): this {
 		const skeleton: TechRecordPUTPSVSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'psv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.LARGE_PSV,
 			techRecord_bodyType_code: 's',
@@ -48,10 +51,9 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'psv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.LARGE_PSV,
 			techRecord_bodyType_code: 's',
@@ -80,10 +82,9 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'psv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.LARGE_PSV,
 			techRecord_bodyType_code: 's',

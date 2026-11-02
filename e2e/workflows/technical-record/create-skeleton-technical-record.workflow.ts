@@ -3,15 +3,12 @@ import {
 	type SkeletonTechnicalRecord,
 	populateSkeletonTechnicalRecord,
 } from './populate-skeleton-technical-record.workflow';
-import {
-	type TechnicalRecordIdentifiers,
-	startTechnicalRecordCreation,
-} from './start-technical-record-creation.workflow';
+import { startTechnicalRecordCreation } from './start-technical-record-creation.workflow';
 import { submitTechnicalRecord } from './submit-technical-record.workflow';
 
 export async function createSkeletonTechnicalRecord(
 	pages: PageFactory,
-	record: SkeletonTechnicalRecord & Pick<TechnicalRecordIdentifiers, 'generateId'>
+	record: SkeletonTechnicalRecord
 ): Promise<void> {
 	if (record.techRecord_statusCode !== 'current' && record.techRecord_statusCode !== 'provisional') {
 		throw new Error('New technical records must be current or provisional.');

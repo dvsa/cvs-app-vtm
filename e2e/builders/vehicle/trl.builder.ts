@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryTrl.enum.js';
 import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
@@ -14,6 +13,11 @@ import { createPurchaser } from '../helpers/purchaser';
 import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';
 
 export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
+	withTrailerId(trailerId = generateTrailerId()): this {
+		this.vehicle.trailerId = trailerId;
+		return this;
+	}
+
 	withDocuments(): this {
 		this.vehicle = { ...this.vehicle, ...createDocuments() };
 		return this;
@@ -42,10 +46,9 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 	skeleton(): this {
 		const skeleton: TechRecordPUTTRLSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			trailerId: generateTrailerId(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'trl',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'trailer',
 			techRecord_bodyType_code: 'b',
@@ -64,10 +67,9 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			trailerId: generateTrailerId(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'trl',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'trailer',
 			techRecord_bodyType_code: 'b',
@@ -95,10 +97,9 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			trailerId: generateTrailerId(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'trl',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'trailer',
 			techRecord_bodyType_code: 'b',

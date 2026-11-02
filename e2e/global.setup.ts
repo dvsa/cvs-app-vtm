@@ -1,7 +1,7 @@
-import { test as setup } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { test as setup } from '@playwright/test';
 import { LoginPage } from './page-objects/login.page';
 
 function isRecord(value: unknown): value is Record<string, unknown> {

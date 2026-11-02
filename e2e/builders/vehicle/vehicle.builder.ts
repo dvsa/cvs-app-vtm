@@ -13,7 +13,17 @@ export abstract class VehicleBuilder<
 	vehicle: Partial<T> = {};
 
 	constructor(initialValues: Partial<T> = {}) {
-		this.vehicle = { ...this.vehicle, ...initialValues };
+		this.vehicle = { vin: generateVin(), techRecord_statusCode: 'current', ...this.vehicle, ...initialValues };
+	}
+
+	current(): this {
+		this.vehicle.techRecord_statusCode = 'current';
+		return this;
+	}
+
+	provisional(): this {
+		this.vehicle.techRecord_statusCode = 'provisional';
+		return this;
 	}
 
 	build(overrides: Partial<T> = {}): T {
@@ -21,14 +31,17 @@ export abstract class VehicleBuilder<
 	}
 }
 
-export function generateVin(seed: number = Math.random()) {
-	return String(Math.floor(1000000 + (seed % 9000000000)));
+export function generateVin(seed?: number): string {
+	if (seed === undefined) return randomUUID().replaceAll('-', '').slice(0, 17).toUpperCase();
+	if (!Number.isFinite(seed)) throw new Error('VIN seed must be a finite number.');
+	return createHash('sha256').update(String(seed)).digest('hex').slice(0, 17).toUpperCase();
 }
 
-export function generateVrm(seed: number = Math.random()) {
+export function generateVrm(seed: number = randomInt(1_000_000, 9_000_000)) {
 	return String(Math.floor(1000000 + (seed % 9000000)));
 }
 
-export function generateTrailerId(seed: number = Math.random()) {
+export function generateTrailerId(seed: number = randomInt(1_000_000, 9_000_000)) {
 	return String(Math.floor(1000000 + (seed % 9000000)));
 }
+import { createHash, randomInt, randomUUID } from 'node:crypto';

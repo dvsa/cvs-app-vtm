@@ -2,6 +2,11 @@ import { Locator, Page, expect } from '@playwright/test';
 import { BaseComponent } from './base.component';
 
 export class Select extends BaseComponent {
+	readonly value = async (): Promise<string> => {
+		// Angular ngValue prefixes primitive option values with an index.
+		return (await this.locator.inputValue()).replace(/^\d+: /, '');
+	};
+
 	constructor(scope: Page | Locator, id: string) {
 		super(scope, id, 'select');
 	}

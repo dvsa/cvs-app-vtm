@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
@@ -13,6 +12,11 @@ import { createLastApplicant } from '../helpers/last-applicant';
 import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 
 export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
+	withVrm(vrm = generateVrm()): this {
+		this.vehicle.primaryVrm = vrm;
+		return this;
+	}
+
 	withDocuments(): this {
 		this.vehicle = { ...this.vehicle, ...createDocuments() };
 		return this;
@@ -31,10 +35,9 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 	skeleton(): this {
 		const skeleton: TechRecordPUTHGVSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'hgv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'heavy goods vehicle',
 			techRecord_bodyType_code: 'b',
@@ -50,10 +53,9 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'hgv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'heavy goods vehicle',
 			techRecord_bodyType_code: 'b',
@@ -77,10 +79,9 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 			...createLastApplicant(),
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'hgv',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: 'heavy goods vehicle',
 			techRecord_bodyType_code: 'b',

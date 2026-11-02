@@ -1,4 +1,3 @@
-import { RUN_SEED } from '@/e2e/constants/seed';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
@@ -10,6 +9,11 @@ import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
 export class MotorcycleBuilder extends VehicleBuilder<
 	TechRecordPUTMotorcycleSkeleton | TechRecordPUTMotorcycleComplete
 > {
+	withVrm(vrm = generateVrm()): this {
+		this.vehicle.primaryVrm = vrm;
+		return this;
+	}
+
 	withLastApplicant(): this {
 		this.vehicle = { ...this.vehicle, ...createLastApplicant() };
 		return this;
@@ -23,10 +27,9 @@ export class MotorcycleBuilder extends VehicleBuilder<
 	skeleton(): this {
 		const skeleton: TechRecordPUTMotorcycleSkeleton = {
 			...this.vehicle,
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'motorcycle',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.MotorbikesOver200ccOrWithASidecar,
 		};
@@ -41,10 +44,9 @@ export class MotorcycleBuilder extends VehicleBuilder<
 			...this.vehicle,
 
 			// Skeleton fields
-			vin: generateVin(RUN_SEED),
-			primaryVrm: generateVrm(RUN_SEED),
+			vin: this.vehicle.vin ?? generateVin(),
 			techRecord_vehicleType: 'motorcycle',
-			techRecord_statusCode: 'provisional',
+			techRecord_statusCode: this.vehicle.techRecord_statusCode ?? 'current',
 			techRecord_reasonForCreation: 'Initial creation',
 			techRecord_vehicleClass_description: VehicleClassDescription.MotorbikesOver200ccOrWithASidecar,
 
