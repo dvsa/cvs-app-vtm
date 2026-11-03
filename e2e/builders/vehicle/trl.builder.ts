@@ -120,12 +120,12 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			techRecord_couplingCenterToRearAxleMax: 8000,
 			techRecord_couplingCenterToRearTrlMin: 12000,
 			techRecord_couplingCenterToRearTrlMax: 12000,
-			techRecord_couplingType: 'SEMI',
+			techRecord_couplingType: 'S',
 			techRecord_maxLoadOnCoupling: 10000,
 			techRecord_roadFriendly: true,
-			techRecord_suspensionType: 'air',
+			techRecord_suspensionType: 'A',
 			techRecord_tyreUseCode: TyreUseCode._2B,
-			techRecord_notes: '',
+			techRecord_notes: 'Complete trailer record',
 			techRecord_axles: [createTRLAxle(1), createTRLAxle(2)],
 		};
 		this.vehicle = complete;

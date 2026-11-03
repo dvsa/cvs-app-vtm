@@ -28,7 +28,7 @@ export class VehicleSection extends Section {
 		for (const [key, value] of Object.entries(values)) {
 			if (
 				key === 'odometerReadingUnits' &&
-				values.odometerReadingUnits !== undefined &&
+				values.odometerReadingUnits != null &&
 				(await this.odometerReadingUnitsSelect.locator.count())
 			) {
 				await this.odometerReadingUnitsSelect.fill(values.odometerReadingUnits);

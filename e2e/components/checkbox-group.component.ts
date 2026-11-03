@@ -2,6 +2,13 @@ import { expect } from '@playwright/test';
 import { BaseComponent } from './base.component';
 
 export class CheckboxGroup extends BaseComponent {
+	readonly value = (): Promise<string[]> =>
+		this.locator.evaluate((group) =>
+			Array.from(group.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:checked'), (input) =>
+				input.id.slice(`${group.id}-`.length, -'-checkbox'.length)
+			)
+		);
+
 	async fill(values: (string | number)[]): Promise<void> {
 		const checkboxes = this.locator.locator('input[type="checkbox"]');
 		await expect(checkboxes.first()).toBeVisible();

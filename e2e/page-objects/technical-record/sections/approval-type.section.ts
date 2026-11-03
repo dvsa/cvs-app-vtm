@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { ApprovalTypeNumber } from '../../../components/approval-type-number.component';
 import { DateInput } from '../../../components/date-input.component';
 import { Input } from '../../../components/input.component';
 import { Select } from '../../../components/select.component';
@@ -11,6 +12,7 @@ export class ApprovalTypeSection extends Section {
 
 	readonly fields = {
 		techRecord_approvalType: new Select(this.content, 'techRecord_approvalType'),
+		techRecord_approvalTypeNumber: new ApprovalTypeNumber(this.content),
 		techRecord_ntaNumber: new Input(this.content, 'techRecord_ntaNumber'),
 		techRecord_coifSerialNumber: new Input(this.content, 'techRecord_coifSerialNumber'),
 		techRecord_coifCertifierName: new Input(this.content, 'techRecord_coifCertifierName'),

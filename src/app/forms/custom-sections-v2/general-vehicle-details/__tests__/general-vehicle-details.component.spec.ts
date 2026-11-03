@@ -280,6 +280,35 @@ describe('GeneralVehicleDetailsComponent', () => {
 	});
 
 	describe('handleBodyTypeDescriptionChange', () => {
+		it.each([
+			{ storedConfiguration: null, configuration: 'rigid', bodyType: BodyTypeDescription.BOX, code: BodyTypeCode.B },
+			{
+				storedConfiguration: 'articulated',
+				configuration: 'rigid',
+				bodyType: BodyTypeDescription.BOX,
+				code: BodyTypeCode.B,
+			},
+			{
+				storedConfiguration: 'rigid',
+				configuration: 'articulated',
+				bodyType: BodyTypeDescription.ARTICULATED,
+				code: BodyTypeCode.A,
+			},
+		] as const)(
+			'should use the current $configuration form configuration when the record still has $storedConfiguration',
+			({ storedConfiguration, configuration, bodyType, code }) => {
+				componentRef.setInput('techRecord', {
+					...mockVehicleTechnicalRecord('hgv'),
+					techRecord_vehicleConfiguration: storedConfiguration,
+				});
+				component.form.get('techRecord_vehicleConfiguration')?.setValue(configuration);
+				component.form.get('techRecord_bodyType_description')?.setValue(bodyType);
+
+				expect(component.techRecord().techRecord_vehicleConfiguration).toBe(storedConfiguration);
+				expect(component.form.get('techRecord_bodyType_code')?.value).toBe(code);
+			}
+		);
+
 		it('should set the bodyType code to a if the vehicle configuration and body type are articulated for a hgv', () => {
 			const mockTechRecord = mockVehicleTechnicalRecord('hgv');
 			componentRef.setInput('techRecord', mockTechRecord);

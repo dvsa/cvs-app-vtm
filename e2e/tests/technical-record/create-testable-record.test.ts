@@ -1,15 +1,16 @@
+import type { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { expect, test } from '@playwright/test';
 import { HgvBuilder } from '../../builders/vehicle/hgv.builder';
 import { PsvBuilder } from '../../builders/vehicle/psv.builder';
 import { TrlBuilder } from '../../builders/vehicle/trl.builder';
 import { PageFactory } from '../../page-objects/page.factory';
-import {
-	type TestableTechnicalRecord,
-	createTestableTechnicalRecord,
-} from '../../workflows/technical-record/create-testable-technical-record.workflow';
+import { createTechnicalRecord } from '../../workflows/technical-record/create-technical-record.workflow';
 
-async function createAndVerifyTestableRecord(pages: PageFactory, record: TestableTechnicalRecord): Promise<void> {
-	await createTestableTechnicalRecord(pages, record);
+async function createAndVerifyTestableRecord(
+	pages: PageFactory,
+	record: TechRecordType<'hgv' | 'psv' | 'trl', 'put'>
+): Promise<void> {
+	await createTechnicalRecord(pages, record);
 
 	const view = pages.viewTechnicalRecordPage;
 	await expect(view.heading).toBeVisible();

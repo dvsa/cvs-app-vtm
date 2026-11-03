@@ -24,4 +24,15 @@ export class TyresSection extends Section {
 		await this.open();
 		await fillFields(this.fields, values);
 	}
+
+	async fillTyreCodes(codes: (number | null | undefined)[]): Promise<void> {
+		if (!codes.some((code) => code != null)) return;
+		await this.open();
+		for (const [index, code] of codes.entries()) {
+			if (code == null) continue;
+			const field = new Input(this.content, `tyres_tyreCode-${index + 1}`);
+			await field.fill(code);
+			await field.locator.blur();
+		}
+	}
 }

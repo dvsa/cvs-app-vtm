@@ -1,15 +1,9 @@
 import type { PageFactory } from '../../page-objects/page.factory';
-import {
-	type SkeletonTechnicalRecord,
-	populateSkeletonTechnicalRecord,
-} from './populate-skeleton-technical-record.workflow';
+import type { TechnicalRecord } from '../../page-objects/technical-record/technical-record.page';
 import { startTechnicalRecordCreation } from './start-technical-record-creation.workflow';
 import { submitTechnicalRecord } from './submit-technical-record.workflow';
 
-export async function createSkeletonTechnicalRecord(
-	pages: PageFactory,
-	record: SkeletonTechnicalRecord
-): Promise<void> {
+export async function createTechnicalRecord(pages: PageFactory, record: TechnicalRecord): Promise<void> {
 	if (record.techRecord_statusCode !== 'current' && record.techRecord_statusCode !== 'provisional') {
 		throw new Error('New technical records must be current or provisional.');
 	}
@@ -22,6 +16,6 @@ export async function createSkeletonTechnicalRecord(
 				? 'small trl'
 				: record.techRecord_vehicleType,
 	});
-	await populateSkeletonTechnicalRecord(pages, record);
+	await pages.createTechnicalRecordDetailsPage.fill(record);
 	await submitTechnicalRecord(pages);
 }

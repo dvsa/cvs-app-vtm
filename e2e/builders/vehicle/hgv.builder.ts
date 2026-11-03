@@ -93,6 +93,7 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 
 			// Complete fields
 			techRecord_approvalType: ApprovalType.ECTA,
+			techRecord_approvalTypeNumber: 'e11*2007/46*1234',
 			techRecord_manufactureYear: 2022,
 			techRecord_regnDate: '2023-04-01',
 			techRecord_make: 'SCANIA',
@@ -113,7 +114,7 @@ export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
 			techRecord_frontAxleTo5thWheelMin: 0,
 			techRecord_frontAxleTo5thWheelMax: 0,
 			techRecord_frontAxleToRearAxle: 6000,
-			techRecord_notes: '',
+			techRecord_notes: 'Complete HGV record',
 			techRecord_roadFriendly: false,
 			techRecord_drawbarCouplingFitted: false,
 			techRecord_offRoad: false,

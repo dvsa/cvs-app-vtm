@@ -734,7 +734,8 @@ export class GeneralVehicleDetailsComponent extends EditBaseComponent implements
 	handleBodyTypeDescriptionChange() {
 		const bodyType = this.form.get('techRecord_bodyType_description')?.getRawValue();
 		const vehicleType = this.techRecord().techRecord_vehicleType;
-		const bodyConfig = vehicleType === 'hgv' ? `${this.techRecord().techRecord_vehicleConfiguration}Hgv` : vehicleType;
+		const vehicleConfiguration = this.form.get('techRecord_vehicleConfiguration')?.getRawValue();
+		const bodyConfig = vehicleType === 'hgv' ? `${vehicleConfiguration}Hgv` : vehicleType;
 		const bodyTypes = vehicleBodyTypeDescriptionMap.get(bodyConfig as VehicleTypes) as Map<
 			BodyTypeDescription,
 			BodyTypeCode

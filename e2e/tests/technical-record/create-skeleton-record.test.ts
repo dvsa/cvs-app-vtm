@@ -9,11 +9,11 @@ import { PsvBuilder } from '../../builders/vehicle/psv.builder';
 import { SmallTrlBuilder } from '../../builders/vehicle/small-trl.builder';
 import { TrlBuilder } from '../../builders/vehicle/trl.builder';
 import { PageFactory } from '../../page-objects/page.factory';
-import { createSkeletonTechnicalRecord } from '../../workflows/technical-record/create-skeleton-technical-record.workflow';
-import type { SkeletonTechnicalRecord } from '../../workflows/technical-record/populate-skeleton-technical-record.workflow';
+import type { TechnicalRecord } from '../../page-objects/technical-record/technical-record.page';
+import { createTechnicalRecord } from '../../workflows/technical-record/create-technical-record.workflow';
 
-async function createAndVerifySkeletonRecord(pages: PageFactory, record: SkeletonTechnicalRecord): Promise<void> {
-	await createSkeletonTechnicalRecord(pages, record);
+async function createAndVerifySkeletonRecord(pages: PageFactory, record: TechnicalRecord): Promise<void> {
+	await createTechnicalRecord(pages, record);
 
 	const view = pages.viewTechnicalRecordPage;
 	await expect(view.heading).toBeVisible();
