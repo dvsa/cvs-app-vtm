@@ -13,6 +13,6 @@ ignore:
   SNYK-JS-DEEPMERGE-19964053:
     - '*':
         reason: Remediation not yet available
-        expires: 2026-12-33T09:01:15.119Z
+        expires: 2026-12-03T09:01:15.119Z
         created: 2026-11-03T09:01:15.122Z
 patch: {}
