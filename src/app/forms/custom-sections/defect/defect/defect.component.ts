@@ -154,26 +154,30 @@ export class DefectComponent implements OnInit, OnDestroy {
 	}
 
 	async loadMediaItems() {
-		if (!this.testResult || !this.defect || !this.defectMediaService) return;
+		const testResult = this.testResult;
+		const defect = this.defect;
+		const defectMediaService = this.defectMediaService;
+		if (!testResult || !defect || !defectMediaService) return;
 
 		try {
 			this.loading = true;
 
-			if (this.defectMediaService.canDownloadAdasMediaItems(this.defect)) {
-				await this.defectMediaService.getAdasZip(this.testResult.testResultId);
-			}
+			await Promise.all([
+				defectMediaService.canDownloadAdasMediaItems(defect)
+					? defectMediaService.getAdasZip(testResult.testResultId)
+					: undefined,
+				defectMediaService.canDownloadDefectMediaItems(defect)
+					? defectMediaService.getDefectZip(testResult.testResultId)
+					: undefined,
+			]);
 
-			if (this.defectMediaService.canDownloadDefectMediaItems(this.defect)) {
-				await this.defectMediaService.getDefectZip(this.testResult.testResultId);
-			}
-
-			if (Array.isArray(this.defect.media)) {
-				for (const media of this.defect.media) {
-					await this.defectMediaService.loadMediaItemAsBase64(this.testResult, this.defect, media);
-				}
+			if (Array.isArray(defect.media)) {
+				await Promise.all(
+					defect.media.map((media) => defectMediaService.loadMediaItemAsBase64(testResult, defect, media))
+				);
 			}
 		} catch (error) {
-			this.defectMediaService.handleError(error, this.testResult.testResultId);
+			defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();

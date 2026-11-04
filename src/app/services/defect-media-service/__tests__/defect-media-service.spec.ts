@@ -146,6 +146,55 @@ describe('DefectMediaService', () => {
 
 		expect(zip1).toBe(zip2);
 		expect(jszipSpy).toHaveBeenCalledTimes(1);
+		jszipSpy.mockRestore();
+	});
+
+	it('should share an in-flight archive request and decompression', async () => {
+		const blob = Promise.withResolvers<Blob>();
+		const zip = new JSZip();
+		const getBlob = vi.spyOn(service, 'getBlob').mockReturnValue(blob.promise);
+		const load = vi.spyOn(JSZip.prototype, 'loadAsync').mockResolvedValue(zip);
+		try {
+			const requests = [service.getDefectZip('123'), service.getDefectZip('123')];
+			expect(getBlob).toHaveBeenCalledOnce();
+			blob.resolve(new Blob());
+			expect(await Promise.all(requests)).toEqual([zip, zip]);
+			expect(load).toHaveBeenCalledOnce();
+			expect(await service.getDefectZip('123')).toBe(zip);
+			expect(getBlob).toHaveBeenCalledOnce();
+		} finally {
+			load.mockRestore();
+		}
+	});
+
+	it('should evict failed archive requests so a later download can retry', async () => {
+		const getBlob = vi.spyOn(service, 'getBlob').mockRejectedValue(new Error('download failed'));
+		const results = await Promise.allSettled([service.getDefectZip('123'), service.getDefectZip('123')]);
+		expect(results.map((result) => result.status)).toEqual(['rejected', 'rejected']);
+		expect(getBlob).toHaveBeenCalledOnce();
+
+		await expect(service.getDefectZip('123')).rejects.toThrow('download failed');
+		expect(getBlob).toHaveBeenCalledTimes(2);
+	});
+
+	it('should fetch different archive categories concurrently without sharing their cache entries', async () => {
+		featureToggleServiceMock.isFeatureEnabled.mockReturnValue(true);
+		const getBlob = vi.spyOn(service, 'getBlob').mockResolvedValue(new Blob());
+		const defectsZip = new JSZip();
+		const adasZip = new JSZip();
+		const load = vi
+			.spyOn(JSZip.prototype, 'loadAsync')
+			.mockResolvedValueOnce(defectsZip)
+			.mockResolvedValueOnce(adasZip);
+		try {
+			const requests = [service.getDefectZip('123'), service.getAdasZip('123')];
+			expect(getBlob).toHaveBeenCalledTimes(2);
+			expect(await Promise.all(requests)).toEqual([defectsZip, adasZip]);
+			expect(service.zipCache['123-defects']).toBe(defectsZip);
+			expect(service.zipCache['123-adas']).toBe(adasZip);
+		} finally {
+			load.mockRestore();
+		}
 	});
 
 	// =============================
@@ -193,6 +242,56 @@ describe('DefectMediaService', () => {
 		await service.downloadMedia(mockTestResult);
 
 		expect(handleSpy).toHaveBeenCalled();
+	});
+
+	it('should start both media downloads before either archive is available', async () => {
+		const defects = Promise.withResolvers<JSZip>();
+		const adas = Promise.withResolvers<JSZip>();
+		vi.spyOn(service, 'canDownloadDefectMedia').mockReturnValue(true);
+		vi.spyOn(service, 'canDownloadAdasMedia').mockReturnValue(true);
+		const getDefects = vi.spyOn(service, 'getDefectZip').mockReturnValue(defects.promise);
+		const getAdas = vi.spyOn(service, 'getAdasZip').mockReturnValue(adas.promise);
+		const open = vi.spyOn(service, 'openDocumentFromZip').mockResolvedValue();
+
+		const download = service.downloadMedia(mockTestResult);
+		expect(getDefects).toHaveBeenCalledOnce();
+		expect(getAdas).toHaveBeenCalledOnce();
+		expect(open).not.toHaveBeenCalled();
+		defects.resolve(new JSZip());
+		adas.resolve(new JSZip());
+		await download;
+		expect(open).toHaveBeenCalledTimes(2);
+	});
+
+	it('should extract all selected files concurrently before completing the download', async () => {
+		const handleError = vi.spyOn(service, 'handleError');
+		const first = Promise.withResolvers<Uint8Array<ArrayBuffer>>();
+		const second = Promise.withResolvers<Uint8Array<ArrayBuffer>>();
+		const zip = new JSZip().file('first.jpg', 'first').file('second.jpg', 'second');
+		const extractFirst = vi.spyOn(zip.file('first.jpg')!, 'async').mockReturnValue(first.promise);
+		const extractSecond = vi.spyOn(zip.file('second.jpg')!, 'async').mockReturnValue(second.promise);
+		vi.spyOn(service, 'getDefectZip').mockResolvedValue(zip);
+		const open = vi.spyOn(service, 'openDocumentFromZip').mockImplementation(async (archive) => {
+			expect(await archive.file('first.jpg')!.async('string')).toBe('first');
+			expect(await archive.file('second.jpg')!.async('string')).toBe('second');
+			expect(archive.file('missing.jpg')).toBeNull();
+		});
+
+		const download = service.downloadMediaItems(mockTestResult, {
+			...mockDefect,
+			media: [
+				{ path: 'first.jpg', type: 'image' },
+				{ path: 'second.jpg', type: 'image' },
+				{ path: 'missing.jpg', type: 'image' },
+			],
+		});
+		await vi.waitFor(() => expect(extractFirst).toHaveBeenCalledOnce());
+		expect(extractSecond).toHaveBeenCalledOnce();
+		second.resolve(new TextEncoder().encode('second'));
+		first.resolve(new TextEncoder().encode('first'));
+		await download;
+		expect(open).toHaveBeenCalledOnce();
+		expect(handleError).not.toHaveBeenCalled();
 	});
 
 	// =============================

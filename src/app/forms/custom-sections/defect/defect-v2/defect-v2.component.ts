@@ -172,27 +172,29 @@ export class DefectV2Component {
 	async loadMediaItems() {
 		const defect = this.defect();
 		const testResult = this.testResult();
-		if (!testResult || !defect || !this.defectMediaService) return;
+		const defectMediaService = this.defectMediaService;
+		if (!testResult || !defect || !defectMediaService) return;
 
 		try {
 			this.loading.set(true);
 			this.cdr.markForCheck();
 
-			if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
-				await this.defectMediaService.getAdasZip(testResult.testResultId);
-			}
-
-			if (this.defectMediaService.canDownloadDefectMediaItems(defect)) {
-				await this.defectMediaService.getDefectZip(testResult.testResultId);
-			}
+			await Promise.all([
+				defectMediaService.canDownloadAdasMediaItems(defect)
+					? defectMediaService.getAdasZip(testResult.testResultId)
+					: undefined,
+				defectMediaService.canDownloadDefectMediaItems(defect)
+					? defectMediaService.getDefectZip(testResult.testResultId)
+					: undefined,
+			]);
 
 			if (Array.isArray(defect.media)) {
-				for (const media of defect.media) {
-					await this.defectMediaService.loadMediaItemAsBase64(testResult, defect, media);
-				}
+				await Promise.all(
+					defect.media.map((media) => defectMediaService.loadMediaItemAsBase64(testResult, defect, media))
+				);
 			}
 		} catch (error) {
-			this.defectMediaService.handleError(error, testResult.testResultId);
+			defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
 			this.loading.set(false);
 			this.cdr.detectChanges();
