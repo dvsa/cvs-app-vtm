@@ -1,12 +1,22 @@
 name: CI
 
 on:
+  # Scan target branches after merges; feature branches are checked through their PRs.
   push:
+    branches: ['develop', 'feature/VTMDEV-1']
   pull_request:
     branches: ['develop', 'feature/VTMDEV-1']
 
 permissions:
   contents: read
+
+env:
+  CI: true
+  HUSKY: '0'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   security:
@@ -16,42 +26,8 @@ jobs:
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-  build:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci --include=optional
-
-      - name: Build
-        run: npm run build --ignore-scripts -- --configuration production
-
-  test:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Install dependencies
-        run: npm ci --include=optional
-
-      - name: Run tests
-        run: npm run test:workflow
-
-  lint:
+  # Keep checks on one runner so checkout, Node setup, and npm ci happen once.
+  ci-checks:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -72,17 +48,11 @@ jobs:
       - name: 📝 Check formatting
         run: npm run format:check
 
-  audit:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
       - name: Run audit
         run: npm audit --audit-level=critical
+
+      - name: Run tests
+        run: npm run test:workflow
+
+      - name: Build
+        run: npm run build --ignore-scripts -- --configuration production
