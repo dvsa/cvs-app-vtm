@@ -171,7 +171,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
 							label: 'Expiry Date',
 							value: '',
 							type: FormNodeTypes.CONTROL,
-							viewType: FormNodeViewTypes.TIME,
+							viewType: FormNodeViewTypes.DATE,
 							editType: FormNodeEditTypes.DATE,
 							validators: [
 								{
