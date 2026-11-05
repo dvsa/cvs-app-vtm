@@ -2,7 +2,7 @@
   @if (label()) {
     <label class="govuk-label govuk-label--m" for="{{ name() }}">
       {{ label() }}
-      @for (tag of control?.meta?.customTags; track tag) {
+      @for (tag of control?.meta?.customTags; track tag.label) {
         <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
       }
     </label>
@@ -32,6 +32,7 @@
     [attr.data-module]="'govuk-character-count'"
     [attr.data-maxlength]="maxLength"
     [(ngModel)]="value"
+    [ngModelOptions]="{ standalone: true }"
     [disabled]="disabled"
     (ngModelChange)="onChange($event); valueSub.next($event)"
     (blur)="onTouched(); handleEvent($event)"
