@@ -47,7 +47,7 @@
     @if (defaultOption() && !disabled()) {
       <option [selected]="true" [ngValue]="null">{{ defaultOption() }}</option>
     }
-    @for (option of options(); track $index) {
+    @for (option of options(); track option) {
       <option [ngValue]="option.value">{{ option.label }}</option>
     }
   </select>
