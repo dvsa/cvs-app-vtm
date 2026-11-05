@@ -9,7 +9,7 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -40,7 +40,11 @@ export class AbandonComponent implements OnInit, OnDestroy {
 	}
 
 	getAbandonNotesLabel(): string {
-		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
+		if (
+			[...TEST_TYPES_GROUP7, ...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(
+				this.testResult()?.testTypes[0].testTypeId ?? ''
+			)
+		) {
 			return 'Additional notes as to why this test was abandoned';
 		}
 		return 'Additional notes as to why this test was abandoned (optional)';
@@ -62,6 +66,7 @@ export class AbandonComponent implements OnInit, OnDestroy {
 	}
 
 	addValidators(): void {
+		const testTypeId = this.testResult()?.testTypes[0].testTypeId ?? '';
 		const testTypeGroup = this.form.controls.testTypes.at(0);
 		testTypeGroup.controls.reasonForAbandoning.setValidators([
 			this.commonValidators.required('Why was this test abandoned?'),
@@ -69,6 +74,11 @@ export class AbandonComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.maxLength(500, 'Additional notes as to why this test was abandoned (optional)'),
 		]);
+		if ([...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(testTypeId)) {
+			testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
+				this.commonValidators.required(() => ({ error: 'Enter additional notes as to why this test was abandoned' })),
+			]);
+		}
 	}
 
 	removeValidators(): void {
