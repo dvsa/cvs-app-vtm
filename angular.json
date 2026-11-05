@@ -68,7 +68,6 @@
                 "silenceDeprecations": [
                   "import",
                   "slash-div",
-                  "mixed-decls",
                   "global-builtin"
                 ]
               }
@@ -141,7 +140,7 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "runnerConfig": "vitest.config.ts",
+            "runnerConfig": "vitest.config.mts",
             "providersFile": "test-providers.ts",
             "setupFiles": [
               "setup-vitest.ts"
