@@ -2,7 +2,7 @@ import { CommonValidatorsService } from '@/src/app/forms/validators/common-valid
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { Modes } from '@models/modes.enum';
@@ -26,6 +26,19 @@ export class NotesComponent implements OnInit {
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 
+	readonly additionalNotesLabel = computed(() =>
+		TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+			? 'Additional Notes'
+			: 'Additional Notes (optional)'
+	);
+
+	readonly additionalNotesHint = computed(() => {
+		const testType = this.testResult()?.testTypes[0];
+		return TEST_TYPES_GROUP7.includes(testType?.testTypeId ?? '') && testType?.centralDocs?.issueRequired
+			? 'Enter a reason for issuing documents centrally'
+			: '';
+	});
+
 	ngOnInit(): void {
 		this.addValidators();
 	}
@@ -34,23 +47,8 @@ export class NotesComponent implements OnInit {
 		this.form.controls.testTypes
 			.at(0)
 			.controls.additionalNotesRecorded.setValidators([
-				this.commonValidators.maxLength(500, this.getAdditionalNotesLabel()),
+				this.commonValidators.maxLength(500, this.additionalNotesLabel()),
 			]);
-	}
-
-	getAdditionalNotesLabel(): string {
-		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
-			return 'Additional Notes';
-		}
-		return 'Additional Notes (optional)';
-	}
-
-	getAdditionalNotesHint(): string {
-		const testType = this.testResult()?.testTypes[0];
-		if (TEST_TYPES_GROUP7.includes(testType?.testTypeId ?? '') && testType?.centralDocs?.issueRequired) {
-			return 'Enter a reason for issuing documents centrally';
-		}
-		return '';
 	}
 
 	protected readonly Modes = Modes;

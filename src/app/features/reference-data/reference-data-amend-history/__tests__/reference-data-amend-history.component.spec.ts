@@ -38,8 +38,8 @@ describe('ReferenceDataAmendHistoryComponent', () => {
 		it('should set pageStart and pageEnd', () => {
 			component.handlePaginationChange({ start: 7, end: 20 });
 
-			expect(component.pageStart).toBe(7);
-			expect(component.pageEnd).toBe(20);
+			expect(component.pageStart()).toBe(7);
+			expect(component.pageEnd()).toBe(20);
 		});
 	});
 });

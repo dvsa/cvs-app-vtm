@@ -217,11 +217,11 @@ describe('TechRecordSearchTyresComponent', () => {
 		});
 		it('should get the paginated fields', () => {
 			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
-			expect(component.paginatedFields).toEqual(['foo', 'bar', 'foobar']);
+			expect(component.paginatedFields()).toEqual(['foo', 'bar', 'foobar']);
 		});
 		it('should get the number of results', () => {
 			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
-			expect(component.numberOfResults).toEqual(component.searchResults()?.length);
+			expect(component.numberOfResults()).toEqual(component.searchResults()?.length);
 		});
 	});
 

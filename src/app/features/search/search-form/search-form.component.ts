@@ -10,7 +10,7 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { clearAllSectionStates, clearScrollPosition } from '@/src/app/store/technical-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -43,6 +43,19 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
 	searchResults = input<number>();
 	pagination = input<PaginationOptions>();
+	readonly searchResultsCountHint = computed<string>(() => {
+		const pagination = this.pagination();
+		const searchResults = this.searchResults();
+		if (!pagination || !searchResults) return '';
+
+		const totalPages = Math.ceil(searchResults / pagination.itemsPerPage);
+		if (pagination.currentPage === totalPages) {
+			const remainder = searchResults - (pagination.currentPage - 1) * pagination.itemsPerPage;
+			return `Showing ${remainder} result${remainder === 1 ? '' : 's'} of ${searchResults}`;
+		}
+
+		return `Showing 4 results of ${searchResults}`;
+	});
 
 	form = this.fb.group({
 		searchTerm: this.fb.control('', [
@@ -97,19 +110,5 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 			const queryParams = { ...this.form.getRawValue(), 'search-results-page': 1 };
 			this.router.navigate(['/search/results'], { queryParams, queryParamsHandling: 'merge' });
 		}
-	}
-
-	getSearchResultsCountHint(): string {
-		const pagination = this.pagination();
-		const searchResults = this.searchResults();
-		if (!pagination || !searchResults) return '';
-
-		const totalPages = Math.ceil(searchResults / pagination.itemsPerPage);
-		if (pagination.currentPage === totalPages) {
-			const remainder = searchResults - (pagination.currentPage - 1) * pagination.itemsPerPage;
-			return `Showing ${remainder} result${remainder === 1 ? '' : 's'} of ${searchResults}`;
-		}
-
-		return `Showing 4 results of ${searchResults}`;
 	}
 }

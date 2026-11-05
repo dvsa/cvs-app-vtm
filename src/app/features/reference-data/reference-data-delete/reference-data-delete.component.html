@@ -1,4 +1,4 @@
-@if (refData$ | async) {
+@if (refData(); as refData) {
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-xl govuk-!-font-weight-bold">
@@ -11,7 +11,7 @@
               {{ column.heading }}
             </dt>
             <dd class="govuk-summary-list__value">
-              {{ (refData$ | async)[column.name] }}
+              {{ refData[column.name] }}
             </dd>
           </div>
         }

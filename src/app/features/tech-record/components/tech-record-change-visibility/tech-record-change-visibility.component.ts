@@ -1,6 +1,6 @@
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -38,6 +38,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 	private validators = inject(CommonValidatorsService);
 
 	techRecord = this.store.selectSignal(techRecord);
+	readonly title = computed(() => `${this.techRecord()?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record in VTA`);
+	readonly buttonLabel = computed(() => `${this.techRecord()?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`);
 
 	form = this.fb.group({
 		reason: this.fb.control<string | null>(null),
@@ -51,14 +53,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 				`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`,
 			]);
 		});
-	}
-
-	get title(): string {
-		return `${this.techRecord()?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record in VTA`;
-	}
-
-	get buttonLabel(): string {
-		return `${this.techRecord()?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`;
 	}
 
 	ngOnInit(): void {
