@@ -108,6 +108,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
 		if (this.form.valid) {
 			const queryParams = { ...this.form.getRawValue(), 'search-results-page': 1 };
+			queryParams.searchTerm = queryParams.searchTerm?.toUpperCase() ?? null;
 			this.router.navigate(['/search/results'], { queryParams, queryParamsHandling: 'merge' });
 		}
 	}
