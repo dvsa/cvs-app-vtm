@@ -12,7 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { CreateTechRecordComponent } from '../create-tech-record.component';
 
 describe('CreateTechRecordComponent', () => {
@@ -141,6 +141,60 @@ describe('CreateTechRecordComponent', () => {
 			await component.handleSubmit();
 
 			expect(routerSpy).toHaveBeenCalledWith(['../create/duplicate-vin'], { relativeTo: component.route });
+		});
+	});
+
+	describe('isFormValueUnique', () => {
+		it.each(['hgv', 'trl'] as const)('should check VIN and the %s identifier concurrently', async (vehicleType) => {
+			component.form.controls.vehicleType.setValue(vehicleType);
+			component.form.controls.generateID.setValue(false);
+			component.form.controls.vin.setValue('VIN123');
+			component.form.controls.vrmTrm.setValue('AB123');
+			const vin = new Subject<boolean>();
+			const identifier = new Subject<boolean>();
+			const isUnique = vi
+				.spyOn(techRecordService, 'isUnique')
+				.mockImplementation((_, type) => (type === SEARCH_TYPES.VIN ? vin : identifier));
+
+			const result = component.isFormValueUnique();
+			expect(isUnique).toHaveBeenCalledWith('VIN123', SEARCH_TYPES.VIN);
+			expect(isUnique).toHaveBeenCalledWith(
+				'AB123',
+				vehicleType === 'trl' ? SEARCH_TYPES.TRAILER_ID : SEARCH_TYPES.VRM
+			);
+
+			identifier.next(true);
+			vin.next(false);
+			expect(await result).toBe(false);
+			expect(component.vinUnique).toBe(false);
+			expect(vehicleType === 'trl' ? component.trlUnique : component.vrmUnique).toBe(true);
+		});
+
+		it('should skip identifier checks when generating an ID', async () => {
+			component.form.controls.generateID.setValue(true);
+			const isUnique = vi.spyOn(techRecordService, 'isUnique').mockReturnValue(of(true));
+
+			expect(await component.isFormValueUnique()).toBe(true);
+			expect(isUnique).toHaveBeenCalledOnce();
+			expect(isUnique).toHaveBeenCalledWith(component.form.controls.vin.value, SEARCH_TYPES.VIN);
+		});
+
+		it('should retain the completed VIN check if the identifier check fails and is retried', async () => {
+			component.form.controls.vehicleType.setValue('hgv');
+			component.form.controls.generateID.setValue(false);
+			const identifier = new Subject<boolean>();
+			const isUnique = vi
+				.spyOn(techRecordService, 'isUnique')
+				.mockImplementation((_, type) => (type === SEARCH_TYPES.VIN ? of(true) : identifier));
+			const result = component.isFormValueUnique();
+			const rejected = expect(result).rejects.toThrow('lookup failed');
+			identifier.error(new Error('lookup failed'));
+			await rejected;
+
+			isUnique.mockClear().mockReturnValue(of(true));
+			expect(await component.isFormValueUnique()).toBe(true);
+			expect(isUnique).toHaveBeenCalledOnce();
+			expect(isUnique.mock.calls[0][1]).toBe(SEARCH_TYPES.VRM);
 		});
 	});
 

@@ -46,7 +46,10 @@ describe('AppComponent', () => {
 				{ provide: RoleGuard, useValue: { canActivate: () => of(true) } },
 				PageNotFoundComponent,
 				{ provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
-				{ provide: AnalyticsService, useValue: { pushToDataLayer: vi.fn(), setUserId: vi.fn() } },
+				{
+					provide: AnalyticsService,
+					useValue: { pushToDataLayer: vi.fn(), createUniqueId: vi.fn().mockResolvedValue('user-id') },
+				},
 			],
 		}).compileComponents();
 		router = TestBed.inject(Router);
@@ -57,6 +60,23 @@ describe('AppComponent', () => {
 		const app = fixture.componentInstance;
 		fixture.detectChanges();
 		expect(app).toBeTruthy();
+	});
+
+	it('should hash the user ID while GTM loads and wait for GTM before publishing it', async () => {
+		const gtm = Promise.withResolvers<void>();
+		const analytics = TestBed.inject(AnalyticsService);
+		vi.spyOn(TestBed.inject(GoogleTagManagerService), 'addGtmToDom').mockReturnValue(gtm.promise);
+		const app = TestBed.createComponent(AppComponent).componentInstance;
+		vi.spyOn(app, 'startSentry').mockImplementation(() => {});
+
+		const initialization = app.ngOnInit();
+		expect(analytics.createUniqueId).toHaveBeenCalledOnce();
+		await Promise.resolve();
+		expect(analytics.pushToDataLayer).not.toHaveBeenCalled();
+
+		gtm.resolve();
+		await initialization;
+		expect(analytics.pushToDataLayer).toHaveBeenCalledWith({ UserIDDataLayer: 'user-id' });
 	});
 
 	describe('router.initialNavigation', () => {

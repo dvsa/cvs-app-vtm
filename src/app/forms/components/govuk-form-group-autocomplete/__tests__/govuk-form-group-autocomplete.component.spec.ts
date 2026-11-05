@@ -5,7 +5,7 @@ import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '@forms/components/autocomplete/l
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import type { AutocompleteEnhanceParams } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import { of } from 'rxjs';
+import { Subject, defer, of } from 'rxjs';
 import { vi } from 'vitest';
 import { GovukFormGroupAutocompleteComponent } from '../govuk-form-group-autocomplete.component';
 
@@ -46,7 +46,7 @@ describe('GovukFormGroupAutocompleteComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: ACCESSIBLE_AUTOCOMPLETE_LOADER,
-					useValue: () => Promise.resolve({ enhanceSelectElement: mockEnhanceSelectElement }),
+					useValue: vi.fn(() => Promise.resolve({ enhanceSelectElement: mockEnhanceSelectElement })),
 				},
 			],
 		}).compileComponents();
@@ -60,6 +60,46 @@ describe('GovukFormGroupAutocompleteComponent', () => {
 
 		expect(enhanceCalls).toHaveLength(1);
 		expect(fixture.nativeElement.querySelectorAll('#country')).toHaveLength(1);
+	});
+
+	it('should subscribe to options while the library loads and retain the latest form value', async () => {
+		const library = Promise.withResolvers<{ enhanceSelectElement: typeof mockEnhanceSelectElement }>();
+		vi.mocked(TestBed.inject(ACCESSIBLE_AUTOCOMPLETE_LOADER)).mockReturnValue(library.promise);
+		const options = new Subject<{ label: string; value: string }[]>();
+		const subscribe = vi.fn(() => options);
+		fixture.componentInstance.options$ = defer(subscribe);
+		fixture.detectChanges();
+
+		expect(subscribe).toHaveBeenCalledOnce();
+		options.next([{ label: 'France', value: 'fr' }]);
+		fixture.componentInstance.form.patchValue({ country: 'fr' });
+		expect(enhanceCalls).toHaveLength(0);
+		library.resolve({ enhanceSelectElement: mockEnhanceSelectElement });
+		await fixture.whenStable();
+		expect(enhanceCalls).toHaveLength(1);
+		expect(enhanceCalls[0].defaultValue).toBe('fr');
+		expect(enhanceCalls[0].selectElement.querySelector('option[value="fr"]')?.textContent).toBe('France');
+	});
+
+	it('should render the plain select options if the library fails to load', async () => {
+		vi.mocked(TestBed.inject(ACCESSIBLE_AUTOCOMPLETE_LOADER)).mockRejectedValue(new Error('chunk unavailable'));
+		fixture.detectChanges();
+		await fixture.whenStable();
+
+		expect(enhanceCalls).toHaveLength(0);
+		const select: HTMLSelectElement = fixture.nativeElement.querySelector('select');
+		expect(select.querySelector('option[value="fr"]')?.textContent).toBe('France');
+	});
+
+	it('should not enhance a component destroyed while the library is loading', async () => {
+		const library = Promise.withResolvers<{ enhanceSelectElement: typeof mockEnhanceSelectElement }>();
+		vi.mocked(TestBed.inject(ACCESSIBLE_AUTOCOMPLETE_LOADER)).mockReturnValue(library.promise);
+		fixture.detectChanges();
+		fixture.destroy();
+		library.resolve({ enhanceSelectElement: mockEnhanceSelectElement });
+		await library.promise;
+		await Promise.resolve();
+		expect(enhanceCalls).toHaveLength(0);
 	});
 
 	it('should set the form value from the confirmed option label', async () => {

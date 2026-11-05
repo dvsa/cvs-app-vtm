@@ -44,18 +44,19 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 	ngAfterViewInit(): void {
 		const self = this;
 
-		lastValueFrom(
-			combineLatest({
-				options: this.options$(),
-				refDataLoading: this.refDataLoading,
-			}).pipe(takeWhile(({ options, refDataLoading }) => !options || options.length === 0 || refDataLoading, true))
-		)
-			.then(async ({ options }) => {
+		Promise.all([
+			lastValueFrom(
+				combineLatest({
+					options: this.options$(),
+					refDataLoading: this.refDataLoading,
+				}).pipe(takeWhile(({ options, refDataLoading }) => !options || options.length === 0 || refDataLoading, true))
+			).then(({ options }) => {
 				this.options = options;
 				this.cdr.detectChanges();
-
-				const { enhanceSelectElement } = await this.loadAccessibleAutocomplete();
-
+			}),
+			this.loadAccessibleAutocomplete(),
+		])
+			.then(([, { enhanceSelectElement }]) => {
 				const name = this.name();
 				enhanceSelectElement({
 					selectElement: this.document.querySelector(`#${name}`),
