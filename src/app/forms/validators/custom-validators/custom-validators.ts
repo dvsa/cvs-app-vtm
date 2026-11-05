@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 // eslint-disable-next-line import/no-cycle
@@ -106,6 +106,13 @@ export class CustomValidators {
 			}
 			return null;
 		};
+
+	static required = (args?: { customErrorMessage?: string }): ValidatorFn => {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const required = Validators.required(control);
+			return required ? { required: { customErrorMessage: args?.customErrorMessage } } : null;
+		};
+	};
 
 	static requiredIfEquals =
 		(sibling: string, values: unknown[], customErrorMessage?: string): ValidatorFn =>

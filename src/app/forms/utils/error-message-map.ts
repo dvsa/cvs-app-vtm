@@ -35,7 +35,8 @@ export const ErrorMessageMap: Record<string, Function> = {
 		"The VRM/Trailer ID cannot be in a format that is 7 digits followed by the character 'Z'",
 	[ValidatorNames.PastDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the past`,
 	[ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
-	[ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
+	[ValidatorNames.Required]: (err: { customErrorMessage: string }, label?: string) =>
+		err.customErrorMessage ?? `${label || DEFAULT_LABEL} is required`,
 	[ValidatorNames.RequiredIfEquals]: (err: { sibling: string; customErrorMessage: string }, label?: string) =>
 		err.customErrorMessage ?? `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
 	[ValidatorNames.RequiredIfNotEquals]: (err: { sibling: string }, label?: string) =>
