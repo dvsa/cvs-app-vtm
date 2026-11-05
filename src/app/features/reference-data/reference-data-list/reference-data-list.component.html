@@ -111,7 +111,7 @@
         @for (item of paginatedItems(); track item) {
           <tr class="govuk-table__row">
             @for (column of refDataAdminType()?.columns; track column) {
-              <td class="govuk-table__cell">{{ item[column.name] }}</td>
+              <td class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
             }
             <td class="govuk-table__cell buttons">
               <app-button-group>

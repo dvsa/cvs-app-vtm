@@ -3,7 +3,11 @@ import { Component, OnInit, Signal, computed, inject, signal } from '@angular/co
 import { ActivatedRoute } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import {
+	ReferenceDataAdminType,
+	ReferenceDataModelBase,
+	ReferenceDataResourceType,
+} from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -39,7 +43,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 		});
 		this.refDataAdminType = this.store.selectSignal(
 			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
-		);
+		) as Signal<ReferenceDataAdminType | undefined>;
 		this.data = this.store.selectSignal(selectSearchReturn(`${this.type}#AUDIT` as ReferenceDataResourceType));
 	}
 

@@ -23,7 +23,7 @@
           <tr class="govuk-table__row">
             @if (item.reason) {
               @for (column of refDataAdminType()?.columns; track column) {
-                <td class="govuk-table__cell">{{ item[column.name] }}</td>
+                <td class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
               }
               <td class="govuk-table__cell">
                 {{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}
