@@ -93,7 +93,7 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 		this.refDataAdminType = this.store.selectSignal(
 			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
 		);
-		this.refData = this.store.selectSignal(selectReferenceDataByResourceKey(this.type, this.key));
+		this.refData = this.store.selectSignal(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key)));
 		// the label arrives with the admin-type fetch, so keep the title reactive
 		effect(
 			() =>
