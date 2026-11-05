@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -60,6 +60,21 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 	form!: FormGroup;
 	private destroy$ = new Subject<void>();
 
+	readonly vehicleType = computed<VehicleTypes | undefined>(() => {
+		const techRecord = this.techRecord();
+		return techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) : undefined;
+	});
+
+	readonly makeAndModel = computed<string | undefined>(() => {
+		const techRecord = this.techRecord();
+		return techRecord ? this.technicalRecordService.getMakeAndModel(techRecord) : undefined;
+	});
+
+	readonly currentVrm = computed<string | undefined>(() => {
+		const techRecord = this.techRecord();
+		return techRecord?.techRecord_vehicleType !== 'trl' ? (techRecord?.primaryVrm ?? '') : undefined;
+	});
+
 	constructor() {
 		this.initForm();
 		this.handleAmendVinSuccess();
@@ -76,21 +91,6 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
 	get width(): FormNodeWidth {
 		return FormNodeWidth.L;
-	}
-
-	get vehicleType(): VehicleTypes | undefined {
-		const techRecord = this.techRecord();
-		return techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord) : undefined;
-	}
-
-	get makeAndModel(): string | undefined {
-		const techRecord = this.techRecord();
-		return techRecord ? this.technicalRecordService.getMakeAndModel(techRecord) : undefined;
-	}
-
-	get currentVrm(): string | undefined {
-		const techRecord = this.techRecord();
-		return techRecord?.techRecord_vehicleType !== 'trl' ? (techRecord?.primaryVrm ?? '') : undefined;
 	}
 
 	isFormValid(): boolean {

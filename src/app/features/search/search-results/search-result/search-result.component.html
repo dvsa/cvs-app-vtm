@@ -124,7 +124,7 @@
           <dd
             class="govuk-summary-list__value govuk-summary-list__value--overflow"
           >
-            <app-tag [type]="getTagType(searchResult)">
+            <app-tag [type]="tagType()">
               {{
                 searchResult.techRecord_statusCode
                   | defaultNullOrEmpty

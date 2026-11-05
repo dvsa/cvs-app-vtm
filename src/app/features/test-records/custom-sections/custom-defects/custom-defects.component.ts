@@ -8,7 +8,7 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
@@ -54,6 +54,9 @@ export class CustomDefectsComponent implements OnInit {
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
+	readonly customDefects = computed<SpecialistCustomDefectsSchema[]>(
+		() => this.testResult()?.testTypes[0].customDefects ?? []
+	);
 
 	// The test result holds the custom defects as a single value, so each defect is edited in a form array of its own
 	customDefectsForm = this.fb.array<CustomDefectForm>([]);
@@ -144,10 +147,6 @@ export class CustomDefectsComponent implements OnInit {
 
 	onRemoveCustomDefect(index: number): void {
 		this.customDefectsForm.removeAt(index);
-	}
-
-	get customDefects(): SpecialistCustomDefectsSchema[] {
-		return this.testResult()?.testTypes[0].customDefects ?? [];
 	}
 
 	protected readonly Modes = Modes;

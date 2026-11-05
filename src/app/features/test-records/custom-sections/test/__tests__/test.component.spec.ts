@@ -511,7 +511,7 @@ describe('TestComponent', () => {
 			setTestResult({ testResult: TestResults.PASS });
 			expect(component.isSpecialistGroup1()).toBe(true);
 			expect(component.shouldShowResult()).toBe(true);
-			expect(component.getResultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'prs']);
+			expect(component.resultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'prs']);
 		});
 
 		it('should show the description, prohibition issued and hide the anniversary date', () => {

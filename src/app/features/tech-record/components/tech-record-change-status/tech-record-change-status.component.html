@@ -1,5 +1,5 @@
 <div class="govuk-grid-row">
-  <h1 class="govuk-heading-l">{{ getTitleText() }}</h1>
+  <h1 class="govuk-heading-l">{{ titleText() }}</h1>
   <div class="govuk-grid-column-full">
     <app-tech-record-title
       [vehicle]="techRecord() || undefined"
@@ -10,7 +10,7 @@
       <app-text-area
         [id]="'reasonForAmend'"
         name="reason"
-        [label]="label"
+        [label]="label()"
         formControlName="reason"
       ></app-text-area>
 
@@ -19,7 +19,7 @@
         data-prevent-double-click="true"
         (clicked)="handleSubmit(form.value)"
       >
-        {{ buttonLabel }} record
+        {{ buttonLabel() }} record
       </app-button>
       <app-button
         design="link"
