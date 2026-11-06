@@ -103,7 +103,7 @@ describe('TestRecordSummaryComponent', () => {
 			},
 		] as TestResultSchema[];
 		fixture.componentRef.setInput('testResults', mockRecords);
-		const testFieldResults = component.sortedTestTypeFields;
+		const testFieldResults = component.sortedTestTypeFields();
 
 		expect(testFieldResults).toHaveLength(3);
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -36,6 +36,10 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	titleService = inject(Title);
 
 	readonly techRecord = toSignal(this.technicalRecordService.techRecord$) as Signal<TechRecordType<'get'> | undefined>;
+	readonly isPromotion = signal(false);
+	readonly titleText = computed(() => (this.isPromotion() ? 'Promote technical record' : 'Archive technical record'));
+	readonly label = computed(() => `Reason for ${this.isPromotion() ? 'promotion' : 'archiving'}`);
+	readonly buttonLabel = computed(() => (this.isPromotion() ? 'Promote' : 'Archive'));
 
 	form = new CustomFormGroup(
 		{ name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -43,8 +47,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 			reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
 		}
 	);
-
-	isPromotion = false;
 
 	destroy$ = new Subject<void>();
 
@@ -60,9 +62,9 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 			});
 
 		this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-			this.isPromotion = params.get('to') === 'current';
+			this.isPromotion.set(params.get('to') === 'current');
 			this.titleService.setTitle(
-				`${this.isPromotion ? 'Promote' : 'Archive'} technical record - Vehicle Testing Management`
+				`${this.isPromotion() ? 'Promote' : 'Archive'} technical record - Vehicle Testing Management`
 			);
 		});
 	}
@@ -70,18 +72,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
-	}
-
-	getTitleText(): string {
-		return this.isPromotion ? 'Promote technical record' : 'Archive technical record';
-	}
-
-	get label(): string {
-		return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
-	}
-
-	get buttonLabel(): string {
-		return this.isPromotion ? 'Promote' : 'Archive';
 	}
 
 	navigateBack(relativePath = '..'): void {
@@ -101,7 +91,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 		} else {
 			this.errorService.setErrors([
 				{
-					error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`,
+					error: `${this.label()} is required`,
 					anchorLink: 'reasonForAmend',
 				},
 			]);
@@ -111,7 +101,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		if (this.isPromotion) {
+		if (this.isPromotion()) {
 			this.store.dispatch(
 				promoteTechRecord({
 					systemNumber: techRecord.systemNumber,

@@ -6,7 +6,7 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <div class="govuk-fieldset__heading">
         {{ label() }}
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </div>
@@ -40,6 +40,7 @@
             type="radio"
             [value]="option.value"
             [(ngModel)]="value"
+            [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="onChange($event)"
             (blur)="control?.markAsTouched()"
           />

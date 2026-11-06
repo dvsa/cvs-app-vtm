@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, signal, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -14,7 +13,7 @@ import {
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ValidatorNames } from '@models/validators.enum';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormGroup,
@@ -29,12 +28,12 @@ import {
 	fetchReferenceDataByKey,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, ReplaySubject, take } from 'rxjs';
+import { ReplaySubject, take } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-delete',
 	templateUrl: './reference-data-delete.component.html',
-	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
+	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent],
 })
 export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
@@ -46,6 +45,8 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 
 	type!: ReferenceDataResourceType;
 	refDataAdminType!: Signal<any>;
+	// the item being deleted; assigned in ngOnInit once the type and key are known from the route
+	refData: Signal<any> = signal(undefined);
 	private readonly injector = inject(Injector);
 	key!: string;
 	reasonForDeletion: any;
@@ -92,6 +93,7 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 		this.refDataAdminType = this.store.selectSignal(
 			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
 		);
+		this.refData = this.store.selectSignal(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key)));
 		// the label arrives with the admin-type fetch, so keep the title reactive
 		effect(
 			() =>
@@ -110,11 +112,6 @@ export class ReferenceDataDeleteComponent implements OnInit, OnDestroy {
 
 	get roles(): typeof Roles {
 		return Roles;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refData$(): Observable<any> {
-		return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
 	}
 
 	get widths(): typeof FormNodeWidth {

@@ -1,5 +1,5 @@
 name: CD (Deploy)
-run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
+run-name: "${{ github.actor }} - ${{ inputs.branch || github.ref_name }}${{ inputs.backend && format(' (BE: {0})', inputs.backend) || '' }}${{ inputs.run-automation && ' + automation' || '' }} - ${{ github.run_id }} 🚀"
 on:
   push:
     branches: ['develop']
@@ -16,9 +16,26 @@ on:
           - vtmdev-1
           - vtmdev-2
         default: nonprod
+      branch:
+        description: Branch to deploy (vtmdev-1/vtmdev-2 only). Defaults to the branch this workflow runs from.
+        type: string
+        required: false
+      backend:
+        description: Backend to target (vtmdev-1/vtmdev-2 only), e.g. develop, vtmdev-1 or cb2-12345. Defaults to the environment's backend.
+        type: string
+        required: false
+      run-automation:
+        description: Run the cvs-vtm-automation Playwright suite against this deployment once it is live (not preprod/prod)
+        type: boolean
+        default: false
 
 permissions:
   id-token: write
+
+# Never run two deployments to the same environment at once.
+concurrency:
+  group: vtm-deploy-${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   environment:
@@ -37,6 +54,38 @@ jobs:
           environment: ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}
           output-summary: false
 
+      - name: Validate automation request
+        if: ${{ inputs.run-automation }}
+        env:
+          ENVIRONMENT_NAME: ${{ steps.environment.outputs.environment-name }}
+        run: |
+          if [[ ! "$ENVIRONMENT_NAME" =~ ^(develop|integration|vtmdev-1|vtmdev-2)$ ]]; then
+            echo "::error::automation can only run against develop, integration, vtmdev-1 or vtmdev-2 (got '$ENVIRONMENT_NAME')"
+            exit 1
+          fi
+
+      - name: Validate deployment overrides
+        if: ${{ inputs.branch || inputs.backend }}
+        env:
+          ENVIRONMENT_NAME: ${{ steps.environment.outputs.environment-name }}
+          BACKEND: ${{ inputs.backend }}
+        run: |
+          if [[ ! "$ENVIRONMENT_NAME" =~ ^vtmdev-[12]$ ]]; then
+            echo "::error::branch/backend overrides are only allowed for vtmdev-1 and vtmdev-2 (got '$ENVIRONMENT_NAME')"
+            exit 1
+          fi
+
+          backend=$(echo "$BACKEND" | tr '[:upper:]' '[:lower:]')
+          if [[ -n "$backend" && ! "$backend" =~ ^[a-z0-9-]+$ ]]; then
+            echo "::error::backend must only contain letters, numbers and hyphens (got '$BACKEND')"
+            exit 1
+          fi
+
+          if [[ "$backend" =~ ^(preprod|prod)$ ]]; then
+            echo "::error::vtmdev environments cannot target the $backend backend"
+            exit 1
+          fi
+
   build-application:
     name: Build Application
     runs-on:
@@ -46,7 +95,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ inputs.branch || github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -67,8 +116,47 @@ jobs:
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment == 'nonprod' && github.ref_name || inputs.environment || github.ref_name }}/vtm/config --query SecretString --region=${{ vars.DVSA_AWS_REGION }} --output text > src/environments/environment.deploy.ts
 
+      - name: Override backend API URI
+        if: ${{ inputs.backend }}
+        env:
+          BACKEND: ${{ inputs.backend }}
+        run: |
+          backend=$(echo "$BACKEND" | tr '[:upper:]' '[:lower:]')
+          case "$backend" in
+            develop|integration) api_uri="https://api.${backend}.cvs.dvsacloud.uk/${backend}" ;;
+            *) api_uri="https://${backend}-api.develop.cvs.dvsacloud.uk/${backend}" ;;
+          esac
+
+          sed -E -i "s|(VTM_API_URI['\"]?:[[:space:]]*)['\"][^'\"]*['\"]|\1'${api_uri}'|" src/environments/environment.deploy.ts
+
+          if ! grep -qE "VTM_API_URI['\"]?:[[:space:]]*'${api_uri}'" src/environments/environment.deploy.ts; then
+            echo "::error::Failed to override VTM_API_URI in environment.deploy.ts"
+            exit 1
+          fi
+          echo "Targeting backend: $api_uri"
+
       - name: Build App
         run: npm run build -- --configuration='deploy' --output-path='dist/'
+
+      - name: Write version.json
+        if: ${{ !contains(fromJSON('["preprod", "prod"]'), needs.environment.outputs.environment-name) }}
+        env:
+          ENVIRONMENT_NAME: ${{ needs.environment.outputs.environment-name }}
+          BRANCH: ${{ inputs.branch || github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          api_uri=$(grep -oE "VTM_API_URI['\"]?:[[:space:]]*['\"][^'\"]*['\"]" src/environments/environment.deploy.ts | sed -E "s/.*['\"]([^'\"]*)['\"]/\1/")
+          jq -n \
+            --arg environment "$ENVIRONMENT_NAME" \
+            --arg branch "$BRANCH" \
+            --arg sha "$(git rev-parse HEAD)" \
+            --arg backend "$api_uri" \
+            --arg deployedBy "$ACTOR" \
+            --arg runId "$RUN_ID" \
+            --arg deployedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '$ARGS.named' > dist/browser/version.json
+          cat dist/browser/version.json
 
       - name: Deploy to Sentry
         if: ${{ inputs.environment == 'prod' }}
@@ -147,3 +235,109 @@ jobs:
 
           echo "Uploading to $bucket_name"
           aws s3 sync ./browser "$bucket_name" --delete
+
+  automation:
+    name: 🎭 Run Automation
+    if: ${{ inputs.run-automation }}
+    runs-on:
+      - ubuntu-latest
+    # Runs inside this workflow's concurrency group, so the environment cannot be redeployed mid-run.
+    timeout-minutes: 90
+    needs:
+      - environment
+      - upload-application
+    env:
+      AUTOMATION_REPO: dvsa/cvs-vtm-automation
+      AUTOMATION_WORKFLOW: playwright.yml
+    steps:
+      - name: Resolve automation targets
+        id: targets
+        env:
+          ENVIRONMENT_NAME: ${{ needs.environment.outputs.environment-name }}
+          BACKEND: ${{ inputs.backend }}
+        run: |
+          backend=$(echo "$BACKEND" | tr '[:upper:]' '[:lower:]')
+          app_base_url=""
+          api_base_url=""
+
+          case "$ENVIRONMENT_NAME" in
+            develop|integration)
+              automation_env="$ENVIRONMENT_NAME"
+              ;;
+            vtmdev-1|vtmdev-2)
+              # The automation suite names these environments dev1/dev2; they select the credentials and default URLs.
+              automation_env="dev${ENVIRONMENT_NAME#vtmdev-}"
+              app_base_url="https://vtm-${ENVIRONMENT_NAME}.develop.cvs.dvsacloud.uk"
+              case "$backend" in
+                "") ;;
+                develop|integration) automation_env="$backend" ;;
+                vtmdev-1|vtmdev-2) automation_env="dev${backend#vtmdev-}" ;;
+                # Feature backend: keep the slot's credentials and point the API at the backend the app was built against.
+                *) api_base_url="https://${backend}-api.develop.cvs.dvsacloud.uk/${backend}" ;;
+              esac
+              ;;
+            *)
+              echo "::error::automation is not supported for '$ENVIRONMENT_NAME'"
+              exit 1
+              ;;
+          esac
+
+          {
+            echo "automation-env=$automation_env"
+            echo "app-base-url=$app_base_url"
+            echo "api-base-url=$api_base_url"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Automation environment: $automation_env"
+          echo "App URL override: ${app_base_url:-<environment default>}"
+          echo "API URL override: ${api_base_url:-<environment default>}"
+
+      - name: Trigger automation
+        id: dispatch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          AUTOMATION_ENV: ${{ steps.targets.outputs.automation-env }}
+          APP_BASE_URL: ${{ steps.targets.outputs.app-base-url }}
+          API_BASE_URL: ${{ steps.targets.outputs.api-base-url }}
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "::error::GH_TOKEN secret is not set; it needs Actions read/write access to $AUTOMATION_REPO"
+            exit 1
+          fi
+
+          args=(-f ref=develop -f "inputs[environment]=$AUTOMATION_ENV" -F return_run_details=true)
+          [[ -n "$APP_BASE_URL" ]] && args+=(-f "inputs[app_base_url]=$APP_BASE_URL")
+          [[ -n "$API_BASE_URL" ]] && args+=(-f "inputs[api_base_url]=$API_BASE_URL")
+
+          if ! response=$(gh api --method POST "repos/$AUTOMATION_REPO/actions/workflows/$AUTOMATION_WORKFLOW/dispatches" "${args[@]}"); then
+            echo "::error::Could not trigger $AUTOMATION_WORKFLOW in $AUTOMATION_REPO; check GH_TOKEN has Actions read/write access to it"
+            exit 1
+          fi
+          run_id=$(jq -r '.workflow_run_id // .id // empty' <<< "$response")
+
+          if [[ -z "$run_id" ]]; then
+            echo "::error::Automation was dispatched but no run ID was returned"
+            exit 1
+          fi
+
+          run_url="https://github.com/$AUTOMATION_REPO/actions/runs/$run_id"
+          echo "run-id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "Automation run: $run_url"
+          echo "🎭 Automation run ($AUTOMATION_ENV): [$run_id]($run_url)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Wait for automation
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          RUN_ID: ${{ steps.dispatch.outputs.run-id }}
+        run: gh run watch "$RUN_ID" --repo "$AUTOMATION_REPO" --exit-status --compact --interval 60
+
+      - name: Link automation report
+        if: ${{ always() && steps.dispatch.outputs.run-id }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          RUN_ID: ${{ steps.dispatch.outputs.run-id }}
+          AUTOMATION_ENV: ${{ steps.targets.outputs.automation-env }}
+        run: |
+          read -r conclusion run_number < <(gh run view "$RUN_ID" --repo "$AUTOMATION_REPO" --json conclusion,number --jq '"\(.conclusion) \(.number)"')
+          echo "Automation result: **${conclusion:-in progress}**" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Allure report](https://urban-spork-p8757mj.pages.github.io/$AUTOMATION_ENV/$run_number/)" >> "$GITHUB_STEP_SUMMARY"

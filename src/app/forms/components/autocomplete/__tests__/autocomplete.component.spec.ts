@@ -5,7 +5,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { vi } from 'vitest';
 import { FieldErrorMessageComponent } from '../../field-error-message/field-error-message.component';
 import { AutocompleteComponent } from '../autocomplete.component';
@@ -41,7 +41,7 @@ describe('AutocompleteComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 				{
 					provide: ACCESSIBLE_AUTOCOMPLETE_LOADER,
-					useValue: () => Promise.resolve({ enhanceSelectElement: () => {} }),
+					useValue: vi.fn(() => Promise.resolve({ enhanceSelectElement: () => {} })),
 				},
 			],
 		}).compileComponents();
@@ -65,6 +65,37 @@ describe('AutocompleteComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should load the library while options are pending and enhance only after both are ready', async () => {
+		await fixture.whenStable();
+		fixture.destroy();
+		const options = new Subject<{ label: string; value: string }[]>();
+		const enhanceSelectElement = vi.fn();
+		const loader = vi.mocked(TestBed.inject(ACCESSIBLE_AUTOCOMPLETE_LOADER));
+		loader.mockClear().mockResolvedValue({ enhanceSelectElement });
+		fixture = TestBed.createComponent(HostComponent);
+		fixture.componentInstance.options$ = options;
+		fixture.detectChanges();
+
+		expect(loader).toHaveBeenCalledOnce();
+		await Promise.resolve();
+		expect(enhanceSelectElement).not.toHaveBeenCalled();
+		options.next([{ label: 'Ready', value: 'ready' }]);
+		await fixture.whenStable();
+		expect(enhanceSelectElement).toHaveBeenCalledOnce();
+		expect(fixture.nativeElement.querySelector('option[value="ready"]').textContent).toBe('Ready');
+	});
+
+	it('should still render the options if the library fails to load', async () => {
+		await fixture.whenStable();
+		fixture.destroy();
+		vi.mocked(TestBed.inject(ACCESSIBLE_AUTOCOMPLETE_LOADER)).mockRejectedValue(new Error('chunk unavailable'));
+		fixture = TestBed.createComponent(HostComponent);
+		fixture.detectChanges();
+		await fixture.whenStable();
+
+		expect(fixture.nativeElement.querySelector('option[value="option2"]').textContent).toBe('option2');
 	});
 
 	it.each([

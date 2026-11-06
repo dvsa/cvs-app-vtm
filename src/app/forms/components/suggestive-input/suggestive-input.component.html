@@ -35,6 +35,7 @@
       [ngClass]="style"
       [disabled]="disabled"
       [(ngModel)]="field_value"
+      [ngModelOptions]="{ standalone: true }"
       (ngModelChange)="handleChangeForOption($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"

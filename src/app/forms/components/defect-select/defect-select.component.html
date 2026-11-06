@@ -15,6 +15,7 @@
         type="text"
         class="govuk-input"
         [(ngModel)]="searchFilter"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="onSearchInput()"
         (keyup.enter)="search()"
       />
