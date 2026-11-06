@@ -17,7 +17,7 @@ on:
           - vtmdev-2
         default: nonprod
       branch:
-        description: Branch to deploy (vtmdev-1/vtmdev-2 only). Defaults to the branch this workflow runs from.
+        description: Branch to deploy (vtmdev-1/vtmdev-2 only) - defaults to the branch this workflow runs from.
         type: string
         required: false
       backend:
@@ -93,12 +93,12 @@ jobs:
     needs: environment
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.branch || github.ref_name }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'

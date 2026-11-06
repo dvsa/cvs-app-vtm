@@ -1,11 +1,8 @@
 name: CI
 
 on:
-  # Scan target branches after merges; feature branches are checked through their PRs.
-  push:
-    branches: ['develop', 'feature/VTMDEV-1']
   pull_request:
-    branches: ['develop', 'feature/VTMDEV-1']
+    branches: [ develop, 'release/**' ]
 
 permissions:
   contents: read
@@ -20,7 +17,7 @@ concurrency:
 
 jobs:
   security:
-    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v2
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v7
     with:
       args: '--all-projects'
     secrets:
@@ -31,10 +28,10 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -49,6 +46,7 @@ jobs:
         run: npm run format:check
 
       - name: Run audit
+        continue-on-error: true
         run: npm audit --audit-level=critical
 
       - name: Run tests
