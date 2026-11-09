@@ -116,7 +116,7 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 				filter((errors) => !errors.length),
 				switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
 				take(1),
-				catchError((error) => (error.status === 200 ? of(true) : throwError(() => new Error('Error'))))
+				catchError((error) => (error.status === 200 ? of(true) : throwError(() => error)))
 			)
 			.subscribe({
 				next: (res) => {
@@ -128,8 +128,6 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 				},
 				error: (e) => {
 					if (e.status === 404) {
-						of(true);
-					} else {
 						this.store.dispatch(
 							createReferenceDataItem({
 								resourceType: this.type,
@@ -138,6 +136,11 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 							})
 						);
 						this.navigateBack();
+					} else {
+						this.globalErrorService.addError({
+							error: 'Unable to check whether Resource Key already exists. Try again later.',
+							anchorLink: 'newReferenceData',
+						});
 					}
 				},
 			});
