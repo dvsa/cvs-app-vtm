@@ -184,18 +184,34 @@
   }
 
   @if (shouldDisplayFormControl('techRecord_make')) {
-    <govuk-form-group-select
-      type="text"
-      formControlName="techRecord_make"
-      label="Body make"
-      [defaultOption]="'Select body make'"
-      [options]="$any(bodyMakes$ | async) ?? []"
-      [width]="FormNodeWidth.L"
-      appFilterByTags
-      [filters]="filters()"
-      [tagNames]="['Plates', 'ADR']"
-    >
-    </govuk-form-group-select>
+    @if (techRecord().techRecord_vehicleType === VehicleTypes.TRL) {
+      <govuk-form-group-autocomplete
+        type="text"
+        formControlName="techRecord_make"
+        label="Body make"
+        [width]="FormNodeWidth.L"
+        [placeholder]="'Select body make'"
+        [options$]="bodyMakes$"
+        appTrimWhitespace
+        appNoSpace
+        appFilterByTags
+        [filters]="filters()"
+        [tagNames]="['Plates', 'ADR']"
+      />
+    } @else {
+      <govuk-form-group-select
+        type="text"
+        formControlName="techRecord_make"
+        label="Body make"
+        [defaultOption]="'Select body make'"
+        [options]="$any(bodyMakes$ | async) ?? []"
+        [width]="FormNodeWidth.L"
+        appFilterByTags
+        [filters]="filters()"
+        [tagNames]="['Plates', 'ADR']"
+      >
+      </govuk-form-group-select>
+    }
   }
 
   @if (shouldDisplayFormControl('techRecord_model')) {

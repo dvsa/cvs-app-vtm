@@ -23,7 +23,9 @@
     "strictTemplates": false
   },
   "include": [
+    "./src/**/*.mock.ts",
     "./src/**/*.spec.ts",
+    "./src/**/__mocks__/**/*.ts",
     "./src/**/*.d.ts"
   ]
 }
