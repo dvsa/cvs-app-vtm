@@ -43,7 +43,7 @@ describe('HttpService', () => {
 	describe('amendTechRecordVrm', () => {
 		it('should call tech-records/v4/updateVrm', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.amendTechRecordVrm('new vrm', false, technicalRecord.systemNumber, technicalRecord.createdTimestamp)
 				.subscribe();
 
@@ -53,16 +53,20 @@ describe('HttpService', () => {
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('newVrm');
 			expect(req.request.body).toHaveProperty('isCherishedTransfer');
+			req.flush(technicalRecord);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('archiveTechRecord', () => {
 		it('should return a new tech record with status archived', () => {
-			httpService.archiveTechRecord('foo', 'bar', 'foobar').subscribe();
+			const subscription = httpService.archiveTechRecord('foo', 'bar', 'foobar').subscribe();
 
 			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/archive/foo/bar`);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForArchiving');
+			req.flush({ systemNumber: 'foo', techRecord_statusCode: StatusCodes.ARCHIVED });
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -300,7 +304,7 @@ describe('HttpService', () => {
 	describe('generateLetter', () => {
 		it('should call tech-records/v4/letter', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService.generateLetter(technicalRecord, 'test', 123, {}).subscribe();
+			const subscription = httpService.generateLetter(technicalRecord, 'test', 123, {}).subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/letter/HGV/${technicalRecord.createdTimestamp}`
@@ -310,13 +314,15 @@ describe('HttpService', () => {
 			expect(req.request.body).toHaveProperty('letterType');
 			expect(req.request.body).toHaveProperty('paragraphId');
 			expect(req.request.body).toHaveProperty('recipientEmailAddress');
+			req.flush('Letter generated');
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('generatePlate', () => {
 		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService.generatePlate(technicalRecord, 'reason', {}).subscribe();
+			const subscription = httpService.generatePlate(technicalRecord, 'reason', {}).subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/plate/HGV/${technicalRecord.createdTimestamp}`
@@ -325,13 +331,15 @@ describe('HttpService', () => {
 			expect(req.request.body).toHaveProperty('vtmUsername');
 			expect(req.request.body).toHaveProperty('reasonForCreation');
 			expect(req.request.body).toHaveProperty('recipientEmailAddress');
+			req.flush({});
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('getTechRecordV3', () => {
 		it('should call tech-records/v4/plate/HGV', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.getTechRecordBySysNumberAndTimestamp(technicalRecord.systemNumber, technicalRecord.createdTimestamp)
 				.subscribe();
 
@@ -339,13 +347,15 @@ describe('HttpService', () => {
 				`${environment.VTM_API_URI}/tech-records/v4/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('GET');
+			req.flush(technicalRecord);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('promoteTechRecord', () => {
 		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.promoteTechRecord(technicalRecord.systemNumber, technicalRecord.createdTimestamp, 'reason')
 				.subscribe();
 
@@ -354,6 +364,8 @@ describe('HttpService', () => {
 			);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForPromoting');
+			req.flush({ ...technicalRecord, techRecord_statusCode: StatusCodes.CURRENT });
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -368,12 +380,14 @@ describe('HttpService', () => {
 
 	describe('searchTechRecords', () => {
 		it('should call tech-records/v4/search', () => {
-			httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
+			const subscription = httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/search/term?searchCriteria=${SEARCH_TYPES.ALL}&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
+			req.flush([]);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -389,7 +403,7 @@ describe('HttpService', () => {
 				techRecord_reasonForCreation: 'test',
 				secondaryVrms: undefined,
 			} as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.updateTechRecord(systemNumber, createdTimestamp, expectedVehicle as TechRecordType<'put'>)
 				.subscribe();
 
@@ -402,6 +416,8 @@ describe('HttpService', () => {
 			// should format the vrms for the update payload
 			expect(req.request.body).toHaveProperty('primaryVrm');
 			expect(req.request.body).toHaveProperty('secondaryVrms');
+			req.flush(expectedVehicle);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
