@@ -52,7 +52,7 @@ describe('User service reducer and selectors', () => {
 		expect(state).toEqual(loginDetails);
 	});
 
-	it.each([undefined, []])('normalises missing or empty roles (%s)', (roles) => {
+	it.each([{ roles: undefined }, { roles: [] }])('normalises missing or empty roles ($roles)', ({ roles }) => {
 		expect(userServiceReducer(undefined, Login({ ...loginDetails, roles })).roles).toEqual([]);
 	});
 

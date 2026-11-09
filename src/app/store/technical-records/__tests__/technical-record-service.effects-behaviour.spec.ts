@@ -286,6 +286,18 @@ describe('Technical record effect behaviour', () => {
 	});
 
 	describe('amending identifiers and promoting records', () => {
+		it('reports VIN amendment failures using the VIN failure action', async () => {
+			http.amendTechRecordVin.mockReturnValue(
+				throwError(() => new HttpErrorResponse({ status: 400, error: { message: 'VIN already exists' } }))
+			);
+			actions$ = of(
+				actions.amendVin({ newVin: 'NEW-VIN', systemNumber: 'system-1', createdTimestamp: record.createdTimestamp })
+			);
+			expect(await firstValueFrom(effects.amendVin$)).toEqual(
+				actions.amendVinFailure({ error: 'Unable to update technical record {"message":"VIN already exists"}' })
+			);
+		});
+
 		it('passes all VRM amendment details, including a third mark, to the API', async () => {
 			http.amendTechRecordVrm.mockReturnValue(of(record));
 			actions$ = of(
@@ -370,6 +382,45 @@ describe('Technical record effect behaviour', () => {
 	});
 
 	describe('generating documents', () => {
+		it.each([
+			[
+				'plate',
+				'generatePlate',
+				'generatePlate$',
+				actions.generatePlate({ reason: 'Replacement' }),
+				actions.generatePlateFailure,
+			],
+			[
+				'letter',
+				'generateLetter',
+				'generateLetter$',
+				actions.generateLetter({ letterType: 'trailer', paragraphId: 3 }),
+				actions.generateLetterFailure,
+			],
+		] as const)('reports a readable %s generation error', async (label, method, effect, action, failure) => {
+			http[method].mockReturnValue(
+				throwError(() => new HttpErrorResponse({ status: 500, error: { message: 'Unavailable' } }))
+			);
+			actions$ = of(action);
+			expect(await firstValueFrom(effects[effect])).toEqual(
+				failure({ error: `Unable to generate ${label} {"message":"Unavailable"}` })
+			);
+		});
+
+		it('preserves plain-text service errors', async () => {
+			http.generateADRCertificate.mockReturnValue(throwError(() => 'Certificate unavailable'));
+			actions$ = of(
+				actions.generateADRCertificate({
+					systemNumber: 'system-1',
+					createdTimestamp: record.createdTimestamp,
+					certificateType: 'ADR',
+				})
+			);
+			expect(await firstValueFrom(effects.generateADRCertificate$)).toEqual(
+				actions.generateADRCertificateFailure({ error: 'Certificate unavailable' })
+			);
+		});
+
 		it('generates a plate using the selected record and logged-in user', async () => {
 			http.generatePlate.mockReturnValue(of({}));
 			actions$ = of(actions.generatePlate({ reason: 'Replacement' }));
