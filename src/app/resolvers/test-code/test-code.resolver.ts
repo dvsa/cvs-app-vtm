@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum';
 import { Store, select } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -27,7 +28,10 @@ export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (rout
 				record!.techRecord_noOfAxles!,
 				record!.techRecord_euVehicleCategory!,
 				techRecordService.getVehicleClass(record!) as string,
-				techRecordService.getVehicleSubClass(record!)?.[0] as string
+				techRecordService.getVehicleSubClass(record!)?.[0] as string,
+				record!.techRecord_vehicleType === VehicleType.MOTORCYCLE
+					? (record?.techRecord_numberOfWheelsDriven ?? undefined)
+					: undefined
 			);
 		}),
 		map((response) => response.defaultTestCode),
