@@ -76,7 +76,7 @@ export class AbandonComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.maxLength(500, 'Additional notes as to why this test was abandoned (optional)'),
 		]);
-		if ([...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(testTypeId)) {
+		if (NOTES_REQUIRED_TEST_TYPES.has(testTypeId)) {
 			testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 				this.commonValidators.required(() => ({ error: 'Enter additional notes as to why this test was abandoned' })),
 			]);
