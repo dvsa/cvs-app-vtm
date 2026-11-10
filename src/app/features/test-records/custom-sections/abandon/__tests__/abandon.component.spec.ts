@@ -61,7 +61,7 @@ describe('AbandonComponent', () => {
 		]);
 	});
 
-	it('marks ADR test notes as required and applies matching validation', () => {
+	it('keeps ADR test notes optional in form validation', () => {
 		selectedTestResult = resultFor('59');
 
 		component.ngOnInit();
@@ -69,7 +69,7 @@ describe('AbandonComponent', () => {
 		expect(component.notesRequired()).toBe(true);
 		expect(component.abandonNotesLabel()).toBe('Additional notes as to why this test was abandoned');
 		const notes = component.form.controls.testTypes.at(0).controls.additionalCommentsForAbandon;
-		expect(notes.validator?.(notes)).toHaveProperty('required');
+		expect(notes.validator?.(notes)).toBeNull();
 	});
 
 	it('keeps ordinary-test notes optional while requiring an abandonment reason', () => {
