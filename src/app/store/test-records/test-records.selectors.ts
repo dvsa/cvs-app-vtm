@@ -21,7 +21,7 @@ export const selectAllTestResults = createSelector(testResultsFeatureState, (sta
 
 // select the array of tests results in order of createdAt (most recent to oldest)
 export const selectAllTestResultsInDateOrder = createSelector(selectAllTestResults, (testResults) =>
-	testResults.sort(byDate)
+	testResults.slice().sort(byDate)
 );
 
 // select the total test results count

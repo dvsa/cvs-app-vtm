@@ -74,7 +74,7 @@ describe('Reference Data Selectors', () => {
 			};
 
 			const expectedState = referenceDataSelectors.selectSearchReturn(ReferenceDataResourceType.Tyres).projector(state);
-			expect(expectedState).toBe(value.payload);
+			expect(expectedState).toEqual(value.payload);
 		});
 	});
 	describe('selectTyreSearchCriteria', () => {

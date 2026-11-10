@@ -1,7 +1,9 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
+import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestStationSchema } from '@dvsa/cvs-type-definitions/types/v1/test-station';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -43,7 +45,7 @@ describe('HttpService', () => {
 	describe('amendTechRecordVrm', () => {
 		it('should call tech-records/v4/updateVrm', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.amendTechRecordVrm('new vrm', false, technicalRecord.systemNumber, technicalRecord.createdTimestamp)
 				.subscribe();
 
@@ -53,16 +55,20 @@ describe('HttpService', () => {
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('newVrm');
 			expect(req.request.body).toHaveProperty('isCherishedTransfer');
+			req.flush(technicalRecord);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('archiveTechRecord', () => {
 		it('should return a new tech record with status archived', () => {
-			httpService.archiveTechRecord('foo', 'bar', 'foobar').subscribe();
+			const subscription = httpService.archiveTechRecord('foo', 'bar', 'foobar').subscribe();
 
 			const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/tech-records/v4/archive/foo/bar`);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForArchiving');
+			req.flush({ systemNumber: 'foo', techRecord_statusCode: StatusCodes.ARCHIVED });
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -300,7 +306,7 @@ describe('HttpService', () => {
 	describe('generateLetter', () => {
 		it('should call tech-records/v4/letter', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService.generateLetter(technicalRecord, 'test', 123, {}).subscribe();
+			const subscription = httpService.generateLetter(technicalRecord, 'test', 123, {}).subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/letter/HGV/${technicalRecord.createdTimestamp}`
@@ -310,13 +316,15 @@ describe('HttpService', () => {
 			expect(req.request.body).toHaveProperty('letterType');
 			expect(req.request.body).toHaveProperty('paragraphId');
 			expect(req.request.body).toHaveProperty('recipientEmailAddress');
+			req.flush('Letter generated');
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('generatePlate', () => {
 		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService.generatePlate(technicalRecord, 'reason', {}).subscribe();
+			const subscription = httpService.generatePlate(technicalRecord, 'reason', {}).subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/plate/HGV/${technicalRecord.createdTimestamp}`
@@ -325,13 +333,15 @@ describe('HttpService', () => {
 			expect(req.request.body).toHaveProperty('vtmUsername');
 			expect(req.request.body).toHaveProperty('reasonForCreation');
 			expect(req.request.body).toHaveProperty('recipientEmailAddress');
+			req.flush({});
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('getTechRecordV3', () => {
 		it('should call tech-records/v4/plate/HGV', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.getTechRecordBySysNumberAndTimestamp(technicalRecord.systemNumber, technicalRecord.createdTimestamp)
 				.subscribe();
 
@@ -339,13 +349,15 @@ describe('HttpService', () => {
 				`${environment.VTM_API_URI}/tech-records/v4/HGV/${technicalRecord.createdTimestamp}`
 			);
 			expect(req.request.method).toBe('GET');
+			req.flush(technicalRecord);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
 	describe('promoteTechRecord', () => {
 		it('should call tech-records/v4/plate', () => {
 			const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.promoteTechRecord(technicalRecord.systemNumber, technicalRecord.createdTimestamp, 'reason')
 				.subscribe();
 
@@ -354,6 +366,8 @@ describe('HttpService', () => {
 			);
 			expect(req.request.method).toBe('PATCH');
 			expect(req.request.body).toHaveProperty('reasonForPromoting');
+			req.flush({ ...technicalRecord, techRecord_statusCode: StatusCodes.CURRENT });
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -368,12 +382,14 @@ describe('HttpService', () => {
 
 	describe('searchTechRecords', () => {
 		it('should call tech-records/v4/search', () => {
-			httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
+			const subscription = httpService.searchTechRecords(SEARCH_TYPES.ALL, 'term').subscribe();
 
 			const req = httpTestingController.expectOne(
 				`${environment.VTM_API_URI}/tech-records/v4/search/term?searchCriteria=${SEARCH_TYPES.ALL}&additionalInfo=true`
 			);
 			expect(req.request.method).toBe('GET');
+			req.flush([]);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -389,7 +405,7 @@ describe('HttpService', () => {
 				techRecord_reasonForCreation: 'test',
 				secondaryVrms: undefined,
 			} as TechRecordType<'get'>;
-			httpService
+			const subscription = httpService
 				.updateTechRecord(systemNumber, createdTimestamp, expectedVehicle as TechRecordType<'put'>)
 				.subscribe();
 
@@ -402,6 +418,8 @@ describe('HttpService', () => {
 			// should format the vrms for the update payload
 			expect(req.request.body).toHaveProperty('primaryVrm');
 			expect(req.request.body).toHaveProperty('secondaryVrms');
+			req.flush(expectedVehicle);
+			expect(subscription.closed).toBe(true);
 		});
 	});
 
@@ -784,6 +802,213 @@ describe('HttpService', () => {
 			expect(req.request.context.get(CACHE_CONTEXT)).toEqual({});
 
 			req.flush({});
+		});
+	});
+
+	describe('additional request contracts', () => {
+		it('amends a technical record VIN using the update endpoint and compressed request headers', () => {
+			httpService.amendTechRecordVin('new-vin', 'SYS123', '2025-01-02').subscribe();
+
+			const request = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/tech-records/v4/updateVin/SYS123/2025-01-02`
+			);
+			expect(request.request.method).toBe('PATCH');
+			expect(request.request.body).toEqual({ newVin: 'new-vin' });
+			expect(request.request.headers.get(CompressionHeaders.inbound.request)).toBe(CompressionHeaders.compressionValue);
+			request.flush({});
+		});
+
+		it('passes document retrieval parameters and API key for documents and test media', () => {
+			const documentParams = new Map([
+				['documentId', 'doc 123'],
+				['version', '2'],
+			]);
+			httpService.getDocument(documentParams).subscribe();
+			const documentRequest = httpTestingController.expectOne(
+				(request) => request.url === `${environment.VTM_API_URI}/v1/document-retrieval`
+			);
+			expect(documentRequest.request.params.get('documentId')).toBe('doc 123');
+			expect(documentRequest.request.params.get('version')).toBe('2');
+			expect(documentRequest.request.headers.get('Content-Type')).toBe('application/pdf; charset=utf-8');
+			expect(documentRequest.request.headers.get('X-Api-Key')).toBe(environment.DOCUMENT_RETRIEVAL_API_KEY);
+			documentRequest.flush('document');
+
+			httpService.getTestResultMedia('result/123', new Map([['type', 'failReason']])).subscribe();
+			const mediaRequest = httpTestingController.expectOne(
+				(request) => request.url === `${environment.VTM_API_URI}/v1/document-retrieval/result/123`
+			);
+			expect(mediaRequest.request.params.get('type')).toBe('failReason');
+			expect(mediaRequest.request.headers.get('Content-Type')).toBe('application/zip');
+			expect(mediaRequest.request.headers.get('X-Api-Key')).toBe(environment.DOCUMENT_RETRIEVAL_API_KEY);
+			mediaRequest.flush('archive');
+		});
+
+		it('includes optional type filters only when provided and caches test-type taxonomy requests', () => {
+			httpService.getTestTypes('annual').subscribe();
+			const filteredRequest = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/test-types?typeOfTest=annual`
+			);
+			expect(filteredRequest.request.params.get('typeOfTest')).toBe('annual');
+			expect(filteredRequest.request.headers.get(CompressionHeaders.inbound.request)).toBe(
+				CompressionHeaders.compressionValue
+			);
+			expect(filteredRequest.request.context.get(CACHE_CONTEXT)).toEqual(
+				expect.objectContaining({ cache: true, key: CacheKeys.TEST_TYPES })
+			);
+			filteredRequest.flush({});
+
+			httpService.getTestTypes().subscribe();
+			const allTypesRequest = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-types`);
+			expect(allTypesRequest.request.params.has('typeOfTest')).toBe(false);
+			allTypesRequest.flush({});
+		});
+
+		it('requires the mandatory test-type lookup parameters', () => {
+			expect(() => httpService.getTestTypesid(null as unknown as string, [], 'hgv')).toThrow(
+				'Required parameter id was null or undefined when calling getTestTypesid.'
+			);
+			expect(() => httpService.getTestTypesid('1', null as unknown as string[], 'hgv')).toThrow(
+				'Required parameter fields was null or undefined when calling getTestTypesid.'
+			);
+			expect(() => httpService.getTestTypesid('1', [], null as unknown as string)).toThrow(
+				'Required parameter vehicleType was null or undefined when calling getTestTypesid.'
+			);
+		});
+
+		it('encodes test-type IDs and sends all optional vehicle filters', () => {
+			httpService
+				.getTestTypesid(
+					'type/1',
+					['bodyType', 'vehicleClass'],
+					'hgv',
+					'large',
+					'articulated',
+					3,
+					'n3',
+					'class 1',
+					'A',
+					8
+				)
+				.subscribe();
+
+			const request = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/test-types/type%2F1?fields=bodyType,vehicleClass&vehicleType=hgv&vehicleSize=large&vehicleConfiguration=articulated&vehicleAxles=3&euVehicleCategory=n3&vehicleClass=class%201&vehicleSubclass=A&vehicleWheels=8`
+			);
+			expect(request.request.method).toBe('GET');
+			request.flush({});
+		});
+
+		it('paginates reference data and reuses a cache bucket per resource type', () => {
+			const bucket = httpService.getRefDataBucket(ReferenceDataResourceType.Tyres);
+			httpService.referenceResourceTypeGet(ReferenceDataResourceType.Tyres, 'next-page').subscribe();
+			const pagedRequest = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/reference/TYRES?paginationToken=next-page`
+			);
+			expect(pagedRequest.request.context.get(CACHE_CONTEXT)).toEqual(
+				expect.objectContaining({
+					cache: true,
+					key: `${CacheKeys.REFERENCE_DATA}${ReferenceDataResourceType.Tyres}next-page`,
+					bucket,
+				})
+			);
+			pagedRequest.flush({ data: [] });
+
+			httpService.referenceResourceTypeGet(ReferenceDataResourceType.Tyres).subscribe();
+			const firstPageRequest = httpTestingController.expectOne(`${environment.VTM_API_URI}/reference/TYRES`);
+			expect(httpService.getRefDataBucket(ReferenceDataResourceType.Tyres)).toBe(bucket);
+			firstPageRequest.flush({ data: [] });
+			expect(() => httpService.referenceResourceTypeGet(null as unknown as string)).toThrow(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeGet.'
+			);
+		});
+
+		it('validates reference lookup inputs and supports CRUD requests', () => {
+			expect(() => httpService.referenceResourceTypeResourceKeyGet(null as unknown as string, 'key')).toThrow(
+				'Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyGet.'
+			);
+			expect(() => httpService.referenceResourceTypeResourceKeyGet('TYRES', null as unknown as string)).toThrow(
+				'Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyGet.'
+			);
+			expect(() => httpService.referenceLookupResourceTypeResourceKeyGet(null as unknown as string, 'key')).toThrow();
+			expect(() => httpService.referenceLookupTyresSearchKeyParamGet('key', null as unknown as string)).toThrow();
+			expect(() => httpService.referenceResourceTypeResourceKeyPost('TYRES', null as unknown as string, {})).toThrow();
+			expect(() => httpService.referenceResourceTypeResourceKeyPut('TYRES', null as unknown as string, {})).toThrow();
+			expect(() =>
+				httpService.referenceResourceTypeResourceKeyDelete('TYRES', null as unknown as string, {})
+			).toThrow();
+
+			const body = { description: 'Updated tyre' };
+			httpService.referenceResourceTypeResourceKeyPost('TYRES', 'key/1', body).subscribe();
+			httpService.referenceResourceTypeResourceKeyPut('TYRES', 'key/1', body).subscribe();
+			httpService.referenceResourceTypeResourceKeyDelete('TYRES', 'key/1', body).subscribe();
+
+			const post = httpTestingController.expectOne(
+				(request) => request.url === `${environment.VTM_API_URI}/reference/TYRES/key%2F1` && request.method === 'POST'
+			);
+			expect(post.request.method).toBe('POST');
+			expect(post.request.body).toEqual(body);
+			post.flush({});
+			const put = httpTestingController.expectOne(
+				(request) => request.url === `${environment.VTM_API_URI}/reference/TYRES/key%2F1` && request.method === 'PUT'
+			);
+			expect(put.request.method).toBe('PUT');
+			expect(put.request.body).toEqual(body);
+			put.flush({});
+			const deleteRequest = httpTestingController.expectOne(
+				(request) => request.url === `${environment.VTM_API_URI}/reference/TYRES/key%2F1` && request.method === 'DELETE'
+			);
+			expect(deleteRequest.request.method).toBe('DELETE');
+			expect(deleteRequest.request.body).toEqual(body);
+			deleteRequest.flush({});
+		});
+
+		it('posts and updates test results with outbound compression headers', () => {
+			const body = { systemNumber: 'SYS123' } as TestResultSchema;
+			httpService.testResultsPost(body).subscribe();
+			const post = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-results`);
+			expect(post.request.method).toBe('POST');
+			expect(post.request.body).toBe(body);
+			expect(post.request.headers.get(CompressionHeaders.outbound.request)).toBe(CompressionHeaders.compressionValue);
+			post.flush({ testResultId: 'id' });
+
+			httpService.testResultsSystemNumberPut(body, 'SYS/123').subscribe();
+			const put = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-results/SYS%2F123`);
+			expect(put.request.method).toBe('PUT');
+			expect(put.request.body).toBe(body);
+			put.flush(body);
+
+			expect(() => httpService.testResultsPost(null as unknown as TestResultSchema)).toThrow();
+			expect(() => httpService.testResultsSystemNumberPut(null as unknown as TestResultSchema, 'SYS')).toThrow();
+			expect(() => httpService.testResultsSystemNumberPut(body, null as unknown as string)).toThrow();
+		});
+
+		it('generates ADR certificates and unarchives records with their action details', () => {
+			httpService.generateADRCertificate('SYS123', 'timestamp', 'adr').subscribe();
+			const certificate = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/tech-records/v4/adrCertificate/SYS123/timestamp`
+			);
+			expect(certificate.request.method).toBe('POST');
+			expect(certificate.request.body).toEqual({ certificateType: 'adr' });
+			certificate.flush({ message: 'Generated', id: 'id' });
+
+			httpService.unarchiveTechRecord('SYS123', 'timestamp', 'corrected record', StatusCodes.CURRENT).subscribe();
+			const unarchive = httpTestingController.expectOne(
+				`${environment.VTM_API_URI}/tech-records/v4/unarchive/SYS123/timestamp`
+			);
+			expect(unarchive.request.method).toBe('POST');
+			expect(unarchive.request.body).toEqual({ reasonForUnarchiving: 'corrected record', status: StatusCodes.CURRENT });
+			expect(unarchive.request.headers.get(CompressionHeaders.outbound.request)).toBe(
+				CompressionHeaders.compressionValue
+			);
+			unarchive.flush({});
+		});
+
+		it('fetches feature flags from the VTM endpoint', () => {
+			httpService.getFeatureFlags().subscribe();
+
+			const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/feature-flags/VTM`);
+			expect(request.request.method).toBe('GET');
+			request.flush({});
 		});
 	});
 });
