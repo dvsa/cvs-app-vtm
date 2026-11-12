@@ -445,6 +445,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
+		this.handleDangerousGoodsChange();
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
@@ -462,6 +463,20 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
+	}
+
+	// Several validators depend on the dangerous goods flag held in a sibling control, so Angular does not re-run them when it changes.
+	// setErrors emits a status change (without a value change) so the OnPush inline errors re-render.
+	handleDangerousGoodsChange() {
+		this.form.controls.techRecord_adrDetails_dangerousGoods.valueChanges
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => {
+				for (const [name, control] of Object.entries(this.form.controls)) {
+					if (name === 'techRecord_adrDetails_dangerousGoods' || !control.validator) continue;
+					control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+					control.setErrors(control.errors);
+				}
+			});
 	}
 
 	handleADRBodyTypeChange() {
