@@ -19,7 +19,7 @@ export const technicalRecordsLoadingState = createSelector(getTechRecordState, (
 export const getCanGeneratePlate = createSelector(getTechRecordState, (state) => state.canGeneratePlate);
 
 export const selectTechRecordHistory = createSelector(getTechRecordState, (state) =>
-	state.techRecordHistory?.sort((a, b) => {
+	state.techRecordHistory?.slice().sort((a, b) => {
 		const aTimeCode = new Date(a.createdTimestamp).getTime();
 		const bTimeCode = new Date(b.createdTimestamp).getTime();
 		// return aTimeCode < bTimeCode ? 1 : aTimeCode > bTimeCode ? -1 : 0;

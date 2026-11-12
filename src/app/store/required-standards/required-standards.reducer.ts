@@ -43,7 +43,8 @@ export const requiredStandardsReducer = createReducer<RequiredStandardState>(
 	on(getRequiredStandardsComplete, (state) => ({ ...state, loading: false }))
 );
 
-function orderRequiredStandards(requiredStandards: DefectGETRequiredStandards) {
+function orderRequiredStandards(payload: DefectGETRequiredStandards) {
+	const requiredStandards = { ...payload, basic: [...payload.basic], normal: [...payload.normal] };
 	if (requiredStandards.basic.length) {
 		requiredStandards.basic.sort((current, next) =>
 			current.sectionNumber.localeCompare(next.sectionNumber, 'en', { numeric: true })

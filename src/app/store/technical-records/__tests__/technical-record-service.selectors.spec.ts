@@ -141,7 +141,7 @@ describe('Tech Record Selectors', () => {
 			] as TechRecordSearchSchema[];
 			const state: TechnicalRecordServiceState = { ...initialState, techRecordHistory: vehicleTechRecords };
 			const selectedVehicleHistory = selectTechRecordHistory.projector(state);
-			expect(selectedVehicleHistory).toBe(vehicleTechRecords);
+			expect(selectedVehicleHistory).toEqual(vehicleTechRecords);
 		});
 	});
 
