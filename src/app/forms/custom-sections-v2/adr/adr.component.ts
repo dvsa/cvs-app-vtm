@@ -465,18 +465,15 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.destroy(this.form);
 	}
 
-	// Several validators depend on the dangerous goods flag held in a sibling control, so Angular does not re-run them when it changes.
-	// setErrors emits a status change (without a value change) so the OnPush inline errors re-render.
+	// Most ADR validators depend on the sibling dangerous goods control, so re-run them when it changes
 	handleDangerousGoodsChange() {
-		this.form.controls.techRecord_adrDetails_dangerousGoods.valueChanges
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe(() => {
-				for (const [name, control] of Object.entries(this.form.controls)) {
-					if (name === 'techRecord_adrDetails_dangerousGoods' || !control.validator) continue;
-					control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-					control.setErrors(control.errors);
-				}
-			});
+		const { techRecord_adrDetails_dangerousGoods: dangerousGoods, ...dependants } = this.form.controls;
+
+		dangerousGoods.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+			for (const control of Object.values(dependants)) {
+				control.updateValueAndValidity({ onlySelf: true });
+			}
+		});
 	}
 
 	handleADRBodyTypeChange() {
