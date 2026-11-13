@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { FeatureToggleGuard } from '../feature-toggle.guard';
 
 describe('feature toggle guard', () => {
@@ -22,7 +22,7 @@ describe('feature toggle guard', () => {
 
 	it('should return true when the feature is enabled', () => {
 		const next = new ActivatedRouteSnapshot();
-		next.data = { featureToggleName: 'testToggle' };
+		next.data = { featureToggleName: FeatureFlags.BETAS };
 
 		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
 
@@ -33,7 +33,7 @@ describe('feature toggle guard', () => {
 
 	it('should return false when the feature is disabled', () => {
 		const next = new ActivatedRouteSnapshot();
-		next.data = { featureToggleName: 'testToggle' };
+		next.data = { featureToggleName: FeatureFlags.BETAS };
 
 		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(false);
 
@@ -47,6 +47,15 @@ describe('feature toggle guard', () => {
 		next.data = {};
 
 		vi.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
+
+		const guardResponse = guard.canActivate(next);
+
+		expect(guardResponse).toBeFalsy();
+	});
+
+	it('should return false when the route has an unknown feature', () => {
+		const next = new ActivatedRouteSnapshot();
+		next.data = { featureToggleName: 'unknown-feature' };
 
 		const guardResponse = guard.canActivate(next);
 

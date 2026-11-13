@@ -1,16 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { get } from 'lodash-es';
-import {
-	TEST_TYPES_GROUP1,
-	TEST_TYPES_GROUP1_SPEC_TEST,
-	TEST_TYPES_GROUP2,
-	TEST_TYPES_GROUP7,
-	TEST_TYPES_GROUP9_10,
-	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
-} from '../../models/testTypeId.enum';
+import { TEST_TYPES } from '../../models/testTypeId.enum';
+import { FeatureFlags, TestResultRefactorFeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
+
+export { FeatureFlags } from '../../store/feature-flags/feature-flags.feature';
+
+const testTypeGroups: Record<Exclude<keyof TestResultRefactorFeatureConfig, 'enabled'>, readonly string[]> = TEST_TYPES;
+const testTypeGroupKeys = Object.keys(testTypeGroups) as Array<keyof typeof testTypeGroups>;
 
 @Injectable({
 	providedIn: 'root',
@@ -19,36 +16,15 @@ export class FeatureToggleService {
 	store = inject(Store);
 	featureFlags = this.store.selectSignal(selectFeatureFlags);
 
-	isFeatureEnabled(...keys: string[]) {
+	isFeatureEnabled(...keys: FeatureFlags[]): boolean {
 		const featureFlags = this.featureFlags();
 		if (!featureFlags) return false;
-		return keys?.some((key) => get(featureFlags, key)?.enabled);
+		return keys.some((key) => featureFlags[key]?.enabled === true);
 	}
 
 	shouldUseV2TestResults(testTypeId?: string): boolean {
-		if (!testTypeId) return false;
-		const allowList = [
-			...TEST_TYPES_GROUP12_14,
-			...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-			...TEST_TYPES_GROUP9_10,
-			...TEST_TYPES_GROUP1,
-			...TEST_TYPES_GROUP2,
-			...TEST_TYPES_GROUP7,
-			...TEST_TYPES_GROUP1_SPEC_TEST,
-		];
-
-		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
+		const refactor = this.featureFlags()?.[FeatureFlags.TEST_RESULT_REFACTOR];
+		if (!testTypeId || !refactor?.enabled) return false;
+		return testTypeGroupKeys.some((group) => refactor[group] === true && testTypeGroups[group].includes(testTypeId));
 	}
-}
-
-export enum FeatureFlags {
-	BETAS = 'betas',
-	TECH_RECORD_REDESIGN = 'techrecordredesign',
-	TECH_RECORD_REDESIGN_CREATE = 'techrecordredesigncreate',
-	TECH_RECORD_REDESIGN_CREATE_DETAILS = 'techrecordredesigncreatedetails',
-	TEST_RESULT_CREATE = 'testresultcreate',
-	TEST_RESULT_AMEND = 'testresultamend',
-	HIDE_TEST_RESTRICTIONS = 'hide-test-restriction-functionality',
-	ADAS_IMAGES_ON_DEFECTS = 'adas-images-on-defects',
-	BATCH_REDESIGN = 'batch-redesign',
 }

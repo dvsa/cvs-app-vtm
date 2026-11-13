@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { DTOLayer } from '../dto.service';
 
 describe('DTOLayer', () => {
@@ -29,22 +29,20 @@ describe('DTOLayer', () => {
 		service = TestBed.inject(DTOLayer);
 	});
 
-	it.each([
-		[false, false],
-		[false, true],
-		[true, false],
-	])('leaves the payload untouched when create=%s and amend=%s', (createEnabled, amendEnabled) => {
-		featureToggleService.isFeatureEnabled.mockImplementation((feature) =>
-			feature === 'testresultcreate' ? createEnabled : amendEnabled
-		);
+	it('leaves the payload untouched when the refactor is disabled', () => {
+		featureToggleService.isFeatureEnabled.mockReturnValue(false);
 		const result = createResult();
 		const original = structuredClone(result);
 
 		expect(service.transformPayload(result)).toBe(result);
 		expect(result).toEqual(original);
+		expect(featureToggleService.isFeatureEnabled).toHaveBeenCalledWith(FeatureFlags.TEST_RESULT_REFACTOR);
 	});
 
 	it('removes anniversary dates and retains central documents only for applicable tests without mutating input', () => {
+		featureToggleService.isFeatureEnabled.mockImplementation(
+			(feature) => feature === FeatureFlags.TEST_RESULT_REFACTOR
+		);
 		const result = createResult();
 		const original = structuredClone(result);
 		Object.freeze(result);

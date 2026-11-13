@@ -1,6 +1,6 @@
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormRecord, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { selectFeatureFlags } from '@store/feature-flags/feature-flags.selectors';
 import { updateFeatureFlags } from '../../store/feature-flags/feature-flags.actions';
-import { FeatureConfig } from '../../store/feature-flags/feature-flags.feature';
+import { FeatureFlags, isFeatureFlag } from '../../store/feature-flags/feature-flags.feature';
 
 @Component({
 	selector: 'app-betas',
@@ -32,26 +32,35 @@ export class BetasComponent implements OnInit {
 	featureToggleService = inject(FeatureToggleService);
 	featureFlags = this.store.selectSignal(selectFeatureFlags);
 
-	blocklist = ['test-facility', 'test-facility-as-object']; // List of feature toggles to exclude from the UI
+	blocklist: FeatureFlags[] = [
+		FeatureFlags.TEST_FACILITY,
+		FeatureFlags.TEST_FACILITY_AS_OBJECT,
+		FeatureFlags.TEST_RESULT_CREATE,
+		FeatureFlags.TEST_RESULT_AMEND,
+	];
 
-	form = this.fb.nonNullable.group<Partial<FeatureConfig>>({});
+	form = this.fb.nonNullable.record<FormRecord<FormControl<boolean>>>({});
 
 	ngOnInit(): void {
 		const featureFlags = this.featureFlags();
 		if (featureFlags) {
-			for (const [key, { enabled }] of Object.entries(featureFlags ?? {})) {
-				if (this.blocklist.includes(key)) continue;
-				this.form.addControl(
-					key,
-					this.fb.group({ enabled: this.fb.nonNullable.control(enabled) }) as unknown as FormControl,
-					{ emitEvent: false }
-				);
+			for (const key of Object.keys(featureFlags)) {
+				if (!isFeatureFlag(key) || this.blocklist.includes(key)) continue;
+				const flag = featureFlags[key];
+				if (!flag) continue;
+				const controls = this.fb.nonNullable.record({ enabled: flag.enabled });
+				for (const [property, value] of Object.entries(flag)) {
+					if (property !== 'enabled' && typeof value === 'boolean') {
+						controls.addControl(property, this.fb.nonNullable.control(value), { emitEvent: false });
+					}
+				}
+				this.form.addControl(key, controls, { emitEvent: false });
 			}
 		}
 	}
 
 	save(): void {
-		this.store.dispatch(updateFeatureFlags({ changes: this.form.value }));
+		this.store.dispatch(updateFeatureFlags({ changes: this.form.getRawValue() }));
 		this.router.navigate([RootRoutes.ROOT]);
 	}
 

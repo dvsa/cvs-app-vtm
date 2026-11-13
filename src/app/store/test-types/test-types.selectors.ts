@@ -8,7 +8,7 @@ import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
 import dayjs from 'dayjs';
-import { FeatureConfig } from '../feature-flags/feature-flags.feature';
+import { FeatureConfig, FeatureFlags } from '../feature-flags/feature-flags.feature';
 import { selectFeatureFlags } from '../feature-flags/feature-flags.selectors';
 import { testTypesAdapter, testTypesFeatureState } from './test-types.reducer';
 
@@ -201,7 +201,7 @@ function filterTestTypes(
 				if (!isADRVehicle) return true;
 				if (!techRecord.techRecord_adrDetails_dangerousGoods) return false;
 
-				const hideTestRestrictions = featureFlags?.['hide-test-restriction-functionality']?.enabled ?? true;
+				const hideTestRestrictions = featureFlags?.[FeatureFlags.HIDE_TEST_RESTRICTIONS]?.enabled ?? true;
 				if (hideTestRestrictions) return true;
 				if (!techRecord.techRecord_adrDetails_approved) return false;
 				if (!techRecord.techRecord_adrDetails_receivedDate) return false;
