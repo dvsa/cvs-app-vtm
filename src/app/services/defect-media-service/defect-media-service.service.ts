@@ -6,6 +6,7 @@ import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-ty
 import { environment } from '@environments/environment';
 import { RootRoutes } from '@models/routes.enum';
 import { DocumentsService } from '@services/documents/documents.service';
+import { FeatureFlags } from '@services/feature-toggle-service/feature-toggle-service';
 import dayjs from 'dayjs';
 import JSZip from 'jszip';
 import { lastValueFrom } from 'rxjs';
@@ -44,13 +45,13 @@ export class DefectMediaService {
 	}
 
 	canDownloadAdasMediaItems(defect: DefectDetailsSchema): boolean {
-		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
+		if (!this.featureToggleService.isFeatureEnabled(FeatureFlags.ADAS_IMAGES_ON_DEFECTS)) return false;
 
 		return defect.imNumber === 29 && this.hasMedia(defect);
 	}
 
 	canDownloadAdasMedia(testResult: TestResultSchema): boolean {
-		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return false;
+		if (!this.featureToggleService.isFeatureEnabled(FeatureFlags.ADAS_IMAGES_ON_DEFECTS)) return false;
 
 		const defects = testResult.testTypes[0].defects;
 		if (!Array.isArray(defects) || defects.length === 0) return false;
@@ -153,7 +154,7 @@ export class DefectMediaService {
 	}
 
 	async getAdasZip(testResultId: string): Promise<JSZip | null> {
-		if (!this.featureToggleService.isFeatureEnabled('adas-images-on-defects')) return null;
+		if (!this.featureToggleService.isFeatureEnabled(FeatureFlags.ADAS_IMAGES_ON_DEFECTS)) return null;
 
 		return await this.getZip(testResultId, { category: 'adas' });
 	}

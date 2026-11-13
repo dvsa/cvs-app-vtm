@@ -3,6 +3,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { fetchDefectsComplete } from '../defects/defects.actions';
 import { defectsReducer, initialDefectsState } from '../defects/defects.reducer';
 import { fetchFeatureFlagsSuccess, updateFeatureFlags } from '../feature-flags/feature-flags.actions';
+import { FeatureFlags } from '../feature-flags/feature-flags.feature';
 import { featureFlagsReducer } from '../feature-flags/feature-flags.reducer';
 import { globalErrorReducer } from '../global-error/global-error-service.reducer';
 import { patchErrors } from '../global-error/global-error.actions';
@@ -24,18 +25,46 @@ import { initialTestTypeState, testTypesReducer } from '../test-types/test-types
 
 describe('NgRx state transitions', () => {
 	it('replaces feature configuration on fetch and patches only supplied flags on updates', () => {
-		const config = { testresultcreate: { enabled: true }, testresultamend: { enabled: false } };
+		const config = {
+			[FeatureFlags.TEST_RESULT_CREATE]: { enabled: true },
+			[FeatureFlags.TEST_RESULT_AMEND]: { enabled: false },
+		};
 		const loaded = featureFlagsReducer(null, fetchFeatureFlagsSuccess({ config }));
 		expect(loaded).toEqual(config);
 		const result = featureFlagsReducer(
 			loaded,
-			updateFeatureFlags({ changes: { testresultcreate: { enabled: false } } })
+			updateFeatureFlags({ changes: { [FeatureFlags.TEST_RESULT_CREATE]: { enabled: false } } })
 		);
-		expect(result).toEqual({ testresultcreate: { enabled: false }, testresultamend: { enabled: false } });
-		expect(config.testresultcreate.enabled).toBe(true);
-		expect(featureFlagsReducer(null, updateFeatureFlags({ changes: { testresultcreate: { enabled: true } } }))).toEqual(
-			{ testresultcreate: { enabled: true } }
+		expect(result).toEqual({
+			[FeatureFlags.TEST_RESULT_CREATE]: { enabled: false },
+			[FeatureFlags.TEST_RESULT_AMEND]: { enabled: false },
+		});
+		expect(config[FeatureFlags.TEST_RESULT_CREATE].enabled).toBe(true);
+		expect(
+			featureFlagsReducer(
+				null,
+				updateFeatureFlags({ changes: { [FeatureFlags.TEST_RESULT_CREATE]: { enabled: true } } })
+			)
+		).toEqual({
+			[FeatureFlags.TEST_RESULT_CREATE]: { enabled: true },
+		});
+	});
+
+	it('preserves additional flag configuration when updating enabled state', () => {
+		const config = {
+			[FeatureFlags.BATCH_REDESIGN]: { enabled: true, _variant: 'default' },
+			[FeatureFlags.TEST_FACILITY]: { enabled: true, activities: ['read:ddb', 'write:ddb'] },
+		};
+		const loaded = featureFlagsReducer(null, fetchFeatureFlagsSuccess({ config }));
+		const result = featureFlagsReducer(
+			loaded,
+			updateFeatureFlags({ changes: { [FeatureFlags.BATCH_REDESIGN]: { enabled: false } } })
 		);
+
+		expect(result).toEqual({
+			[FeatureFlags.BATCH_REDESIGN]: { enabled: false, _variant: 'default' },
+			[FeatureFlags.TEST_FACILITY]: { enabled: true, activities: ['read:ddb', 'write:ddb'] },
+		});
 	});
 
 	it('appends patched and batch-create errors without changing existing errors', () => {

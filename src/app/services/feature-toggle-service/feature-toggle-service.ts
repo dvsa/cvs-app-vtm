@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { get } from 'lodash-es';
 import {
 	TEST_TYPES_GROUP1,
 	TEST_TYPES_GROUP1_SPEC_TEST,
@@ -10,7 +9,10 @@ import {
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP12_14,
 } from '../../models/testTypeId.enum';
+import { FeatureFlags } from '../../store/feature-flags/feature-flags.feature';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
+
+export { FeatureFlags } from '../../store/feature-flags/feature-flags.feature';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,10 +21,10 @@ export class FeatureToggleService {
 	store = inject(Store);
 	featureFlags = this.store.selectSignal(selectFeatureFlags);
 
-	isFeatureEnabled(...keys: string[]) {
+	isFeatureEnabled(...keys: FeatureFlags[]): boolean {
 		const featureFlags = this.featureFlags();
 		if (!featureFlags) return false;
-		return keys?.some((key) => get(featureFlags, key)?.enabled);
+		return keys.some((key) => featureFlags[key]?.enabled === true);
 	}
 
 	shouldUseV2TestResults(testTypeId?: string): boolean {
@@ -39,16 +41,4 @@ export class FeatureToggleService {
 
 		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
 	}
-}
-
-export enum FeatureFlags {
-	BETAS = 'betas',
-	TECH_RECORD_REDESIGN = 'techrecordredesign',
-	TECH_RECORD_REDESIGN_CREATE = 'techrecordredesigncreate',
-	TECH_RECORD_REDESIGN_CREATE_DETAILS = 'techrecordredesigncreatedetails',
-	TEST_RESULT_CREATE = 'testresultcreate',
-	TEST_RESULT_AMEND = 'testresultamend',
-	HIDE_TEST_RESTRICTIONS = 'hide-test-restriction-functionality',
-	ADAS_IMAGES_ON_DEFECTS = 'adas-images-on-defects',
-	BATCH_REDESIGN = 'batch-redesign',
 }

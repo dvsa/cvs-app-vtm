@@ -1,4 +1,4 @@
-import { FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { Component, inject } from '@angular/core';
 import { TestResultSummaryComponent } from '@features/test-records/amend/views/test-result-summary/test-result-summary.component';
@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 @Component({
 	selector: 'app-test-result-summary-wrapper',
 	template: `
-    @if (featureToggleService.isFeatureEnabled('testresultamend') && testTypeIdAllowList.includes(testType()?.testTypes?.[0]?.testTypeId || '')) {
+    @if (featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_AMEND) && testTypeIdAllowList.includes(testType()?.testTypes?.[0]?.testTypeId || '')) {
       <app-test-record-v2 [initialMode]="Modes.VIEW" />
     } @else {
       <app-test-result-summary />
@@ -25,4 +25,5 @@ export class TestResultSummaryWrapperComponent {
 	testType = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP1_SPEC_TEST];
 	protected readonly Modes = Modes;
+	protected readonly FeatureFlags = FeatureFlags;
 }

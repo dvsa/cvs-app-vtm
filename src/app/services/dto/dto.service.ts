@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 
 @Injectable({
 	providedIn: 'root',
@@ -11,8 +11,8 @@ export class DTOLayer {
 
 	transformPayload(editingTestResult: TestResultSchema) {
 		if (
-			!this.featureToggleService.isFeatureEnabled('testresultcreate') ||
-			!this.featureToggleService.isFeatureEnabled('testresultamend')
+			!this.featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) ||
+			!this.featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_AMEND)
 		) {
 			return editingTestResult;
 		}
