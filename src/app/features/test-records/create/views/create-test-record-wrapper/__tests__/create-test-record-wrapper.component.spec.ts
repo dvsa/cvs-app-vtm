@@ -1,9 +1,12 @@
+import featureConfig from '@/src/assets/featureToggle.json';
 import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Modes } from '@models/modes.enum';
-import { provideMockStore } from '@ngrx/store/testing';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { FeatureFlags } from '@store/feature-flags/feature-flags.feature';
+import { selectFeatureFlags } from '@store/feature-flags/feature-flags.selectors';
 import { initialAppState } from '@store/index';
+import { selectQueryParams } from '@store/router/router.selectors';
 import { CreateTestRecordWrapperComponent } from '../create-test-record-wrapper.component';
 
 @Component({ selector: 'app-test-record-v2', template: '' })
@@ -16,29 +19,29 @@ class TestRecordV1StubComponent {}
 
 describe('CreateTestRecordWrapperComponent', () => {
 	let fixture: ComponentFixture<CreateTestRecordWrapperComponent>;
-	const featureToggleService = { shouldUseV2TestResults: vi.fn().mockReturnValue(true) };
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [CreateTestRecordWrapperComponent],
-			providers: [
-				provideMockStore({ initialState: initialAppState }),
-				{ provide: FeatureToggleService, useValue: featureToggleService },
-			],
+			providers: [provideMockStore({ initialState: initialAppState })],
 		})
 			.overrideComponent(CreateTestRecordWrapperComponent, {
 				set: { imports: [TestRecordV1StubComponent, TestRecordV2StubComponent] },
 			})
 			.compileComponents();
+		store = TestBed.inject(MockStore);
+		store.overrideSelector(selectQueryParams, { testType: '56' });
 	});
 
-	it('should render the v2 test form when the selected test type uses v2', () => {
+	it.each([true, false])('renders the appropriate create form when the test type group is enabled=%s', (enabled) => {
+		store.overrideSelector(selectFeatureFlags, {
+			[FeatureFlags.TEST_RESULT_REFACTOR]: { ...featureConfig['test-result-refactor'], testTypesGroup5And13: enabled },
+		});
 		fixture = TestBed.createComponent(CreateTestRecordWrapperComponent);
-
 		fixture.detectChanges();
 
-		expect(fixture.nativeElement.querySelector('app-test-record-v2')).toBeTruthy();
-		expect(fixture.nativeElement.querySelector('app-create-test-record')).toBeFalsy();
-		expect(featureToggleService.shouldUseV2TestResults).toHaveBeenCalled();
+		expect(!!fixture.nativeElement.querySelector('app-test-record-v2')).toBe(enabled);
+		expect(!!fixture.nativeElement.querySelector('app-create-test-record')).toBe(!enabled);
 	});
 });

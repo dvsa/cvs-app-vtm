@@ -1,6 +1,6 @@
 import { KeyValuePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormRecord, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
 import { ButtonComponent } from '@components/button/button.component';
@@ -32,9 +32,14 @@ export class BetasComponent implements OnInit {
 	featureToggleService = inject(FeatureToggleService);
 	featureFlags = this.store.selectSignal(selectFeatureFlags);
 
-	blocklist: FeatureFlags[] = [FeatureFlags.TEST_FACILITY, FeatureFlags.TEST_FACILITY_AS_OBJECT];
+	blocklist: FeatureFlags[] = [
+		FeatureFlags.TEST_FACILITY,
+		FeatureFlags.TEST_FACILITY_AS_OBJECT,
+		FeatureFlags.TEST_RESULT_CREATE,
+		FeatureFlags.TEST_RESULT_AMEND,
+	];
 
-	form = this.fb.nonNullable.record<FormGroup<{ enabled: FormControl<boolean> }>>({});
+	form = this.fb.nonNullable.record<FormRecord<FormControl<boolean>>>({});
 
 	ngOnInit(): void {
 		const featureFlags = this.featureFlags();
@@ -43,7 +48,13 @@ export class BetasComponent implements OnInit {
 				if (!isFeatureFlag(key) || this.blocklist.includes(key)) continue;
 				const flag = featureFlags[key];
 				if (!flag) continue;
-				this.form.addControl(key, this.fb.nonNullable.group({ enabled: flag.enabled }), { emitEvent: false });
+				const controls = this.fb.nonNullable.record({ enabled: flag.enabled });
+				for (const [property, value] of Object.entries(flag)) {
+					if (property !== 'enabled' && typeof value === 'boolean') {
+						controls.addControl(property, this.fb.nonNullable.control(value), { emitEvent: false });
+					}
+				}
+				this.form.addControl(key, controls, { emitEvent: false });
 			}
 		}
 	}

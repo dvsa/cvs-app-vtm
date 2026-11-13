@@ -1,18 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-	TEST_TYPES_GROUP1,
-	TEST_TYPES_GROUP1_SPEC_TEST,
-	TEST_TYPES_GROUP2,
-	TEST_TYPES_GROUP7,
-	TEST_TYPES_GROUP9_10,
-	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
-} from '../../models/testTypeId.enum';
-import { FeatureFlags } from '../../store/feature-flags/feature-flags.feature';
+import { TEST_TYPES } from '../../models/testTypeId.enum';
+import { FeatureFlags, TestResultRefactorFeatureConfig } from '../../store/feature-flags/feature-flags.feature';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
 
 export { FeatureFlags } from '../../store/feature-flags/feature-flags.feature';
+
+const testTypeGroups: Record<Exclude<keyof TestResultRefactorFeatureConfig, 'enabled'>, readonly string[]> = TEST_TYPES;
+const testTypeGroupKeys = Object.keys(testTypeGroups) as Array<keyof typeof testTypeGroups>;
 
 @Injectable({
 	providedIn: 'root',
@@ -28,17 +23,8 @@ export class FeatureToggleService {
 	}
 
 	shouldUseV2TestResults(testTypeId?: string): boolean {
-		if (!testTypeId) return false;
-		const allowList = [
-			...TEST_TYPES_GROUP12_14,
-			...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-			...TEST_TYPES_GROUP9_10,
-			...TEST_TYPES_GROUP1,
-			...TEST_TYPES_GROUP2,
-			...TEST_TYPES_GROUP7,
-			...TEST_TYPES_GROUP1_SPEC_TEST,
-		];
-
-		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
+		const refactor = this.featureFlags()?.[FeatureFlags.TEST_RESULT_REFACTOR];
+		if (!testTypeId || !refactor?.enabled) return false;
+		return testTypeGroupKeys.some((group) => refactor[group] === true && testTypeGroups[group].includes(testTypeId));
 	}
 }

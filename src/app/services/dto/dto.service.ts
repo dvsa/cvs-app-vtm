@@ -10,10 +10,7 @@ export class DTOLayer {
 	featureToggleService = inject(FeatureToggleService);
 
 	transformPayload(editingTestResult: TestResultSchema) {
-		if (
-			!this.featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) ||
-			!this.featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_AMEND)
-		) {
+		if (!this.featureToggleService.isFeatureEnabled(FeatureFlags.TEST_RESULT_REFACTOR)) {
 			return editingTestResult;
 		}
 		const payload = this.stripCentralDocsForNonApplicableTestTypes(editingTestResult);
