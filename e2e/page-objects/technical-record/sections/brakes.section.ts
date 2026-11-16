@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { Autocomplete } from '../../../components/autocomplete.component';
 import { Checkbox } from '../../../components/checkbox.component';
 import { Input } from '../../../components/input.component';
@@ -31,5 +31,19 @@ export class BrakesSection extends Section {
 	async fill(values: Partial<SectionValues<typeof this.fields>>): Promise<void> {
 		await this.open();
 		await fillFields(this.fields, values);
+		if (values.techRecord_brakes_brakeCodeOriginal != null) await this.waitForBrakeCodeDetails();
+	}
+
+	override async fillFromRecord(record: object, excluded: readonly string[] = []): Promise<void> {
+		await super.fillFromRecord(record, excluded);
+		const { techRecord_brakes_brakeCodeOriginal } = record as { techRecord_brakes_brakeCodeOriginal?: string | null };
+		if (techRecord_brakes_brakeCodeOriginal != null && !excluded.includes('techRecord_brakes_brakeCodeOriginal')) {
+			await this.waitForBrakeCodeDetails();
+		}
+	}
+
+	// The app applies brake code details after a 400ms debounce, so wait for them before continuing.
+	private async waitForBrakeCodeDetails(): Promise<void> {
+		await expect(this.fields.techRecord_brakes_dataTrBrakeOne.locator).not.toHaveValue('');
 	}
 }

@@ -110,7 +110,7 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			techRecord_vehicleConfiguration: VehicleConfiguration.SEMI_TRAILER,
 
 			// Complete fields
-			techRecord_make: 'SCHMITZ',
+			techRecord_make: 'ABELL',
 			techRecord_model: 'CARGOBULL',
 			techRecord_firstUseDate: '2023-04-01',
 			techRecord_euVehicleCategory: EUVehicleCategory.O4,

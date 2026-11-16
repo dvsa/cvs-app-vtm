@@ -86,15 +86,11 @@ export abstract class TechnicalRecordPage extends BasePage {
 				await this.tyres.fillFromRecord(record);
 			}
 			await this.weights.fillFromRecord(record, vehicleType === 'psv' ? ['techRecord_brakes_dtpNumber'] : []);
-			await this.brakes.fillFromRecord(
-				{
-					...record,
-					...(vehicleType === 'psv' && record.techRecord_brakes_brakeCode
-						? { techRecord_brakes_brakeCodeOriginal: record.techRecord_brakes_brakeCode.slice(-3) }
-						: {}),
-				},
-				['techRecord_brakes_dataTrBrakeOne', 'techRecord_brakes_dataTrBrakeTwo', 'techRecord_brakes_dataTrBrakeThree']
-			);
+			await this.brakes.fillFromRecord(record, [
+				'techRecord_brakes_dataTrBrakeOne',
+				'techRecord_brakes_dataTrBrakeTwo',
+				'techRecord_brakes_dataTrBrakeThree',
+			]);
 			await this.lastApplicant.fillFromRecord(record);
 			await this.documents.fillFromRecord(record);
 		}

@@ -108,6 +108,7 @@ export class PsvBuilder extends VehicleBuilder<TechRecordType<'psv', 'put'>> {
 			techRecord_grossKerbWeight: 8000,
 			techRecord_grossLadenWeight: 12000,
 			techRecord_dda_certificateIssued: false,
+			techRecord_brakes_brakeCodeOriginal: '122',
 			techRecord_brakes_brakeCode: '120122',
 			techRecord_brakes_dataTrBrakeOne: '2 AXLE NO SPLIT',
 			techRecord_brakes_dataTrBrakeTwo: 'HAND CONTROL AX2 (DESIGNATED)  OR SPLIT IF FITTED',

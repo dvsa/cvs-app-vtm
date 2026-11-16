@@ -90,6 +90,9 @@ test.describe('Complete technical record creation', { tag: ['@smoke', '@technica
 			.toBe(String(record.techRecord_grossKerbWeight));
 		await view.brakes.open();
 		await expect
+			.poll(view.brakes.fields.techRecord_brakes_brakeCodeOriginal.value)
+			.toBe(record.techRecord_brakes_brakeCodeOriginal);
+		await expect
 			.poll(view.brakes.fields.techRecord_brakes_dataTrBrakeOne.value)
 			.toBe(record.techRecord_brakes_dataTrBrakeOne);
 		await expect

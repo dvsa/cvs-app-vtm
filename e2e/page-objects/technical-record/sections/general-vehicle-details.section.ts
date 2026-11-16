@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { AutocompleteOrSelect } from '../../../components/autocomplete-or-select.component';
 import { Autocomplete } from '../../../components/autocomplete.component';
 import { Button } from '../../../components/button.component';
 import { CheckboxGroup } from '../../../components/checkbox-group.component';
@@ -31,7 +32,7 @@ export class GeneralVehicleDetailsSection extends Section {
 		techRecord_bodyMake: new Input(this.content, 'techRecord_bodyMake'),
 		techRecord_bodyModel: new Input(this.content, 'techRecord_bodyModel'),
 		techRecord_vehicleSubclass: new CheckboxGroup(this.content, 'techRecord_vehicleSubclass'),
-		techRecord_make: new Select(this.content, 'techRecord_make'),
+		techRecord_make: new AutocompleteOrSelect(this.content, 'techRecord_make'),
 		techRecord_model: new Input(this.content, 'techRecord_model'),
 		techRecord_bodyType_description: new InputOrSelect(this.content, 'techRecord_bodyType_description'),
 		techRecord_modelLiteral: new Input(this.content, 'techRecord_modelLiteral'),

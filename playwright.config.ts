@@ -20,9 +20,10 @@ if (startServer && new URL(baseURL).origin !== 'http://localhost:4200') {
 
 export default defineConfig({
 	testDir: './e2e',
+	fullyParallel: true,
 	forbidOnly: !!process.env['CI'],
-	retries: process.env['CI'] ? 2 : 0,
-	workers: 1,
+	retries: process.env['CI'] ? 1 : 1,
+	workers: process.env['CI'] ? 2 : 18,
 	reporter: [['list'], ['html', { open: 'never' }]],
 	expect: { timeout: 30_000 },
 	webServer: startServer
