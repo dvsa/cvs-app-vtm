@@ -7,7 +7,7 @@
     ></app-tech-record-title>
 
     <form [formGroup]="form" (submit)="handleSubmit()">
-      <h1 class="govuk-heading-l">{{ title }}</h1>
+      <h1 class="govuk-heading-l">{{ title() }}</h1>
 
       <govuk-form-group-textarea
         label="Why are you making this change?"
@@ -24,7 +24,7 @@
             data-module="govuk-button"
             data-prevent-double-click="true"
           >
-            {{ buttonLabel }}
+            {{ buttonLabel() }}
           </button>
         </dd>
         <dd class="govuk-summary-list__value back-button">

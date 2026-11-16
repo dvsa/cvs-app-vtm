@@ -96,4 +96,65 @@ describe('AuthorisationIntoServiceSectionEditComponent', () => {
 			expect(addControlSpy).toHaveBeenCalled();
 		});
 	});
+
+	describe('trailerFields', () => {
+		it('should return a control for each authorisation into service date field', () => {
+			const fields = component.trailerFields;
+			expect(Object.keys(fields)).toEqual([
+				'techRecord_authIntoService_cocIssueDate',
+				'techRecord_authIntoService_dateReceived',
+				'techRecord_authIntoService_datePending',
+				'techRecord_authIntoService_dateAuthorised',
+				'techRecord_authIntoService_dateRejected',
+			]);
+		});
+
+		it('should default every control to null', () => {
+			const fields = component.trailerFields;
+			for (const control of Object.values(fields)) {
+				expect(control?.value).toBeNull();
+			}
+		});
+	});
+
+	describe('date validators', () => {
+		it.each([
+			'techRecord_authIntoService_cocIssueDate',
+			'techRecord_authIntoService_dateReceived',
+			'techRecord_authIntoService_dateAuthorised',
+		])('should mark %s invalid when the date is in the future', (controlName) => {
+			const control = component.form.controls[controlName];
+			const futureDate = new Date();
+			futureDate.setFullYear(futureDate.getFullYear() + 1);
+			control.setValue(futureDate.toISOString().split('T')[0]);
+
+			expect(control.hasError('pastDate')).toBe(true);
+		});
+
+		it.each([
+			'techRecord_authIntoService_cocIssueDate',
+			'techRecord_authIntoService_dateReceived',
+			'techRecord_authIntoService_datePending',
+			'techRecord_authIntoService_dateAuthorised',
+			'techRecord_authIntoService_dateRejected',
+		])('should mark %s invalid when the date is malformed', (controlName) => {
+			const control = component.form.controls[controlName];
+			control.setValue('not-a-date');
+
+			expect(control.valid).toBe(false);
+		});
+
+		it.each([
+			'techRecord_authIntoService_cocIssueDate',
+			'techRecord_authIntoService_dateReceived',
+			'techRecord_authIntoService_datePending',
+			'techRecord_authIntoService_dateAuthorised',
+			'techRecord_authIntoService_dateRejected',
+		])('should mark %s valid for a well-formed past date', (controlName) => {
+			const control = component.form.controls[controlName];
+			control.setValue('2020-01-01');
+
+			expect(control.valid).toBe(true);
+		});
+	});
 });

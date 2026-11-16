@@ -1,5 +1,5 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '@components/button/button.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -8,25 +8,30 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
-import { Observable, map } from 'rxjs';
 
 @Component({
 	selector: 'app-tech-record-history',
 	templateUrl: './tech-record-history.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	styleUrls: ['./tech-record-history.component.scss'],
-	imports: [ButtonComponent, RouterLink, PaginationComponent, AsyncPipe, DatePipe],
+	imports: [ButtonComponent, RouterLink, PaginationComponent, DatePipe],
 })
 export class TechRecordHistoryComponent implements OnInit {
-	cdr = inject(ChangeDetectorRef);
 	store = inject(Store);
 
 	readonly currentTechRecord = input<V3TechRecordModel>();
 
-	pageStart?: number;
-	pageEnd?: number;
+	readonly pageStart = signal<number | undefined>(undefined);
+	readonly pageEnd = signal<number | undefined>(undefined);
 
-	techRecordHistory$ = this.store.select(selectTechRecordHistory);
+	readonly techRecordHistory = this.store.selectSignal(selectTechRecordHistory);
+	readonly techRecordHistoryPage = computed<TechRecordSearchSchema[]>(
+		() => this.techRecordHistory()?.slice(this.pageStart(), this.pageEnd()) ?? []
+	);
+	readonly numberOfRecords = computed(() => this.techRecordHistory()?.length ?? 0);
+	readonly currentTimeStamp = computed(
+		() => (this.currentTechRecord() as TechRecordType<'get'> | undefined)?.createdTimestamp
+	);
 
 	ngOnInit(): void {
 		const currentTechRecord = this.currentTechRecord();
@@ -37,30 +42,17 @@ export class TechRecordHistoryComponent implements OnInit {
 		}
 	}
 
-	get techRecordHistoryPage$(): Observable<TechRecordSearchSchema[]> {
-		return this.techRecordHistory$?.pipe(map((records) => records?.slice(this.pageStart, this.pageEnd) ?? []));
-	}
-
-	get numberOfRecords$(): Observable<number> {
-		return this.techRecordHistory$?.pipe(map((records) => records?.length ?? 0));
-	}
-
 	convertToUnix(date: Date): number {
 		return new Date(date).getTime();
 	}
 
 	handlePaginationChange(event?: { start: number; end: number }) {
 		if (!event) return;
-		this.pageStart = event.start;
-		this.pageEnd = event.end;
-		this.cdr.detectChanges();
+		this.pageStart.set(event.start);
+		this.pageEnd.set(event.end);
 	}
 
 	summaryLinkUrl(searchResult: TechRecordSearchSchema) {
 		return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
-	}
-
-	get currentTimeStamp() {
-		return (this.currentTechRecord() as TechRecordType<'get'>).createdTimestamp;
 	}
 }

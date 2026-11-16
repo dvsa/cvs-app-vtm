@@ -10,6 +10,7 @@
       [value]="value()"
       [checked]="radios.value() === value()"
       [(ngModel)]="radios.value"
+      [ngModelOptions]="{ standalone: true }"
       (ngModelChange)="radios.onChange($event)"
       [attr.data-aria-controls]="`conditional-${radios.id}`"
       [disabled]="radios.disabled()"

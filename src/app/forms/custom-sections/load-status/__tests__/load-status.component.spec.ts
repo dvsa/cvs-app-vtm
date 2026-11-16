@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
 import { LoadStatusComponent } from '../load-status.component';
@@ -81,11 +82,27 @@ describe('LoadStatusComponent', () => {
 			expect(component.isLoadStatusApplicable()).toBe(false);
 		});
 
-		it('should return true when the annual test being retested was failed on IM 59, 71, 72 or 73', () => {
+		it.each([
+			{ deficiencyCategory: DeficiencyCategoryEnum.Dangerous, expected: true },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Major, expected: true },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Minor, expected: false },
+			{ deficiencyCategory: DeficiencyCategoryEnum.Advisory, expected: false },
+		])('should return $expected for a $deficiencyCategory brake defect', ({ deficiencyCategory, expected }) => {
 			setRetest();
-			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 59 }] });
+			setTestHistory({
+				testTypeId: '94',
+				testResult: TestResults.FAIL,
+				defects: [{ imNumber: 59, deficiencyCategory }],
+			});
 
-			expect(component.isLoadStatusApplicable()).toBe(true);
+			expect(component.isLoadStatusApplicable()).toBe(expected);
+			fixture.componentRef.setInput('edit', true);
+			fixture.detectChanges();
+			expect(!!fixture.nativeElement.querySelector('govuk-form-group-radio')).toBe(expected);
+
+			const control = component.form.controls.testTypes.at(0)?.controls.loadStatus.controls.vehicleLoadStatus;
+			control?.updateValueAndValidity();
+			expect(control?.hasError('required')).toBe(expected);
 		});
 
 		it('should return false when the annual test being retested was failed outside of the retest window', () => {
@@ -94,7 +111,7 @@ describe('LoadStatusComponent', () => {
 				testTypeId: '94',
 				testResult: TestResults.FAIL,
 				testTypeStartTimestamp: '2026-09-06T09:00:00.000Z',
-				defects: [{ imNumber: 59 }],
+				defects: [{ imNumber: 59, deficiencyCategory: DeficiencyCategoryEnum.Major }],
 			});
 
 			expect(component.isLoadStatusApplicable()).toBe(false);

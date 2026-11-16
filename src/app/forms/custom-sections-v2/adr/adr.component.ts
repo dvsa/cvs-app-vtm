@@ -16,7 +16,7 @@ import {
 	signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, ValueChangeEvent } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
@@ -51,6 +51,7 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, updateScrollPosition } from '@store/technical-records';
 import { indexOf } from 'lodash-es';
+import { filter } from 'rxjs';
 import { getOptionsFromEnum } from '../../utils/enum-map';
 
 @Component({
@@ -445,6 +446,7 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 		this.init(this.form);
 
 		this.handleADRBodyTypeChange();
+		this.handleDangerousGoodsChange();
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord() as any);
@@ -462,6 +464,23 @@ export class AdrComponent extends EditBaseComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
+	}
+
+	// Most ADR validators read the dangerous goods flag from the parent form. The control's own valueChanges fires
+	// before the parent's value updates, so wait for the parent's value change from that control instead.
+	handleDangerousGoodsChange() {
+		const { techRecord_adrDetails_dangerousGoods: dangerousGoods, ...dependants } = this.form.controls;
+
+		this.parent.events
+			.pipe(
+				filter((event) => event instanceof ValueChangeEvent && event.source === dangerousGoods),
+				takeUntilDestroyed(this.destroyRef)
+			)
+			.subscribe(() => {
+				for (const control of Object.values(dependants)) {
+					control.updateValueAndValidity({ onlySelf: true });
+				}
+			});
 	}
 
 	handleADRBodyTypeChange() {

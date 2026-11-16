@@ -1,4 +1,4 @@
-@if (history$ | async) {
+@if (history()) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       {{
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      @for (item of paginatedItems$ | async; track item) {
+      @for (item of paginatedItems(); track item) {
         <tr class="govuk-table__row">
           @for (column of columns(); track column) {
             <td class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
@@ -32,7 +32,7 @@
   </table>
   <app-pagination
     tableName="audit-history"
-    [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+    [numberOfItems]="numberOfRecords()"
     (paginationOptionsChange)="handlePaginationChange($event)"
   />
 }

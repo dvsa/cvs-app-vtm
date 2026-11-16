@@ -22,12 +22,12 @@
   @switch (viewType()) {
     @case (formNodeViewTypes.DATE) {
       <td id="test-{{ name() }}" class="govuk-table__cell">
-        {{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+        {{ value | date: 'dd/MM/yyyy' : 'UTC' | defaultNullOrEmpty }}
       </td>
     }
     @case (formNodeViewTypes.DATETIME) {
       <td id="test-{{ name() }}" class="govuk-table__cell">
-        {{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+        {{ value | date: 'dd/MM/yyyy HH:mm' : 'UTC' | defaultNullOrEmpty }}
       </td>
     }
     @case (formNodeViewTypes.TIME) {

@@ -10,6 +10,8 @@ import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-
 import { TechRecordGETHGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { AdrCertsSectionViewComponent } from '@forms/custom-sections/adr-certs-section/adr-certs-section-view/adr-certs-section-view.component';
 import { createMockHgv } from '@mocks/hgv-record.mock';
+import { DocumentType } from '@models/document-type.enum';
+import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AdrService } from '@services/adr/adr.service';
 import { State, initialAppState } from '@store/index';
@@ -174,6 +176,168 @@ describe('AdrCertsSectionViewComponent', () => {
 			expect(result).toBeInstanceOf(Map);
 			expect(result.size).toBe(1);
 			expect(result.get('fileName')).toBe(adrCertDetails.certificateId);
+		});
+	});
+
+	describe('isArchived', () => {
+		it('should return true when the tech record status code is archived', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_statusCode = 'archived';
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.isArchived).toBe(true);
+		});
+
+		it('should return false when the tech record status code is not archived', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_statusCode = 'current';
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.isArchived).toBe(false);
+		});
+
+		it('should return false when there is no tech record', () => {
+			store.overrideSelector(techRecord, undefined as never);
+			store.refreshState();
+
+			expect(component.isArchived).toBe(false);
+		});
+	});
+
+	describe('roles', () => {
+		it('should return the Roles enum', () => {
+			expect(component.roles).toBe(Roles);
+		});
+	});
+
+	describe('DocumentType', () => {
+		it('should expose the DocumentType enum', () => {
+			expect(component.DocumentType).toBe(DocumentType);
+		});
+	});
+
+	describe('sortedCertificates', () => {
+		it('should return certificates sorted by generatedTimestamp, most recent first', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [
+				{ certificateId: 'old', generatedTimestamp: '2020-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'newest', generatedTimestamp: '2023-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'middle', generatedTimestamp: '2021-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+			];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.sortedCertificates?.map((c) => c.certificateId)).toEqual(['newest', 'middle', 'old']);
+		});
+
+		it('should not reorder certificates when generatedTimestamp is missing', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [
+				{ certificateId: 'a', generatedTimestamp: '' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'b', generatedTimestamp: '' } as unknown as ADRCertificateDetails,
+			];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.sortedCertificates?.map((c) => c.certificateId)).toEqual(['a', 'b']);
+		});
+
+		it('should return undefined when there are no certificates on the tech record', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = undefined;
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.sortedCertificates).toBeUndefined();
+		});
+
+		it('should not mutate the original tech record array when sorting', () => {
+			const mockTechRecord = createMockHgv(0);
+			const original = [
+				{ certificateId: 'old', generatedTimestamp: '2020-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'new', generatedTimestamp: '2023-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+			];
+			mockTechRecord.techRecord_adrPassCertificateDetails = original;
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			component.sortedCertificates;
+
+			expect(original.map((c) => c.certificateId)).toEqual(['old', 'new']);
+		});
+	});
+
+	describe('numberOfADRCertificates', () => {
+		it('should return the number of certificates', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [
+				{ certificateId: 'a' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'b' } as unknown as ADRCertificateDetails,
+			];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.numberOfADRCertificates).toBe(2);
+		});
+
+		it('should return 0 when there are no certificates', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = undefined;
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.numberOfADRCertificates).toBe(0);
+		});
+	});
+
+	describe('adrCertificateHistory', () => {
+		it('should return the certificates sliced between pageStart and pageEnd', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [
+				{ certificateId: 'a', generatedTimestamp: '2023-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'b', generatedTimestamp: '2022-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+				{ certificateId: 'c', generatedTimestamp: '2021-01-01T00:00:00.000Z' } as unknown as ADRCertificateDetails,
+			];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			component.pageStart = 0;
+			component.pageEnd = 2;
+
+			expect(component.adrCertificateHistory.map((c) => c.certificateId)).toEqual(['a', 'b']);
+		});
+
+		it('should return an empty array when there are no sorted certificates', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = undefined;
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.adrCertificateHistory).toEqual([]);
+		});
+	});
+
+	describe('reasonForNoRecords', () => {
+		it('should return a message when there are no certificates', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.reasonForNoRecords).toBe('No ADR certificates found.');
+		});
+
+		it('should return an empty string when there are certificates', () => {
+			const mockTechRecord = createMockHgv(0);
+			mockTechRecord.techRecord_adrPassCertificateDetails = [
+				{ certificateId: 'a' } as unknown as ADRCertificateDetails,
+			];
+			store.overrideSelector(techRecord, mockTechRecord as TechRecordGETHGV);
+			store.refreshState();
+
+			expect(component.reasonForNoRecords).toBe('');
 		});
 	});
 });

@@ -101,12 +101,12 @@ export class AppComponent implements OnInit, OnDestroy {
 			}
 		});
 
-		await this.gtmService.addGtmToDom();
+		const [, uniqueId] = await Promise.all([this.gtmService.addGtmToDom(), this.analyticsService.createUniqueId()]);
 		this.analyticsService.pushToDataLayer({
 			StaffRole: this.userService.jobTitle(),
 			AppVersionDataLayer: packageInfo.version,
 		});
-		await this.analyticsService.setUserId();
+		this.analyticsService.pushToDataLayer({ UserIDDataLayer: uniqueId });
 		initAll();
 	}
 

@@ -7,7 +7,7 @@
     >
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
         {{ label() }}
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </legend>
@@ -49,6 +49,7 @@
               inputmode="numeric"
               [maxlength]="maxLength.day"
               [(ngModel)]="day"
+              [ngModelOptions]="{ standalone: true }"
               [disabled]="disabled"
               (input)="onDateInput($event, 'day')"
               (ngModelChange)="onDayChange($event)"
@@ -81,6 +82,7 @@
               inputmode="numeric"
               [maxlength]="maxLength.month"
               [(ngModel)]="month"
+              [ngModelOptions]="{ standalone: true }"
               [disabled]="disabled"
               (input)="onDateInput($event, 'month')"
               (ngModelChange)="onMonthChange($event)"
@@ -113,6 +115,7 @@
               [min]="1000"
               [maxlength]="maxLength.year"
               [(ngModel)]="year"
+              [ngModelOptions]="{ standalone: true }"
               [disabled]="disabled"
               (input)="onDateInput($event, 'year')"
               (ngModelChange)="onYearChange($event)"
@@ -172,6 +175,7 @@
             inputmode="numeric"
             [maxlength]="maxLength.day"
             [(ngModel)]="day"
+            [ngModelOptions]="{ standalone: true }"
             [disabled]="disabled"
             (input)="onDateInput($event, 'day')"
             (ngModelChange)="onDayChange($event)"
@@ -202,6 +206,7 @@
             inputmode="numeric"
             [maxlength]="maxLength.month"
             [(ngModel)]="month"
+            [ngModelOptions]="{ standalone: true }"
             [disabled]="disabled"
             (input)="onDateInput($event, 'month')"
             (ngModelChange)="onMonthChange($event)"
@@ -234,6 +239,7 @@
             [min]="1000"
             [maxlength]="maxLength.year"
             [(ngModel)]="year"
+            [ngModelOptions]="{ standalone: true }"
             [disabled]="disabled"
             (input)="onDateInput($event, 'year')"
             (ngModelChange)="onYearChange($event)"
@@ -268,6 +274,7 @@
             [max]="23"
             [maxlength]="maxLength.hour"
             [(ngModel)]="hour"
+            [ngModelOptions]="{ standalone: true }"
             [disabled]="disabled"
             (input)="onDateInput($event, 'hour')"
             (ngModelChange)="onHourChange($event)"
@@ -302,6 +309,7 @@
             [max]="59"
             [maxlength]="maxLength.minute"
             [(ngModel)]="minute"
+            [ngModelOptions]="{ standalone: true }"
             [disabled]="disabled"
             (input)="onDateInput($event, 'minute')"
             (ngModelChange)="onMinuteChange($event)"

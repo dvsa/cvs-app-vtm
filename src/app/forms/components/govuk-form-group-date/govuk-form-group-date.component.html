@@ -6,7 +6,7 @@
           {{ controlLabel() }}
           @if (tags().length) {
             <div class="tags">
-              @for (tag of tags(); track tag) {
+              @for (tag of tags(); track tag.label) {
                 <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
               }
             </div>
@@ -47,7 +47,6 @@
             [attr.maxlength]="maxLength.day"
             (wheel)="$event.preventDefault()"
             appNumberOnly
-            [disabled]="disabled()"
             [class]="style"
           />
         </div>
@@ -70,7 +69,6 @@
             [attr.maxlength]="maxLength.month"
             (wheel)="$event.preventDefault()"
             appNumberOnly
-            [disabled]="disabled()"
             [class]="style"
           />
         </div>
@@ -93,7 +91,6 @@
             [attr.maxlength]="maxLength.year"
             (wheel)="$event.preventDefault()"
             appNumberOnly
-            [disabled]="disabled()"
             [class]="style"
           />
         </div>
@@ -121,7 +118,6 @@
               [attr.maxlength]="maxLength.hours"
               [min]="0"
               [max]="23"
-              [disabled]="disabled()"
               [class]="style"
             />
           </div>
@@ -147,7 +143,6 @@
               [attr.maxlength]="maxLength.minutes"
               [min]="0"
               [max]="59"
-              [disabled]="disabled()"
               [class]="style"
             />
           </div>

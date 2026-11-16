@@ -57,19 +57,23 @@ export class GovukFormGroupAutocompleteComponent
 	private loadAccessibleAutocomplete = inject(ACCESSIBLE_AUTOCOMPLETE_LOADER);
 
 	ngAfterViewInit(): void {
-		// Load the library before subscribing so each emission below runs synchronously. If the library can't be
-		// loaded, carry on without it so the plain select still works.
-		this.loadAccessibleAutocomplete()
-			.then(({ enhanceSelectElement }) => enhanceSelectElement)
-			.catch(() => undefined)
-			.then((enhanceSelectElement) => this.watchOptions(enhanceSelectElement));
+		// Load options and the library together, then enhance using the latest form value.
+		this.watchOptions(
+			this.loadAccessibleAutocomplete()
+				.then(({ enhanceSelectElement }) => enhanceSelectElement)
+				.catch(() => undefined)
+		);
 	}
 
-	private watchOptions(enhanceSelectElement: ((params: AutocompleteEnhanceParams) => void) | undefined): void {
+	private watchOptions(enhancement: Promise<((params: AutocompleteEnhanceParams) => void) | undefined>): void {
 		// takeUntil(destroy) also covers the component being destroyed while the library was loading
-		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
+		combineLatest([
+			this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)),
+			this.valueSub,
+			enhancement,
+		])
 			.pipe(takeUntil(this.destroy))
-			.subscribe(([options, latest]) => {
+			.subscribe(([options, latest, enhanceSelectElement]) => {
 				this.multiOptions = Array.isArray(options)
 					? options.map((option) => (typeof option === 'string' ? { label: option, value: option } : option))
 					: [];

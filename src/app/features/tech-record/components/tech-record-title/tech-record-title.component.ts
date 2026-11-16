@@ -55,15 +55,15 @@ export class TechRecordTitleComponent {
 		return techRecord ? this.technicalRecordService.getMakeAndModel(techRecord) : '';
 	});
 
-	get currentVrm(): string | undefined {
+	readonly currentVrm = computed<string | undefined>(() => {
 		const vehicle = this.vehicle();
 		return vehicle?.techRecord_vehicleType !== 'trl' ? (vehicle?.primaryVrm ?? '') : undefined;
-	}
+	});
 
-	get otherVrms(): string[] | undefined {
+	readonly otherVrms = computed<string[] | undefined>(() => {
 		const vehicle = this.vehicle();
 		return vehicle?.techRecord_vehicleType !== 'trl' ? (vehicle?.secondaryVrms ?? []) : undefined;
-	}
+	});
 
 	get vehicleTypes(): typeof VehicleTypes {
 		return VehicleTypes;

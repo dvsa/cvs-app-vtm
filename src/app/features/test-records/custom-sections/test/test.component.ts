@@ -117,6 +117,17 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 	readonly adrCertificateFileName = signal<string | undefined>(undefined);
 	readonly adrCertificateError = signal<string | null | undefined>(undefined);
+	readonly resultOptions = computed(() => {
+		if (this.mode() === Modes.AMEND) {
+			return RESULT_OPTIONS;
+		}
+		if (this.isSpecialistGroup1()) {
+			return PASS_FAIL_PRS_OPTIONS;
+		}
+		return PASS_FAIL_OPTIONS;
+	});
+
+	readonly contingencyTestNumberIsRequired = computed(() => this.initialMode() === Modes.EDIT);
 
 	ngOnInit(): void {
 		this.prepopulateVTG15Required();
@@ -170,7 +181,10 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		const resourceType = this.testTypeService.getAbandonReasonsResourceType(testResult);
 		const referenceData = this.store.selectSignal(selectAllReferenceDataByResourceType(resourceType))() || [];
-		return referenceData.map((reason) => ({ label: `${reason.description}`, value: `${reason.description}` }));
+		return referenceData.map((reason) => ({
+			label: `${reason.description}`,
+			value: `${reason.description}`,
+		}));
 	}
 
 	loadOptions(): void {
@@ -339,20 +353,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	getResultOptions() {
-		if (this.mode() === Modes.AMEND) {
-			return RESULT_OPTIONS;
-		}
-		if (this.isSpecialistGroup1()) {
-			return PASS_FAIL_PRS_OPTIONS;
-		}
-		return PASS_FAIL_OPTIONS;
-	}
-
-	contingencyTestNumberIsRequired(): boolean {
-		return this.initialMode() === Modes.EDIT;
-	}
-
 	handleTestStartTimestampChange(): void {
 		this.form.controls.testTypes
 			.at(0)
@@ -373,62 +373,72 @@ export class TestComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	isTestTypeGroup7(): boolean {
-		return TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-	}
+	readonly isTestTypeGroup7 = computed(() =>
+		TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
 
-	isSpecialistGroup1(): boolean {
-		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-	}
+	readonly isSpecialistGroup1 = computed(() =>
+		TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
 
-	isTestTypeGroup12or14(): boolean {
-		return TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
-	}
+	readonly isTestTypeGroup12or14 = computed(() =>
+		TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
 
-	isPassOrPrs(): boolean {
+	readonly isPassOrPrs = computed(() => {
 		const testResult = this.testResult()?.testTypes[0].testResult;
 		return testResult === TestResults.PASS || testResult === TestResults.PRS;
-	}
+	});
 
-	shouldShowResult(): boolean {
-		return this.isTestTypeGroup7() || this.isSpecialistGroup1();
-	}
+	readonly shouldShowResult = computed(() => this.isTestTypeGroup7() || this.isSpecialistGroup1());
 
 	/** Mirrors the `resultDependantOnRequiredStandards` async validator used by the dynamic form service. */
 	validateResultAgainstRequiredStandards(control: AbstractControl): ValidationErrors | null {
 		const hasRequiredStandards = !!this.form.controls.testTypes.at(0).controls.requiredStandards.value?.length;
 
 		if (control.value === TestResults.PASS && hasRequiredStandards) {
-			return { invalidTestResult: { error: 'Cannot pass test when required standards are present' } };
+			return {
+				invalidTestResult: {
+					error: 'Cannot pass test when required standards are present',
+				},
+			};
 		}
 		if (control.value === TestResults.FAIL && !hasRequiredStandards) {
-			return { invalidTestResult: { error: 'Cannot fail test when no required standards are present' } };
+			return {
+				invalidTestResult: {
+					error: 'Cannot fail test when no required standards are present',
+				},
+			};
 		}
 		if (control.value === TestResults.PRS && !hasRequiredStandards) {
-			return { invalidTestResult: { error: 'Cannot mark test as PRS when no required standards are present' } };
+			return {
+				invalidTestResult: {
+					error: 'Cannot mark test as PRS when no required standards are present',
+				},
+			};
 		}
 
 		return null;
 	}
 
-	shouldShowExpiryDate(): boolean {
+	readonly shouldShowExpiryDate = computed(() => {
 		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
 		if (this.mode() === Modes.ABANDON) return false;
 		if (!isGroup7) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
-	}
+	});
 
-	shouldShowCreateModeDescription(): boolean {
-		return (this.isTestTypeGroup7() || this.isSpecialistGroup1()) && this.mode() === Modes.EDIT;
-	}
+	readonly shouldShowCreateModeDescription = computed(
+		() => (this.isTestTypeGroup7() || this.isSpecialistGroup1()) && this.mode() === Modes.EDIT
+	);
 
-	shouldShowAnniversaryDate(): boolean {
-		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup12or14();
-	}
+	readonly shouldShowAnniversaryDate = computed(
+		() => !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup12or14()
+	);
 
-	shouldShowCentralDocs(): boolean {
+	readonly shouldShowCentralDocs = computed(() => {
 		if (this.isSpecialistGroup1()) {
 			return this.isPassOrPrs();
 		}
@@ -438,9 +448,9 @@ export class TestComponent implements OnInit, OnDestroy {
 				this.testResult()?.testTypes[0].testTypeId ?? ''
 			) && this.testResult()?.testTypes[0].testResult !== 'fail'
 		);
-	}
+	});
 
-	shouldShowGenerateADRCertificate(): boolean {
+	readonly shouldShowGenerateADRCertificate = computed(() => {
 		if (this.mode() === Modes.AMEND) {
 			return false;
 		}
@@ -448,9 +458,9 @@ export class TestComponent implements OnInit, OnDestroy {
 			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
 			this.testResult()?.testTypes[0].testResult === 'pass'
 		);
-	}
+	});
 
-	shouldShowCertificateNumber(): boolean {
+	readonly shouldShowCertificateNumber = computed(() => {
 		if (this.isSpecialistGroup1()) {
 			// An abandoned test keeps its certificate number when it is amended
 			if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return this.mode() === Modes.AMEND;
@@ -471,31 +481,26 @@ export class TestComponent implements OnInit, OnDestroy {
 		return !(
 			this.testResult()?.testTypes[0].testResult == 'pass' && this.testResult()?.testTypes[0].centralDocs?.issueRequired
 		);
-	}
+	});
 
-	shouldShowProhibitionIssued(): boolean {
-		return this.isTestTypeGroup7() || this.isSpecialistGroup1();
-	}
+	readonly shouldShowProhibitionIssued = computed(() => this.isTestTypeGroup7() || this.isSpecialistGroup1());
 
-	shouldShowReapplicationDate(): boolean {
-		return this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL;
-	}
+	readonly shouldShowReapplicationDate = computed(
+		() => this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL
+	);
 
-	shouldShowApprovalsMedia(): boolean {
-		return (
+	readonly shouldShowApprovalsMedia = computed(
+		() =>
 			this.isSpecialistGroup1() &&
 			(this.mode() === Modes.VIEW || (this.initialMode() === Modes.AMEND && this.mode() === Modes.SUMMARY))
-		);
-	}
+	);
 
-	shouldShowLoadStatus(): boolean {
-		return this.loadStatusService.isLoadStatusApplicable(this.testResult());
-	}
+	readonly shouldShowLoadStatus = computed(() => this.loadStatusService.isLoadStatusApplicable(this.testResult()));
 
-	isLoadStatusRequired(): boolean {
+	readonly isLoadStatusRequired = computed(() => {
 		// When amending a test, load status is displayed but can be left blank
 		return this.shouldShowLoadStatus() && this.initialMode() !== Modes.AMEND;
-	}
+	});
 
 	isUnladenSelected(): boolean {
 		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();

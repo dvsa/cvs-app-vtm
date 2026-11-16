@@ -201,12 +201,13 @@ export class TechRecordComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private handleFormChanges(): void {
 		// Debounce the live store mirror so rapid typing does not push a new editing record
-		// (which re-feeds every section's techRecord input) on every keystroke. Submit flushes synchronously.
+		// (which re-feeds every section's techRecord input) on every keystroke. Anything that reads the
+		// editing record to submit it must call syncFormToStore() first, or the latest changes are lost.
 		this.form.valueChanges.pipe(debounceTime(100), takeUntil(this.destroy)).subscribe(() => this.syncFormToStore());
 	}
 
 	/** Immediately mirror the form into the store editing record (flushes any pending debounced change). */
-	private syncFormToStore(): void {
+	syncFormToStore(): void {
 		this.technicalRecordService.updateEditingTechRecord(this.form.getRawValue() as TechRecordTypeVerb<'put'>);
 	}
 

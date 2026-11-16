@@ -1,4 +1,4 @@
-@if (techRecordHistory$ | async) {
+@if (techRecordHistory()) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Technical Records History
@@ -13,11 +13,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      @for (
-        searchResult of techRecordHistoryPage$ | async;
-        track i;
-        let i = $index
-      ) {
+      @for (searchResult of techRecordHistoryPage(); track i; let i = $index) {
         <tr class="govuk-table__row">
           <th
             scope="row"
@@ -45,7 +41,7 @@
             {{ searchResult.createdTimestamp | date: 'dd/MM/yyyy HH:mm' }}
           </td>
           <td class="govuk-table__cell">
-            @if (searchResult.createdTimestamp !== currentTimeStamp) {
+            @if (searchResult.createdTimestamp !== currentTimeStamp()) {
               <app-button
                 id="view-test-{{ searchResult.vin }}"
                 type="link"
@@ -62,7 +58,7 @@
   </table>
   <app-pagination
     tableName="tech-history"
-    [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+    [numberOfItems]="numberOfRecords()"
     (paginationOptionsChange)="handlePaginationChange($event)"
   />
 }

@@ -9,8 +9,14 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
+
+const NOTES_REQUIRED_TEST_TYPES = new Set<string>([
+	...TEST_TYPES_GROUP7,
+	...TEST_TYPES_GROUP1_SPEC_TEST,
+	...TEST_TYPES_GROUP5_SPEC_TEST,
+]);
 
 @Component({
 	selector: 'app-abandon',
@@ -29,6 +35,13 @@ export class AbandonComponent implements OnInit, OnDestroy {
 	form = this.testService.form;
 	testResult = this.store.selectSignal(testResultInEdit);
 	abandonReasons = computed(() => this.getAbandonReasonsList());
+	testTypeId = computed(() => this.testResult()?.testTypes?.[0]?.testTypeId ?? '');
+	notesRequired = computed(() => NOTES_REQUIRED_TEST_TYPES.has(this.testTypeId()));
+	abandonNotesLabel = computed(() =>
+		this.notesRequired()
+			? 'Additional notes as to why this test was abandoned'
+			: 'Additional notes as to why this test was abandoned (optional)'
+	);
 
 	ngOnInit(): void {
 		this.loadOptions();
@@ -37,13 +50,6 @@ export class AbandonComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.removeValidators();
-	}
-
-	getAbandonNotesLabel(): string {
-		if (TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')) {
-			return 'Additional notes as to why this test was abandoned';
-		}
-		return 'Additional notes as to why this test was abandoned (optional)';
 	}
 
 	getAbandonReasonsList(): MultiOptions {
@@ -62,6 +68,7 @@ export class AbandonComponent implements OnInit, OnDestroy {
 	}
 
 	addValidators(): void {
+		const testTypeId = this.testResult()?.testTypes[0].testTypeId ?? '';
 		const testTypeGroup = this.form.controls.testTypes.at(0);
 		testTypeGroup.controls.reasonForAbandoning.setValidators([
 			this.commonValidators.required('Why was this test abandoned?'),
@@ -69,6 +76,11 @@ export class AbandonComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.maxLength(500, 'Additional notes as to why this test was abandoned (optional)'),
 		]);
+		if ([...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(testTypeId)) {
+			testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
+				this.commonValidators.required(() => ({ error: 'Enter additional notes as to why this test was abandoned' })),
+			]);
+		}
 	}
 
 	removeValidators(): void {

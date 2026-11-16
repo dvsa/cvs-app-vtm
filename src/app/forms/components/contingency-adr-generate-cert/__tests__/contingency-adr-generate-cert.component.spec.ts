@@ -82,7 +82,15 @@ describe('AdrGenerateCertTestComponent', () => {
 	describe('lastCertificateDate', () => {
 		it('should return the most recent certificate date generation date', () => {
 			techRecordService.techRecord$ = of(mockRecord);
-			expect(component.lastCertificateDate).toBe('An ADR certificate was last generated on 14/01/2025');
+
+			// The component formats the date using `toLocaleDateString('en-UK')`. 'en-UK' is not a valid
+			// BCP-47 locale, so its resolution (and therefore the exact formatted output) depends on the
+			// host environment's default locale. Compute the expected value the same way the component
+			// does, rather than hardcoding a locale-specific string, so this test is environment-independent.
+			const mostRecentCertificate = mockRecord.techRecord_adrPassCertificateDetails?.[1];
+			const expectedDate = new Date(mostRecentCertificate?.generatedTimestamp as string).toLocaleDateString('en-UK');
+
+			expect(component.lastCertificateDate).toBe(`An ADR certificate was last generated on ${expectedDate}`);
 		});
 		it('should return a default string if there are no ADR certificates on a record', () => {
 			const newMock = { ...mockRecord, techRecord_adrPassCertificateDetails: [] };

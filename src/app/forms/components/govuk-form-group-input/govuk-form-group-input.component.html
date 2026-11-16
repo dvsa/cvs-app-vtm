@@ -14,7 +14,7 @@
         }
         @if (tags().length) {
           <div class="tags">
-            @for (tag of tags(); track tag) {
+            @for (tag of tags(); track tag.label) {
               <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
             }
           </div>
@@ -65,6 +65,7 @@
         [attr.data-testid]="id"
         [class.govuk-radios__input--error]="hasError"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="writeValue($event)"
         (input)="onInput($event)"
         (blur)="onTouched(); onBlur($event)"
@@ -83,6 +84,7 @@
         [attr.data-testid]="id"
         [class.govuk-radios__input--error]="hasError"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="writeValue($event)"
         type="number"
         appNumberOnly
@@ -104,6 +106,7 @@
         [attr.data-testid]="id"
         [class.govuk-radios__input--error]="hasError"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="writeValue($event)"
         appNumberOnly
         (blur)="onTouched(); onBlur($event)"
@@ -121,6 +124,7 @@
         [attr.data-testid]="id"
         [class.govuk-radios__input--error]="hasError"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="writeValue($event)"
         type="number"
         inputmode="decimal"

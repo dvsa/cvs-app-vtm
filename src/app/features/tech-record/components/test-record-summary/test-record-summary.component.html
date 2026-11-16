@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      @for (test of paginatedTestFields; track i; let i = $index) {
+      @for (test of paginatedTestFields(); track i; let i = $index) {
         <tr>
           <th
             scope="row"
@@ -48,7 +48,7 @@
   </table>
   <app-pagination
     tableName="test-history"
-    [numberOfItems]="numberOfRecords"
+    [numberOfItems]="numberOfRecords()"
     (paginationOptionsChange)="handlePaginationChange($event)"
   />
 } @else {

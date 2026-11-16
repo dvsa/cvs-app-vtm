@@ -7,7 +7,7 @@
     @if (label()) {
       <label class="govuk-label govuk-label--m" [for]="name()">
         {{ label() }}
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </label>
@@ -35,6 +35,7 @@
             [attr.checked]="isChecked(option.value)"
             [value]="option.value"
             [ngModel]="isChecked(option.value)"
+            [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="handleChange($event, option)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"

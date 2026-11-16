@@ -1,7 +1,7 @@
 <div [class]="style">
   <label [for]="name()" class="govuk-label govuk-label--m">
     {{ label() }}
-    @for (tag of control?.meta?.customTags; track tag) {
+    @for (tag of control?.meta?.customTags; track tag.label) {
       <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
     }
   </label>

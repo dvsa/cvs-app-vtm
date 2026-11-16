@@ -89,9 +89,33 @@ describe('SearchFormComponent', () => {
 			component.form.patchValue({ searchTerm: 'foo', searchCriteria: SEARCH_TYPES.ALL });
 			component.search();
 			expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], {
-				queryParams: { searchTerm: 'foo', searchCriteria: 'all', includeArchived: false, 'search-results-page': 1 },
+				queryParams: { searchTerm: 'FOO', searchCriteria: 'all', includeArchived: false, 'search-results-page': 1 },
 				queryParamsHandling: 'merge',
 			});
 		});
+
+		it.each(['ab12cde', 'Ab12CdE', 'AB12CDE'])(
+			'should submit %s as uppercase without requiring focusout',
+			(searchTerm) => {
+				const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+				const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+				input.focus();
+				input.value = searchTerm;
+				input.dispatchEvent(new Event('input', { bubbles: true }));
+
+				expect(component.form.controls.searchTerm.value).toBe(searchTerm);
+				component.search();
+
+				expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], {
+					queryParams: {
+						searchTerm: 'AB12CDE',
+						searchCriteria: 'all',
+						includeArchived: false,
+						'search-results-page': 1,
+					},
+					queryParamsHandling: 'merge',
+				});
+			}
+		);
 	});
 });

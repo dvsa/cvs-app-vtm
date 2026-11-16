@@ -9,17 +9,6 @@ import { of } from 'rxjs';
 import { vi } from 'vitest';
 import { UserService } from '../user-service';
 
-// remove when we update: @azure/msal-angular see: https://www.reddit.com/r/angular/comments/1gq82zc/browserautherror_crypto_nonexistent_the_crypto/
-Object.defineProperty(global.self, 'crypto', {
-	value: {
-		// Needed for @azure/msal-browser
-		subtle: {
-			digest: vi.fn(),
-		},
-		getRandomValues: vi.fn(),
-	},
-});
-
 describe('User-Service', () => {
 	let service: UserService;
 	let store: MockStore;

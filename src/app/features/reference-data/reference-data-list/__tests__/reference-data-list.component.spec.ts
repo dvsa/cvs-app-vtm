@@ -97,8 +97,8 @@ describe('DataTypeListComponent', () => {
 		it('should set the start and end pages', () => {
 			component.handlePaginationChange({ start: 0, end: 24 });
 
-			expect(component.pageStart).toBe(0);
-			expect(component.pageEnd).toBe(24);
+			expect(component.pageStart()).toBe(0);
+			expect(component.pageEnd()).toBe(24);
 		});
 	});
 	describe('clear', () => {

@@ -6,7 +6,7 @@
           {{ controlTitle() }}
           @if (tags().length) {
             <div class="tags">
-              @for (tag of tags(); track tag) {
+              @for (tag of tags(); track tag.label) {
                 <app-tag [type]="tag.colour">{{ tag.label }}</app-tag>
               }
             </div>
@@ -43,6 +43,7 @@
           type="checkbox"
           class="govuk-checkboxes__input"
           [(ngModel)]="value"
+          [ngModelOptions]="{ standalone: true }"
           (ngModelChange)="onChange($event)"
           [attr.aria-labelledby]="controlId() + '-' + value() + '-label'"
           [disabled]="disabled()"

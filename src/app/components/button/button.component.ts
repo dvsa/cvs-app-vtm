@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLinkWithHref } from '@angular/router';
 import { PreventDoubleClickDirective } from '@directives/prevent-double-click/prevent-double-click.directive';
@@ -8,7 +8,7 @@ import { PreventDoubleClickDirective } from '@directives/prevent-double-click/pr
 	templateUrl: './button.component.html',
 	styleUrls: ['./button.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgClass, NgTemplateOutlet, PreventDoubleClickDirective],
+	imports: [NgTemplateOutlet, PreventDoubleClickDirective],
 })
 export class ButtonComponent extends RouterLinkWithHref {
 	readonly id = input<string>();

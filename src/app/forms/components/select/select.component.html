@@ -6,7 +6,7 @@
     >
       {{ label() }}
       <div class="flex flex-wrap gap-2">
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </div>
@@ -32,6 +32,7 @@
     [id]="customId() || name()"
     name="{{ name() }}"
     [(ngModel)]="value"
+    [ngModelOptions]="{ standalone: true }"
     [disabled]="disabled"
     attr.aria-describedby="{{ name() }}-hint"
     (ngModelChange)="onChange($event)"

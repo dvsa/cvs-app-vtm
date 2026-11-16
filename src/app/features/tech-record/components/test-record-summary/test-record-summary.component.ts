@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -23,27 +23,19 @@ interface TestField {
 	imports: [RouterLink, PaginationComponent, DatePipe],
 })
 export class TestRecordSummaryComponent {
-	cdr = inject(ChangeDetectorRef);
-
 	readonly isEditing = input(false);
 	readonly testResults = input<TestResultSchema[]>([]);
 
-	pageStart?: number;
-	pageEnd?: number;
+	readonly pageStart = signal<number | undefined>(undefined);
+	readonly pageEnd = signal<number | undefined>(undefined);
 
 	public get roles(): typeof Roles {
 		return Roles;
 	}
 
-	get numberOfRecords(): number {
-		return this.testResults().length;
-	}
+	readonly numberOfRecords = computed(() => this.testResults().length);
 
-	get paginatedTestFields(): TestField[] {
-		return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
-	}
-
-	get sortedTestTypeFields(): TestField[] {
+	readonly sortedTestTypeFields = computed<TestField[]>(() => {
 		const byDate = (a: TestField, b: TestField) =>
 			new Date(b.testTypeStartTimestamp || 0).getTime() - new Date(a.testTypeStartTimestamp || 0).getTime();
 
@@ -59,7 +51,9 @@ export class TestRecordSummaryComponent {
 				}))
 			)
 			.sort(byDate);
-	}
+	});
+
+	readonly paginatedTestFields = computed(() => this.sortedTestTypeFields().slice(this.pageStart(), this.pageEnd()));
 
 	getResult(test: TestField) {
 		return test.testResultStatus === TestStatus.CANCELLED ? TestStatus.CANCELLED : test.testResult;
@@ -75,8 +69,7 @@ export class TestRecordSummaryComponent {
 
 	handlePaginationChange(event?: { start: number; end: number }): void {
 		if (!event) return;
-		this.pageStart = event.start;
-		this.pageEnd = event.end;
-		this.cdr.detectChanges();
+		this.pageStart.set(event.start);
+		this.pageEnd.set(event.end);
 	}
 }

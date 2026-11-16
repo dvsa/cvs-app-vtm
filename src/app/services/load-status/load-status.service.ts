@@ -2,12 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema, TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TEST_TYPES_LOAD_STATUS_ANNUAL, TEST_TYPES_LOAD_STATUS_ANNUAL_RETEST } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { selectAllTestResults } from '@store/test-records';
 import dayjs, { Dayjs } from 'dayjs';
 
-// Brake related IM numbers which mean the loading condition of the vehicle must be captured on the retest
+// Brake related IM numbers whose Major or Dangerous defects require load status on the retest
 export const LOAD_STATUS_DEFECT_IM_NUMBERS = [59, 71, 72, 73];
 
 // A retest must be carried out within 21 days of the annual test it is retesting
@@ -21,7 +22,7 @@ export class LoadStatusService {
 
 	/**
 	 * Load status is captured on HGV/TRL annual tests, and on annual test retests where the annual
-	 * test being retested failed on one or more brake related defects.
+	 * test being retested failed on one or more Major or Dangerous brake related defects.
 	 */
 	isLoadStatusApplicable(testResult: Partial<TestResultSchema> | undefined): boolean {
 		const testType = testResult?.testTypes?.[0];
@@ -38,7 +39,7 @@ export class LoadStatusService {
 	 * Returns the annual test that a retest is retesting, if load status applies because of it.
 	 *
 	 * This is the most recent annual test the vehicle failed within the retest window; it only
-	 * qualifies if it was failed on one or more brake related defects.
+	 * qualifies if it was failed on one or more Major or Dangerous brake related defects.
 	 */
 	getQualifyingAnnualTest(retest: Partial<TestResultSchema>): TestResultTestTypeSchema | undefined {
 		// A contingency test being recorded now has no test date until the tester enters one
@@ -68,8 +69,11 @@ export class LoadStatusService {
 		const annualTest = failedAnnualTests.at(0)?.testType;
 		if (!annualTest) return undefined;
 
-		const hasBrakeRelatedDefect = !!annualTest.defects?.some((defect) =>
-			LOAD_STATUS_DEFECT_IM_NUMBERS.includes(defect.imNumber)
+		const hasBrakeRelatedDefect = !!annualTest.defects?.some(
+			(defect) =>
+				LOAD_STATUS_DEFECT_IM_NUMBERS.includes(defect.imNumber) &&
+				(defect.deficiencyCategory === DeficiencyCategoryEnum.Major ||
+					defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous)
 		);
 
 		return hasBrakeRelatedDefect ? annualTest : undefined;

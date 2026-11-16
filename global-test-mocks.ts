@@ -21,3 +21,8 @@ Object.defineProperty(window, 'getComputedStyle', {
 		appearance: ['-webkit-appearance'],
 	}),
 });
+
+// jsdom does not implement these and logs "Not implemented" on every call; stub them so specs stay quiet
+// (they remain writable, so individual specs can still spy on them)
+Object.defineProperty(window, 'alert', { value: () => {}, writable: true, configurable: true });
+Object.defineProperty(window, 'scrollTo', { value: () => {}, writable: true, configurable: true });

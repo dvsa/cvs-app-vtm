@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ValidatorNames } from '@models/validators.enum';
@@ -219,7 +219,8 @@ describe('DynamicFormService', () => {
 			const outputGroup = service.createForm(node);
 			const control = outputGroup.get('foo');
 			expect(control instanceof CustomFormControl).toBeTruthy();
-			expect(control?.hasValidator(Validators.required)).toBeTruthy();
+			control?.setValue(null);
+			expect(control?.hasError('required')).toBeTruthy();
 		});
 	});
 
@@ -231,9 +232,9 @@ describe('DynamicFormService', () => {
 				children: [],
 			});
 			const validators = [{ name: ValidatorNames.Required }];
-			const expectedValidator: ValidatorFn = Validators.required;
 			service.addValidators(control, validators);
-			expect(control.hasValidator(expectedValidator)).toBeTruthy();
+			control.setValue(null);
+			expect(control.hasError('required')).toBeTruthy();
 		});
 	});
 

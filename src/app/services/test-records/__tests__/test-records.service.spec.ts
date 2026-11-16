@@ -1,18 +1,30 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
+import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { environment } from '@environments/environment';
 import { mockTestResult } from '@mocks/mock-test-result';
+import { createMockTestType } from '@mocks/test-type.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
 import { State, initialAppState } from '@store/index';
 import {
+	cancelEditingTestResult,
+	cleanTestResult,
+	contingencyTestTypeSelected,
 	createTestResult,
+	editingTestResult,
 	fetchTestResults,
 	fetchTestResultsBySystemNumber,
+	testResultInEdit,
+	testTypeIdChanged,
 	toEditOrNotToEdit,
+	updateEditingTestResult,
 	updateTestResult,
+	updateTestResultFailed,
 } from '@store/test-records';
+import { firstValueFrom, of } from 'rxjs';
 import { TestRecordsService } from '../test-records.service';
 
 describe('TestRecordsService', () => {
@@ -126,6 +138,118 @@ describe('TestRecordsService', () => {
 			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			service.createTestResult({} as TestResultSchema);
 			expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultSchema }));
+		});
+	});
+
+	describe('saving and preparing test results', () => {
+		it('removes test history from the cloned amendment payload and includes user details', async () => {
+			const body = mockTestResult();
+			const originalHistory = structuredClone(body.testHistory);
+			vi.spyOn(httpService, 'testResultsSystemNumberPut').mockReturnValue(of(body));
+
+			await firstValueFrom(
+				service.saveTestResult('SYS0001', { name: 'Tester', id: 'oid', userEmail: 'tester@example.com' }, body)
+			);
+
+			expect(httpService.testResultsSystemNumberPut).toHaveBeenCalledWith(
+				{
+					msUserDetails: { msOid: 'oid', msUser: 'Tester', msEmailAddress: 'tester@example.com' },
+					testResult: expect.not.objectContaining({ testHistory: expect.anything() }),
+				},
+				'SYS0001'
+			);
+			expect(body.testHistory).toEqual(originalHistory);
+		});
+
+		it('posts a new test result through the HTTP service', () => {
+			const body = mockTestResult();
+			const post = vi.spyOn(httpService, 'testResultsPost').mockReturnValue(of({ testResultId: 'new-id' }) as any);
+
+			service.postTestResult(body);
+
+			expect(post).toHaveBeenCalledExactlyOnceWith(body);
+		});
+
+		it('clears the certificate number for a failed TIR test when it is missing', () => {
+			const result = mockTestResult();
+			result.testTypes = [
+				createMockTestType({ testTypeId: '49', testResult: TestResults.FAIL, certificateNumber: '' }),
+			];
+
+			expect(service.prepareTestResultForAmendment([], result)).toBe(result);
+			expect(result.testTypes[0].certificateNumber).toBeNull();
+		});
+
+		it('uses the certificate number from the latest matching IVA/MSVA result when absent', () => {
+			const latestPreviousTest = mockTestResult(1);
+			latestPreviousTest.testTypes = [createMockTestType({ testTypeId: '125', certificateNumber: 'IVA-CERT' })];
+			const earlierPreviousTest = mockTestResult(2);
+			earlierPreviousTest.testTypes = [createMockTestType({ testTypeId: '153', certificateNumber: 'OLDER-CERT' })];
+			const amended = mockTestResult();
+			amended.testTypes = [createMockTestType({ testTypeId: '126', certificateNumber: null })];
+
+			service.prepareTestResultForAmendment([latestPreviousTest, earlierPreviousTest], amended);
+
+			expect(amended.testTypes[0].certificateNumber).toBe('IVA-CERT');
+		});
+
+		it('preserves an existing certificate number rather than replacing it', () => {
+			const previous = mockTestResult();
+			previous.testTypes = [createMockTestType({ testTypeId: '125', certificateNumber: 'OLD' })];
+			const amended = mockTestResult();
+			amended.testTypes = [createMockTestType({ testTypeId: '126', certificateNumber: 'CURRENT' })];
+
+			service.prepareTestResultForAmendment([previous], amended);
+
+			expect(amended.testTypes[0].certificateNumber).toBe('CURRENT');
+		});
+	});
+
+	describe('dispatching edits and cancellation', () => {
+		it('dispatches edit, cancel-edit, update-edit, test-type, contingency, and clean actions', () => {
+			const dispatch = vi.spyOn(store, 'dispatch');
+			const result = mockTestResult();
+
+			service.editingTestResult(result);
+			service.cancelEditingTestResult();
+			service.updateEditingTestResult(result);
+			service.testTypeChange('41');
+			service.contingencyTestTypeSelected('annual');
+			service.cleanTestResult();
+
+			expect(dispatch.mock.calls.map(([action]) => action)).toEqual([
+				editingTestResult({ testTypeId: result.testTypes[0].testTypeId }),
+				cancelEditingTestResult(),
+				updateEditingTestResult({ testResult: result }),
+				testTypeIdChanged({ testTypeId: '41' }),
+				contingencyTestTypeSelected({ testType: 'annual' }),
+				cleanTestResult(),
+			]);
+		});
+
+		it('cancels the selected test with the supplied reason', () => {
+			const result = mockTestResult();
+			store.overrideSelector(testResultInEdit, result);
+			const dispatch = vi.spyOn(store, 'dispatch');
+
+			service.cancelTest('Duplicate test');
+
+			expect(dispatch).toHaveBeenCalledWith(
+				updateTestResult({
+					value: { ...result, testStatus: TestStatus.CANCELLED, reasonForCancellation: 'Duplicate test' },
+				})
+			);
+		});
+
+		it('reports a failed update when there is no selected test to cancel', () => {
+			store.overrideSelector(testResultInEdit, undefined);
+			const dispatch = vi.spyOn(store, 'dispatch');
+
+			service.cancelTest('Duplicate test');
+
+			expect(dispatch).toHaveBeenCalledWith(
+				updateTestResultFailed({ errors: [{ error: 'No selected test result.' }] })
+			);
 		});
 	});
 

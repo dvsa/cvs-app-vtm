@@ -1,7 +1,12 @@
 import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { TEST_TYPES_GROUP5_13, TEST_TYPES_MSVA } from '@models/testTypeId.enum';
+import {
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_13,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_MSVA,
+} from '@models/testTypeId.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
@@ -12,7 +17,10 @@ import { ButtonGroupComponent } from '../../../components/button-group/button-gr
 import { ButtonComponent } from '../../../components/button/button.component';
 import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
 
-const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialRefData): FormNode => ({
+const ABANDON_FORM = (
+	testTypeId: string,
+	ReasonsForAbandoning: ReferenceDataResourceType | SpecialRefData
+): FormNode => ({
 	name: 'abandonSection',
 	type: FormNodeTypes.GROUP,
 	children: [
@@ -36,13 +44,27 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
 							referenceData: ReasonsForAbandoning,
 							validators: [{ name: ValidatorNames.Required }],
 						},
-						{
-							name: 'additionalCommentsForAbandon',
-							type: FormNodeTypes.CONTROL,
-							label: 'Additional notes as to why this test was abandoned (optional)',
-							editType: FormNodeEditTypes.TEXTAREA,
-							validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
-						},
+						[...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(testTypeId)
+							? {
+									name: 'additionalCommentsForAbandon',
+									type: FormNodeTypes.CONTROL,
+									label: 'Additional notes as to why this test was abandoned',
+									editType: FormNodeEditTypes.TEXTAREA,
+									validators: [
+										{
+											name: ValidatorNames.Required,
+											args: { customErrorMessage: 'Enter additional notes as to why this test was abandoned' },
+										},
+										{ name: ValidatorNames.MaxLength, args: 500 },
+									],
+								}
+							: {
+									name: 'additionalCommentsForAbandon',
+									type: FormNodeTypes.CONTROL,
+									label: 'Additional notes as to why this test was abandoned (optional)',
+									editType: FormNodeEditTypes.TEXTAREA,
+									validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
+								},
 					],
 				},
 			],
@@ -68,15 +90,15 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
 		const testTypeId = this.testResult()?.testTypes[0].testTypeId ?? '';
 
 		if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
-			return ABANDON_FORM(ReferenceDataResourceType.TirReasonsForAbandoning);
+			return ABANDON_FORM(testTypeId, ReferenceDataResourceType.TirReasonsForAbandoning);
 		}
 		if (TEST_TYPES_MSVA.includes(testTypeId)) {
-			return ABANDON_FORM(ReferenceDataResourceType.MsvaReasonsForAbandoning);
+			return ABANDON_FORM(testTypeId, ReferenceDataResourceType.MsvaReasonsForAbandoning);
 		}
 		if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
-			return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
+			return ABANDON_FORM(testTypeId, ReferenceDataResourceType.SpecialistReasonsForAbandoning);
 		}
-		return ABANDON_FORM(SpecialRefData.ReasonsForAbandoning);
+		return ABANDON_FORM(testTypeId, SpecialRefData.ReasonsForAbandoning);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -115,7 +115,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      @for (tyre of paginatedFields; track $index) {
+      @for (tyre of paginatedFields(); track $index) {
         <tr class="govuk-table__row">
           <td class="govuk-table__cell" data-label="Code">{{ tyre.code }}</td>
           <td class="govuk-table__cell" data-label="Size">
@@ -165,7 +165,7 @@
   </table>
   <app-pagination
     tableName="search-results"
-    [numberOfItems]="numberOfResults"
+    [numberOfItems]="numberOfResults()"
     [itemsPerPage]="itemsPerPage"
     (paginationOptionsChange)="handlePaginationChange($event)"
   />

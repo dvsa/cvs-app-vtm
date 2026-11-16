@@ -39,9 +39,15 @@ export class EnterTechRecordDetailsComponent {
 	readonly techRecordComponent = viewChild(TechRecordComponent);
 
 	handleSave(): void {
-		const techRecord = this.techRecord();
 		const techRecordComponent = this.techRecordComponent();
-		if (!techRecord || !techRecordComponent) return;
+		if (!techRecordComponent) return;
+
+		// The form is mirrored into the editing record on a debounce, so flush it before reading the record,
+		// otherwise changes made just before saving (e.g. the DTp number or reason for creation) are lost
+		techRecordComponent.syncFormToStore();
+
+		const techRecord = this.techRecord();
+		if (!techRecord) return;
 
 		const form = techRecordComponent.form;
 		form.markAllAsTouched();

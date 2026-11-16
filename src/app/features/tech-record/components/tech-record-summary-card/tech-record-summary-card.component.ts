@@ -8,7 +8,7 @@ import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@/src/app/models/v
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 
@@ -34,6 +34,17 @@ export class TechRecordSummaryCardComponent {
 	techRecord = input.required<TechRecordType<'get'>, V3TechRecordModel>({
 		transform: (value) => value as TechRecordType<'get'>,
 	});
+	readonly vehicleTypeLabel = computed<VehicleTypes>(() => {
+		const techRecord = this.techRecord();
+
+		if (
+			techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
+			(techRecord.techRecord_euVehicleCategory === 'o1' || techRecord.techRecord_euVehicleCategory === 'o2')
+		) {
+			return VehicleTypes.SMALL_TRL;
+		}
+		return techRecord.techRecord_vehicleType as VehicleTypes;
+	});
 
 	readonly Roles = Roles;
 	readonly Modes = Modes;
@@ -49,16 +60,5 @@ export class TechRecordSummaryCardComponent {
 		this.router.navigate([TechRecordCreateRoutes.NEW_RECORD_DETAILS_CANCEL], {
 			relativeTo: this.route,
 		});
-	}
-
-	getVehicleTypeLabel(): VehicleTypes {
-		if (
-			this.techRecord().techRecord_vehicleType === VehicleTypes.TRL &&
-			(this.techRecord().techRecord_euVehicleCategory === 'o1' ||
-				this.techRecord().techRecord_euVehicleCategory === 'o2')
-		) {
-			return VehicleTypes.SMALL_TRL;
-		}
-		return this.techRecord().techRecord_vehicleType as VehicleTypes;
 	}
 }

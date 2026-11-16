@@ -25,6 +25,7 @@
       type="checkbox"
       class="govuk-checkboxes__input"
       [(ngModel)]="value"
+      [ngModelOptions]="{ standalone: true }"
       [disabled]="disabled"
       (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event)"
