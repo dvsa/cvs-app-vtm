@@ -5,7 +5,16 @@ import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+	ControlContainer,
+	ControlEvent,
+	FormControl,
+	FormGroup,
+	FormGroupDirective,
+	FormsModule,
+	ReactiveFormsModule,
+	StatusChangeEvent,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
@@ -66,6 +75,27 @@ describe('AdrComponent', () => {
 			const spy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 			expect(spy).toHaveBeenCalled();
+		});
+	});
+
+	describe('toggling approved to carry dangerous goods', () => {
+		it('should revalidate dependent controls against the new value and emit a status change so OnPush inline errors refresh', () => {
+			const parent = controlContainer.control as FormGroup;
+			const dangerousGoods = parent.get('techRecord_adrDetails_dangerousGoods') as FormControl;
+			const bodyType = parent.get('techRecord_adrDetails_vehicleDetails_type') as FormControl;
+			const events: ControlEvent[] = [];
+			bodyType.events.subscribe((event) => events.push(event));
+			bodyType.markAsTouched();
+
+			// Mimic the user clicking the radio, which does not write the value back to the view
+			dangerousGoods.setValue(true, { emitModelToViewChange: false });
+
+			expect(bodyType.errors).toHaveProperty('required');
+			expect(events.some((event) => event instanceof StatusChangeEvent && event.status === 'INVALID')).toBe(true);
+
+			dangerousGoods.setValue(false, { emitModelToViewChange: false });
+
+			expect(bodyType.valid).toBe(true);
 		});
 	});
 
