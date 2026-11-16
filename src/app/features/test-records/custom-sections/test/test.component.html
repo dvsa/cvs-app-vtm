@@ -20,7 +20,7 @@
           <govuk-form-group-input
             label="Certificate number"
             formControlName="certificateNumber"
-            [width]="FormNodeWidth.XXL"
+            [width]="FormNodeWidth.XXXL"
             appToUppercase
             appNoSpace
             appTrimWhitespace
@@ -179,7 +179,7 @@
               formControlName="testTypeName"
             ></govuk-form-group-input>
 
-            @if (!isTestTypeGroup12or14()) {
+            @if (!isTestTypeGroup12or14() && !isTestTypeGroup5or13()) {
               <!-- Expiry Date -->
               <govuk-form-group-date
                 mode="iso-date"
@@ -487,7 +487,9 @@
           @if (
             mode() === Modes.VIEW ||
             (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) ||
-            ((isTestTypeGroup7() || isSpecialistGroup1()) &&
+            ((isTestTypeGroup7() ||
+              isSpecialistGroup1() ||
+              isTestTypeGroup5or13()) &&
               mode() === Modes.SUMMARY)
           ) {
             <tr class="govuk-table__row">
@@ -502,7 +504,12 @@
               </td>
             </tr>
           }
-          @if (isTestTypeGroup7() && mode() === Modes.SUMMARY) {
+          @if (
+            (isTestTypeGroup7() && mode() === Modes.SUMMARY) ||
+            (initialMode() === Modes.EDIT &&
+              mode() === Modes.SUMMARY &&
+              isTestTypeGroup5or13())
+          ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
                 Certificate number:
@@ -568,7 +575,7 @@
                 {{ testResult.testTypes[0].testNumber | defaultNullOrEmpty }}
               </td>
             </tr>
-            @if (!isSpecialistGroup1()) {
+            @if (!isSpecialistGroup1() && !isTestTypeGroup5or13()) {
               <tr class="govuk-table__row">
                 <td class="govuk-table__header" style="width: 30%">
                   Expiry Date:

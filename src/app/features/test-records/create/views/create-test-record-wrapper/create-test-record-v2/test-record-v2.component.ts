@@ -55,7 +55,7 @@ import { VehicleComponent } from '@features/test-records/custom-sections/vehicle
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_13, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -407,8 +407,14 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	shouldShowDefectSection(): boolean {
-		return !TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') && !this.isSpecialistGroup1();
+		return !this.isTestTypeGroup7 && !this.isSpecialistGroup1() && !this.isTestTypeGroup5or13();
 	}
+
+	isTestTypeGroup5or13 = computed(() =>
+		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
+
+	isTestTypeGroup7 = computed(() => TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? ''));
 
 	shouldShowRequiredStandardsSection(): boolean {
 		return this.isSpecialistGroup1();

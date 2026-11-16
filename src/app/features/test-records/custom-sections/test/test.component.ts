@@ -244,7 +244,8 @@ export class TestComponent implements OnInit, OnDestroy {
 					(this.mode() === Modes.AMEND &&
 						testTypeGroup.controls.testResult.value === TestResults.PASS &&
 						!this.isSpecialistGroup1() &&
-						!this.isTestTypeGroup12or14()) ||
+						!this.isTestTypeGroup12or14() &&
+						!this.isTestTypeGroup5or13()) ||
 					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
@@ -429,10 +430,9 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	readonly shouldShowExpiryDate = computed(() => {
-		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
 		if (this.mode() === Modes.ABANDON) return false;
-		if (!isGroup7) return false;
+		if (!this.isTestTypeGroup7()) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
 	});
@@ -444,11 +444,15 @@ export class TestComponent implements OnInit, OnDestroy {
 	);
 
 	readonly shouldShowAnniversaryDate = computed(
-		() => !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup12or14()
+		() =>
+			!this.isTestTypeGroup7() &&
+			!this.isSpecialistGroup1() &&
+			!this.isTestTypeGroup12or14() &&
+			!this.isTestTypeGroup5or13()
 	);
 
 	readonly shouldShowCentralDocs = computed(() => {
-		if (this.isSpecialistGroup1()) {
+		if (this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
 			return this.isPassOrPrs();
 		}
 
