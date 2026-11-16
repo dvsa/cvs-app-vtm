@@ -1,6 +1,7 @@
 @import 'node_modules/govuk-frontend/govuk/base';
 
-.govuk-\!-margin-bottom-0::ng-deep > .govuk-form-group {
+.govuk-\!-margin-bottom-0::ng-deep > .govuk-form-group,
+.govuk-\!-margin-bottom-0::ng-deep > .govuk-form-group:last-of-type {
   margin-bottom: 0 !important;
 }
 
