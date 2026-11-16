@@ -79,20 +79,21 @@ describe('AdrComponent', () => {
 	});
 
 	describe('toggling approved to carry dangerous goods', () => {
-		it('should revalidate dependent controls and emit a status change so OnPush inline errors refresh', () => {
+		it('should revalidate dependent controls against the new value and emit a status change so OnPush inline errors refresh', () => {
 			const parent = controlContainer.control as FormGroup;
+			const dangerousGoods = parent.get('techRecord_adrDetails_dangerousGoods') as FormControl;
 			const bodyType = parent.get('techRecord_adrDetails_vehicleDetails_type') as FormControl;
 			const events: ControlEvent[] = [];
 			bodyType.events.subscribe((event) => events.push(event));
 			bodyType.markAsTouched();
 
-			parent.get('techRecord_adrDetails_dangerousGoods')?.setValue(true);
+			// Mimic the user clicking the radio, which does not write the value back to the view
+			dangerousGoods.setValue(true, { emitModelToViewChange: false });
 
-			expect(bodyType.invalid).toBe(true);
 			expect(bodyType.errors).toHaveProperty('required');
 			expect(events.some((event) => event instanceof StatusChangeEvent && event.status === 'INVALID')).toBe(true);
 
-			parent.get('techRecord_adrDetails_dangerousGoods')?.setValue(false);
+			dangerousGoods.setValue(false, { emitModelToViewChange: false });
 
 			expect(bodyType.valid).toBe(true);
 		});
