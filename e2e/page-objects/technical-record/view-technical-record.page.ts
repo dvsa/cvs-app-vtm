@@ -4,6 +4,7 @@ import { TechnicalRecordPage } from './technical-record.page';
 
 export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly heading = this.page.getByRole('heading', { name: 'View technical record', exact: true });
+	readonly amendButton = new Button(this.page, 'bottomedit');
 	readonly summary = this.page.locator('app-tech-record-summary-card');
 	readonly vin = this.summary.locator('#vin');
 	readonly changeVinLink = new Button(this.summary, 'change-vin-link');

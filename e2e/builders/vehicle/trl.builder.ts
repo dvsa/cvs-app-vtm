@@ -10,9 +10,10 @@ import { createDocuments } from '../helpers/documents';
 import { createLastApplicant } from '../helpers/last-applicant';
 import { createManufacturer } from '../helpers/manufacturer';
 import { createPurchaser } from '../helpers/purchaser';
-import { VehicleBuilder, generateTrailerId, generateVin } from './vehicle.builder';
+import { AdrVehicleBuilder } from './adr-vehicle.builder';
+import { generateTrailerId, generateVin } from './vehicle.builder';
 
-export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
+export class TrlBuilder extends AdrVehicleBuilder<TechRecordType<'trl', 'put'>> {
 	withTrailerId(trailerId = generateTrailerId()): this {
 		this.vehicle.trailerId = trailerId;
 		return this;

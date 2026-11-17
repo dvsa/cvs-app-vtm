@@ -9,9 +9,10 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { createHGVAxle } from '../helpers/axles';
 import { createDocuments } from '../helpers/documents';
 import { createLastApplicant } from '../helpers/last-applicant';
-import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
+import { AdrVehicleBuilder } from './adr-vehicle.builder';
+import { generateVin, generateVrm } from './vehicle.builder';
 
-export class HgvBuilder extends VehicleBuilder<TechRecordType<'hgv', 'put'>> {
+export class HgvBuilder extends AdrVehicleBuilder<TechRecordType<'hgv', 'put'>> {
 	withVrm(vrm = generateVrm()): this {
 		this.vehicle.primaryVrm = vrm;
 		return this;

@@ -4,9 +4,10 @@ import type { TechRecordPUTLGVComplete } from '@dvsa/cvs-type-definitions/types/
 import { TechRecordPUTLGVSkeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/put/lgv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { createLastApplicant } from '../helpers/last-applicant';
-import { VehicleBuilder, generateVin, generateVrm } from './vehicle.builder';
+import { AdrVehicleBuilder } from './adr-vehicle.builder';
+import { generateVin, generateVrm } from './vehicle.builder';
 
-export class LgvBuilder extends VehicleBuilder<TechRecordType<'lgv', 'put'>> {
+export class LgvBuilder extends AdrVehicleBuilder<TechRecordType<'lgv', 'put'>> {
 	withVrm(vrm = generateVrm()): this {
 		this.vehicle.primaryVrm = vrm;
 		return this;

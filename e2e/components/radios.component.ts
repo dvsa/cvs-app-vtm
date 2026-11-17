@@ -11,6 +11,10 @@ export class Radios extends BaseComponent {
 			if (label?.startsWith(prefix) && label.endsWith('-label')) {
 				return label.slice(prefix.length, -'-label'.length);
 			}
+			// Projected radios omit value and aria-labelledby, but retain the domain value in their ID.
+			if (selected.id.startsWith(prefix) && selected.id.endsWith('-radio')) {
+				return selected.id.slice(prefix.length, -'-radio'.length);
+			}
 			if (!selected.hasAttribute('value')) throw new Error('Selected radio has no domain value or label reference.');
 			return selected.value;
 		});

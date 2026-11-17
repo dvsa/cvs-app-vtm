@@ -1,10 +1,11 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { Button } from '../../../components/button.component';
 import { CheckboxGroup } from '../../../components/checkbox-group.component';
 import { Checkbox } from '../../../components/checkbox.component';
 import { DateInput } from '../../../components/date-input.component';
 import { Input } from '../../../components/input.component';
 import { Radios } from '../../../components/radios.component';
+import { mapRecordFields } from '../../../components/section.component';
 import { Select } from '../../../components/select.component';
 import { Textarea } from '../../../components/textarea.component';
 import { Section, SectionList, SectionRows, SectionValues, fillFields } from './section';
@@ -16,6 +17,25 @@ export class AdrSection extends Section {
 
 	readonly addUnNumberButton = new Button(this.content, 'add-un-number-button');
 	readonly addSubsequentInspectionButton = new Button(this.content, 'add-subsequent-inspection');
+	readonly unNumberInputs = this.content.locator(
+		'input[id^="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-"]'
+	);
+	readonly unNumber = (index: number) =>
+		new Input(this.content, `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`);
+	readonly subsequentInspectionTypes = this.content.locator(
+		'select[id^="techRecord_adrDetails_tank_tankDetails_tc3Details_"][id$="_tc3Type"]'
+	);
+	readonly subsequentInspection = (index: number) => ({
+		tc3Type: new Select(this.content, `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3Type`),
+		tc3PeriodicNumber: new Input(
+			this.content,
+			`techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicNumber`
+		),
+		tc3PeriodicExpiryDate: new DateInput(
+			this.content,
+			`techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`
+		),
+	});
 
 	readonly fields = {
 		techRecord_adrDetails_dangerousGoods: new Radios(this.content, 'techRecord_adrDetails_dangerousGoods'),
@@ -88,10 +108,7 @@ export class AdrSection extends Section {
 			this.content,
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo'
 		),
-		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: new SectionList(
-			(index) =>
-				new Input(this.content, `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`)
-		),
+		techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: new SectionList(this.unNumber),
 		techRecord_adrDetails_tank_tankDetails_tankStatement_productList: new Textarea(
 			this.content,
 			'techRecord_adrDetails_tank_tankDetails_tankStatement_productList'
@@ -108,17 +125,7 @@ export class AdrSection extends Section {
 			this.content,
 			'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate'
 		),
-		techRecord_adrDetails_tank_tankDetails_tc3Details: new SectionRows((index) => ({
-			tc3Type: new Select(this.content, `techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3Type`),
-			tc3PeriodicNumber: new Input(
-				this.content,
-				`techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicNumber`
-			),
-			tc3PeriodicExpiryDate: new DateInput(
-				this.content,
-				`techRecord_adrDetails_tank_tankDetails_tc3Details_${index}_tc3PeriodicExpiryDate`
-			),
-		})),
+		techRecord_adrDetails_tank_tankDetails_tc3Details: new SectionRows(this.subsequentInspection),
 		techRecord_adrDetails_memosApply: new CheckboxGroup(this.content, 'techRecord_adrDetails_memosApply'),
 		techRecord_adrDetails_m145Statement: new Checkbox(this.content, 'techRecord_adrDetails_m145Statement-checkbox'),
 		techRecord_adrDetails_listStatementApplicable: new Radios(
@@ -154,6 +161,32 @@ export class AdrSection extends Section {
 
 	async fill(values: Partial<SectionValues<typeof this.fields>>): Promise<void> {
 		await this.open();
-		await fillFields(this.fields, values);
+		const {
+			techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers,
+			techRecord_adrDetails_tank_tankDetails_tc3Details: inspections,
+			...fields
+		} = values;
+		await fillFields(this.fields, fields);
+		if (unNumbers) {
+			for (const [index, number] of unNumbers.entries()) {
+				if (index >= (await this.unNumberInputs.count())) {
+					await this.addUnNumberButton.click();
+					await expect(this.unNumberInputs).toHaveCount(index + 1);
+				}
+				if (number != null) await this.unNumber(index).fill(number);
+			}
+		}
+		if (inspections) {
+			for (let count = await this.subsequentInspectionTypes.count(); count < inspections.length; count++) {
+				await this.addSubsequentInspectionButton.click();
+				await expect(this.subsequentInspectionTypes).toHaveCount(count + 1);
+			}
+			await this.fields.techRecord_adrDetails_tank_tankDetails_tc3Details.fill(inspections);
+		}
+	}
+
+	override async fillFromRecord(record: object, excluded: readonly string[] = []): Promise<void> {
+		const values = mapRecordFields<SectionValues<typeof this.fields>>(this.fields, record, excluded);
+		if (Object.keys(values).length) await this.fill(values);
 	}
 }
