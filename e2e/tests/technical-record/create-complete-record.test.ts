@@ -114,6 +114,12 @@ test.describe('Complete technical record creation', { tag: ['@smoke', '@technica
 		await expect
 			.poll(view.dimensions.fields.techRecord_dimensions_length.value)
 			.toBe(String(record.techRecord_dimensions_length));
+		await expect
+			.poll(view.dimensions.fields.techRecord_frontAxleToRearAxle.value)
+			.toBe(String(record.techRecord_frontAxleToRearAxle));
+		await expect
+			.poll(view.dimensions.fields.techRecord_rearAxleToRearTrl.value)
+			.toBe(String(record.techRecord_rearAxleToRearTrl));
 		await view.weights.open();
 		await expect
 			.poll(view.weights.fields.techRecord_maxLoadOnCoupling.value)

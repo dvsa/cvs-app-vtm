@@ -116,6 +116,8 @@ export class TrlBuilder extends VehicleBuilder<TechRecordType<'trl', 'put'>> {
 			techRecord_euVehicleCategory: EUVehicleCategory.O4,
 			techRecord_dimensions_length: 13600,
 			techRecord_dimensions_width: 2500,
+			techRecord_frontAxleToRearAxle: 1300,
+			techRecord_rearAxleToRearTrl: 1600,
 			techRecord_couplingCenterToRearAxleMin: 8000,
 			techRecord_couplingCenterToRearAxleMax: 8000,
 			techRecord_couplingCenterToRearTrlMin: 12000,
