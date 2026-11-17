@@ -16,6 +16,7 @@ import { SearchTechRecordPage } from './search/search.page';
 import { AmendTechnicalRecordChangesSummaryPage } from './technical-record/amend-technical-record-changes-summary.page';
 import { AmendTechnicalRecordReasonPage } from './technical-record/amend-technical-record-reason.page';
 import { AmendTechnicalRecordPage } from './technical-record/amend-technical-record.page';
+import { ChangeVinPage } from './technical-record/change-vin.page';
 import { CreateTechnicalRecordDetailsPage } from './technical-record/create-technical-record-details.page';
 import { CreateTechnicalRecordPage } from './technical-record/create-technical-record.page';
 import { SelectAdrCertificatePage } from './technical-record/select-adr-certificate.page';
@@ -48,6 +49,7 @@ export class PageFactory extends BasePage {
 	readonly batchSummaryPage = new BatchSummaryPage(this.page);
 	readonly cancelBatchPage = new CancelBatchPage(this.page);
 	readonly viewTechnicalRecordPage = new ViewTechnicalRecordPage(this.page);
+	readonly changeVinPage = new ChangeVinPage(this.page);
 	readonly amendTechnicalRecordReasonPage = new AmendTechnicalRecordReasonPage(this.page);
 	readonly amendTechnicalRecordPage = new AmendTechnicalRecordPage(this.page);
 	readonly createTechnicalRecordPage = new CreateTechnicalRecordPage(this.page);

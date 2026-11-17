@@ -1,10 +1,12 @@
 import { Accordion } from '../../components/accordion.component';
+import { Button } from '../../components/button.component';
 import { TechnicalRecordPage } from './technical-record.page';
 
 export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly heading = this.page.getByRole('heading', { name: 'View technical record', exact: true });
 	readonly summary = this.page.locator('app-tech-record-summary-card');
 	readonly vin = this.summary.locator('#vin');
+	readonly changeVinLink = new Button(this.summary, 'change-vin-link');
 	readonly vrm = this.summary.locator('#current-vrm');
 	readonly trailerId = this.summary.locator('#trailer-id');
 	readonly vehicleType = this.summary.locator('#vehicleType');
