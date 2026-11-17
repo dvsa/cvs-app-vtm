@@ -17,6 +17,7 @@ import { WeightsComponent } from '@forms/custom-sections-v2/weights/weights.comp
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
+import { updateBrakeForces } from '@store/technical-records';
 import { of } from 'rxjs';
 
 describe('WeightsComponent', () => {
@@ -141,28 +142,62 @@ describe('WeightsComponent', () => {
 	});
 
 	describe('handleGrossKerbWeightChange', () => {
-		it('should call the updateBrakeForces function from the store', () => {
+		it('should calculate brake forces on the first kerb weight change from a blank record', () => {
 			fixture.componentRef.setInput('mode', Modes.EDIT);
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
 			const updateBrakeForcesSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
-			component.form.patchValue({ techRecord_grossKerbWeight: undefined }); // simulate form initialisation
-			component.form.patchValue({ techRecord_grossKerbWeight: 100 });
+			component.form.get('techRecord_grossKerbWeight')?.setValue(8000);
 
-			expect(updateBrakeForcesSpy).toHaveBeenCalled();
+			expect(updateBrakeForcesSpy).toHaveBeenCalledExactlyOnceWith(
+				updateBrakeForces({ grossKerbWeight: 8000, grossLadenWeight: null })
+			);
 		});
 	});
 
 	describe('handleGrossLadenWeightChange', () => {
-		it('should call the updateBrakeForces function from the store', () => {
+		it('should calculate brake forces on the first laden weight change from a blank record', () => {
 			fixture.componentRef.setInput('mode', Modes.EDIT);
 			fixture.componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
 			const updateBrakeForcesSpy = vi.spyOn(store, 'dispatch');
 			component.ngOnInit();
-			component.form.patchValue({ techRecord_grossLadenWeight: undefined }); // simulate form initialisation
-			component.form.patchValue({ techRecord_grossLadenWeight: 100 });
+			component.form.get('techRecord_grossLadenWeight')?.setValue(12000);
 
-			expect(updateBrakeForcesSpy).toHaveBeenCalled();
+			expect(updateBrakeForcesSpy).toHaveBeenCalledExactlyOnceWith(
+				updateBrakeForces({ grossKerbWeight: null, grossLadenWeight: 12000 })
+			);
+		});
+	});
+
+	describe('PSV weight changes', () => {
+		it.each([
+			['techRecord_grossKerbWeight', 9000, { grossKerbWeight: 9000, grossLadenWeight: 12000 }],
+			['techRecord_grossLadenWeight', 13000, { grossKerbWeight: 8000, grossLadenWeight: 13000 }],
+		] as const)('should ignore prepopulation but process the first edit to %s', (field, value, weights) => {
+			componentRef.setInput('techRecord', {
+				techRecord_vehicleType: 'psv',
+				techRecord_grossKerbWeight: 8000,
+				techRecord_grossLadenWeight: 12000,
+			});
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+
+			component.ngOnInit();
+			expect(dispatchSpy).not.toHaveBeenCalled();
+
+			component.form.get(field)?.setValue(value);
+			expect(dispatchSpy).toHaveBeenCalledExactlyOnceWith(updateBrakeForces(weights));
+		});
+
+		it.each([Modes.VIEW, Modes.SUMMARY])('should not recalculate brake forces in %s mode', (mode) => {
+			componentRef.setInput('mode', mode);
+			componentRef.setInput('techRecord', { techRecord_vehicleType: 'psv' });
+			component.ngOnInit();
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+
+			component.form.get('techRecord_grossKerbWeight')?.setValue(8000);
+			component.form.get('techRecord_grossLadenWeight')?.setValue(12000);
+
+			expect(dispatchSpy).not.toHaveBeenCalled();
 		});
 	});
 

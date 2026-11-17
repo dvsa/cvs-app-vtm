@@ -22,7 +22,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { STORE_FEATURE_REFERENCE_DATA_KEY, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { updateEditingTechRecord } from '@store/technical-records';
+import { updateBrakeForces, updateEditingTechRecord } from '@store/technical-records';
+import { initialState, vehicleTechRecordReducer } from '@store/technical-records/technical-record-service.reducer';
 import { ReplaySubject, of } from 'rxjs';
 import { BrakesComponent } from '../brakes.component';
 
@@ -40,6 +41,7 @@ describe('BrakesComponent', () => {
 	const actions$ = new ReplaySubject<Action>();
 
 	beforeEach(async () => {
+		vi.useFakeTimers();
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup<Partial<Record<keyof TechRecordType<'psv' | 'trl'>, FormControl>>>({});
 
@@ -167,6 +169,52 @@ describe('BrakesComponent', () => {
 	});
 
 	describe('handleBrakeCodeChange', () => {
+		it('should calculate all six brake forces using current weights when a brake code is selected', () => {
+			const brakesData = {
+				resourceKey: '122',
+				resourceType: ReferenceDataResourceType.Brakes,
+				service: 'Service description',
+				secondary: 'Secondary description',
+				parking: 'Parking description',
+			};
+			store.setState({
+				...initialAppState,
+				[STORE_FEATURE_REFERENCE_DATA_KEY]: {
+					...initialAppState.referenceData,
+					[ReferenceDataResourceType.Brakes]: {
+						ids: [brakesData.resourceKey],
+						entities: { [brakesData.resourceKey]: brakesData },
+					},
+				},
+			});
+			const record = {
+				...mockPSV,
+				techRecord_vehicleType: 'psv' as const,
+				techRecord_grossKerbWeight: 8000,
+				techRecord_grossLadenWeight: 12000,
+				techRecord_brakes_brakeCodeOriginal: '122',
+			};
+			componentRef.setInput('techRecord', record);
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			component.form.get('techRecord_brakes_brakeCodeOriginal')?.setValue('122');
+
+			vi.advanceTimersByTime(401);
+
+			expect(dispatchSpy).toHaveBeenCalledWith(updateBrakeForces({ grossKerbWeight: 8000, grossLadenWeight: 12000 }));
+			const forceAction = dispatchSpy.mock.calls.find(([action]) => action.type === updateBrakeForces.type)?.[0];
+			expect(forceAction).toBeDefined();
+			const result = vehicleTechRecordReducer({ ...initialState, editingTechRecord: record }, forceAction!);
+			expect(result.editingTechRecord).toMatchObject({
+				techRecord_brakes_brakeCode: '120122',
+				techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA: 1920,
+				techRecord_brakes_brakeForceWheelsNotLocked_secondaryBrakeForceA: 2700,
+				techRecord_brakes_brakeForceWheelsNotLocked_parkingBrakeForceA: 5400,
+				techRecord_brakes_brakeForceWheelsUpToHalfLocked_serviceBrakeForceB: 1280,
+				techRecord_brakes_brakeForceWheelsUpToHalfLocked_secondaryBrakeForceB: 2000,
+				techRecord_brakes_brakeForceWheelsUpToHalfLocked_parkingBrakeForceB: 4000,
+			});
+		});
+
 		it('should early return for vehicles other than PSV', () => {
 			store
 				.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.Brakes, '1234'))
@@ -179,8 +227,6 @@ describe('BrakesComponent', () => {
 		});
 
 		it('should dispatch updateEditingTechRecord with calculated values when the brake code value changes', () => {
-			vi.useFakeTimers();
-
 			const brakesData = {
 				resourceKey: '123',
 				resourceType: ReferenceDataResourceType.Brakes,

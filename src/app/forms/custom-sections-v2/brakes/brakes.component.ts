@@ -177,7 +177,15 @@ export class BrakesComponent extends EditBaseComponent implements OnInit, OnDest
 				}
 
 				if (selectedBrake) {
-					this.store.dispatch(updateBrakeForces({}));
+					const currentRecord = this.techRecord();
+					if (currentRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+						this.store.dispatch(
+							updateBrakeForces({
+								grossKerbWeight: currentRecord.techRecord_grossKerbWeight ?? undefined,
+								grossLadenWeight: currentRecord.techRecord_grossLadenWeight ?? undefined,
+							})
+						);
+					}
 				}
 			});
 	}
