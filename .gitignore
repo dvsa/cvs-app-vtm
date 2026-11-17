@@ -70,5 +70,5 @@ vtm-automation
 /e2e/creds/.auth/*
 !/e2e/creds/.auth/.gitkeep
 
-/test-results/
-/playwright-report/
+/test-results/*
+/playwright-report/*

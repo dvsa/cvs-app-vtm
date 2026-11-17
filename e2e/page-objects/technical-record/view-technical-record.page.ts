@@ -8,6 +8,8 @@ export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly vin = this.summary.locator('#vin');
 	readonly changeVinLink = new Button(this.summary, 'change-vin-link');
 	readonly vrm = this.summary.locator('#current-vrm');
+	readonly previousVrm = this.summary.locator('#previous-vrm');
+	readonly changeVrmLink = new Button(this.summary, 'change-vrm-link');
 	readonly trailerId = this.summary.locator('#trailer-id');
 	readonly vehicleType = this.summary.locator('#vehicleType');
 	readonly statusCode = this.summary.locator('#status-code');
