@@ -46,6 +46,7 @@ import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
 import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP12_14,
@@ -243,7 +244,8 @@ export class TestComponent implements OnInit, OnDestroy {
 					(this.mode() === Modes.AMEND &&
 						testTypeGroup.controls.testResult.value === TestResults.PASS &&
 						!this.isSpecialistGroup1() &&
-						!this.isTestTypeGroup12or14()) ||
+						!this.isTestTypeGroup12or14() &&
+						!this.isTestTypeGroup5or13()) ||
 					this.shouldShowExpiryDate(),
 				this.commonValidators.required('Expiry Date')
 			),
@@ -265,6 +267,13 @@ export class TestComponent implements OnInit, OnDestroy {
 			),
 			this.commonValidators.date('Anniversary date'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Anniversary date', 'Start Time'),
+		]);
+
+		testTypeGroup.controls.reasonForAbandoning.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isTestTypeGroup5or13() && this.isAbandoned(),
+				this.commonValidators.required('Reason for abandoning')
+			),
 		]);
 
 		testTypeGroup.controls.reapplicationDate.setValidators([
@@ -348,7 +357,7 @@ export class TestComponent implements OnInit, OnDestroy {
 			}
 		}
 
-		if (this.isTestTypeGroup7() || this.isSpecialistGroup1()) {
+		if (this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 		}
 	}
@@ -385,12 +394,20 @@ export class TestComponent implements OnInit, OnDestroy {
 		TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
 	);
 
+	readonly isTestTypeGroup5or13 = computed(() =>
+		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
+
+	readonly isAbandoned = computed(() => this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED);
+
 	readonly isPassOrPrs = computed(() => {
 		const testResult = this.testResult()?.testTypes[0].testResult;
 		return testResult === TestResults.PASS || testResult === TestResults.PRS;
 	});
 
-	readonly shouldShowResult = computed(() => this.isTestTypeGroup7() || this.isSpecialistGroup1());
+	readonly shouldShowResult = computed(
+		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()
+	);
 
 	/** Mirrors the `resultDependantOnRequiredStandards` async validator used by the dynamic form service. */
 	validateResultAgainstRequiredStandards(control: AbstractControl): ValidationErrors | null {
@@ -422,24 +439,29 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	readonly shouldShowExpiryDate = computed(() => {
-		const isGroup7 = TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
 		if (this.mode() === Modes.ABANDON) return false;
-		if (!isGroup7) return false;
+		if (!this.isTestTypeGroup7()) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
 	});
 
 	readonly shouldShowCreateModeDescription = computed(
-		() => (this.isTestTypeGroup7() || this.isSpecialistGroup1()) && this.mode() === Modes.EDIT
+		() =>
+			(this.isTestTypeGroup7() || this.isTestTypeGroup5or13() || this.isSpecialistGroup1()) &&
+			this.mode() === Modes.EDIT
 	);
 
 	readonly shouldShowAnniversaryDate = computed(
-		() => !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup12or14()
+		() =>
+			!this.isTestTypeGroup7() &&
+			!this.isSpecialistGroup1() &&
+			!this.isTestTypeGroup12or14() &&
+			!this.isTestTypeGroup5or13()
 	);
 
 	readonly shouldShowCentralDocs = computed(() => {
-		if (this.isSpecialistGroup1()) {
+		if (this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
 			return this.isPassOrPrs();
 		}
 
@@ -463,7 +485,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly shouldShowCertificateNumber = computed(() => {
 		if (this.isSpecialistGroup1()) {
 			// An abandoned test keeps its certificate number when it is amended
-			if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return this.mode() === Modes.AMEND;
+			// unless the test type is in group 5 or 13
+			if (this.isAbandoned()) return this.mode() === Modes.AMEND;
 
 			if (!this.isPassOrPrs()) return false;
 
@@ -474,7 +497,8 @@ export class TestComponent implements OnInit, OnDestroy {
 			return !this.testResult()?.testTypes[0].centralDocs?.issueRequired;
 		}
 
-		if (!this.isTestTypeGroup7()) return false;
+		if (!this.isTestTypeGroup7() && !this.isTestTypeGroup5or13()) return false;
+		if (this.isTestTypeGroup5or13() && this.mode() === Modes.AMEND) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
 		}
@@ -483,7 +507,9 @@ export class TestComponent implements OnInit, OnDestroy {
 		);
 	});
 
-	readonly shouldShowProhibitionIssued = computed(() => this.isTestTypeGroup7() || this.isSpecialistGroup1());
+	readonly shouldShowProhibitionIssued = computed(
+		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()
+	);
 
 	readonly shouldShowReapplicationDate = computed(
 		() => this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL
