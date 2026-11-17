@@ -269,6 +269,13 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Anniversary date', 'Start Time'),
 		]);
 
+		testTypeGroup.controls.reasonForAbandoning.setValidators([
+			this.commonValidators.applyWhen(
+				() => this.isTestTypeGroup5or13() && this.isAbandoned(),
+				this.commonValidators.required('Reason for abandoning')
+			),
+		]);
+
 		testTypeGroup.controls.reapplicationDate.setValidators([
 			this.commonValidators.applyWhen(
 				() => this.shouldShowReapplicationDate(),
@@ -391,6 +398,8 @@ export class TestComponent implements OnInit, OnDestroy {
 		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
 	);
 
+	readonly isAbandoned = computed(() => this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED);
+
 	readonly isPassOrPrs = computed(() => {
 		const testResult = this.testResult()?.testTypes[0].testResult;
 		return testResult === TestResults.PASS || testResult === TestResults.PRS;
@@ -476,7 +485,8 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly shouldShowCertificateNumber = computed(() => {
 		if (this.isSpecialistGroup1()) {
 			// An abandoned test keeps its certificate number when it is amended
-			if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return this.mode() === Modes.AMEND;
+			// unless the test type is in group 5 or 13
+			if (this.isAbandoned()) return this.mode() === Modes.AMEND;
 
 			if (!this.isPassOrPrs()) return false;
 
@@ -488,6 +498,8 @@ export class TestComponent implements OnInit, OnDestroy {
 		}
 
 		if (!this.isTestTypeGroup7() && !this.isTestTypeGroup5or13()) return false;
+
+		if (this.isTestTypeGroup5or13() && this.isAbandoned()) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
 		}

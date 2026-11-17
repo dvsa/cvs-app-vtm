@@ -407,7 +407,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	shouldShowDefectSection(): boolean {
-		return !this.isTestTypeGroup7 && !this.isSpecialistGroup1() && !this.isTestTypeGroup5or13();
+		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup5or13();
 	}
 
 	isTestTypeGroup5or13 = computed(() =>
