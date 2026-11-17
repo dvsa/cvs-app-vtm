@@ -17,6 +17,8 @@ export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly archiveLink = new Button(this.summary, 'change-status-to-archive-link');
 	readonly unarchiveLink = new Button(this.summary, 'unarchive-link');
 	readonly recordCompleteness = this.summary.locator('#record-completeness');
+	readonly vtaVisibility = this.summary.locator('#record-visibility');
+	readonly changeVtaVisibilityLink = new Button(this.summary, 'change-record-visibility-in-vta-link');
 	readonly removeRequiredFilter = this.page.getByRole('link', { name: 'Remove filter Required', exact: true });
 	readonly recordHistory = new Accordion(this.page, 'accordion-control-technical-records-history');
 	readonly creationReason = this.page.locator('#tech-record-history-reason-0');

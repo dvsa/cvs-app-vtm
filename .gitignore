@@ -72,3 +72,5 @@ vtm-automation
 
 /test-results/*
 /playwright-report/*
+/playwright-report
+/test-results

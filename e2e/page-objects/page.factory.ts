@@ -20,6 +20,7 @@ import { ChangeRecordStatusPage } from './technical-record/change-record-status.
 import { ChangeVinPage } from './technical-record/change-vin.page';
 import { ChangeVrmReasonPage } from './technical-record/change-vrm-reason.page';
 import { ChangeVrmPage } from './technical-record/change-vrm.page';
+import { ChangeVtaVisibilityPage } from './technical-record/change-vta-visibility.page';
 import { CreateTechnicalRecordDetailsPage } from './technical-record/create-technical-record-details.page';
 import { CreateTechnicalRecordPage } from './technical-record/create-technical-record.page';
 import { SelectAdrCertificatePage } from './technical-record/select-adr-certificate.page';
@@ -56,6 +57,7 @@ export class PageFactory extends BasePage {
 	readonly changeRecordStatusPage = new ChangeRecordStatusPage(this.page);
 	readonly unarchiveRecordPage = new UnarchiveRecordPage(this.page);
 	readonly changeVinPage = new ChangeVinPage(this.page);
+	readonly changeVtaVisibilityPage = new ChangeVtaVisibilityPage(this.page);
 	readonly changeVrmReasonPage = new ChangeVrmReasonPage(this.page);
 	readonly changeVrmPage = new ChangeVrmPage(this.page);
 	readonly amendTechnicalRecordReasonPage = new AmendTechnicalRecordReasonPage(this.page);
