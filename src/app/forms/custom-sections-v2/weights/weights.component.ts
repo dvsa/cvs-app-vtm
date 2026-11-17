@@ -27,7 +27,6 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
-import { skip } from 'rxjs';
 
 @Component({
 	selector: 'app-weights',
@@ -62,12 +61,12 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 
 	ngOnInit(): void {
 		this.addControls(this.controlsBasedOffVehicleType, this.form);
-		this.handleGrossKerbWeightChange();
-		this.handleGrossLadenWeightChange();
 		this.init(this.form);
 
 		// Prepopulate form with current tech record
 		this.form.patchValue(this.techRecord());
+		this.handleGrossKerbWeightChange();
+		this.handleGrossLadenWeightChange();
 	}
 
 	shouldDisplayFormControl(formControlName: string) {
@@ -269,7 +268,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	handleGrossKerbWeightChange() {
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
-		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+		grossKerbWeight?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
 			if (!value) return;
 			const mode = this.mode();
 			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
@@ -286,7 +285,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
-		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+		grossLadenWeight?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
 			if (!value) return;
 			const mode = this.mode();
 			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
