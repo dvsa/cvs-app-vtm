@@ -498,8 +498,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		}
 
 		if (!this.isTestTypeGroup7() && !this.isTestTypeGroup5or13()) return false;
-
-		if (this.isTestTypeGroup5or13() && this.isAbandoned()) return false;
+		if (this.isTestTypeGroup5or13() && this.mode() === Modes.AMEND) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
 		}

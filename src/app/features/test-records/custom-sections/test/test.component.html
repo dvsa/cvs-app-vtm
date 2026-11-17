@@ -508,7 +508,8 @@
             (isTestTypeGroup7() && mode() === Modes.SUMMARY) ||
             (initialMode() === Modes.EDIT &&
               mode() === Modes.SUMMARY &&
-              isTestTypeGroup5or13())
+              isTestTypeGroup5or13() &&
+              testResult.testTypes[0].testResult !== TestResults.FAIL)
           ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
