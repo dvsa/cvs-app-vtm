@@ -3,6 +3,7 @@ import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,
 	ReferenceDataResourceTypeAudit,
+	User,
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
@@ -59,7 +60,7 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
 export const selectSearchReturn = (type: ReferenceDataResourceTypeAudit) =>
 	createSelector(referenceDataFeatureState, (state) => {
 		const data = (state[type as ReferenceDataResourceType] as ReferenceDataEntityStateSearch)?.searchReturn;
-		return data?.sort((a, b) => b.resourceKey.toString().localeCompare(a.resourceKey.toString()));
+		return data?.slice().sort((a, b) => b.resourceKey.toString().localeCompare(a.resourceKey.toString()));
 	});
 
 export const selectTyreSearchCriteria = createSelector(
@@ -89,9 +90,10 @@ export const selectUserByResourceKey = (resourceKey: string) =>
 		(state) => state[ReferenceDataResourceType.User].entities[`${resourceKey}`]
 	);
 
-export const getUserNames = createSelector(
-	referenceDataFeatureState,
-	(state) => Object.values(state[ReferenceDataResourceType.User]).map((user) => user.name) as string[]
+export const getUserNames = createSelector(referenceDataFeatureState, (state) =>
+	(Object.values(state[ReferenceDataResourceType.User].entities) as (User | undefined)[])
+		.filter((user): user is User => !!user)
+		.map((user) => user.name)
 );
 
 export const selectCountryOfRegistrationOptions = createSelector(referenceDataFeatureState, (state) =>

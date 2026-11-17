@@ -1,4 +1,5 @@
 import { nullADRDetails } from '@/src/app/store/technical-records/technical-record-service.reducer';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -15,8 +16,9 @@ import { AxleTyreProperties } from '@models/vehicle/axleTyreProperties';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
 import { State, initialAppState } from '@store/index';
+import { fetchSearchResult } from '@store/tech-record-search/tech-record-search.actions';
 import { updateEditingTechRecord } from '@store/technical-records';
-import { EmptyError, firstValueFrom, from, of } from 'rxjs';
+import { EmptyError, firstValueFrom, from, of, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TechnicalRecordService } from '../technical-record.service';
 
@@ -1015,6 +1017,117 @@ describe('TechnicalRecordService', () => {
 					],
 				} as TechRecordType<'put'>)
 			).toBe(3000);
+		});
+	});
+
+	describe('remaining service branches', () => {
+		it('treats archived-only search results as unique and propagates non-404 failures', async () => {
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+				of([{ techRecord_statusCode: StatusCodes.ARCHIVED } as TechRecordSearchSchema])
+			);
+			await expect(firstValueFrom(service.isUnique('VIN123', SEARCH_TYPES.VIN))).resolves.toBe(true);
+
+			const error = new HttpErrorResponse({ status: 500, statusText: 'Server Error' });
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(throwError(() => error));
+			await expect(firstValueFrom(service.isUnique('VIN123', SEARCH_TYPES.VIN))).rejects.toBe(error);
+		});
+
+		it('treats a missing search result as a unique VIN', async () => {
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+				throwError(() => new HttpErrorResponse({ status: 404, statusText: 'Not Found' }))
+			);
+			await expect(firstValueFrom(service.isUnique('VIN123', SEARCH_TYPES.VIN))).resolves.toBe(true);
+		});
+
+		it('returns null for a missing VRM search and propagates other lookup failures', async () => {
+			const missing = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(throwError(() => missing));
+			await expect(firstValueFrom(service.checkVrmNotActive(new FormControl('NEW'), 'OLD'))).resolves.toBeNull();
+
+			const failure = new HttpErrorResponse({ status: 503, statusText: 'Unavailable' });
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(throwError(() => failure));
+			await expect(firstValueFrom(service.checkVrmNotActive(new FormControl('NEW'), 'OLD'))).rejects.toBe(failure);
+		});
+
+		it('clears only the cloned editing record reason and does nothing without a record', () => {
+			const record = { techRecord_reasonForCreation: 'Initial reason' } as unknown as TechRecordType<'put'>;
+			service.techRecord$ = of(record as TechRecordType<'get'>);
+			const update = vi.spyOn(service, 'updateEditingTechRecord');
+
+			service.clearReasonForCreation();
+
+			expect(record.techRecord_reasonForCreation).toBe('Initial reason');
+			expect(update).toHaveBeenCalledWith({ ...record, techRecord_reasonForCreation: '' });
+
+			service.techRecord$ = of(undefined);
+			update.mockClear();
+			service.clearReasonForCreation();
+			expect(update).not.toHaveBeenCalled();
+		});
+
+		it('selects technical records by current, provisional, then archived precedence', () => {
+			const current = { statusCode: StatusCodes.CURRENT, vin: 'current' };
+			const provisional = { statusCode: StatusCodes.PROVISIONAL, vin: 'provisional' };
+			const archived = { statusCode: StatusCodes.ARCHIVED, vin: 'archived' };
+
+			expect(
+				TechnicalRecordService.filterTechRecordByStatusCode({
+					techRecord: [archived, provisional, current],
+				} as any)
+			).toBe(current);
+			expect(TechnicalRecordService.filterTechRecordByStatusCode({ techRecord: [archived, provisional] } as any)).toBe(
+				provisional
+			);
+			expect(TechnicalRecordService.filterTechRecordByStatusCode({ techRecord: [archived] } as any)).toBe(archived);
+			expect(TechnicalRecordService.filterTechRecordByStatusCode({ techRecord: [] } as any)).toBeUndefined();
+		});
+
+		it('dispatches the selected search criteria and term', () => {
+			const dispatch = vi.spyOn(store, 'dispatch');
+
+			service.searchBy(SEARCH_TYPES.VRM, 'AB12 CDE', true);
+
+			expect(dispatch).toHaveBeenCalledWith(
+				fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: 'AB12 CDE', includeArchived: true })
+			);
+		});
+
+		it('provides vehicle-specific accordion descriptions and category option groups', () => {
+			const record = (vehicleType: VehicleTypes, euVehicleCategory?: EUVehicleCategory) =>
+				({ techRecord_vehicleType: vehicleType, techRecord_euVehicleCategory: euVehicleCategory }) as TechRecordType<
+					'get' | 'put'
+				>;
+
+			expect(service.getApprovalTypeAccordionDescription(record(VehicleTypes.PSV))).toContain('COIF');
+			expect(service.getApprovalTypeAccordionDescription(record(VehicleTypes.HGV))).toContain('national type');
+			expect(service.getBrakesAccordionDescription(record(VehicleTypes.PSV))).toContain('retarders');
+			expect(service.getBrakesAccordionDescription(record(VehicleTypes.HGV))).toContain('Axle brake');
+			expect(service.getConfigAccordionDescription(record(VehicleTypes.HGV))).toContain('Off-road');
+			expect(service.getConfigAccordionDescription(record(VehicleTypes.TRL))).toContain('Vehicle markers');
+			expect(service.getConfigAccordionDescription(record(VehicleTypes.PSV))).toContain('speed restriction');
+			expect(service.getConfigAccordionDescription(record(VehicleTypes.CAR))).toBe('');
+			expect(service.getWeightsAccordionDescription(record(VehicleTypes.HGV))).toContain('train weights');
+			expect(service.getWeightsAccordionDescription(record(VehicleTypes.PSV))).toContain('unladen weight');
+			expect(service.getWeightsAccordionDescription(record(VehicleTypes.TRL))).toContain('coupling type');
+			expect(service.getWeightsAccordionDescription(record(VehicleTypes.CAR))).toBe('');
+			expect(service.getTyresAccordionDescription(record(VehicleTypes.PSV))).toBe('Tyre details.');
+			expect(service.getTyresAccordionDescription(record(VehicleTypes.TRL))).toContain('tyre use code');
+
+			for (const vehicleType of [
+				VehicleTypes.PSV,
+				VehicleTypes.HGV,
+				VehicleTypes.TRL,
+				VehicleTypes.LGV,
+				VehicleTypes.CAR,
+				VehicleTypes.MOTORCYCLE,
+			]) {
+				expect(service.getEUVehicleCategoryOptions(record(vehicleType)).length).toBeGreaterThan(0);
+			}
+			expect(service.getEUVehicleCategoryOptions(record('other' as VehicleTypes)).length).toBeGreaterThan(0);
+			expect(
+				service.getEUVehicleCategoryOptions(record(VehicleTypes.TRL, EUVehicleCategory.O1)).length
+			).toBeGreaterThan(0);
+			expect(service.getDesignTotalAxleWeight(record(VehicleTypes.TRL, undefined))).toBeNull();
 		});
 	});
 });

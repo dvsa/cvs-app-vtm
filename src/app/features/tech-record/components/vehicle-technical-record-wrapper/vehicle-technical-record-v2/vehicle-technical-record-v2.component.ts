@@ -54,6 +54,8 @@ export class VehicleTechnicalRecordV2Component {
 		this.globalErrorService.markAllAsTouched(form);
 
 		if (form.valid) {
+			// The change summary reads the editing record, which is only mirrored from the form on a debounce
+			techRecordComponent.syncFormToStore();
 			this.router.navigate(['change-summary'], { relativeTo: this.route });
 		}
 

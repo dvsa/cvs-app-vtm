@@ -49,8 +49,8 @@ jobs:
         continue-on-error: true
         run: npm audit --audit-level=critical
 
-      - name: Run tests
-        run: npm run test:workflow
+      - name: Run tests with coverage
+        run: npm run test:ci
 
       - name: Build
         run: npm run build --ignore-scripts -- --configuration production

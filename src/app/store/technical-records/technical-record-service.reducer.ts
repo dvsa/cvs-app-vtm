@@ -554,7 +554,9 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 
 function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
 	const { editingTechRecord } = state;
-	const additionalNoteTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'> & {
+	const additionalNoteTechRecord = cloneDeep(editingTechRecord) as unknown as NonVerbTechRecordType<
+		'hgv' | 'lgv' | 'trl'
+	> & {
 		techRecord_adrDetails_additionalExaminerNotes_note: string;
 	};
 	if (editingTechRecord) {
@@ -581,10 +583,10 @@ function handleUpdateExistingADRExaminerNote(
 	action: { additionalExaminerNote: string; examinerNoteIndex: number }
 ) {
 	const { editingTechRecord } = state;
-	const editedTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
+	const editedTechRecord = cloneDeep(editingTechRecord) as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
 	if (editedTechRecord) {
 		const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
 		examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
 	}
-	return { ...state, editingTechRecord: editingTechRecord as unknown as TechRecordType<'put'> };
+	return { ...state, editingTechRecord: editedTechRecord as unknown as TechRecordType<'put'> };
 }

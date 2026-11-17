@@ -20,6 +20,7 @@ import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withL
 import { selectMergedRouteUrl } from '../router/router.selectors';
 import {
 	amendVin,
+	amendVinFailure,
 	amendVinSuccess,
 	amendVrm,
 	amendVrmFailure,
@@ -210,7 +211,7 @@ export class TechnicalRecordServiceEffects {
 				return this.httpService.amendTechRecordVin(newVin, systemNumber, createdTimestamp).pipe(
 					map((vehicleTechRecord) => amendVinSuccess({ vehicleTechRecord })),
 					catchError((error) =>
-						of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
+						of(amendVinFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
 					)
 				);
 			})
@@ -439,5 +440,7 @@ export class TechnicalRecordServiceEffects {
 		promoteTechRecord_400: 'Unable to promote technical record',
 		unarchiveTechRecord_400: 'Unable to unarchive technical record',
 		generateADRCertificate_400: 'Unable to generate ADR certificate',
+		generatePlate_400: 'Unable to generate plate',
+		generateLetter_400: 'Unable to generate letter',
 	};
 }

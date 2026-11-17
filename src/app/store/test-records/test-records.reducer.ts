@@ -224,10 +224,11 @@ function createNewRequiredStandard(
 	return { ...testResult };
 }
 
-export function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
-	if (!testResult || !testResult.testTypes) {
-		return testResult;
+export function cleanTestResultPayload(testResultState: TestResultSchema | undefined) {
+	if (!testResultState || !testResultState.testTypes) {
+		return testResultState;
 	}
+	const testResult = cloneDeep(testResultState);
 
 	// Ensure body model is null when empty, so it doesn't affect downstream services
 	if (testResult.model === '') {
@@ -385,7 +386,7 @@ function updateRequiredStandardAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].requiredStandards) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].requiredStandards[`${index}`] = requiredStandard;
 
@@ -398,7 +399,7 @@ function removeRequiredStandardAtIndex(testResultState: TestResultSchema | undef
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].requiredStandards) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].requiredStandards.splice(index, 1);
 
@@ -414,9 +415,7 @@ function createNewDefect(
 	}
 	const testResult = cloneDeep(testResultState);
 
-	if (!testResult.testTypes[0].defects) {
-		return;
-	}
+	testResult.testTypes[0].defects ??= [];
 	testResult.testTypes[0].defects.push(defect);
 
 	return { ...testResult };
@@ -432,7 +431,7 @@ function updateDefectAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].defects) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].defects[`${index}`] = defect;
 
@@ -448,7 +447,7 @@ function removeDefectAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].defects) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].defects.splice(index, 1);
 

@@ -98,6 +98,24 @@ describe('EnterTechRecordDetailsComponent', () => {
 			expect(errorService.setErrors).toHaveBeenCalledWith(errors);
 		});
 
+		it('should flush the tech record form to the store before reading the editing record to save', () => {
+			const techRecordComponent = component.techRecordComponent();
+			expect(techRecordComponent).toBeDefined();
+
+			const calls: string[] = [];
+			vi.spyOn(techRecordComponent!, 'syncFormToStore').mockImplementation(() => calls.push('syncFormToStore'));
+			vi.spyOn(store, 'dispatch').mockImplementation(() => calls.push('dispatch'));
+			vi.spyOn(errorService, 'extractGlobalErrors').mockReturnValue([]);
+
+			store.overrideSelector(selectBatchDetails, mockSavedBatchDetails);
+			store.refreshState();
+
+			component.handleSave();
+
+			expect(calls[0]).toBe('syncFormToStore');
+			expect(calls).toContain('dispatch');
+		});
+
 		it('should dispatch updateTechRecord for each vehicle if the form is valid, and each vehicle has a VRM/Trailer ID', () => {
 			vi.spyOn(store, 'dispatch');
 			vi.spyOn(router, 'navigate');

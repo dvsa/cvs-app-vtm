@@ -47,6 +47,7 @@ export const selectTestTypesByVehicleType = createSelector(
 export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, (testTypes) => {
 	const sortTestTypes = (testTypesList: TestTypesTaxonomy): TestTypesTaxonomy => {
 		return testTypesList
+			.slice()
 			.sort((a, b) => {
 				if (!Object.prototype.hasOwnProperty.call(b, 'sortId')) {
 					return 1;
