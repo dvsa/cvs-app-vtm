@@ -13,6 +13,9 @@ export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly trailerId = this.summary.locator('#trailer-id');
 	readonly vehicleType = this.summary.locator('#vehicleType');
 	readonly statusCode = this.summary.locator('#status-code');
+	readonly promoteLink = new Button(this.summary, 'promote-link');
+	readonly archiveLink = new Button(this.summary, 'change-status-to-archive-link');
+	readonly unarchiveLink = new Button(this.summary, 'unarchive-link');
 	readonly recordCompleteness = this.summary.locator('#record-completeness');
 	readonly removeRequiredFilter = this.page.getByRole('link', { name: 'Remove filter Required', exact: true });
 	readonly recordHistory = new Accordion(this.page, 'accordion-control-technical-records-history');

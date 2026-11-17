@@ -23,7 +23,7 @@ export default defineConfig({
 	fullyParallel: true,
 	forbidOnly: !!process.env['CI'],
 	retries: process.env['CI'] ? 1 : 1,
-	workers: process.env['CI'] ? 2 : 18,
+	workers: process.env['CI'] ? 2 : 8,
 	reporter: [['list'], ['html', { open: 'never' }]],
 	expect: { timeout: 30_000 },
 	webServer: startServer
@@ -53,7 +53,16 @@ export default defineConfig({
 		},
 		{
 			name: 'chromium',
-			testMatch: ['**/*.spec.ts', '**/*.test.ts'],
+			testMatch: '**/*.test.ts',
+			dependencies: ['setup'],
+			use: {
+				...devices['Desktop Chrome'],
+				storageState: path.resolve(__dirname, 'e2e/creds/.auth/fullAccess.json'),
+			},
+		},
+		{
+			name: 'debug',
+			testMatch: '**/*.spec.ts',
 			dependencies: ['setup'],
 			use: {
 				...devices['Desktop Chrome'],

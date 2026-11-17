@@ -16,6 +16,7 @@ import { SearchTechRecordPage } from './search/search.page';
 import { AmendTechnicalRecordChangesSummaryPage } from './technical-record/amend-technical-record-changes-summary.page';
 import { AmendTechnicalRecordReasonPage } from './technical-record/amend-technical-record-reason.page';
 import { AmendTechnicalRecordPage } from './technical-record/amend-technical-record.page';
+import { ChangeRecordStatusPage } from './technical-record/change-record-status.page';
 import { ChangeVinPage } from './technical-record/change-vin.page';
 import { ChangeVrmReasonPage } from './technical-record/change-vrm-reason.page';
 import { ChangeVrmPage } from './technical-record/change-vrm.page';
@@ -25,6 +26,7 @@ import { SelectAdrCertificatePage } from './technical-record/select-adr-certific
 import { SelectLetterTypePage } from './technical-record/select-letter-type.page';
 import { SelectPlateTypePage } from './technical-record/select-plate-type.page';
 import { TyreSearchTechRecordPage } from './technical-record/tyre-search.page';
+import { UnarchiveRecordPage } from './technical-record/unarchive-record.page';
 import { ViewTechnicalRecordPage } from './technical-record/view-technical-record.page';
 import { AbandonTestPage } from './test-result/abandon-test.page';
 import { AmendTestResultPage } from './test-result/amend-test-result.page';
@@ -51,6 +53,8 @@ export class PageFactory extends BasePage {
 	readonly batchSummaryPage = new BatchSummaryPage(this.page);
 	readonly cancelBatchPage = new CancelBatchPage(this.page);
 	readonly viewTechnicalRecordPage = new ViewTechnicalRecordPage(this.page);
+	readonly changeRecordStatusPage = new ChangeRecordStatusPage(this.page);
+	readonly unarchiveRecordPage = new UnarchiveRecordPage(this.page);
 	readonly changeVinPage = new ChangeVinPage(this.page);
 	readonly changeVrmReasonPage = new ChangeVrmReasonPage(this.page);
 	readonly changeVrmPage = new ChangeVrmPage(this.page);
