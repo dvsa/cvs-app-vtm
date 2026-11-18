@@ -26,6 +26,18 @@ export abstract class VehicleBuilder<
 		return this;
 	}
 
+	withPartialVin(partialVin: string): this {
+		if (!/^[A-HJ-NPR-Z0-9]{1,17}$/.test(partialVin)) {
+			throw new Error('Partial VIN must be 1 to 17 uppercase letters or digits, excluding I, O and Q.');
+		}
+		this.vehicle = {
+			...this.vehicle,
+			vin: generateVin().slice(0, 17 - partialVin.length) + partialVin,
+			partialVin,
+		};
+		return this;
+	}
+
 	build(overrides: Partial<T> = {}): T {
 		return { ...this.vehicle, ...overrides } as T;
 	}

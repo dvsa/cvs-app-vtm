@@ -8,6 +8,7 @@ export interface CreatedTechnicalRecord {
 }
 
 export type RecordStatus = 'current' | 'provisional' | 'archived';
+export type SearchCriteria = 'all' | 'vin' | 'primaryVrm' | 'trailerId' | 'partialVin';
 
 export interface TechnicalRecordVersion extends CreatedTechnicalRecord {
 	techRecord_statusCode: RecordStatus;
@@ -79,13 +80,30 @@ export class TechnicalRecordsApi {
 			}
 		);
 		expect(response.status(), `Finding current technical record: ${await response.text()}`).toBe(200);
-		const records: unknown = await response.json();
+		const records = this.parseVersions(await response.json());
+		for (const record of records) expect(record.systemNumber).toBe(systemNumber);
+		return records;
+	}
+
+	async search(criteria: SearchCriteria, term: string): Promise<TechnicalRecordVersion[]> {
+		const response = await this.request.get(
+			`${this.baseURL.replace(/\/+$/, '')}/tech-records/v4/search/${encodeURIComponent(term)}`,
+			{
+				headers: { Authorization: `Bearer ${this.accessToken}` },
+				params: { searchCriteria: criteria, additionalInfo: true },
+			}
+		);
+		if (response.status() === 404) return [];
+		expect(response.status(), `Searching technical records: ${await response.text()}`).toBe(200);
+		return this.parseVersions(await response.json());
+	}
+
+	private parseVersions(records: unknown): TechnicalRecordVersion[] {
 		if (!Array.isArray(records)) {
 			throw new Error('Technical record search API response must be an array.');
 		}
 		return records.map((record: unknown) => {
 			const reference = this.parseRecord(record);
-			expect(reference.systemNumber).toBe(systemNumber);
 			if (
 				typeof record !== 'object' ||
 				record === null ||
