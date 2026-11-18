@@ -1,10 +1,17 @@
 import { test as base } from '@playwright/test';
 import { TechnicalRecordsApi } from '../api/technical-records.api';
+import { TestResultsApi } from '../api/test-results.api';
 
 export { expect } from '@playwright/test';
 
-export const test = base.extend<{ technicalRecordsApi: TechnicalRecordsApi }>({
-	technicalRecordsApi: async ({ request, context, baseURL }, use) => {
+interface ApiFixtures {
+	apiConfig: { baseURL: string; accessToken: string };
+	technicalRecordsApi: TechnicalRecordsApi;
+	testResultsApi: TestResultsApi;
+}
+
+export const test = base.extend<ApiFixtures>({
+	apiConfig: async ({ context, baseURL }, use) => {
 		if (!baseURL) {
 			throw new Error('API setup requires the Playwright baseURL to locate the authenticated browser origin.');
 		}
@@ -28,6 +35,12 @@ export const test = base.extend<{ technicalRecordsApi: TechnicalRecordsApi }>({
 			throw new Error(`Unknown API ENVIRONMENT "${environment}". Set API_BASE_URL explicitly.`);
 		}
 
-		await use(new TechnicalRecordsApi(request, apiBaseURL, accessToken));
+		await use({ baseURL: apiBaseURL.replace(/\/+$/, ''), accessToken });
+	},
+	technicalRecordsApi: async ({ request, apiConfig }, use) => {
+		await use(new TechnicalRecordsApi(request, apiConfig.baseURL, apiConfig.accessToken));
+	},
+	testResultsApi: async ({ request, apiConfig }, use) => {
+		await use(new TestResultsApi(request, apiConfig.baseURL, apiConfig.accessToken));
 	},
 });

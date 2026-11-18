@@ -23,4 +23,8 @@ export class ViewTechnicalRecordPage extends TechnicalRecordPage {
 	readonly removeRequiredFilter = this.page.getByRole('link', { name: 'Remove filter Required', exact: true });
 	readonly recordHistory = new Accordion(this.page, 'accordion-control-technical-records-history');
 	readonly creationReason = this.page.locator('#tech-record-history-reason-0');
+	readonly testRecordsSection = new Accordion(this.page, 'accordion-control-test-records');
+	readonly createTestButton = new Button(this.page, 'create-test-button');
+	readonly testHistory = this.page.locator('app-test-records');
+	readonly viewTestLink = this.testHistory.locator('a[id^="test-record-link-"]');
 }

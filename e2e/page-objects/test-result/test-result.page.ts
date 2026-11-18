@@ -1,4 +1,5 @@
 import { AccordionGroup } from '../../components/accordion-group.component';
+import { Button } from '../../components/button.component';
 import { BasePage } from '../base.page';
 import { AdditionalDefectsSection } from './sections/additional-defects.section';
 import { DefectsSection } from './sections/defects.section';
@@ -21,4 +22,8 @@ export abstract class TestResultPage extends BasePage {
 	readonly requiredStandards = new RequiredStandardsSection(this.page);
 	readonly additionalDefects = new AdditionalDefectsSection(this.page);
 	readonly reasonForCreation = new ReasonForCreationSection(this.page);
+	readonly reviewButton = new Button(this.page, 'review-test-result');
+	readonly submitButton = this.page.getByRole('button', { name: 'Accept and send', exact: true });
+	readonly abandonButton = new Button(this.page, 'abandon-test-result');
+	readonly errorSummary = this.page.locator('app-global-error');
 }

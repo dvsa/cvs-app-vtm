@@ -107,6 +107,16 @@ Use `npm run test:e2e:ui` for Playwright's interactive runner, or
 `npx playwright show-report` to open the HTML report. Reports, failure
 screenshots, and traces are ignored by Git.
 
+#### Automation coverage: open questions
+
+- **Group 1 contingency tests (PSV annual):** Confirm whether users should be
+  allowed to amend a submitted result from PASS to ABANDONED, or whether the
+  correct action is to cancel the submitted test. The amendment screen does not
+  offer **Mark as abandoned**, so this transition is out of scope for the
+  [Group 1 suite](e2e/tests/contingency/group-1-annual.test.ts) pending a
+  decision. Creating a test as ABANDONED and cancelling a submitted test are
+  covered separately.
+
 ### Backend Requirements
 
 This talks to the following backends:

@@ -22,6 +22,7 @@ export const routes: Routes = [
 			{
 				path: '',
 				redirectTo: 'type',
+				pathMatch: 'full',
 			},
 			{
 				path: TestRecordCreateRoutes.TYPE,
