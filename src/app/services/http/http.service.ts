@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { CompressionHeaders } from '@dvsa/cvs-microservice-common/api/headers';
 import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
@@ -27,6 +27,7 @@ import { CacheBucket, withCache } from '@ngneat/cashew';
 import { FeatureConfig } from '@store/feature-flags/feature-flags.feature';
 import { cloneDeep } from 'lodash-es';
 import { EMPTY, defer, expand, last, lastValueFrom, map, switchMap, takeWhile, timeout, timer } from 'rxjs';
+import { HANDLE_MEDIA_DOWNLOAD_ERRORS } from '../../interceptors/error-handling/error-handling.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
@@ -176,6 +177,7 @@ export class HttpService {
 		paramMap.forEach((value, key) => (params = params.set(key, value)));
 
 		return this.http.get(`${environment.VTM_API_URI}/v1/document-retrieval/${testResultId}`, {
+			context: new HttpContext().set(HANDLE_MEDIA_DOWNLOAD_ERRORS, true),
 			headers,
 			observe: 'events',
 			params,
