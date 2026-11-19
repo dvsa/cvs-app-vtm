@@ -45,12 +45,11 @@
           [(ngModel)]="value"
           [ngModelOptions]="{ standalone: true }"
           (ngModelChange)="onChange($event)"
-          [attr.aria-labelledby]="controlId() + '-' + value() + '-label'"
           [disabled]="disabled()"
         />
         <label
           [id]="`${id}-${value()}-label`"
-          [for]="`${id}-${value()}-checkbox`"
+          [for]="`${id}-checkbox`"
           [class]="`govuk-label govuk-checkboxes__label ${labelClass()}`"
         >
           {{ controlLabel() }}
