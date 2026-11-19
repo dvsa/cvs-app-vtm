@@ -80,7 +80,7 @@ describe('VehicleHeaderComponent', () => {
 			showTest(typeId, [photo]);
 			const row = photoCell()?.parentElement;
 			expect(row?.previousElementSibling?.querySelector('#test-certificate')).toBeTruthy();
-			expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of Certificate');
+			expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of certificate:');
 			expect(photoCell()?.querySelector('a')?.textContent?.trim()).toBe('Download photo of certificate');
 		});
 
