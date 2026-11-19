@@ -27,6 +27,14 @@
           ></govuk-form-group-input>
         </ng-template>
 
+        <ng-template #expiryDateField>
+          <govuk-form-group-date
+            mode="iso-date"
+            label="Expiry Date"
+            formControlName="testExpiryDate"
+          ></govuk-form-group-date>
+        </ng-template>
+
         <ng-template #abandonFields>
           @if (
             testResult()?.testTypes?.[0]?.testResult === TestResults.ABANDONED
@@ -149,13 +157,8 @@
           <ng-container [ngTemplateOutlet]="certificateNumberField" />
         }
 
-        @if (shouldShowExpiryDate()) {
-          <!-- Expiry Date -->
-          <govuk-form-group-date
-            mode="iso-date"
-            label="Expiry Date"
-            formControlName="testExpiryDate"
-          ></govuk-form-group-date>
+        @if (mode() === Modes.EDIT && shouldShowExpiryDate()) {
+          <ng-container [ngTemplateOutlet]="expiryDateField" />
         }
 
         @if (mode() === Modes.AMEND) {
@@ -180,12 +183,7 @@
             ></govuk-form-group-input>
 
             @if (!isTestTypeGroup12or14() && !isTestTypeGroup5or13()) {
-              <!-- Expiry Date -->
-              <govuk-form-group-date
-                mode="iso-date"
-                label="Expiry Date"
-                formControlName="testExpiryDate"
-              ></govuk-form-group-date>
+              <ng-container [ngTemplateOutlet]="expiryDateField" />
             }
 
             <!-- Test number -->

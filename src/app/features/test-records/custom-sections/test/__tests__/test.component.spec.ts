@@ -54,6 +54,86 @@ describe('TestComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	describe('expiry date display', () => {
+		const setTestResult = (testTypeId: string, testResult: TestResults) => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
+				testTypes: [{ testTypeId, testResult, testExpiryDate: '2030-01-01' }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		it.each([
+			[Modes.EDIT, '59', TestResults.PASS, 1],
+			[Modes.EDIT, '59', TestResults.FAIL, 0],
+			[Modes.EDIT, '59', TestResults.ABANDONED, 0],
+			[Modes.EDIT, '94', TestResults.PASS, 0],
+			[Modes.AMEND, '59', TestResults.PASS, 1],
+			[Modes.AMEND, '59', TestResults.FAIL, 1],
+			[Modes.AMEND, '59', TestResults.ABANDONED, 1],
+			[Modes.AMEND, '94', TestResults.PASS, 1],
+			[Modes.AMEND, '117', TestResults.PASS, 0],
+			[Modes.AMEND, '49', TestResults.PASS, 0],
+			[Modes.AMEND, '126', TestResults.PASS, 0],
+		])('shows expiry fields in mode %s for test %s with result %s: %i', (mode, testTypeId, result, count) => {
+			setTestResult(testTypeId, result);
+			fixture.componentRef.setInput('mode', mode);
+			fixture.componentRef.setInput('initialMode', mode);
+			fixture.detectChanges();
+
+			expect(
+				fixture.nativeElement.querySelectorAll('govuk-form-group-date[formControlName="testExpiryDate"]')
+			).toHaveLength(count);
+		});
+
+		it.each([Modes.EDIT, Modes.AMEND])('places the group 7 expiry field in the correct order in %s mode', (mode) => {
+			setTestResult('59', TestResults.PASS);
+			fixture.componentRef.setInput('mode', mode);
+			fixture.componentRef.setInput('initialMode', mode);
+			fixture.detectChanges();
+
+			const fields = Array.from(fixture.nativeElement.querySelectorAll('[formControlName]') as NodeListOf<HTMLElement>);
+			const indexOf = (name: string) => fields.findIndex((field) => field.getAttribute('formControlName') === name);
+			const expiryIndex = indexOf('testExpiryDate');
+			expect(expiryIndex).toBeGreaterThan(indexOf('testTypeName'));
+			expect(expiryIndex).toBeLessThan(indexOf(mode === Modes.AMEND ? 'testNumber' : 'testTypeStartTimestamp'));
+		});
+
+		it('updates the expiry field when the result or mode changes', () => {
+			const expiryFields = () =>
+				fixture.nativeElement.querySelectorAll('govuk-form-group-date[formControlName="testExpiryDate"]');
+
+			setTestResult('59', TestResults.PASS);
+			fixture.detectChanges();
+			expect(expiryFields()).toHaveLength(1);
+
+			setTestResult('59', TestResults.FAIL);
+			fixture.detectChanges();
+			expect(expiryFields()).toHaveLength(0);
+
+			fixture.componentRef.setInput('mode', Modes.AMEND);
+			fixture.detectChanges();
+			expect(expiryFields()).toHaveLength(1);
+
+			setTestResult('59', TestResults.PASS);
+			fixture.detectChanges();
+			expect(expiryFields()).toHaveLength(1);
+		});
+
+		it.each([
+			[Modes.VIEW, Modes.VIEW],
+			[Modes.SUMMARY, Modes.EDIT],
+			[Modes.SUMMARY, Modes.AMEND],
+		])('shows one group 7 expiry row in %s with initial mode %s', (mode, initialMode) => {
+			setTestResult('59', TestResults.PASS);
+			fixture.componentRef.setInput('mode', mode);
+			fixture.componentRef.setInput('initialMode', initialMode);
+			fixture.detectChanges();
+
+			expect(fixture.nativeElement.querySelectorAll('#test-testExpiryDate')).toHaveLength(1);
+		});
+	});
+
 	describe('prepopulateVTG15Required', () => {
 		it.each([
 			['hgv', true, null],
