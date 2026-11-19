@@ -23,8 +23,8 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
+import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -37,11 +37,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
 import {
+	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -92,17 +92,12 @@ export class TestComponent implements OnInit, OnDestroy {
 	abandonReasons = computed(() => this.getAbandonReasonsList());
 	destroy = new ReplaySubject<boolean>(1);
 
-	startTimeDisplay = new FormControl({ value: '', disabled: true });
-	endTimeDisplay = new FormControl({ value: '', disabled: true });
-
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly TestResults = TestResults;
 	readonly ABANDON_REASONS_REGEX = new RegExp('\\. (?<!\\..\\. )');
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
-	readonly adrCertificateFileName = signal<string | undefined>(undefined);
-	readonly adrCertificateError = signal<string | null | undefined>(undefined);
 	readonly resultOptions = computed(() => {
 		if (this.mode() === Modes.AMEND) {
 			return RESULT_OPTIONS;
@@ -122,7 +117,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		this.disableFields();
 		this.handleTestStartTimestampChange();
 		this.handleTestEndTimestampChange();
-		this.initTimeDisplayControls();
 	}
 
 	ngOnDestroy(): void {
@@ -520,28 +514,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
 		return reasonForNotLoading === ReasonForNotLoading.OTHER;
-	}
-
-	private formatDateTimeLocal(isoString: string | null | undefined): string {
-		if (!isoString) return '';
-		const date = new Date(isoString);
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, '0');
-		const day = date.getDate().toString().padStart(2, '0');
-		const hours = date.getHours().toString().padStart(2, '0');
-		const minutes = date.getMinutes().toString().padStart(2, '0');
-		const seconds = date.getSeconds().toString().padStart(2, '0');
-		const ms = date.getMilliseconds().toString().padStart(3, '0');
-		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${ms}`;
-	}
-
-	private initTimeDisplayControls(): void {
-		if (this.initialMode() !== Modes.AMEND) return;
-
-		const testTypeGroup = this.form.controls.testTypes.at(0);
-
-		this.startTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeStartTimestamp.value));
-		this.endTimeDisplay.setValue(this.formatDateTimeLocal(testTypeGroup.controls.testTypeEndTimestamp.value));
 	}
 
 	getReasonsList(reasons: string | string[] | null): string[] {
