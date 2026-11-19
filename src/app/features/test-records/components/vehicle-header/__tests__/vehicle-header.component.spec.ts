@@ -60,7 +60,7 @@ describe('VehicleHeaderComponent', () => {
 	describe('Photo of Certificate', () => {
 		const ivaTypeId = TEST_TYPES_GROUP1_SPEC_TEST[0];
 		const msvaTypeId = TEST_TYPES_GROUP5_SPEC_TEST[0];
-		const photo: MediaSchema = { type: 'image', path: 'iac/certificate.jpg' };
+		const photo: MediaSchema = { type: 'image', path: 'TestResultId0001/iac/certificate.jpg' };
 
 		afterEach(() => TestBed.inject(HttpTestingController).verify());
 
@@ -87,11 +87,11 @@ describe('VehicleHeaderComponent', () => {
 		it('downloads only IAC images and reuses the full archive for later media downloads', async () => {
 			const test = showTest(ivaTypeId, [photo]);
 			const source = new JSZip()
-				.file('iac/certificate.jpg', 'first image')
-				.file('iac/extra.PNG', 'second image')
-				.file('iac/reason.txt', 'not an image')
-				.file('approvals/vehicle.jpg', 'vehicle photo')
-				.file('vtg15/vtg15.jpg', 'VTG15 photo');
+				.file(`${test.testResultId}/iac/certificate.jpg`, 'first image')
+				.file(`${test.testResultId}/iac/extra.PNG`, 'second image')
+				.file(`${test.testResultId}/iac/reason.txt`, 'not an image')
+				.file(`${test.testResultId}/approvals/vehicle.jpg`, 'vehicle photo')
+				.file(`${test.testResultId}/vtg15/vtg15.jpg`, 'VTG15 photo');
 			const data = await source.generateAsync({ type: 'arraybuffer' });
 			const documents = TestBed.inject(DocumentsService);
 			vi.spyOn(documents, 'simulateClick').mockImplementation(() => {});
@@ -112,9 +112,9 @@ describe('VehicleHeaderComponent', () => {
 			await vi.waitFor(() => expect(createLink).toHaveBeenCalledTimes(3));
 
 			const expectedFiles = {
-				iac: ['iac/certificate.jpg', 'iac/extra.PNG'],
-				vtg15: ['vtg15/vtg15.jpg'],
-				approvals: ['approvals/vehicle.jpg'],
+				iac: [`${test.testResultId}/iac/certificate.jpg`, `${test.testResultId}/iac/extra.PNG`],
+				vtg15: [`${test.testResultId}/vtg15/vtg15.jpg`],
+				approvals: [`${test.testResultId}/approvals/vehicle.jpg`],
 			};
 			for (const [category, names] of Object.entries(expectedFiles)) {
 				const call = createLink.mock.calls.find(([fileName]) => fileName === `${test.testResultId}-${category}`);
@@ -127,7 +127,7 @@ describe('VehicleHeaderComponent', () => {
 						.sort()
 				).toEqual(names);
 				if (category === 'iac') {
-					expect(await zip.file('iac/certificate.jpg')?.async('string')).toBe('first image');
+					expect(await zip.file(`${test.testResultId}/iac/certificate.jpg`)?.async('string')).toBe('first image');
 				}
 			}
 		});
@@ -143,7 +143,10 @@ describe('VehicleHeaderComponent', () => {
 			['The assessor’s hands were full.', 'No photo of certificate available – The assessor’s hands were full.'],
 			['Failed to upload', 'No photo of certificate available – media failed to upload'],
 		])('shows why a photo is unavailable (%s) without offering a download', (reason, expected) => {
-			showTest(ivaTypeId, reason ? [{ type: 'failReason', path: 'iac/reason.txt', reason }] : undefined);
+			showTest(
+				ivaTypeId,
+				reason ? [{ type: 'failReason', path: 'TestResultId0001/iac/reason.txt', reason }] : undefined
+			);
 			expect(photoCell()?.textContent?.trim()).toBe(expected);
 			expect(photoCell()?.querySelector('a')).toBeNull();
 		});

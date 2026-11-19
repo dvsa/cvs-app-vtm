@@ -66,8 +66,9 @@ export class TestResultMediaService {
 
 	private async downloadFromArchive(testResultId: string, category: MediaCategory): Promise<void> {
 		const archive = await this.getFullArchive(testResultId);
+		const categoryPath = `${testResultId}/${category}/`;
 		const files = archive
-			.file(new RegExp(`^${category}/`))
+			.filter((path) => path.startsWith(categoryPath))
 			.filter((file) => category !== 'iac' || /\.(avif|bmp|gif|heic|heif|jpe?g|jfif|png|tiff?|webp)$/i.test(file.name));
 
 		if (!files.length) {

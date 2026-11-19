@@ -89,7 +89,7 @@ describe('TestRecordV2Component', () => {
 		const existingTest = {
 			testResultId: 'test-result-id',
 			vin: 'VIN00000001',
-			approvalCertificate: [{ type: 'image', path: 'iac/certificate.jpg' }],
+			approvalCertificate: [{ type: 'image', path: 'test-result-id/iac/certificate.jpg' }],
 			testTypes: [
 				{
 					testTypeId: '95',

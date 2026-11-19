@@ -39,8 +39,8 @@ describe('DynamicFormService', () => {
 			'preserves certificate photos and failure reasons in %s specialist template state',
 			(_vehicleType, templates) => {
 				const certificateMedia: MediaSchema[][] = [
-					[{ type: 'image', path: 'iac/certificate.jpg' }],
-					[{ type: 'failReason', path: 'iac/reason.txt', reason: 'Camera not working' }],
+					[{ type: 'image', path: 'test-result-id/iac/certificate.jpg' }],
+					[{ type: 'failReason', path: 'test-result-id/iac/reason.txt', reason: 'Camera not working' }],
 				];
 				const groups = [
 					'testTypesSpecialistGroup1',
