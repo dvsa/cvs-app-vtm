@@ -11,10 +11,8 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
-import { Actions } from '@ngrx/effects';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
-import { ReplaySubject } from 'rxjs';
 
 import { TestComponent } from '../test.component';
 
@@ -34,7 +32,6 @@ describe('TestComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
-				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 
@@ -679,7 +676,6 @@ describe('TestComponent - AMEND mode', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
-				{ provide: Actions, useValue: new ReplaySubject<any>(1) },
 			],
 		}).compileComponents();
 
