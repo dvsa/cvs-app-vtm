@@ -428,7 +428,7 @@
                   )
                 ) {
                   <div
-                    class="govuk-form-group"
+                    class="govuk-form-group govuk-!-margin-bottom-0"
                     formArrayName="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo"
                   >
                     @for (
@@ -444,17 +444,15 @@
                         )
                       ) {
                         <fieldset class="govuk-fieldset">
-                          <div class="govuk-form-group">
-                            <h1 class="govuk-label-wrapper">
+                          <div class="govuk-form-group govuk-!-margin-bottom-0">
+                            <div class="govuk-label-wrapper">
                               <label
                                 class="govuk-label govuk-label--s"
-                                for="techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{
-                                  i + 1
-                                }}"
+                                [for]="`techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${i + 1}`"
                               >
                                 UN number {{ i + 1 }}
                               </label>
-                            </h1>
+                            </div>
                             @if (
                               form.controls
                                 .techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo
