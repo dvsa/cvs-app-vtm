@@ -37,11 +37,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
 import {
-	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
