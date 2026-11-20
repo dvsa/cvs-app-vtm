@@ -22,6 +22,7 @@ import {
 	TypeOfTest,
 	VehicleType,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { Modes } from '../../models/modes.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -35,6 +36,8 @@ export class TestService {
 	 * applies to a test that is being completed, mirroring the `requiredIfNotAbandoned` async validator
 	 * used by the dynamic form service.
 	 */
+	mode = signal<Modes | null>(null);
+	initialMode = signal<Modes | null>(null);
 	isAbandoning = signal(false);
 
 	form = this.fb.group({

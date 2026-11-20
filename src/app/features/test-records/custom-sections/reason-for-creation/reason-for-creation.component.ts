@@ -1,6 +1,6 @@
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { TestService } from '@/src/app/services/test/test.service';
-import { ChangeDetectionStrategy, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { Modes } from '@models/modes.enum';
@@ -15,8 +15,6 @@ import { Modes } from '@models/modes.enum';
 export class ReasonForCreationComponent implements OnInit {
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
-
-	mode = input.required<Modes>();
 
 	form = this.testService.form;
 

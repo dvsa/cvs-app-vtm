@@ -10,7 +10,7 @@ import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.typ
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Modes } from '@models/modes.enum';
@@ -39,8 +39,6 @@ export class SeatbeltsComponent implements OnInit {
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
-
-	mode = input.required<Modes>();
 
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;

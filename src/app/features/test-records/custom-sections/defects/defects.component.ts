@@ -9,7 +9,7 @@ import { DocumentsService } from '@/src/app/services/documents/documents.service
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DefectDetailsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
@@ -29,8 +29,6 @@ export class DefectsComponent {
 	globalErrorService = inject(GlobalErrorService);
 	defectMediaService = inject(DefectMediaService, { optional: true });
 	testService = inject(TestService);
-
-	mode = input.required<Modes>();
 
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 

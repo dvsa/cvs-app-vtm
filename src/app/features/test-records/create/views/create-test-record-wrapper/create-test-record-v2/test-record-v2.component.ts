@@ -30,8 +30,6 @@ import {
 	Signal,
 	computed,
 	inject,
-	input,
-	linkedSignal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -112,9 +110,6 @@ export class TestRecordV2Component implements OnInit {
 
 	form = this.testService.form;
 
-	initialMode = input.required<Modes>();
-	mode = linkedSignal(() => this.initialMode());
-
 	techRecord = this.store.selectSignal(techRecord);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -127,7 +122,7 @@ export class TestRecordV2Component implements OnInit {
 		// Debounce the live store mirror so rapid typing does not push a new editing test result
 		// (and re-render every section) on every keystroke. Explicit actions flush synchronously.
 		this.form.valueChanges.pipe(debounceTime(100), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
+			if (this.testService.mode() === Modes.EDIT || this.testService.mode() === Modes.AMEND) {
 				this.flushFormToStore();
 			}
 		});
@@ -139,7 +134,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	private handleMissingTestResult(): void {
-		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
+		if (this.testService.mode() === Modes.SUMMARY || this.testService.mode() === Modes.EDIT) {
 			this.testRecordService.editingTestResult$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((testResult) => {
 				if (!testResult && !this.router.currentNavigation()) {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
@@ -149,7 +144,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	private loadEditingTestResult(): void {
-		if (!(this.mode() === Modes.AMEND || this.mode() === Modes.VIEW)) return;
+		if (!(this.testService.mode() === Modes.AMEND || this.testService.mode() === Modes.VIEW)) return;
 
 		const testResult = this.testResult();
 		const testResultInEdit = this.testResultInEdit();
@@ -157,7 +152,7 @@ export class TestRecordV2Component implements OnInit {
 
 		// Copy viewable test result into editing test result
 		if (!testResultInEdit && testResult) {
-			if (this.mode() === Modes.AMEND) {
+			if (this.testService.mode() === Modes.AMEND) {
 				testResult.reasonForCreation = ''; // clear reason for creation when amending.
 			}
 			this.testRecordService.editingTestResult(testResult);
@@ -183,7 +178,7 @@ export class TestRecordV2Component implements OnInit {
 
 	ngOnInit(): void {
 		this.testService.isAbandoning.set(false); // the flag is held on a root service, so clear it per test
-		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
+		if (this.testService.initialMode() === Modes.EDIT && this.testTypeId()) {
 			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
 		}
 		this.prepopulateForm();
@@ -194,7 +189,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	private applyPrefetchedRecalls(): void {
-		if (this.initialMode() !== Modes.EDIT) return;
+		if (this.testService.initialMode() !== Modes.EDIT) return;
 
 		const recallsState = this.store.selectSignal(selectRecallsState)();
 		if (!recallsState.recalls || recallsState.vin !== this.techRecord()?.vin) return;
@@ -210,7 +205,7 @@ export class TestRecordV2Component implements OnInit {
 		this.form.markAsPristine();
 		this.form.patchValue(testResult as any);
 
-		if (this.mode() === Modes.CREATE) {
+		if (this.testService.mode() === Modes.CREATE) {
 			this.form.controls.testTypes.at(0).patchValue({
 				testTypeId: this.testType()?.id,
 				testTypeName: this.testType()?.name,
@@ -251,7 +246,7 @@ export class TestRecordV2Component implements OnInit {
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
-			this.mode.set(Modes.SUMMARY);
+			this.testService.mode.set(Modes.SUMMARY);
 			this.setProvisionalWarning();
 			return;
 		}
@@ -259,17 +254,17 @@ export class TestRecordV2Component implements OnInit {
 		this.setGlobalErrors(errors);
 	}
 
-	onCancel(mode: Modes): void {
+	onCancel(mode: Modes | null): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
 		// The errors belong to the page being left behind, so they must not follow the user back.
 		this.globalErrorService.clearErrors();
 		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
 		// The abandon-only validation is dropped by the abandon page as it is destroyed.
-		if (this.mode() === Modes.ABANDON) {
+		if (this.testService.mode() === Modes.ABANDON) {
 			this.testService.isAbandoning.set(false);
 		}
-		this.mode.set(mode);
+		this.testService.mode.set(mode);
 	}
 
 	private setProvisionalWarning(): void {
@@ -301,7 +296,7 @@ export class TestRecordV2Component implements OnInit {
 	}
 
 	onSubmit(): void {
-		if (this.initialMode() === Modes.EDIT) {
+		if (this.testService.initialMode() === Modes.EDIT) {
 			return this.createTestResult();
 		}
 
@@ -358,7 +353,7 @@ export class TestRecordV2Component implements OnInit {
 			this.titleService.setTitle('Test abandoned reason - Vehicle Testing Management');
 			this.form.markAsPristine();
 			this.form.markAsUntouched();
-			this.mode.set(Modes.ABANDON);
+			this.testService.mode.set(Modes.ABANDON);
 			return;
 		}
 

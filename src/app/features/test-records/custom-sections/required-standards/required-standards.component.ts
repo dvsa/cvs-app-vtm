@@ -8,7 +8,7 @@ import { TestRecordsService } from '@/src/app/services/test-records/test-records
 import { TestService } from '@/src/app/services/test/test.service';
 import { testResultInEdit, toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -32,8 +32,6 @@ export class RequiredStandardsComponent implements OnInit {
 	testService = inject(TestService);
 	destroyRef = inject(DestroyRef);
 
-	mode = input.required<Modes>();
-
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	editingTestResult = this.store.selectSignal(testResultInEdit);
@@ -49,7 +47,7 @@ export class RequiredStandardsComponent implements OnInit {
 	}
 
 	isEditing(): boolean {
-		return this.mode() === Modes.EDIT || this.mode() === Modes.AMEND;
+		return this.testService.mode() === Modes.EDIT || this.testService.mode() === Modes.AMEND;
 	}
 
 	handleEuVehicleCategoryChange(): void {

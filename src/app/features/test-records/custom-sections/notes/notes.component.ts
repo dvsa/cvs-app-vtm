@@ -2,7 +2,7 @@ import { CommonValidatorsService } from '@/src/app/forms/validators/common-valid
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { Modes } from '@models/modes.enum';
@@ -20,8 +20,6 @@ export class NotesComponent implements OnInit {
 	store = inject(Store);
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
-
-	mode = input.required<Modes>();
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);

@@ -1,7 +1,9 @@
 <div [formGroup]="form">
-  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+  @if (
+    testService.mode() === Modes.EDIT || testService.mode() === Modes.AMEND
+  ) {
     <!-- Contingency Test Number -->
-    @if (mode() === Modes.EDIT) {
+    @if (testService.mode() === Modes.EDIT) {
       <govuk-form-group-input
         label="Contingency Test Number"
         formControlName="contingencyTestNumber"
@@ -48,7 +50,7 @@
           }
         </ng-template>
 
-        @if (mode() === Modes.AMEND && !isSpecialistGroup1()) {
+        @if (testService.mode() === Modes.AMEND && !isSpecialistGroup1()) {
           <!-- Created -->
           <govuk-form-group-date
             mode="iso-date"
@@ -107,7 +109,7 @@
 
         @if (
           shouldShowCertificateNumber() &&
-          !(isSpecialistGroup1() && mode() === Modes.AMEND)
+          !(isSpecialistGroup1() && testService.mode() === Modes.AMEND)
         ) {
           <ng-container [ngTemplateOutlet]="certificateNumberField" />
         }
@@ -121,7 +123,7 @@
           ></govuk-form-group-date>
         }
 
-        @if (mode() === Modes.AMEND) {
+        @if (testService.mode() === Modes.AMEND) {
           @if (isSpecialistGroup1()) {
             <!-- IVA/MSVA tests follow the dynamic form order: abandon details, description, certificate number -->
             <ng-container [ngTemplateOutlet]="abandonFields" />
@@ -198,7 +200,7 @@
           }
         }
 
-        @if (mode() === Modes.EDIT) {
+        @if (testService.mode() === Modes.EDIT) {
           <!-- Test start date and time -->
           <govuk-form-group-date
             mode="iso"
@@ -370,8 +372,9 @@
       <table class="govuk-table">
         <tbody class="govuk-table__body">
           @if (
-            mode() === Modes.VIEW ||
-            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)
+            testService.mode() === Modes.VIEW ||
+            (testService.initialMode() === Modes.AMEND &&
+              testService.mode() === Modes.SUMMARY)
           ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">Created:</td>
@@ -413,7 +416,10 @@
               <ng-container [ngTemplateOutlet]="abandonRows" />
             }
           }
-          @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
+          @if (
+            testService.initialMode() === Modes.EDIT &&
+            testService.mode() === Modes.SUMMARY
+          ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
                 Contingency Test Number:
@@ -427,8 +433,9 @@
             </tr>
           }
           @if (
-            (mode() === Modes.VIEW ||
-              (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY)) &&
+            (testService.mode() === Modes.VIEW ||
+              (testService.initialMode() === Modes.EDIT &&
+                testService.mode() === Modes.SUMMARY)) &&
             shouldShowCentralDocs()
           ) {
             <tr class="govuk-table__row">
@@ -448,12 +455,13 @@
             </tr>
           }
           @if (
-            mode() === Modes.VIEW ||
-            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY) ||
+            testService.mode() === Modes.VIEW ||
+            (testService.initialMode() === Modes.AMEND &&
+              testService.mode() === Modes.SUMMARY) ||
             ((isTestTypeGroup7() ||
               isSpecialistGroup1() ||
               isTestTypeGroup5or13()) &&
-              mode() === Modes.SUMMARY)
+              testService.mode() === Modes.SUMMARY)
           ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
@@ -468,9 +476,9 @@
             </tr>
           }
           @if (
-            (isTestTypeGroup7() && mode() === Modes.SUMMARY) ||
-            (initialMode() === Modes.EDIT &&
-              mode() === Modes.SUMMARY &&
+            (isTestTypeGroup7() && testService.mode() === Modes.SUMMARY) ||
+            (testService.initialMode() === Modes.EDIT &&
+              testService.mode() === Modes.SUMMARY &&
               isTestTypeGroup5or13() &&
               testResult.testTypes[0].testResult !== TestResults.FAIL)
           ) {
@@ -505,8 +513,8 @@
           }
           @if (
             isTestTypeGroup7() &&
-            mode() === Modes.SUMMARY &&
-            initialMode() === Modes.EDIT
+            testService.mode() === Modes.SUMMARY &&
+            testService.initialMode() === Modes.EDIT
           ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
@@ -525,8 +533,9 @@
             </tr>
           }
           @if (
-            mode() === Modes.VIEW ||
-            (initialMode() === Modes.AMEND && mode() === Modes.SUMMARY)
+            testService.mode() === Modes.VIEW ||
+            (testService.initialMode() === Modes.AMEND &&
+              testService.mode() === Modes.SUMMARY)
           ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
@@ -603,7 +612,10 @@
               </td>
             </tr>
           }
-          @if (initialMode() === Modes.EDIT && mode() === Modes.SUMMARY) {
+          @if (
+            testService.initialMode() === Modes.EDIT &&
+            testService.mode() === Modes.SUMMARY
+          ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
                 Test start date and time:

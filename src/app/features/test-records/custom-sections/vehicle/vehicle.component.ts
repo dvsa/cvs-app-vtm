@@ -15,7 +15,7 @@ import {
 } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
@@ -26,7 +26,7 @@ import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/r
 import { getOptionsFromEnumWithCodeAndDescription } from '@forms/utils/enum-map';
 import { Modes } from '@models/modes.enum';
 import { MultiOptions } from '@models/options.model';
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP12_14 } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP12_14, TEST_TYPES_GROUP1_SPEC_TEST } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged } from 'rxjs';
 
@@ -53,8 +53,6 @@ export class VehicleComponent implements OnInit {
 	commonValidators = inject(CommonValidatorsService);
 	technicalRecordService = inject(TechnicalRecordService);
 	destroyRef = inject(DestroyRef);
-
-	mode = input.required<Modes>();
 
 	techRecord = this.store.selectSignal(techRecord);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -178,7 +176,7 @@ export class VehicleComponent implements OnInit {
 	isVTGRequiredMandatory(): boolean {
 		const techRecord = this.techRecord();
 		// not mandatory for amend mode
-		if (this.mode() === Modes.AMEND) {
+		if (this.testService.mode() === Modes.AMEND) {
 			return false;
 		}
 		if (

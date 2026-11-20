@@ -23,7 +23,7 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
@@ -37,11 +37,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
 import {
+	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -83,9 +83,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	commonValidators = inject(CommonValidatorsService);
 	loadStatusService = inject(LoadStatusService);
 
-	mode = input.required<Modes>();
-	initialMode = input.required<Modes>();
-
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	techRecord = this.store.selectSignal(techRecord);
@@ -99,7 +96,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 	readonly resultOptions = computed(() => {
-		if (this.mode() === Modes.AMEND) {
+		if (this.testService.mode() === Modes.AMEND) {
 			return RESULT_OPTIONS;
 		}
 		if (this.isSpecialistGroup1()) {
@@ -108,7 +105,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		return PASS_FAIL_OPTIONS;
 	});
 
-	readonly contingencyTestNumberIsRequired = computed(() => this.initialMode() === Modes.EDIT);
+	readonly contingencyTestNumberIsRequired = computed(() => this.testService.initialMode() === Modes.EDIT);
 
 	ngOnInit(): void {
 		this.prepopulateVTG15Required();
@@ -125,7 +122,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	prepopulateVTG15Required(): void {
-		if (this.initialMode() !== Modes.EDIT && this.initialMode() !== Modes.CREATE) return;
+		if (this.testService.initialMode() !== Modes.EDIT && this.testService.initialMode() !== Modes.CREATE) return;
 
 		const vtg15Required = this.form.controls.vtg15.controls.vtg15Required;
 		if (vtg15Required.value != null) return;
@@ -190,7 +187,7 @@ export class TestComponent implements OnInit, OnDestroy {
 				() =>
 					this.shouldShowCertificateNumber() &&
 					this.testResult()?.testTypes[0].testResult !== null &&
-					this.mode() !== Modes.ABANDON &&
+					this.testService.mode() !== Modes.ABANDON &&
 					// IVA/MSVA tests show the certificate number when abandoned, but do not require it
 					!(this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED),
 				this.commonValidators.requiredWith('Certificate number', 'Result')
@@ -205,7 +202,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.testExpiryDate.setValidators([
 			this.commonValidators.applyWhen(
 				() =>
-					(this.mode() === Modes.AMEND &&
+					(this.testService.mode() === Modes.AMEND &&
 						testTypeGroup.controls.testResult.value === TestResults.PASS &&
 						!this.isSpecialistGroup1() &&
 						!this.isTestTypeGroup12or14() &&
@@ -216,7 +213,7 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.date('Expiry Date'),
 			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
 			this.commonValidators.applyWhen(
-				() => this.isTestTypeGroup7() && this.mode() === Modes.EDIT,
+				() => this.isTestTypeGroup7() && this.testService.mode() === Modes.EDIT,
 				this.commonValidators.futureDate('Expiry Date')
 			),
 		]);
@@ -224,7 +221,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		testTypeGroup.controls.testAnniversaryDate.setValidators([
 			this.commonValidators.applyWhen(
 				() =>
-					this.mode() === Modes.AMEND &&
+					this.testService.mode() === Modes.AMEND &&
 					testTypeGroup.controls.testResult.value === TestResults.PASS &&
 					this.shouldShowAnniversaryDate(),
 				this.commonValidators.required('Anniversary date')
@@ -298,7 +295,9 @@ export class TestComponent implements OnInit, OnDestroy {
 		]);
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.applyWhen(
-				() => this.mode() === Modes.AMEND && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
+				() =>
+					this.testService.mode() === Modes.AMEND &&
+					this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
 				this.commonValidators.requiredWith('Additional details for abandoning', 'Result', 'test')
 			),
 		]);
@@ -308,7 +307,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		// Initially enable all controls
 		this.form.enable();
 
-		if (this.initialMode() === Modes.AMEND) {
+		if (this.testService.initialMode() === Modes.AMEND) {
 			this.form.controls.testTypes.at(0).controls.createdAt.disable();
 			this.form.controls.testTypes.at(0).controls.testCode.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
@@ -404,7 +403,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 	readonly shouldShowExpiryDate = computed(() => {
 		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
-		if (this.mode() === Modes.ABANDON) return false;
+		if (this.testService.mode() === Modes.ABANDON) return false;
 		if (!this.isTestTypeGroup7()) return false;
 		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
 		return true;
@@ -413,7 +412,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly shouldShowCreateModeDescription = computed(
 		() =>
 			(this.isTestTypeGroup7() || this.isTestTypeGroup5or13() || this.isSpecialistGroup1()) &&
-			this.mode() === Modes.EDIT
+			this.testService.mode() === Modes.EDIT
 	);
 
 	readonly shouldShowAnniversaryDate = computed(
@@ -437,7 +436,7 @@ export class TestComponent implements OnInit, OnDestroy {
 	});
 
 	readonly shouldShowGenerateADRCertificate = computed(() => {
-		if (this.mode() === Modes.AMEND) {
+		if (this.testService.mode() === Modes.AMEND) {
 			return false;
 		}
 		return (
@@ -450,7 +449,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		if (this.isSpecialistGroup1()) {
 			// An abandoned test keeps its certificate number when it is amended
 			// unless the test type is in group 5 or 13
-			if (this.isAbandoned()) return this.mode() === Modes.AMEND;
+			if (this.isAbandoned()) return this.testService.mode() === Modes.AMEND;
 
 			if (!this.isPassOrPrs()) return false;
 
@@ -462,7 +461,7 @@ export class TestComponent implements OnInit, OnDestroy {
 		}
 
 		if (!this.isTestTypeGroup7() && !this.isTestTypeGroup5or13()) return false;
-		if (this.isTestTypeGroup5or13() && this.mode() === Modes.AMEND) return false;
+		if (this.isTestTypeGroup5or13() && this.testService.mode() === Modes.AMEND) return false;
 		if (this.testResult()?.testTypes[0].testResult == 'fail') {
 			return false;
 		}
@@ -482,14 +481,15 @@ export class TestComponent implements OnInit, OnDestroy {
 	readonly shouldShowApprovalsMedia = computed(
 		() =>
 			this.isSpecialistGroup1() &&
-			(this.mode() === Modes.VIEW || (this.initialMode() === Modes.AMEND && this.mode() === Modes.SUMMARY))
+			(this.testService.mode() === Modes.VIEW ||
+				(this.testService.initialMode() === Modes.AMEND && this.testService.mode() === Modes.SUMMARY))
 	);
 
 	readonly shouldShowLoadStatus = computed(() => this.loadStatusService.isLoadStatusApplicable(this.testResult()));
 
 	readonly isLoadStatusRequired = computed(() => {
 		// When amending a test, load status is displayed but can be left blank
-		return this.shouldShowLoadStatus() && this.initialMode() !== Modes.AMEND;
+		return this.shouldShowLoadStatus() && this.testService.initialMode() !== Modes.AMEND;
 	});
 
 	isUnladenSelected(): boolean {

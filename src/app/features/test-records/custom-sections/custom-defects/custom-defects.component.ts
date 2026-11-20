@@ -8,7 +8,7 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
 	FormBuilder,
@@ -49,8 +49,6 @@ export class CustomDefectsComponent implements OnInit {
 	testService = inject(TestService);
 	commonValidators = inject(CommonValidatorsService);
 	destroyRef = inject(DestroyRef);
-
-	mode = input.required<Modes>();
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -121,7 +119,7 @@ export class CustomDefectsComponent implements OnInit {
 	}
 
 	isEditing(): boolean {
-		return this.mode() === Modes.EDIT || this.mode() === Modes.AMEND;
+		return this.testService.mode() === Modes.EDIT || this.testService.mode() === Modes.AMEND;
 	}
 
 	isSpecialistGroup1(): boolean {
