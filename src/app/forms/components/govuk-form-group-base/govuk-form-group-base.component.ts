@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject, input, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer } from '@angular/forms';
+import { validationErrorMessage } from '@forms/utils/validation-error-message';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 
@@ -9,6 +10,7 @@ import { CustomTag, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.t
 	template: '',
 })
 export class GovukFormGroupBaseComponent implements OnInit {
+	protected readonly validationErrorMessage = validationErrorMessage;
 	controlContainer = inject(ControlContainer);
 	cdr = inject(ChangeDetectorRef);
 	commonValidators = inject(CommonValidatorsService);

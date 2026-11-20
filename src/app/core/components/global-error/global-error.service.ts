@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { SignalFormControl } from '@angular/forms/signals/compat';
+import { validationErrorMessage } from '@forms/utils/validation-error-message';
 import { Store, select } from '@ngrx/store';
 import { globalErrorState } from '@store/global-error/global-error-service.reducer';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/global-error.actions';
@@ -56,7 +58,7 @@ export class GlobalErrorService {
 	extractErrors = (control: AbstractControl) => {
 		const errors: ValidationErrors = {};
 
-		if (control instanceof FormControl) {
+		if (control instanceof FormControl || control instanceof SignalFormControl) {
 			Object.entries(control.errors || {}).forEach(([key, error]) => {
 				errors[key] = error;
 			});
@@ -89,7 +91,7 @@ export class GlobalErrorService {
 
 			// Validity can change without the value changing (e.g. validation skipped while abandoning a test), so
 			// re-emit just the status (not the value) for the inline error of an OnPush section to be refreshed
-			if (control.status !== previousStatus) {
+			if (control.status !== previousStatus && !(control instanceof SignalFormControl)) {
 				control.setErrors(control.errors);
 			}
 
@@ -98,7 +100,7 @@ export class GlobalErrorService {
 				if (control.invalid && control.errors) {
 					Object.values(control.errors).forEach((error) => {
 						errors.push({
-							error: typeof error === 'string' ? error : error.error,
+							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
 							accordion: error.accordion ?? undefined,
 						});
@@ -115,7 +117,7 @@ export class GlobalErrorService {
 					const firstError = controlErrors[0];
 					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
 						errors.push({
-							error: typeof error === 'string' ? error : error.error,
+							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
 							accordion: error.accordion ?? undefined,
 						});

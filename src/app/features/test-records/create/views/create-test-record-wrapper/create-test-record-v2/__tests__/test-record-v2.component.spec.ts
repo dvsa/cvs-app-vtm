@@ -143,6 +143,26 @@ describe('TestRecordV2Component', () => {
 	});
 
 	describe('onReview', () => {
+		it('blocks review for an empty signal reason and allows it after correction', () => {
+			testService.initialMode.set(Modes.EDIT);
+			testService.mode.set(Modes.EDIT);
+			testService.reasonForCreation.setValue('');
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
+
+			component.onReview();
+
+			expect(testService.mode()).toBe(Modes.EDIT);
+			expect(setErrors).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					expect.objectContaining({ error: 'Reason for creation is required', anchorLink: 'reasonForCreation' }),
+				])
+			);
+
+			testService.reasonForCreation.setValue('Reason for creating the test');
+			component.onReview();
+			expect(testService.mode()).toBe(Modes.SUMMARY);
+		});
+
 		it('should set mode to SUMMARY when form is valid', () => {
 			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
 			vi.spyOn(component.form, 'markAllAsTouched');

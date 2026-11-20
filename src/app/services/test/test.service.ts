@@ -1,5 +1,7 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, effect, inject, signal, untracked } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { maxLength, required } from '@angular/forms/signals';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
@@ -36,10 +38,22 @@ export class TestService {
 	 * applies to a test that is being completed, mirroring the `requiredIfNotAbandoned` async validator
 	 * used by the dynamic form service.
 	 */
-	mode = signal<Modes | null>(null);
-	initialMode = signal<Modes | null>(null);
 	isAbandoning = signal(false);
 
+	mode = signal<Modes | null>(null);
+	initialMode = signal<Modes | null>(null);
+
+	/**
+	 * Define individual signal form controls here, then reference in the form.
+	 * Once all controls have been migrated, the form can use a single signal and
+	 * the Angular form() helper instead.
+	 */
+	reasonForCreation = new SignalFormControl<string>('', (schema) => {
+		required(schema, { message: 'Reason for creation is required' });
+		maxLength(schema, 100, { message: 'Reason for creation must be less than or equal to 100 characters' });
+	});
+
+	// Form
 	form = this.fb.group({
 		testResultId: this.fb.nonNullable.control<string>(''),
 		testStationName: this.fb.control<string | null>(null),
@@ -79,7 +93,7 @@ export class TestService {
 		regnDate: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 		firstUseDate: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 		media: this.fb.nonNullable.control<MediaSchema[] | undefined>({ value: undefined, disabled: false }),
-		reasonForCreation: this.fb.nonNullable.control<string>(''),
+		reasonForCreation: this.reasonForCreation,
 		createdAt: this.fb.control<string | null>(null),
 		createdByEmailAddress: this.fb.nonNullable.control<string | undefined>({ value: undefined, disabled: false }),
 		createdByName: this.fb.nonNullable.control<string>(''),
@@ -179,6 +193,14 @@ export class TestService {
 			}),
 		}),
 	});
+
+	constructor() {
+		effect(() => {
+			this.initialMode();
+			// A change to a signal rule does not automatically recalculate the reactive parent.
+			untracked(() => this.form.updateValueAndValidity());
+		});
+	}
 }
 
 export const INITIAL_TEST_RESULT_FORM_VALUE = {

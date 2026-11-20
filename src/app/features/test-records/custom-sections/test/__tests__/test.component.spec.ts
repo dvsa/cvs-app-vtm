@@ -5,7 +5,9 @@ import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { disabled } from '@angular/forms/signals';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
@@ -38,8 +40,8 @@ describe('TestComponent', () => {
 		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', Modes.EDIT);
-		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		component.testService.mode.set(Modes.EDIT);
+		component.testService.initialMode.set(Modes.EDIT);
 		fixture.detectChanges();
 	});
 
@@ -49,6 +51,59 @@ describe('TestComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('enables reactive controls without enabling the signal control imperatively', () => {
+		const rootControl = component.form.controls.systemNumber;
+		const nestedControl = component.form.controls.testTypes.at(0).controls.loadStatus.controls.otherUnladenBodyType;
+		rootControl.disable();
+		nestedControl.disable();
+		const signalControl = component.testService.reasonForCreation;
+		const enable = vi.spyOn(signalControl, 'enable');
+
+		component.disableFields();
+
+		expect(rootControl.enabled).toBe(true);
+		expect(nestedControl.enabled).toBe(true);
+		expect(signalControl.enabled).toBe(true);
+		expect(enable).not.toHaveBeenCalled();
+	});
+
+	it('skips all signal controls, including those nested in groups and arrays', () => {
+		const topLevelSignal = TestBed.runInInjectionContext(() => new SignalFormControl('value'));
+		const nestedSignal = TestBed.runInInjectionContext(
+			() => new SignalFormControl('value', (path) => disabled(path, { when: () => true }))
+		);
+		const reactiveControl = new FormControl({ value: 'value', disabled: true });
+		const nestedGroup = new FormGroup({ signal: nestedSignal, reactive: reactiveControl });
+		const group = new FormGroup({ nested: new FormArray([nestedGroup]) });
+		const form: FormGroup = component.form;
+		form.addControl('additionalSignal', topLevelSignal);
+		form.addControl('additionalGroup', group);
+		const enableTopLevel = vi.spyOn(topLevelSignal, 'enable');
+		const enableNested = vi.spyOn(nestedSignal, 'enable');
+
+		component.disableFields();
+
+		expect(enableTopLevel).not.toHaveBeenCalled();
+		expect(enableNested).not.toHaveBeenCalled();
+		expect(topLevelSignal.enabled).toBe(true);
+		expect(nestedSignal.disabled).toBe(true);
+		expect(reactiveControl.enabled).toBe(true);
+		expect(nestedGroup.enabled).toBe(true);
+		expect(group.enabled).toBe(true);
+	});
+
+	it('keeps amendment-only fields disabled after enabling the other controls', () => {
+		component.testService.initialMode.set(Modes.AMEND);
+		component.disableFields();
+
+		const controls = component.form.controls.testTypes.at(0).controls;
+		expect(controls.createdAt.disabled).toBe(true);
+		expect(controls.testCode.disabled).toBe(true);
+		expect(controls.testTypeName.disabled).toBe(true);
+		expect(controls.testNumber.disabled).toBe(true);
+		expect(component.testService.reasonForCreation.enabled).toBe(true);
 	});
 
 	describe('prepopulateVTG15Required', () => {
@@ -69,8 +124,8 @@ describe('TestComponent', () => {
 				store.refreshState();
 				fixture = TestBed.createComponent(TestComponent);
 				component = fixture.componentInstance;
-				fixture.componentRef.setInput('mode', Modes.EDIT);
-				fixture.componentRef.setInput('initialMode', Modes.EDIT);
+				component.testService.mode.set(Modes.EDIT);
+				component.testService.initialMode.set(Modes.EDIT);
 				const control = component.form.controls.vtg15.controls.vtg15Required;
 				control.setValue(undefined);
 
@@ -95,7 +150,7 @@ describe('TestComponent', () => {
 		});
 
 		it.each([Modes.AMEND, Modes.VIEW])('should not default VTG15 required in initial mode %s', (initialMode) => {
-			fixture.componentRef.setInput('initialMode', initialMode);
+			component.testService.initialMode.set(initialMode);
 			store.overrideSelector(techRecord, {
 				techRecord_vehicleType: 'hgv',
 				techRecord_adrDetails_dangerousGoods: false,
@@ -237,7 +292,7 @@ describe('TestComponent', () => {
 			});
 
 			it('should be required when amending a passed test', () => {
-				fixture.componentRef.setInput('mode', Modes.AMEND);
+				component.testService.mode.set(Modes.AMEND);
 				component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
 				expiryControl.setValue(null);
 				expiryControl.markAsTouched();
@@ -246,7 +301,7 @@ describe('TestComponent', () => {
 			});
 
 			it('should not be required when amending a failed test', () => {
-				fixture.componentRef.setInput('mode', Modes.AMEND);
+				component.testService.mode.set(Modes.AMEND);
 				component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
 				expiryControl.setValue(null);
 				expiryControl.markAsTouched();
@@ -619,7 +674,7 @@ describe('TestComponent', () => {
 
 		it('should not require an expiry or anniversary date when amending a passed test', () => {
 			setTestResult({ testResult: TestResults.PASS });
-			fixture.componentRef.setInput('mode', Modes.AMEND);
+			component.testService.mode.set(Modes.AMEND);
 			const testTypeGroup = component.form.controls.testTypes.at(0);
 			testTypeGroup.controls.testResult.setValue(TestResults.PASS);
 			testTypeGroup.controls.testExpiryDate.setValue(undefined);
@@ -675,8 +730,8 @@ describe('TestComponent - AMEND mode', () => {
 		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', Modes.AMEND);
-		fixture.componentRef.setInput('initialMode', Modes.AMEND);
+		component.testService.mode.set(Modes.AMEND);
+		component.testService.initialMode.set(Modes.AMEND);
 	});
 
 	afterEach(() => {

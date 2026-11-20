@@ -24,7 +24,15 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import {
+	AbstractControl,
+	FormArray,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	ValidationErrors,
+} from '@angular/forms';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -37,11 +45,11 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
 import {
-	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -304,8 +312,10 @@ export class TestComponent implements OnInit, OnDestroy {
 	}
 
 	disableFields(): void {
-		// Initially enable all controls
-		this.form.enable();
+		Object.values(this.form.controls).forEach((control) => {
+			this.enableReactiveControls(control);
+		});
+		this.form.updateValueAndValidity();
 
 		if (this.testService.initialMode() === Modes.AMEND) {
 			this.form.controls.testTypes.at(0).controls.createdAt.disable();
@@ -322,6 +332,25 @@ export class TestComponent implements OnInit, OnDestroy {
 
 		if (this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
+		}
+	}
+
+	private containsSignalControl(control: AbstractControl): boolean {
+		if (control instanceof SignalFormControl) return true;
+		if (control instanceof FormGroup || control instanceof FormArray) {
+			return Object.values(control.controls).some((child) => this.containsSignalControl(child));
+		}
+		return false;
+	}
+
+	private enableReactiveControls(control: AbstractControl): void {
+		if (control instanceof SignalFormControl) return;
+		if ((control instanceof FormGroup || control instanceof FormArray) && this.containsSignalControl(control)) {
+			// Enabling a container directly would also enable its signal descendants.
+			Object.values(control.controls).forEach((child) => this.enableReactiveControls(child));
+			control.updateValueAndValidity({ onlySelf: true });
+		} else {
+			control.enable({ onlySelf: true });
 		}
 	}
 
