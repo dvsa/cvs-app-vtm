@@ -2,7 +2,7 @@ import { TechnicalRecordService } from '@/src/app/services/technical-record/tech
 import { isTestTypeOldIvaOrMsva } from '@/src/app/store/test-records';
 import { AsyncPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconComponent } from '@components/icon/icon.component';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
@@ -29,6 +29,7 @@ import {
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP6_11,
 	TEST_TYPES_GROUP7,
+	TEST_TYPES_MSVA,
 	TEST_TYPES_VTP_VTG_12,
 } from '@models/testTypeId.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -37,7 +38,7 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { DigitGroupSeparatorPipe } from '@pipes/digit-group-separator/digit-group-separator.pipe';
 import { RefDataDecodePipe } from '@pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from '@pipes/test-type-name/test-type-name.pipe';
-import { TestResultMediaService } from '@services/documents/test-result-media.service';
+import { CertificatePhotoCategory, TestResultMediaService } from '@services/documents/test-result-media.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { techRecord } from '@store/technical-records';
 import { selectAllTestTypes } from '@store/test-types/test-types.selectors';
@@ -191,13 +192,17 @@ export class VehicleHeaderComponent {
 		return new Map([['fileName', this.fileAbandonCertDocName]]);
 	}
 
-	get shouldShowCertificatePhoto(): boolean {
+	readonly certificatePhotoCategory = computed<CertificatePhotoCategory | undefined>(() => {
+		if (this.isReview()) return undefined;
+
 		const testTypeId = this.test?.testTypeId ?? '';
-		return (
-			!this.isReview() &&
-			(TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId))
-		);
-	}
+		if (!TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) && !TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) {
+			return undefined;
+		}
+
+		// Specialist group 1 contains both IVA and MSVA tests.
+		return TEST_TYPES_MSVA.includes(testTypeId) ? 'mac' : 'iac';
+	});
 
 	hasCertificatePhoto(test: TestResultSchema): boolean {
 		return test.approvalCertificate?.some((media) => media.type === 'image') ?? false;
@@ -225,7 +230,7 @@ export class VehicleHeaderComponent {
 		}
 	}
 
-	downloadCertificateMedia(test: TestResultSchema, category: 'iac' | 'vtg15') {
+	downloadCertificateMedia(test: TestResultSchema, category: CertificatePhotoCategory | 'vtg15') {
 		this.testResultMediaService.download(test.testResultId, category).subscribe({
 			error: (error) => {
 				if (error instanceof HttpErrorResponse) {

@@ -59,7 +59,8 @@ describe('VehicleHeaderComponent', () => {
 
 	describe('Photo of Certificate', () => {
 		const ivaTypeId = TEST_TYPES_GROUP1_SPEC_TEST[0];
-		const msvaTypeId = TEST_TYPES_GROUP5_SPEC_TEST[0];
+		const qt1TypeId = '136';
+		const voluntaryIvaTypeId = TEST_TYPES_GROUP5_SPEC_TEST[0];
 		const photo: MediaSchema = { type: 'image', path: 'TestResultId0001/iac/certificate.jpg' };
 
 		afterEach(() => TestBed.inject(HttpTestingController).verify());
@@ -76,20 +77,29 @@ describe('VehicleHeaderComponent', () => {
 			return fixture.nativeElement.querySelector('#test-certificate-photo');
 		}
 
-		it.each([ivaTypeId, msvaTypeId])('offers a photo download under Certificate for test type %s', (typeId) => {
-			showTest(typeId, [photo]);
-			const row = photoCell()?.parentElement;
-			expect(row?.previousElementSibling?.querySelector('#test-certificate')).toBeTruthy();
-			expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of certificate:');
-			expect(photoCell()?.querySelector('a')?.textContent?.trim()).toBe('Download photo of certificate');
-		});
+		it.each([ivaTypeId, qt1TypeId, voluntaryIvaTypeId])(
+			'offers a photo download under Certificate for test type %s',
+			(typeId) => {
+				showTest(typeId, [photo]);
+				const row = photoCell()?.parentElement;
+				expect(row?.previousElementSibling?.querySelector('#test-certificate')).toBeTruthy();
+				expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of certificate:');
+				expect(photoCell()?.querySelector('a')?.textContent?.trim()).toBe('Download photo of certificate');
+			}
+		);
 
-		it('downloads only IAC images and reuses the full archive for later media downloads', async () => {
-			const test = showTest(ivaTypeId, [photo]);
+		it.each([
+			['IVA', 'iac', ivaTypeId],
+			['Part MSVA inspection (QT1)', 'mac', qt1TypeId],
+			['voluntary IVA', 'iac', voluntaryIvaTypeId],
+		])('%s downloads only %s images and reuses the full archive', async (_, category, typeId) => {
+			const test = showTest(typeId, [{ ...photo, path: `TestResultId0001/${category}/certificate.jpg` }]);
+			const categoryPath = `${test.testResultId}/${category}`;
 			const source = new JSZip()
-				.file(`${test.testResultId}/iac/certificate.jpg`, 'first image')
-				.file(`${test.testResultId}/iac/extra.PNG`, 'second image')
-				.file(`${test.testResultId}/iac/reason.txt`, 'not an image')
+				.file(`${categoryPath}/certificate.jpg`, 'first image')
+				.file(`${categoryPath}/extra.PNG`, 'second image')
+				.file(`${categoryPath}/reason.txt`, 'not an image')
+				.file(`${test.testResultId}/${category === 'iac' ? 'mac' : 'iac'}/other.jpg`, 'other certificate photo')
 				.file(`${test.testResultId}/approvals/vehicle.jpg`, 'vehicle photo')
 				.file(`${test.testResultId}/vtg15/vtg15.jpg`, 'VTG15 photo');
 			const data = await source.generateAsync({ type: 'arraybuffer' });
@@ -102,7 +112,7 @@ describe('VehicleHeaderComponent', () => {
 			photoCell()?.querySelector('a')?.click();
 			const vtg15Download = lastValueFrom(mediaService.download(test.testResultId, 'vtg15'));
 			http
-				.expectOne(({ url, params }) => url.endsWith(`/${test.testResultId}`) && params.get('category') === 'iac')
+				.expectOne(({ url, params }) => url.endsWith(`/${test.testResultId}`) && params.get('category') === category)
 				.flush('https://example.test/test-media.zip');
 			const request = await vi.waitFor(() => http.expectOne('https://example.test/test-media.zip'));
 			request.flush(data);
@@ -112,12 +122,12 @@ describe('VehicleHeaderComponent', () => {
 			await vi.waitFor(() => expect(createLink).toHaveBeenCalledTimes(3));
 
 			const expectedFiles = {
-				iac: [`${test.testResultId}/iac/certificate.jpg`, `${test.testResultId}/iac/extra.PNG`],
+				[category]: [`${categoryPath}/certificate.jpg`, `${categoryPath}/extra.PNG`],
 				vtg15: [`${test.testResultId}/vtg15/vtg15.jpg`],
 				approvals: [`${test.testResultId}/approvals/vehicle.jpg`],
 			};
-			for (const [category, names] of Object.entries(expectedFiles)) {
-				const call = createLink.mock.calls.find(([fileName]) => fileName === `${test.testResultId}-${category}`);
+			for (const [mediaCategory, names] of Object.entries(expectedFiles)) {
+				const call = createLink.mock.calls.find(([fileName]) => fileName === `${test.testResultId}-${mediaCategory}`);
 				expect(call).toBeDefined();
 				const zip = await JSZip.loadAsync(call![1]);
 				expect(
@@ -126,8 +136,8 @@ describe('VehicleHeaderComponent', () => {
 						.map(({ name }) => name)
 						.sort()
 				).toEqual(names);
-				if (category === 'iac') {
-					expect(await zip.file(`${test.testResultId}/iac/certificate.jpg`)?.async('string')).toBe('first image');
+				if (mediaCategory === category) {
+					expect(await zip.file(`${categoryPath}/certificate.jpg`)?.async('string')).toBe('first image');
 				}
 			}
 		});
