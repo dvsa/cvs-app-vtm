@@ -190,7 +190,9 @@
                       >
                         <a
                           class="govuk-link"
-                          (click)="downloadVTG15(testResult)"
+                          (click)="
+                            downloadCertificateMedia(testResult, 'vtg15')
+                          "
                           href="javascript:void(0)"
                         >
                           Download VTG15
@@ -299,6 +301,32 @@
               }
             </dd>
           </div>
+          @if (certificatePhotoCategory(); as category) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Photo of certificate:</dt>
+              <dd
+                id="test-certificate-photo"
+                class="govuk-summary-list__value whitespace-pre-wrap"
+              >
+                @if (hasCertificatePhoto(testResult)) {
+                  @if (hasCertificatePhotoRetentionExpired(testResult)) {
+                    No photo available - photo was deleted as the retention
+                    period had passed
+                  } @else {
+                    <a
+                      class="govuk-link"
+                      href="javascript:void(0)"
+                      (click)="downloadCertificateMedia(testResult, category)"
+                    >
+                      <span>Download photo of certificate</span>
+                    </a>
+                  }
+                } @else {
+                  {{ getCertificatePhotoUnavailableText(testResult) }}
+                }
+              </dd>
+            </div>
+          }
         }
 
         @if (shouldShowAbandonCert) {
