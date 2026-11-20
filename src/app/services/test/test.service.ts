@@ -1,9 +1,10 @@
-import { Injectable, effect, inject, signal, untracked } from '@angular/core';
+import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { maxLength, required } from '@angular/forms/signals';
+import { applyWhen, hidden, maxLength, patternError, required, validate } from '@angular/forms/signals';
 import { SignalFormControl } from '@angular/forms/signals/compat';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
+import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
 import {
@@ -17,13 +18,27 @@ import {
 	RecallsSchema,
 	SpecialistCustomDefectsSchema,
 	SpecialistCustomDefectsSchemaPut,
-	TestResults,
 	TestSources,
 	TestStationTypes,
 	TestStatus,
 	TypeOfTest,
 	VehicleType,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import {
+	TEST_TYPES_GROUP1_DESK_BASED_TEST,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_DESK_BASED_TEST,
+	TEST_TYPES_GROUP4_DESK_BASED_TEST,
+	TEST_TYPES_GROUP5_13,
+	TEST_TYPES_GROUP5_DESK_BASED_TEST,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP15_16,
+} from '@models/testTypeId.enum';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
+import { isTestTypeOldIvaOrMsva, toEditOrNotToEdit } from '@store/test-records';
 import { Modes } from '../../models/modes.enum';
 
 @Injectable({
@@ -42,6 +57,82 @@ export class TestService {
 
 	mode = signal<Modes | null>(null);
 	initialMode = signal<Modes | null>(null);
+	private readonly store = inject(Store);
+	private readonly testResult = this.store.selectSignal(toEditOrNotToEdit);
+	private readonly oldSpecialist = this.store.selectSignal(isTestTypeOldIvaOrMsva);
+	private readonly certificateNumberRules = computed(() => {
+		const result = this.testResult();
+		const test = result?.testTypes?.[0];
+		// The API type omits small trailers, which the create journey still supports.
+		const vehicle: string | undefined = result?.vehicleType;
+		const notApplicable = { visible: false, required: false, requiredWithResult: false };
+		if (!test?.testTypeId || !vehicle) return notApplicable;
+
+		const mode = this.mode();
+		const journey = this.initialMode();
+		const amending = mode === Modes.AMEND || mode === Modes.VIEW || journey === Modes.AMEND || journey === Modes.VIEW;
+		const { testTypeId, testResult: outcome } = test;
+		const passed = outcome === TestResults.PASS;
+		const failed = outcome === TestResults.FAIL;
+		const passedOrPrs = passed || outcome === TestResults.PRS;
+		const issuedCentrally = test.centralDocs?.issueRequired === true;
+		const hgvOrTrl = vehicle === VehicleTypes.HGV || vehicle === VehicleTypes.TRL;
+		const psv = vehicle === VehicleTypes.PSV;
+		const lightVehicle = vehicle === VehicleTypes.CAR || vehicle === VehicleTypes.LGV;
+		const motorcycle = vehicle === VehicleTypes.MOTORCYCLE;
+		const optional = { ...notApplicable, visible: true };
+
+		if (hgvOrTrl && TEST_TYPES_GROUP7.includes(testTypeId)) {
+			// ADR amendments can retain a manually entered number for PRS or abandoned tests.
+			const visible = amending
+				? outcome === TestResults.ABANDONED || (passedOrPrs && !issuedCentrally)
+				: passed && !issuedCentrally;
+			return { ...optional, visible, requiredWithResult: passed && !issuedCentrally };
+		}
+		if (hgvOrTrl && !amending && TEST_TYPES_GROUP5_13.includes(testTypeId)) {
+			const visible = passed && !issuedCentrally;
+			return { ...optional, visible, requiredWithResult: visible };
+		}
+		if ((psv || vehicle === VehicleTypes.HGV) && TEST_TYPES_GROUP15_16.includes(testTypeId)) {
+			return { ...optional, visible: !(amending && passedOrPrs && issuedCentrally), required: true };
+		}
+
+		if ((hgvOrTrl || psv || lightVehicle || motorcycle) && TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId)) {
+			if (amending && this.oldSpecialist()) return optional;
+			if (hgvOrTrl) return { ...optional, visible: !failed, requiredWithResult: passedOrPrs };
+			return {
+				...optional,
+				visible: !failed && !(passedOrPrs && issuedCentrally),
+				requiredWithResult: passed && !issuedCentrally,
+			};
+		}
+		if ((hgvOrTrl || psv || lightVehicle) && TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) {
+			if (amending && this.oldSpecialist()) return notApplicable;
+			return { ...optional, visible: !failed, requiredWithResult: passedOrPrs };
+		}
+
+		if (psv && TEST_TYPES_GROUP1_DESK_BASED_TEST.includes(testTypeId)) {
+			// New PSV desk-based group 1 tests default to Pass before the result is populated.
+			return { ...optional, requiredWithResult: passed || (!amending && outcome === undefined) };
+		}
+		if ((hgvOrTrl || psv) && TEST_TYPES_GROUP2_DESK_BASED_TEST.includes(testTypeId)) {
+			return { ...optional, required: true };
+		}
+		if (TEST_TYPES_GROUP3_DESK_BASED_TEST.includes(testTypeId)) {
+			if (hgvOrTrl || psv) return { ...optional, required: !amending };
+			if (vehicle === VehicleTypes.SMALL_TRL && !amending) return optional;
+		}
+		if (TEST_TYPES_GROUP4_DESK_BASED_TEST.includes(testTypeId)) {
+			if (lightVehicle || motorcycle) return { ...optional, required: true };
+			if (psv && amending) return optional;
+		}
+		if (TEST_TYPES_GROUP5_DESK_BASED_TEST.includes(testTypeId)) {
+			if (vehicle === VehicleTypes.HGV) return { ...optional, required: true };
+			if (vehicle === VehicleTypes.LGV) return { ...optional, required: !amending };
+		}
+
+		return notApplicable;
+	});
 
 	/**
 	 * Define individual signal form controls here, then reference in the form.
@@ -51,6 +142,27 @@ export class TestService {
 	reasonForCreation = new SignalFormControl<string>('', (schema) => {
 		required(schema, { message: 'Reason for creation is required' });
 		maxLength(schema, 100, { message: 'Reason for creation must be less than or equal to 100 characters' });
+	});
+
+	certificateNumber = new SignalFormControl<string | null>(null, (schema) => {
+		hidden(schema, { when: () => !this.certificateNumberRules().visible });
+		applyWhen(
+			schema,
+			() => this.mode() !== Modes.ABANDON && this.certificateNumberRules().required,
+			(path) => required(path, { message: 'Certificate number is required' })
+		);
+		applyWhen(
+			schema,
+			() => this.mode() !== Modes.ABANDON && this.certificateNumberRules().requiredWithResult,
+			(path) => required(path, { message: 'Certificate number is required with Result' })
+		);
+		const alphanumeric = /^[a-zA-Z0-9]*$/;
+		validate(schema, ({ value }) => {
+			const number = value();
+			return number && !alphanumeric.test(number)
+				? patternError(alphanumeric, { message: 'Certificate number must be alphanumeric' })
+				: undefined;
+		});
 	});
 
 	// Form
@@ -117,7 +229,7 @@ export class TestService {
 				testTypeName: this.fb.control<string | null>(null),
 				name: this.fb.control<string>(''),
 				testTypeId: this.fb.control<string>(''),
-				certificateNumber: this.fb.control<string | null>(null),
+				certificateNumber: this.certificateNumber,
 				secondaryCertificateNumber: this.fb.control<string | null>(null),
 				testTypeStartTimestamp: this.fb.control<string | null>(null),
 				testTypeEndTimestamp: this.fb.control<string | null>(null),
@@ -199,6 +311,10 @@ export class TestService {
 			this.initialMode();
 			// A change to a signal rule does not automatically recalculate the reactive parent.
 			untracked(() => this.form.updateValueAndValidity());
+		});
+		effect(() => {
+			this.certificateNumber.status;
+			untracked(() => this.certificateNumber.parent?.updateValueAndValidity({ emitEvent: false }));
 		});
 	}
 }

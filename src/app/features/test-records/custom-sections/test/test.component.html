@@ -108,7 +108,7 @@
         }
 
         @if (
-          shouldShowCertificateNumber() &&
+          !testService.certificateNumber.fieldTree().hidden() &&
           !(isSpecialistGroup1() && testService.mode() === Modes.AMEND)
         ) {
           <ng-container [ngTemplateOutlet]="certificateNumberField" />
@@ -134,7 +134,7 @@
               formControlName="testTypeName"
             ></govuk-form-group-input>
 
-            @if (shouldShowCertificateNumber()) {
+            @if (!testService.certificateNumber.fieldTree().hidden()) {
               <ng-container [ngTemplateOutlet]="certificateNumberField" />
             }
           } @else {
@@ -496,7 +496,11 @@
               </td>
             </tr>
           }
-          @if (isSpecialistGroup1() && shouldShowCertificateNumber()) {
+          @if (
+            isSpecialistGroup1() &&
+            isPassOrPrs() &&
+            !testService.certificateNumber.fieldTree().hidden()
+          ) {
             <tr class="govuk-table__row">
               <td class="govuk-table__header" style="width: 30%">
                 Certificate number:

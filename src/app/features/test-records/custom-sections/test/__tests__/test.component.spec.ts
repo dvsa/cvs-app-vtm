@@ -1,3 +1,4 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { Modes } from '@/src/app/models/modes.enum';
 import { V3TechRecordModel } from '@/src/app/models/vehicle-tech-record.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
@@ -13,8 +14,10 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectAllTestResults } from '@store/test-records';
+import { EMPTY } from 'rxjs';
 
 import { TestComponent } from '../test.component';
 
@@ -34,6 +37,7 @@ describe('TestComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{ provide: MultiOptionsService, useValue: { getOptions: vi.fn(), loadOptions: vi.fn() } },
 				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => EMPTY),
 			],
 		}).compileComponents();
 
@@ -484,7 +488,198 @@ describe('TestComponent', () => {
 			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
 			expect(component.shouldShowProhibitionIssued()).toBe(false);
 			expect(component.shouldShowCentralDocs()).toBe(false);
-			expect(component.shouldShowCertificateNumber()).toBe(false);
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
+		});
+
+		describe('certificate number signal control', () => {
+			const setContext = (
+				testTypeId: string,
+				testResult: TestResults | null | undefined,
+				issueRequired = false,
+				vehicleType = 'hgv',
+				customDefects?: TestResultSchema['testTypes'][0]['customDefects']
+			) => {
+				store.overrideSelector(toEditOrNotToEdit, {
+					vehicleType,
+					testTypes: [{ testTypeId, testResult, centralDocs: { issueRequired }, customDefects }],
+				} as TestResultSchema);
+				store.refreshState();
+			};
+
+			it.each([
+				['1', TestResults.PASS, false, 'psv', Modes.EDIT, true, false],
+				['59', TestResults.PASS, false, 'hgv', Modes.EDIT, false, true],
+				['59', TestResults.PASS, true, 'hgv', Modes.EDIT, true, false],
+				['59', TestResults.PRS, false, 'hgv', Modes.EDIT, true, false],
+				['59', TestResults.FAIL, false, 'hgv', Modes.EDIT, true, false],
+				['59', null, false, 'hgv', Modes.EDIT, true, false],
+				['59', undefined, false, 'hgv', Modes.EDIT, true, false],
+				['59', TestResults.PASS, false, 'hgv', Modes.ABANDON, false, false],
+				['59', TestResults.PRS, false, 'hgv', Modes.AMEND, false, false],
+				['59', TestResults.PRS, true, 'hgv', Modes.AMEND, true, false],
+				['59', TestResults.ABANDONED, true, 'hgv', Modes.AMEND, false, false],
+				['49', TestResults.PASS, false, 'hgv', Modes.EDIT, false, true],
+				['49', TestResults.PRS, false, 'hgv', Modes.EDIT, true, false],
+				['49', TestResults.PASS, false, 'hgv', Modes.AMEND, true, false],
+				['126', TestResults.PASS, false, 'psv', Modes.EDIT, false, true],
+				['126', TestResults.PRS, false, 'psv', Modes.EDIT, false, false],
+				['126', TestResults.PRS, true, 'psv', Modes.EDIT, true, false],
+				['186', TestResults.PASS, true, 'hgv', Modes.EDIT, false, true],
+				['186', TestResults.PRS, true, 'trl', Modes.EDIT, false, true],
+				['126', TestResults.FAIL, false, 'psv', Modes.AMEND, true, false],
+				['126', TestResults.ABANDONED, false, 'psv', Modes.AMEND, false, false],
+				['126', null, false, 'psv', Modes.EDIT, false, false],
+				['39', TestResults.PRS, false, 'hgv', Modes.AMEND, false, true],
+				['39', TestResults.PRS, true, 'hgv', Modes.AMEND, true, false],
+				['39', TestResults.PASS, false, 'trl', Modes.EDIT, true, false],
+				['153', TestResults.PRS, false, 'psv', Modes.AMEND, false, true],
+				['417', undefined, false, 'psv', Modes.EDIT, false, true],
+				['417', TestResults.PASS, false, 'hgv', Modes.EDIT, true, false],
+				['407', TestResults.PASS, false, 'psv', Modes.EDIT, false, true],
+				['407', TestResults.PASS, false, 'psv', Modes.AMEND, false, false],
+				['409', TestResults.PASS, false, 'psv', Modes.EDIT, true, false],
+				['409', TestResults.PASS, false, 'psv', Modes.AMEND, false, false],
+			] as const)(
+				'uses the existing visibility and required rules for %s / %s / central=%s / %s / %s',
+				(type, result, central, vehicle, mode, isHidden, isRequired) => {
+					component.testService.mode.set(mode);
+					setContext(type, result, central, vehicle);
+					const control = component.testService.certificateNumber;
+					control.setValue(null);
+
+					expect(control.fieldTree().hidden()).toBe(isHidden);
+					expect(control.hasError('required')).toBe(isRequired);
+					expect(control.invalid).toBe(isRequired);
+				}
+			);
+
+			it.each([Modes.AMEND, Modes.SUMMARY])('requires alphanumeric ADR certificates in %s mode', (mode) => {
+				component.testService.initialMode.set(Modes.AMEND);
+				component.testService.mode.set(mode);
+				setContext('59', TestResults.PRS);
+				const control = component.testService.certificateNumber;
+				control.setValue('ABC-123');
+				expect(control.fieldTree().hidden()).toBe(false);
+				expect(control.getError('pattern')).toEqual(
+					expect.objectContaining({ message: 'Certificate number must be alphanumeric' })
+				);
+				control.setValue('ABC123');
+				expect(control.errors).toBeNull();
+				control.setValue(null);
+				expect(control.errors).toBeNull();
+			});
+
+			it('keeps old IVA certificates optional on amendment', () => {
+				component.testService.mode.set(Modes.AMEND);
+				setContext('126', TestResults.PASS, true, 'psv', [
+					{ referenceNumber: '1' } as NonNullable<TestResultSchema['testTypes'][0]['customDefects']>[number],
+				]);
+				const control = component.testService.certificateNumber;
+				control.setValue(null);
+				expect(control.fieldTree().hidden()).toBe(false);
+				expect(control.errors).toBeNull();
+				control.setValue('ABC-123');
+				expect(control.hasError('pattern')).toBe(true);
+			});
+
+			it('uses the unconditional required message for LEC certificates', () => {
+				setContext('39', TestResults.PASS);
+				const control = component.testService.certificateNumber;
+				control.setValue(null);
+				expect(control.getError('required')).toEqual(
+					expect.objectContaining({ message: 'Certificate number is required' })
+				);
+			});
+
+			it('updates inline and global errors as the result and certificate number change', () => {
+				setContext('59', TestResults.PASS);
+				const control = component.testService.certificateNumber;
+				control.setValue(null);
+				control.markAsTouched();
+				fixture.detectChanges();
+
+				expect(fixture.nativeElement.querySelector('#certificateNumber-error')?.textContent).toContain(
+					'Certificate number is required with Result'
+				);
+				expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(component.form)).toContainEqual(
+					expect.objectContaining({
+						error: 'Certificate number is required with Result',
+						anchorLink: 'certificateNumber',
+					})
+				);
+
+				control.setValue('ABC-123');
+				fixture.detectChanges();
+				expect(fixture.nativeElement.querySelector('#certificateNumber-error')?.textContent).toContain(
+					'Certificate number must be alphanumeric'
+				);
+				expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(component.form)).toContainEqual(
+					expect.objectContaining({ error: 'Certificate number must be alphanumeric', anchorLink: 'certificateNumber' })
+				);
+
+				setContext('59', TestResults.FAIL);
+				fixture.detectChanges();
+				expect(control.fieldTree().hidden()).toBe(true);
+				expect(control.errors).toBeNull();
+				expect(fixture.nativeElement.querySelector('#certificateNumber')).toBeNull();
+				expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(component.form)).not.toContainEqual(
+					expect.objectContaining({ anchorLink: 'certificateNumber' })
+				);
+
+				setContext('59', TestResults.PASS);
+				control.setValue('ABC123');
+				fixture.detectChanges();
+				expect(fixture.nativeElement.querySelector('#certificateNumber')).not.toBeNull();
+				expect(control.errors).toBeNull();
+			});
+
+			it('still validates a supplied certificate for an abandoned specialist amendment', () => {
+				component.testService.mode.set(Modes.AMEND);
+				setContext('126', TestResults.ABANDONED, false, 'psv');
+				const control = component.testService.certificateNumber;
+				control.setValue('ABC-123');
+				fixture.detectChanges();
+
+				expect(fixture.nativeElement.querySelectorAll('#certificateNumber')).toHaveLength(1);
+				expect(control.hasError('pattern')).toBe(true);
+				control.setValue(null);
+				expect(control.valid).toBe(true);
+			});
+
+			it('uses the signal visibility for specialist summary rows', () => {
+				component.testService.mode.set(Modes.SUMMARY);
+				setContext('126', TestResults.PASS, false, 'psv');
+				fixture.detectChanges();
+				expect(fixture.nativeElement.querySelectorAll('#test-certificateNumber')).toHaveLength(1);
+
+				setContext('126', TestResults.FAIL, false, 'psv');
+				fixture.detectChanges();
+				expect(fixture.nativeElement.querySelector('#test-certificateNumber')).toBeNull();
+
+				setContext('126', null, false, 'psv');
+				fixture.detectChanges();
+				expect(fixture.nativeElement.querySelector('#test-certificateNumber')).toBeNull();
+			});
+
+			it('updates the nested reactive group validity when signal rules change', () => {
+				const control = component.testService.certificateNumber;
+				const group = new FormGroup({ certificateNumber: control });
+				const parent = new FormGroup({ group });
+				setContext('59', TestResults.PASS);
+				control.setValue(null);
+				TestBed.tick();
+				expect(group.invalid).toBe(true);
+				expect(parent.invalid).toBe(true);
+				const valueChanges = vi.fn();
+				parent.valueChanges.subscribe(valueChanges);
+
+				setContext('59', TestResults.FAIL);
+				TestBed.tick();
+				expect(control.errors).toBeNull();
+				expect(group.valid).toBe(true);
+				expect(parent.valid).toBe(true);
+				expect(valueChanges).not.toHaveBeenCalled();
+			});
 		});
 
 		it('should be true for group 7 test types', () => {
@@ -510,36 +705,38 @@ describe('TestComponent', () => {
 			expect(component.shouldShowCentralDocs()).toBe(true);
 		});
 
-		it('shouldShowCertificateNumber rules: false for non-group7 or failing tests', () => {
+		it('hides the certificate for unrelated or failing tests', () => {
 			// non-group7 -> false
 			store.overrideSelector(toEditOrNotToEdit, {
 				testTypes: [{ testTypeId: '1', testResult: TestResults.PASS }],
 			} as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCertificateNumber()).toBe(false);
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 
 			// group7 but failed -> false
 			store.overrideSelector(toEditOrNotToEdit, {
 				testTypes: [{ testTypeId: '59', testResult: TestResults.FAIL }],
 			} as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCertificateNumber()).toBe(false);
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 		});
 
-		it('shouldShowCertificateNumber: pass and no centralDocs.issueRequired => true', () => {
+		it('shows the certificate for a pass without central documents', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
 				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: false } }],
 			} as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCertificateNumber()).toBe(true);
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(false);
 		});
 
-		it('shouldShowCertificateNumber: pass but centralDocs.issueRequired true => false', () => {
+		it('hides the certificate for a pass with central documents', () => {
 			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'hgv',
 				testTypes: [{ testTypeId: '59', testResult: TestResults.PASS, centralDocs: { issueRequired: true } }],
 			} as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCertificateNumber()).toBe(false);
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 		});
 	});
 
@@ -584,20 +781,20 @@ describe('TestComponent', () => {
 			expect(component.shouldShowReapplicationDate()).toBe(false);
 		});
 
-		describe('shouldShowCertificateNumber', () => {
+		describe('certificate number visibility', () => {
 			it('should be hidden when the test has failed', () => {
 				setTestResult({ testResult: TestResults.FAIL });
-				expect(component.shouldShowCertificateNumber()).toBe(false);
+				expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 			});
 
 			it.each([TestResults.PASS, TestResults.PRS])('should be shown when the result is %s', (testResult) => {
 				setTestResult({ testResult, centralDocs: { issueRequired: false } });
-				expect(component.shouldShowCertificateNumber()).toBe(true);
+				expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(false);
 			});
 
 			it('should be hidden when issuing documents centrally', () => {
 				setTestResult({ testResult: TestResults.PASS, centralDocs: { issueRequired: true } });
-				expect(component.shouldShowCertificateNumber()).toBe(false);
+				expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 			});
 
 			it.each(['hgv', 'trl'])('should be shown for a %s when issuing documents centrally', (vehicleType) => {
@@ -605,7 +802,7 @@ describe('TestComponent', () => {
 					{ testTypeId: '186', testResult: TestResults.PASS, centralDocs: { issueRequired: true } },
 					vehicleType
 				);
-				expect(component.shouldShowCertificateNumber()).toBe(true);
+				expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(false);
 			});
 		});
 

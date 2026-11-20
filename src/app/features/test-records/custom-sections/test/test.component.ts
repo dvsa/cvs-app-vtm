@@ -51,7 +51,6 @@ import {
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP12_14,
 } from '@models/testTypeId.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -187,23 +186,6 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.commonValidators.applyWhen(
 				() => this.shouldShowProhibitionIssued(),
 				this.commonValidators.required('Prohibition issued')
-			),
-		]);
-
-		testTypeGroup.controls.certificateNumber.setValidators([
-			this.commonValidators.applyWhen(
-				() =>
-					this.shouldShowCertificateNumber() &&
-					this.testResult()?.testTypes[0].testResult !== null &&
-					this.testService.mode() !== Modes.ABANDON &&
-					// IVA/MSVA tests show the certificate number when abandoned, but do not require it
-					!(this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED),
-				this.commonValidators.requiredWith('Certificate number', 'Result')
-			),
-			// A hidden certificate number (e.g. once the result is changed to a fail) must not block the user
-			this.commonValidators.applyWhen(
-				() => this.shouldShowCertificateNumber(),
-				this.commonValidators.alphanumeric('Certificate number must be alphanumeric')
 			),
 		]);
 
@@ -471,31 +453,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		return (
 			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
 			this.testResult()?.testTypes[0].testResult === 'pass'
-		);
-	});
-
-	readonly shouldShowCertificateNumber = computed(() => {
-		if (this.isSpecialistGroup1()) {
-			// An abandoned test keeps its certificate number when it is amended
-			// unless the test type is in group 5 or 13
-			if (this.isAbandoned()) return this.testService.mode() === Modes.AMEND;
-
-			if (!this.isPassOrPrs()) return false;
-
-			// HGV/TRL IVA tests still record a certificate number when documents are issued centrally
-			const vehicleType = this.testResult()?.vehicleType;
-			if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) return true;
-
-			return !this.testResult()?.testTypes[0].centralDocs?.issueRequired;
-		}
-
-		if (!this.isTestTypeGroup7() && !this.isTestTypeGroup5or13()) return false;
-		if (this.isTestTypeGroup5or13() && this.testService.mode() === Modes.AMEND) return false;
-		if (this.testResult()?.testTypes[0].testResult == 'fail') {
-			return false;
-		}
-		return !(
-			this.testResult()?.testTypes[0].testResult == 'pass' && this.testResult()?.testTypes[0].centralDocs?.issueRequired
 		);
 	});
 
