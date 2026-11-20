@@ -8,6 +8,7 @@
       [options$]="testStations$"
       [width]="FormNodeWidth.XXL"
       formControlName="testStationPNumber"
+      (optionSelected)="updateTestStationDetails($event)"
     />
 
     <!-- Type of test facility -->
@@ -23,6 +24,7 @@
       [options$]="users$"
       [width]="FormNodeWidth.XXL"
       formControlName="testerStaffId"
+      (optionSelected)="updateTesterDetails($event)"
     />
   } @else {
     @if (testResult(); as testResult) {

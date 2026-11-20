@@ -1,6 +1,15 @@
 import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { applyWhen, hidden, maxLength, patternError, required, validate } from '@angular/forms/signals';
+import {
+	applyWhen,
+	disabled,
+	hidden,
+	maxError,
+	maxLength,
+	patternError,
+	required,
+	validate,
+} from '@angular/forms/signals';
 import { SignalFormControl } from '@angular/forms/signals/compat';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
@@ -24,6 +33,7 @@ import {
 	TypeOfTest,
 	VehicleType,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { dateTimeError } from '@forms/validators/date-time-error';
 import {
 	TEST_TYPES_GROUP1_DESK_BASED_TEST,
 	TEST_TYPES_GROUP1_SPEC_TEST,
@@ -34,12 +44,28 @@ import {
 	TEST_TYPES_GROUP5_DESK_BASED_TEST,
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP15_16,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { techRecord } from '@store/technical-records';
 import { isTestTypeOldIvaOrMsva, toEditOrNotToEdit } from '@store/test-records';
+import dayjs from 'dayjs';
 import { Modes } from '../../models/modes.enum';
+
+const START_TIMESTAMP_LABEL = 'Test start date and time';
+const END_TIMESTAMP_LABEL = 'Test end date and time';
+
+function timestampError(value: string | null, label: string) {
+	if (!value) return undefined;
+	const formatError = dateTimeError(value, label);
+	if (formatError) return { kind: 'datetime', message: formatError };
+	if (dayjs(value).startOf('minute').isAfter(dayjs().endOf('minute'))) {
+		return { kind: 'pastDate', message: `${label} must be in the past` };
+	}
+	return undefined;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -60,6 +86,19 @@ export class TestService {
 	private readonly store = inject(Store);
 	private readonly testResult = this.store.selectSignal(toEditOrNotToEdit);
 	private readonly oldSpecialist = this.store.selectSignal(isTestTypeOldIvaOrMsva);
+	private readonly techRecord = this.store.selectSignal(techRecord);
+	private readonly hasOdometer = computed(() => {
+		const vehicle = this.techRecord();
+		return !!vehicle && vehicle.techRecord_vehicleType !== VehicleTypes.TRL;
+	});
+	private readonly isSpecialistGroup1 = computed(() =>
+		TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes?.[0]?.testTypeId ?? '')
+	);
+	readonly odometerUsesPairedFields = this.isSpecialistGroup1;
+	private readonly recordedAsAbandoned = computed(
+		() => this.testResult()?.testTypes?.[0]?.testResult === TestResults.ABANDONED
+	);
+	private readonly requireOdometerPair = computed(() => !this.isAbandoning() && !this.recordedAsAbandoned());
 	private readonly certificateNumberRules = computed(() => {
 		const result = this.testResult();
 		const test = result?.testTypes?.[0];
@@ -144,6 +183,51 @@ export class TestService {
 		maxLength(schema, 100, { message: 'Reason for creation must be less than or equal to 100 characters' });
 	});
 
+	odometerReading = new SignalFormControl<number | null | undefined>(undefined, (schema) => {
+		hidden(schema, { when: () => !this.hasOdometer() });
+		applyWhen(
+			schema,
+			() =>
+				!this.isAbandoning() &&
+				!this.odometerUsesPairedFields() &&
+				(!this.recordedAsAbandoned() ||
+					TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes?.[0]?.testTypeId ?? '')),
+			(path) => required(path, { message: 'Odometer Reading is required' })
+		);
+		applyWhen(
+			schema,
+			() => {
+				if (!this.requireOdometerPair() || !this.odometerUsesPairedFields()) return false;
+				const units = this.odometerReadingUnits.fieldTree().value();
+				return units === 'miles' || units === 'kilometres';
+			},
+			(path) => required(path, { message: 'Odometer Reading is required with Odometer Reading Units' })
+		);
+		validate(schema, ({ value }) => {
+			const reading = value();
+			return reading != null && reading > 9999999
+				? maxError(9999999, { message: 'Odometer Reading must be less than or equal to 9999999' })
+				: undefined;
+		});
+	});
+
+	odometerReadingUnits = new SignalFormControl<OdometerReadingUnits | null | undefined>(undefined, (schema) => {
+		hidden(schema, { when: () => !this.hasOdometer() });
+		applyWhen(
+			schema,
+			() => this.requireOdometerPair() && !this.odometerUsesPairedFields(),
+			(path) => required(path, { message: 'Odometer Reading Units is required' })
+		);
+		applyWhen(
+			schema,
+			() =>
+				this.requireOdometerPair() &&
+				this.odometerUsesPairedFields() &&
+				this.odometerReading.fieldTree().value() != null,
+			(path) => required(path, { message: 'Odometer Reading Units is required with Odometer Reading' })
+		);
+	});
+
 	certificateNumber = new SignalFormControl<string | null>(null, (schema) => {
 		hidden(schema, { when: () => !this.certificateNumberRules().visible });
 		applyWhen(
@@ -165,17 +249,80 @@ export class TestService {
 		});
 	});
 
+	testStationName = new SignalFormControl<string | null>(null);
+
+	testStationPNumber = new SignalFormControl<string | null>(null, (path) => {
+		required(path, { message: 'Test Station Details is required' });
+		validate(path, ({ value }) =>
+			value() === '[INVALID_OPTION]' ? { kind: 'invalidOption', message: 'Test Station Details is invalid' } : undefined
+		);
+	});
+
+	testStationType = new SignalFormControl<TestStationTypes | null>(null, (path) => {
+		disabled(path, { when: () => true });
+	});
+
+	testerName = new SignalFormControl<string | null>(null);
+
+	testerStaffId = new SignalFormControl<string>('', (path) => {
+		required(path, { message: 'Tester details is required' });
+		validate(path, ({ value }) =>
+			value() === '[INVALID_OPTION]' ? { kind: 'invalidOption', message: 'Tester details is invalid' } : undefined
+		);
+	});
+
+	testerEmailAddress = new SignalFormControl<string | null>(null);
+
+	private readonly timestampsReadOnly = computed(
+		() => this.initialMode() === Modes.AMEND && !this.isSpecialistGroup1()
+	);
+
+	// Both timestamp controls keep strings so GOV.UK validation can report incomplete input.
+	// After migration, consider Date | null values so minDate() can use the start as the end's minimum.
+	// Keep raw input in the date component for validation; parse and serialize ISO strings at the API DTO boundary.
+	testTypeStartTimestamp = new SignalFormControl<string | null>(null, (path) => {
+		disabled(path, { when: () => this.timestampsReadOnly() });
+		required(path, { message: `${START_TIMESTAMP_LABEL} is required` });
+		validate(path, ({ value }) => timestampError(value(), START_TIMESTAMP_LABEL));
+	});
+
+	testTypeEndTimestamp = new SignalFormControl<string | null>(null, (path) => {
+		disabled(path, { when: () => this.timestampsReadOnly() });
+		required(path, { message: `${END_TIMESTAMP_LABEL} is required` });
+		validate(path, ({ value }) => {
+			const end = value();
+			const error = timestampError(end, END_TIMESTAMP_LABEL);
+			if (error || !end) return error;
+
+			const start = this.testTypeStartTimestamp.fieldTree();
+			const startValue = start.value();
+			if (!startValue || !start.valid()) return undefined;
+
+			const startDate = dayjs(startValue);
+			if (dayjs(end).isBefore(startDate)) {
+				return {
+					kind: 'aheadOfDate',
+					message: `${END_TIMESTAMP_LABEL} must be ahead of ${START_TIMESTAMP_LABEL} (${startDate.format('DD/MM/YYYY')})`,
+				};
+			}
+			return undefined;
+		});
+	});
+
+	testStartTimestamp = new SignalFormControl<string | undefined>('');
+	testEndTimestamp = new SignalFormControl<string | undefined>('');
+
 	// Form
 	form = this.fb.group({
 		testResultId: this.fb.nonNullable.control<string>(''),
-		testStationName: this.fb.control<string | null>(null),
-		testStationPNumber: this.fb.control<string | null>(null),
-		testStationType: this.fb.nonNullable.control<TestStationTypes | null>({ value: null, disabled: true }),
-		testerName: this.fb.control<string | null>(null),
-		testerStaffId: this.fb.nonNullable.control<string>(''),
-		testerEmailAddress: this.fb.control<string | null>(null),
-		testStartTimestamp: this.fb.nonNullable.control<string>(''),
-		testEndTimestamp: this.fb.nonNullable.control<string>(''),
+		testStationName: this.testStationName,
+		testStationPNumber: this.testStationPNumber,
+		testStationType: this.testStationType,
+		testerName: this.testerName,
+		testerStaffId: this.testerStaffId,
+		testerEmailAddress: this.testerEmailAddress,
+		testStartTimestamp: this.testStartTimestamp,
+		testEndTimestamp: this.testEndTimestamp,
 		testStatus: this.fb.nonNullable.control<TestStatus>('submitted' as TestStatus),
 		reasonForCancellation: this.fb.control<string | null>(null),
 		systemNumber: this.fb.nonNullable.control<string>(''),
@@ -189,11 +336,8 @@ export class TestService {
 		vehicleSubclass: this.fb.nonNullable.control<string[] | undefined>({ value: undefined, disabled: false }),
 		vehicleType: this.fb.nonNullable.control<VehicleType>('car'),
 		vehicleConfiguration: this.fb.nonNullable.control<string>(''),
-		odometerReading: this.fb.control<number | null | undefined>({ value: undefined, disabled: false }),
-		odometerReadingUnits: this.fb.control<OdometerReadingUnits | null | undefined>({
-			value: undefined,
-			disabled: false,
-		}),
+		odometerReading: this.odometerReading,
+		odometerReadingUnits: this.odometerReadingUnits,
 		preparerId: this.fb.control<string | null>(null),
 		preparerName: this.fb.control<string | null>(null),
 		euVehicleCategory: this.fb.control<EUVehicleCategory | null>(null),
@@ -231,8 +375,8 @@ export class TestService {
 				testTypeId: this.fb.control<string>(''),
 				certificateNumber: this.certificateNumber,
 				secondaryCertificateNumber: this.fb.control<string | null>(null),
-				testTypeStartTimestamp: this.fb.control<string | null>(null),
-				testTypeEndTimestamp: this.fb.control<string | null>(null),
+				testTypeStartTimestamp: this.testTypeStartTimestamp,
+				testTypeEndTimestamp: this.testTypeEndTimestamp,
 				testResult: this.fb.control<TestResults | null>(null),
 				prohibitionIssued: this.fb.control<boolean | null>(null),
 				reasonForAbandoning: this.fb.control<string | null>(null),
@@ -314,7 +458,30 @@ export class TestService {
 		});
 		effect(() => {
 			this.certificateNumber.status;
+			this.testTypeStartTimestamp.status;
+			this.testTypeEndTimestamp.status;
 			untracked(() => this.certificateNumber.parent?.updateValueAndValidity({ emitEvent: false }));
+		});
+		effect(() => {
+			this.odometerReading.status;
+			this.odometerReadingUnits.status;
+			untracked(() => this.form.updateValueAndValidity({ emitEvent: false }));
+		});
+		this.mirrorTimestamp(this.testTypeStartTimestamp, this.testStartTimestamp);
+		this.mirrorTimestamp(this.testTypeEndTimestamp, this.testEndTimestamp);
+	}
+
+	private mirrorTimestamp(source: SignalFormControl<string | null>, target: SignalFormControl<string | undefined>) {
+		let previous = source.fieldTree().value();
+		effect(() => {
+			const value = source.fieldTree().value();
+			if (value === previous) return;
+			previous = value;
+			// The API expects the timestamps at both levels of the test result.
+			untracked(() => {
+				const timestamp = value || undefined;
+				if (target.value !== timestamp) target.setValue(timestamp, { emitEvent: false });
+			});
 		});
 	}
 }

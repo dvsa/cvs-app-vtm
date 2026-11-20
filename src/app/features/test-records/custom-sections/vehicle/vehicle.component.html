@@ -63,7 +63,7 @@
       formControlName="euVehicleCategory"
     />
 
-    @if (techRecord.techRecord_vehicleType !== VehicleTypes.TRL) {
+    @if (!testService.odometerReading.fieldTree().hidden()) {
       <!-- Odometer reading -->
       <govuk-form-group-input
         label="Odometer Reading"
@@ -71,9 +71,11 @@
         type="number"
         [width]="FormNodeWidth.L"
       />
+    }
 
+    @if (!testService.odometerReadingUnits.fieldTree().hidden()) {
       <!-- Odometer reading units -->
-      @if (isSpecialistGroup1()) {
+      @if (testService.odometerUsesPairedFields()) {
         <govuk-form-group-select
           label="Odometer Reading Units"
           formControlName="odometerReadingUnits"

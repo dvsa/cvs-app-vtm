@@ -23,7 +23,7 @@ import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import {
 	AbstractControl,
 	FormArray,
@@ -53,7 +53,6 @@ import {
 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
 import { GenerateAdrCertificateComponent } from './generate-adr-certificate/generate-adr-certificate.component';
 
 @Component({
@@ -81,7 +80,7 @@ import { GenerateAdrCertificateComponent } from './generate-adr-certificate/gene
 	styleUrls: ['./test.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TestComponent implements OnInit, OnDestroy {
+export class TestComponent implements OnInit {
 	store = inject(Store);
 	testService = inject(TestService);
 	testTypeService = inject(TestTypeService);
@@ -94,7 +93,6 @@ export class TestComponent implements OnInit, OnDestroy {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	techRecord = this.store.selectSignal(techRecord);
 	abandonReasons = computed(() => this.getAbandonReasonsList());
-	destroy = new ReplaySubject<boolean>(1);
 
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly TestResults = TestResults;
@@ -119,13 +117,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		this.loadOptions();
 		this.addValidators();
 		this.disableFields();
-		this.handleTestStartTimestampChange();
-		this.handleTestEndTimestampChange();
-	}
-
-	ngOnDestroy(): void {
-		this.destroy.next(true);
-		this.destroy.complete();
 	}
 
 	prepopulateVTG15Required(): void {
@@ -236,19 +227,6 @@ export class TestComponent implements OnInit, OnDestroy {
 			),
 		]);
 
-		testTypeGroup.controls.testTypeStartTimestamp.setValidators([
-			this.commonValidators.required('Test start date and time'),
-			this.commonValidators.datetime({ label: 'Test start date and time' }),
-			this.commonValidators.pastDate('Test start date and time'),
-		]);
-
-		testTypeGroup.controls.testTypeEndTimestamp.setValidators([
-			this.commonValidators.required('Test end date and time'),
-			this.commonValidators.datetime({ label: 'Test end date and time' }),
-			this.commonValidators.pastDate('Test end date and time'),
-			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Test end date and time', 'Test start date and time'),
-		]);
-
 		const loadStatusGroup = testTypeGroup.controls.loadStatus;
 		loadStatusGroup.controls.vehicleLoadStatus.setValidators([
 			this.commonValidators.applyWhen(() => this.isLoadStatusRequired(), this.commonValidators.required('Load status')),
@@ -304,12 +282,6 @@ export class TestComponent implements OnInit, OnDestroy {
 			this.form.controls.testTypes.at(0).controls.testCode.disable();
 			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
 			this.form.controls.testTypes.at(0).controls.testNumber.disable();
-
-			// IVA/MSVA tests let the start and end times be amended
-			if (!this.isSpecialistGroup1()) {
-				this.form.controls.testTypes.at(0).controls.testTypeEndTimestamp.disable();
-				this.form.controls.testTypes.at(0).controls.testTypeStartTimestamp.disable();
-			}
 		}
 
 		if (this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
@@ -334,26 +306,6 @@ export class TestComponent implements OnInit, OnDestroy {
 		} else {
 			control.enable({ onlySelf: true });
 		}
-	}
-
-	handleTestStartTimestampChange(): void {
-		this.form.controls.testTypes
-			.at(0)
-			.controls.testTypeStartTimestamp.valueChanges.pipe(takeUntil(this.destroy))
-			.subscribe((value) => {
-				// Hoist value to top level of form
-				this.form.patchValue({ testStartTimestamp: value || undefined });
-			});
-	}
-
-	handleTestEndTimestampChange(): void {
-		this.form.controls.testTypes
-			.at(0)
-			.controls.testTypeEndTimestamp.valueChanges.pipe(takeUntil(this.destroy))
-			.subscribe((value) => {
-				// Hoist value to top level of form
-				this.form.patchValue({ testEndTimestamp: value || undefined });
-			});
 	}
 
 	readonly isTestTypeGroup7 = computed(() =>

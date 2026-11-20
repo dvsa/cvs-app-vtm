@@ -402,6 +402,44 @@ describe('TestComponent', () => {
 				endControl.markAsTouched();
 				expect(endControl.valid).toBe(true);
 			});
+
+			it('rechecks the end time when only the start time changes', () => {
+				endControl.setValue('2024-01-15T14:00:00');
+				startControl.setValue('2024-01-15T15:00:00');
+				expect(endControl.hasError('aheadOfDate')).toBe(true);
+
+				startControl.setValue('2024-01-15T14:00:00');
+				expect(endControl.valid).toBe(true);
+			});
+
+			it('keeps both levels of the test result in sync when timestamps change or clear', () => {
+				const start = '2024-01-15T10:00:00.000Z';
+				const end = '2024-01-15T14:00:00.000Z';
+				startControl.setValue(start);
+				endControl.setValue(end);
+				TestBed.tick();
+
+				expect(component.form.getRawValue()).toMatchObject({
+					testStartTimestamp: start,
+					testEndTimestamp: end,
+					testTypes: [expect.objectContaining({ testTypeStartTimestamp: start, testTypeEndTimestamp: end })],
+				});
+
+				endControl.setValue(null);
+				TestBed.tick();
+				expect(component.form.getRawValue().testEndTimestamp).toBeUndefined();
+			});
+
+			it('reactively unlocks the timestamps for IVA/MSVA amendments only', () => {
+				component.testService.initialMode.set(Modes.AMEND);
+				expect(startControl.disabled).toBe(true);
+				expect(endControl.disabled).toBe(true);
+
+				store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '186' }] } as TestResultSchema);
+				store.refreshState();
+				expect(startControl.enabled).toBe(true);
+				expect(endControl.enabled).toBe(true);
+			});
 		});
 	});
 
