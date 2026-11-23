@@ -1040,7 +1040,15 @@ describe('TestResultsEffects', () => {
 	describe('onEnterTestCreateOrAmend', () => {
 		it('should clear the shared test form without emitting, so the v2 form mirror cannot write blanks to the store', () => {
 			const testService = TestBed.inject(TestService);
-			testService.form.controls.vin.setValue('VIN00000001');
+			testService.form.patchValue({
+				vin: 'VIN00000001',
+				vrm: 'AB12CDE',
+				bodyType: { code: 'b', description: 'Box' },
+				vtg15: { vtg15Required: false, unNumber: '0123' },
+			});
+			testService.form.controls.vin.markAsTouched();
+			testService.form.controls.vin.markAsDirty();
+			TestBed.tick();
 
 			const emissions: unknown[] = [];
 			const subscription = testService.form.valueChanges.subscribe((value) => emissions.push(value));
@@ -1053,9 +1061,17 @@ describe('TestResultsEffects', () => {
 				flush();
 			});
 
+			TestBed.tick();
 			subscription.unsubscribe();
 
-			expect(testService.form.controls.vin.value).toBe('');
+			expect(testService.form.getRawValue()).toMatchObject({
+				vin: '',
+				vrm: undefined,
+				bodyType: { code: '', description: '' },
+				vtg15: { vtg15Required: null, unNumber: null },
+			});
+			expect(testService.form.controls.vin.touched).toBe(false);
+			expect(testService.form.controls.vin.dirty).toBe(false);
 			expect(emissions).toEqual([]);
 		});
 	});

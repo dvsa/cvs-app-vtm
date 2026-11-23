@@ -20,9 +20,6 @@ describe('SeatbeltsComponent', () => {
 		store.refreshState();
 	};
 
-	/** Mirrors what `extractGlobalErrors` does on review, so sibling-dependent validators re-run. */
-	const revalidate = (control: { updateValueAndValidity(): void }) => control.updateValueAndValidity();
-
 	beforeEach(async () => {
 		formGroupDirective = new FormGroupDirective([], []);
 		formGroupDirective.form = new FormGroup({});
@@ -41,7 +38,7 @@ describe('SeatbeltsComponent', () => {
 		setTestResult('psv', '1');
 		fixture = TestBed.createComponent(SeatbeltsComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', Modes.EDIT);
+		testService.mode.set(Modes.EDIT);
 		fixture.detectChanges();
 	});
 
@@ -49,7 +46,7 @@ describe('SeatbeltsComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	describe('addValidators', () => {
+	describe('validation', () => {
 		describe('seatbeltInstallationCheckDate', () => {
 			it('should be invalid when unanswered', () => {
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
@@ -79,7 +76,6 @@ describe('SeatbeltsComponent', () => {
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
 				control.setValue(null);
 				control.markAsTouched();
-				revalidate(control);
 				expect(control.valid).toBe(true);
 			});
 
@@ -87,7 +83,6 @@ describe('SeatbeltsComponent', () => {
 				setTestResult('psv', '126');
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
 				control.setValue(null);
-				revalidate(control);
 				expect(control.valid).toBe(true);
 			});
 
@@ -95,7 +90,6 @@ describe('SeatbeltsComponent', () => {
 				setTestResult('hgv', '94');
 				const control = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
 				control.setValue(null);
-				revalidate(control);
 				expect(control.valid).toBe(true);
 			});
 		});
@@ -105,7 +99,6 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
 				testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(null);
-				revalidate(testTypeGroup.controls.numberOfSeatbeltsFitted);
 
 				expect(testTypeGroup.controls.numberOfSeatbeltsFitted.valid).toBe(false);
 				expect(testTypeGroup.controls.numberOfSeatbeltsFitted.errors).toHaveProperty('required');
@@ -115,7 +108,6 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(false);
 				testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(null);
-				revalidate(testTypeGroup.controls.numberOfSeatbeltsFitted);
 
 				expect(testTypeGroup.controls.numberOfSeatbeltsFitted.valid).toBe(true);
 			});
@@ -132,9 +124,15 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
 				testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(150);
-				revalidate(testTypeGroup.controls.numberOfSeatbeltsFitted);
 
 				expect(testTypeGroup.controls.numberOfSeatbeltsFitted.valid).toBe(true);
+			});
+
+			it('accepts zero seatbelts when the check was carried out', () => {
+				testService.seatbeltInstallationCheckDate.setValue(true);
+				testService.numberOfSeatbeltsFitted.setValue(0);
+				expect(testService.numberOfSeatbeltsFitted.valid).toBe(true);
+				expect(testService.form.getRawValue().testTypes[0].numberOfSeatbeltsFitted).toBe(0);
 			});
 		});
 
@@ -143,7 +141,6 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
 				testTypeGroup.controls.lastSeatbeltInstallationCheckDate.setValue(null);
-				revalidate(testTypeGroup.controls.lastSeatbeltInstallationCheckDate);
 
 				expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.valid).toBe(false);
 				expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.errors).toHaveProperty('required');
@@ -153,7 +150,6 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(false);
 				testTypeGroup.controls.lastSeatbeltInstallationCheckDate.setValue(null);
-				revalidate(testTypeGroup.controls.lastSeatbeltInstallationCheckDate);
 
 				expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.valid).toBe(true);
 			});
@@ -178,7 +174,6 @@ describe('SeatbeltsComponent', () => {
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				testTypeGroup.controls.seatbeltInstallationCheckDate.setValue(true);
 				testTypeGroup.controls.lastSeatbeltInstallationCheckDate.setValue('2024-01-15');
-				revalidate(testTypeGroup.controls.lastSeatbeltInstallationCheckDate);
 
 				expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.valid).toBe(true);
 			});
@@ -187,7 +182,16 @@ describe('SeatbeltsComponent', () => {
 
 	// The dependent fields used to keep whatever validity they last had, so their errors only
 	// caught up with the answer once the user edited the fields themselves.
-	describe('watchSeatbeltCheck', () => {
+	describe('dependent fields', () => {
+		it('does not validate retained seatbelt data for a test without the section', () => {
+			testService.seatbeltInstallationCheckDate.setValue(true);
+			testService.numberOfSeatbeltsFitted.setValue(151);
+			testService.lastSeatbeltInstallationCheckDate.setValue('2024-13-01');
+			setTestResult('hgv', '94');
+			expect(testService.numberOfSeatbeltsFitted.errors).toBeNull();
+			expect(testService.lastSeatbeltInstallationCheckDate.errors).toBeNull();
+		});
+
 		it('should raise the dependent errors as soon as the check is answered Yes', () => {
 			const testTypeGroup = component.form.controls.testTypes.at(0);
 			testTypeGroup.controls.numberOfSeatbeltsFitted.setValue(null);
@@ -210,16 +214,19 @@ describe('SeatbeltsComponent', () => {
 			expect(testTypeGroup.controls.numberOfSeatbeltsFitted.errors).toBeNull();
 			expect(testTypeGroup.controls.lastSeatbeltInstallationCheckDate.errors).toBeNull();
 		});
-	});
 
-	describe('isSeatbeltCheckCarriedOut', () => {
-		it.each([
-			[true, true],
-			[false, false],
-			[null, false],
-		])('should return %s for a check value of %s', (value, expected) => {
-			component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate.setValue(value);
-			expect(component.isSeatbeltCheckCarriedOut()).toBe(expected);
+		it('updates parent validity when the answer changes', () => {
+			const group = component.form.controls.testTypes.at(0);
+			testService.testTypeStartTimestamp.setValue('2025-01-01T10:00:00.000Z');
+			testService.testTypeEndTimestamp.setValue('2025-01-01T10:30:00.000Z');
+			testService.numberOfSeatbeltsFitted.setValue(null);
+			testService.lastSeatbeltInstallationCheckDate.setValue(null);
+			testService.seatbeltInstallationCheckDate.setValue(true);
+			TestBed.tick();
+			expect(group.invalid).toBe(true);
+			testService.seatbeltInstallationCheckDate.setValue(false);
+			TestBed.tick();
+			expect(group.valid).toBe(true);
 		});
 	});
 });

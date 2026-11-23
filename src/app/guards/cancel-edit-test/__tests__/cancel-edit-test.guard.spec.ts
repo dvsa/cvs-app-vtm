@@ -1,10 +1,11 @@
+import { initialAppState } from '@/src/app/store';
 import { TestBed } from '@angular/core/testing';
 import { RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CancelEditTestGuard } from '../cancel-edit-test.guard';
 
-describe('NoEditGuard', () => {
+describe('CancelEditTestGuard', () => {
 	let guard: CancelEditTestGuard;
 
 	beforeEach(() => {
@@ -12,7 +13,7 @@ describe('NoEditGuard', () => {
 			imports: [RouterTestingModule],
 			providers: [
 				CancelEditTestGuard,
-				provideMockStore({}),
+				provideMockStore({ initialState: initialAppState }),
 				{ provide: RouterStateSnapshot, useValue: vi.fn().mockReturnValue({ url: '', toString: vi.fn() }) },
 			],
 		});

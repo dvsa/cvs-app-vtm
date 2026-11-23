@@ -8,12 +8,19 @@ import { TestRecordsService } from '@/src/app/services/test-records/test-records
 import { TestService } from '@/src/app/services/test/test.service';
 import { testResultInEdit, toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Injector,
+	OnInit,
+	computed,
+	effect,
+	inject,
+	untracked,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, skip, startWith } from 'rxjs';
 
 @Component({
 	selector: 'app-test-required-standards',
@@ -30,7 +37,7 @@ export class RequiredStandardsComponent implements OnInit {
 	resultOfTestService = inject(ResultOfTestService);
 	testRecordsService = inject(TestRecordsService);
 	testService = inject(TestService);
-	destroyRef = inject(DestroyRef);
+	private readonly injector = inject(Injector);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -52,16 +59,23 @@ export class RequiredStandardsComponent implements OnInit {
 
 	handleEuVehicleCategoryChange(): void {
 		// Required standards are specific to the EU vehicle category, so changing it clears any that were added
-		const euVehicleCategory = this.form.controls.euVehicleCategory;
-		euVehicleCategory.valueChanges
-			.pipe(startWith(euVehicleCategory.value), distinctUntilChanged(), skip(1), takeUntilDestroyed(this.destroyRef))
-			.subscribe(() => {
-				const requiredStandards = this.form.controls.testTypes.at(0).controls.requiredStandards;
-				if (!requiredStandards.value?.length) return;
+		const category = this.testService.euVehicleCategory.fieldTree().value;
+		let previous = category();
+		effect(
+			() => {
+				const current = category();
+				if (previous === current) return;
+				previous = current;
+				untracked(() => {
+					const requiredStandards = this.form.controls.testTypes.at(0).controls.requiredStandards;
+					if (!requiredStandards.value?.length) return;
 
-				requiredStandards.setValue([], { emitEvent: false });
-				this.syncResultWithRequiredStandards();
-			});
+					requiredStandards.setValue([], { emitEvent: false });
+					this.syncResultWithRequiredStandards();
+				});
+			},
+			{ injector: this.injector }
+		);
 	}
 
 	/** The result of the test is derived from its required standards, so recalculate it from the latest form value. */
@@ -77,10 +91,9 @@ export class RequiredStandardsComponent implements OnInit {
 		this.globalErrorService.clearErrors();
 
 		// Required standards are looked up by EU vehicle category, so one must be selected first
-		const euVehicleCategory = this.form.controls.euVehicleCategory;
-		if (!euVehicleCategory.value) {
+		const euVehicleCategory = this.testService.euVehicleCategory.fieldTree();
+		if (!euVehicleCategory.value()) {
 			euVehicleCategory.markAsTouched();
-			euVehicleCategory.updateValueAndValidity();
 			this.globalErrorService.setErrors([
 				{ error: 'EU Vehicle Category is required', anchorLink: 'euVehicleCategory' },
 			]);

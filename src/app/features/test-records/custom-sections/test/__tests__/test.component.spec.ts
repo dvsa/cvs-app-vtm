@@ -10,8 +10,11 @@ import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective
 import { disabled } from '@angular/forms/signals';
 import { SignalFormControl } from '@angular/forms/signals/compat';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -58,16 +61,13 @@ describe('TestComponent', () => {
 	});
 
 	it('enables reactive controls without enabling the signal control imperatively', () => {
-		const rootControl = component.form.controls.systemNumber;
-		const nestedControl = component.form.controls.testTypes.at(0).controls.loadStatus.controls.otherUnladenBodyType;
-		rootControl.disable();
+		const nestedControl = component.form.controls.testTypes.at(0).controls.prohibitionIssued;
 		nestedControl.disable();
 		const signalControl = component.testService.reasonForCreation;
 		const enable = vi.spyOn(signalControl, 'enable');
 
 		component.disableFields();
 
-		expect(rootControl.enabled).toBe(true);
 		expect(nestedControl.enabled).toBe(true);
 		expect(signalControl.enabled).toBe(true);
 		expect(enable).not.toHaveBeenCalled();
@@ -108,6 +108,28 @@ describe('TestComponent', () => {
 		expect(controls.testTypeName.disabled).toBe(true);
 		expect(controls.testNumber.disabled).toBe(true);
 		expect(component.testService.reasonForCreation.enabled).toBe(true);
+	});
+
+	it('updates load status dependencies and visibility without revalidating sibling controls', () => {
+		const service = component.testService;
+		service.vehicleLoadStatus.setValue(VehicleLoadStatusType.UNLADEN);
+		service.unladenBodyType.setValue(UnladenBodyType.OTHER);
+		service.reasonForNotLoading.setValue(ReasonForNotLoading.OTHER);
+		expect(service.unladenBodyType.valid).toBe(true);
+		expect(service.otherUnladenBodyType.fieldTree().hidden()).toBe(false);
+		expect(service.otherUnladenBodyType.errors).toHaveProperty('required');
+		expect(service.otherReasonForNotLoading.errors).toHaveProperty('required');
+
+		service.otherUnladenBodyType.setValue('a'.repeat(201));
+		expect(service.otherUnladenBodyType.errors).toHaveProperty('maxLength');
+		service.vehicleLoadStatus.setValue(VehicleLoadStatusType.PARTIALLY_LADEN);
+		expect(service.otherUnladenBodyType.fieldTree().hidden()).toBe(true);
+		expect(service.otherUnladenBodyType.errors).toBeNull();
+		expect(service.otherReasonForNotLoading.fieldTree().hidden()).toBe(true);
+		expect(service.partiallyLadenReason.errors).toHaveProperty('required');
+		service.partiallyLadenReason.setValue('a'.repeat(200));
+		expect(service.partiallyLadenReason.valid).toBe(true);
+		expect(service.form.getRawValue().testTypes[0].loadStatus.otherUnladenBodyType).toBe('a'.repeat(201));
 	});
 
 	describe('prepopulateVTG15Required', () => {

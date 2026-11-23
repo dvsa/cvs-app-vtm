@@ -1,4 +1,5 @@
 import { Modes } from '@/src/app/models/modes.enum';
+import { TestService } from '@/src/app/services/test/test.service';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
@@ -29,11 +30,22 @@ describe('NotesComponent', () => {
 
 		fixture = TestBed.createComponent(NotesComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', Modes.EDIT);
+		TestBed.inject(TestService).mode.set(Modes.EDIT);
 		fixture.detectChanges();
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('validates the notes length using the test type label', () => {
+		const notes = TestBed.inject(TestService).additionalNotesRecorded;
+		notes.setValue('a'.repeat(500));
+		expect(notes.valid).toBe(true);
+		notes.setValue('a'.repeat(501));
+		expect(notes.errors).toHaveProperty(
+			'maxLength.message',
+			'Additional Notes (optional) must be less than or equal to 500 characters'
+		);
 	});
 });

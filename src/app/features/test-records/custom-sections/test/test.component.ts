@@ -15,7 +15,6 @@ import {
 } from '@/src/app/models/options.model';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { LoadStatusService } from '@/src/app/services/load-status/load-status.service';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
@@ -87,7 +86,6 @@ export class TestComponent implements OnInit {
 	techRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
 	commonValidators = inject(CommonValidatorsService);
-	loadStatusService = inject(LoadStatusService);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -109,8 +107,6 @@ export class TestComponent implements OnInit {
 		}
 		return PASS_FAIL_OPTIONS;
 	});
-
-	readonly contingencyTestNumberIsRequired = computed(() => this.testService.initialMode() === Modes.EDIT);
 
 	ngOnInit(): void {
 		this.prepopulateVTG15Required();
@@ -155,15 +151,6 @@ export class TestComponent implements OnInit {
 
 	addValidators(): void {
 		const testTypeGroup = this.form.controls.testTypes.at(0);
-
-		this.form.controls.contingencyTestNumber.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.contingencyTestNumberIsRequired(),
-				this.commonValidators.required('Contingency Test Number')
-			),
-			this.commonValidators.minLength(6, 'Contingency Test Number'),
-			this.commonValidators.maxLength(8, 'Contingency Test Number'),
-		]);
 
 		testTypeGroup.controls.testResult.setValidators([
 			// Applies when abandoning too, as it does in the dynamic form flow
@@ -227,40 +214,6 @@ export class TestComponent implements OnInit {
 			),
 		]);
 
-		const loadStatusGroup = testTypeGroup.controls.loadStatus;
-		loadStatusGroup.controls.vehicleLoadStatus.setValidators([
-			this.commonValidators.applyWhen(() => this.isLoadStatusRequired(), this.commonValidators.required('Load status')),
-		]);
-		loadStatusGroup.controls.unladenBodyType.setValidators([
-			this.commonValidators.applyWhen(() => this.isUnladenSelected(), this.commonValidators.required('Body type')),
-		]);
-		loadStatusGroup.controls.otherUnladenBodyType.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isOtherUnladenBodyTypeRequired(),
-				this.commonValidators.required('Enter body type'),
-				this.commonValidators.maxLength(200, 'Enter body type')
-			),
-		]);
-		loadStatusGroup.controls.reasonForNotLoading.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isUnladenSelected(),
-				this.commonValidators.required('Reason for not loading')
-			),
-		]);
-		loadStatusGroup.controls.partiallyLadenReason.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isPartiallyLadenSelected(),
-				this.commonValidators.required('Partially laden reason'),
-				this.commonValidators.maxLength(200, 'Partially laden reason')
-			),
-		]);
-		loadStatusGroup.controls.otherReasonForNotLoading.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isOtherReasonForNotLoadingRequired(),
-				this.commonValidators.required('Enter reason for not loading'),
-				this.commonValidators.maxLength(200, 'Enter reason for not loading')
-			),
-		]);
 		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
 			this.commonValidators.applyWhen(
 				() =>
@@ -276,17 +229,6 @@ export class TestComponent implements OnInit {
 			this.enableReactiveControls(control);
 		});
 		this.form.updateValueAndValidity();
-
-		if (this.testService.initialMode() === Modes.AMEND) {
-			this.form.controls.testTypes.at(0).controls.createdAt.disable();
-			this.form.controls.testTypes.at(0).controls.testCode.disable();
-			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
-			this.form.controls.testTypes.at(0).controls.testNumber.disable();
-		}
-
-		if (this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
-			this.form.controls.testTypes.at(0).controls.testTypeName.disable();
-		}
 	}
 
 	private containsSignalControl(control: AbstractControl): boolean {
@@ -423,36 +365,8 @@ export class TestComponent implements OnInit {
 				(this.testService.initialMode() === Modes.AMEND && this.testService.mode() === Modes.SUMMARY))
 	);
 
-	readonly shouldShowLoadStatus = computed(() => this.loadStatusService.isLoadStatusApplicable(this.testResult()));
-
-	readonly isLoadStatusRequired = computed(() => {
-		// When amending a test, load status is displayed but can be left blank
-		return this.shouldShowLoadStatus() && this.testService.initialMode() !== Modes.AMEND;
-	});
-
-	isUnladenSelected(): boolean {
-		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
-		return vehicleLoadStatus === VehicleLoadStatusType.UNLADEN;
-	}
-
-	isPartiallyLadenSelected(): boolean {
-		const vehicleLoadStatus = this.form.get('testTypes.0.loadStatus.vehicleLoadStatus')?.getRawValue();
-		return vehicleLoadStatus === VehicleLoadStatusType.PARTIALLY_LADEN;
-	}
-
-	isOtherUnladenBodyTypeRequired(): boolean {
-		if (!this.isUnladenSelected()) return false;
-
-		const unladenBodyType = this.form.get('testTypes.0.loadStatus.unladenBodyType')?.getRawValue();
-		return unladenBodyType === UnladenBodyType.OTHER;
-	}
-
-	isOtherReasonForNotLoadingRequired(): boolean {
-		if (!this.isUnladenSelected()) return false;
-
-		const reasonForNotLoading = this.form.get('testTypes.0.loadStatus.reasonForNotLoading')?.getRawValue();
-		return reasonForNotLoading === ReasonForNotLoading.OTHER;
-	}
+	readonly shouldShowLoadStatus = this.testService.showLoadStatus;
+	readonly isLoadStatusRequired = this.testService.loadStatusRequired;
 
 	getReasonsList(reasons: string | string[] | null): string[] {
 		return Array.isArray(reasons) ? reasons : (reasons?.split(this.ABANDON_REASONS_REGEX) ?? []);

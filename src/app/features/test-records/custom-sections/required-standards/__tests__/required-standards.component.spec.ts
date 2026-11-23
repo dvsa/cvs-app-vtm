@@ -29,7 +29,7 @@ describe('RequiredStandardsComponent', () => {
 
 		fixture = TestBed.createComponent(RequiredStandardsComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', mode);
+		testService.mode.set(mode);
 		fixture.detectChanges();
 	};
 
@@ -87,6 +87,7 @@ describe('RequiredStandardsComponent', () => {
 		requiredStandards.setValue([requiredStandard]);
 
 		testService.form.controls.euVehicleCategory.setValue('m1' as never);
+		TestBed.tick();
 
 		expect(requiredStandards.value).toEqual([]);
 	});

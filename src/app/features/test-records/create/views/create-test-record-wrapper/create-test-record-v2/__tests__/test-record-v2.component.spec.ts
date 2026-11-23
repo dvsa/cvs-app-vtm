@@ -143,9 +143,27 @@ describe('TestRecordV2Component', () => {
 	});
 
 	describe('onReview', () => {
-		it('blocks review for an empty signal reason and allows it after correction', () => {
+		const populateReviewFields = () => {
 			testService.initialMode.set(Modes.EDIT);
 			testService.mode.set(Modes.EDIT);
+			component.form.patchValue({
+				contingencyTestNumber: '123456',
+				countryOfRegistration: 'gb',
+				euVehicleCategory: 'm1',
+				reasonForCreation: 'Reason for creating the test',
+				testStationPNumber: 'P12345',
+				testerStaffId: '12345',
+				testTypes: [
+					{
+						testTypeStartTimestamp: '2025-01-01T10:00:00.000Z',
+						testTypeEndTimestamp: '2025-01-01T10:30:00.000Z',
+					},
+				],
+			});
+		};
+
+		it('blocks review for an empty signal reason and allows it after correction', () => {
+			populateReviewFields();
 			testService.reasonForCreation.setValue('');
 			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
 
@@ -161,6 +179,30 @@ describe('TestRecordV2Component', () => {
 			testService.reasonForCreation.setValue('Reason for creating the test');
 			component.onReview();
 			expect(testService.mode()).toBe(Modes.SUMMARY);
+		});
+
+		it('keeps contingency number validation active when reviewing a new test', () => {
+			populateReviewFields();
+			testService.contingencyTestNumber.setValue('12345');
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
+
+			component.onReview();
+
+			expect(testService.mode()).toBe(Modes.EDIT);
+			expect(setErrors).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					{
+						error: 'Contingency Test Number must be greater than or equal to 6 characters',
+						anchorLink: 'contingencyTestNumber',
+					},
+				])
+			);
+
+			testService.contingencyTestNumber.setValue('01234567');
+			component.onReview();
+
+			expect(testService.mode()).toBe(Modes.SUMMARY);
+			expect(component.form.getRawValue().contingencyTestNumber).toBe('01234567');
 		});
 
 		it('should set mode to SUMMARY when form is valid', () => {

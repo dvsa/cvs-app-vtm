@@ -136,7 +136,7 @@ export class DefectV2Component {
 		this.form.controls.prohibitionIssued.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
 			this.form.controls.additionalInformation.controls.notes.updateValueAndValidity();
 		});
-		const vehicleType = this.testService.form.controls.vehicleType.value;
+		const vehicleType = this.testService.vehicleType.fieldTree().value();
 
 		// If we're amending an existing defect, use the existing values
 		const index = Number(this.defectIndex());
@@ -241,7 +241,7 @@ export class DefectV2Component {
 	}
 
 	populateAdditionalInfoFromTaxonomy(defectCategory: DefectCategoryReferenceDataSchema) {
-		const vehicleType = this.testService.form.controls.vehicleType.value;
+		const vehicleType = this.testService.vehicleType.fieldTree().value();
 		if (vehicleType !== 'psv' && vehicleType !== 'trl' && vehicleType !== 'hgv') return;
 
 		const additionalInfo = defectCategory.additionalInfo;

@@ -54,7 +54,7 @@ describe('VehicleComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	describe('addValidators', () => {
+	describe('validation', () => {
 		describe('countryOfRegistration', () => {
 			it('should be invalid when empty', () => {
 				const control = component.form.controls.countryOfRegistration;
@@ -78,6 +78,48 @@ describe('VehicleComponent', () => {
 				control.markAsTouched();
 				control.updateValueAndValidity();
 				expect(control.valid).toBe(true);
+			});
+
+			it('rejects free text even when the test is being abandoned', () => {
+				testService.isAbandoning.set(true);
+				testService.countryOfRegistration.setValue('[INVALID_OPTION]');
+				expect(testService.countryOfRegistration.errors).toHaveProperty(
+					'invalidOption.message',
+					'Country Of Registration is invalid'
+				);
+			});
+		});
+
+		it('accepts No for VTG15 and only validates hazard details when Yes is selected', () => {
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: true,
+			} as TechRecordType<'get'>);
+			store.refreshState();
+			const vtg15 = testService.form.controls.vtg15;
+
+			expect(testService.vtg15Required.errors).toHaveProperty('required.message', 'Select if a VTG15 is required');
+
+			testService.vtg15Required.setValue(false);
+			TestBed.tick();
+			expect(vtg15.valid).toBe(true);
+
+			testService.vtg15Required.setValue(true);
+			TestBed.tick();
+			expect(vtg15.invalid).toBe(true);
+			expect(testService.primaryHazardClassification.errors).toHaveProperty('required');
+			expect(testService.unNumber.errors).toHaveProperty('required');
+
+			testService.primaryHazardClassification.setValue(HazardClassification._1);
+			testService.unNumber.setValue('012');
+			expect(testService.unNumber.errors).toHaveProperty('minLength.message', 'UN number must be 4 digits');
+			testService.unNumber.setValue('0123');
+			TestBed.tick();
+			expect(vtg15.valid).toBe(true);
+			expect(vtg15.getRawValue()).toMatchObject({
+				vtg15Required: true,
+				primaryHazardClassification: HazardClassification._1,
+				unNumber: '0123',
 			});
 		});
 
@@ -234,7 +276,6 @@ describe('VehicleComponent', () => {
 			store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
 			store.refreshState();
 			component.form.controls.euVehicleCategory.setValue(null);
-			component.form.controls.euVehicleCategory.enable();
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.controls.euVehicleCategory.value).toBe(EUVehicleCategory.M1);
 			expect(component.form.controls.euVehicleCategory.disabled).toBe(true);
@@ -244,7 +285,6 @@ describe('VehicleComponent', () => {
 			store.overrideSelector(techRecord, { techRecord_vehicleType: 'lgv' } as TechRecordType<'get'>);
 			store.refreshState();
 			component.form.controls.euVehicleCategory.setValue(null);
-			component.form.controls.euVehicleCategory.enable();
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.controls.euVehicleCategory.value).toBe(EUVehicleCategory.N1);
 			expect(component.form.controls.euVehicleCategory.disabled).toBe(true);
@@ -254,7 +294,6 @@ describe('VehicleComponent', () => {
 			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
 			store.refreshState();
 			component.form.controls.euVehicleCategory.setValue(null);
-			component.form.controls.euVehicleCategory.enable();
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.controls.euVehicleCategory.value).toBeNull();
 			expect(component.form.controls.euVehicleCategory.disabled).toBe(false);

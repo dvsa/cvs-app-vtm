@@ -1,5 +1,14 @@
 import validateDate from 'validate-govuk-date';
 
+export function dateError(value: string, label: string): string | undefined {
+	const [date] = value.split('T');
+	const [year, month, day] = date.split('-');
+	const { error, errors } = validateDate(day || '', month || '', year || '', label);
+	if (error && errors?.length) return errors[0].reason;
+	if (year.length !== 4) return `'${label}' year must be four digits`;
+	return undefined;
+}
+
 export function dateTimeError(value: string, label: string): string | undefined {
 	const [date, time] = value.split('T');
 	const [year, month, day] = date.split('-');
