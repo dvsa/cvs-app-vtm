@@ -14,7 +14,7 @@ import { TestResultMediaService } from '../../services/documents/test-result-med
 import { selectedTestResultState } from '../../store/test-records';
 
 @Component({
-	selector: 'app-approval-approval-media-download',
+	selector: 'app-approval-media-download',
 	templateUrl: './approval-media-download.component.html',
 	styleUrls: ['./approval-media-download.component.scss'],
 	host: {
