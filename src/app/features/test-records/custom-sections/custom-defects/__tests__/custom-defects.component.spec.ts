@@ -1,3 +1,4 @@
+import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { Modes } from '@/src/app/models/modes.enum';
 import { TestService } from '@/src/app/services/test/test.service';
 import { initialAppState } from '@/src/app/store';
@@ -27,7 +28,7 @@ describe('CustomDefectsComponent', () => {
 
 		fixture = TestBed.createComponent(CustomDefectsComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', mode);
+		testService.mode.set(mode);
 		fixture.detectChanges();
 	};
 
@@ -82,10 +83,68 @@ describe('CustomDefectsComponent', () => {
 		const customDefects = testService.form.controls.testTypes.at(0).controls.customDefects;
 
 		component.onAddCustomDefect();
-		expect(customDefects.value).toEqual([customDefect, { defectName: null, defectNotes: null }]);
+		expect(customDefects.value).toMatchObject([customDefect, { defectName: null, defectNotes: null }]);
 
 		component.onRemoveCustomDefect(0);
-		expect(customDefects.value).toEqual([{ defectName: null, defectNotes: null }]);
+		expect(customDefects.value).toMatchObject([{ defectName: null, defectNotes: null }]);
+	});
+
+	it('copies edited defect fields to the shared form before review', () => {
+		createComponent(Modes.EDIT);
+		const defect = component.customDefectsForm.at(0);
+		defect.controls.defectName.setValue('Updated defect');
+		defect.controls.defectNotes.setValue('Updated notes');
+
+		expect(testService.form.getRawValue().testTypes[0].customDefects).toEqual([
+			{ defectName: 'Updated defect', defectNotes: 'Updated notes' },
+		]);
+	});
+
+	it('does not mutate frozen test-result data when validating defects', () => {
+		const defect = Object.freeze({ referenceNumber: '', defectName: 'Defect', defectNotes: 'Notes' });
+		const data = [defect];
+		Object.freeze(data);
+		store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '126' }] } as TestResultSchema);
+		store.refreshState();
+		testService.customDefects.setValue(data);
+
+		expect(testService.customDefects.valid).toBe(true);
+		expect(Object.getOwnPropertySymbols(defect)).toEqual([]);
+		const payload = testService.form.getRawValue().testTypes[0].customDefects;
+		expect(Object.getOwnPropertySymbols(payload[0])).toEqual([]);
+		Object.freeze(payload[0]);
+		expect(() => testService.customDefects.setValue([defect])).not.toThrow();
+	});
+
+	it('preserves and resets the migrated collections and central documents', () => {
+		const testType = testService.form.controls.testTypes.at(0);
+		const standard = {
+			sectionNumber: '1',
+			sectionDescription: 'Section',
+			rsNumber: 1,
+			requiredStandard: 'Standard',
+			refCalculation: '1',
+			additionalInfo: false,
+			prs: false,
+		};
+		testType.patchValue({
+			customDefects: [customDefect],
+			requiredStandards: [standard],
+			centralDocs: { issueRequired: true, notes: 'Notes', reasonsForIssue: ['Replacement'] },
+		});
+
+		expect(testService.form.getRawValue().testTypes[0]).toMatchObject({
+			customDefects: [customDefect],
+			requiredStandards: [standard],
+			centralDocs: { issueRequired: true, notes: 'Notes', reasonsForIssue: ['Replacement'] },
+		});
+
+		testService.resetForm();
+		expect(testService.form.getRawValue().testTypes[0]).toMatchObject({
+			customDefects: [],
+			requiredStandards: undefined,
+			centralDocs: { issueRequired: false, notes: ' ', reasonsForIssue: [] },
+		});
 	});
 
 	describe('validation', () => {
@@ -96,12 +155,16 @@ describe('CustomDefectsComponent', () => {
 			const customDefects = testService.form.controls.testTypes.at(0).controls.customDefects;
 			customDefects.updateValueAndValidity();
 
-			expect(customDefects.errors).toEqual({
-				customDefects: [
+			expect(customDefects.errors).toHaveProperty('customDefects.details', [
+				expect.objectContaining({ error: 'Defect Name is required', anchorLink: 'defectName-1' }),
+				expect.objectContaining({ error: 'Defect Notes is required', anchorLink: 'defectNotes-1' }),
+			]);
+			expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(testService.form)).toEqual(
+				expect.arrayContaining([
 					expect.objectContaining({ error: 'Defect Name is required', anchorLink: 'defectName-1' }),
 					expect.objectContaining({ error: 'Defect Notes is required', anchorLink: 'defectNotes-1' }),
-				],
-			});
+				])
+			);
 		});
 
 		it('should limit the defect name to 200 characters', () => {
@@ -125,6 +188,7 @@ describe('CustomDefectsComponent', () => {
 			createComponent(Modes.EDIT);
 
 			testService.form.markAllAsTouched();
+			TestBed.tick();
 
 			expect(component.customDefectsForm.at(0).controls.defectName.touched).toBe(true);
 		});

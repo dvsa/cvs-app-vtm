@@ -1,7 +1,5 @@
 <div [formGroup]="form">
-  @if (
-    testService.mode() === Modes.EDIT || testService.mode() === Modes.AMEND
-  ) {
+  @if (testService.isEditing()) {
     <ng-container formArrayName="testTypes">
       <ng-container formGroupName="0">
         <!-- Carried out during test -->

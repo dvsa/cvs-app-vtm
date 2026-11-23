@@ -6,9 +6,7 @@ import { initialAppState } from '@/src/app/store';
 import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormArray, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
-import { disabled } from '@angular/forms/signals';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
@@ -60,47 +58,8 @@ describe('TestComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('enables reactive controls without enabling the signal control imperatively', () => {
-		const nestedControl = component.form.controls.testTypes.at(0).controls.prohibitionIssued;
-		nestedControl.disable();
-		const signalControl = component.testService.reasonForCreation;
-		const enable = vi.spyOn(signalControl, 'enable');
-
-		component.disableFields();
-
-		expect(nestedControl.enabled).toBe(true);
-		expect(signalControl.enabled).toBe(true);
-		expect(enable).not.toHaveBeenCalled();
-	});
-
-	it('skips all signal controls, including those nested in groups and arrays', () => {
-		const topLevelSignal = TestBed.runInInjectionContext(() => new SignalFormControl('value'));
-		const nestedSignal = TestBed.runInInjectionContext(
-			() => new SignalFormControl('value', (path) => disabled(path, { when: () => true }))
-		);
-		const reactiveControl = new FormControl({ value: 'value', disabled: true });
-		const nestedGroup = new FormGroup({ signal: nestedSignal, reactive: reactiveControl });
-		const group = new FormGroup({ nested: new FormArray([nestedGroup]) });
-		const form: FormGroup = component.form;
-		form.addControl('additionalSignal', topLevelSignal);
-		form.addControl('additionalGroup', group);
-		const enableTopLevel = vi.spyOn(topLevelSignal, 'enable');
-		const enableNested = vi.spyOn(nestedSignal, 'enable');
-
-		component.disableFields();
-
-		expect(enableTopLevel).not.toHaveBeenCalled();
-		expect(enableNested).not.toHaveBeenCalled();
-		expect(topLevelSignal.enabled).toBe(true);
-		expect(nestedSignal.disabled).toBe(true);
-		expect(reactiveControl.enabled).toBe(true);
-		expect(nestedGroup.enabled).toBe(true);
-		expect(group.enabled).toBe(true);
-	});
-
-	it('keeps amendment-only fields disabled after enabling the other controls', () => {
+	it('disables amendment-only fields while leaving editable fields enabled', () => {
 		component.testService.initialMode.set(Modes.AMEND);
-		component.disableFields();
 
 		const controls = component.form.controls.testTypes.at(0).controls;
 		expect(controls.createdAt.disabled).toBe(true);
@@ -111,6 +70,11 @@ describe('TestComponent', () => {
 	});
 
 	it('updates load status dependencies and visibility without revalidating sibling controls', () => {
+		store.overrideSelector(toEditOrNotToEdit, {
+			vehicleType: 'hgv',
+			testTypes: [{ testTypeId: '94' }],
+		} as TestResultSchema);
+		store.refreshState();
 		const service = component.testService;
 		service.vehicleLoadStatus.setValue(VehicleLoadStatusType.UNLADEN);
 		service.unladenBodyType.setValue(UnladenBodyType.OTHER);
@@ -130,6 +94,109 @@ describe('TestComponent', () => {
 		service.partiallyLadenReason.setValue('a'.repeat(200));
 		expect(service.partiallyLadenReason.valid).toBe(true);
 		expect(service.form.getRawValue().testTypes[0].loadStatus.otherUnladenBodyType).toBe('a'.repeat(201));
+	});
+
+	it('shows signal-controlled test fields and updates them when the test result changes', () => {
+		const setContext = (testTypeId: string, testResult: TestResults) => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'psv',
+				testTypes: [{ testTypeId, testResult }],
+			} as TestResultSchema);
+			store.refreshState();
+			fixture.detectChanges();
+		};
+		const hasField = (name: string) => !!fixture.nativeElement.querySelector(`[formcontrolname="${name}"]`);
+
+		setContext('126', TestResults.PASS);
+		expect(hasField('testResult')).toBe(true);
+		expect(hasField('issueRequired')).toBe(true);
+		expect(hasField('prohibitionIssued')).toBe(true);
+		expect(hasField('reapplicationDate')).toBe(false);
+
+		setContext('126', TestResults.FAIL);
+		expect(hasField('issueRequired')).toBe(false);
+		expect(hasField('reapplicationDate')).toBe(true);
+		expect(component.testService.reapplicationDate.errors).toHaveProperty('required');
+
+		setContext('1', TestResults.PASS);
+		expect(hasField('testResult')).toBe(false);
+		expect(hasField('prohibitionIssued')).toBe(false);
+		expect(hasField('reapplicationDate')).toBe(false);
+		expect(component.testService.reapplicationDate.errors).toBeNull();
+	});
+
+	it('preserves different date visibility in amendment and review', () => {
+		store.overrideSelector(toEditOrNotToEdit, {
+			vehicleType: 'hgv',
+			testTypes: [{ testTypeId: '117', testResult: TestResults.PASS }],
+		} as TestResultSchema);
+		store.refreshState();
+		component.testService.initialMode.set(Modes.AMEND);
+		component.testService.mode.set(Modes.AMEND);
+		expect(component.testService.testExpiryDate.fieldTree().hidden()).toBe(true);
+		expect(component.testService.testAnniversaryDate.fieldTree().hidden()).toBe(true);
+
+		component.testService.mode.set(Modes.SUMMARY);
+		expect(component.testService.testExpiryDate.fieldTree().hidden()).toBe(false);
+		expect(component.testService.testAnniversaryDate.fieldTree().hidden()).toBe(false);
+	});
+
+	it.each([TestResults.PASS, TestResults.FAIL])('renders one expiry date when amending an ADR %s result', (outcome) => {
+		store.overrideSelector(toEditOrNotToEdit, {
+			vehicleType: 'hgv',
+			testTypes: [{ testTypeId: '59', testResult: outcome }],
+		} as TestResultSchema);
+		store.refreshState();
+		component.testService.initialMode.set(Modes.AMEND);
+		component.testService.mode.set(Modes.AMEND);
+		fixture.detectChanges();
+
+		expect(component.testService.testExpiryDate.fieldTree().hidden()).toBe(false);
+		expect(fixture.nativeElement.querySelectorAll('[formcontrolname="testExpiryDate"]')).toHaveLength(1);
+	});
+
+	it.each([
+		['59', TestResults.FAIL, Modes.SUMMARY, true],
+		['49', TestResults.PASS, Modes.SUMMARY, true],
+		['49', TestResults.FAIL, Modes.SUMMARY, false],
+		['126', TestResults.PASS, Modes.SUMMARY, true],
+		['1', TestResults.PASS, Modes.SUMMARY, false],
+		['59', TestResults.PASS, Modes.VIEW, false],
+	] as const)(
+		'uses certificate visibility for test %s with result %s in %s',
+		(testTypeId, testResult, mode, visible) => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: 'psv',
+				testTypes: [{ testTypeId, testResult, certificateNumber: '123', centralDocs: { issueRequired: false } }],
+			} as TestResultSchema);
+			store.refreshState();
+			component.testService.mode.set(mode);
+			fixture.detectChanges();
+
+			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(!visible);
+			expect(!!fixture.nativeElement.querySelector('#test-certificateNumber')).toBe(visible);
+		}
+	);
+
+	it('clears nested load-status errors when the section is no longer applicable', () => {
+		store.overrideSelector(toEditOrNotToEdit, {
+			vehicleType: 'hgv',
+			testTypes: [{ testTypeId: '94' }],
+		} as TestResultSchema);
+		store.refreshState();
+		const service = component.testService;
+		service.vehicleLoadStatus.setValue(VehicleLoadStatusType.UNLADEN);
+		expect(service.unladenBodyType.errors).toHaveProperty('required');
+
+		store.overrideSelector(toEditOrNotToEdit, {
+			vehicleType: 'psv',
+			testTypes: [{ testTypeId: '1' }],
+		} as TestResultSchema);
+		store.refreshState();
+		expect(service.vehicleLoadStatus.fieldTree().hidden()).toBe(true);
+		expect(service.unladenBodyType.fieldTree().hidden()).toBe(true);
+		expect(service.unladenBodyType.errors).toBeNull();
+		expect(service.form.getRawValue().testTypes[0].loadStatus.vehicleLoadStatus).toBe(VehicleLoadStatusType.UNLADEN);
 	});
 
 	describe('prepopulateVTG15Required', () => {
@@ -289,6 +356,7 @@ describe('TestComponent', () => {
 				: never;
 
 			beforeEach(() => {
+				component.testService.mode.set(Modes.AMEND);
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				startControl = testTypeGroup.controls.testTypeStartTimestamp;
 				expiryControl = testTypeGroup.controls.testExpiryDate;
@@ -315,6 +383,15 @@ describe('TestComponent', () => {
 				expiryControl.setValue('2024-01-16');
 				expiryControl.markAsTouched();
 				expect(expiryControl.valid).toBe(true);
+			});
+
+			it('revalidates when the start date changes', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				expiryControl.setValue('2024-01-16');
+				expect(expiryControl.valid).toBe(true);
+
+				startControl.setValue('2024-01-17T14:00:00');
+				expect(expiryControl.errors).toHaveProperty('aheadOfDate');
 			});
 
 			it('should be required when amending a passed test', () => {
@@ -348,6 +425,7 @@ describe('TestComponent', () => {
 				: never;
 
 			beforeEach(() => {
+				component.testService.mode.set(Modes.AMEND);
 				const testTypeGroup = component.form.controls.testTypes.at(0);
 				startControl = testTypeGroup.controls.testTypeStartTimestamp;
 				anniversaryControl = testTypeGroup.controls.testAnniversaryDate;
@@ -374,6 +452,15 @@ describe('TestComponent', () => {
 				anniversaryControl.setValue('2024-01-16');
 				anniversaryControl.markAsTouched();
 				expect(anniversaryControl.valid).toBe(true);
+			});
+
+			it('revalidates when the start date changes', () => {
+				startControl.setValue('2024-01-15T14:00:00');
+				anniversaryControl.setValue('2024-01-16');
+				expect(anniversaryControl.valid).toBe(true);
+
+				startControl.setValue('2024-01-17T14:00:00');
+				expect(anniversaryControl.errors).toHaveProperty('aheadOfDate');
 			});
 		});
 
@@ -488,35 +575,35 @@ describe('TestComponent', () => {
 		it('should be false when there is no test result', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined);
 			store.refreshState();
-			expect(component.shouldShowLoadStatus()).toBe(false);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(false);
 		});
 
 		it('should be true for an HGV/TRL annual test', () => {
 			setTestType({ testTypeId: '94' });
-			expect(component.shouldShowLoadStatus()).toBe(true);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(true);
 		});
 
 		// Group 1/2 are PSV tests, which have no load status in the dynamic form templates
 		it.each(['1', '18', '15', '22'])('should be false for group 1/2 test type %s', (testTypeId) => {
 			setTestType({ testTypeId });
-			expect(component.shouldShowLoadStatus()).toBe(false);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(false);
 		});
 
 		it('should be false for a retest when the vehicle has no test history', () => {
 			setTestType({ testTypeId: '53' });
-			expect(component.shouldShowLoadStatus()).toBe(false);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(false);
 		});
 
 		it('should be false for a retest of an annual test that did not fail', () => {
 			setTestType({ testTypeId: '53' });
 			setTestHistory({ testTypeId: '94', testResult: TestResults.PASS, defects: [{ imNumber: 59 }] });
-			expect(component.shouldShowLoadStatus()).toBe(false);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(false);
 		});
 
 		it('should be false for a retest of an annual test without a qualifying defect', () => {
 			setTestType({ testTypeId: '53' });
 			setTestHistory({ testTypeId: '94', testResult: TestResults.FAIL, defects: [{ imNumber: 1 }] });
-			expect(component.shouldShowLoadStatus()).toBe(false);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(false);
 		});
 
 		it.each([
@@ -531,8 +618,8 @@ describe('TestComponent', () => {
 				testResult: TestResults.FAIL,
 				defects: [{ imNumber: 59, deficiencyCategory }],
 			});
-			expect(component.shouldShowLoadStatus()).toBe(expected);
-			expect(component.isLoadStatusRequired()).toBe(expected);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(expected);
+			expect(component.testService.loadStatusRequired()).toBe(expected);
 
 			const control = component.form.controls.testTypes.at(0).controls.loadStatus.controls.vehicleLoadStatus;
 			control.updateValueAndValidity();
@@ -544,10 +631,10 @@ describe('TestComponent', () => {
 		it('should return false when there is no test result', () => {
 			store.overrideSelector(toEditOrNotToEdit, undefined);
 			store.refreshState();
-			expect(component.shouldShowResult()).toBe(false);
+			expect(!component.testService.testOutcome.fieldTree().hidden()).toBe(false);
 			expect(component.shouldShowGenerateADRCertificate()).toBe(false);
-			expect(component.shouldShowProhibitionIssued()).toBe(false);
-			expect(component.shouldShowCentralDocs()).toBe(false);
+			expect(!component.testService.prohibitionIssued.fieldTree().hidden()).toBe(false);
+			expect(!component.testService.centralDocsIssueRequired.fieldTree().hidden()).toBe(false);
 			expect(component.testService.certificateNumber.fieldTree().hidden()).toBe(true);
 		});
 
@@ -748,21 +835,21 @@ describe('TestComponent', () => {
 			} as TestResultSchema);
 			store.refreshState();
 
-			expect(component.shouldShowResult()).toBe(true);
+			expect(!component.testService.testOutcome.fieldTree().hidden()).toBe(true);
 			expect(component.shouldShowGenerateADRCertificate()).toBe(true);
-			expect(component.shouldShowProhibitionIssued()).toBe(true);
+			expect(!component.testService.prohibitionIssued.fieldTree().hidden()).toBe(true);
 		});
 
 		it('should include central docs ids and group7 for central docs check', () => {
 			// central docs id from TEST_TYPES_GROUP9_10_CENTRAL_DOCS (e.g. '95')
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '95' }] } as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCentralDocs()).toBe(true);
+			expect(!component.testService.centralDocsIssueRequired.fieldTree().hidden()).toBe(true);
 
 			// also true for group7 id
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '59' }] } as TestResultSchema);
 			store.refreshState();
-			expect(component.shouldShowCentralDocs()).toBe(true);
+			expect(!component.testService.centralDocsIssueRequired.fieldTree().hidden()).toBe(true);
 		});
 
 		it('hides the certificate for unrelated or failing tests', () => {
@@ -811,17 +898,17 @@ describe('TestComponent', () => {
 
 		it('should show the result with pass, fail and PRS options when creating', () => {
 			setTestResult({ testResult: TestResults.PASS });
-			expect(component.isSpecialistGroup1()).toBe(true);
-			expect(component.shouldShowResult()).toBe(true);
+			expect(component.testService.isSpecialistGroup1()).toBe(true);
+			expect(!component.testService.testOutcome.fieldTree().hidden()).toBe(true);
 			expect(component.resultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'prs']);
 		});
 
 		it('should show the description, prohibition issued and hide the anniversary date', () => {
 			setTestResult({ testResult: TestResults.PASS });
-			expect(component.shouldShowCreateModeDescription()).toBe(true);
-			expect(component.shouldShowProhibitionIssued()).toBe(true);
-			expect(component.shouldShowAnniversaryDate()).toBe(false);
-			expect(component.shouldShowExpiryDate()).toBe(false);
+			expect(!component.testService.testTypeName.fieldTree().hidden()).toBe(true);
+			expect(!component.testService.prohibitionIssued.fieldTree().hidden()).toBe(true);
+			expect(!component.testService.testAnniversaryDate.fieldTree().hidden()).toBe(false);
+			expect(!component.testService.testExpiryDate.fieldTree().hidden()).toBe(false);
 		});
 
 		it.each([
@@ -830,15 +917,15 @@ describe('TestComponent', () => {
 			[TestResults.FAIL, false],
 		])('should show issue documents centrally when the result is %s: %s', (testResult, expected) => {
 			setTestResult({ testResult });
-			expect(component.shouldShowCentralDocs()).toBe(expected);
+			expect(!component.testService.centralDocsIssueRequired.fieldTree().hidden()).toBe(expected);
 		});
 
 		it('should only show the reapplication date when the test has failed', () => {
 			setTestResult({ testResult: TestResults.FAIL });
-			expect(component.shouldShowReapplicationDate()).toBe(true);
+			expect(!component.testService.reapplicationDate.fieldTree().hidden()).toBe(true);
 
 			setTestResult({ testResult: TestResults.PASS });
-			expect(component.shouldShowReapplicationDate()).toBe(false);
+			expect(!component.testService.reapplicationDate.fieldTree().hidden()).toBe(false);
 		});
 
 		describe('certificate number visibility', () => {
@@ -867,7 +954,15 @@ describe('TestComponent', () => {
 		});
 
 		describe('testResult', () => {
-			const requiredStandard = { rsNumber: 1, prs: false } as never;
+			const requiredStandard = {
+				sectionNumber: '1',
+				sectionDescription: 'Section',
+				rsNumber: 1,
+				requiredStandard: 'Standard',
+				refCalculation: '1',
+				additionalInfo: false,
+				prs: false,
+			};
 
 			it.each([
 				[TestResults.PASS, [requiredStandard], 'Cannot pass test when required standards are present'],
@@ -881,7 +976,7 @@ describe('TestComponent', () => {
 					testTypeGroup.controls.requiredStandards.setValue(requiredStandards);
 					testTypeGroup.controls.testResult.setValue(testResult);
 
-					expect(testTypeGroup.controls.testResult.errors).toEqual({ invalidTestResult: { error } });
+					expect(testTypeGroup.controls.testResult.errors).toHaveProperty('invalidTestResult.message', error);
 				}
 			);
 
@@ -896,6 +991,19 @@ describe('TestComponent', () => {
 				testTypeGroup.controls.testResult.setValue(testResult);
 
 				expect(testTypeGroup.controls.testResult.valid).toBe(true);
+			});
+
+			it('revalidates an existing result when required standards change', () => {
+				setTestResult({ testResult: TestResults.PASS });
+				const testType = component.form.controls.testTypes.at(0);
+				testType.controls.testResult.setValue(TestResults.PASS);
+				testType.controls.requiredStandards.setValue([]);
+				expect(testType.controls.testResult.valid).toBe(true);
+
+				testType.controls.requiredStandards.setValue([requiredStandard]);
+				expect(testType.controls.testResult.errors).toHaveProperty('invalidTestResult');
+				testType.controls.requiredStandards.setValue([]);
+				expect(testType.controls.testResult.valid).toBe(true);
 			});
 		});
 
@@ -951,7 +1059,7 @@ describe('TestComponent', () => {
 			control.setValue(null);
 			control.markAsTouched();
 
-			expect(component.isLoadStatusRequired()).toBe(true);
+			expect(component.testService.loadStatusRequired()).toBe(true);
 			expect(control.valid).toBe(false);
 			expect(control.errors).toHaveProperty('required');
 		});
@@ -960,7 +1068,7 @@ describe('TestComponent', () => {
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '1' }] } as TestResultSchema);
 			store.refreshState();
 
-			expect(component.isLoadStatusRequired()).toBe(false);
+			expect(component.testService.loadStatusRequired()).toBe(false);
 		});
 	});
 });
@@ -1019,7 +1127,7 @@ describe('TestComponent - AMEND mode', () => {
 		});
 
 		it('should be displayed when the annual test being retested failed on a qualifying defect', () => {
-			expect(component.shouldShowLoadStatus()).toBe(true);
+			expect(!component.testService.vehicleLoadStatus.fieldTree().hidden()).toBe(true);
 		});
 
 		it('should not be mandatory, so an amendment can be saved with it left blank', () => {
@@ -1027,7 +1135,7 @@ describe('TestComponent - AMEND mode', () => {
 			control.setValue(null);
 			control.markAsTouched();
 
-			expect(component.isLoadStatusRequired()).toBe(false);
+			expect(component.testService.loadStatusRequired()).toBe(false);
 			expect(control.valid).toBe(true);
 		});
 	});

@@ -16,10 +16,7 @@
       testService.mode() === Modes.AMEND
     ) {
       <app-vehicle-header
-        [isEditing]="
-          testService.mode() === Modes.EDIT ||
-          testService.mode() === Modes.AMEND
-        "
+        [isEditing]="testService.isEditing()"
         [isReview]="testService.mode() === Modes.SUMMARY"
         [testResult]="testResult()"
         [testNumber]="testNumber()"
@@ -68,10 +65,7 @@
         "
       >
         <ng-template #template>
-          @if (
-            testService.mode() === Modes.EDIT ||
-            testService.mode() === Modes.AMEND
-          ) {
+          @if (testService.isEditing()) {
             <app-accordion
               [id]="'vehicle'"
               [title]="'Vehicle Details'"
@@ -92,7 +86,7 @@
               [ngTemplateOutlet]="specialistSections"
             ></ng-container>
           }
-          @if (shouldShowSeatbeltSection()) {
+          @if (!testService.seatbeltInstallationCheckDate.fieldTree().hidden()) {
             <app-accordion
               [id]="'seatbelts'"
               [title]="'Seatbelts'"
@@ -113,7 +107,7 @@
               <app-test-notes />
             </form>
           </app-accordion>
-          @if (shouldShowDefectSection()) {
+          @if (!testService.defects.fieldTree().hidden()) {
             <app-accordion
               [id]="'defects'"
               [title]="'Defects'"
@@ -138,10 +132,7 @@
               [testRecord]="testResult()"
             />
           }
-          @if (
-            testService.mode() === Modes.EDIT ||
-            testService.mode() === Modes.AMEND
-          ) {
+          @if (testService.isEditing()) {
             <app-accordion
               [id]="'reason-for-creation'"
               [title]="'Reason for creation'"
@@ -154,7 +145,7 @@
           }
         </ng-template>
         <ng-template #specialistSections>
-          @if (shouldShowRequiredStandardsSection()) {
+          @if (!testService.requiredStandards.fieldTree().hidden()) {
             <app-accordion
               [id]="'requiredStandards'"
               [title]="'Required Standards'"
@@ -165,7 +156,7 @@
               </form>
             </app-accordion>
           }
-          @if (shouldShowAdditionalDefectsSection()) {
+          @if (!testService.customDefects.fieldTree().hidden()) {
             <app-accordion
               [id]="'additionalDefects'"
               [title]="'Additional Defects'"

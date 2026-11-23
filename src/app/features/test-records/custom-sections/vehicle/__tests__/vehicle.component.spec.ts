@@ -54,6 +54,34 @@ describe('VehicleComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	it('uses signal visibility for VTG15 and its conditional fields', () => {
+		store.overrideSelector(techRecord, {
+			techRecord_vehicleType: 'hgv',
+			techRecord_adrDetails_dangerousGoods: true,
+		} as TechRecordType<'get'>);
+		store.refreshState();
+		testService.vtg15Required.setValue(true);
+		fixture.detectChanges();
+		const hasField = (name: string) => !!fixture.nativeElement.querySelector(`[formcontrolname="${name}"]`);
+
+		expect(hasField('vtg15Required')).toBe(true);
+		expect(hasField('unNumber')).toBe(true);
+		expect(testService.unNumber.errors).toHaveProperty('required');
+
+		testService.vtg15Required.setValue(false);
+		fixture.detectChanges();
+		expect(hasField('unNumber')).toBe(false);
+		expect(testService.unNumber.errors).toBeNull();
+
+		store.overrideSelector(techRecord, {
+			techRecord_vehicleType: 'trl',
+			techRecord_euVehicleCategory: EUVehicleCategory.O1,
+		} as TechRecordType<'get'>);
+		store.refreshState();
+		fixture.detectChanges();
+		expect(hasField('vtg15Required')).toBe(false);
+	});
+
 	describe('validation', () => {
 		describe('countryOfRegistration', () => {
 			it('should be invalid when empty', () => {

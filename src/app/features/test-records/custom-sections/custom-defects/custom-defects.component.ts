@@ -1,32 +1,22 @@
 import { ButtonComponent } from '@/src/app/components/button/button.component';
-import { GlobalError } from '@/src/app/core/components/global-error/global-error.interface';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
-import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { TEST_TYPES_GROUP1_SPEC_TEST } from '@/src/app/models/testTypeId.enum';
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
-import { TestService } from '@/src/app/services/test/test.service';
+import { TestService, customDefectFieldError } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Injector, OnInit, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-	TouchedChangeEvent,
-	ValidationErrors,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, TouchedChangeEvent } from '@angular/forms';
+import { validate } from '@angular/forms/signals';
+import { SignalFormControl } from '@angular/forms/signals/compat';
 import { SpecialistCustomDefectsSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
-import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
 type CustomDefectForm = FormGroup<{
-	defectName: FormControl<string | null>;
-	defectNotes: FormControl<string | null>;
+	defectName: SignalFormControl<string | null>;
+	defectNotes: SignalFormControl<string | null>;
 }>;
 
 @Component({
@@ -47,8 +37,8 @@ export class CustomDefectsComponent implements OnInit {
 	fb = inject(FormBuilder);
 	store = inject(Store);
 	testService = inject(TestService);
-	commonValidators = inject(CommonValidatorsService);
 	destroyRef = inject(DestroyRef);
+	private readonly injector = inject(Injector);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -62,7 +52,7 @@ export class CustomDefectsComponent implements OnInit {
 	readonly FormNodeWidth = FormNodeWidth;
 
 	ngOnInit(): void {
-		if (!this.isEditing()) return;
+		if (!this.testService.isEditing()) return;
 
 		const customDefects = this.form.controls.testTypes.at(0).controls.customDefects;
 		for (const customDefect of customDefects.value ?? []) {
@@ -80,50 +70,21 @@ export class CustomDefectsComponent implements OnInit {
 				takeUntilDestroyed(this.destroyRef)
 			)
 			.subscribe(() => this.customDefectsForm.markAllAsTouched());
-
-		customDefects.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isSpecialistGroup1(),
-				() => this.getCustomDefectErrors()
-			),
-		]);
 	}
 
 	createCustomDefectForm(customDefect?: SpecialistCustomDefectsSchema): CustomDefectForm {
-		return this.fb.group({
-			defectName: this.fb.control<string | null>(customDefect?.defectName ?? null, [
-				this.commonValidators.required('Defect Name'),
-				this.commonValidators.maxLength(200, 'Defect Name'),
-			]),
-			defectNotes: this.fb.control<string | null>(customDefect?.defectNotes ?? null, [
-				this.commonValidators.required('Defect Notes'),
-				this.commonValidators.maxLength(500, 'Defect Notes'),
-			]),
+		return new FormGroup({
+			defectName: new SignalFormControl<string | null>(
+				customDefect?.defectName ?? null,
+				(path) => validate(path, ({ value }) => customDefectFieldError(value(), 'Defect Name', 200)),
+				{ injector: this.injector }
+			),
+			defectNotes: new SignalFormControl<string | null>(
+				customDefect?.defectNotes ?? null,
+				(path) => validate(path, ({ value }) => customDefectFieldError(value(), 'Defect Notes', 500)),
+				{ injector: this.injector }
+			),
 		});
-	}
-
-	/** Reports every invalid field of every additional defect, so they all appear in the global error summary. */
-	getCustomDefectErrors(): ValidationErrors | null {
-		const errors: GlobalError[] = [];
-
-		for (const [index, customDefect] of this.customDefectsForm.controls.entries()) {
-			for (const [key, control] of Object.entries(customDefect.controls)) {
-				const error = Object.values(control.errors ?? {})[0] as GlobalError | undefined;
-				if (error) {
-					errors.push({ ...error, anchorLink: `${key}-${index}` });
-				}
-			}
-		}
-
-		return errors.length ? { customDefects: errors } : null;
-	}
-
-	isEditing(): boolean {
-		return this.testService.mode() === Modes.EDIT || this.testService.mode() === Modes.AMEND;
-	}
-
-	isSpecialistGroup1(): boolean {
-		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	onAddCustomDefect(): void {
@@ -134,11 +95,6 @@ export class CustomDefectsComponent implements OnInit {
 		const customDefectForm = this.createCustomDefectForm(customDefect);
 		this.customDefectsForm.push(customDefectForm);
 
-		// The common validators skip controls without a parent, so validate the fields again now they have one
-		for (const control of Object.values(customDefectForm.controls)) {
-			control.updateValueAndValidity();
-		}
-
 		// Touched events only fire on the first touch, so reset it for the next review to touch the new defect too
 		this.form.controls.testTypes.at(0).controls.customDefects.markAsUntouched();
 	}
@@ -146,6 +102,4 @@ export class CustomDefectsComponent implements OnInit {
 	onRemoveCustomDefect(index: number): void {
 		this.customDefectsForm.removeAt(index);
 	}
-
-	protected readonly Modes = Modes;
 }

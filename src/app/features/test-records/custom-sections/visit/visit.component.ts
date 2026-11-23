@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
-import { Modes } from '@models/modes.enum';
 import { ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { MultiOptionsService, SpecialRefData } from '@services/multi-options/multi-options.service';
@@ -61,6 +60,5 @@ export class VisitComponent implements OnInit {
 		this.form.patchValue({ testerName: tester.name, testerEmailAddress: tester.email });
 	}
 
-	protected readonly Modes = Modes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 }

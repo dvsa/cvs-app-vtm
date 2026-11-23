@@ -5,7 +5,6 @@ import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-ch
 import { GovukFormGroupDateComponent } from '@/src/app/forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
-import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import {
 	MultiOptions,
 	PASS_FAIL_OPTIONS,
@@ -23,18 +22,9 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
-import {
-	AbstractControl,
-	FormArray,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-	ValidationErrors,
-} from '@angular/forms';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
-import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
@@ -43,13 +33,6 @@ import { GovukFormGroupTextareaComponent } from '@forms/components/govuk-form-gr
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { DocumentType } from '@models/document-type.enum';
 import { Modes } from '@models/modes.enum';
-import {
-	TEST_TYPES_GROUP1_SPEC_TEST,
-	TEST_TYPES_GROUP5_13,
-	TEST_TYPES_GROUP7,
-	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
-} from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { GenerateAdrCertificateComponent } from './generate-adr-certificate/generate-adr-certificate.component';
@@ -85,7 +68,6 @@ export class TestComponent implements OnInit {
 	testTypeService = inject(TestTypeService);
 	techRecordService = inject(TechnicalRecordService);
 	optionsService = inject(MultiOptionsService);
-	commonValidators = inject(CommonValidatorsService);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
@@ -93,7 +75,6 @@ export class TestComponent implements OnInit {
 	abandonReasons = computed(() => this.getAbandonReasonsList());
 
 	readonly FormNodeWidth = FormNodeWidth;
-	readonly TestResults = TestResults;
 	readonly ABANDON_REASONS_REGEX = new RegExp('\\. (?<!\\..\\. )');
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
 	readonly UNLADEN_BODY_TYPES_OPTIONS = getOptionsFromEnum(UnladenBodyType);
@@ -102,7 +83,7 @@ export class TestComponent implements OnInit {
 		if (this.testService.mode() === Modes.AMEND) {
 			return RESULT_OPTIONS;
 		}
-		if (this.isSpecialistGroup1()) {
+		if (this.testService.isSpecialistGroup1()) {
 			return PASS_FAIL_PRS_OPTIONS;
 		}
 		return PASS_FAIL_OPTIONS;
@@ -111,8 +92,6 @@ export class TestComponent implements OnInit {
 	ngOnInit(): void {
 		this.prepopulateVTG15Required();
 		this.loadOptions();
-		this.addValidators();
-		this.disableFields();
 	}
 
 	prepopulateVTG15Required(): void {
@@ -149,224 +128,19 @@ export class TestComponent implements OnInit {
 		this.optionsService.loadOptions(this.testTypeService.getAbandonReasonsResourceType(testResult));
 	}
 
-	addValidators(): void {
-		const testTypeGroup = this.form.controls.testTypes.at(0);
-
-		testTypeGroup.controls.testResult.setValidators([
-			// Applies when abandoning too, as it does in the dynamic form flow
-			this.commonValidators.applyWhen(
-				() => this.isSpecialistGroup1(),
-				(control) => this.validateResultAgainstRequiredStandards(control)
-			),
-		]);
-
-		testTypeGroup.controls.prohibitionIssued.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.shouldShowProhibitionIssued(),
-				this.commonValidators.required('Prohibition issued')
-			),
-		]);
-
-		testTypeGroup.controls.testExpiryDate.setValidators([
-			this.commonValidators.applyWhen(
-				() =>
-					(this.testService.mode() === Modes.AMEND &&
-						testTypeGroup.controls.testResult.value === TestResults.PASS &&
-						!this.isSpecialistGroup1() &&
-						!this.isTestTypeGroup12or14() &&
-						!this.isTestTypeGroup5or13()) ||
-					this.shouldShowExpiryDate(),
-				this.commonValidators.required('Expiry Date')
-			),
-			this.commonValidators.date('Expiry Date'),
-			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Expiry Date', 'Start Time'),
-			this.commonValidators.applyWhen(
-				() => this.isTestTypeGroup7() && this.testService.mode() === Modes.EDIT,
-				this.commonValidators.futureDate('Expiry Date')
-			),
-		]);
-
-		testTypeGroup.controls.testAnniversaryDate.setValidators([
-			this.commonValidators.applyWhen(
-				() =>
-					this.testService.mode() === Modes.AMEND &&
-					testTypeGroup.controls.testResult.value === TestResults.PASS &&
-					this.shouldShowAnniversaryDate(),
-				this.commonValidators.required('Anniversary date')
-			),
-			this.commonValidators.date('Anniversary date'),
-			this.commonValidators.isAfterDate('testTypeStartTimestamp', 'Anniversary date', 'Start Time'),
-		]);
-
-		testTypeGroup.controls.reasonForAbandoning.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.isTestTypeGroup5or13() && this.isAbandoned(),
-				this.commonValidators.required('Reason for abandoning')
-			),
-		]);
-
-		testTypeGroup.controls.reapplicationDate.setValidators([
-			this.commonValidators.applyWhen(
-				() => this.shouldShowReapplicationDate(),
-				this.commonValidators.required('Reapplication date'),
-				this.commonValidators.date('Reapplication date'),
-				this.commonValidators.futureDate('Reapplication date')
-			),
-		]);
-
-		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
-			this.commonValidators.applyWhen(
-				() =>
-					this.testService.mode() === Modes.AMEND &&
-					this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED,
-				this.commonValidators.requiredWith('Additional details for abandoning', 'Result', 'test')
-			),
-		]);
-	}
-
-	disableFields(): void {
-		Object.values(this.form.controls).forEach((control) => {
-			this.enableReactiveControls(control);
-		});
-		this.form.updateValueAndValidity();
-	}
-
-	private containsSignalControl(control: AbstractControl): boolean {
-		if (control instanceof SignalFormControl) return true;
-		if (control instanceof FormGroup || control instanceof FormArray) {
-			return Object.values(control.controls).some((child) => this.containsSignalControl(child));
-		}
-		return false;
-	}
-
-	private enableReactiveControls(control: AbstractControl): void {
-		if (control instanceof SignalFormControl) return;
-		if ((control instanceof FormGroup || control instanceof FormArray) && this.containsSignalControl(control)) {
-			// Enabling a container directly would also enable its signal descendants.
-			Object.values(control.controls).forEach((child) => this.enableReactiveControls(child));
-			control.updateValueAndValidity({ onlySelf: true });
-		} else {
-			control.enable({ onlySelf: true });
-		}
-	}
-
-	readonly isTestTypeGroup7 = computed(() =>
-		TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
-	);
-
-	readonly isSpecialistGroup1 = computed(() =>
-		TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
-	);
-
-	readonly isTestTypeGroup12or14 = computed(() =>
-		TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
-	);
-
-	readonly isTestTypeGroup5or13 = computed(() =>
-		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
-	);
-
-	readonly isAbandoned = computed(() => this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED);
-
-	readonly isPassOrPrs = computed(() => {
-		const testResult = this.testResult()?.testTypes[0].testResult;
-		return testResult === TestResults.PASS || testResult === TestResults.PRS;
-	});
-
-	readonly shouldShowResult = computed(
-		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()
-	);
-
-	/** Mirrors the `resultDependantOnRequiredStandards` async validator used by the dynamic form service. */
-	validateResultAgainstRequiredStandards(control: AbstractControl): ValidationErrors | null {
-		const hasRequiredStandards = !!this.form.controls.testTypes.at(0).controls.requiredStandards.value?.length;
-
-		if (control.value === TestResults.PASS && hasRequiredStandards) {
-			return {
-				invalidTestResult: {
-					error: 'Cannot pass test when required standards are present',
-				},
-			};
-		}
-		if (control.value === TestResults.FAIL && !hasRequiredStandards) {
-			return {
-				invalidTestResult: {
-					error: 'Cannot fail test when no required standards are present',
-				},
-			};
-		}
-		if (control.value === TestResults.PRS && !hasRequiredStandards) {
-			return {
-				invalidTestResult: {
-					error: 'Cannot mark test as PRS when no required standards are present',
-				},
-			};
-		}
-
-		return null;
-	}
-
-	readonly shouldShowExpiryDate = computed(() => {
-		if (this.testResult()?.testTypes[0].testResult === TestResults.ABANDONED) return false;
-		if (this.testService.mode() === Modes.ABANDON) return false;
-		if (!this.isTestTypeGroup7()) return false;
-		if (this.testResult()?.testTypes[0].testResult === 'fail') return false;
-		return true;
-	});
-
-	readonly shouldShowCreateModeDescription = computed(
-		() =>
-			(this.isTestTypeGroup7() || this.isTestTypeGroup5or13() || this.isSpecialistGroup1()) &&
-			this.testService.mode() === Modes.EDIT
-	);
-
-	readonly shouldShowAnniversaryDate = computed(
-		() =>
-			!this.isTestTypeGroup7() &&
-			!this.isSpecialistGroup1() &&
-			!this.isTestTypeGroup12or14() &&
-			!this.isTestTypeGroup5or13()
-	);
-
-	readonly shouldShowCentralDocs = computed(() => {
-		if (this.isSpecialistGroup1() || this.isTestTypeGroup5or13()) {
-			return this.isPassOrPrs();
-		}
-
-		return (
-			[...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP7].includes(
-				this.testResult()?.testTypes[0].testTypeId ?? ''
-			) && this.testResult()?.testTypes[0].testResult !== 'fail'
-		);
-	});
-
 	readonly shouldShowGenerateADRCertificate = computed(() => {
 		if (this.testService.mode() === Modes.AMEND) {
 			return false;
 		}
-		return (
-			TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? '') &&
-			this.testResult()?.testTypes[0].testResult === 'pass'
-		);
+		return this.testService.isTestTypeGroup7() && this.testResult()?.testTypes[0].testResult === 'pass';
 	});
-
-	readonly shouldShowProhibitionIssued = computed(
-		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.isTestTypeGroup5or13()
-	);
-
-	readonly shouldShowReapplicationDate = computed(
-		() => this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL
-	);
 
 	readonly shouldShowApprovalsMedia = computed(
 		() =>
-			this.isSpecialistGroup1() &&
+			this.testService.isSpecialistGroup1() &&
 			(this.testService.mode() === Modes.VIEW ||
 				(this.testService.initialMode() === Modes.AMEND && this.testService.mode() === Modes.SUMMARY))
 	);
-
-	readonly shouldShowLoadStatus = this.testService.showLoadStatus;
-	readonly isLoadStatusRequired = this.testService.loadStatusRequired;
 
 	getReasonsList(reasons: string | string[] | null): string[] {
 		return Array.isArray(reasons) ? reasons : (reasons?.split(this.ABANDON_REASONS_REGEX) ?? []);

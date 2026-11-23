@@ -9,7 +9,6 @@ import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Modes } from '@models/modes.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -36,6 +35,4 @@ export class SeatbeltsComponent {
 
 	readonly FormNodeWidth = FormNodeWidth;
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
-
-	protected readonly Modes = Modes;
 }

@@ -53,7 +53,6 @@ import { VehicleComponent } from '@features/test-records/custom-sections/vehicle
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_13, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -260,7 +259,7 @@ export class TestRecordV2Component implements OnInit {
 		// The errors belong to the page being left behind, so they must not follow the user back.
 		this.globalErrorService.clearErrors();
 		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
-		// The abandon-only validation is dropped by the abandon page as it is destroyed.
+		// The mode change below drops the abandon-only validation.
 		if (this.testService.mode() === Modes.ABANDON) {
 			this.testService.isAbandoning.set(false);
 		}
@@ -395,30 +394,6 @@ export class TestRecordV2Component implements OnInit {
 		return this.testRecordService.isTestTypeGroupEditable$;
 	}
 
-	shouldShowSeatbeltSection(): boolean {
-		// Sourced from the test result rather than the tech record, as the tech record is not
-		// guaranteed to be loaded when amending or viewing an existing test.
-		return this.testResult()?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1();
-	}
-
-	shouldShowDefectSection(): boolean {
-		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup5or13();
-	}
-
-	isTestTypeGroup5or13 = computed(() =>
-		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
-	);
-
-	isTestTypeGroup7 = computed(() => TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? ''));
-
-	shouldShowRequiredStandardsSection(): boolean {
-		return this.isSpecialistGroup1();
-	}
-
-	shouldShowAdditionalDefectsSection(): boolean {
-		return this.isSpecialistGroup1();
-	}
-
 	shouldShowSpecialistSectionsAfterTest(): boolean {
 		// Matches the original DFS template order, where LGV/car/motorcycle show Required Standards
 		// and Additional Defects straight after Test, and PSV/HGV/TRL show them after Notes.
@@ -426,10 +401,6 @@ export class TestRecordV2Component implements OnInit {
 		return (
 			vehicleType === VehicleTypes.LGV || vehicleType === VehicleTypes.CAR || vehicleType === VehicleTypes.MOTORCYCLE
 		);
-	}
-
-	isSpecialistGroup1(): boolean {
-		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	protected readonly Modes = Modes;

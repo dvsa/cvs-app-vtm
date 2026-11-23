@@ -1,7 +1,6 @@
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { TagComponent } from '@/src/app/components/tag/tag.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
-import { Modes } from '@/src/app/models/modes.enum';
 import { TruncatePipe } from '@/src/app/pipes/truncate/truncate.pipe';
 import { ResultOfTestService } from '@/src/app/services/result-of-test/result-of-test.service';
 import { TestRecordsService } from '@/src/app/services/test-records/test-records.service';
@@ -44,17 +43,11 @@ export class RequiredStandardsComponent implements OnInit {
 	editingTestResult = this.store.selectSignal(testResultInEdit);
 	requiredStandards = computed(() => this.testResult()?.testTypes[0].requiredStandards ?? []);
 
-	readonly Modes = Modes;
-
 	ngOnInit(): void {
-		if (!this.isEditing()) return;
+		if (!this.testService.isEditing()) return;
 
 		this.syncResultWithRequiredStandards();
 		this.handleEuVehicleCategoryChange();
-	}
-
-	isEditing(): boolean {
-		return this.testService.mode() === Modes.EDIT || this.testService.mode() === Modes.AMEND;
 	}
 
 	handleEuVehicleCategoryChange(): void {

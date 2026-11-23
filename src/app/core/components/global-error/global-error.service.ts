@@ -115,7 +115,11 @@ export class GlobalErrorService {
 				if (controlErrors.length > 0) {
 					// A control holding a list (e.g. additional defects) can report an error for each of its items
 					const firstError = controlErrors[0];
-					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
+					const details =
+						firstError && typeof firstError === 'object' && Array.isArray(firstError.details)
+							? firstError.details
+							: firstError;
+					for (const error of Array.isArray(details) ? details : [details]) {
 						errors.push({
 							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,

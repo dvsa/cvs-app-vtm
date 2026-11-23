@@ -4,7 +4,7 @@ import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { mockTestResult } from '@mocks/mock-test-result';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { NotesComponent } from '../notes.component';
 
@@ -38,11 +38,55 @@ describe('NotesComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	it.each([
+		[Modes.EDIT, true],
+		[Modes.AMEND, true],
+		[Modes.VIEW, false],
+		[Modes.SUMMARY, false],
+	] as const)('shows the notes editor in %s mode: %s', (mode, editing) => {
+		component.testService.mode.set(mode);
+		fixture.detectChanges();
+
+		expect(!!fixture.nativeElement.querySelector('textarea')).toBe(editing);
+	});
+
 	it('validates the notes length using the test type label', () => {
 		const notes = TestBed.inject(TestService).additionalNotesRecorded;
 		notes.setValue('a'.repeat(500));
 		expect(notes.valid).toBe(true);
 		notes.setValue('a'.repeat(501));
+		expect(notes.errors).toHaveProperty(
+			'maxLength.message',
+			'Additional Notes (optional) must be less than or equal to 500 characters'
+		);
+	});
+
+	it('keeps the displayed label, hint and validation message in sync when the test type changes', () => {
+		const store = TestBed.inject(MockStore);
+		const testResult = mockTestResult();
+		const notes = TestBed.inject(TestService).additionalNotesRecorded;
+		notes.setValue('a'.repeat(501));
+
+		store.overrideSelector(toEditOrNotToEdit, {
+			...testResult,
+			testTypes: [{ ...testResult.testTypes[0], testTypeId: '59', centralDocs: { issueRequired: true } }],
+		});
+		store.refreshState();
+		fixture.detectChanges();
+
+		expect(fixture.nativeElement.textContent).toContain('Additional Notes');
+		expect(component.additionalNotesHint()).toBe('Enter a reason for issuing documents centrally');
+		expect(notes.errors).toHaveProperty(
+			'maxLength.message',
+			'Additional Notes must be less than or equal to 500 characters'
+		);
+
+		store.overrideSelector(toEditOrNotToEdit, testResult);
+		store.refreshState();
+		fixture.detectChanges();
+
+		expect(fixture.nativeElement.textContent).toContain('Additional Notes (optional)');
+		expect(component.additionalNotesHint()).toBe('');
 		expect(notes.errors).toHaveProperty(
 			'maxLength.message',
 			'Additional Notes (optional) must be less than or equal to 500 characters'

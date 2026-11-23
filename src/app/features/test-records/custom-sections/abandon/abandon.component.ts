@@ -1,13 +1,12 @@
 import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
-import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
 import { MultiOptions } from '@/src/app/models/options.model';
 import { MultiOptionsService } from '@/src/app/services/multi-options/multi-options.service';
 import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { testResultInEdit } from '@/src/app/store/test-records';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
@@ -25,12 +24,11 @@ const NOTES_REQUIRED_TEST_TYPES = new Set<string>([
 	imports: [FormsModule, ReactiveFormsModule, GovukCheckboxGroupComponent, GovukFormGroupTextareaComponent],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AbandonComponent implements OnInit, OnDestroy {
+export class AbandonComponent implements OnInit {
 	store = inject(Store);
 	testService = inject(TestService);
 	testTypeService = inject(TestTypeService);
 	optionsService = inject(MultiOptionsService);
-	commonValidators = inject(CommonValidatorsService);
 
 	form = this.testService.form;
 	testResult = this.store.selectSignal(testResultInEdit);
@@ -45,11 +43,6 @@ export class AbandonComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.loadOptions();
-		this.addValidators();
-	}
-
-	ngOnDestroy(): void {
-		this.removeValidators();
 	}
 
 	getAbandonReasonsList(): MultiOptions {
@@ -65,32 +58,5 @@ export class AbandonComponent implements OnInit, OnDestroy {
 		const testResult = this.testResult();
 		if (!testResult) return;
 		this.optionsService.loadOptions(this.testTypeService.getAbandonReasonsResourceType(testResult));
-	}
-
-	addValidators(): void {
-		const testTypeId = this.testResult()?.testTypes[0].testTypeId ?? '';
-		const testTypeGroup = this.form.controls.testTypes.at(0);
-		testTypeGroup.controls.reasonForAbandoning.setValidators([
-			this.commonValidators.required('Why was this test abandoned?'),
-		]);
-		testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
-			this.commonValidators.maxLength(500, 'Additional notes as to why this test was abandoned (optional)'),
-		]);
-		if ([...TEST_TYPES_GROUP1_SPEC_TEST, ...TEST_TYPES_GROUP5_SPEC_TEST].includes(testTypeId)) {
-			testTypeGroup.controls.additionalCommentsForAbandon.setValidators([
-				this.commonValidators.required(() => ({ error: 'Enter additional notes as to why this test was abandoned' })),
-			]);
-		}
-	}
-
-	removeValidators(): void {
-		const testTypeGroup = this.form.controls.testTypes.at(0);
-		for (const control of [
-			testTypeGroup.controls.reasonForAbandoning,
-			testTypeGroup.controls.additionalCommentsForAbandon,
-		]) {
-			control.clearValidators();
-			control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-		}
 	}
 }

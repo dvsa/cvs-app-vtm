@@ -57,6 +57,26 @@ import {
 } from '../../models/options.model';
 import { nullADRDetails } from '../../store/technical-records/technical-record-service.reducer';
 
+function isHeavyTrailer(
+	techRecord: TechRecordType<'get' | 'put'>
+): techRecord is TechRecordTypeVehicle<'trl', 'get' | 'put'> {
+	return (
+		techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
+		techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O1 &&
+		techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O2
+	);
+}
+
+export function isAdrVehicle(
+	techRecord: TechRecordType<'get' | 'put'>
+): techRecord is TechRecordTypeVehicle<'hgv' | 'lgv' | 'trl', 'get' | 'put'> {
+	return (
+		techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+		techRecord.techRecord_vehicleType === VehicleTypes.LGV ||
+		isHeavyTrailer(techRecord)
+	);
+}
+
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
 	private store = inject(Store);
@@ -355,20 +375,11 @@ export class TechnicalRecordService {
 	isAdrVehicle(
 		techRecord: TechRecordType<'get' | 'put'>
 	): techRecord is TechRecordTypeVehicle<'hgv' | 'lgv' | 'trl', 'get' | 'put'> {
-		if (techRecord.techRecord_vehicleType === VehicleTypes.HGV) return true;
-		if (techRecord.techRecord_vehicleType === VehicleTypes.LGV) return true;
-		return this.isHeavyTrailer(techRecord);
+		return isAdrVehicle(techRecord);
 	}
 
 	isHeavyTrailer(techRecord: TechRecordType<'get' | 'put'>): techRecord is TechRecordTypeVehicle<'trl', 'get' | 'put'> {
-		if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-			return (
-				techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O1 &&
-				techRecord.techRecord_euVehicleCategory !== EUVehicleCategory.O2
-			);
-		}
-
-		return false;
+		return isHeavyTrailer(techRecord);
 	}
 
 	isHeavyVehicle(

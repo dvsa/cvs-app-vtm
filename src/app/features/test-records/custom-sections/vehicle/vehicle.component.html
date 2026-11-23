@@ -1,6 +1,6 @@
 @if (techRecord(); as techRecord) {
   <div [formGroup]="form">
-    @if (technicalRecordService.isAdrVehicle(techRecord)) {
+    @if (!testService.vtg15Required.fieldTree().hidden()) {
       <!-- VTG15 -->
       <ng-container formGroupName="vtg15">
         <govuk-form-group-radio
@@ -9,36 +9,40 @@
         >
           <govuk-radio id="vtg15RequiredTrue" label="Yes" [value]="true">
             <!-- UN Number -->
-            <govuk-form-group-input
-              class="govuk-label govuk-label--s"
-              label="UN number"
-              prefix="UN"
-              formControlName="unNumber"
-              appNumberOnly
-              [width]="FORM_NODE_WIDTH.S"
-            />
+            @if (!testService.unNumber.fieldTree().hidden()) {
+              <govuk-form-group-input
+                class="govuk-label govuk-label--s"
+                label="UN number"
+                prefix="UN"
+                formControlName="unNumber"
+                appNumberOnly
+                [width]="FORM_NODE_WIDTH.S"
+              />
+            }
             <!-- Hazard classification numbers -->
-            <h1 class="govuk-label-wrapper">
-              <label class="govuk-label govuk-label--s">
-                Hazard classification numbers
-              </label>
-            </h1>
-            <govuk-form-group-select
-              class="govuk-label govuk-label--s vtg15-select"
-              label="Primary"
-              formControlName="primaryHazardClassification"
-              [options]="HAZARD_CLASSIFICATION_OPTIONS"
-              [width]="FORM_NODE_WIDTH.XXL"
-              [defaultOption]="'Select primary hazard classification'"
-            />
-            <govuk-form-group-select
-              class="govuk-label govuk-label--s vtg15-select"
-              label="Secondary (optional)"
-              formControlName="secondaryHazardClassification"
-              [options]="HAZARD_CLASSIFICATION_OPTIONS"
-              [width]="FORM_NODE_WIDTH.XXL"
-              [defaultOption]="'Select secondary hazard classification'"
-            />
+            @if (!testService.primaryHazardClassification.fieldTree().hidden()) {
+              <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--s">
+                  Hazard classification numbers
+                </label>
+              </h1>
+              <govuk-form-group-select
+                class="govuk-label govuk-label--s vtg15-select"
+                label="Primary"
+                formControlName="primaryHazardClassification"
+                [options]="HAZARD_CLASSIFICATION_OPTIONS"
+                [width]="FORM_NODE_WIDTH.XXL"
+                [defaultOption]="'Select primary hazard classification'"
+              />
+              <govuk-form-group-select
+                class="govuk-label govuk-label--s vtg15-select"
+                label="Secondary (optional)"
+                formControlName="secondaryHazardClassification"
+                [options]="HAZARD_CLASSIFICATION_OPTIONS"
+                [width]="FORM_NODE_WIDTH.XXL"
+                [defaultOption]="'Select secondary hazard classification'"
+              />
+            }
           </govuk-radio>
           <govuk-radio id="vtg15RequiredFalse" label="No" [value]="false">
           </govuk-radio>
@@ -75,7 +79,7 @@
 
     @if (!testService.odometerReadingUnits.fieldTree().hidden()) {
       <!-- Odometer reading units -->
-      @if (testService.odometerUsesPairedFields()) {
+      @if (testService.isSpecialistGroup1()) {
         <govuk-form-group-select
           label="Odometer Reading Units"
           formControlName="odometerReadingUnits"
