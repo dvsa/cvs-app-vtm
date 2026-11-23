@@ -48,6 +48,12 @@ export const PASS_FAIL_PRS_OPTIONS: MultiOptions = [
 	{ value: 'prs', label: 'PRS' },
 ];
 
+export const PASS_FAIL_ABANDONED_OPTIONS: MultiOptions = [
+	{ value: 'pass', label: 'Pass' },
+	{ value: 'fail', label: 'Fail' },
+	{ value: 'abandoned', label: 'Abandoned' },
+];
+
 export const RESULT_OPTIONS: MultiOptions = [
 	{ value: 'pass', label: 'Pass' },
 	{ value: 'fail', label: 'Fail' },

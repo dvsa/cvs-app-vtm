@@ -1050,6 +1050,158 @@ describe('TestComponent', () => {
 		});
 	});
 
+	describe('groups 3, 4 and 8', () => {
+		const setTestResult = (testType: Partial<TestResultSchema['testTypes'][0]>, vehicleType = 'psv') => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType,
+				testTypes: [{ testTypeId: '38', ...testType }],
+			} as TestResultSchema);
+			store.refreshState();
+		};
+
+		it.each(['psv', 'hgv', 'trl'])('shows only the create fields from the %s template', (vehicleType) => {
+			setTestResult({ testResult: TestResults.PASS }, vehicleType);
+			const service = component.testService;
+
+			expect(component.resultOptions().map((option) => option.value)).toEqual(['pass', 'fail']);
+			expect(service.testOutcome.fieldTree().hidden()).toBe(false);
+			expect(service.testTypeName.fieldTree().hidden()).toBe(false);
+			expect(service.testTypeName.fieldTree().disabled()).toBe(true);
+			expect(service.prohibitionIssued.fieldTree().hidden()).toBe(false);
+			expect(service.certificateNumber.fieldTree().hidden()).toBe(true);
+			expect(service.centralDocsIssueRequired.fieldTree().hidden()).toBe(true);
+			expect(service.testExpiryDate.fieldTree().hidden()).toBe(true);
+			expect(service.testAnniversaryDate.fieldTree().hidden()).toBe(true);
+			expect(service.defects.fieldTree().hidden()).toBe(true);
+			expect(service.seatbeltInstallationCheckDate.fieldTree().hidden()).toBe(true);
+		});
+
+		it('requires prohibition issued but not a certificate number', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			const testType = component.form.controls.testTypes.at(0);
+			testType.controls.prohibitionIssued.setValue(null);
+			testType.controls.certificateNumber.setValue(null);
+
+			expect(testType.controls.prohibitionIssued.errors).toHaveProperty('required');
+			expect(testType.controls.certificateNumber.valid).toBe(true);
+		});
+
+		it('does not require PSV seatbelt details', () => {
+			setTestResult({ testResult: TestResults.PASS });
+			const seatbelts = component.form.controls.testTypes.at(0).controls.seatbeltInstallationCheckDate;
+			seatbelts.setValue(undefined);
+
+			expect(seatbelts.valid).toBe(true);
+		});
+
+		describe('when amending', () => {
+			beforeEach(() => {
+				component.testService.mode.set(Modes.AMEND);
+				component.testService.initialMode.set(Modes.AMEND);
+			});
+
+			it.each(['psv', 'hgv', 'trl'])('offers pass, fail and abandoned without test dates for a %s', (vehicleType) => {
+				setTestResult({ testResult: TestResults.PASS }, vehicleType);
+				const testType = component.form.controls.testTypes.at(0);
+				testType.controls.testExpiryDate.setValue(undefined);
+				testType.controls.testAnniversaryDate.setValue(null);
+
+				expect(component.resultOptions().map((option) => option.value)).toEqual(['pass', 'fail', 'abandoned']);
+				expect(component.testService.testExpiryDate.fieldTree().hidden()).toBe(true);
+				expect(component.testService.testAnniversaryDate.fieldTree().hidden()).toBe(true);
+				expect(testType.controls.testAnniversaryDate.valid).toBe(true);
+			});
+
+			it('requires the abandonment details when the result is abandoned', () => {
+				setTestResult({ testResult: TestResults.ABANDONED }, 'hgv');
+				const testType = component.form.controls.testTypes.at(0);
+				testType.controls.reasonForAbandoning.setValue([]);
+				testType.controls.additionalCommentsForAbandon.setValue(null);
+
+				expect(testType.controls.reasonForAbandoning.errors).toHaveProperty(
+					'required.message',
+					'Reason for abandoning is required with Result'
+				);
+				expect(testType.controls.additionalCommentsForAbandon.errors).toHaveProperty('required');
+			});
+		});
+
+		it('hides the test dates when viewing', () => {
+			component.testService.mode.set(Modes.VIEW);
+			component.testService.initialMode.set(Modes.VIEW);
+			setTestResult({ testResult: TestResults.PASS });
+
+			expect(component.testService.testExpiryDate.fieldTree().hidden()).toBe(true);
+			expect(component.testService.testAnniversaryDate.fieldTree().hidden()).toBe(true);
+			expect(component.testService.prohibitionIssued.fieldTree().hidden()).toBe(false);
+		});
+	});
+
+	describe('amending an abandoned test', () => {
+		beforeEach(() => {
+			component.testService.mode.set(Modes.AMEND);
+			component.testService.initialMode.set(Modes.AMEND);
+		});
+
+		const amendAbandoned = (vehicleType: string, testTypeId: string) => {
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType,
+				testTypes: [{ testTypeId, testResult: TestResults.ABANDONED }],
+			} as TestResultSchema);
+			store.refreshState();
+			const testType = component.form.controls.testTypes.at(0);
+			testType.controls.reasonForAbandoning.setValue([]);
+			testType.controls.additionalCommentsForAbandon.setValue(null);
+			return testType;
+		};
+
+		it.each([
+			['psv', '1'],
+			['psv', '15'],
+			['psv', '38'],
+			['psv', '125'],
+			['hgv', '59'],
+			['hgv', '76'],
+			['trl', '117'],
+			['trl', '56'],
+			['lgv', '125'],
+			['car', '125'],
+			['motorcycle', '125'],
+		])('requires the abandonment details for a %s test type %s', (vehicleType, testTypeId) => {
+			const testType = amendAbandoned(vehicleType, testTypeId);
+
+			expect(testType.controls.reasonForAbandoning.errors).toHaveProperty(
+				'required.message',
+				'Reason for abandoning is required with Result'
+			);
+			expect(testType.controls.additionalCommentsForAbandon.errors).toHaveProperty(
+				'required.message',
+				'Additional details for abandoning is required with Result'
+			);
+
+			testType.controls.additionalCommentsForAbandon.setValue('a'.repeat(501));
+			expect(testType.controls.additionalCommentsForAbandon.errors).toHaveProperty(
+				'maxLength.message',
+				'Additional details for abandoning must be less than or equal to 500 characters'
+			);
+		});
+
+		it.each([
+			['psv', '59'],
+			['psv', '76'],
+			['psv', '56'],
+			['hgv', '1'],
+			['trl', '15'],
+			['lgv', '1'],
+			['small trl', '125'],
+		])('does not require the abandonment details for a %s test type %s', (vehicleType, testTypeId) => {
+			const testType = amendAbandoned(vehicleType, testTypeId);
+
+			expect(testType.controls.reasonForAbandoning.valid).toBe(true);
+			expect(testType.controls.additionalCommentsForAbandon.valid).toBe(true);
+		});
+	});
+
 	describe('isLoadStatusRequired', () => {
 		it('should be required when creating a test that captures load status', () => {
 			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId: '94' }] } as TestResultSchema);

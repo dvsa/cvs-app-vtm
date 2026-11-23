@@ -3,13 +3,14 @@ import { Store } from '@ngrx/store';
 import { get } from 'lodash-es';
 import {
 	TEST_TYPES_GROUP1,
+	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2,
+	TEST_TYPES_GROUP3_4_8,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-	TEST_TYPES_GROUP12_14,
 } from '../../models/testTypeId.enum';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
 
@@ -37,6 +38,7 @@ export class FeatureToggleService {
 			...TEST_TYPES_GROUP7,
 			...TEST_TYPES_GROUP1_SPEC_TEST,
 			...TEST_TYPES_GROUP5_13,
+			...TEST_TYPES_GROUP3_4_8,
 		];
 
 		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');

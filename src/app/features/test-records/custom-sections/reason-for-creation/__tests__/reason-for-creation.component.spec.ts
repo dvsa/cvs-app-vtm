@@ -93,6 +93,14 @@ describe('ReasonForCreationComponent', () => {
 
 	it('updates the parent form validity when the journey changes', () => {
 		const service = component.testService;
+		// Satisfy the other migrated fields, which are required in every journey.
+		service.testStationPNumber.setValue('P12345');
+		service.testerStaffId.setValue('staff-1');
+		service.euVehicleCategory.setValue('m1');
+		service.countryOfRegistration.setValue('gb');
+		const testType = service.form.controls.testTypes.at(0).controls;
+		testType.testTypeStartTimestamp.setValue('2026-01-01T09:00:00.000Z');
+		testType.testTypeEndTimestamp.setValue('2026-01-01T10:00:00.000Z');
 		service.reasonForCreation.setValue('');
 		service.initialMode.set(Modes.VIEW);
 		TestBed.tick();

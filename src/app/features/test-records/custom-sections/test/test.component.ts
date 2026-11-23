@@ -7,6 +7,7 @@ import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-f
 import { GovukFormGroupRadioComponent } from '@/src/app/forms/components/govuk-form-group-radio/govuk-form-group-radio.component';
 import {
 	MultiOptions,
+	PASS_FAIL_ABANDONED_OPTIONS,
 	PASS_FAIL_OPTIONS,
 	PASS_FAIL_PRS_OPTIONS,
 	RESULT_OPTIONS,
@@ -81,7 +82,7 @@ export class TestComponent implements OnInit {
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 	readonly resultOptions = computed(() => {
 		if (this.testService.mode() === Modes.AMEND) {
-			return RESULT_OPTIONS;
+			return this.testService.isTestTypeGroup3And4And8() ? PASS_FAIL_ABANDONED_OPTIONS : RESULT_OPTIONS;
 		}
 		if (this.testService.isSpecialistGroup1()) {
 			return PASS_FAIL_PRS_OPTIONS;

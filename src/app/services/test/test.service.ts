@@ -40,15 +40,19 @@ import {
 import { EUVehicleCategory as TechRecordEUCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { dateError, dateTimeError } from '@forms/validators/date-time-error';
 import {
+	TEST_TYPES_GROUP1,
 	TEST_TYPES_GROUP1_DESK_BASED_TEST,
 	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2,
 	TEST_TYPES_GROUP2_DESK_BASED_TEST,
+	TEST_TYPES_GROUP3_4_8,
 	TEST_TYPES_GROUP3_DESK_BASED_TEST,
 	TEST_TYPES_GROUP4_DESK_BASED_TEST,
 	TEST_TYPES_GROUP5_13,
 	TEST_TYPES_GROUP5_DESK_BASED_TEST,
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	TEST_TYPES_GROUP12_14,
 	TEST_TYPES_GROUP15_16,
@@ -145,11 +149,18 @@ export class TestService {
 	private readonly group12or14 = computed(() =>
 		TEST_TYPES_GROUP12_14.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
 	);
+	readonly isTestTypeGroup3And4And8 = computed(() =>
+		TEST_TYPES_GROUP3_4_8.includes(this.testResult()?.testTypes?.[0]?.testTypeId ?? '')
+	);
 	readonly isSpecialistGroup1 = computed(() =>
 		TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes?.[0]?.testTypeId ?? '')
 	);
 	private readonly showResult = computed(
-		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.group5or13()
+		() => this.isTestTypeGroup7() || this.isSpecialistGroup1() || this.group5or13() || this.isTestTypeGroup3And4And8()
+	);
+	// These templates record no expiry or anniversary date in any mode.
+	private readonly withoutTestDates = computed(
+		() => this.isSpecialistGroup1() || this.group5or13() || this.isTestTypeGroup3And4And8()
 	);
 	readonly additionalNotesLabel = computed(() =>
 		this.isTestTypeGroup7() ? 'Additional Notes' : 'Additional Notes (optional)'
@@ -253,7 +264,10 @@ export class TestService {
 	 * the Angular form() helper instead.
 	 */
 	reasonForCreation = new SignalFormControl<string>('', (schema) => {
-		required(schema, { message: 'Reason for creation is required' });
+		required(schema, {
+			message: 'Reason for creation is required',
+			when: () => this.initialMode() === Modes.EDIT || this.initialMode() === Modes.AMEND,
+		});
 		maxLength(schema, 100, { message: 'Reason for creation must be less than or equal to 100 characters' });
 	});
 
@@ -458,7 +472,7 @@ export class TestService {
 
 	private readonly seatbeltApplicable = computed(() => {
 		const result = this.testResult();
-		return result?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1();
+		return result?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1() && !this.isTestTypeGroup3And4And8();
 	});
 	seatbeltInstallationCheckDate = new SignalFormControl<boolean | null | undefined>(undefined, (path) => {
 		hidden(path, { when: () => !this.seatbeltApplicable() });
@@ -631,7 +645,7 @@ export class TestService {
 		);
 	});
 	private readonly showAnniversaryDate = computed(
-		() => !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.group12or14() && !this.group5or13()
+		() => !this.isTestTypeGroup7() && !this.withoutTestDates() && !this.group12or14()
 	);
 	private readonly showReapplicationDate = computed(
 		() => this.isSpecialistGroup1() && this.testResult()?.testTypes[0].testResult === TestResults.FAIL
@@ -641,13 +655,10 @@ export class TestService {
 			when: () => {
 				const mode = this.mode();
 				if (mode === Modes.VIEW || (mode === Modes.SUMMARY && this.initialMode() === Modes.AMEND)) {
-					return this.isSpecialistGroup1() || this.group5or13();
+					return this.withoutTestDates();
 				}
 				if (mode === Modes.SUMMARY && this.initialMode() === Modes.EDIT) return !this.isTestTypeGroup7();
-				return !(
-					this.showExpiryDate() ||
-					(mode === Modes.AMEND && !this.isSpecialistGroup1() && !this.group12or14() && !this.group5or13())
-				);
+				return !(this.showExpiryDate() || (mode === Modes.AMEND && !this.withoutTestDates() && !this.group12or14()));
 			},
 		});
 		required(path, {
@@ -668,7 +679,7 @@ export class TestService {
 			when: () => {
 				const mode = this.mode();
 				if (mode === Modes.VIEW || (mode === Modes.SUMMARY && this.initialMode() === Modes.AMEND)) {
-					return this.isSpecialistGroup1() || this.group5or13();
+					return this.withoutTestDates();
 				}
 				return mode !== Modes.AMEND || !this.showAnniversaryDate();
 			},
@@ -692,6 +703,44 @@ export class TestService {
 			return error ? { kind: 'invalidDate', message: error } : futureDateError(date, 'Reapplication date');
 		});
 	});
+	// Mirrors the amend templates (master.template.ts) that define the abandonment fields with
+	// RequiredIfEquals on testResult. Vehicle and group pairs without a dedicated template use the
+	// default section, which has no abandonment fields, so nothing is enforced for them.
+	private readonly amendAbandonDetailsEnforced = computed(() => {
+		const result = this.testResult();
+		const testTypeId = result?.testTypes?.[0]?.testTypeId ?? '';
+		// The API type omits small trailers, which the create journey still supports.
+		const vehicle: string | undefined = result?.vehicleType;
+		switch (vehicle) {
+			case VehicleTypes.PSV:
+				return [
+					...TEST_TYPES_GROUP1,
+					...TEST_TYPES_GROUP2,
+					...TEST_TYPES_GROUP3_4_8,
+					...TEST_TYPES_GROUP1_SPEC_TEST,
+				].includes(testTypeId);
+			case VehicleTypes.HGV:
+			case VehicleTypes.TRL:
+				return [
+					...TEST_TYPES_GROUP3_4_8,
+					...TEST_TYPES_GROUP7,
+					...TEST_TYPES_GROUP9_10,
+					...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+					...TEST_TYPES_GROUP12_14,
+					...TEST_TYPES_GROUP5_13,
+					...TEST_TYPES_GROUP1_SPEC_TEST,
+				].includes(testTypeId);
+			case VehicleTypes.LGV:
+			case VehicleTypes.CAR:
+			case VehicleTypes.MOTORCYCLE:
+				return TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId);
+			default:
+				return false;
+		}
+	});
+	private readonly amendingAbandonedTest = computed(
+		() => this.mode() === Modes.AMEND && this.recordedAsAbandoned() && this.amendAbandonDetailsEnforced()
+	);
 	reasonForAbandoning = new SignalFormControl<string | string[] | null>(null, (path) => {
 		hidden(path, { when: () => this.mode() !== Modes.ABANDON && !this.recordedAsAbandoned() });
 		validate(path, ({ value }) => {
@@ -699,8 +748,8 @@ export class TestService {
 			const empty = !reason || (Array.isArray(reason) && reason.length === 0);
 			if (!empty) return undefined;
 			if (this.mode() === Modes.ABANDON) return requiredError({ message: 'Why was this test abandoned? is required' });
-			return this.group5or13() && this.recordedAsAbandoned()
-				? requiredError({ message: 'Reason for abandoning is required' })
+			return this.amendingAbandonedTest()
+				? requiredError({ message: 'Reason for abandoning is required with Result' })
 				: undefined;
 		});
 	});
@@ -722,8 +771,12 @@ export class TestService {
 						})
 					: undefined;
 			}
-			return this.mode() === Modes.AMEND && this.recordedAsAbandoned() && !notes
-				? requiredError({ message: 'Additional details for abandoning is required with Result' })
+			if (!this.amendingAbandonedTest()) return undefined;
+			if (!notes) return requiredError({ message: 'Additional details for abandoning is required with Result' });
+			return notes.length > 500
+				? maxLengthError(500, {
+						message: 'Additional details for abandoning must be less than or equal to 500 characters',
+					})
 				: undefined;
 		});
 	});
