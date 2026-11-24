@@ -320,6 +320,9 @@ function patchLeaves<T extends object>(current: T, value: unknown, groups: Set<s
  */
 export function patchTestResultFormModel(current: TestResultFormModel, value: unknown): TestResultFormModel {
 	const next = patchLeaves(current, value, GROUPS);
+	// Legacy records can contain a numeric UN number despite the API's string type.
+	const unNumber: unknown = next.vtg15.unNumber;
+	if (typeof unNumber === 'number') next.vtg15.unNumber = String(unNumber);
 	const testTypes = (value as Partial<TestResultSchema> | null)?.testTypes;
 	if (Array.isArray(testTypes)) {
 		next.testTypes = current.testTypes.map((testType, index) => {

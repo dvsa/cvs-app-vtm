@@ -162,6 +162,42 @@ describe('VehicleComponent', () => {
 			});
 		});
 
+		it.each([
+			[1234, '1234', undefined],
+			['0123', '0123', undefined],
+			[null, null, 'required'],
+			[undefined, null, 'required'],
+			[123, '123', 'minLength'],
+			[0, '0', 'minLength'],
+		])('normalizes saved VTG15 UN number %s for amendment', (saved, expected, errorKind) => {
+			store.overrideSelector(techRecord, {
+				techRecord_vehicleType: 'hgv',
+				techRecord_adrDetails_dangerousGoods: true,
+			} as TechRecordType<'get'>);
+			store.refreshState();
+			testService.initialMode.set(Modes.AMEND);
+			testService.mode.set(Modes.AMEND);
+			testService.patch({
+				vtg15: {
+					vtg15Required: true,
+					primaryHazardClassification: HazardClassification._1,
+					unNumber: saved,
+				},
+			});
+			const control = testService.form.vtg15.unNumber;
+
+			expect(control().value()).toBe(expected);
+			expect(
+				control()
+					.errors()
+					.map((error) => error.kind)
+			).toEqual(errorKind ? [errorKind] : []);
+			expect(testService.value().vtg15?.unNumber).toBe(expected);
+
+			testService.patch({ vtg15: { secondaryHazardClassification: HazardClassification['_4.2'] } });
+			expect(control().value()).toBe(expected);
+		});
+
 		describe('euVehicleCategory', () => {
 			it('should be invalid when empty', () => {
 				const control = component.form.euVehicleCategory;
