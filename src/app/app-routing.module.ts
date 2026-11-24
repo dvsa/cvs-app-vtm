@@ -85,7 +85,7 @@ const routes: Routes = [
 			},
 			{
 				path: RootRoutes.BETAS,
-				data: { title: 'Betas', featureToggleName: 'betas' },
+				data: { title: 'Betas', featureToggleName: FeatureFlags.BETAS },
 				canActivate: [MsalGuard, FeatureToggleGuard],
 				loadComponent: () => import('./features/betas/betas.component').then((m) => m.BetasComponent),
 			},

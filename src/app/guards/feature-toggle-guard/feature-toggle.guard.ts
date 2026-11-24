@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { isFeatureFlag } from '@store/feature-flags/feature-flags.feature';
 
 @Injectable({
 	providedIn: 'root',
@@ -10,8 +11,7 @@ export class FeatureToggleGuard implements CanActivate {
 
 	canActivate(next: ActivatedRouteSnapshot): boolean {
 		const feature = next.data['featureToggleName'];
-
-		if (feature) {
+		if (isFeatureFlag(feature)) {
 			return this.featureToggleService.isFeatureEnabled(feature);
 		}
 		return false;

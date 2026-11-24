@@ -4,16 +4,34 @@
 
     <form [formGroup]="form">
       <div class="govuk-inset-text">
-        Check the following boxes to enable the given beta feature, then click
-        'save preferences'.
+        Check the boxes to enable features and their options, then click 'save
+        preferences'. Changes are local and reset when feature flags are
+        refreshed.
       </div>
 
       @for (flag of form.controls | keyvalue; track flag.key) {
         <ng-container formGroupName="{{ flag.key }}">
           <govuk-form-group-checkbox
+            [id]="flag.key"
             label="{{ flag.key }}"
             formControlName="enabled"
           ></govuk-form-group-checkbox>
+          @if (flag.value.controls['enabled'].value) {
+            <div class="govuk-!-margin-left-6">
+              @for (
+                property of flag.value.controls | keyvalue;
+                track property.key
+              ) {
+                @if (property.key !== 'enabled') {
+                  <govuk-form-group-checkbox
+                    [id]="flag.key + '-' + property.key"
+                    [label]="property.key"
+                    [formControlName]="property.key"
+                  ></govuk-form-group-checkbox>
+                }
+              }
+            </div>
+          }
         </ng-container>
       }
 

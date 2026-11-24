@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { FeatureConfig, STORE_FEATURE_FLAGS_KEY } from './feature-flags.feature';
+import { FeatureConfig, FeatureConfigChanges, STORE_FEATURE_FLAGS_KEY } from './feature-flags.feature';
 
 export const {
 	fetchFeatureFlags,
@@ -16,6 +16,6 @@ export const {
 		fetchRemoteFeatureFlags: emptyProps(),
 		fetchFeatureFlagsSuccess: props<{ config: FeatureConfig }>(),
 		fetchFeatureFlagsFailure: props<{ error: Error }>(),
-		updateFeatureFlags: props<{ changes: Partial<FeatureConfig> }>(),
+		updateFeatureFlags: props<{ changes: FeatureConfigChanges }>(),
 	},
 });

@@ -5,18 +5,18 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { FeatureFlags, FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { FeatureToggleDirective } from '../feature-toggle.directive';
 
 @Component({
 	template: `
-    <div id="testToggleEnabled" *featureToggleName="'testToggleEnabled'">
+    <div id="testToggleEnabled" *featureToggleName="FeatureFlags.BETAS">
       <h1>This does display</h1>
     </div>
-    <div id="testToggle" *featureToggleName="'testToggleDisabled'">
+    <div id="testToggle" *featureToggleName="FeatureFlags.ADAS_IMAGES_ON_DEFECTS">
       <h1>This does not display</h1>
     </div>
-    <div id="randomKey" *featureToggleName="'randomKey'">
+    <div id="randomKey" *featureToggleName="FeatureFlags.TECH_RECORD_REDESIGN">
       <h1>This displays</h1>
     </div>
     <div id="noToggle">
@@ -25,7 +25,9 @@ import { FeatureToggleDirective } from '../feature-toggle.directive';
   `,
 	imports: [FeatureToggleDirective],
 })
-class TestComponent {}
+class TestComponent {
+	readonly FeatureFlags = FeatureFlags;
+}
 
 describe('FeatureToggleDirective', () => {
 	let fixture: ComponentFixture<TestComponent>;
@@ -41,8 +43,8 @@ describe('FeatureToggleDirective', () => {
 		store = TestBed.inject(MockStore);
 		service = TestBed.inject(FeatureToggleService);
 		store.overrideSelector(selectFeatureFlags, {
-			testToggleEnabled: { enabled: true },
-			testToggleDisabled: { enabled: false },
+			[FeatureFlags.BETAS]: { enabled: true },
+			[FeatureFlags.ADAS_IMAGES_ON_DEFECTS]: { enabled: false },
 		});
 
 		fixture.detectChanges(); // initial binding
