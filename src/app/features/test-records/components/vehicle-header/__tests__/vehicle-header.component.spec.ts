@@ -17,6 +17,7 @@ import { TestResultMediaService } from '@services/documents/test-result-media.se
 import { HttpService } from '@services/http/http.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { TestService } from '@services/test/test.service';
 import { initialAppState } from '@store/index';
 import JSZip from 'jszip';
 import { lastValueFrom, of } from 'rxjs';
@@ -85,6 +86,32 @@ describe('VehicleHeaderComponent', () => {
 				expect(row?.previousElementSibling?.querySelector('#test-certificate')).toBeTruthy();
 				expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of certificate:');
 				expect(photoCell()?.querySelector('a')?.textContent?.trim()).toBe('Download photo of certificate');
+			}
+		);
+
+		it.each([
+			[ivaTypeId, 'iac'],
+			[qt1TypeId, 'mac'],
+		] as const)(
+			'preserves the certificate photo download after editing test %s with the signal form',
+			(typeId, category) => {
+				const service = TestBed.inject(TestService);
+				const test = showTest(typeId, [{ ...photo, path: `TestResultId0001/${category}/certificate.jpg` }]);
+				service.patch({
+					...test,
+					testTypes: [{ ...test.testTypes[0], testTypeStartTimestamp: test.testStartTimestamp }],
+				});
+				service.form.reasonForCreation().value.set('Amended test details');
+				const saved = service.value();
+				fixture.componentRef.setInput('testResult', saved);
+				fixture.detectChanges();
+
+				expect(saved.approvalCertificate).toEqual(test.approvalCertificate);
+				const download = vi.spyOn(TestBed.inject(TestResultMediaService), 'download').mockReturnValue(of(undefined));
+				const link = photoCell()?.querySelector('a');
+				expect(link?.textContent?.trim()).toBe('Download photo of certificate');
+				link?.click();
+				expect(download).toHaveBeenCalledExactlyOnceWith(test.testResultId, category);
 			}
 		);
 

@@ -121,6 +121,7 @@ export interface TestResultFormModel {
 	regnDate: string | null;
 	firstUseDate: string | null;
 	media: MediaSchema[] | null;
+	approvalCertificate: MediaSchema[] | null;
 	reasonForCreation: string;
 	createdAt: string | null;
 	createdByEmailAddress: string | null;
@@ -227,6 +228,7 @@ export function createInitialTestResultFormModel(): TestResultFormModel {
 		regnDate: null,
 		firstUseDate: null,
 		media: null,
+		approvalCertificate: null,
 		reasonForCreation: '',
 		createdAt: null,
 		createdByEmailAddress: null,
@@ -266,6 +268,7 @@ const OMITTED_WHEN_EMPTY = new Set<string>([
 	'regnDate',
 	'firstUseDate',
 	'media',
+	'approvalCertificate',
 	'createdByEmailAddress',
 	'lastUpdatedByEmailAddress',
 	'recalls',
