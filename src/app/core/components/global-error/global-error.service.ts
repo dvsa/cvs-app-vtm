@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { FieldTree } from '@angular/forms/signals';
 import { validationErrorMessage } from '@forms/utils/validation-error-message';
 import { Store, select } from '@ngrx/store';
 import { globalErrorState } from '@store/global-error/global-error-service.reducer';
@@ -58,7 +58,7 @@ export class GlobalErrorService {
 	extractErrors = (control: AbstractControl) => {
 		const errors: ValidationErrors = {};
 
-		if (control instanceof FormControl || control instanceof SignalFormControl) {
+		if (control instanceof FormControl) {
 			Object.entries(control.errors || {}).forEach(([key, error]) => {
 				errors[key] = error;
 			});
@@ -91,7 +91,7 @@ export class GlobalErrorService {
 
 			// Validity can change without the value changing (e.g. validation skipped while abandoning a test), so
 			// re-emit just the status (not the value) for the inline error of an OnPush section to be refreshed
-			if (control.status !== previousStatus && !(control instanceof SignalFormControl)) {
+			if (control.status !== previousStatus) {
 				control.setErrors(control.errors);
 			}
 
@@ -115,11 +115,7 @@ export class GlobalErrorService {
 				if (controlErrors.length > 0) {
 					// A control holding a list (e.g. additional defects) can report an error for each of its items
 					const firstError = controlErrors[0];
-					const details =
-						firstError && typeof firstError === 'object' && Array.isArray(firstError.details)
-							? firstError.details
-							: firstError;
-					for (const error of Array.isArray(details) ? details : [details]) {
+					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
 						errors.push({
 							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
@@ -132,6 +128,24 @@ export class GlobalErrorService {
 
 		return errors;
 	};
+
+	/**
+	 * Collects the first error of each invalid field in a signal form. Fields that are hidden, disabled or
+	 * read-only are not validated, so they report no errors.
+	 */
+	extractSignalFormErrors(
+		form: FieldTree<unknown>,
+		anchorFor: (field: FieldTree<unknown>) => string = (field) => String(field().keyInParent())
+	): GlobalError[] {
+		const fields = new Set<unknown>();
+		return form()
+			.errorSummary()
+			.filter(({ fieldTree }) => !fields.has(fieldTree) && fields.add(fieldTree))
+			.map((error) => ({
+				error: validationErrorMessage(error),
+				anchorLink: anchorFor(error.fieldTree as FieldTree<unknown>),
+			}));
+	}
 
 	extractGlobalErrorsFromErrorResponse(e: HttpErrorResponse) {
 		const errors: GlobalError[] = [];

@@ -1,12 +1,9 @@
 @if (testService.isEditing()) {
-  @if (customDefectsForm.length) {
+  @let customDefects = form.testTypes[0].customDefects;
+  @if (customDefects().value().length) {
     <h2 class="govuk-heading-m">Additional Defects</h2>
   }
-  @for (
-    customDefectForm of customDefectsForm.controls;
-    track customDefectForm;
-    let i = $index
-  ) {
+  @for (customDefect of customDefects; track customDefect; let i = $index) {
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h3 class="govuk-heading-m">Defect {{ i + 1 }}</h3>
@@ -22,27 +19,24 @@
         </app-button>
       </div>
     </div>
-    <ng-container [formGroup]="customDefectForm">
-      <govuk-form-group-input
-        label="Defect Name"
-        formControlName="defectName"
-        [id]="`defectName-${i}`"
-        [width]="FormNodeWidth.XXL"
-      ></govuk-form-group-input>
-      <govuk-form-group-textarea
-        label="Defect Notes"
-        formControlName="defectNotes"
-        [id]="`defectNotes-${i}`"
-        [maxLength]="500"
-      ></govuk-form-group-textarea>
-    </ng-container>
+    <govuk-form-group-input
+      label="Defect Name"
+      [formField]="customDefect.defectName"
+      [id]="`defectName-${i}`"
+      [width]="FormNodeWidth.XXL"
+    ></govuk-form-group-input>
+    <govuk-form-group-textarea
+      label="Defect Notes"
+      [formField]="customDefect.defectNotes"
+      [id]="`defectNotes-${i}`"
+    ></govuk-form-group-textarea>
   }
   <app-button id="add-custom-defect" (clicked)="onAddCustomDefect()"
     >Add Additional Defect</app-button
   >
 } @else {
   <h2 class="govuk-heading-m">Additional Defects</h2>
-  @for (customDefect of customDefects(); track $index) {
+  @for (customDefect of savedCustomDefects(); track $index) {
     <h3 class="govuk-heading-m">Defect {{ $index + 1 }}</h3>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">

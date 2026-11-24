@@ -18,7 +18,6 @@ import {
 	untracked,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -52,7 +51,7 @@ export class RequiredStandardsComponent implements OnInit {
 
 	handleEuVehicleCategoryChange(): void {
 		// Required standards are specific to the EU vehicle category, so changing it clears any that were added
-		const category = this.testService.euVehicleCategory.fieldTree().value;
+		const category = this.form.euVehicleCategory().value;
 		let previous = category();
 		effect(
 			() => {
@@ -60,10 +59,10 @@ export class RequiredStandardsComponent implements OnInit {
 				if (previous === current) return;
 				previous = current;
 				untracked(() => {
-					const requiredStandards = this.form.controls.testTypes.at(0).controls.requiredStandards;
-					if (!requiredStandards.value?.length) return;
+					const requiredStandards = this.testService.testType.requiredStandards().value;
+					if (!requiredStandards()?.length) return;
 
-					requiredStandards.setValue([], { emitEvent: false });
+					requiredStandards.set([]);
 					this.syncResultWithRequiredStandards();
 				});
 			},
@@ -73,18 +72,18 @@ export class RequiredStandardsComponent implements OnInit {
 
 	/** The result of the test is derived from its required standards, so recalculate it from the latest form value. */
 	syncResultWithRequiredStandards(): void {
-		this.testRecordsService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+		this.testRecordsService.updateEditingTestResult(this.testService.value());
 		this.resultOfTestService.updateResultOfTestRequiredStandards();
 
 		const testResult = this.editingTestResult()?.testTypes[0].testResult ?? null;
-		this.form.controls.testTypes.at(0).controls.testResult.setValue(testResult, { emitEvent: false });
+		this.testService.testType.testResult().value.set(testResult);
 	}
 
 	onAddRequiredStandard(): void {
 		this.globalErrorService.clearErrors();
 
 		// Required standards are looked up by EU vehicle category, so one must be selected first
-		const euVehicleCategory = this.testService.euVehicleCategory.fieldTree();
+		const euVehicleCategory = this.form.euVehicleCategory();
 		if (!euVehicleCategory.value()) {
 			euVehicleCategory.markAsTouched();
 			this.globalErrorService.setErrors([
@@ -95,7 +94,7 @@ export class RequiredStandardsComponent implements OnInit {
 		}
 
 		// Flush any pending (debounced) form changes, so the required standard pages read the latest test result
-		this.testRecordsService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+		this.testRecordsService.updateEditingTestResult(this.testService.value());
 		void this.router.navigate(['selectRequiredStandard'], { queryParamsHandling: 'preserve', relativeTo: this.route });
 	}
 }

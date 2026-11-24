@@ -23,7 +23,7 @@ import { techRecord } from '@/src/app/store/technical-records';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormField } from '@angular/forms/signals';
 import { ApprovalMediaDownloadComponent } from '@components/approval-media-download/approval-media-download.component';
 import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
@@ -44,8 +44,7 @@ import { GenerateAdrCertificateComponent } from './generate-adr-certificate/gene
 	imports: [
 		DatePipe,
 		NgTemplateOutlet,
-		FormsModule,
-		ReactiveFormsModule,
+		FormField,
 		ToUppercaseDirective,
 		NoSpaceDirective,
 		TrimWhitespaceDirective,
@@ -82,7 +81,7 @@ export class TestComponent implements OnInit {
 	readonly REASON_FOR_NOT_LOADING_OPTIONS = getOptionsFromEnum(ReasonForNotLoading);
 	readonly resultOptions = computed(() => {
 		if (this.testService.mode() === Modes.AMEND) {
-			return this.testService.isTestTypeGroup3And4And8() ? PASS_FAIL_ABANDONED_OPTIONS : RESULT_OPTIONS;
+			return this.testService.isGroup3And4And8() ? PASS_FAIL_ABANDONED_OPTIONS : RESULT_OPTIONS;
 		}
 		if (this.testService.isSpecialistGroup1()) {
 			return PASS_FAIL_PRS_OPTIONS;
@@ -98,8 +97,8 @@ export class TestComponent implements OnInit {
 	prepopulateVTG15Required(): void {
 		if (this.testService.initialMode() !== Modes.EDIT && this.testService.initialMode() !== Modes.CREATE) return;
 
-		const vtg15Required = this.form.controls.vtg15.controls.vtg15Required;
-		if (vtg15Required.value != null) return;
+		const vtg15Required = this.form.vtg15.vtg15Required();
+		if (vtg15Required.value() != null) return;
 
 		const techRecord = this.techRecord();
 		if (
@@ -107,7 +106,7 @@ export class TestComponent implements OnInit {
 			techRecord?.techRecord_vehicleType === 'lgv' ||
 			techRecord?.techRecord_vehicleType === 'trl'
 		) {
-			vtg15Required.setValue(techRecord.techRecord_adrDetails_dangerousGoods ? null : false);
+			vtg15Required.value.set(techRecord.techRecord_adrDetails_dangerousGoods ? null : false);
 		}
 	}
 
@@ -133,7 +132,7 @@ export class TestComponent implements OnInit {
 		if (this.testService.mode() === Modes.AMEND) {
 			return false;
 		}
-		return this.testService.isTestTypeGroup7() && this.testResult()?.testTypes[0].testResult === 'pass';
+		return this.testService.isGroup7() && this.testResult()?.testTypes[0].testResult === 'pass';
 	});
 
 	readonly shouldShowApprovalsMedia = computed(

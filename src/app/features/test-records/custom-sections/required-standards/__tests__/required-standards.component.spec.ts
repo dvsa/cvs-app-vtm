@@ -41,7 +41,7 @@ describe('RequiredStandardsComponent', () => {
 
 		store = TestBed.inject(MockStore);
 		testService = TestBed.inject(TestService);
-		testService.form.reset();
+		testService.resetForm();
 		vi.spyOn(store, 'dispatch');
 	});
 
@@ -78,18 +78,18 @@ describe('RequiredStandardsComponent', () => {
 		createComponent(Modes.EDIT, { testTypes: [{ testResult: TestResults.PASS }] } as TestResultSchema);
 
 		expect(store.dispatch).toHaveBeenCalledWith(updateResultOfTestRequiredStandards());
-		expect(testService.form.controls.testTypes.at(0).controls.testResult.value).toBe(TestResults.PASS);
+		expect(testService.testType.testResult().value()).toBe(TestResults.PASS);
 	});
 
 	it('should clear the required standards when the EU vehicle category changes', () => {
 		createComponent(Modes.EDIT, { testTypes: [{ testResult: TestResults.PRS }] } as TestResultSchema);
-		const requiredStandards = testService.form.controls.testTypes.at(0).controls.requiredStandards;
-		requiredStandards.setValue([requiredStandard]);
+		const requiredStandards = testService.testType.requiredStandards();
+		requiredStandards.value.set([requiredStandard]);
 
-		testService.form.controls.euVehicleCategory.setValue('m1' as never);
+		testService.form.euVehicleCategory().value.set('m1' as never);
 		TestBed.tick();
 
-		expect(requiredStandards.value).toEqual([]);
+		expect(requiredStandards.value()).toEqual([]);
 	});
 
 	describe('onAddRequiredStandard', () => {
@@ -112,7 +112,7 @@ describe('RequiredStandardsComponent', () => {
 			createComponent(Modes.EDIT, { testTypes: [{}] } as TestResultSchema);
 			const router = TestBed.inject(Router);
 			vi.spyOn(router, 'navigate').mockResolvedValue(true);
-			testService.form.controls.euVehicleCategory.setValue('m1' as never);
+			testService.form.euVehicleCategory().value.set('m1' as never);
 
 			component.onAddRequiredStandard();
 

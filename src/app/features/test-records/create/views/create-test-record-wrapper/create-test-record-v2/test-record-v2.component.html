@@ -86,7 +86,7 @@
               [ngTemplateOutlet]="specialistSections"
             ></ng-container>
           }
-          @if (!testService.seatbeltInstallationCheckDate.fieldTree().hidden()) {
+          @if (!testService.testType.seatbeltInstallationCheckDate().hidden()) {
             <app-accordion
               [id]="'seatbelts'"
               [title]="'Seatbelts'"
@@ -107,7 +107,7 @@
               <app-test-notes />
             </form>
           </app-accordion>
-          @if (!testService.defects.fieldTree().hidden()) {
+          @if (!testService.testType.defects().hidden()) {
             <app-accordion
               [id]="'defects'"
               [title]="'Defects'"
@@ -145,7 +145,7 @@
           }
         </ng-template>
         <ng-template #specialistSections>
-          @if (!testService.requiredStandards.fieldTree().hidden()) {
+          @if (!testService.testType.requiredStandards().hidden()) {
             <app-accordion
               [id]="'requiredStandards'"
               [title]="'Required Standards'"
@@ -156,7 +156,7 @@
               </form>
             </app-accordion>
           }
-          @if (!testService.customDefects.fieldTree().hidden()) {
+          @if (!testService.testType.customDefects().hidden()) {
             <app-accordion
               [id]="'additionalDefects'"
               [title]="'Additional Defects'"

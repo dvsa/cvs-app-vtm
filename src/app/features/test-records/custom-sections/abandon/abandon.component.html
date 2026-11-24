@@ -1,22 +1,14 @@
-<ng-container [formGroup]="form">
-  <ng-container formGroupName="testTypes">
-    <ng-container formGroupName="0">
-      <!-- Reason for abandoning -->
-      <govuk-checkbox-group
-        name="reasonForAbandoning"
-        label="Why was this test abandoned?"
-        hint="Select all that apply."
-        formControlName="reasonForAbandoning"
-        [options]="abandonReasons()"
-      ></govuk-checkbox-group>
+@let testType = form.testTypes[0];
+<!-- Reason for abandoning -->
+<govuk-checkbox-group
+  label="Why was this test abandoned?"
+  hint="Select all that apply."
+  [formField]="testType.reasonForAbandoning"
+  [options]="abandonReasons()"
+></govuk-checkbox-group>
 
-      <!-- Additional comments for abandon -->
-      <govuk-form-group-textarea
-        name="additionalCommentsForAbandon"
-        [label]="abandonNotesLabel()"
-        formControlName="additionalCommentsForAbandon"
-        [maxLength]="500"
-      ></govuk-form-group-textarea>
-    </ng-container>
-  </ng-container>
-</ng-container>
+<!-- Additional comments for abandon -->
+<govuk-form-group-textarea
+  [label]="abandonNotesLabel()"
+  [formField]="testType.additionalCommentsForAbandon"
+></govuk-form-group-textarea>

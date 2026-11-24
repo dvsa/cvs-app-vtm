@@ -51,21 +51,22 @@ describe('NotesComponent', () => {
 	});
 
 	it('validates the notes length using the test type label', () => {
-		const notes = TestBed.inject(TestService).additionalNotesRecorded;
-		notes.setValue('a'.repeat(500));
-		expect(notes.valid).toBe(true);
-		notes.setValue('a'.repeat(501));
-		expect(notes.errors).toHaveProperty(
-			'maxLength.message',
-			'Additional Notes (optional) must be less than or equal to 500 characters'
-		);
+		const notes = TestBed.inject(TestService).testType.additionalNotesRecorded;
+		notes().value.set('a'.repeat(500));
+		expect(notes().valid()).toBe(true);
+		notes().value.set('a'.repeat(501));
+		expect(
+			notes()
+				.errors()
+				.map((error) => error.message)
+		).toEqual(['Additional Notes (optional) must be less than or equal to 500 characters']);
 	});
 
 	it('keeps the displayed label, hint and validation message in sync when the test type changes', () => {
 		const store = TestBed.inject(MockStore);
 		const testResult = mockTestResult();
-		const notes = TestBed.inject(TestService).additionalNotesRecorded;
-		notes.setValue('a'.repeat(501));
+		const notes = TestBed.inject(TestService).testType.additionalNotesRecorded;
+		notes().value.set('a'.repeat(501));
 
 		store.overrideSelector(toEditOrNotToEdit, {
 			...testResult,
@@ -76,10 +77,11 @@ describe('NotesComponent', () => {
 
 		expect(fixture.nativeElement.textContent).toContain('Additional Notes');
 		expect(component.additionalNotesHint()).toBe('Enter a reason for issuing documents centrally');
-		expect(notes.errors).toHaveProperty(
-			'maxLength.message',
-			'Additional Notes must be less than or equal to 500 characters'
-		);
+		expect(
+			notes()
+				.errors()
+				.map((error) => error.message)
+		).toEqual(['Additional Notes must be less than or equal to 500 characters']);
 
 		store.overrideSelector(toEditOrNotToEdit, testResult);
 		store.refreshState();
@@ -87,9 +89,10 @@ describe('NotesComponent', () => {
 
 		expect(fixture.nativeElement.textContent).toContain('Additional Notes (optional)');
 		expect(component.additionalNotesHint()).toBe('');
-		expect(notes.errors).toHaveProperty(
-			'maxLength.message',
-			'Additional Notes (optional) must be less than or equal to 500 characters'
-		);
+		expect(
+			notes()
+				.errors()
+				.map((error) => error.message)
+		).toEqual(['Additional Notes (optional) must be less than or equal to 500 characters']);
 	});
 });

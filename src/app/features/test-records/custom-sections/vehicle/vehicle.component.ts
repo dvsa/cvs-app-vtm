@@ -13,7 +13,7 @@ import {
 } from '@/src/app/store/reference-data';
 import { techRecord } from '@/src/app/store/technical-records';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormField } from '@angular/forms/signals';
 import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
 import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum.js';
 import { RadioComponent } from '@forms/components/govuk-form-group-radio/radio/radio.component';
@@ -26,8 +26,7 @@ import { Store } from '@ngrx/store';
 	selector: 'app-test-vehicle',
 	templateUrl: './vehicle.component.html',
 	imports: [
-		FormsModule,
-		ReactiveFormsModule,
+		FormField,
 		GovukFormGroupAutocompleteComponent,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupInputComponent,
@@ -64,32 +63,19 @@ export class VehicleComponent implements OnInit {
 		this.optionsService.loadOptions(ReferenceDataResourceType.CountryOfRegistration);
 	}
 
+	// The select options are compared by reference, so stored classifications are swapped for the matching option.
 	prepopulateHazardClassificationOptions(): void {
-		const vtg15 = this.form.controls.vtg15;
-		const primaryHazardClassification = this.toHazardClassificationOption(
-			vtg15.controls.primaryHazardClassification.value
-		);
-		const secondaryHazardClassification = this.toHazardClassificationOption(
-			vtg15.controls.secondaryHazardClassification.value
-		);
-
-		if (
-			primaryHazardClassification !== vtg15.controls.primaryHazardClassification.value ||
-			secondaryHazardClassification !== vtg15.controls.secondaryHazardClassification.value
-		) {
-			vtg15.patchValue(
-				{
-					primaryHazardClassification,
-					secondaryHazardClassification,
-				},
-				{ emitEvent: false }
-			);
+		const vtg15 = this.form.vtg15;
+		for (const field of [vtg15.primaryHazardClassification, vtg15.secondaryHazardClassification]) {
+			const value = field().value();
+			const option = this.toHazardClassificationOption(value);
+			if (option !== value) field().value.set(option);
 		}
 	}
 
 	handlePrepopulateEuVehicleCategory() {
 		const category = this.testService.fixedEuVehicleCategory();
-		if (category !== null) this.testService.euVehicleCategory.setValue(category);
+		if (category !== null) this.form.euVehicleCategory().value.set(category);
 	}
 
 	toHazardClassificationOption(value?: HazardClassification | null): HazardClassification | null {

@@ -1,7 +1,7 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { required } from '@angular/forms/signals';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import { hidden, required, form as signalForm, validate } from '@angular/forms/signals';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/global-error.actions';
 import { State, initialAppState } from '@store/index';
@@ -58,16 +58,25 @@ describe('GlobalErrorService', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
-	it('extracts signal validation messages and recognises signal controls as leaves', () => {
-		const control = TestBed.runInInjectionContext(
-			() => new SignalFormControl('', (path) => required(path, { message: 'Enter a value' }))
+	it('extracts the first error of each invalid signal form field, skipping hidden fields', () => {
+		const form = TestBed.runInInjectionContext(() =>
+			signalForm(signal({ name: '', code: '', hiddenField: '' }), (path) => {
+				required(path.name, { message: 'Enter a name' });
+				validate(path.name, () => ({ kind: 'second', message: 'Not shown' }));
+				required(path.code, { message: 'Enter a code' });
+				required(path.hiddenField, { message: 'Not validated' });
+				hidden(path.hiddenField, { when: () => true });
+			})
 		);
-		const form = new FormGroup({ field: control });
 
-		expect(service.extractGlobalErrors(form)).toEqual([
-			{ error: 'Enter a value', anchorLink: 'field', accordion: undefined },
+		expect(service.extractSignalFormErrors(form)).toEqual([
+			{ error: 'Enter a name', anchorLink: 'name' },
+			{ error: 'Enter a code', anchorLink: 'code' },
 		]);
-		expect(service.extractErrors(control)).toEqual(control.errors);
+		expect(service.extractSignalFormErrors(form, (field) => `anchor-${field().keyInParent()}`)).toEqual([
+			{ error: 'Enter a name', anchorLink: 'anchor-name' },
+			{ error: 'Enter a code', anchorLink: 'anchor-code' },
+		]);
 	});
 
 	it('preserves reactive error strings, metadata and array errors', () => {

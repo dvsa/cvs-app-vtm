@@ -1,16 +1,11 @@
-<div [formGroup]="form">
+<div>
   @if (testService.isEditing()) {
     <!--  Notes -->
-    <ng-container formGroupName="testTypes">
-      <ng-container formGroupName="0">
-        <govuk-form-group-textarea
-          label="{{ testService.additionalNotesLabel() }}"
-          hint="{{ additionalNotesHint() }}"
-          [maxLength]="500"
-          formControlName="additionalNotesRecorded"
-        />
-      </ng-container>
-    </ng-container>
+    <govuk-form-group-textarea
+      label="{{ testService.additionalNotesLabel() }}"
+      hint="{{ additionalNotesHint() }}"
+      [formField]="form.testTypes[0].additionalNotesRecorded"
+    />
   } @else {
     @if (testResult(); as testResult) {
       <table class="govuk-table">

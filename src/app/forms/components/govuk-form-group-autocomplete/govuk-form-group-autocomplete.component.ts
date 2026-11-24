@@ -11,8 +11,13 @@ import {
 	model,
 	output,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { SignalFormControl } from '@angular/forms/signals/compat';
+import {
+	AbstractControl,
+	ControlValueAccessor,
+	FormsModule,
+	NG_VALUE_ACCESSOR,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOptions } from '@models/options.model';
@@ -155,8 +160,8 @@ export class GovukFormGroupAutocompleteComponent
 
 	addValidators() {
 		const control = this.control;
-		// Signal controls own their validation in their schema.
-		if (control instanceof SignalFormControl) return;
-		control?.addValidators(this.commonValidators.invalidOption(`${this.controlLabel()} is invalid`));
+		// Signal form fields own their validation in their schema.
+		if (!(control instanceof AbstractControl)) return;
+		control.addValidators(this.commonValidators.invalidOption(`${this.controlLabel()} is invalid`));
 	}
 }

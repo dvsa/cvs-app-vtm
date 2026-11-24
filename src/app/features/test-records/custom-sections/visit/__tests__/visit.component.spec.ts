@@ -3,7 +3,6 @@ import { MultiOptionsService } from '@/src/app/services/multi-options/multi-opti
 import { initialAppState } from '@/src/app/store';
 import { testStations } from '@/src/app/store/test-stations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
@@ -15,16 +14,11 @@ describe('VisitComponent', () => {
 	let fixture: ComponentFixture<VisitComponent>;
 	let component: VisitComponent;
 	let store: MockStore;
-	let formGroupDirective: FormGroupDirective;
 
 	beforeEach(async () => {
-		formGroupDirective = new FormGroupDirective([], []);
-		formGroupDirective.form = new FormGroup({});
-
 		await TestBed.configureTestingModule({
 			imports: [VisitComponent],
 			providers: [
-				{ provide: ControlContainer, useValue: formGroupDirective },
 				{
 					provide: MultiOptionsService,
 					useValue: { getOptions: vi.fn().mockReturnValue(of([])), loadOptions: vi.fn() },
@@ -45,9 +39,9 @@ describe('VisitComponent', () => {
 	});
 
 	const selectOption = (field: 'testerStaffId' | 'testStationPNumber', label: string, value: string) => {
-		const autocomplete: GovukFormGroupAutocompleteComponent = fixture.debugElement.query(
-			By.css(`[formControlName="${field}"]`)
-		).componentInstance;
+		const autocomplete: GovukFormGroupAutocompleteComponent = fixture.debugElement.queryAll(
+			By.directive(GovukFormGroupAutocompleteComponent)
+		)[field === 'testStationPNumber' ? 0 : 1].componentInstance;
 		autocomplete.multiOptions = [{ label, value }];
 		autocomplete.handleChangeForOption(label);
 		fixture.detectChanges();
@@ -56,25 +50,25 @@ describe('VisitComponent', () => {
 	describe('validation', () => {
 		describe('testStationPNumber', () => {
 			it('should be invalid when empty', () => {
-				const control = component.form.controls.testStationPNumber;
-				control.setValue(null);
-				control.markAsTouched();
-				expect(control.valid).toBe(false);
-				expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(component.form)).toContainEqual(
+				const control = component.form.testStationPNumber;
+				control().value.set(null);
+				control().markAsTouched();
+				expect(control().valid()).toBe(false);
+				expect(TestBed.inject(GlobalErrorService).extractSignalFormErrors(component.form)).toContainEqual(
 					expect.objectContaining({ error: 'Test Station Details is required', anchorLink: 'testStationPNumber' })
 				);
 			});
 
 			it('should be valid when a value is provided', () => {
-				const control = component.form.controls.testStationPNumber;
-				control.setValue('P12345');
-				control.markAsTouched();
-				expect(control.valid).toBe(true);
+				const control = component.form.testStationPNumber;
+				control().value.set('P12345');
+				control().markAsTouched();
+				expect(control().valid()).toBe(true);
 			});
 
 			it('shows the invalid selection message when the autocomplete cannot match the input', () => {
-				component.form.controls.testStationPNumber.setValue('[INVALID_OPTION]');
-				component.form.controls.testStationPNumber.markAsTouched();
+				component.form.testStationPNumber().value.set('[INVALID_OPTION]');
+				component.form.testStationPNumber().markAsTouched();
 				fixture.detectChanges();
 
 				expect(fixture.nativeElement.querySelector('#testStationPNumber-error')?.textContent).toContain(
@@ -85,25 +79,25 @@ describe('VisitComponent', () => {
 
 		describe('testerStaffId', () => {
 			it('should be invalid when empty', () => {
-				const control = component.form.controls.testerStaffId;
-				control.setValue('');
-				control.markAsTouched();
-				expect(control.valid).toBe(false);
-				expect(TestBed.inject(GlobalErrorService).extractGlobalErrors(component.form)).toContainEqual(
+				const control = component.form.testerStaffId;
+				control().value.set('');
+				control().markAsTouched();
+				expect(control().valid()).toBe(false);
+				expect(TestBed.inject(GlobalErrorService).extractSignalFormErrors(component.form)).toContainEqual(
 					expect.objectContaining({ error: 'Tester details is required', anchorLink: 'testerStaffId' })
 				);
 			});
 
 			it('should be valid when a value is provided', () => {
-				const control = component.form.controls.testerStaffId;
-				control.setValue('STAFF001');
-				control.markAsTouched();
-				expect(control.valid).toBe(true);
+				const control = component.form.testerStaffId;
+				control().value.set('STAFF001');
+				control().markAsTouched();
+				expect(control().valid()).toBe(true);
 			});
 
 			it('shows the invalid selection message when the autocomplete cannot match the input', () => {
-				component.form.controls.testerStaffId.setValue('[INVALID_OPTION]');
-				component.form.controls.testerStaffId.markAsTouched();
+				component.form.testerStaffId().value.set('[INVALID_OPTION]');
+				component.form.testerStaffId().markAsTouched();
 				fixture.detectChanges();
 
 				expect(fixture.nativeElement.querySelector('#testerStaffId-error')?.textContent).toContain(
@@ -131,12 +125,12 @@ describe('VisitComponent', () => {
 				testerName: 'Saved Name',
 				testerEmailAddress: 'saved@example.com',
 			};
-			component.form.patchValue(savedTester);
+			component.testService.patch(savedTester);
 			fixture.detectChanges();
-			expect(component.form.getRawValue()).toMatchObject(savedTester);
+			expect(component.testService.value()).toMatchObject(savedTester);
 
 			selectOption('testerStaffId', 'John Doe', 'STAFF001');
-			expect(component.form.getRawValue()).toMatchObject({
+			expect(component.testService.value()).toMatchObject({
 				testerStaffId: 'STAFF001',
 				testerName: 'John Doe',
 				testerEmailAddress: 'john@example.com',
@@ -144,10 +138,10 @@ describe('VisitComponent', () => {
 		});
 
 		it('should not patch when testerStaffId is empty', () => {
-			component.form.controls.testerName.setValue('Existing Name');
+			component.form.testerName().value.set('Existing Name');
 			selectOption('testerStaffId', '', '');
 
-			expect(component.form.controls.testerName.value).toBe('Existing Name');
+			expect(component.form.testerName().value()).toBe('Existing Name');
 		});
 
 		it('should not patch when user is not found in store', () => {
@@ -159,10 +153,10 @@ describe('VisitComponent', () => {
 				},
 			});
 
-			component.form.controls.testerName.setValue('Existing Name');
+			component.form.testerName().value.set('Existing Name');
 			selectOption('testerStaffId', 'Unknown tester', 'UNKNOWN');
 
-			expect(component.form.controls.testerName.value).toBe('Existing Name');
+			expect(component.form.testerName().value()).toBe('Existing Name');
 		});
 	});
 
@@ -174,7 +168,7 @@ describe('VisitComponent', () => {
 
 			selectOption('testStationPNumber', 'Test Station A', 'P123');
 
-			expect(component.form.getRawValue()).toMatchObject({
+			expect(component.testService.value()).toMatchObject({
 				testStationPNumber: 'P123',
 				testStationType: 'atf',
 				testStationName: 'Test Station A',
@@ -186,27 +180,27 @@ describe('VisitComponent', () => {
 				{ testStationPNumber: 'P123', testStationType: 'atf', testStationName: 'Current Name' },
 			] as ReturnType<typeof testStations>);
 			store.refreshState();
-			component.form.patchValue({ testStationPNumber: 'P123', testStationName: 'Stored Name' });
+			component.testService.patch({ testStationPNumber: 'P123', testStationName: 'Stored Name' });
 			fixture.detectChanges();
 
-			expect(component.form.controls.testStationName.value).toBe('Stored Name');
+			expect(component.form.testStationName().value()).toBe('Stored Name');
 		});
 
 		it('should not patch when testStationPNumber is empty', () => {
-			component.form.controls.testStationType.setValue('atf' as any);
+			component.form.testStationType().value.set('atf' as any);
 			selectOption('testStationPNumber', '', '');
 
-			expect(component.form.controls.testStationType.value).toBe('atf');
+			expect(component.form.testStationType().value()).toBe('atf');
 		});
 
 		it('should not patch when station is not found', () => {
 			store.overrideSelector(testStations, []);
 			store.refreshState();
 
-			component.form.controls.testStationType.setValue('atf' as any);
+			component.form.testStationType().value.set('atf' as any);
 			selectOption('testStationPNumber', 'Unknown station', 'UNKNOWN');
 
-			expect(component.form.controls.testStationType.value).toBe('atf');
+			expect(component.form.testStationType().value()).toBe('atf');
 		});
 	});
 

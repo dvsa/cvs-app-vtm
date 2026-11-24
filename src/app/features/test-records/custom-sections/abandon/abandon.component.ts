@@ -7,7 +7,7 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { selectAllReferenceDataByResourceType } from '@/src/app/store/reference-data';
 import { testResultInEdit } from '@/src/app/store/test-records';
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormField } from '@angular/forms/signals';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
@@ -21,7 +21,7 @@ const NOTES_REQUIRED_TEST_TYPES = new Set<string>([
 	selector: 'app-abandon',
 	templateUrl: './abandon.component.html',
 	styleUrls: ['./abandon.component.scss'],
-	imports: [FormsModule, ReactiveFormsModule, GovukCheckboxGroupComponent, GovukFormGroupTextareaComponent],
+	imports: [FormField, GovukCheckboxGroupComponent, GovukFormGroupTextareaComponent],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbandonComponent implements OnInit {

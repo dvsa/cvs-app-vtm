@@ -8,7 +8,7 @@ import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormField } from '@angular/forms/signals';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -16,8 +16,7 @@ import { Store } from '@ngrx/store';
 	templateUrl: './seatbelts.component.html',
 	imports: [
 		DatePipe,
-		FormsModule,
-		ReactiveFormsModule,
+		FormField,
 		GovukFormGroupRadioComponent,
 		GovukFormGroupInputComponent,
 		GovukFormGroupDateComponent,

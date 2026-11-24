@@ -432,7 +432,7 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
-			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
+			tap(({ recalls }) => this.testService.patch({ recalls })),
 			concatLatestFrom(() => this.store.select(testResultInEdit)),
 			filter(([_, editingTestResult]) => Boolean(editingTestResult)),
 			map(([{ recalls }]) => patchEditingTestResult({ testResult: { recalls } }))

@@ -76,8 +76,7 @@ describe('AbandonComponent', () => {
 
 		expect(component.notesRequired()).toBe(true);
 		expect(component.abandonNotesLabel()).toBe('Additional notes as to why this test was abandoned');
-		const notes = component.form.controls.testTypes.at(0).controls.additionalCommentsForAbandon;
-		expect(notes.errors).toBeNull();
+		expect(component.form.testTypes[0].additionalCommentsForAbandon().errors()).toEqual([]);
 	});
 
 	it('keeps ordinary-test notes optional while requiring an abandonment reason', () => {
@@ -87,34 +86,53 @@ describe('AbandonComponent', () => {
 
 		expect(component.notesRequired()).toBe(false);
 		expect(component.abandonNotesLabel()).toBe('Additional notes as to why this test was abandoned (optional)');
-		const testType = component.form.controls.testTypes.at(0);
-		expect(testType.controls.reasonForAbandoning.errors).toHaveProperty('required');
-		expect(testType.controls.additionalCommentsForAbandon.errors).toBeNull();
+		const testType = component.form.testTypes[0];
+		expect(
+			testType
+				.reasonForAbandoning()
+				.errors()
+				.map((error) => error.kind)
+		).toEqual(['required']);
+		expect(testType.additionalCommentsForAbandon().errors()).toEqual([]);
 	});
 
 	it('drops abandonment-only rules when leaving the abandonment flow', () => {
 		selectedTestResult.set(resultFor('125'));
 		component.ngOnInit();
-		const testType = component.form.controls.testTypes.at(0);
+		const testType = component.form.testTypes[0];
 
-		expect(testType.controls.reasonForAbandoning.errors).toHaveProperty('required');
-		expect(testType.controls.additionalCommentsForAbandon.errors).toHaveProperty('required');
+		expect(
+			testType
+				.reasonForAbandoning()
+				.errors()
+				.map((error) => error.kind)
+		).toEqual(['required']);
+		expect(
+			testType
+				.additionalCommentsForAbandon()
+				.errors()
+				.map((error) => error.kind)
+		).toEqual(['required']);
 		component.testService.mode.set(Modes.EDIT);
 
-		expect(testType.controls.reasonForAbandoning.errors).toBeNull();
-		expect(testType.controls.additionalCommentsForAbandon.errors).toBeNull();
+		expect(testType.reasonForAbandoning().errors()).toEqual([]);
+		expect(testType.additionalCommentsForAbandon().errors()).toEqual([]);
 	});
 
 	it('requires at least one reason when entering the abandonment flow', () => {
 		selectedTestResult.set(resultFor('1'));
 		component.testService.mode.set(Modes.EDIT);
-		const reason = component.form.controls.testTypes.at(0).controls.reasonForAbandoning;
-		reason.setValue([]);
-		expect(reason.errors).toBeNull();
+		const reason = component.form.testTypes[0].reasonForAbandoning;
+		reason().value.set([]);
+		expect(reason().errors()).toEqual([]);
 
 		component.testService.mode.set(Modes.ABANDON);
-		expect(reason.errors).toHaveProperty('required');
-		reason.setValue(['Unsafe to continue']);
-		expect(reason.errors).toBeNull();
+		expect(
+			reason()
+				.errors()
+				.map((error) => error.kind)
+		).toEqual(['required']);
+		reason().value.set(['Unsafe to continue']);
+		expect(reason().errors()).toEqual([]);
 	});
 });

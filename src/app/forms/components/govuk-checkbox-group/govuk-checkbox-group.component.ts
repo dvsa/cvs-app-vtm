@@ -23,7 +23,8 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 	readonly regex = input<RegExp | string>();
 	readonly seperator = input<string>();
 
-	value = model<unknown[] | null>(null);
+	// A signal form field may hold the options as one delimited string, which writeValue splits.
+	value = model<unknown[] | string | null>(null);
 	size = input<'small' | 'regular'>('regular');
 
 	readonly options =
@@ -54,7 +55,7 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 	}
 
 	toggle(option: any) {
-		const value = this.value();
+		const value = this.selected();
 
 		if (!value) {
 			this.value.set([option]);
@@ -69,6 +70,11 @@ export class GovukCheckboxGroupComponent extends GovukFormGroupBaseComponent imp
 	}
 
 	isChecked(value: unknown) {
-		return this.value()?.includes(value?.toString());
+		return this.selected()?.includes(value?.toString());
+	}
+
+	private selected(): unknown[] | null {
+		const value = this.value();
+		return typeof value === 'string' ? [value] : value;
 	}
 }
