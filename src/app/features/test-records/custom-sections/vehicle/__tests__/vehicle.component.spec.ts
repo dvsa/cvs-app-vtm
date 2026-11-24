@@ -30,6 +30,12 @@ describe('VehicleComponent', () => {
 	let store: MockStore;
 	let testService: TestService;
 
+	const setVehicle = (vehicleType: 'car' | 'lgv' | 'psv' | 'trl') => {
+		store.overrideSelector(techRecord, { techRecord_vehicleType: vehicleType } as TechRecordType<'get'>);
+		store.overrideSelector(toEditOrNotToEdit, { vehicleType, testTypes: [{}] } as TestResultSchema);
+		store.refreshState();
+	};
+
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [VehicleComponent],
@@ -51,6 +57,10 @@ describe('VehicleComponent', () => {
 		testService.mode.set(Modes.EDIT);
 		testService.initialMode.set(Modes.EDIT);
 		fixture.detectChanges();
+	});
+
+	afterEach(() => {
+		store.resetSelectors();
 	});
 
 	it('should create', () => {
@@ -171,8 +181,7 @@ describe('VehicleComponent', () => {
 
 		describe('odometerReading', () => {
 			it('should be invalid when empty and vehicle is not a TRL', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
 				const control = component.form.odometerReading;
 				control().value.set(null);
 				control().markAsTouched();
@@ -181,8 +190,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should be invalid when exceeding max value', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
 				const control = component.form.odometerReading;
 				control().value.set(10000000);
 				control().markAsTouched();
@@ -191,8 +199,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should be valid when within range', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
 				const control = component.form.odometerReading;
 				control().value.set(9999999);
 				control().markAsTouched();
@@ -200,8 +207,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should not have validators when vehicle is a TRL', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('trl');
 				const control = component.form.odometerReading;
 				control().value.set(null);
 				control().markAsTouched();
@@ -209,11 +215,9 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should not carry validators over from a previously viewed non-TRL vehicle', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
-
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
+				expect(component.form.odometerReading().valid()).toBe(false);
+				setVehicle('trl');
 
 				const control = component.form.odometerReading;
 				control().value.set(null);
@@ -222,8 +226,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should be valid when empty and the test is being abandoned', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('psv');
 				testService.isAbandoning.set(true);
 
 				const control = component.form.odometerReading;
@@ -233,8 +236,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should still enforce the max value when the test is being abandoned', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('psv');
 				testService.isAbandoning.set(true);
 
 				const control = component.form.odometerReading;
@@ -247,8 +249,7 @@ describe('VehicleComponent', () => {
 
 		describe('odometerReadingUnits', () => {
 			it('should be invalid when empty and vehicle is not a TRL', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
 				const control = component.form.odometerReadingUnits;
 				control().value.set(null);
 				control().markAsTouched();
@@ -257,8 +258,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should be valid when a value is provided', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
 				const control = component.form.odometerReadingUnits;
 				control().value.set('kilometres');
 				control().markAsTouched();
@@ -266,8 +266,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should not have validators when vehicle is a TRL', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('trl');
 				const control = component.form.odometerReadingUnits;
 				control().value.set(null);
 				control().markAsTouched();
@@ -275,11 +274,9 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should not carry validators over from a previously viewed non-TRL vehicle', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-				store.refreshState();
-
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'trl' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('car');
+				expect(component.form.odometerReadingUnits().valid()).toBe(false);
+				setVehicle('trl');
 
 				const control = component.form.odometerReadingUnits;
 				control().value.set(null);
@@ -288,8 +285,7 @@ describe('VehicleComponent', () => {
 			});
 
 			it('should be valid when empty and the test is being abandoned', () => {
-				store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
-				store.refreshState();
+				setVehicle('psv');
 				testService.isAbandoning.set(true);
 
 				const control = component.form.odometerReadingUnits;
@@ -302,8 +298,7 @@ describe('VehicleComponent', () => {
 
 	describe('handlePrepopulateEuVehicleCategory', () => {
 		it('should set euVehicleCategory to M1 if the vehicle type is CAR', () => {
-			store.overrideSelector(techRecord, { techRecord_vehicleType: 'car' } as TechRecordType<'get'>);
-			store.refreshState();
+			setVehicle('car');
 			component.form.euVehicleCategory().value.set(null);
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.euVehicleCategory().value()).toBe(EUVehicleCategory.M1);
@@ -311,8 +306,7 @@ describe('VehicleComponent', () => {
 		});
 
 		it('should set euVehicleCategory to N1 if the vehicle type is LGV', () => {
-			store.overrideSelector(techRecord, { techRecord_vehicleType: 'lgv' } as TechRecordType<'get'>);
-			store.refreshState();
+			setVehicle('lgv');
 			component.form.euVehicleCategory().value.set(null);
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.euVehicleCategory().value()).toBe(EUVehicleCategory.N1);
@@ -320,8 +314,7 @@ describe('VehicleComponent', () => {
 		});
 
 		it('should not set euVehicleCategory if the vehicle type is not CAR or LGV', () => {
-			store.overrideSelector(techRecord, { techRecord_vehicleType: 'psv' } as TechRecordType<'get'>);
-			store.refreshState();
+			setVehicle('psv');
 			component.form.euVehicleCategory().value.set(null);
 			component.handlePrepopulateEuVehicleCategory();
 			expect(component.form.euVehicleCategory().value()).toBeNull();
@@ -379,7 +372,10 @@ describe('VehicleComponent', () => {
 	describe('odometer signal rules', () => {
 		const setTest = (vehicle: 'hgv' | 'trl', testTypeId: string, testResult: TestResults) => {
 			store.overrideSelector(techRecord, { techRecord_vehicleType: vehicle } as TechRecordType<'get'>);
-			store.overrideSelector(toEditOrNotToEdit, { testTypes: [{ testTypeId, testResult }] } as TestResultSchema);
+			store.overrideSelector(toEditOrNotToEdit, {
+				vehicleType: vehicle,
+				testTypes: [{ testTypeId, testResult }],
+			} as TestResultSchema);
 			store.refreshState();
 		};
 

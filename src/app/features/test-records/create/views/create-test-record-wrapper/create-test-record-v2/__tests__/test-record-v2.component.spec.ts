@@ -207,6 +207,8 @@ describe('TestRecordV2Component', () => {
 				contingencyTestNumber: '123456',
 				countryOfRegistration: 'gb',
 				euVehicleCategory: 'm1',
+				odometerReading: 100,
+				odometerReadingUnits: 'miles',
 				reasonForCreation: 'Reason for creating the test',
 				testStationPNumber: 'P12345',
 				testerStaffId: '12345',

@@ -93,6 +93,8 @@ describe('ReasonForCreationComponent', () => {
 		service.form.testerStaffId().value.set('staff-1');
 		service.form.euVehicleCategory().value.set('m1');
 		service.form.countryOfRegistration().value.set('gb');
+		service.form.odometerReading().value.set(100);
+		service.form.odometerReadingUnits().value.set('miles');
 		const testType = service.testType;
 		testType.testTypeStartTimestamp().value.set('2026-01-01T09:00:00.000Z');
 		testType.testTypeEndTimestamp().value.set('2026-01-01T10:00:00.000Z');
