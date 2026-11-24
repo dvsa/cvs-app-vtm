@@ -89,6 +89,7 @@ describe('TestRecordV2Component', () => {
 		const existingTest = {
 			testResultId: 'test-result-id',
 			vin: 'VIN00000001',
+			approvalCertificate: [{ type: 'image', path: 'test-result-id/iac/certificate.jpg' }],
 			testTypes: [
 				{
 					testTypeId: '95',
@@ -120,6 +121,7 @@ describe('TestRecordV2Component', () => {
 			expect(value.testTypes[0].testNumber).toBe('T12345678');
 			expect(value.testTypes[0].testCode).toBe('FFV2');
 			expect(value.testTypes[0].createdAt).toBe('2026-09-01T09:00:00.000Z');
+			expect(value.approvalCertificate).toEqual(existingTest.approvalCertificate);
 		});
 
 		it('should stamp the newly selected test type onto the form', () => {
@@ -139,6 +141,7 @@ describe('TestRecordV2Component', () => {
 			expect(updateSpy).toHaveBeenCalledTimes(1);
 			expect(updateSpy.mock.calls[0][0].testTypes[0].testTypeId).toBe('65');
 			expect(updateSpy.mock.calls[0][0].vin).toBe('VIN00000001');
+			expect(updateSpy.mock.calls[0][0].approvalCertificate).toEqual(existingTest.approvalCertificate);
 		});
 	});
 
