@@ -1,10 +1,11 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { retryInterceptorFailure } from '@store/retry-interceptor/retry-interceptor.actions';
 import { setSpinnerState } from '@store/spinner/spinner.actions';
 import { Observable, retry, throwError, timer } from 'rxjs';
+import { HANDLE_MEDIA_DOWNLOAD_ERRORS } from '../error-handling/error-handling.interceptor';
 
 export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');
 
@@ -75,6 +76,13 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
 	retryHandler(error: any, retryCount: number, config: InternalConfig, request: HttpRequest<unknown>) {
 		const { delay, count, httpStatusRetry, backoff, whiteList } = config;
 		const { status } = error;
+
+		if (
+			request.context.get(HANDLE_MEDIA_DOWNLOAD_ERRORS) &&
+			(status === HttpStatusCode.NotFound || status === HttpStatusCode.InternalServerError)
+		) {
+			throw error;
+		}
 
 		if (retryCount < count && whiteList.some((url) => request.url.includes(url))) {
 			return timer(backoff ? delay * retryCount : delay);

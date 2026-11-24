@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, Signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { VehicleType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
@@ -10,12 +10,11 @@ import { CustomFormControlComponent } from '../../forms/custom-sections/custom-f
 import { RootRoutes } from '../../models/routes.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '../../models/testTypeId.enum';
 import { VehicleSubclass } from '../../models/vehicle-tech-record.model';
-import { DocumentsService } from '../../services/documents/documents.service';
-import { HttpService } from '../../services/http/http.service';
+import { TestResultMediaService } from '../../services/documents/test-result-media.service';
 import { selectedTestResultState } from '../../store/test-records';
 
 @Component({
-	selector: 'app-approval-approval-media-download',
+	selector: 'app-approval-media-download',
 	templateUrl: './approval-media-download.component.html',
 	styleUrls: ['./approval-media-download.component.scss'],
 	host: {
@@ -25,8 +24,7 @@ import { selectedTestResultState } from '../../store/test-records';
 export class ApprovalMediaDownloadComponent extends CustomFormControlComponent implements OnDestroy {
 	store = inject(Store);
 	router = inject(Router);
-	httpService = inject(HttpService);
-	documentsService = inject(DocumentsService);
+	testResultMediaService = inject(TestResultMediaService);
 	globalErrorService = inject(GlobalErrorService);
 
 	testResult = this.store.selectSignal(selectedTestResultState) as Signal<TestResultSchema | undefined>;
@@ -126,26 +124,8 @@ export class ApprovalMediaDownloadComponent extends CustomFormControlComponent i
 		this.globalErrorService.clearErrors();
 	}
 
-	get params(): Map<string, string> {
-		return new Map([['category', 'approvals']]);
-	}
-
 	downloadMedia(test: TestResultSchema) {
-		const fileType = 'zip';
-		const fileName = `${test.testResultId}.zip`;
-
-		this.httpService.getTestResultMedia(test.testResultId, this.params).subscribe({
-			next: (response) => {
-				switch (response.type) {
-					case HttpEventType.DownloadProgress:
-						break;
-					case HttpEventType.Response:
-						this.documentsService.openDocumentFromResponse(fileName, response.body, fileType);
-						break;
-					default:
-						break;
-				}
-			},
+		this.testResultMediaService.download(test.testResultId, 'approvals').subscribe({
 			error: (error) => {
 				if (error instanceof HttpErrorResponse) {
 					switch (error.status) {
@@ -166,6 +146,8 @@ export class ApprovalMediaDownloadComponent extends CustomFormControlComponent i
 							console.error(error);
 							break;
 					}
+				} else {
+					console.error(error);
 				}
 			},
 		});

@@ -10,6 +10,12 @@ export const RequiredSpecialistSectionMotorcycle: FormNode = {
 	type: FormNodeTypes.GROUP,
 	children: [
 		{
+			name: 'approvalCertificate',
+			type: FormNodeTypes.CONTROL,
+			viewType: FormNodeViewTypes.HIDDEN,
+			editType: FormNodeEditTypes.HIDDEN,
+		},
+		{
 			name: 'testResultId',
 			type: FormNodeTypes.CONTROL,
 			viewType: FormNodeViewTypes.HIDDEN,

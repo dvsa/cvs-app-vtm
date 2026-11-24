@@ -1,17 +1,25 @@
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { InterceptorModule } from '@/src/app/interceptors/interceptor.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleType as VehicleTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleType.enum.js';
-import { TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { MediaSchema, TestResultTestTypeSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { mockTestResult } from '@mocks/mock-test-result';
+import { RootRoutes } from '@models/routes.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
 import { V3TechRecordModel, VehicleConfigurations } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { DocumentsService } from '@services/documents/documents.service';
+import { TestResultMediaService } from '@services/documents/test-result-media.service';
 import { HttpService } from '@services/http/http.service';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import JSZip from 'jszip';
+import { lastValueFrom, of } from 'rxjs';
 import { VehicleHeaderComponent } from '../vehicle-header.component';
 
 const mockTechnicalRecordService = {
@@ -26,11 +34,11 @@ describe('VehicleHeaderComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [VehicleHeaderComponent],
+			imports: [VehicleHeaderComponent, InterceptorModule],
 			providers: [
 				HttpService,
 				provideRouter([]),
-				provideHttpClient(),
+				provideHttpClient(withInterceptorsFromDi()),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
 				ResultOfTestService,
@@ -47,6 +55,177 @@ describe('VehicleHeaderComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	describe('Photo of Certificate', () => {
+		const ivaTypeId = TEST_TYPES_GROUP1_SPEC_TEST[0];
+		const qt1TypeId = '136';
+		const voluntaryIvaTypeId = TEST_TYPES_GROUP5_SPEC_TEST[0];
+		const photo: MediaSchema = { type: 'image', path: 'TestResultId0001/iac/certificate.jpg' };
+
+		afterEach(() => TestBed.inject(HttpTestingController).verify());
+
+		function showTest(testTypeId: string, media?: MediaSchema[], testStartTimestamp = new Date().toISOString()) {
+			const test = { ...mockTestResult(), approvalCertificate: media, testStartTimestamp };
+			test.testTypes[0].testTypeId = testTypeId;
+			fixture.componentRef.setInput('testResult', test);
+			fixture.detectChanges();
+			return test;
+		}
+
+		function photoCell(): HTMLElement | null {
+			return fixture.nativeElement.querySelector('#test-certificate-photo');
+		}
+
+		it.each([ivaTypeId, qt1TypeId, voluntaryIvaTypeId])(
+			'offers a photo download under Certificate for test type %s',
+			(typeId) => {
+				showTest(typeId, [photo]);
+				const row = photoCell()?.parentElement;
+				expect(row?.previousElementSibling?.querySelector('#test-certificate')).toBeTruthy();
+				expect(row?.querySelector('dt')?.textContent?.trim()).toBe('Photo of certificate:');
+				expect(photoCell()?.querySelector('a')?.textContent?.trim()).toBe('Download photo of certificate');
+			}
+		);
+
+		it.each([
+			['IVA', 'iac', ivaTypeId],
+			['Part MSVA inspection (QT1)', 'mac', qt1TypeId],
+			['voluntary IVA', 'iac', voluntaryIvaTypeId],
+		])('%s downloads only %s images and reuses the full archive', async (_, category, typeId) => {
+			const test = showTest(typeId, [{ ...photo, path: `TestResultId0001/${category}/certificate.jpg` }]);
+			const categoryPath = `${test.testResultId}/${category}`;
+			const source = new JSZip()
+				.file(`${categoryPath}/certificate.jpg`, 'first image')
+				.file(`${categoryPath}/extra.PNG`, 'second image')
+				.file(`${categoryPath}/reason.txt`, 'not an image')
+				.file(`${test.testResultId}/${category === 'iac' ? 'mac' : 'iac'}/other.jpg`, 'other certificate photo')
+				.file(`${test.testResultId}/approvals/vehicle.jpg`, 'vehicle photo')
+				.file(`${test.testResultId}/vtg15/vtg15.jpg`, 'VTG15 photo');
+			const data = await source.generateAsync({ type: 'arraybuffer' });
+			const documents = TestBed.inject(DocumentsService);
+			vi.spyOn(documents, 'simulateClick').mockImplementation(() => {});
+			const createLink = vi.spyOn(documents, 'createFileLink').mockImplementation(() => document.createElement('a'));
+			const http = TestBed.inject(HttpTestingController);
+			const mediaService = TestBed.inject(TestResultMediaService);
+
+			photoCell()?.querySelector('a')?.click();
+			const vtg15Download = lastValueFrom(mediaService.download(test.testResultId, 'vtg15'));
+			http
+				.expectOne(({ url, params }) => url.endsWith(`/${test.testResultId}`) && params.get('category') === category)
+				.flush('https://example.test/test-media.zip');
+			const request = await vi.waitFor(() => http.expectOne('https://example.test/test-media.zip'));
+			request.flush(data);
+
+			await vtg15Download;
+			await lastValueFrom(mediaService.download(test.testResultId, 'approvals'));
+			await vi.waitFor(() => expect(createLink).toHaveBeenCalledTimes(3));
+
+			const expectedFiles = {
+				[category]: [`${categoryPath}/certificate.jpg`, `${categoryPath}/extra.PNG`],
+				vtg15: [`${test.testResultId}/vtg15/vtg15.jpg`],
+				approvals: [`${test.testResultId}/approvals/vehicle.jpg`],
+			};
+			for (const [mediaCategory, names] of Object.entries(expectedFiles)) {
+				const call = createLink.mock.calls.find(([fileName]) => fileName === `${test.testResultId}-${mediaCategory}`);
+				expect(call).toBeDefined();
+				const zip = await JSZip.loadAsync(call![1]);
+				expect(
+					zip
+						.file(/./)
+						.map(({ name }) => name)
+						.sort()
+				).toEqual(names);
+				if (mediaCategory === category) {
+					expect(await zip.file(`${categoryPath}/certificate.jpg`)?.async('string')).toBe('first image');
+				}
+			}
+		});
+
+		it('does not show the row for tests outside specialist groups 1 and 5', () => {
+			showTest('94', [photo]);
+			expect(photoCell()).toBeNull();
+		});
+
+		it.each([
+			[undefined, 'No photo of certificate available'],
+			['Camera not working', 'No photo of certificate available – camera was not working'],
+			['The assessor’s hands were full.', 'No photo of certificate available – The assessor’s hands were full.'],
+			['Failed to upload', 'No photo of certificate available – media failed to upload'],
+		])('shows why a photo is unavailable (%s) without offering a download', (reason, expected) => {
+			showTest(
+				ivaTypeId,
+				reason ? [{ type: 'failReason', path: 'TestResultId0001/iac/reason.txt', reason }] : undefined
+			);
+			expect(photoCell()?.textContent?.trim()).toBe(expected);
+			expect(photoCell()?.querySelector('a')).toBeNull();
+		});
+
+		it('stops offering a download exactly ten years after the test started', () => {
+			const now = new Date(2026, 10, 18, 12);
+			const start = new Date(2016, 10, 18, 12);
+			vi.useFakeTimers();
+			try {
+				vi.setSystemTime(new Date(now.getTime() - 1));
+				showTest(ivaTypeId, [photo], start.toISOString());
+				expect(photoCell()?.querySelector('a')).not.toBeNull();
+
+				vi.setSystemTime(now);
+				showTest(ivaTypeId, [photo], start.toISOString());
+				expect(photoCell()?.querySelector('a')).toBeNull();
+				expect(photoCell()?.textContent?.trim().replace(/\s+/g, ' ')).toBe(
+					'No photo available - photo was deleted as the retention period had passed'
+				);
+			} finally {
+				vi.useRealTimers();
+			}
+		});
+
+		it.each(['vtg15', 'iac'] as const)('shows a global error instead of downloading on a %s 404', async (category) => {
+			const test = showTest(ivaTypeId, [photo]);
+			const download = vi.spyOn(TestBed.inject(DocumentsService), 'simulateClick');
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
+			const http = TestBed.inject(HttpTestingController);
+			if (category === 'iac') {
+				photoCell()?.querySelector('a')?.click();
+			} else {
+				component.downloadCertificateMedia(test, category);
+			}
+			let request = http.expectOne(({ params }) => params.get('category') === category);
+			if (category === 'iac') {
+				request.flush('https://example.test/test-media.zip');
+				request = await vi.waitFor(() => http.expectOne('https://example.test/test-media.zip'));
+			}
+			request.flush(null, { status: 404, statusText: 'Not Found' });
+
+			await vi.waitFor(() =>
+				expect(setErrors).toHaveBeenCalledWith([
+					{
+						error:
+							'Media could not be found <br>Try again later or contact the IT Service Desk if this issue keeps happening.',
+						anchorLink: '',
+					},
+				])
+			);
+			expect(download).not.toHaveBeenCalled();
+		});
+
+		it('redirects only once on an IAC 500 and does not download the archive', async () => {
+			showTest(ivaTypeId, [photo]);
+			const router = TestBed.inject(Router);
+			const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+			const navigateByUrl = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+			const download = vi.spyOn(TestBed.inject(DocumentsService), 'simulateClick');
+			photoCell()?.querySelector('a')?.click();
+
+			TestBed.inject(HttpTestingController)
+				.expectOne(({ params }) => params.get('category') === 'iac')
+				.flush(null, { status: 500, statusText: 'Internal Server Error' });
+
+			await vi.waitFor(() => expect(navigate).toHaveBeenCalledExactlyOnceWith([RootRoutes.ERROR]));
+			expect(navigateByUrl).not.toHaveBeenCalled();
+			expect(download).not.toHaveBeenCalled();
+		});
 	});
 
 	it('should combine the odometer reading', () => {

@@ -30,8 +30,6 @@ import { EUVehicleCategory as TechRecordEUCategory } from '@dvsa/cvs-type-defini
 import { dateError, dateTimeError } from '@forms/validators/date-time-error';
 import {
 	TEST_TYPES_GROUP1,
-	TEST_TYPES_GROUP12_14,
-	TEST_TYPES_GROUP15_16,
 	TEST_TYPES_GROUP1_DESK_BASED_TEST,
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP2,
@@ -48,6 +46,8 @@ import {
 	TEST_TYPES_GROUP7,
 	TEST_TYPES_GROUP9_10,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
+	TEST_TYPES_GROUP15_16,
 } from '@models/testTypeId.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
