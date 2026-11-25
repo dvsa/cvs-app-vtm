@@ -1,9 +1,18 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+	HttpContextToken,
+	HttpErrorResponse,
+	HttpEvent,
+	HttpHandler,
+	HttpInterceptor,
+	HttpRequest,
+} from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, throwError } from 'rxjs';
 
 export const HTTP_RESPONSE_REDIRECT = new InjectionToken<HttpResponseRedirectConfig>('HttpResponseRedirectConfig');
+// Media downloads handle 404 and 500 responses themselves, including those from signed archive URLs.
+export const HANDLE_MEDIA_DOWNLOAD_ERRORS = new HttpContextToken(() => false);
 
 export interface HttpResponseRedirectConfig {
 	/**
@@ -41,6 +50,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 				if (error instanceof HttpErrorResponse) {
 					if (
 						this.config.httpStatusRedirect.includes(error.status) &&
+						!request.context.get(HANDLE_MEDIA_DOWNLOAD_ERRORS) &&
 						!this.config.blacklist?.some((url) => request.url.includes(url))
 					) {
 						void this.router.navigateByUrl(this.config.redirectTo);

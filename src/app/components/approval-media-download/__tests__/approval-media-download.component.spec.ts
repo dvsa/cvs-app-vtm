@@ -314,11 +314,7 @@ describe('ApprovalMediaDownloadComponent', () => {
 			component.downloadMedia(test);
 
 			expect(httpService.getTestResultMedia).toHaveBeenCalledWith('result-1', new Map([['category', 'approvals']]));
-			expect(documentService.openDocumentFromResponse).toHaveBeenCalledExactlyOnceWith(
-				'result-1.zip',
-				'signed-url',
-				'zip'
-			);
+			expect(documentService.openDocumentFromResponse).toHaveBeenCalledExactlyOnceWith('result-1', 'signed-url', 'zip');
 		});
 
 		it('reports unexpected HTTP errors for monitoring', () => {
@@ -336,11 +332,11 @@ describe('ApprovalMediaDownloadComponent', () => {
 		});
 		it('should call openDocumentFromResponse upon receiving a 200 response', () => {
 			vi.spyOn(httpService, 'getTestResultMedia').mockReturnValue(
-				of({ type: HttpEventType.Response } as HttpEvent<string>)
+				of({ type: HttpEventType.Response, body: 'signed-url' } as HttpEvent<string>)
 			);
 
 			const openDocumentFromResponseSpy = vi.spyOn(documentService, 'openDocumentFromResponse');
-			component.downloadMedia({} as TestResultSchema);
+			component.downloadMedia({ testResultId: 'result-1' } as TestResultSchema);
 			expect(openDocumentFromResponseSpy).toHaveBeenCalledTimes(1);
 		});
 
@@ -350,7 +346,7 @@ describe('ApprovalMediaDownloadComponent', () => {
 			);
 
 			const setErrorsSpy = vi.spyOn(globalErrorService, 'setErrors');
-			component.downloadMedia({} as TestResultSchema);
+			component.downloadMedia({ testResultId: 'result-1' } as TestResultSchema);
 			expect(setErrorsSpy).toHaveBeenCalledWith([
 				{
 					error:
@@ -366,7 +362,7 @@ describe('ApprovalMediaDownloadComponent', () => {
 			);
 
 			const navigateSpy = vi.spyOn(router, 'navigate');
-			component.downloadMedia({} as TestResultSchema);
+			component.downloadMedia({ testResultId: 'result-1' } as TestResultSchema);
 			expect(navigateSpy).toHaveBeenCalledWith([RootRoutes.ERROR]);
 		});
 	});
