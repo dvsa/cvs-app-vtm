@@ -2,6 +2,10 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { createAction, props } from '@ngrx/store';
 
+export const deleteDefect = createAction('[API/defects] Delete Defect', props<{ id: number }>());
+export const deleteDefectSuccess = createAction('[API/defects] Delete Defect Success', props<{ id: number }>());
+export const deleteDefectFailed = createAction('[API/defects] Delete Defect Failed', props<GlobalError>());
+
 export const fetchDefects = createAction(getTitle(true));
 export const fetchDefectsSuccess = createAction(
 	getTitle(true, 'Success'),

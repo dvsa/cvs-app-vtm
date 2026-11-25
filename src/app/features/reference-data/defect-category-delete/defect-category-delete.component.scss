@@ -1,0 +1,13 @@
+.preview-compact-column {
+  width: 1%;
+}
+
+.preview-description {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 40.0625em) {
+  .preview-compact-column {
+    white-space: nowrap;
+  }
+}

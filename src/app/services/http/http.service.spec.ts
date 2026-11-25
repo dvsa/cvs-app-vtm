@@ -113,6 +113,14 @@ describe('HttpService', () => {
 		});
 	});
 
+	it('deletes the selected defect category with no request body', () => {
+		httpService.deleteDefect(1).subscribe();
+		const request = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/1`);
+		expect(request.request.method).toBe('DELETE');
+		expect(request.request.body).toBeNull();
+		request.flush(null, { status: 204, statusText: 'No Content' });
+	});
+
 	describe('fetchDefects', () => {
 		it('should get an array of matching results', () => {
 			const expectedResult = [{ imDescription: 'Some Description' } as DefectCategoryReferenceDataSchema];

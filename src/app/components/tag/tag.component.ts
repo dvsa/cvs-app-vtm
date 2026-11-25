@@ -1,8 +1,10 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-export type TagTypes = 'blue' | 'green' | 'orange' | 'red' | 'yellow' | 'purple' | 'grey';
+export type TagTypes = 'blue' | 'green' | 'orange' | 'red' | 'yellow' | 'purple' | 'grey' | 'black' | 'white';
 export const TagType = {
+	BLACK: 'black' as TagTypes,
+	WHITE: 'white' as TagTypes,
 	BLUE: 'blue' as TagTypes,
 	GREEN: 'green' as TagTypes,
 	ORANGE: 'orange' as TagTypes,
@@ -15,6 +17,7 @@ export const TagType = {
 @Component({
 	selector: 'app-tag',
 	templateUrl: './tag.component.html',
+	styleUrls: ['./tag.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgClass],
 })

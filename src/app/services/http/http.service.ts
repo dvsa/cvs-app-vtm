@@ -122,6 +122,10 @@ export class HttpService {
 		return this.http.get<DefectCategoryReferenceDataSchema>(`${environment.VTM_API_URI}/defects/${id}`);
 	}
 
+	deleteDefect(id: number) {
+		return this.http.delete<void>(`${environment.VTM_API_URI}/defects/${id}`).pipe(timeout(HttpService.TIMEOUT));
+	}
+
 	fetchRequiredStandards(euVehicleCategory: string) {
 		return this.http.get<DefectGETRequiredStandards>(
 			`${environment.VTM_API_URI}/defects/required-standards?euVehicleCategory=${euVehicleCategory}`,

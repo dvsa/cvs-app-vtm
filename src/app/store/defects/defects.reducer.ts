@@ -2,6 +2,9 @@ import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/ty
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
+	deleteDefect,
+	deleteDefectFailed,
+	deleteDefectSuccess,
 	fetchDefect,
 	fetchDefectFailed,
 	fetchDefectSuccess,
@@ -35,6 +38,13 @@ export const initialDefectsState: EntityState<DefectCategoryReferenceDataSchema>
 
 export const defectsReducer = createReducer(
 	initialDefectsState,
+
+	on(deleteDefect, (state) => ({ ...state, loading: true, error: '' })),
+	on(deleteDefectSuccess, (state, { id }) => ({
+		...defectsAdapter.removeMany((category) => category.imNumber === id, state),
+		loading: false,
+	})),
+	on(deleteDefectFailed, (state, { error }) => ({ ...state, loading: false, error })),
 
 	on(fetchDefects, (state) => ({ ...state, loading: true })),
 	on(fetchDefectsSuccess, (state, action) => ({ ...defectsAdapter.setAll(action.payload, state), loading: false })),
