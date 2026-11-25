@@ -14,7 +14,7 @@ import { ReplaySubject, of } from 'rxjs';
 import { AmendVrmReasonComponent } from '../tech-record-amend-vrm-reason.component';
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordChangeVrmComponent', () => {
@@ -53,7 +53,7 @@ describe('TechRecordChangeVrmComponent', () => {
 	});
 	describe('errors', () => {
 		it('should add an error when the reason for amending is not selected', () => {
-			const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+			const addErrorSpy = vi.spyOn(errorService, 'setErrors');
 
 			component.submit();
 
@@ -65,7 +65,7 @@ describe('TechRecordChangeVrmComponent', () => {
 	describe('submit', () => {
 		it('should navigate to correct-error', () => {
 			fixture.ngZone?.run(() => {
-				const navigationSpy = jest.spyOn(router, 'navigate');
+				const navigationSpy = vi.spyOn(router, 'navigate');
 				component.form.controls['isCherishedTransfer'].setValue('correcting-error');
 				component.submit();
 
@@ -74,7 +74,7 @@ describe('TechRecordChangeVrmComponent', () => {
 		});
 		it('should navigate to cherished-transfer', () => {
 			fixture.ngZone?.run(() => {
-				const navigationSpy = jest.spyOn(router, 'navigate');
+				const navigationSpy = vi.spyOn(router, 'navigate');
 				component.form.controls['isCherishedTransfer'].setValue('cherished-transfer');
 				component.submit();
 

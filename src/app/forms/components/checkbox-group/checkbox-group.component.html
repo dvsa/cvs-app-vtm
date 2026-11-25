@@ -1,16 +1,26 @@
 <div class="govuk-form-group">
-  <fieldset [disabled]="disabled" class="govuk-fieldset" attr.aria-describedby="{{ name() + '-hint' }}">
+  <fieldset
+    [disabled]="disabled"
+    class="govuk-fieldset"
+    attr.aria-describedby="{{ name() + '-hint' }}"
+  >
     @if (label()) {
       <label class="govuk-label govuk-label--m" [for]="name()">
         {{ label() }}
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </label>
     }
 
-    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-    <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+    <app-field-error-message
+      [error]="error"
+      [name]="name()"
+    ></app-field-error-message>
+    <app-field-error-message
+      [error]="warning()"
+      [name]="name()"
+    ></app-field-error-message>
 
     <div [id]="name() + '-hint'" class="govuk-hint">{{ hint() }}</div>
 
@@ -25,11 +35,17 @@
             [attr.checked]="isChecked(option.value)"
             [value]="option.value"
             [ngModel]="isChecked(option.value)"
+            [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="handleChange($event, option)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
-            />
-          <label class="govuk-label govuk-checkboxes__label" [for]="name() + '-' + option.value + '-checkbox'"> {{ option.label }} </label>
+          />
+          <label
+            class="govuk-label govuk-checkboxes__label"
+            [for]="name() + '-' + option.value + '-checkbox'"
+          >
+            {{ option.label }}
+          </label>
         </div>
       }
     </div>

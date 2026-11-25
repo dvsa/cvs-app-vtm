@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'node_modules/accessible-autocomplete';
+@use 'node_modules/accessible-autocomplete/dist/accessible-autocomplete.min.css';
 @use './styles';
 @import 'node_modules/govuk-frontend/govuk/all';
 
@@ -55,7 +55,7 @@
 
 .padding-vertical-half {
   display: block;
-  padding: .5rem 0 !important;
+  padding: 0.5rem 0 !important;
 }
 
 .autocomplete__input::placeholder {

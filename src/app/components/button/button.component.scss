@@ -1,7 +1,8 @@
-@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/govuk-frontend/govuk/base';
 
 .govuk-button {
-  &--link, &--link:link {
+  &--link,
+  &--link:link {
     text-decoration: underline;
     text-decoration-thickness: max(1px, 0.0625rem);
     text-underline-offset: 0.1em;
@@ -21,9 +22,9 @@
 }
 
 .govuk-button--tertiary {
-  background-color:#1d70b8;
+  background-color: #1d70b8;
 
   &:hover {
-    background-color:#1d70b8;
+    background-color: #1d70b8;
   }
 }

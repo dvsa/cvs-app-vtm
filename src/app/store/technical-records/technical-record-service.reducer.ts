@@ -9,11 +9,13 @@ import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import {
 	clearBatch,
 	setApplicationId,
+	setBatchDetails,
 	setGenerateNumberFlag,
+	setTrailerFormType,
 	setVehicleStatus,
 	setVehicleType,
 	upsertVehicleBatch,
@@ -52,6 +54,8 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
+	getTechRecordV3,
+	getTechRecordV3Failure,
 	getTechRecordV3Success,
 	promoteTechRecord,
 	promoteTechRecordFailure,
@@ -116,6 +120,14 @@ export const vehicleTechRecordReducer = createReducer(
 	})),
 	on(getBySystemNumberFailure, (state) => ({ ...state, loading: false, techRecordHistory: [] })),
 
+	on(getTechRecordV3, (state) => ({ ...state, loading: true })),
+	on(getTechRecordV3Success, (state, action) => ({
+		...state,
+		vehicleTechRecord: action.vehicleTechRecord,
+		loading: false,
+	})),
+	on(getTechRecordV3Failure, (state) => ({ ...state, loading: false })),
+
 	on(updateTechRecord, defaultArgs),
 	on(updateTechRecordSuccess, successArgs),
 	on(updateTechRecordFailure, updateFailureArgs),
@@ -176,12 +188,18 @@ export const vehicleTechRecordReducer = createReducer(
 	on(clearAllSectionStates, (state) => ({ ...state, sectionState: [] })),
 
 	on(
+		createVehicleRecord,
+		updateTechRecord,
 		upsertVehicleBatch,
 		createVehicleRecordSuccess,
 		updateTechRecordSuccess,
+		createVehicleRecordFailure,
+		updateTechRecordFailure,
 		setApplicationId,
 		setVehicleStatus,
 		setVehicleType,
+		setTrailerFormType,
+		setBatchDetails,
 		setGenerateNumberFlag,
 		clearBatch,
 		(state, action) => ({
@@ -189,8 +207,6 @@ export const vehicleTechRecordReducer = createReducer(
 			batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action),
 		})
 	),
-
-	on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord })),
 
 	on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
 	on(clearScrollPosition, (state) => ({ ...state, scrollPosition: [0, 0] as [number, number] })),
@@ -538,7 +554,9 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 
 function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
 	const { editingTechRecord } = state;
-	const additionalNoteTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'> & {
+	const additionalNoteTechRecord = cloneDeep(editingTechRecord) as unknown as NonVerbTechRecordType<
+		'hgv' | 'lgv' | 'trl'
+	> & {
 		techRecord_adrDetails_additionalExaminerNotes_note: string;
 	};
 	if (editingTechRecord) {
@@ -565,10 +583,10 @@ function handleUpdateExistingADRExaminerNote(
 	action: { additionalExaminerNote: string; examinerNoteIndex: number }
 ) {
 	const { editingTechRecord } = state;
-	const editedTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
+	const editedTechRecord = cloneDeep(editingTechRecord) as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
 	if (editedTechRecord) {
 		const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
 		examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
 	}
-	return { ...state, editingTechRecord: editingTechRecord as unknown as TechRecordType<'put'> };
+	return { ...state, editingTechRecord: editedTechRecord as unknown as TechRecordType<'put'> };
 }

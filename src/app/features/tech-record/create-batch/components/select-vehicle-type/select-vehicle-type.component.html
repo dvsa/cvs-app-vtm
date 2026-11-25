@@ -1,5 +1,7 @@
 <form [formGroup]="form">
-  <h1 class="govuk-heading-l title">Select the vehicle type to process a batch</h1>
+  <h1 class="govuk-heading-l title">
+    Select the vehicle type to process a batch
+  </h1>
 
   <app-radio-group
     #vehicleType
@@ -18,7 +20,13 @@
     ></app-radio-group>
   }
 
-  <app-button id="create-batch-continue" (clicked)="handleSubmit(vehicleType.value)">Continue</app-button>
+  <app-button
+    id="create-batch-continue"
+    (clicked)="handleSubmit(vehicleType.value)"
+    >Continue</app-button
+  >
 
-  <app-button design="link" data-module="govuk-button" (clicked)="cancel()">Back</app-button>
+  <app-button design="link" data-module="govuk-button" (clicked)="cancel()"
+    >Back</app-button
+  >
 </form>

@@ -28,6 +28,7 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 	readonly suffix = input<string>();
 	readonly nullIfEmpty = input<boolean>(false);
 	readonly showErrors = input<boolean>(true);
+	readonly showGroupError = input<boolean>(false);
 	readonly customScreenReaderLabelSuffix = input<string | null>(null);
 	readonly screenReaderLabelSuffix = computed(() => this.getScreenReaderLabelSuffix());
 	readonly FormNodeWidth = FormNodeWidth;
@@ -49,6 +50,28 @@ export class GovukFormGroupInputComponent extends GovukFormGroupBaseComponent im
 		}
 		this.value.set(obj);
 		this.onChange(obj);
+	}
+
+	onInput(event: Event) {
+		const input = event.target as HTMLInputElement | null;
+		if (!input) return;
+		let val = input.value ?? '';
+
+		const type = this.controlType ? this.controlType() : 'text';
+		if (type === 'number' || type === 'numericString') {
+			val = val.replace(/\D+/g, '');
+		}
+
+		const maxAttr = this.maxlength ? this.maxlength() : null;
+		const max = maxAttr != null && maxAttr !== '' ? Number(maxAttr) : null;
+		if (max && val.length > max) {
+			val = val.slice(0, max);
+			input.value = val;
+		}
+
+		const parsed = val === '' ? null : type === 'number' ? Number(val) : val;
+		this.value.set(parsed);
+		this.onChange(parsed);
 	}
 
 	getScreenReaderLabelSuffix(): string | null {

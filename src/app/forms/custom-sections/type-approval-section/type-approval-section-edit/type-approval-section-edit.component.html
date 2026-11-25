@@ -1,12 +1,20 @@
 @if (techRecord(); as tr) {
-  @if (tr.techRecord_vehicleType === VehicleTypes.HGV || tr.techRecord_vehicleType === VehicleTypes.PSV || tr.techRecord_vehicleType === VehicleTypes.TRL) {
+  @if (
+    tr.techRecord_vehicleType === VehicleTypes.HGV ||
+    tr.techRecord_vehicleType === VehicleTypes.PSV ||
+    tr.techRecord_vehicleType === VehicleTypes.TRL
+  ) {
     <div [formGroup]="form">
       @if (shouldDisplayFormControl('techRecord_approvalType')) {
         <govuk-form-group-select
-        label="Approval type"
-        formControlName="techRecord_approvalType"
-        [options]="tr.techRecord_vehicleType === VehicleTypes.TRL ? trlApprovalTypes : hgvAndPsvApprovalTypes"
-        [allowNull]="true"
+          label="Approval type"
+          formControlName="techRecord_approvalType"
+          [options]="
+            tr.techRecord_vehicleType === VehicleTypes.TRL
+              ? trlApprovalTypes
+              : hgvAndPsvApprovalTypes
+          "
+          [allowNull]="true"
         ></govuk-form-group-select>
       }
       @if (shouldDisplayFormControl('techRecord_approvalTypeNumber')) {
@@ -15,8 +23,8 @@
           formControlName="techRecord_approvalTypeNumber"
           [width]="FormNodeWidth.XL"
           [approvalType]="tr.techRecord_approvalType || null"
-          ></approval-type-number-input>
-        }
+        ></approval-type-number-input>
+      }
       @if (shouldDisplayFormControl('techRecord_ntaNumber')) {
         <govuk-form-group-input
           label="National type number"
@@ -50,7 +58,11 @@
         <govuk-form-group-input
           label="Variant number"
           [width]="FormNodeWidth.XL"
-          [tags]="vehicleType === VehicleTypes.PSV ? [] : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]"
+          [tags]="
+            vehicleType === VehicleTypes.PSV
+              ? []
+              : [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+          "
           formControlName="techRecord_variantNumber"
         ></govuk-form-group-input>
       }

@@ -44,7 +44,7 @@ describe('ErrorInterceptor', () => {
 		router = TestBed.inject(Router);
 		http = TestBed.inject(HttpClient);
 		httpController = TestBed.inject(HttpTestingController);
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should be created', () => {
@@ -53,7 +53,9 @@ describe('ErrorInterceptor', () => {
 		expect(interceptor).toBeTruthy();
 	});
 
-	it('should navigate to error page on a 500', fakeAsync(() => {
+	it('should navigate to error page on a 500', async () => {
+		await router.navigateByUrl('/');
+
 		http.get('http://www.google.com').subscribe({
 			next: () => {},
 			error: (e) => {
@@ -64,10 +66,8 @@ describe('ErrorInterceptor', () => {
 		const req = httpController.expectOne('http://www.google.com');
 		req.flush('string', { status: 500, statusText: 'Internal Server Error' });
 
-		tick();
-
-		expect(router.url).toBe('/error');
-	}));
+		await vi.waitFor(() => expect(router.url).toBe('/error'));
+	});
 
 	it('should not navigate to error page on a success', fakeAsync(() => {
 		http.get('http://www.google.com').subscribe({

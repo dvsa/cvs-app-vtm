@@ -1,15 +1,25 @@
 @if (techRecord(); as vm) {
-  @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL || vm.techRecord_vehicleType === VehicleTypes.PSV) {
+  @if (
+    vm.techRecord_vehicleType === VehicleTypes.HGV ||
+    vm.techRecord_vehicleType === VehicleTypes.TRL ||
+    vm.techRecord_vehicleType === VehicleTypes.PSV
+  ) {
     <dl class="govuk-summary-list">
       <!-- DTp number -->
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">DTp number</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_brakes_dtpNumber">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_brakes_dtpNumber"
+        >
           {{ vm.techRecord_brakes_dtpNumber | defaultNullOrEmpty }}
         </dd>
       </div>
       <!-- HGV/TRL Only Body Fields -->
-      @if (vm.techRecord_vehicleType === VehicleTypes.HGV || vm.techRecord_vehicleType === VehicleTypes.TRL) {
+      @if (
+        vm.techRecord_vehicleType === VehicleTypes.HGV ||
+        vm.techRecord_vehicleType === VehicleTypes.TRL
+      ) {
         <!-- Body make -->
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Body make</dt>
@@ -32,14 +42,20 @@
         <!-- Chassis Make -->
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Chassis make</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_chassisMake">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_chassisMake"
+          >
             {{ vm.techRecord_chassisMake | defaultNullOrEmpty }}
           </dd>
         </div>
         <!-- Chassis Model -->
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Chassis model</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_chassisModel">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_chassisModel"
+          >
             {{ vm.techRecord_chassisModel | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -62,7 +78,10 @@
         <!-- Model literal -->
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Model literal</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_modelLiteral">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_modelLiteral"
+          >
             {{ vm.techRecord_modelLiteral | defaultNullOrEmpty }}
           </dd>
         </div>
@@ -77,14 +96,20 @@
       <!-- Conversion reference number -->
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Conversion reference number</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_conversionRefNo">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_conversionRefNo"
+        >
           {{ vm.techRecord_conversionRefNo | defaultNullOrEmpty }}
         </dd>
       </div>
       <ng-template #bodyType>
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Body type</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_bodyType_description">
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_bodyType_description"
+          >
             {{ vm.techRecord_bodyType_description | defaultNullOrEmpty }}
           </dd>
         </div>

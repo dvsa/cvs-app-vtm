@@ -5,7 +5,16 @@ import { createMockHgv } from '@/src/mocks/hgv-record.mock';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+	ControlContainer,
+	ControlEvent,
+	FormControl,
+	FormGroup,
+	FormGroupDirective,
+	FormsModule,
+	ReactiveFormsModule,
+	StatusChangeEvent,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
@@ -63,21 +72,36 @@ describe('AdrComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should attach its form to its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 			expect(spy).toHaveBeenCalled();
 		});
 	});
 
-	describe('ngOnDestroy', () => {
-		it('should unsubscribe from all subscriptions', () => {
-			const spy = jest.spyOn(component.destroy$, 'complete');
-			component.ngOnDestroy();
-			expect(spy).toHaveBeenCalled();
-		});
+	describe('toggling approved to carry dangerous goods', () => {
+		it('should revalidate dependent controls against the new value and emit a status change so OnPush inline errors refresh', () => {
+			const parent = controlContainer.control as FormGroup;
+			const dangerousGoods = parent.get('techRecord_adrDetails_dangerousGoods') as FormControl;
+			const bodyType = parent.get('techRecord_adrDetails_vehicleDetails_type') as FormControl;
+			const events: ControlEvent[] = [];
+			bodyType.events.subscribe((event) => events.push(event));
+			bodyType.markAsTouched();
 
+			// Mimic the user clicking the radio, which does not write the value back to the view
+			dangerousGoods.setValue(true, { emitModelToViewChange: false });
+
+			expect(bodyType.errors).toHaveProperty('required');
+			expect(events.some((event) => event instanceof StatusChangeEvent && event.status === 'INVALID')).toBe(true);
+
+			dangerousGoods.setValue(false, { emitModelToViewChange: false });
+
+			expect(bodyType.valid).toBe(true);
+		});
+	});
+
+	describe('ngOnDestroy', () => {
 		it('should detach its form from its parent form', () => {
-			const spy = jest.spyOn(controlContainer.control as FormGroup, 'removeControl');
+			const spy = vi.spyOn(controlContainer.control as FormGroup, 'removeControl');
 			component.ngOnDestroy();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -86,14 +110,14 @@ describe('AdrComponent', () => {
 	describe('addUNNumber', () => {
 		it('should not allow the adding of a UN number if the previous one is empty', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addUNNumber();
 			expect(spy).not.toHaveBeenCalled();
 		});
 		it('should add an empty UN number to the form array if the all prior ones are filled in', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
 			arr.patchValue(['123']);
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addUNNumber();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -102,7 +126,7 @@ describe('AdrComponent', () => {
 	describe('removeUNNumber', () => {
 		it('should remove the UN number at the specified index from the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(arr, 'removeAt');
+			const spy = vi.spyOn(arr, 'removeAt');
 			component.removeUNNumber(1);
 			expect(spy).toHaveBeenCalledWith(1);
 		});
@@ -114,9 +138,9 @@ describe('AdrComponent', () => {
 			const reason = 'edit';
 			const expectedRoute = `../${reason}/edit-additional-examiner-note/${examinerNoteIndex}`;
 
-			jest.spyOn(component.viewportScroller, 'getScrollPosition').mockReturnValue([0, 100]);
-			jest.spyOn(component.store, 'dispatch');
-			jest.spyOn(component.router, 'navigate');
+			vi.spyOn(component.viewportScroller, 'getScrollPosition').mockReturnValue([0, 100]);
+			vi.spyOn(component.store, 'dispatch');
+			vi.spyOn(component.router, 'navigate');
 
 			component.getEditAdditionalExaminerNotePage(examinerNoteIndex);
 
@@ -131,7 +155,7 @@ describe('AdrComponent', () => {
 	describe('addTC3TankInspection', () => {
 		it('should add an empty TC3 tank inspection to the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
-			const spy = jest.spyOn(arr, 'push');
+			const spy = vi.spyOn(arr, 'push');
 			component.addTC3TankInspection();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -140,7 +164,7 @@ describe('AdrComponent', () => {
 	describe('removeTC3TankInspection', () => {
 		it('should remove the TC3 tank inspection at the specified index from the form array', () => {
 			const arr = component.form.controls.techRecord_adrDetails_tank_tankDetails_tc3Details;
-			const spy = jest.spyOn(arr, 'removeAt');
+			const spy = vi.spyOn(arr, 'removeAt');
 			component.removeTC3TankInspection(1);
 			expect(spy).toHaveBeenCalledWith(1);
 		});
@@ -166,7 +190,7 @@ describe('AdrComponent', () => {
 				},
 			];
 			component.techRecord().techRecord_adrDetails_tank_tankDetails_tc3Details = mockDetails;
-			const spy = jest.spyOn(component, 'addTC3TankInspection');
+			const spy = vi.spyOn(component, 'addTC3TankInspection');
 			component.handleInitialiseSubsequentTankInspections();
 			expect(spy).toHaveBeenCalledTimes(mockDetails.length);
 		});
@@ -175,13 +199,13 @@ describe('AdrComponent', () => {
 	describe('handleInitialiseUNNumbers', () => {
 		it('should push a new UN number into the form if none exist', () => {
 			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(control, 'push');
+			const spy = vi.spyOn(control, 'push');
 			component.handleInitialiseUNNumbers();
 			expect(spy).toHaveBeenCalled();
 		});
 		it('should push multiple un numbers into the form if they exist on the tech record', () => {
 			const control = component.form.controls.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
-			const spy = jest.spyOn(control, 'push');
+			const spy = vi.spyOn(control, 'push');
 			component.techRecord().techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo = ['123', '456'];
 			component.handleInitialiseUNNumbers();
 			expect(spy).toHaveBeenCalledTimes(2);
@@ -215,10 +239,7 @@ describe('AdrComponent', () => {
 
 	describe('handleADRBodyTypeChange', () => {
 		it('should subscribe to ADR body type changes', () => {
-			const spy = jest.spyOn(
-				component.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges,
-				'subscribe'
-			);
+			const spy = vi.spyOn(component.form.controls.techRecord_adrDetails_vehicleDetails_type.valueChanges, 'subscribe');
 			component.handleADRBodyTypeChange();
 			expect(spy).toHaveBeenCalled();
 		});
@@ -264,7 +285,7 @@ describe('AdrComponent', () => {
 			});
 
 			const options = PERMITTED_DANGEROUS_GOODS_OPTIONS;
-			expect(component.permittedDangerousGoodsOptions).toEqual(options);
+			expect(component.permittedDangerousGoodsOptions()).toEqual(options);
 
 			component.handleADRBodyTypeChange();
 
@@ -273,7 +294,7 @@ describe('AdrComponent', () => {
 				techRecord_adrDetails_vehicleDetails_type: ADRBodyType.RIGID_BATTERY,
 			});
 
-			expect(component.permittedDangerousGoodsOptions).toEqual(
+			expect(component.permittedDangerousGoodsOptions()).toEqual(
 				options.filter(
 					(option) =>
 						option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && option.value !== ADRDangerousGood.EXPLOSIVES_TYPE_3

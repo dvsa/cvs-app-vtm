@@ -1,13 +1,20 @@
-<ng-template [ngTemplateOutlet]="isEditing ? editRs : viewRs" [ngTemplateOutletContext]="{ data: form }" />
+<ng-template
+  [ngTemplateOutlet]="isEditing ? editRs : viewRs"
+  [ngTemplateOutletContext]="{ data: form }"
+/>
 
 <ng-template #viewRs let-data="data">
   @if (requiredStandard) {
     <h1 class="govuk-heading-l">Required Standard</h1>
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
       <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-m">{{ requiredStandard.sectionDescription }}</span>
+        <span class="govuk-caption-m">{{
+          requiredStandard.sectionDescription
+        }}</span>
         <h2 class="govuk-heading-s">
-          {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
+          {{ requiredStandard.refCalculation }} -
+          {{ requiredStandard.sectionDescription }}:
+          {{ requiredStandard.requiredStandard }}
         </h2>
         @if (requiredStandard.prs) {
           <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
@@ -19,11 +26,15 @@
         <dl class="govuk-summary-list">
           <dl class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Notes</dt>
-            <dd class="govuk-summary-list__value">{{ requiredStandard.additionalNotes | defaultNullOrEmpty }}</dd>
+            <dd class="govuk-summary-list__value">
+              {{ requiredStandard.additionalNotes | defaultNullOrEmpty }}
+            </dd>
           </dl>
           <dl class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">PRS?</dt>
-            <dd class="govuk-summary-list__value">{{ !!requiredStandard.prs | defaultNullOrEmpty }}</dd>
+            <dd class="govuk-summary-list__value">
+              {{ !!requiredStandard.prs | defaultNullOrEmpty }}
+            </dd>
           </dl>
         </dl>
       </div>
@@ -35,9 +46,13 @@
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Required Standard Details</h1>
-        <span class="govuk-caption-m">{{ requiredStandard.sectionDescription }}</span>
+        <span class="govuk-caption-m">{{
+          requiredStandard.sectionDescription
+        }}</span>
         <h2 class="govuk-heading-s">
-          {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
+          {{ requiredStandard.refCalculation }} -
+          {{ requiredStandard.sectionDescription }}:
+          {{ requiredStandard.requiredStandard }}
         </h2>
         @if (requiredStandard.prs) {
           <app-tag id="prs-display" [type]="'blue'">PRS</app-tag>
@@ -47,30 +62,54 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <ng-container [formGroup]="form">
-          <app-text-area name="additionalNotes" label="Additional Notes" formControlName="additionalNotes"></app-text-area>
+          <app-text-area
+            name="additionalNotes"
+            label="Additional Notes"
+            formControlName="additionalNotes"
+          ></app-text-area>
           <div class="govuk-form-group">
             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
               <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="prs" type="checkbox" [checked]="requiredStandard.prs" (change)="toggleRsPrsField()" />
-                <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect rectified during test</label>
+                <input
+                  class="govuk-checkboxes__input"
+                  id="prs"
+                  type="checkbox"
+                  [checked]="requiredStandard.prs"
+                  (change)="toggleRsPrsField()"
+                />
+                <label class="govuk-label govuk-checkboxes__label" for="prs">
+                  Defect rectified during test</label
+                >
               </div>
             </div>
           </div>
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
               <app-button-group>
-                <app-button id="confirm-requierdStandard" (clicked)="handleSubmit()">Confirm</app-button>
+                <app-button
+                  id="confirm-requierdStandard"
+                  (clicked)="handleSubmit()"
+                  >Confirm</app-button
+                >
                 @if (index || index === 0) {
-                  <app-button id="remove-requiredStandard" design="warning" (clicked)="handleRemove()"
+                  <app-button
+                    id="remove-requiredStandard"
+                    design="warning"
+                    (clicked)="handleRemove()"
                     >Remove Required Standard</app-button
-                    >
-                  }
-                  <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">Cancel</app-button>
-                </app-button-group>
-              </div>
+                  >
+                }
+                <app-button
+                  id="remove-nav-back"
+                  design="link"
+                  (clicked)="navigateBack()"
+                  >Cancel</app-button
+                >
+              </app-button-group>
             </div>
-          </ng-container>
-        </div>
+          </div>
+        </ng-container>
       </div>
-    }
-  </ng-template>
+    </div>
+  }
+</ng-template>

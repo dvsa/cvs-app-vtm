@@ -47,7 +47,7 @@ describe('RequiredStandardsComponent', () => {
 		router = TestBed.inject(Router);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should create', () => {
@@ -79,7 +79,7 @@ describe('RequiredStandardsComponent', () => {
 
 	describe('onAddRequiredStandards', () => {
 		it('should let me add a RS and call the navigator', () => {
-			const spy = jest.spyOn(router, 'navigate');
+			const spy = vi.spyOn(router, 'navigate');
 
 			fixture.componentRef.setInput('testData', {
 				euVehicleCategory: EUVehicleCategory.M1,
@@ -90,8 +90,8 @@ describe('RequiredStandardsComponent', () => {
 			expect(spy).toHaveBeenCalledTimes(1);
 		});
 		it('should not add a RS and emit a value to the parent', () => {
-			const spy = jest.spyOn(router, 'navigate');
-			const emitSpy = jest.spyOn(component.validateEuVehicleCategory, 'emit');
+			const spy = vi.spyOn(router, 'navigate');
+			const emitSpy = vi.spyOn(component.validateEuVehicleCategory, 'emit');
 
 			fixture.componentRef.setInput('testData', {
 				testerName: 'bar',

@@ -1,4 +1,4 @@
-import { AsyncPipe, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -53,7 +53,6 @@ import { TextAreaComponent } from '../../../components/text-area/text-area.compo
 		ButtonComponent,
 		KeyValuePipe,
 		DefaultNullOrEmpty_1,
-		AsyncPipe,
 	],
 })
 export class DefectComponent implements OnInit, OnDestroy {
@@ -89,6 +88,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 		{ value: true, label: 'Yes' },
 		{ value: false, label: 'No' },
 	];
+	isVideoPlaying = false;
 
 	async ngOnInit(): Promise<void> {
 		const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));
@@ -154,26 +154,30 @@ export class DefectComponent implements OnInit, OnDestroy {
 	}
 
 	async loadMediaItems() {
-		if (!this.testResult || !this.defect || !this.defectMediaService) return;
+		const testResult = this.testResult;
+		const defect = this.defect;
+		const defectMediaService = this.defectMediaService;
+		if (!testResult || !defect || !defectMediaService) return;
 
 		try {
 			this.loading = true;
 
-			if (this.defectMediaService.canDownloadAdasMediaItems(this.defect)) {
-				await this.defectMediaService.getAdasZip(this.testResult.testResultId);
-			}
+			await Promise.all([
+				defectMediaService.canDownloadAdasMediaItems(defect)
+					? defectMediaService.getAdasZip(testResult.testResultId)
+					: undefined,
+				defectMediaService.canDownloadDefectMediaItems(defect)
+					? defectMediaService.getDefectZip(testResult.testResultId)
+					: undefined,
+			]);
 
-			if (this.defectMediaService.canDownloadDefectMediaItems(this.defect)) {
-				await this.defectMediaService.getDefectZip(this.testResult.testResultId);
-			}
-
-			if (Array.isArray(this.defect.media)) {
-				for (const media of this.defect.media) {
-					await this.defectMediaService.loadMediaItemAsBase64(this.testResult, this.defect, media);
-				}
+			if (Array.isArray(defect.media)) {
+				await Promise.all(
+					defect.media.map((media) => defectMediaService.loadMediaItemAsBase64(testResult, defect, media))
+				);
 			}
 		} catch (error) {
-			// TODO: handle error
+			defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
 			this.loading = false;
 			this.cdr.detectChanges();
@@ -192,7 +196,31 @@ export class DefectComponent implements OnInit, OnDestroy {
 			}
 		}
 
+		// Check for HTTP errors (404 or 500) when fetching media
+		if (this.testResult) {
+			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult.testResultId);
+			if (mediaError) {
+				return mediaError.message;
+			}
+		}
+
 		return 'No media available';
+	}
+
+	async playVideo(mediaPath: string): Promise<void> {
+		this.isVideoPlaying = true;
+		this.cdr.detectChanges();
+		const video = this.getVideoElement(mediaPath);
+		if (!video) {
+			this.isVideoPlaying = false;
+			return;
+		}
+		await video.play();
+	}
+
+	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
+		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
+		return element ? (element as HTMLVideoElement) : null;
 	}
 
 	get isDangerous(): boolean {

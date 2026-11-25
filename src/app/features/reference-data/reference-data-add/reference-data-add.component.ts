@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -13,17 +12,17 @@ import {
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, ReplaySubject, catchError, filter, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { ReplaySubject, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-add',
 	templateUrl: './reference-data-add.component.html',
-	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent, AsyncPipe],
+	imports: [RoleRequiredDirective, DynamicFormGroupComponent_1, ButtonGroupComponent, ButtonComponent],
 })
 export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	globalErrorService = inject(GlobalErrorService);
@@ -36,6 +35,9 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 	destroy$ = new ReplaySubject<boolean>(1);
 
 	type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	newRefData: any;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,22 +52,21 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 			this.type = params['type'];
 			this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 		});
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Add a new ${type?.labelSingular} - Vehicle Testing Management`);
-		});
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(`Add a new ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`),
+			{ injector: this.injector }
+		);
 	}
 
 	ngOnDestroy(): void {
 		// Clear subscriptions
 		this.destroy$.next(true);
 		this.destroy$.complete();
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
 	}
 
 	get roles(): typeof Roles {
@@ -115,7 +116,7 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 				filter((errors) => !errors.length),
 				switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
 				take(1),
-				catchError((error) => (error.status === 200 ? of(true) : throwError(() => new Error('Error'))))
+				catchError((error) => (error.status === 200 ? of(true) : throwError(() => error)))
 			)
 			.subscribe({
 				next: (res) => {
@@ -127,8 +128,6 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 				},
 				error: (e) => {
 					if (e.status === 404) {
-						of(true);
-					} else {
 						this.store.dispatch(
 							createReferenceDataItem({
 								resourceType: this.type,
@@ -137,6 +136,11 @@ export class ReferenceDataCreateComponent implements OnInit, OnDestroy {
 							})
 						);
 						this.navigateBack();
+					} else {
+						this.globalErrorService.addError({
+							error: 'Unable to check whether Resource Key already exists. Try again later.',
+							anchorLink: 'newReferenceData',
+						});
 					}
 				},
 			});

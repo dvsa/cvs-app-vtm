@@ -30,13 +30,13 @@ const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
 
 describe('DuplicateVinComponent', () => {
 	beforeEach(async () => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 
 		await TestBed.configureTestingModule({
 			imports: [DuplicateVinComponent],
 			providers: [
 				GlobalErrorService,
-				provideRouter([{ path: 'create/new-record-details', component: jest.fn() }]),
+				provideRouter([{ path: 'create/new-record-details', component: vi.fn() }]),
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
@@ -64,7 +64,7 @@ describe('DuplicateVinComponent', () => {
 
 	describe('onSubmit', () => {
 		it('should navigate to new record details on submit', fakeAsync(() => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.onSubmit();
 			expect(navigateSpy).toHaveBeenCalledWith(['../create/new-record-details']);
 		}));
@@ -72,7 +72,7 @@ describe('DuplicateVinComponent', () => {
 
 	describe('onNavigateBack', () => {
 		it('should navigate back to the previous route', fakeAsync(() => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.onNavigateBack();
 			fixture.detectChanges();
 			discardPeriodicTasks();

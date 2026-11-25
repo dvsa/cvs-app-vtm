@@ -62,8 +62,8 @@ describe('LastApplicantSectionEditComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should call addControls', () => {
-			const addControlsSpy = jest.spyOn(component, 'addControls');
-			const parentFormSpy = jest.spyOn(controlContainer.control as FormGroup, 'addControl');
+			const addControlsSpy = vi.spyOn(component, 'addControls');
+			const parentFormSpy = vi.spyOn(controlContainer.control as FormGroup, 'addControl');
 			component.ngOnInit();
 			expect(addControlsSpy).toHaveBeenCalled();
 			expect(parentFormSpy).toHaveBeenCalled();
@@ -83,7 +83,7 @@ describe('LastApplicantSectionEditComponent', () => {
 		});
 
 		it('should complete destroy$ subject', () => {
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(completeSpy).toHaveBeenCalled();
 		});

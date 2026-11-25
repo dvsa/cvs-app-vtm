@@ -7,11 +7,17 @@ import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
+import { LoginComponent } from './features/login/login.component';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
+import { FeatureFlags } from './services/feature-toggle-service/feature-toggle-service';
 
 const routes: Routes = [
+	{
+		path: 'login',
+		component: LoginComponent,
+	},
 	{
 		path: RootRoutes.ROOT,
 		resolve: { title: titleResolver },
@@ -39,6 +45,13 @@ const routes: Routes = [
 				providers: [AxlesService],
 				canActivate: [MsalGuard, RoleGuard],
 				loadChildren: () => import('./features/tech-record/create/create-tech-records.routes').then((m) => m.routes),
+			},
+			{
+				path: RootRoutes.BATCH,
+				data: { title: 'Batch', roles: Roles.TechRecordCreate, featureToggleName: FeatureFlags.BATCH_REDESIGN },
+				canActivate: [MsalGuard, RoleGuard, FeatureToggleGuard],
+				providers: [AxlesService],
+				loadChildren: () => import('./features/tech-record/batch/batch.routes').then((m) => m.routes),
 			},
 			{
 				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,

@@ -1,9 +1,15 @@
 @if ((selectAllTestTypes$ | async)?.length) {
   <h1 class="govuk-heading-l">Select a test type</h1>
   <div class="list_container--wrapper">
-    <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
+    <div
+      class="list_container"
+      [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }"
+    >
       <ol class="list">
-        @for (type of selectAllTestTypes$ | async; track tackByFn($index, type)) {
+        @for (
+          type of selectAllTestTypes$ | async;
+          track tackByFn($index, type)
+        ) {
           @let selected = isSelected(type.id!!);
           @let hasChildren = hasNext(type);
           <li>
@@ -11,10 +17,13 @@
               [id]="'test-list-item-' + [type.id]"
               [attr.data-testid]="type.id"
               class="list__item"
-              [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
+              [ngClass]="{
+                'list__item--active': selected,
+                'list__item--more': hasChildren,
+              }"
               [attr.aria-expanded]="hasChildren ? selected : ''"
               (click)="handleCategory(type, 0)"
-              >
+            >
               {{ type.name }}
             </button>
           </li>
@@ -25,11 +34,14 @@
       <div
         class="list_container"
         [ngClass]="{ 'list_container--shrink': categories.length > i + 2 }"
-        >
+      >
         <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
         <ol class="list">
           @if (hasNext(category)) {
-            @for (type of category.nextTestTypesOrCategories; track tackByFn($index, type)) {
+            @for (
+              type of category.nextTestTypesOrCategories;
+              track tackByFn($index, type)
+            ) {
               @let selected = isSelected(type.id!!);
               @let hasChildren = hasNext(type);
               <li>
@@ -37,10 +49,13 @@
                   [id]="'browse-list-item-' + [type.id]"
                   [attr.data-testid]="type.id"
                   class="list__item"
-                  [ngClass]="{ 'list__item--active': selected, 'list__item--more': hasChildren }"
+                  [ngClass]="{
+                    'list__item--active': selected,
+                    'list__item--more': hasChildren,
+                  }"
                   [attr.aria-expanded]="hasChildren ? selected : ''"
                   (click)="handleCategory(type, i + 1)"
-                  >
+                >
                   {{ type.name }}
                 </button>
               </li>
@@ -52,6 +67,8 @@
   </div>
 } @else {
   <h1 class="govuk-heading-l">No test types found</h1>
-  <p class="govuk-body">No test types were found. Check the information on the technical record is correct, or try to refresh the page.</p>
+  <p class="govuk-body">
+    No test types were found. Check the information on the technical record is
+    correct, or try to refresh the page.
+  </p>
 }
-

@@ -27,7 +27,9 @@
     >
       <govuk-radio label="Yes" [value]="true">
         <!-- Conditionally show details about the wheelchair lift -->
-        @if (shouldDisplayFormControl('techRecord_dda_wheelchairLiftInformation')) {
+        @if (
+          shouldDisplayFormControl('techRecord_dda_wheelchairLiftInformation')
+        ) {
           <govuk-form-group-textarea
             [hint]="'Enter details about the wheelchair lift'"
             [maxLength]="250"
@@ -50,7 +52,9 @@
     >
       <!-- Conditionally show details about the wheelchair ramp -->
       <govuk-radio label="Yes" [value]="true">
-        @if (shouldDisplayFormControl('techRecord_dda_wheelchairRampInformation')) {
+        @if (
+          shouldDisplayFormControl('techRecord_dda_wheelchairRampInformation')
+        ) {
           <govuk-form-group-textarea
             [hint]="'Enter details about the wheelchair ramp'"
             [maxLength]="250"

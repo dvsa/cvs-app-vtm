@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +24,7 @@ import {
 	selectRefDataBySearchTerm,
 	selectReferenceDataByResourceKey,
 } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-list',
@@ -39,7 +38,6 @@ import { Observable, Subject, catchError, filter, map, of, switchMap, take, take
 		ButtonGroupComponent,
 		ButtonComponent,
 		PaginationComponent,
-		AsyncPipe,
 		NoEmojisDirective,
 	],
 })
@@ -48,18 +46,23 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 	route = inject(ActivatedRoute);
 	router = inject(Router);
 	store = inject(Store);
-	cdr = inject(ChangeDetectorRef);
 	globalErrorService = inject(GlobalErrorService);
 	dfs = inject(DynamicFormService);
 	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
-	disabled = true;
-	pageStart?: number;
-	pageEnd?: number;
-	currentPage?: number;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	data?: Observable<Array<any> | undefined>;
+	refDataAdminType!: Signal<ReferenceDataAdminType | undefined>;
+	private readonly injector = inject(Injector);
+	readonly disabled = signal(true);
+	readonly pageStart = signal<number | undefined>(undefined);
+	readonly pageEnd = signal<number | undefined>(undefined);
+	// all items of the resource type; assigned in ngOnInit once the type is known from the route
+	private allItems: Signal<Array<ReferenceDataModelBase> | undefined> = signal(undefined);
+	// items matching the last search, or undefined when no search is applied
+	private readonly searchResults = signal<Array<ReferenceDataModelBase> | undefined>(undefined);
+	readonly data = computed(() => this.searchResults() ?? this.allItems());
+	readonly paginatedItems = computed(() => this.data()?.slice(this.pageStart(), this.pageEnd()) ?? []);
+	readonly numberOfRecords = computed(() => this.data()?.length ?? 0);
 	private destroy$ = new Subject<void>();
 
 	public form!: CustomFormGroup;
@@ -100,7 +103,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 						map((array) =>
 							array.data.map((item) => {
 								if (item.reason !== undefined) {
-									this.disabled = false;
+									this.disabled.set(false);
 								}
 							})
 						)
@@ -108,7 +111,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 				),
 				catchError((error) => {
 					if (error.status === 404) {
-						this.disabled = true;
+						this.disabled.set(true);
 						return of(true);
 					}
 					return of(false);
@@ -117,15 +120,16 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: (res) => of(!!res),
 			});
-		this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Search for ${type?.label} - Vehicle Testing Management`);
-		});
-	}
-
-	get refDataAdminType$(): Observable<ReferenceDataAdminType | undefined> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
+		this.allItems = this.store.selectSignal(selectAllReferenceDataByResourceType(this.type));
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		) as Signal<ReferenceDataAdminType | undefined>;
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() => {
+				this.titleService.setTitle(`Search for ${this.refDataAdminType()?.label} - Vehicle Testing Management`);
+			},
+			{ injector: this.injector }
 		);
 	}
 
@@ -153,17 +157,8 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 
 	handlePaginationChange(event?: { start: number; end: number }) {
 		if (!event) return;
-		this.pageStart = event.start;
-		this.pageEnd = event.end;
-		this.cdr.detectChanges();
-	}
-
-	get paginatedItems$() {
-		return (this.data ?? of([])).pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
-	}
-
-	get numberOfRecords$() {
-		return (this.data ?? of([])).pipe(map((items) => items?.length ?? 0));
+		this.pageStart.set(event.start);
+		this.pageEnd.set(event.end);
 	}
 
 	search(term: string, filterterm: keyof ReferenceDataModelBase) {
@@ -182,9 +177,9 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 			.subscribe((items) => {
 				if (!items?.length) {
 					this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'refSearch' });
-					this.data = of([]);
+					this.searchResults.set([]);
 				} else {
-					this.data = of(items);
+					this.searchResults.set(items);
 					void this.router.navigate([`../${this.type}`], {
 						relativeTo: this.route,
 						queryParams: { 'reference-data-items-page': 1 },
@@ -198,7 +193,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 		this.form.reset();
 		this.globalErrorService.clearErrors();
 		if (this.searchReturned) {
-			this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
+			this.searchResults.set(undefined);
 			void this.router.navigate([`../${this.type}`], {
 				relativeTo: this.route,
 				queryParams: { 'reference-data-items-page': 1 },

@@ -4,7 +4,7 @@ import { Component, inject } from '@angular/core';
 import { TestResultSummaryComponent } from '@features/test-records/amend/views/test-result-summary/test-result-summary.component';
 import { TestRecordV2Component } from '@features/test-records/create/views/create-test-record-wrapper/create-test-record-v2/test-record-v2.component';
 import { Modes } from '@models/modes.enum';
-import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '@models/testTypeId.enum';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -23,6 +23,6 @@ export class TestResultSummaryWrapperComponent {
 	featureToggleService = inject(FeatureToggleService);
 
 	testType = this.store.selectSignal(toEditOrNotToEdit);
-	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
+	testTypeIdAllowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS, ...TEST_TYPES_GROUP1_SPEC_TEST];
 	protected readonly Modes = Modes;
 }

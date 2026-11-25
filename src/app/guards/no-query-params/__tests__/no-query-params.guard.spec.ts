@@ -18,7 +18,7 @@ describe('NoQueryParamsGuard', () => {
 			providers: [
 				NoQueryParamsGuard,
 				provideMockStore({}),
-				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '' }) },
+				{ provide: RouterStateSnapshot, useValue: vi.fn().mockReturnValue({ url: '' }) },
 			],
 		});
 		guard = TestBed.inject(NoQueryParamsGuard);
@@ -32,58 +32,67 @@ describe('NoQueryParamsGuard', () => {
 	});
 
 	describe('No query params guard', () => {
-		it('should return true if there are query params', (done) => {
-			store.overrideSelector(selectQueryParams, { foo: 'bar' } as Params);
-			guard.canActivate().subscribe((result) => {
-				expect(result).toBe(true);
-				done();
+		it('should return true if there are query params', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				store.overrideSelector(selectQueryParams, { foo: 'bar' } as Params);
+				guard.canActivate().subscribe((result) => {
+					expect(result).toBe(true);
+					done();
+				});
 			});
 		});
 
-		it('should return an empty url when the previous navigation is undefined', (done) => {
-			const mockNavigation: Navigation = {
-				abort(): void {},
-				id: 1,
-				initialUrl: '/some/path' as unknown as UrlTree,
-				extractedUrl: {} as UrlTree,
-				trigger: 'hashchange',
-				extras: {} as NavigationExtras,
-				previousNavigation: {} as Navigation,
-			};
-			router.getCurrentNavigation = jest.fn().mockReturnValue(mockNavigation);
-			guard.canActivate().subscribe((tree) => {
-				expect(tree instanceof UrlTree).toBeTruthy();
-				expect((tree as UrlTree).toString()).toBe('/');
-				done();
+		it('should return an empty url when the previous navigation is undefined', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const mockNavigation: Navigation = {
+					abort(): void {},
+					id: 1,
+					initialUrl: '/some/path' as unknown as UrlTree,
+					extractedUrl: {} as UrlTree,
+					trigger: 'hashchange',
+					extras: {} as NavigationExtras,
+					previousNavigation: {} as Navigation,
+				};
+				router.getCurrentNavigation = vi.fn().mockReturnValue(mockNavigation);
+				guard.canActivate().subscribe((tree) => {
+					expect(tree instanceof UrlTree).toBeTruthy();
+					expect((tree as UrlTree).toString()).toBe('/');
+					done();
+				});
 			});
 		});
 
-		it('should return the previous Url if the previous navigation is defined', (done) => {
-			const mockNavigation: Navigation = {
-				abort(): void {},
-				id: 1,
-				initialUrl: '/some/path' as unknown as UrlTree,
-				extractedUrl: {} as UrlTree,
-				trigger: 'hashchange',
-				extras: {} as NavigationExtras,
-				previousNavigation: {} as Navigation,
-			};
+		it('should return the previous Url if the previous navigation is defined', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				const mockNavigation: Navigation = {
+					abort(): void {},
+					id: 1,
+					initialUrl: '/some/path' as unknown as UrlTree,
+					extractedUrl: {} as UrlTree,
+					trigger: 'hashchange',
+					extras: {} as NavigationExtras,
+					previousNavigation: {} as Navigation,
+				};
 
-			const tree = router.parseUrl('/path');
+				const tree = router.parseUrl('/path');
 
-			const previousNavigation: Navigation = {
-				...mockNavigation,
-				previousNavigation: {
+				const previousNavigation: Navigation = {
 					...mockNavigation,
-					finalUrl: tree,
-				},
-			};
-			router.getCurrentNavigation = jest.fn().mockReturnValue(previousNavigation);
-			guard.canActivate().subscribe((url_tree) => {
-				expect(url_tree instanceof UrlTree).toBeTruthy();
-				expect(previousNavigation.previousNavigation?.finalUrl?.toString()).toBeTruthy();
-				expect(url_tree.toString()).toEqual(previousNavigation.previousNavigation?.finalUrl?.toString());
-				done();
+					previousNavigation: {
+						...mockNavigation,
+						finalUrl: tree,
+					},
+				};
+				router.getCurrentNavigation = vi.fn().mockReturnValue(previousNavigation);
+				guard.canActivate().subscribe((url_tree) => {
+					expect(url_tree instanceof UrlTree).toBeTruthy();
+					expect(previousNavigation.previousNavigation?.finalUrl?.toString()).toBeTruthy();
+					expect(url_tree.toString()).toEqual(previousNavigation.previousNavigation?.finalUrl?.toString());
+					done();
+				});
 			});
 		});
 	});

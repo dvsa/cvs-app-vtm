@@ -3,7 +3,12 @@
     @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT) {
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-          <app-button id="generate-plate-link" design="secondary" *appRoleRequired="Roles.TechRecordAmend" (clicked)="generatePlate()">
+          <app-button
+            id="generate-plate-link"
+            design="secondary"
+            *appRoleRequired="Roles.TechRecordAmend"
+            (clicked)="generatePlate()"
+          >
             Generate and send plate
           </app-button>
         </div>
@@ -17,7 +22,9 @@
 
     @if (plates.length) {
       <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-!-margin-bottom-4">Plates history</caption>
+        <caption class="govuk-table__caption govuk-!-margin-bottom-4">
+          Plates history
+        </caption>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Serial</th>
@@ -29,7 +36,10 @@
         </thead>
         <tbody class="govuk-table__body">
           @for (plate of plates; track i; let i = $index) {
-            @if (techRecord.techRecord_statusCode === StatusCodes.CURRENT && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+            @if (
+              techRecord.techRecord_statusCode === StatusCodes.CURRENT &&
+              mostRecentPlate?.plateIssueDate === plate.plateIssueDate
+            ) {
               <a
                 class="govuk-link govuk-table__row"
                 href="javascript:void(0)"
@@ -39,45 +49,77 @@
                 [fileName]="fileName"
                 [documentType]="DocumentType.PLATE"
               >
-                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
+                <td
+                  scope="row"
+                  class="govuk-table__cell whitespace-pre-line"
+                  [id]="`plate-serial-number-${i}`"
+                >
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}
                 </td>
-                <td scope="row" class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issue-reason-${i}`">
+                <td
+                  scope="row"
+                  class="govuk-table__cell whitespace-pre-line break-all"
+                  [id]="`plate-issue-reason-${i}`"
+                >
                   {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
                 </td>
-                <td class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issuer-${i}`">
+                <td
+                  class="govuk-table__cell whitespace-pre-line break-all"
+                  [id]="`plate-issuer-${i}`"
+                >
                   {{ plate.plateIssuer | defaultNullOrEmpty }}
                 </td>
-                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
-                  {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
+                <td
+                  class="govuk-table__cell whitespace-pre-line"
+                  [id]="`plate-issue-date-${i}`"
+                >
+                  {{ plate.plateIssueDate | date: 'dd/MM/yyyy' }}
                 </td>
                 <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
-                  {{ plate.plateIssueDate | date : 'HH:mm' }}
+                  {{ plate.plateIssueDate | date: 'HH:mm' }}
                 </td>
               </a>
             } @else {
               <tr class="govuk-table__row" [id]="`plate-link${i}`">
-                <td scope="row" class="govuk-table__cell whitespace-pre-line" [id]="`plate-serial-number-${i}`">
+                <td
+                  scope="row"
+                  class="govuk-table__cell whitespace-pre-line"
+                  [id]="`plate-serial-number-${i}`"
+                >
                   {{ plate.plateSerialNumber | defaultNullOrEmpty }}
                 </td>
-                <td scope="row" class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issue-reason-${i}`">
+                <td
+                  scope="row"
+                  class="govuk-table__cell whitespace-pre-line break-all"
+                  [id]="`plate-issue-reason-${i}`"
+                >
                   {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
                 </td>
-                <td class="govuk-table__cell whitespace-pre-line break-all" [id]="`plate-issuer-${i}`">
+                <td
+                  class="govuk-table__cell whitespace-pre-line break-all"
+                  [id]="`plate-issuer-${i}`"
+                >
                   {{ plate.plateIssuer | defaultNullOrEmpty }}
                 </td>
-                <td class="govuk-table__cell whitespace-pre-line" [id]="`plate-issue-date-${i}`">
-                  {{ plate.plateIssueDate | date : 'dd/MM/yyyy' }}
+                <td
+                  class="govuk-table__cell whitespace-pre-line"
+                  [id]="`plate-issue-date-${i}`"
+                >
+                  {{ plate.plateIssueDate | date: 'dd/MM/yyyy' }}
                 </td>
                 <td class="govuk-table__cell" [id]="`plate-issue-time-${i}`">
-                  {{ plate.plateIssueDate | date : 'HH:mm' }}
+                  {{ plate.plateIssueDate | date: 'HH:mm' }}
                 </td>
               </tr>
             }
           }
         </tbody>
       </table>
-      <app-pagination tableName="plate-history" [numberOfItems]="numberOfPlates" (paginationOptionsChange)="handlePaginationChange($event)" />
+      <app-pagination
+        tableName="plate-history"
+        [numberOfItems]="numberOfPlates"
+        (paginationOptionsChange)="handlePaginationChange($event)"
+      />
     }
   </div>
 }

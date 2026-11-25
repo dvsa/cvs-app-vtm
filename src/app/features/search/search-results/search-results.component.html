@@ -1,0 +1,74 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l govuk-!-font-weight-bold">
+      Search for a technical record
+    </h1>
+
+    @if (searchView$ | async; as view) {
+      <app-search-form
+        class="search-form"
+        [pagination]="pagination.paginationOptions()"
+        [searchResults]="view.results.length"
+      ></app-search-form>
+
+      @if (view.results.length) {
+        @if (pagination.paginationOptions(); as page) {
+          @for (
+            searchResult of view.results.slice(page.start, page.end);
+            track searchResult.systemNumber +
+              '#' +
+              searchResult.createdTimestamp
+          ) {
+            <app-search-result
+              [searchResult]="searchResult"
+              *appRoleRequired="roles.TechRecordView"
+            ></app-search-result>
+          }
+        }
+      } @else if (view.showNoRecords) {
+        <h2
+          class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-5"
+          id="no-records-found"
+        >
+          No Records Found
+        </h2>
+        @if (view.hasArchivedRecords) {
+          <p class="govuk-body">
+            There are
+            <a
+              class="govuk-link"
+              id="archived-records-link"
+              [routerLink]="[]"
+              [queryParams]="{
+                includeArchived: true,
+                'search-results-page': 1,
+              }"
+              queryParamsHandling="merge"
+              >archived records matching your search</a
+            >.
+          </p>
+        } @else {
+          <p class="govuk-body">Check the VIN, VRM or Trailer ID.</p>
+        }
+        <p class="govuk-body" *appRoleRequired="roles.TechRecordCreate">
+          You can
+          <a
+            class="govuk-link"
+            id="create-technical-record-link"
+            routerLink="/create"
+            >create a new technical record</a
+          >
+          if the vehicle does not have one.
+        </p>
+      }
+
+      <app-pagination
+        #pagination
+        tableName="search-results"
+        [numberOfItems]="view.results.length"
+        [itemsPerPage]="4"
+        [hidden]="!view.results.length"
+      ></app-pagination>
+    }
+  </div>
+</div>

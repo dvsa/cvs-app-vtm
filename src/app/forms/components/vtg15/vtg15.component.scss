@@ -1,0 +1,9 @@
+:host ::ng-deep .vtg15-select .govuk-select {
+  width: 18.5em !important;
+  min-width: 18.5em !important;
+}
+
+/* Ensure the label sizing is preserved */
+:host ::ng-deep .vtg15-select .govuk-label {
+  display: block;
+}

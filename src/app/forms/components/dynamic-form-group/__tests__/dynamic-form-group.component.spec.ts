@@ -513,7 +513,7 @@ describe('DynamicFormGroupComponent', () => {
 
 				const control = component.form.get('levelOneControl');
 				control?.patchValue('foo');
-				const emitter = jest.spyOn(component.formChange, 'emit');
+				const emitter = vi.spyOn(component.formChange, 'emit');
 				tick(500);
 				expect(emitter).toHaveBeenCalledWith({ ...data, levelOneControl: 'foo' });
 				expect(emitter).toHaveBeenCalledTimes(1);

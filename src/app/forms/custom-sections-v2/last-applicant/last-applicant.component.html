@@ -1,4 +1,4 @@
-<div class="govuk-!-padding-4 govuk-label--s"  [formGroup]="form">
+<div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   <!--  Name or Company -->
   @if (shouldDisplayFormControl('techRecord_applicantDetails_name')) {
     <govuk-form-group-input
@@ -52,7 +52,9 @@
   }
 
   <!--  Telephone number -->
-  @if (shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')) {
+  @if (
+    shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')
+  ) {
     <govuk-form-group-input
       label="Telephone number"
       formControlName="techRecord_applicantDetails_telephoneNumber"

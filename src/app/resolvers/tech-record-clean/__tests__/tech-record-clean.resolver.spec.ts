@@ -14,7 +14,7 @@ describe('techRecordCleanResolver', () => {
 		TestBed.runInInjectionContext(() => techRecordCleanResolver(...resolverParameters));
 
 	const actions$ = new Observable<Action>();
-	const mockActivatedRouteSnapshot = jest.fn;
+	const mockActivatedRouteSnapshot = vi.fn;
 	let store: MockStore<State>;
 	let activatedRouteSnapshot: ActivatedRouteSnapshot;
 
@@ -41,8 +41,8 @@ describe('techRecordCleanResolver', () => {
 
 	describe('fetch tech record', () => {
 		it('should update the editing tech record when approval type = Small series and approval number is in NKS format', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'hgv',
 					techRecord_approvalType: 'Small series' as ApprovalType,
@@ -66,8 +66,8 @@ describe('techRecordCleanResolver', () => {
 		});
 
 		it('should update the editing tech record when approval type = Small series and approval number is in NKSXX format', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'hgv',
 					techRecord_approvalType: 'Small series' as ApprovalType,
@@ -91,8 +91,8 @@ describe('techRecordCleanResolver', () => {
 		});
 
 		it('should not update the editing tech record when the approval type is Small series, but the approval number is invalid', async () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
-			jest.spyOn(store, 'select').mockReturnValue(
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
+			vi.spyOn(store, 'select').mockReturnValue(
 				of({
 					techRecord_vehicleType: 'hgv',
 					techRecord_approvalType: 'Small series' as ApprovalType,
@@ -119,8 +119,8 @@ describe('techRecordCleanResolver', () => {
 	});
 
 	it('should sort additional examiner notes by createdAtDate in descending order', async () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
-		jest.spyOn(store, 'select').mockReturnValue(
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
+		vi.spyOn(store, 'select').mockReturnValue(
 			of({
 				techRecord_vehicleType: 'hgv',
 				techRecord_adrDetails_additionalExaminerNotes: [

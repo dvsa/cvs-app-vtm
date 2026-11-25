@@ -12,21 +12,24 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/router.selectors';
 import { amendVin, amendVinSuccess } from '@store/technical-records';
-import { ReplaySubject, of } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, of } from 'rxjs';
 import { AmendVinComponent } from '../tech-record-amend-vin.component';
 
+const techRecord$ = new BehaviorSubject<V3TechRecordModel | undefined>(undefined);
+
 const mockTechRecordService = {
+	techRecord$,
 	editableTechRecord$: of({}),
 	selectedVehicleTechRecord$: of({}),
-	viewableTechRecord$: jest.fn(),
-	updateEditingTechRecord: jest.fn(),
-	isUnique: jest.fn(),
-	getVehicleTypeWithSmallTrl: jest.fn(),
-	validateVinForUpdate: jest.fn().mockReturnValue(of(null)),
+	viewableTechRecord$: vi.fn(),
+	updateEditingTechRecord: vi.fn(),
+	isUnique: vi.fn(),
+	getVehicleTypeWithSmallTrl: vi.fn(),
+	validateVinForUpdate: vi.fn().mockReturnValue(of(null)),
 };
 
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordChangeVinComponent', () => {
@@ -76,14 +79,14 @@ describe('TechRecordChangeVinComponent', () => {
 				createdTimestamp: 'bar',
 				newVin: 'testVin',
 			} as unknown as TechRecordType<'put'>;
-			component.techRecord = expectedTechRecord;
+			techRecord$.next(expectedTechRecord);
 		});
 		it('should dispatch the amendVin action with the new vin', () => {
 			const createdTimestamp = '2022';
 			const systemNumber = '123456';
 			const newVin = 'myNewVin';
 			store.overrideSelector(selectRouteNestedParams, { createdTimestamp, systemNumber });
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 
 			component.form.controls['vin'].setValue('myNewVin');
 
@@ -95,9 +98,9 @@ describe('TechRecordChangeVinComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation();
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -105,7 +108,7 @@ describe('TechRecordChangeVinComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -113,8 +116,8 @@ describe('TechRecordChangeVinComponent', () => {
 		});
 
 		it('should navigate away amendVinSuccess', fakeAsync(() => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
-			jest.spyOn(router, 'navigate').mockImplementation();
+			const navigateSpy = vi.spyOn(router, 'navigate');
+			vi.spyOn(router, 'navigate').mockImplementation();
 
 			actions$.next(
 				amendVinSuccess({

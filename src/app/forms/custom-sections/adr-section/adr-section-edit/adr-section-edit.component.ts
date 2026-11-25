@@ -1,5 +1,5 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@components/pagination/pagination.component';
@@ -28,7 +28,7 @@ import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or
 import { AdrService } from '@services/adr/adr.service';
 import { FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { removeTC3TankInspection, removeUNNumber, techRecord, updateScrollPosition } from '@store/technical-records';
-import _ from 'lodash';
+import { indexOf } from 'lodash-es';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
@@ -222,7 +222,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 		{ value: 'n/a', label: 'Not applicable' },
 	];
 
-	permittedDangerousGoodsOptions = getOptionsFromEnum(ADRDangerousGood);
+	readonly permittedDangerousGoodsOptions = signal(getOptionsFromEnum(ADRDangerousGood));
 
 	guidanceNotesOptions = getOptionsFromEnum(ADRAdditionalNotesNumber);
 
@@ -277,11 +277,13 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 						techRecord_adrDetails_bodyDeclaration_type: null,
 					});
 
-					this.permittedDangerousGoodsOptions = options.filter(({ value }) => {
-						return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
-					});
+					this.permittedDangerousGoodsOptions.set(
+						options.filter(({ value }) => {
+							return value !== ADRDangerousGood.EXPLOSIVES_TYPE_2 && value !== ADRDangerousGood.EXPLOSIVES_TYPE_3;
+						})
+					);
 				} else {
-					this.permittedDangerousGoodsOptions = options;
+					this.permittedDangerousGoodsOptions.set(options);
 				}
 			});
 	}
@@ -357,7 +359,7 @@ export class AdrSectionEditComponent extends EditBaseComponent implements OnInit
 			arr.push(
 				this.fb.control<string | null>(null, [
 					this.commonValidators.maxLength(1500, (control) => {
-						const index = _.indexOf(arr.controls, control);
+						const index = indexOf(arr.controls, control);
 						return {
 							error: `UN number ${index + 1} must be less than or equal to 1500 characters`,
 							anchorLink: `techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-${index + 1}`,

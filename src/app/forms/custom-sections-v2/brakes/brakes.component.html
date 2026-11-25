@@ -1,91 +1,118 @@
 <div class="govuk-!-padding-4 govuk-label--s" [formGroup]="form">
   @if (techRecord(); as tr) {
-    @if(tr.techRecord_vehicleType === VehicleTypes.TRL) {
-        @if(parent.get('techRecord_axles') && (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_axles'))) {
-          <ng-container [formGroup]="parent">
-            <ng-container formArrayName="techRecord_axles">
-              @for(axle of axles.controls; track axle; let i = $index) {
-                @if (mode() !== Modes.SUMMARY || tcs.hasTRLAxleBrakeChanged(i)) {
-                  <ng-container formGroupName="{{ i }}">
-                    <label class="govuk-label govuk-label--s">Axle {{ axle.value.axleNumber }} brake details</label>
-                    @if (mode() === Modes.EDIT) {
-                      @if (techRecordAxles.at(i).get('brakes_brakeActuator')?.invalid || techRecordAxles.at(i).get('brakes_leverLength')?.invalid) {
-                        <app-field-error-message 
-                          [name]="'axle ' + axle.value.axleNumber + ' brake details'"
-                          [error]="'Brake actuator and Lever length must be less than or equal to 999mm'"
-                        ></app-field-error-message>
-                      }
+    @if (tr.techRecord_vehicleType === VehicleTypes.TRL) {
+      @if (
+        parent.get('techRecord_axles') &&
+        (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_axles'))
+      ) {
+        <ng-container [formGroup]="parent">
+          <ng-container formArrayName="techRecord_axles">
+            @for (axle of axles.controls; track axle; let i = $index) {
+              @if (mode() !== Modes.SUMMARY || tcs.hasTRLAxleBrakeChanged(i)) {
+                <ng-container formGroupName="{{ i }}">
+                  <label class="govuk-label govuk-label--s"
+                    >Axle {{ axle.value.axleNumber }} brake details</label
+                  >
+                  @if (mode() === Modes.EDIT) {
+                    @if (
+                      techRecordAxles.at(i).get('brakes_brakeActuator')
+                        ?.invalid ||
+                      techRecordAxles.at(i).get('brakes_leverLength')?.invalid
+                    ) {
+                      <app-field-error-message
+                        [name]="
+                          'axle ' + axle.value.axleNumber + ' brake details'
+                        "
+                        [error]="'Brake actuator and Lever length must be less than or equal to 999mm'"
+                      ></app-field-error-message>
                     }
-                    <div class="input-row">
-                      @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.brakes_brakeActuator`)) {
-                        <govuk-form-group-input
-                          label="Brake actuator"
-                          id="brakes_brakeActuator-{{ i + 1 }}"
-                          type="number"
-                          class="govuk-label"
-                          formControlName="brakes_brakeActuator"
-                          [suffix]="'mm'"
-                          [width]="FormNodeWidth.M"
-                          [showErrors]="false"
-                        ></govuk-form-group-input>
-                      }
-  
-                      @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.brakes_leverLength`)) {
-                        <govuk-form-group-input
-                          label="Lever length"
-                          id="brakes_leverLength-{{ i + 1 }}"
-                          type="number"
-                          class="govuk-label"
-                          formControlName="brakes_leverLength"
-                          [suffix]="'mm'"
-                          [width]="FormNodeWidth.M"
-                          [showErrors]="false"
-                        ></govuk-form-group-input>
-                      }
-  
-                      @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.brakes_springBrakeParking`)) {
-                        <govuk-form-group-select
-                          label="Spring brake parking"
-                          id="brakes_springBrakeParking-{{ i + 1 }}"
-                          class="select-width govuk-label"
-                          formControlName="brakes_springBrakeParking"
-                          [options]="booleanOptions"
-                          [allowNull]="true"
-                        ></govuk-form-group-select>
-                      }
-                    </div>
-                  </ng-container>
-                }
-              } @empty {
-                @if (mode() === Modes.EDIT) {
-                  <app-field-warning-message
-                    id="enter-number-of-axles-brake-details-warning-message"
-                    [warningMessage]="'Enter the number of axles to be able to add axle brake details.'"
-                  ></app-field-warning-message>
-                }
+                  }
+                  <div class="input-row">
+                    @if (
+                      mode() !== Modes.SUMMARY ||
+                      tcs.hasChanged(
+                        `techRecord_axles.${i}.brakes_brakeActuator`
+                      )
+                    ) {
+                      <govuk-form-group-input
+                        label="Brake actuator"
+                        id="brakes_brakeActuator-{{ i + 1 }}"
+                        type="number"
+                        class="govuk-label"
+                        formControlName="brakes_brakeActuator"
+                        [suffix]="'mm'"
+                        [width]="FormNodeWidth.M"
+                        [showErrors]="false"
+                      ></govuk-form-group-input>
+                    }
+
+                    @if (
+                      mode() !== Modes.SUMMARY ||
+                      tcs.hasChanged(`techRecord_axles.${i}.brakes_leverLength`)
+                    ) {
+                      <govuk-form-group-input
+                        label="Lever length"
+                        id="brakes_leverLength-{{ i + 1 }}"
+                        type="number"
+                        class="govuk-label"
+                        formControlName="brakes_leverLength"
+                        [suffix]="'mm'"
+                        [width]="FormNodeWidth.M"
+                        [showErrors]="false"
+                      ></govuk-form-group-input>
+                    }
+
+                    @if (
+                      mode() !== Modes.SUMMARY ||
+                      tcs.hasChanged(
+                        `techRecord_axles.${i}.brakes_springBrakeParking`
+                      )
+                    ) {
+                      <govuk-form-group-select
+                        label="Spring brake parking"
+                        id="brakes_springBrakeParking-{{ i + 1 }}"
+                        class="select-width govuk-label"
+                        formControlName="brakes_springBrakeParking"
+                        [options]="booleanOptions"
+                        [allowNull]="true"
+                      ></govuk-form-group-select>
+                    }
+                  </div>
+                </ng-container>
               }
-            </ng-container>
+            } @empty {
+              @if (mode() === Modes.EDIT) {
+                <app-field-warning-message
+                  id="enter-number-of-axles-brake-details-warning-message"
+                  [warningMessage]="'Enter the number of axles to be able to add axle brake details.'"
+                ></app-field-warning-message>
+              }
+            }
           </ng-container>
-        }
+        </ng-container>
+      }
 
       <div class="radio-buttons">
         @if (shouldDisplayFormControl('techRecord_brakes_loadSensingValve')) {
           <govuk-form-group-radio
             label="Load sensing valve"
             formControlName="techRecord_brakes_loadSensingValve"
-            [options]="booleanOptions">
+            [options]="booleanOptions"
+          >
           </govuk-form-group-radio>
         }
 
-        @if (shouldDisplayFormControl('techRecord_brakes_antilockBrakingSystem')) {
+        @if (
+          shouldDisplayFormControl('techRecord_brakes_antilockBrakingSystem')
+        ) {
           <govuk-form-group-radio
             label="Anti-lock braking system"
             formControlName="techRecord_brakes_antilockBrakingSystem"
-            [options]="booleanOptions">
+            [options]="booleanOptions"
+          >
           </govuk-form-group-radio>
         }
       </div>
-
     }
 
     @if (tr.techRecord_vehicleType === VehicleTypes.PSV) {
@@ -143,8 +170,13 @@
         }
       </div>
 
-      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossLadenWeight')) {
-        <label class="govuk-label govuk-label--s">Brake efficiency (no wheels locked)</label>
+      @if (
+        mode() !== Modes.SUMMARY ||
+        tcs.hasChanged('techRecord_grossLadenWeight')
+      ) {
+        <label class="govuk-label govuk-label--s"
+          >Brake efficiency (no wheels locked)</label
+        >
 
         <div class="input-row">
           <govuk-form-group-input
@@ -161,7 +193,9 @@
             class="govuk-label"
             [id]="'noWheelLockAddedSecondaryCell'"
             [disabled]="true"
-            [value]="round(((tr.techRecord_grossLadenWeight ?? 0) * 22.5) / 100)"
+            [value]="
+              round(((tr.techRecord_grossLadenWeight ?? 0) * 22.5) / 100)
+            "
             [width]="FormNodeWidth.M"
             [suffix]="'kg'"
           ></govuk-form-group-input>
@@ -177,8 +211,12 @@
         </div>
       }
 
-      @if (mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossKerbWeight')) {
-        <label class="govuk-label govuk-label--s">Brake efficiency (up to and including half wheels locked)</label>
+      @if (
+        mode() !== Modes.SUMMARY || tcs.hasChanged('techRecord_grossKerbWeight')
+      ) {
+        <label class="govuk-label govuk-label--s"
+          >Brake efficiency (up to and including half wheels locked)</label
+        >
 
         <div class="input-row">
           <govuk-form-group-input
@@ -200,7 +238,7 @@
             [width]="FormNodeWidth.M"
             [suffix]="'kg'"
           ></govuk-form-group-input>
-          
+
           <govuk-form-group-input
             label="Parking"
             class="govuk-label"
@@ -217,20 +255,34 @@
     @if (parent.get('techRecord_axles')) {
       @if (mode() !== Modes.SUMMARY || tcs.hasParkingBrakesSectionChanged()) {
         <div class="checkboxes" [formGroup]="parent">
-          <label class="govuk-label govuk-label--s govuk-!-margin-bottom-15" for="parking-brake">Parking brake</label>
-  
+          <label
+            class="govuk-label govuk-label--s govuk-!-margin-bottom-15"
+            for="parking-brake"
+            >Parking brake</label
+          >
+
           @if (mode() === Modes.EDIT) {
-            @if (parent.get('techRecord_axles')?.value.length === 0 || !parent.get('techRecord_axles')?.value) {
+            @if (
+              parent.get('techRecord_axles')?.value.length === 0 ||
+              !parent.get('techRecord_axles')?.value
+            ) {
               <app-field-warning-message
                 id="enter-number-of-axles-parking-brakes-warning-message"
                 [warningMessage]="'Enter the number of axles to be able to add parking brakes.'"
               ></app-field-warning-message>
             }
           }
-  
-          <div id="parking-brake" class="govuk-checkboxes" formArrayName="techRecord_axles">
+
+          <div
+            id="parking-brake"
+            class="govuk-checkboxes"
+            formArrayName="techRecord_axles"
+          >
             @for (axle of axles.controls; track axle; let i = $index) {
-              @if (mode() !== Modes.SUMMARY || tcs.hasChanged(`techRecord_axles.${i}.parkingBrakeMrk`)) {
+              @if (
+                mode() !== Modes.SUMMARY ||
+                tcs.hasChanged(`techRecord_axles.${i}.parkingBrakeMrk`)
+              ) {
                 <ng-container formGroupName="{{ i }}">
                   <govuk-form-group-checkbox
                     class="govuk-!-margin-bottom-12"

@@ -11,6 +11,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
+import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
 import { contingencyTestResolver, getBodyMake, getBodyModel, getBodyType } from '../contingency-test.resolver';
@@ -22,9 +23,9 @@ describe('ContingencyTestResolver', () => {
 	let techRecordService: TechnicalRecordService;
 
 	const MockUserService = {
-		getUserName$: jest.fn().mockReturnValue(new Observable()),
+		getUserName$: vi.fn().mockReturnValue(new Observable()),
 		get user$() {
-			return of('foo');
+			return of({ name: 'foo', oid: 'foo' });
 		},
 	};
 
@@ -49,8 +50,10 @@ describe('ContingencyTestResolver', () => {
 	});
 
 	it('should return true and dispatch the initial contingency test action', async () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
-		techRecordService.techRecord$ = of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>);
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
+		const testRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
+		techRecordService.techRecord$ = of(testRecord);
+		store.overrideSelector(selectTechRecord, testRecord);
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 		) as Observable<boolean>;
@@ -64,8 +67,10 @@ describe('ContingencyTestResolver', () => {
 	});
 
 	it('should return false if there is an error', async () => {
-		techRecordService.techRecord$ = of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>);
-		jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
+		const testRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
+		techRecordService.techRecord$ = of(testRecord);
+		store.overrideSelector(selectTechRecord, testRecord);
+		vi.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
 		const result = TestBed.runInInjectionContext(() =>
 			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
 		) as Observable<boolean>;

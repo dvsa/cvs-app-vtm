@@ -1,5 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { HazardClassification } from '@dvsa/cvs-type-definitions/types/enums/hazardClassification.enum';
+import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/reasonForNotLoading.enum';
+import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum';
+import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum';
 import {
 	DefectDetailsSchema,
 	EUVehicleCategory,
@@ -24,6 +28,14 @@ import {
 })
 export class TestService {
 	fb = inject(FormBuilder);
+
+	/**
+	 * True while the user is abandoning the test (from clicking "Mark as abandoned" until they either
+	 * submit the abandonment or cancel out of it). Sections read this to skip the validation that only
+	 * applies to a test that is being completed, mirroring the `requiredIfNotAbandoned` async validator
+	 * used by the dynamic form service.
+	 */
+	isAbandoning = signal(false);
 
 	form = this.fb.group({
 		testResultId: this.fb.nonNullable.control<string>(''),
@@ -64,6 +76,7 @@ export class TestService {
 		regnDate: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 		firstUseDate: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
 		media: this.fb.nonNullable.control<MediaSchema[] | undefined>({ value: undefined, disabled: false }),
+		approvalCertificate: this.fb.nonNullable.control<MediaSchema[] | undefined>({ value: undefined, disabled: false }),
 		reasonForCreation: this.fb.nonNullable.control<string>(''),
 		createdAt: this.fb.control<string | null>(null),
 		createdByEmailAddress: this.fb.nonNullable.control<string | undefined>({ value: undefined, disabled: false }),
@@ -131,8 +144,38 @@ export class TestService {
 					notes: this.fb.control<string>(' '),
 					reasonsForIssue: this.fb.control<string[]>([]),
 				}),
+				loadStatus: this.fb.group({
+					vehicleLoadStatus: this.fb.control<VehicleLoadStatusType | null | undefined>({
+						value: undefined,
+						disabled: false,
+					}),
+					unladenBodyType: this.fb.control<UnladenBodyType | null | undefined>({ value: undefined, disabled: false }),
+					otherUnladenBodyType: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+					reasonForNotLoading: this.fb.control<ReasonForNotLoading | null | undefined>({
+						value: undefined,
+						disabled: false,
+					}),
+					partiallyLadenReason: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+					otherReasonForNotLoading: this.fb.control<string | null | undefined>({ value: undefined, disabled: false }),
+				}),
 			}),
 		]),
+		vtg15: this.fb.group({
+			vtg15Required: this.fb.control<boolean | undefined>({ value: undefined, disabled: false }),
+			primaryHazardClassification: this.fb.control<HazardClassification | undefined>({
+				value: undefined,
+				disabled: false,
+			}),
+			secondaryHazardClassification: this.fb.control<HazardClassification | undefined>({
+				value: undefined,
+				disabled: false,
+			}),
+			unNumber: this.fb.control<string | undefined>({ value: undefined, disabled: false }),
+			media: this.fb.control<MediaSchema[] | undefined>({
+				value: [{ path: ' ', reason: 'Contingency test', type: 'failReason' }],
+				disabled: false,
+			}),
+		}),
 	});
 }
 
@@ -172,6 +215,7 @@ export const INITIAL_TEST_RESULT_FORM_VALUE = {
 	regnDate: undefined,
 	firstUseDate: undefined,
 	media: undefined,
+	approvalCertificate: undefined,
 	reasonForCreation: '',
 	createdAt: null,
 	createdByEmailAddress: undefined,
@@ -209,7 +253,7 @@ export const INITIAL_TEST_RESULT_FORM_VALUE = {
 			lastSeatbeltInstallationCheckDate: undefined,
 			seatbeltInstallationCheckDate: undefined,
 			testExpiryDate: undefined,
-			testAnniversaryDate: undefined,
+			testAnniversaryDate: '',
 			modType: undefined,
 			emissionStandard: undefined,
 			fuelType: undefined,
@@ -225,6 +269,7 @@ export const INITIAL_TEST_RESULT_FORM_VALUE = {
 			testCode: undefined,
 			createdAt: undefined,
 			testTypeClassification: undefined,
+			loadStatus: {},
 			centralDocs: {
 				issueRequired: false,
 				notes: ' ',

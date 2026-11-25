@@ -20,8 +20,16 @@ import {
 } from '@/src/app/store/test-records';
 import { KeyValuePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, DestroyRef, computed, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	DestroyRef,
+	computed,
+	inject,
+	signal,
+} from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -53,6 +61,7 @@ import { CommonValidatorsService } from '../../../validators/common-validators.s
 		GovukFormGroupCheckboxComponent,
 		DefaultNullOrEmpty,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefectV2Component {
 	fb = inject(FormBuilder);
@@ -73,8 +82,9 @@ export class DefectV2Component {
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	defect = computed(() => this.getDefect());
 
-	loading = false;
+	readonly loading = signal(false);
 	additionalInfoMultiOptions: Record<string, MultiOptions> = {};
+	isVideoPlaying = false;
 
 	form = this.fb.group({
 		deficiencyRef: this.fb.control<string>(''),
@@ -98,13 +108,17 @@ export class DefectV2Component {
 			}),
 			notes: this.fb.control<string | null>(null, [
 				this.commonValidators.applyWhen(() => this.isNotesRequired(), this.commonValidators.required('Notes')),
+				this.commonValidators.maxLength(500, 'Notes'),
 			]),
 		}),
 		prs: this.fb.control<boolean>(false),
 		prohibitionIssued: this.fb.control<boolean | null>(null, [
 			this.commonValidators.applyWhen(
 				() => this.isProhibitionIssuedRequired(),
-				this.commonValidators.required('Prohibition issued')
+				this.commonValidators.required('Prohibition issued'),
+				// A dangerous defect with no standard for prohibition can only be added once a notice has been issued,
+				// so answering 'No' is not a valid way of satisfying the required condition above
+				this.commonValidators.requiredTrue('Prohibition notice has not been issued.')
 			),
 		]),
 		stdForProhibition: this.fb.control<boolean | null>(null),
@@ -113,6 +127,10 @@ export class DefectV2Component {
 	});
 
 	readonly YES_NO_OPTIONS = YES_NO_OPTIONS;
+
+	// Track the form value as a signal so category-driven predicates recompute reactively
+	// instead of each calling form.getRawValue() on every change-detection cycle.
+	private formValue = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
 
 	async ngOnInit(): Promise<void> {
 		this.form.controls.prohibitionIssued.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -133,6 +151,10 @@ export class DefectV2Component {
 			this.populateDefectFromTaxonomy(defect, item, deficiency);
 		}
 
+		// `notes` and `prohibitionIssued` are validated against their siblings, but patchValue validates each control
+		// in declaration order, before the siblings below it have been set. Re-run them now the whole defect is in.
+		this.revalidateSiblingDependentControls();
+
 		// Initialise the additonal information for the defect using the taxonomy
 		const imNumber = this.form.controls.imNumber.value;
 		const defectCategory = this.store.selectSignal(selectByImNumber(imNumber || Number.NaN, vehicleType))();
@@ -142,31 +164,39 @@ export class DefectV2Component {
 		await this.loadMediaItems();
 	}
 
+	revalidateSiblingDependentControls(): void {
+		this.form.controls.additionalInformation.controls.notes.updateValueAndValidity({ emitEvent: false });
+		this.form.controls.prohibitionIssued.updateValueAndValidity({ emitEvent: false });
+	}
+
 	async loadMediaItems() {
 		const defect = this.defect();
 		const testResult = this.testResult();
-		if (!testResult || !defect || !this.defectMediaService) return;
+		const defectMediaService = this.defectMediaService;
+		if (!testResult || !defect || !defectMediaService) return;
 
 		try {
-			this.loading = true;
+			this.loading.set(true);
+			this.cdr.markForCheck();
 
-			if (this.defectMediaService.canDownloadAdasMediaItems(defect)) {
-				await this.defectMediaService.getAdasZip(testResult.testResultId);
-			}
-
-			if (this.defectMediaService.canDownloadDefectMediaItems(defect)) {
-				await this.defectMediaService.getDefectZip(testResult.testResultId);
-			}
+			await Promise.all([
+				defectMediaService.canDownloadAdasMediaItems(defect)
+					? defectMediaService.getAdasZip(testResult.testResultId)
+					: undefined,
+				defectMediaService.canDownloadDefectMediaItems(defect)
+					? defectMediaService.getDefectZip(testResult.testResultId)
+					: undefined,
+			]);
 
 			if (Array.isArray(defect.media)) {
-				for (const media of defect.media) {
-					await this.defectMediaService.loadMediaItemAsBase64(testResult, defect, media);
-				}
+				await Promise.all(
+					defect.media.map((media) => defectMediaService.loadMediaItemAsBase64(testResult, defect, media))
+				);
 			}
 		} catch (error) {
-			// TODO: handle error
+			defectMediaService.handleError(error, testResult.testResultId);
 		} finally {
-			this.loading = false;
+			this.loading.set(false);
 			this.cdr.detectChanges();
 		}
 	}
@@ -252,17 +282,11 @@ export class DefectV2Component {
 		return !Number.isNaN(index);
 	}
 
-	isDangerous(): boolean {
-		return this.form.getRawValue().deficiencyCategory === 'dangerous';
-	}
+	isDangerous = computed(() => this.formValue().deficiencyCategory === 'dangerous');
 
-	isDangerousAsterisk(): boolean {
-		return this.form.getRawValue().stdForProhibition === true;
-	}
+	isDangerousAsterisk = computed(() => this.formValue().stdForProhibition === true);
 
-	isAdvisory(): boolean {
-		return this.form.getRawValue().deficiencyCategory === 'advisory';
-	}
+	isAdvisory = computed(() => this.formValue().deficiencyCategory === 'advisory');
 
 	isNotesRequired(): boolean {
 		const defect = this.form.getRawValue();
@@ -333,6 +357,30 @@ export class DefectV2Component {
 			}
 		}
 
+		// Check for HTTP errors (404 or 500) when fetching media
+		if (this.testResult) {
+			const mediaError = this.defectMediaService?.getMediaFetchError(this.testResult()?.testResultId ?? '');
+			if (mediaError) {
+				return mediaError.message;
+			}
+		}
+
 		return 'No media available';
+	}
+
+	async playVideo(mediaPath: string): Promise<void> {
+		this.isVideoPlaying = true;
+		this.cdr.detectChanges();
+		const video = this.getVideoElement(mediaPath);
+		if (!video) {
+			this.isVideoPlaying = false;
+			return;
+		}
+		await video.play();
+	}
+
+	private getVideoElement(mediaPath: string): HTMLVideoElement | null {
+		const element = document.querySelector(`video[data-media-path="${mediaPath}"]`);
+		return element ? (element as HTMLVideoElement) : null;
 	}
 }

@@ -4,12 +4,14 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
+import { mockTechRecord } from '@mocks/technical-record-service.mock';
 import { Roles } from '@models/roles.enum';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
+import { techRecord } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { TechRecordTitleComponent } from '../../tech-record-title/tech-record-title.component';
 import { TechRecordChangeVisibilityComponent } from '../tech-record-change-visibility.component';
@@ -27,7 +29,10 @@ describe('TechRecordHoldComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
-				provideMockStore({ initialState: initialAppState }),
+				provideMockStore({
+					initialState: initialAppState,
+					selectors: [{ selector: techRecord, value: mockTechRecord }],
+				}),
 				{ provide: APP_BASE_HREF, useValue: '/' },
 				{
 					provide: UserService,

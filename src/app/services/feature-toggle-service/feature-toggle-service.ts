@@ -1,7 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { get } from 'lodash';
-import { TEST_TYPES_GROUP9_10_CENTRAL_DOCS } from '../../models/testTypeId.enum';
+import { get } from 'lodash-es';
+import {
+	TEST_TYPES_GROUP1,
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP2,
+	TEST_TYPES_GROUP5_13,
+	TEST_TYPES_GROUP7,
+	TEST_TYPES_GROUP9_10,
+	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+	TEST_TYPES_GROUP12_14,
+} from '../../models/testTypeId.enum';
 import { selectFeatureFlags } from '../../store/feature-flags/feature-flags.selectors';
 
 @Injectable({
@@ -19,8 +28,29 @@ export class FeatureToggleService {
 
 	shouldUseV2TestResults(testTypeId?: string): boolean {
 		if (!testTypeId) return false;
-		const allowList = [...TEST_TYPES_GROUP9_10_CENTRAL_DOCS];
+		const allowList = [
+			...TEST_TYPES_GROUP12_14,
+			...TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+			...TEST_TYPES_GROUP9_10,
+			...TEST_TYPES_GROUP1,
+			...TEST_TYPES_GROUP2,
+			...TEST_TYPES_GROUP7,
+			...TEST_TYPES_GROUP1_SPEC_TEST,
+			...TEST_TYPES_GROUP5_13,
+		];
 
-		return this.isFeatureEnabled('testresultcreate') && allowList.includes(testTypeId || '');
+		return this.isFeatureEnabled(FeatureFlags.TEST_RESULT_CREATE) && allowList.includes(testTypeId || '');
 	}
+}
+
+export enum FeatureFlags {
+	BETAS = 'betas',
+	TECH_RECORD_REDESIGN = 'techrecordredesign',
+	TECH_RECORD_REDESIGN_CREATE = 'techrecordredesigncreate',
+	TECH_RECORD_REDESIGN_CREATE_DETAILS = 'techrecordredesigncreatedetails',
+	TEST_RESULT_CREATE = 'testresultcreate',
+	TEST_RESULT_AMEND = 'testresultamend',
+	HIDE_TEST_RESTRICTIONS = 'hide-test-restriction-functionality',
+	ADAS_IMAGES_ON_DEFECTS = 'adas-images-on-defects',
+	BATCH_REDESIGN = 'batch-redesign',
 }

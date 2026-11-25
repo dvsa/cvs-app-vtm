@@ -17,7 +17,7 @@ import { Store } from '@ngrx/store';
 import { DefaultNullOrEmpty } from '@pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 @Component({
 	selector: 'app-plates-section-view',

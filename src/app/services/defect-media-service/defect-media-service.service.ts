@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpStatusCode } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefectDetailsSchema, MediaSchema, TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
@@ -21,7 +21,9 @@ export class DefectMediaService {
 	router = inject(Router);
 
 	zipCache: Record<string, JSZip> = {};
+	private zipRequests: Record<string, Promise<JSZip>> = {};
 	fileCache: Record<string, string> = {};
+	mediaFetchErrors = signal<Record<string, { status: number; message: string }>>({});
 
 	hasMedia(defect: DefectDetailsSchema): boolean {
 		if (!Array.isArray(defect.media) || defect.media.length === 0) return false;
@@ -31,6 +33,14 @@ export class DefectMediaService {
 	hasMediaInCache(defect: DefectDetailsSchema): boolean {
 		if (!Array.isArray(defect.media) || defect.media.length === 0) return false;
 		return defect.media.some((media) => this.fileCache[media.path]);
+	}
+
+	getImages(defect: DefectDetailsSchema) {
+		return defect.media?.filter((media) => media.type === 'image') ?? [];
+	}
+
+	getVideos(defect: DefectDetailsSchema) {
+		return defect.media?.filter((media) => media.type === 'video') ?? [];
 	}
 
 	canDownloadAdasMediaItems(defect: DefectDetailsSchema): boolean {
@@ -61,6 +71,10 @@ export class DefectMediaService {
 
 	canDownloadMediaItems(defect: DefectDetailsSchema): boolean {
 		return this.canDownloadAdasMediaItems(defect) || this.canDownloadDefectMediaItems(defect);
+	}
+
+	getMediaFetchError(testResultId: string): { status: number; message: string } | undefined {
+		return this.mediaFetchErrors()[testResultId];
 	}
 
 	canDownloadMedia(testResult: TestResultSchema): boolean {
@@ -122,11 +136,20 @@ export class DefectMediaService {
 		const cachedZip = this.zipCache[cacheKey];
 		if (cachedZip) return cachedZip;
 
-		const blob = await this.getBlob(id, options);
-		const zip = await new JSZip().loadAsync(blob, { base64: true });
-		this.zipCache[cacheKey] = zip;
+		// Several defect components can request the same archive before it reaches the cache.
+		if (!this.zipRequests[cacheKey]) {
+			this.zipRequests[cacheKey] = this.getBlob(id, options)
+				.then((blob) => new JSZip().loadAsync(blob, { base64: true }))
+				.then((zip) => {
+					this.zipCache[cacheKey] = zip;
+					return zip;
+				})
+				.finally(() => {
+					delete this.zipRequests[cacheKey];
+				});
+		}
 
-		return zip;
+		return this.zipRequests[cacheKey];
 	}
 
 	async getAdasZip(testResultId: string): Promise<JSZip | null> {
@@ -149,15 +172,11 @@ export class DefectMediaService {
 		if (cachedFile) return cachedFile;
 
 		// Otherwise, get the cached zip, and load the file into the cache
-		let zip: JSZip | null = null;
-
-		if (this.canDownloadAdasMediaItems(defect)) {
-			zip = await this.getAdasZip(testResult.testResultId);
-		}
-
-		if (this.canDownloadDefectMediaItems(defect)) {
-			zip = await this.getDefectZip(testResult.testResultId);
-		}
+		const [adasZip, defectsZip] = await Promise.all([
+			this.canDownloadAdasMediaItems(defect) ? this.getAdasZip(testResult.testResultId) : null,
+			this.canDownloadDefectMediaItems(defect) ? this.getDefectZip(testResult.testResultId) : null,
+		]);
+		const zip = defectsZip ?? adasZip;
 
 		// If the zip doesn't exist, return an empty string as a fallback
 		if (!zip) return '';
@@ -175,47 +194,43 @@ export class DefectMediaService {
 
 	async downloadMedia(testResult: TestResultSchema) {
 		try {
-			if (this.canDownloadDefectMedia(testResult)) {
-				const defectsZip = await this.getDefectZip(testResult.testResultId);
-				await this.openDocumentFromZip(defectsZip, `${testResult.testResultId}`);
-			}
-
-			if (this.canDownloadAdasMedia(testResult)) {
-				const adasZip = await this.getAdasZip(testResult.testResultId);
-				if (adasZip) {
-					await this.openDocumentFromZip(adasZip, `${testResult.testResultId}`);
-				}
-			}
+			await Promise.all([
+				this.canDownloadDefectMedia(testResult)
+					? this.getDefectZip(testResult.testResultId).then((zip) =>
+							this.openDocumentFromZip(zip, testResult.testResultId)
+						)
+					: undefined,
+				this.canDownloadAdasMedia(testResult)
+					? this.getAdasZip(testResult.testResultId).then((zip) =>
+							zip ? this.openDocumentFromZip(zip, testResult.testResultId) : undefined
+						)
+					: undefined,
+			]);
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error, testResult.testResultId);
 		}
 	}
 
 	private async _downloadMediaItems(testResult: TestResultSchema, defect: DefectDetailsSchema, items: MediaSchema[]) {
 		try {
-			let sourceZip = new JSZip();
 			const targetZip = new JSZip();
-
-			if (this.canDownloadDefectMediaItems(defect)) {
-				sourceZip = await this.getDefectZip(testResult.testResultId);
-			}
-
-			if (this.canDownloadAdasMediaItems(defect)) {
-				const zip = await this.getAdasZip(testResult.testResultId);
-				if (zip) sourceZip = zip;
-			}
+			const [defectsZip, adasZip] = await Promise.all([
+				this.canDownloadDefectMediaItems(defect) ? this.getDefectZip(testResult.testResultId) : null,
+				this.canDownloadAdasMediaItems(defect) ? this.getAdasZip(testResult.testResultId) : null,
+			]);
+			const sourceZip = adasZip ?? defectsZip ?? new JSZip();
 
 			for (const item of items) {
 				const file = sourceZip.file(item.path);
 				if (!file) continue;
 
-				const content = await file.async('uint8array');
-				targetZip.file(item.path, content);
+				// JSZip accepts promises and waits for their content when generating the archive.
+				targetZip.file(item.path, file.async('uint8array'));
 			}
 
 			await this.openDocumentFromZip(targetZip, `${defect.imNumber}-${defect.imDescription}`);
 		} catch (error) {
-			this.handleError(error);
+			this.handleError(error, testResult.testResultId);
 		}
 	}
 
@@ -256,20 +271,38 @@ export class DefectMediaService {
 		return reason;
 	}
 
-	handleError(error: unknown) {
+	handleError(error: unknown, testResultId?: string) {
 		if (error instanceof HttpErrorResponse) {
 			switch (error.status) {
 				case HttpStatusCode.NotFound:
+					if (testResultId) {
+						this.mediaFetchErrors.update((errors) => ({
+							...errors,
+							[testResultId]: {
+								status: HttpStatusCode.NotFound,
+								message: 'Media could not be found',
+							},
+						}));
+					}
 					this.globalErrorService.setErrors([
 						{
 							error:
-								'Media could not be found. <br>' +
-								'Try again later or contact the service desk if this issue keeps happening.',
+								'Media could not be found <br>' +
+								'Try again later or contact the Service Desk if this issue keeps happening.',
 							anchorLink: '',
 						},
 					]);
 					break;
 				case HttpStatusCode.InternalServerError:
+					if (testResultId) {
+						this.mediaFetchErrors.update((errors) => ({
+							...errors,
+							[testResultId]: {
+								status: HttpStatusCode.InternalServerError,
+								message: 'Media could not be downloaded',
+							},
+						}));
+					}
 					this.router.navigate([RootRoutes.ERROR]);
 					break;
 				default:

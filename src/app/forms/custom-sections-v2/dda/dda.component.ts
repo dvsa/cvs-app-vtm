@@ -1,7 +1,7 @@
 import { Modes } from '@/src/app/models/modes.enum';
 import { YES_NO_NULL_OPTIONS } from '@/src/app/models/options.model';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/edit-base-component';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -22,6 +22,7 @@ import { GovukFormGroupTextareaComponent } from '../../components/govuk-form-gro
 		GovukFormGroupInputComponent,
 		GovukFormGroupTextareaComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DDAComponent extends EditBaseComponent implements OnInit, OnDestroy {
 	protected readonly FormNodeWidth = FormNodeWidth;

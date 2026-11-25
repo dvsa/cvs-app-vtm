@@ -1,12 +1,16 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ (refDataAdminType$ | async)?.label }}</h1>
+    <h1 class="govuk-heading-xl govuk-!-font-weight-bold">
+      Deleted {{ refDataAdminType()?.label }}
+    </h1>
 
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          @for (column of (refDataAdminType$ | async)?.columns; track column) {
-            <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
+          @for (column of refDataAdminType()?.columns; track column) {
+            <th scope="col" class="govuk-table__header">
+              {{ column.heading }}
+            </th>
           }
           <th scope="col" class="govuk-table__header">Deleted At</th>
           <th scope="col" class="govuk-table__header">Deleted By</th>
@@ -15,13 +19,15 @@
       </thead>
 
       <tbody class="govuk-table__body">
-        @for (item of paginatedItems$ | async; track item) {
+        @for (item of paginatedItems(); track item) {
           <tr class="govuk-table__row">
             @if (item.reason) {
-              @for (column of (refDataAdminType$ | async)?.columns; track column) {
-                <td class="govuk-table__cell">{{ item[column.name] }}</td>
+              @for (column of refDataAdminType()?.columns; track column) {
+                <td class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
               }
-              <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="govuk-table__cell">
+                {{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+              </td>
               <td class="govuk-table__cell">{{ item.createdName }}</td>
               <td class="govuk-table__cell">{{ item.reason }}</td>
             }
@@ -31,7 +37,7 @@
     </table>
     <app-pagination
       tableName="reference-data-items"
-      [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+      [numberOfItems]="numberOfRecords()"
       (paginationOptionsChange)="handlePaginationChange($event)"
       [itemsPerPage]="25"
     ></app-pagination>

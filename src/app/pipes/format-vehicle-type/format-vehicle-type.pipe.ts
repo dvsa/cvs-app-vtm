@@ -3,7 +3,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 @Pipe({ name: 'formatVehicleType' })
 export class FormatVehicleTypePipe implements PipeTransform {
-	transform(value: VehicleTypes | undefined | null): unknown {
+	transform(value: VehicleTypes | string | undefined | null): unknown {
 		switch (value) {
 			case VehicleTypes.TRL:
 				return 'trailer';

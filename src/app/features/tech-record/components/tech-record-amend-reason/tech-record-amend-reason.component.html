@@ -6,8 +6,12 @@
     [options]="reasons"
   ></app-radio-group>
 
-<app-button-group>
-  <app-button [id]="'submit'" type="submit" (clicked)="handleSubmit()">Continue</app-button>
-  <app-button [id]="'back-button'" design="link" (clicked)="navigateBack()">Back</app-button>
-</app-button-group>
+  <app-button-group>
+    <app-button [id]="'submit'" type="submit" (clicked)="handleSubmit()"
+      >Continue</app-button
+    >
+    <app-button [id]="'back-button'" design="link" (clicked)="navigateBack()"
+      >Back</app-button
+    >
+  </app-button-group>
 </form>

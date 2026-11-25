@@ -7,7 +7,7 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
 import { selectNonViewedCurrentTechRecordFromHistory, updateScrollPosition } from '@/src/app/store/technical-records';
 import { DatePipe, NgTemplateOutlet, ViewportScroller } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -28,6 +28,7 @@ import { FieldWarningMessageComponent } from '../../components/field-warning-mes
 		DatePipe,
 		NgTemplateOutlet,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LetterOfAuthorisationComponent {
 	store = inject(Store);

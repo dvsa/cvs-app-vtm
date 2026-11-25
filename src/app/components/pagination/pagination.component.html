@@ -1,8 +1,6 @@
 <nav class="govuk-pagination" role="navigation" aria-label="results">
   @if (currentPage > 1) {
-    <div
-      class="govuk-pagination__prev"
-    >
+    <div class="govuk-pagination__prev">
       <a
         [id]="tableName() + '-prev-page'"
         class="govuk-link govuk-pagination__link"
@@ -10,7 +8,7 @@
         [queryParams]="prevPage()"
         queryParamsHandling="merge"
         rel="prev"
-        [attr.aria-label]='readableTableName + " previous link"'
+        [attr.aria-label]="readableTableName + ' previous link'"
         href="javascript:void(0)"
       >
         <svg
@@ -22,7 +20,9 @@
           focusable="false"
           viewBox="0 0 15 13"
         >
-          <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+          <path
+            d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"
+          ></path>
         </svg>
         <span class="govuk-pagination__link-title">Previous</span>
       </a>
@@ -39,15 +39,21 @@
           [routerLink]="[]"
           [queryParams]="pageQuery(1)"
           queryParamsHandling="merge"
-        >1</a>
+          >1</a
+        >
       </li>
       @if (visiblePages[0] > 2) {
-        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">&ctdot;</li>
+        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">
+          &ctdot;
+        </li>
       }
     }
 
     @for (page of visiblePages; track i; let i = $index) {
-      <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }">
+      <li
+        class="govuk-pagination__item"
+        [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }"
+      >
         <a
           href="javascript:void(0)"
           [id]="tableName() + '-page-' + page"
@@ -57,7 +63,7 @@
           routerLinkActive=""
           #rla="routerLinkActive"
           queryParamsHandling="merge"
-          [attr.aria-label]='readableTableName + " Page " + page'
+          [attr.aria-label]="readableTableName + ' Page ' + page"
           ariaCurrentWhenActive="page"
         >
           {{ page }}
@@ -67,18 +73,21 @@
 
     @if (visiblePages[visiblePages.length - 1] < pages.length) {
       @if (visiblePages[visiblePages.length - 1] < pages.length - 1) {
-        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">&ctdot;</li>
+        <li class="govuk-pagination__item govuk-pagination__item--ellipsis">
+          &ctdot;
+        </li>
       }
       <li class="govuk-pagination__item">
         <a
           href="javascript:void(0)"
           [id]="tableName() + '-page-' + pages.length"
-          [attr.aria-label]='readableTableName + " Page " + pages.length'
+          [attr.aria-label]="readableTableName + ' Page ' + pages.length"
           class="govuk-link govuk-pagination__link"
           [routerLink]="[]"
           [queryParams]="pageQuery(pages.length)"
           queryParamsHandling="merge"
-        >{{ pages.length }}</a>
+          >{{ pages.length }}</a
+        >
       </li>
     }
   </ul>
@@ -88,7 +97,7 @@
       <a
         href="javascript:void(0)"
         [id]="tableName() + '-next-page'"
-        [attr.aria-label]='readableTableName + " next page"'
+        [attr.aria-label]="readableTableName + ' next page'"
         class="govuk-link govuk-pagination__link"
         rel="next"
         [routerLink]="[]"
@@ -105,7 +114,9 @@
           focusable="false"
           viewBox="0 0 15 13"
         >
-          <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+          <path
+            d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"
+          ></path>
         </svg>
       </a>
     </div>

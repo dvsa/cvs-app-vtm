@@ -56,7 +56,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { addSectionState, selectScrollPosition } from '@store/technical-records';
-import { cloneDeep, mergeWith } from 'lodash';
+import { cloneDeep, mergeWith } from 'lodash-es';
 import { Subject, debounceTime, map, skipWhile, take, takeUntil } from 'rxjs';
 
 @Component({

@@ -1,6 +1,8 @@
 @if (form(); as form) {
   @if (control(); as control) {
-    @if (control.value && control.value.meta.editType !== formNodeEditTypes.HIDDEN) {
+    @if (
+      control.value && control.value.meta.editType !== formNodeEditTypes.HIDDEN
+    ) {
       <ng-container [formGroup]="form">
         @switch (control.value.meta.editType) {
           @case (formNodeEditTypes.AUTOCOMPLETE) {
@@ -15,7 +17,7 @@
               [warning]="control.value.meta.warning"
             ></app-autocomplete>
           }
-          @case(formNodeEditTypes.DATE) {
+          @case (formNodeEditTypes.DATE) {
             <app-date
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -26,7 +28,7 @@
               [warning]="control.value.meta.warning"
             ></app-date>
           }
-          @case(formNodeEditTypes.DATETIME) {
+          @case (formNodeEditTypes.DATETIME) {
             <app-date
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -37,7 +39,7 @@
               [warning]="control.value.meta.warning"
             ></app-date>
           }
-          @case(formNodeEditTypes.NUMBER) {
+          @case (formNodeEditTypes.NUMBER) {
             <app-number-input
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -48,12 +50,14 @@
               [enableDecimals]="control.value.meta.enableDecimals"
               [warning]="control.value.meta.warning"
             >
-              @if(control.value.meta.suffix) {
-                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+              @if (control.value.meta.suffix) {
+                <ng-template appSuffix>
+                  {{ control.value.meta.suffix }}
+                </ng-template>
               }
             </app-number-input>
           }
-          @case(formNodeEditTypes.RADIO) {
+          @case (formNodeEditTypes.RADIO) {
             <app-radio-group
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -64,7 +68,7 @@
               [warning]="control.value.meta.warning"
             ></app-radio-group>
           }
-          @case(formNodeEditTypes.SELECT) {
+          @case (formNodeEditTypes.SELECT) {
             <app-select
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -76,7 +80,7 @@
               [warning]="control.value.meta.warning"
             ></app-select>
           }
-          @case(formNodeEditTypes.TEXTAREA) {
+          @case (formNodeEditTypes.TEXTAREA) {
             <app-text-area
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -86,7 +90,7 @@
               [warning]="control.value.meta.warning"
             ></app-text-area>
           }
-          @case(formNodeEditTypes.CHECKBOX) {
+          @case (formNodeEditTypes.CHECKBOX) {
             <app-checkbox
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -96,7 +100,7 @@
               [warning]="control.value.meta.warning"
             ></app-checkbox>
           }
-          @case(formNodeEditTypes.CHECKBOXGROUP) {
+          @case (formNodeEditTypes.CHECKBOXGROUP) {
             <app-checkbox-group
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -108,7 +112,7 @@
               [warning]="control.value.meta.warning"
             ></app-checkbox-group>
           }
-          @case(formNodeEditTypes.NUMERICSTRING) {
+          @case (formNodeEditTypes.NUMERICSTRING) {
             <app-text-input
               [label]="control.value.meta.label"
               [name]="control.value.meta.name"
@@ -119,16 +123,18 @@
               [customId]="control.value.meta.customId"
               [warning]="control.value.meta.warning"
             >
-              @if(control.value.meta.suffix) {
-                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+              @if (control.value.meta.suffix) {
+                <ng-template appSuffix>
+                  {{ control.value.meta.suffix }}
+                </ng-template>
               }
             </app-text-input>
           }
-          @case(formNodeEditTypes.CUSTOM) {
-            @if(control.value.meta.editComponent) {
-              <ng-container 
-                [ngComponentOutlet]="control.value.meta.editComponent" 
-                [ngComponentOutletInputs]="customFormControlInputs" 
+          @case (formNodeEditTypes.CUSTOM) {
+            @if (control.value.meta.editComponent) {
+              <ng-container
+                [ngComponentOutlet]="control.value.meta.editComponent"
+                [ngComponentOutletInputs]="customFormControlInputs"
                 [ngComponentOutletInjector]="customFormControlInjector"
               ></ng-container>
             }
@@ -145,7 +151,9 @@
               [warning]="control.value.meta.warning"
             >
               @if (control.value.meta.suffix) {
-                <ng-template appSuffix> {{ control.value.meta.suffix }} </ng-template>
+                <ng-template appSuffix>
+                  {{ control.value.meta.suffix }}
+                </ng-template>
               }
             </app-text-input>
           }

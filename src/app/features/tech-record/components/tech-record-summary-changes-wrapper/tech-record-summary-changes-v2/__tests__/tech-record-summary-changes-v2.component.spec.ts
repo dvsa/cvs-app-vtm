@@ -2,7 +2,7 @@ import { AxlesService } from '@/src/app/services/axles/axles.service';
 import { RouterService } from '@/src/app/services/router/router.service';
 import { UserService } from '@/src/app/services/user-service/user-service';
 import { initialAppState } from '@/src/app/store';
-import { amendVrmSuccess, updateTechRecord } from '@/src/app/store/technical-records';
+import { updateTechRecord, updateTechRecordSuccess } from '@/src/app/store/technical-records';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -41,7 +41,7 @@ describe('TechRecordSummaryChangesV2Component', () => {
 				{
 					provide: RouterService,
 					useValue: {
-						getRouteDataProperty$: jest.fn(),
+						getRouteDataProperty$: vi.fn(),
 						getRouteNestedParam$(param: string) {
 							if (param === 'systemNumber') return of('123456');
 							if (param === 'createdTimestamp') return of('123123123');
@@ -64,18 +64,19 @@ describe('TechRecordSummaryChangesV2Component', () => {
 	});
 
 	describe('ngOnInit', () => {
-		it('should navigate when updateRecordSuccess dispatched', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate when updateTechRecordSuccess is dispatched', () => {
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.ngOnInit();
 
 			actions$.next(
-				amendVrmSuccess({
+				updateTechRecordSuccess({
 					vehicleTechRecord: {
 						createdTimestamp: 'now',
 						vin: 'testVin',
 						systemNumber: 'testNumber',
 					} as TechRecordType<'get'>,
+					groupType: 'single',
 				})
 			);
 
@@ -85,8 +86,8 @@ describe('TechRecordSummaryChangesV2Component', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should call the destroy.next and destroy.complete', () => {
-			const nextSpy = jest.spyOn(component.destroy, 'next');
-			const completeSpy = jest.spyOn(component.destroy, 'complete');
+			const nextSpy = vi.spyOn(component.destroy, 'next');
+			const completeSpy = vi.spyOn(component.destroy, 'complete');
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalled();
 			expect(completeSpy).toHaveBeenCalled();
@@ -95,13 +96,13 @@ describe('TechRecordSummaryChangesV2Component', () => {
 
 	describe('submit', () => {
 		it('should dispatch clearADRDetailsBeforeUpdate', () => {
-			const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = vi.spyOn(store, 'dispatch');
 			component.submit();
 			expect(dispatch).toHaveBeenCalled();
 		});
 
 		it('should dispatch updateTechRecords', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.submit();
 			expect(dispatchSpy).toHaveBeenCalled();
 			expect(dispatchSpy).toHaveBeenCalledWith(
@@ -116,8 +117,8 @@ describe('TechRecordSummaryChangesV2Component', () => {
 
 	describe('cancel', () => {
 		it('should call globalErrorService.clearErrors and then navigate', () => {
-			const clearErrorsSpy = jest.spyOn(component.globalErrorService, 'clearErrors');
-			const navigateSpy = jest.spyOn(component.router, 'navigate');
+			const clearErrorsSpy = vi.spyOn(component.globalErrorService, 'clearErrors');
+			const navigateSpy = vi.spyOn(component.router, 'navigate');
 			component.cancel();
 			expect(clearErrorsSpy).toHaveBeenCalled();
 			expect(navigateSpy).toHaveBeenCalled();

@@ -84,7 +84,14 @@ export class GlobalErrorService {
 
 		// For each control in the form, determine its validity and collect form errors
 		Object.entries(form.controls).forEach(([key, control]) => {
+			const previousStatus = control.status;
 			control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+
+			// Validity can change without the value changing (e.g. validation skipped while abandoning a test), so
+			// re-emit just the status (not the value) for the inline error of an OnPush section to be refreshed
+			if (control.status !== previousStatus) {
+				control.setErrors(control.errors);
+			}
 
 			// For nested form groups/arrays, collect the top level errors, then recusively collect errors from their children
 			if (control instanceof FormGroup || control instanceof FormArray) {
@@ -104,12 +111,15 @@ export class GlobalErrorService {
 				const controlErrors = Object.values(control.errors);
 
 				if (controlErrors.length > 0) {
-					const error = controlErrors[0];
-					errors.push({
-						error: typeof error === 'string' ? error : error.error,
-						anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
-						accordion: error.accordion ?? undefined,
-					});
+					// A control holding a list (e.g. additional defects) can report an error for each of its items
+					const firstError = controlErrors[0];
+					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
+						errors.push({
+							error: typeof error === 'string' ? error : error.error,
+							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
+							accordion: error.accordion ?? undefined,
+						});
+					}
 				}
 			}
 		});

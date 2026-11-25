@@ -1,4 +1,4 @@
-@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/govuk-frontend/govuk/base';
 
 :host {
   display: contents;
@@ -8,7 +8,10 @@
   background-color: transparent;
   border: none;
   box-shadow: none;
-  font-family: GDS Transport, arial, sans-serif;
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif;
   font-size: 19px;
   font-weight: 400;
   padding: 0;

@@ -7,6 +7,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AxlesService } from '@services/axles/axles.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/index';
 import { ReplaySubject, of } from 'rxjs';
@@ -29,6 +30,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 				provideHttpClientTesting(),
 				provideMockActions(() => actions$),
 				provideMockStore({ initialState: initialAppState }),
+				AxlesService,
 				{
 					provide: UserService,
 					useValue: {
@@ -56,9 +58,9 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 	describe('navigate', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation();
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigate();
 
@@ -66,7 +68,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 		});
 		// TODO V3 HGV PSV TRL
 		it('should navigate back to batch results', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigate();
 
@@ -76,7 +78,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
 	describe('handleSubmit', () => {
 		it('should not dispatch createVehicleRecord', () => {
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			Object.defineProperty(component, 'summary', { value: signal({ checkForms: () => true }) as any });
 			component.handleSubmit();
 

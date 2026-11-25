@@ -6,13 +6,13 @@ import { clearAllSectionStates, clearScrollPosition } from '@/src/app/store/tech
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { SearchResultsV2Component } from '../../search-results-wrapper/search-results-v2/search-results-v2.component';
+import { SearchResultsComponent } from '../../search-results/search-results.component';
 import { SearchFormComponent } from '../search-form.component';
 
 const mockGlobalErrorService = {
-	setErrors: jest.fn(),
-	clearErrors: jest.fn(),
-	extractGlobalErrors: jest.fn(),
+	setErrors: vi.fn(),
+	clearErrors: vi.fn(),
+	extractGlobalErrors: vi.fn(),
 };
 
 describe('SearchFormComponent', () => {
@@ -26,7 +26,7 @@ describe('SearchFormComponent', () => {
 			imports: [SearchFormComponent],
 			providers: [
 				provideMockStore({ initialState: initialAppState }),
-				provideRouter([{ path: 'search/results', component: SearchResultsV2Component }]),
+				provideRouter([{ path: 'search/results', component: SearchResultsComponent }]),
 				{ provide: GlobalErrorService, useValue: mockGlobalErrorService },
 			],
 		}).compileComponents();
@@ -41,7 +41,7 @@ describe('SearchFormComponent', () => {
 
 	describe('ngOnInit', () => {
 		it('should patch the form with queryParams from the url', async () => {
-			const patchSpy = jest.spyOn(component.form, 'patchValue');
+			const patchSpy = vi.spyOn(component.form, 'patchValue');
 			component.ngOnInit();
 			await router.navigate(['/search/results'], { queryParams: { searchTerm: 'foo', searchCriteria: 'bar' } });
 			expect(patchSpy).toHaveBeenCalledWith({ searchTerm: 'foo', searchCriteria: 'bar', includeArchived: false });
@@ -50,8 +50,8 @@ describe('SearchFormComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should next and complete the destroy subject', () => {
-			const nextSpy = jest.spyOn(component.destroy, 'next');
-			const completeSpy = jest.spyOn(component.destroy, 'complete');
+			const nextSpy = vi.spyOn(component.destroy, 'next');
+			const completeSpy = vi.spyOn(component.destroy, 'complete');
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalled();
 			expect(completeSpy).toHaveBeenCalled();
@@ -60,9 +60,9 @@ describe('SearchFormComponent', () => {
 
 	describe('search', () => {
 		it('should clear all global errors, section state, and cursor position', () => {
-			const dispatchSpy = jest.spyOn(component.store, 'dispatch');
-			const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
-			const markAllAsTouchedSpy = jest.spyOn(component.form, 'markAllAsTouched');
+			const dispatchSpy = vi.spyOn(component.store, 'dispatch');
+			const clearErrorsSpy = vi.spyOn(globalErrorService, 'clearErrors');
+			const markAllAsTouchedSpy = vi.spyOn(component.form, 'markAllAsTouched');
 			component.search();
 			expect(dispatchSpy).toHaveBeenCalledWith(clearAllSectionStates());
 			expect(dispatchSpy).toHaveBeenCalledWith(clearScrollPosition());
@@ -77,21 +77,45 @@ describe('SearchFormComponent', () => {
 					anchorLink: 'search-term',
 				},
 			];
-			jest.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue(errors);
-			const setErrorsSpy = jest.spyOn(globalErrorService, 'setErrors');
+			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue(errors);
+			const setErrorsSpy = vi.spyOn(globalErrorService, 'setErrors');
 			component.form.patchValue({ searchTerm: '', searchCriteria: 'bar' }); // invalid form state
 			component.search();
 			expect(setErrorsSpy).toHaveBeenCalledWith(errors);
 		});
 
 		it('should, if the form is valid, navigate to the search results page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			component.form.patchValue({ searchTerm: 'foo', searchCriteria: SEARCH_TYPES.ALL });
 			component.search();
 			expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], {
-				queryParams: { searchTerm: 'foo', searchCriteria: 'all', includeArchived: false },
+				queryParams: { searchTerm: 'FOO', searchCriteria: 'all', includeArchived: false, 'search-results-page': 1 },
 				queryParamsHandling: 'merge',
 			});
 		});
+
+		it.each(['ab12cde', 'Ab12CdE', 'AB12CDE'])(
+			'should submit %s as uppercase without requiring focusout',
+			(searchTerm) => {
+				const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+				const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+				input.focus();
+				input.value = searchTerm;
+				input.dispatchEvent(new Event('input', { bubbles: true }));
+
+				expect(component.form.controls.searchTerm.value).toBe(searchTerm);
+				component.search();
+
+				expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], {
+					queryParams: {
+						searchTerm: 'AB12CDE',
+						searchCriteria: 'all',
+						includeArchived: false,
+						'search-results-page': 1,
+					},
+					queryParamsHandling: 'merge',
+				});
+			}
+		);
 	});
 });

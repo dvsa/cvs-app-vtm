@@ -112,6 +112,44 @@ export class CommonValidatorsService {
 		};
 	}
 
+	exactLengthDigits(
+		length: number,
+		func: (control: AbstractControl) => GlobalError,
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn;
+	exactLengthDigits(length: number, message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	exactLengthDigits(
+		length: number,
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (control.value && (control.value.length < length || control.value.length > length)) {
+				if (typeof message !== 'string') {
+					return { minLength: message(control) };
+				}
+				const globalError = {
+					minLength: {
+						error: `${message} must be ${length} digits`,
+						anchorLink: '',
+						accordion: '',
+					},
+				};
+				if (anchorLink) {
+					globalError.minLength.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.minLength.accordion = accordion;
+				}
+				return globalError;
+			}
+
+			return null;
+		};
+	}
+
 	minLength(
 		length: number,
 		func: (control: AbstractControl) => GlobalError,
@@ -132,7 +170,7 @@ export class CommonValidatorsService {
 				}
 				const globalError = {
 					minLength: {
-						error: `${message} must be at least ${length} characters`,
+						error: `${message} must be greater than or equal to ${length} characters`,
 						anchorLink: '',
 						accordion: '',
 					},
@@ -204,7 +242,7 @@ export class CommonValidatorsService {
 		anchorLink?: string
 	): ValidatorFn {
 		return (control) => {
-			if (!control.value) return null;
+			if (!control.value && control.value !== 0) return null;
 			if (!control.touched) return null;
 			if (typeof control.value !== 'number') return null;
 
@@ -311,6 +349,54 @@ export class CommonValidatorsService {
 				}
 				if (accordion) {
 					globalError.pastDate.accordion = accordion;
+				}
+				return globalError;
+			}
+
+			return null;
+		};
+	}
+
+	futureDate(message: string, accordion?: string, anchorLink?: string): ValidatorFn {
+		return (control) => {
+			// Ensure value exists
+			if (!control.value) return null;
+
+			// If the control value is a string (expected format YYYY-MM-DD or YYYY-MM-DDTHH:MM)
+			// do the basic checks on the raw value parts first and return null (skip validation)
+			// if any of day/month/year are missing. This prevents dayjs from inferring values
+			// for partial dates.
+			const [date, time] = control.value.split('T');
+			const [yearStr, monthStr, dayStr] = (date || '').split('-');
+			const isMissingOrInvalid = (s?: string) => {
+				if (s == null) return true;
+				const v = s.trim().toLowerCase();
+				return v === '' || v === 'null' || v === 'undefined';
+			};
+			if (typeof control.value === 'string') {
+				if (isMissingOrInvalid(yearStr) || isMissingOrInvalid(monthStr) || isMissingOrInvalid(dayStr)) return null;
+			}
+			if (time) {
+				const [minutesStr, secondsStr] = (time || '').split(':');
+				if (isMissingOrInvalid(minutesStr) || isMissingOrInvalid(secondsStr)) return null;
+			}
+			// return null if yearStr is defined but contains less than 4 characters
+			if (yearStr.length < 4) return null;
+
+			// Parse value with dayjs and ensure it's valid (covers non-string values like Date)
+			const inputDate = dayjs(control.value);
+			if (!inputDate.isValid()) return null;
+
+			// Determine future date (ignore seconds)
+			if (inputDate.startOf('minute').isBefore(dayjs().startOf('minute'))) {
+				const globalError = {
+					futureDate: { error: `${message} must be in the future`, anchorLink: '', accordion: '' },
+				};
+				if (anchorLink) {
+					globalError.futureDate.anchorLink = anchorLink;
+				}
+				if (accordion) {
+					globalError.futureDate.accordion = accordion;
 				}
 				return globalError;
 			}
@@ -428,9 +514,11 @@ export class CommonValidatorsService {
 	date(label: string, id?: string | ((control: AbstractControl) => string), accordion?: string): ValidatorFn {
 		return (control) => {
 			if (!control.value) return null;
+
 			const [d] = (control.value as string).split('T');
 			const [year, month, day] = d.split('-');
 			const { error, errors } = validateDate(day || '', month || '', year || '', label);
+
 			const anchorLink = typeof id === 'string' ? id : id?.(control) || label;
 
 			if (error && errors?.length) {
@@ -461,6 +549,87 @@ export class CommonValidatorsService {
 		};
 	}
 
+	datetime({
+		label,
+		anchorLink = '',
+		accordion = '',
+	}: { label: string; anchorLink?: string; accordion?: string }): ValidatorFn {
+		return (control) => {
+			if (!control.value) return null;
+
+			const [d, t] = control.value.split('T');
+			const [year, month, day] = d.split('-');
+			const { errors } = validateDate(day || '', month || '', year || '', label);
+
+			if (errors?.length) {
+				return { datetime: { error: errors[0].reason, anchorLink, accordion } };
+			}
+
+			if (year.length !== 4) {
+				return { datetime: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
+			}
+
+			if (!t) {
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
+			}
+
+			const [hh, mm] = t.split(':');
+			const hours = Number.parseInt(hh, 10);
+			const minutes = Number.parseInt(mm, 10);
+
+			if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
+			}
+
+			if (hours > 23) {
+				return { datetime: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
+			}
+
+			if (minutes > 59) {
+				return { datetime: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
+			}
+
+			return null;
+		};
+	}
+
+	requiredWith(
+		message: string | ((control: AbstractControl) => GlobalError),
+		message2: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// If array has an element it satisfies the required condition
+			if (Array.isArray(control.value) && control.value.length > 0) return null;
+
+			// If the value is truthy or 0 it satisfies the required condition
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
+
+			const globalError: GlobalError = {
+				error: `${message} is required with ${message2}`,
+				anchorLink: '',
+				accordion: '',
+			};
+
+			if (typeof message !== 'string') {
+				return { required: message(control) };
+			}
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { required: globalError };
+		};
+	}
+
 	required(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
 	required(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
 	required(
@@ -475,7 +644,7 @@ export class CommonValidatorsService {
 			if (Array.isArray(control.value) && control.value.length > 0) return null;
 
 			// If the value is truthy or 0 it satisfies the required condition
-			if (typeof control.value === 'number' || !!control.value) return null;
+			if (typeof control.value === 'number' || typeof control.value === 'boolean' || !!control.value) return null;
 
 			const globalError: GlobalError = { error: `${message} is required`, anchorLink: '', accordion: '' };
 
@@ -492,6 +661,37 @@ export class CommonValidatorsService {
 			}
 
 			return { required: globalError };
+		};
+	}
+
+	requiredTrue(func: (control: AbstractControl) => GlobalError, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(message: string, accordion?: string, anchorLink?: string): ValidatorFn;
+	requiredTrue(
+		message: string | ((control: AbstractControl) => GlobalError),
+		accordion?: string,
+		anchorLink?: string
+	): ValidatorFn {
+		return (control) => {
+			if (!control.parent) return null;
+
+			// Only an explicit answer of `false` fails here, a missing answer is left to the required condition
+			if (control.value !== false) return null;
+
+			if (typeof message !== 'string') {
+				return { requiredTrue: message(control) };
+			}
+
+			const globalError: GlobalError = { error: message, anchorLink: '', accordion: '' };
+
+			if (anchorLink) {
+				globalError.anchorLink = anchorLink;
+			}
+
+			if (accordion) {
+				globalError.accordion = accordion;
+			}
+
+			return { requiredTrue: globalError };
 		};
 	}
 
@@ -592,22 +792,24 @@ export class CommonValidatorsService {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (!control.parent) return null;
 
-			const inputValue = control.value;
-			if (!inputValue) return null;
+			if (!control.value) return null;
+			const inputValue = dayjs(control.value);
+			if (!inputValue.isValid()) return null;
 
 			// Only perform comparison if both controls contain valid dates
 			const siblingControl = control.parent.get(sibling) as AbstractControl;
-			const siblingValue = siblingControl.value;
-			if (!siblingValue) return null;
+			if (!siblingControl.value || !siblingControl.valid) return null;
+			const siblingValue = dayjs(siblingControl.value);
+			if (!siblingValue.isValid()) return null;
 
 			// If dates are the same, return null
-			if (dayjs(inputValue).isSame(dayjs(siblingValue))) return null;
+			if (inputValue.isSame(siblingValue)) return null;
 
-			return dayjs(inputValue).isAfter(dayjs(siblingValue))
+			return inputValue.isAfter(siblingValue)
 				? null
 				: {
 						aheadOfDate: {
-							error: `${label} must be ahead of ${siblingLabel} (${dayjs(siblingValue).format('DD/MM/YYYY')})`,
+							error: `${label} must be ahead of ${siblingLabel} (${siblingValue.format('DD/MM/YYYY')})`,
 							anchorLink,
 							accordion,
 						},

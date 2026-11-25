@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, CanDeactivate } from '@angular/router';
+import { TechRecordComponent } from '@features/tech-record/tech-record.component';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
-import { TechRecordComponent } from 'src/app/features/tech-record/tech-record.component';
 
 @Injectable({
 	providedIn: 'root',

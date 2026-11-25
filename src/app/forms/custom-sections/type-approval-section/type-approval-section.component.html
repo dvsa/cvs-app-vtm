@@ -1,12 +1,11 @@
-
 @switch (mode()) {
   @case ('view') {
-    <app-type-approval-section-view/>
+    <app-type-approval-section-view />
   }
   @case ('edit') {
-    <app-type-approval-section-edit [techRecord]="techRecord()"/>
+    <app-type-approval-section-edit [techRecord]="techRecord()" />
   }
   @case ('summary') {
-    <app-type-approval-section-summary/>
+    <app-type-approval-section-summary />
   }
 }

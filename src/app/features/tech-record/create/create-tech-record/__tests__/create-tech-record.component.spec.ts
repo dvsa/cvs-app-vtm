@@ -12,7 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as V3TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { CreateTechRecordComponent } from '../create-tech-record.component';
 
 describe('CreateTechRecordComponent', () => {
@@ -74,9 +74,9 @@ describe('CreateTechRecordComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation();
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -84,7 +84,7 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -98,10 +98,10 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should navigate to hydrate when successful', async () => {
-			jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
-			jest.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
-			const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-			jest.spyOn(techRecordService, 'updateEditingTechRecord');
+			vi.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
+			const routerSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			vi.spyOn(techRecordService, 'updateEditingTechRecord');
 
 			await component.handleSubmit();
 
@@ -110,8 +110,8 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should set the global errors if form is not valid', async () => {
-			jest.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => [{ error: 'Form is invalid' }]);
-			jest.spyOn(errorService, 'setErrors');
+			vi.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => [{ error: 'Form is invalid' }]);
+			vi.spyOn(errorService, 'setErrors');
 
 			await component.handleSubmit();
 
@@ -119,9 +119,12 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should not navigate anywhere if the VRM or Trailer ID is not unique', async () => {
-			jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(false));
-			jest.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
-			const routerSpy = jest.spyOn(router, 'navigate');
+			vi.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(false));
+			vi.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
+			const routerSpy = vi.spyOn(router, 'navigate');
+			component.vrmUnique = false;
+			component.trlUnique = false;
+			component.form.controls.generateID.setValue(false);
 
 			await component.handleSubmit();
 
@@ -129,9 +132,9 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should navigate to the duplicate VIN page if the VIN is not unique', async () => {
-			jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(false));
-			jest.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
-			const routerSpy = jest.spyOn(router, 'navigate');
+			vi.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(false));
+			vi.spyOn(errorService, 'extractGlobalErrors').mockImplementation(() => []);
+			const routerSpy = vi.spyOn(router, 'navigate');
 			component.vrmUnique = true;
 			component.vinUnique = false;
 
@@ -141,9 +144,64 @@ describe('CreateTechRecordComponent', () => {
 		});
 	});
 
+	describe('isFormValueUnique', () => {
+		it.each(['hgv', 'trl'] as const)('should check VIN and the %s identifier concurrently', async (vehicleType) => {
+			component.form.controls.vehicleType.setValue(vehicleType);
+			component.form.controls.generateID.setValue(false);
+			component.form.controls.vin.setValue('VIN123');
+			component.form.controls.vrmTrm.setValue('AB123');
+			const vin = new Subject<boolean>();
+			const identifier = new Subject<boolean>();
+			const isUnique = vi
+				.spyOn(techRecordService, 'isUnique')
+				.mockImplementation((_, type) => (type === SEARCH_TYPES.VIN ? vin : identifier));
+
+			const result = component.isFormValueUnique();
+			expect(isUnique).toHaveBeenCalledWith('VIN123', SEARCH_TYPES.VIN);
+			expect(isUnique).toHaveBeenCalledWith(
+				'AB123',
+				vehicleType === 'trl' ? SEARCH_TYPES.TRAILER_ID : SEARCH_TYPES.VRM
+			);
+
+			identifier.next(true);
+			vin.next(false);
+			expect(await result).toBe(false);
+			expect(component.vinUnique).toBe(false);
+			expect(vehicleType === 'trl' ? component.trlUnique : component.vrmUnique).toBe(true);
+		});
+
+		it('should skip identifier checks when generating an ID', async () => {
+			component.form.controls.generateID.setValue(true);
+			const isUnique = vi.spyOn(techRecordService, 'isUnique').mockReturnValue(of(true));
+
+			expect(await component.isFormValueUnique()).toBe(true);
+			expect(isUnique).toHaveBeenCalledOnce();
+			expect(isUnique).toHaveBeenCalledWith(component.form.controls.vin.value, SEARCH_TYPES.VIN);
+		});
+
+		it('should retain the completed VIN check if the identifier check fails and is retried', async () => {
+			component.form.controls.vehicleType.setValue('hgv');
+			component.form.controls.generateID.setValue(false);
+			const identifier = new Subject<boolean>();
+			const isUnique = vi
+				.spyOn(techRecordService, 'isUnique')
+				.mockImplementation((_, type) => (type === SEARCH_TYPES.VIN ? of(true) : identifier));
+			const result = component.isFormValueUnique();
+			const rejected = expect(result).rejects.toThrow('lookup failed');
+			identifier.error(new Error('lookup failed'));
+			await rejected;
+
+			isUnique.mockClear().mockReturnValue(of(true));
+			expect(await component.isFormValueUnique()).toBe(true);
+			expect(isUnique).toHaveBeenCalledOnce();
+			expect(isUnique.mock.calls[0][1]).toBe(SEARCH_TYPES.VRM);
+		});
+	});
+
 	describe('isVinUnique', () => {
 		it('should call isUnique with an empty string and the type of vin', async () => {
-			const isUniqueSpy = jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			const isUniqueSpy = vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			component.form.controls.vin.setValue('');
 
 			await component.isVinUnique();
 
@@ -151,7 +209,7 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should return true when the VIN is unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
 			const result = await component.isVinUnique();
 
@@ -161,7 +219,7 @@ describe('CreateTechRecordComponent', () => {
 
 	describe('isVrmUnique', () => {
 		it('should return true when the VRM is unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
 			const result = await component.isVrmUnique();
 
@@ -169,8 +227,8 @@ describe('CreateTechRecordComponent', () => {
 		});
 
 		it('should call addError when the VRM must be unique', async () => {
-			jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
-			const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
+			vi.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
+			const addErrorSpy = vi.spyOn(errorService, 'addError').mockImplementation();
 
 			const result = await component.isVrmUnique();
 

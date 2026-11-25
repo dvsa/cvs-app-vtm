@@ -23,7 +23,11 @@
       [tagNames]="[]"
       [filters]="filters()"
     >
-      <div class="govuk-input__suffix" [class.govuk-input__suffix-disabled]="mode() !== Modes.EDIT" aria-hidden="true">
+      <div
+        class="govuk-input__suffix"
+        [class.govuk-input__suffix-disabled]="mode() !== Modes.EDIT"
+        aria-hidden="true"
+      >
         m<sup><small>-1</small></sup>
       </div>
     </govuk-form-group-input>

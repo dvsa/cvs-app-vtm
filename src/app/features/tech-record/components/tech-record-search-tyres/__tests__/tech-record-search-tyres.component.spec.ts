@@ -22,8 +22,8 @@ import { Observable, ReplaySubject, of } from 'rxjs';
 import { TechRecordSearchTyresComponent } from '../tech-record-search-tyres.component';
 
 const mockGlobalErrorService = {
-	addError: jest.fn(),
-	clearErrors: jest.fn(),
+	addError: vi.fn(),
+	clearErrors: vi.fn(),
 };
 const mockTechRecordService = {
 	get techRecord$() {
@@ -31,16 +31,16 @@ const mockTechRecordService = {
 	},
 };
 const mockReferenceDataService = {
-	addSearchInformation: jest.fn(),
-	getTyreSearchReturn$: jest.fn(),
-	getTyreSearchCriteria$: jest.fn(),
-	loadReferenceDataByKeySearch: jest.fn(),
-	loadTyreReferenceDataByKeySearch: jest.fn(),
-	loadReferenceData: jest.fn(),
-	getAll$: jest.fn(),
+	addSearchInformation: vi.fn(),
+	getTyreSearchReturn$: vi.fn(),
+	getTyreSearchCriteria$: vi.fn(),
+	loadReferenceDataByKeySearch: vi.fn(),
+	loadTyreReferenceDataByKeySearch: vi.fn(),
+	loadReferenceData: vi.fn(),
+	getAll$: vi.fn(),
 };
 const mockDynamicFormService = {
-	createForm: jest.fn(),
+	createForm: vi.fn(),
 };
 
 describe('TechRecordSearchTyresComponent', () => {
@@ -92,7 +92,7 @@ describe('TechRecordSearchTyresComponent', () => {
 	describe('handleSearch', () => {
 		it('should set search results to an empty array before populating data', () => {
 			component.handleSearch('', '');
-			expect(component.searchResults).toStrictEqual([]);
+			expect(component.searchResults()).toStrictEqual([]);
 		});
 		it('should call add error in global error service when term is empty', () => {
 			const filter = 'code';
@@ -132,10 +132,10 @@ describe('TechRecordSearchTyresComponent', () => {
 			expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith(filter, term);
 		});
 		it('should navigate and populate the search results on success action', fakeAsync(() => {
-			const navigateSpy = jest.spyOn(router, 'navigate');
+			const navigateSpy = vi.spyOn(router, 'navigate');
 			const mockTyreSearchReturn = ['foo', 'bar'];
 
-			jest.spyOn(store, 'select').mockReturnValue(of(mockTyreSearchReturn));
+			vi.spyOn(store, 'select').mockReturnValue(of(mockTyreSearchReturn));
 			component.handleSearch('foo', 'bar');
 
 			expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith('foo', 'bar');
@@ -144,7 +144,7 @@ describe('TechRecordSearchTyresComponent', () => {
 			tick();
 
 			expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
-			expect(component.searchResults).toEqual(mockTyreSearchReturn);
+			expect(component.searchResults()).toEqual(mockTyreSearchReturn);
 		}));
 
 		const testCases = [
@@ -154,9 +154,9 @@ describe('TechRecordSearchTyresComponent', () => {
 		];
 
 		it.each(testCases)('should return early if the search information has not been provided', ({ filter, term }) => {
-			jest.resetAllMocks();
-			const refDataServiceSpy = jest.spyOn(mockReferenceDataService, 'addSearchInformation');
-			const errorServiceSpy = jest.spyOn(mockGlobalErrorService, 'addError');
+			vi.resetAllMocks();
+			const refDataServiceSpy = vi.spyOn(mockReferenceDataService, 'addSearchInformation');
+			const errorServiceSpy = vi.spyOn(mockGlobalErrorService, 'addError');
 			component.handleSearch(filter, term);
 			expect(refDataServiceSpy).not.toHaveBeenCalled();
 			expect(errorServiceSpy).toHaveBeenCalledWith({
@@ -216,12 +216,12 @@ describe('TechRecordSearchTyresComponent', () => {
 			expect(component.currentVrm).toBe('bar');
 		});
 		it('should get the paginated fields', () => {
-			component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
-			expect(component.paginatedFields).toEqual(['foo', 'bar', 'foobar']);
+			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
+			expect(component.paginatedFields()).toEqual(['foo', 'bar', 'foobar']);
 		});
 		it('should get the number of results', () => {
-			component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
-			expect(component.numberOfResults).toEqual(component.searchResults?.length);
+			component.searchResults.set(['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[]);
+			expect(component.numberOfResults()).toEqual(component.searchResults()?.length);
 		});
 	});
 
@@ -230,31 +230,31 @@ describe('TechRecordSearchTyresComponent', () => {
 			const mockForm = {
 				controls: {
 					filter: {
-						patchValue: jest.fn(),
+						patchValue: vi.fn(),
 					},
 					term: {
-						patchValue: jest.fn(),
+						patchValue: vi.fn(),
 					},
 				},
 			};
 			const mockTyreSearchReturn = ['foobar'];
 			const mockSearchCriteria = { filter: 'foo', term: 'bar' };
-			const dfsSpy = jest.spyOn(mockDynamicFormService, 'createForm').mockReturnValue(mockForm);
-			jest.spyOn(mockReferenceDataService, 'getTyreSearchReturn$').mockReturnValue(of(mockTyreSearchReturn));
-			jest.spyOn(mockReferenceDataService, 'getTyreSearchCriteria$').mockReturnValue(of(mockSearchCriteria));
-			const filterSpy = jest.spyOn(mockForm.controls.filter, 'patchValue');
-			const termSpy = jest.spyOn(mockForm.controls.term, 'patchValue');
+			const dfsSpy = vi.spyOn(mockDynamicFormService, 'createForm').mockReturnValue(mockForm);
+			vi.spyOn(mockReferenceDataService, 'getTyreSearchReturn$').mockReturnValue(of(mockTyreSearchReturn));
+			vi.spyOn(mockReferenceDataService, 'getTyreSearchCriteria$').mockReturnValue(of(mockSearchCriteria));
+			const filterSpy = vi.spyOn(mockForm.controls.filter, 'patchValue');
+			const termSpy = vi.spyOn(mockForm.controls.term, 'patchValue');
 			component.ngOnInit();
 			expect(dfsSpy).toHaveBeenCalledWith(component.template);
 			expect(filterSpy).toHaveBeenCalledWith(mockSearchCriteria.filter);
 			expect(termSpy).toHaveBeenCalledWith(mockSearchCriteria.term);
-			expect(component.searchResults).toEqual(mockTyreSearchReturn);
+			expect(component.searchResults()).toEqual(mockTyreSearchReturn);
 		});
 		it('should navigate if there is no viewable tech record', () => {
-			const routerSpy = jest.spyOn(router, 'navigate');
-			jest
-				.spyOn(mockTechRecordService, 'techRecord$', 'get')
-				.mockReturnValue(of(undefined) as unknown as Observable<Record<string, unknown>>);
+			const routerSpy = vi.spyOn(router, 'navigate');
+			vi.spyOn(mockTechRecordService, 'techRecord$', 'get').mockReturnValue(
+				of(undefined) as unknown as Observable<Record<string, unknown>>
+			);
 			component.ngOnInit();
 			expect(routerSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
 		});

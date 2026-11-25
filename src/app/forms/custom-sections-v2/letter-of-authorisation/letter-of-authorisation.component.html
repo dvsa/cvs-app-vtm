@@ -1,6 +1,10 @@
 <div class="govuk-!-padding-left-4 govuk-!-padding-right-4">
   @if (techRecord(); as techRecord) {
-    @if (techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED && correctApprovalType && !currentTechRecord()) {
+    @if (
+      techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+      correctApprovalType &&
+      !currentTechRecord()
+    ) {
       <app-button
         *appRoleRequired="Roles.TechRecordAmend"
         id="generate-letters-link"
@@ -23,7 +27,10 @@
             <dd id="letter-type" class="govuk-summary-list__value">
               {{ letter.letterType | defaultNullOrEmpty }}
             </dd>
-            <dd id="letter-link" class="govuk-summary-list__value govuk-!-text-align-right">
+            <dd
+              id="letter-link"
+              class="govuk-summary-list__value govuk-!-text-align-right"
+            >
               <a
                 id="test-certificate-link"
                 class="govuk-link"
@@ -46,7 +53,8 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Date requested</dt>
             <dd id="letter-date" class="govuk-summary-list__value">
-              {{ letter.letterDateRequested | date : 'dd/MM/yyyy' }} at {{ letter.letterDateRequested | date : 'HH:mm' }}
+              {{ letter.letterDateRequested | date: 'dd/MM/yyyy' }} at
+              {{ letter.letterDateRequested | date: 'HH:mm' }}
             </dd>
           </div>
         </dl>
@@ -63,7 +71,9 @@
             warningMessage="Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters."
           ></app-field-warning-message>
         } @else {
-          <ng-container [ngTemplateOutlet]="incorrectApprovalType"></ng-container>
+          <ng-container
+            [ngTemplateOutlet]="incorrectApprovalType"
+          ></ng-container>
         }
       } @else if (techRecord.techRecord_statusCode === StatusCodes.ARCHIVED) {
         <app-field-warning-message

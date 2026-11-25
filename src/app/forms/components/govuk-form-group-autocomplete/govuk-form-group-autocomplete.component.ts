@@ -12,12 +12,10 @@ import {
 	output,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOptions } from '@models/options.model';
-import {
-	AutocompleteEnhanceParams,
-	enhanceSelectElement,
-} from 'accessible-autocomplete/dist/accessible-autocomplete.min';
+import type { AutocompleteEnhanceParams } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, takeUntil, takeWhile } from 'rxjs';
 import { TagComponent } from '../../../components/tag/tag.component';
 @Component({
@@ -56,10 +54,26 @@ export class GovukFormGroupAutocompleteComponent
 	destroy = new ReplaySubject<boolean>(1);
 	valueSub = new BehaviorSubject<unknown>(null);
 
+	private loadAccessibleAutocomplete = inject(ACCESSIBLE_AUTOCOMPLETE_LOADER);
+
 	ngAfterViewInit(): void {
-		combineLatest([this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)), this.valueSub])
+		// Load options and the library together, then enhance using the latest form value.
+		this.watchOptions(
+			this.loadAccessibleAutocomplete()
+				.then(({ enhanceSelectElement }) => enhanceSelectElement)
+				.catch(() => undefined)
+		);
+	}
+
+	private watchOptions(enhancement: Promise<((params: AutocompleteEnhanceParams) => void) | undefined>): void {
+		// takeUntil(destroy) also covers the component being destroyed while the library was loading
+		combineLatest([
+			this.options$().pipe(takeWhile((options) => !options || options.length === 0, true)),
+			this.valueSub,
+			enhancement,
+		])
 			.pipe(takeUntil(this.destroy))
-			.subscribe(([options, latest]) => {
+			.subscribe(([options, latest, enhanceSelectElement]) => {
 				this.multiOptions = Array.isArray(options)
 					? options.map((option) => (typeof option === 'string' ? { label: option, value: option } : option))
 					: [];
@@ -87,7 +101,7 @@ export class GovukFormGroupAutocompleteComponent
 				}
 
 				const selectEl = enhanceParams.selectElement as HTMLSelectElement | null;
-				if (this.multiOptions.length > 0 && selectEl?.options?.length) {
+				if (enhanceSelectElement && this.multiOptions.length > 0 && selectEl?.options?.length) {
 					enhanceSelectElement(enhanceParams);
 				}
 

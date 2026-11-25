@@ -4,14 +4,19 @@
   <ng-container content>
     <h3 class="govuk-heading-m">Technical records created</h3>
     <p class="govuk-body">
-      You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }}
-      {{ vehicleType$ | async | formatVehicleType }} technical records using application ID {{ applicationId$ | async }}.
+      You have successfully processed
+      {{ (batchSuccessCount$ | async) ?? 0 }} out of
+      {{ (batchCount$ | async) ?? 0 }}
+      {{ vehicleType$ | async | formatVehicleType }} technical records using
+      application ID {{ applicationId$ | async }}.
     </p>
     <p class="govuk-body">
-      {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
+      {{ (batchCreatedCount$ | async) ?? 0 }} out of
+      {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
     </p>
     <p class="govuk-body">
-      {{ (batchUpdatedCount$ | async) ?? 0 }} out of {{ (batchTotalUpdatedCount$ | async) ?? 0 }} records successfully updated.
+      {{ (batchUpdatedCount$ | async) ?? 0 }} out of
+      {{ (batchTotalUpdatedCount$ | async) ?? 0 }} records successfully updated.
     </p>
   </ng-container>
 </app-banner>
@@ -23,7 +28,9 @@
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">VIN</th>
-      <th scope="col" class="govuk-table__header">{{ (vehicleType$ | async) === 'trl' ? 'Trailer ID' : 'VRM' }}</th>
+      <th scope="col" class="govuk-table__header">
+        {{ (vehicleType$ | async) === 'trl' ? 'Trailer ID' : 'VRM' }}
+      </th>
       <th scope="col" class="govuk-table__header">Vehicle type</th>
       <th scope="col" class="govuk-table__header">Record type</th>
       <th scope="col" class="govuk-table__header">
@@ -32,11 +39,17 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    @for (vehicle of batchVehiclesSuccess$ | async; track vehicle; let i = $index) {
+    @for (
+      vehicle of batchVehiclesSuccess$ | async;
+      track vehicle;
+      let i = $index
+    ) {
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
         <td class="govuk-table__cell">{{ vehicle.trailerIdOrVrm }}</td>
-        <td class="govuk-table__cell">{{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">
+          {{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}
+        </td>
         <td class="govuk-table__cell">
           @switch (vehicle.status) {
             @case ('provisional') {
@@ -54,14 +67,19 @@
           <a
             href="javascript:void(0)"
             id="view-{{ i + 1 }}"
-            [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]"
+            [routerLink]="[
+              '/',
+              'tech-records',
+              vehicle.systemNumber,
+              vehicle.createdTimestamp,
+            ]"
             class="govuk-link"
             rel="noreferrer noopener"
             target="_blank"
             >View (opens in a new tab)</a
-            >
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+          >
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

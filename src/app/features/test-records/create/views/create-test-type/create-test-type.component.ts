@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/.';
 import { clearAllSectionStates } from '@store/technical-records';
-import { contingencyTestTypeSelected } from '@store/test-records';
 import { take } from 'rxjs';
 import { TestTypeSelectComponent } from '../../../components/test-type-select/test-type-select.component';
 
@@ -48,7 +47,6 @@ export class CreateTestTypeComponent implements AfterContentInit {
 	}
 
 	handleSelectedTestType(testType: TestType) {
-		this.store.dispatch(contingencyTestTypeSelected({ testType: testType.id }));
 		this.store.dispatch(clearAllSectionStates());
 
 		void this.router.navigate(['..', 'test-details'], {

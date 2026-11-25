@@ -23,7 +23,7 @@ describe('RequiredStandardsResolver', () => {
 	});
 
 	it('should dispatch the getRequiredStandards action', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
 		expect(dispatchSpy).toHaveBeenCalledWith(getRequiredStandards({ euVehicleCategory: '' }));

@@ -6,7 +6,7 @@ export class DefaultNullOrEmpty implements PipeTransform {
 		return value[0].toUpperCase() + value.substring(1);
 	}
 
-	transform(value: any, suffix?: string) {
+	transform(value: any, suffix?: string): string {
 		if (suffix) {
 			if (!value && value !== 0) return '-';
 			const newValue = Number(value);

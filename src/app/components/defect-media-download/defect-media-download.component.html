@@ -1,12 +1,14 @@
 @if (testResult(); as testResult) {
   @if (defectMediaService?.hasRententionPeriodExpired(testResult)) {
-    <td id="media-expired">
-      Expired
-    </td>
+    <td id="media-expired">Expired</td>
   } @else if (defectMediaService?.canDownloadMediaItems(defect)) {
     <td id="media-download-link">
       <!-- Ensure button does not act as a form submit when rendered inside a <form> -->
-      <button type="button" class="link" (click)="defectMediaService?.downloadMediaItems(testResult, defect)">
+      <button
+        type="button"
+        class="link"
+        (click)="defectMediaService?.downloadMediaItems(testResult, defect)"
+      >
         Download media
       </button>
     </td>

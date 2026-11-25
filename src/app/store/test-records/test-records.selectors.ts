@@ -21,7 +21,7 @@ export const selectAllTestResults = createSelector(testResultsFeatureState, (sta
 
 // select the array of tests results in order of createdAt (most recent to oldest)
 export const selectAllTestResultsInDateOrder = createSelector(selectAllTestResults, (testResults) =>
-	testResults.sort(byDate)
+	testResults.slice().sort(byDate)
 );
 
 // select the total test results count
@@ -60,6 +60,12 @@ export const toEditOrNotToEdit = createSelector(
 );
 
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
+
+export const selectRecallsState = createSelector(testResultsFeatureState, (state) => ({
+	recalls: state.recalls,
+	vin: state.recallsVin,
+	loading: state.recallsLoading,
+}));
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) =>
 	getDefectFromTestResult(testResult)

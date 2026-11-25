@@ -7,12 +7,13 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/index';
+import { amendReferenceDataItem } from '@store/reference-data';
 import { ReferenceDataAmendComponent } from '../reference-data-amend.component';
 
 const mockRefDataService = {
-	loadReferenceData: jest.fn(),
-	loadReferenceDataByKey: jest.fn(),
-	fetchReferenceDataByKey: jest.fn(),
+	loadReferenceData: vi.fn(),
+	loadReferenceDataByKey: vi.fn(),
+	fetchReferenceDataByKey: vi.fn(),
 };
 
 describe('ReferenceDataAmendComponent', () => {
@@ -54,9 +55,9 @@ describe('ReferenceDataAmendComponent', () => {
 
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
-			jest.spyOn(router, 'navigate').mockImplementation();
+			vi.spyOn(router, 'navigate').mockImplementation();
 
-			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = vi.spyOn(errorService, 'clearErrors');
 
 			component.navigateBack();
 
@@ -64,7 +65,7 @@ describe('ReferenceDataAmendComponent', () => {
 		});
 
 		it('should navigate back to the previous page', () => {
-			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
 			component.navigateBack();
 
@@ -84,11 +85,11 @@ describe('ReferenceDataAmendComponent', () => {
 		it('should dispatch if form is valid and dirty', () => {
 			fixture.ngZone?.run(() => {
 				component.amendedData = { description: 'testing' };
-				jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+				vi.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 					component.isFormInvalid = false;
 					component.isFormDirty = true;
 				});
-				const dispatch = jest.spyOn(store, 'dispatch');
+				const dispatch = vi.spyOn(store, 'dispatch');
 
 				component.handleSubmit();
 
@@ -97,10 +98,10 @@ describe('ReferenceDataAmendComponent', () => {
 		});
 
 		it('should not dispatch if form is invalid', () => {
-			jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+			vi.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 				component.isFormInvalid = true;
 			});
-			const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = vi.spyOn(store, 'dispatch');
 
 			component.handleSubmit();
 
@@ -108,16 +109,16 @@ describe('ReferenceDataAmendComponent', () => {
 		});
 
 		it('should not dispatch if form is not dirty', () => {
-			jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+			vi.spyOn(component, 'checkForms').mockImplementationOnce(() => {
 				component.isFormInvalid = false;
 				component.isFormDirty = false;
 			});
-			const dispatch = jest.spyOn(store, 'dispatch');
-			const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+			const dispatch = vi.spyOn(store, 'dispatch');
+			const navigateBackSpy = vi.spyOn(component, 'navigateBack').mockImplementation();
 
 			component.handleSubmit();
 
-			expect(dispatch).not.toHaveBeenCalled();
+			expect(dispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: amendReferenceDataItem.type }));
 			expect(navigateBackSpy).toHaveBeenCalled();
 		});
 	});

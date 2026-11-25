@@ -1,11 +1,20 @@
 @if (currentTechRecord(); as current) {
   @if (amendedTechRecord(); as amended) {
-    @if (amended.techRecord_vehicleType === 'hgv' || amended.techRecord_vehicleType === 'trl' || amended.techRecord_vehicleType === 'lgv') {
+    @if (
+      amended.techRecord_vehicleType === 'hgv' ||
+      amended.techRecord_vehicleType === 'trl' ||
+      amended.techRecord_vehicleType === 'lgv'
+    ) {
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Able to carry dangerous goods</dt>
-          <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_dangerousGoods">
-            {{ amended.techRecord_adrDetails_dangerousGoods | defaultNullOrEmpty }}
+          <dd
+            class="govuk-summary-list__value"
+            id="test-techRecord_adrDetails_dangerousGoods"
+          >
+            {{
+              amended.techRecord_adrDetails_dangerousGoods | defaultNullOrEmpty
+            }}
           </dd>
         </div>
       </dl>
@@ -14,43 +23,83 @@
         @if (tcs.haveAnyApplicantDetailItemsChanged()) {
           <h2 class="govuk-heading-m">Applicant Details</h2>
           <dl class="govuk-summary-list">
-            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_name')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_applicantDetails_name')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Name</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_name">
-                  {{ amended.techRecord_adrDetails_applicantDetails_name | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_applicantDetails_name"
+                >
+                  {{
+                    amended.techRecord_adrDetails_applicantDetails_name
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_street')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_applicantDetails_street')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Street</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_street">
-                  {{ amended.techRecord_adrDetails_applicantDetails_street | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_applicantDetails_street"
+                >
+                  {{
+                    amended.techRecord_adrDetails_applicantDetails_street
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_town')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_applicantDetails_town')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Town</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_town">
-                  {{ amended.techRecord_adrDetails_applicantDetails_town | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_applicantDetails_town"
+                >
+                  {{
+                    amended.techRecord_adrDetails_applicantDetails_town
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_city')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_applicantDetails_city')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">City</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_city">
-                  {{ amended.techRecord_adrDetails_applicantDetails_city | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_applicantDetails_city"
+                >
+                  {{
+                    amended.techRecord_adrDetails_applicantDetails_city
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_applicantDetails_postcode')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_applicantDetails_postcode')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Postcode</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_applicantDetails_postcode">
-                  {{ amended.techRecord_adrDetails_applicantDetails_postcode | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_applicantDetails_postcode"
+                >
+                  {{
+                    amended.techRecord_adrDetails_applicantDetails_postcode
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
@@ -63,66 +112,135 @@
             @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_type')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">ADR body type</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_type">
-                  {{ amended.techRecord_adrDetails_vehicleDetails_type | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_vehicleDetails_type"
+                >
+                  {{
+                    amended.techRecord_adrDetails_vehicleDetails_type
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys')) {
+            @if (
+              tcs.hasChanged(
+                'techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys'
+              )
+            ) {
               <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Vehicle used on international journeys</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys">
-                  {{ amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys === 'n/a'?
-                  amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys.toUpperCase() :
-                  amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys | defaultNullOrEmpty }}
+                <dt class="govuk-summary-list__key">
+                  Vehicle used on international journeys
+                </dt>
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys"
+                >
+                  {{
+                    amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys ===
+                    'n/a'
+                      ? amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys.toUpperCase()
+                      : (amended.techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys
+                        | defaultNullOrEmpty)
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_vehicleDetails_approvalDate')) {
+            @if (
+              tcs.hasChanged(
+                'techRecord_adrDetails_vehicleDetails_approvalDate'
+              )
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Date processed</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_vehicleDetails_approvalDate">
-                  {{ amended.techRecord_adrDetails_vehicleDetails_approvalDate | defaultNullOrEmpty | date : 'dd/MM/yyyy' }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_vehicleDetails_approvalDate"
+                >
+                  {{
+                    amended.techRecord_adrDetails_vehicleDetails_approvalDate
+                      | defaultNullOrEmpty
+                      | date: 'dd/MM/yyyy'
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_permittedDangerousGoods')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_permittedDangerousGoods')
+            ) {
               <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_permittedDangerousGoods">
-                  {{ amended.techRecord_adrDetails_permittedDangerousGoods | defaultNullOrEmpty }}
+                <dt class="govuk-summary-list__key">
+                  Permitted dangerous goods
+                </dt>
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_permittedDangerousGoods"
+                >
+                  {{
+                    amended.techRecord_adrDetails_permittedDangerousGoods
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
             @if (tcs.hasChanged('techRecord_adrDetails_bodyDeclaration_type')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Body declaration</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_bodyDeclaration_type">
-                  {{ amended.techRecord_adrDetails_bodyDeclaration_type | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_bodyDeclaration_type"
+                >
+                  {{
+                    amended.techRecord_adrDetails_bodyDeclaration_type
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
             @if (tcs.hasChanged('techRecord_adrDetails_compatibilityGroupJ')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Compatibility group J</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_compatibilityGroupJ">
-                  {{ amended.techRecord_adrDetails_compatibilityGroupJ === 'I' ? 'Yes' : 'No' }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_compatibilityGroupJ"
+                >
+                  {{
+                    amended.techRecord_adrDetails_compatibilityGroupJ === 'I'
+                      ? 'Yes'
+                      : 'No'
+                  }}
                 </dd>
               </div>
             }
-            @if (tcs.hasChanged('techRecord_adrDetails_additionalNotes_number')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_additionalNotes_number')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Guidance notes</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_additionalNotes_number">
-                  {{ amended.techRecord_adrDetails_additionalNotes_number | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_additionalNotes_number"
+                >
+                  {{
+                    amended.techRecord_adrDetails_additionalNotes_number
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
             @if (tcs.hasChanged('techRecord_adrDetails_adrTypeApprovalNo')) {
               <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">ADR type approval number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrTypeApprovalNo">
-                  {{ amended.techRecord_adrDetails_adrTypeApprovalNo | defaultNullOrEmpty }}
+                <dt class="govuk-summary-list__key">
+                  ADR type approval number
+                </dt>
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_adrTypeApprovalNo"
+                >
+                  {{
+                    amended.techRecord_adrDetails_adrTypeApprovalNo
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
@@ -134,103 +252,234 @@
           @if (tcs.haveAnyTankDetailItemsChanged()) {
             <h2 class="govuk-heading-m">Tank Details</h2>
             <dl class="govuk-summary-list">
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturer')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankManufacturer'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Tank Make</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturer | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturer"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankManufacturer
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_yearOfManufacture')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_yearOfManufacture'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Tank Year of manufacture</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_yearOfManufacture | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Tank Year of manufacture
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_yearOfManufacture"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_yearOfManufacture
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Manufacturer serial number
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankTypeAppNo')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Tank type approval number</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Tank type approval number
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankTypeAppNo"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankTypeAppNo
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankCode')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankCode'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Code</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankCode">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankCode | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankCode"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankCode
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Substances permitted</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_select')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_select'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Select</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_select | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_select"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankStatement_select
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_statement')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_statement'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Reference number</dt>
-                  <dd class="govuk-summary-list__value" id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_statement | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="techRecord_adrDetails_tank_tankDetails_tankStatement_statement"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankStatement_statement
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Reference number</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo')) {
-                @for (unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo; track unNo; let i = $index) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo'
+                )
+              ) {
+                @for (
+                  unNo of amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo;
+                  track unNo;
+                  let i = $index
+                ) {
                   @if (hasUNNumberChanged(i)) {
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">UN number {{ i + 1 }}</dt>
-                      <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{ i }}">
+                      <dt class="govuk-summary-list__key">
+                        UN number {{ i + 1 }}
+                      </dt>
+                      <dd
+                        class="govuk-summary-list__value"
+                        id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo-{{
+                          i
+                        }}"
+                      >
                         {{ unNo | defaultNullOrEmpty }}
                       </dd>
                     </div>
                   }
                 }
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tankStatement_productList')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_tankStatement_productList'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Additional Details</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList">
-                    {{ amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productList | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_tank_tankDetails_tankStatement_productList"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_tank_tankDetails_tankStatement_productList
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_specialProvisions')) {
+              @if (
+                tcs.hasChanged(
+                  'techRecord_adrDetails_tank_tankDetails_specialProvisions'
+                )
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Special provisions</dt>
-                  <dd class="govuk-summary-list__value whitespace-pre-wrap" id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions">
-                    <span>{{ amended.techRecord_adrDetails_tank_tankDetails_specialProvisions | defaultNullOrEmpty }}</span>
+                  <dd
+                    class="govuk-summary-list__value whitespace-pre-wrap"
+                    id="test-techRecord_adrDetails_tank_tankDetails_specialProvisions"
+                  >
+                    <span>{{
+                      amended.techRecord_adrDetails_tank_tankDetails_specialProvisions
+                        | defaultNullOrEmpty
+                    }}</span>
                   </dd>
                 </div>
               }
@@ -243,45 +492,91 @@
             @if (tcs.hasInitialInspectionChanged()) {
               <h2 class="govuk-heading-s">Initial</h2>
               <dl class="govuk-summary-list">
-                @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo')) {
+                @if (
+                  tcs.hasChanged(
+                    'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo'
+                  )
+                ) {
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Certificate number</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo">
-                      <span>{{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}</span>
+                    <dd
+                      class="govuk-summary-list__value"
+                      id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo"
+                    >
+                      <span>{{
+                        amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo
+                          | defaultNullOrEmpty
+                      }}</span>
                     </dd>
                   </div>
                 }
-                @if (tcs.hasChanged('techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate')) {
+                @if (
+                  tcs.hasChanged(
+                    'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate'
+                  )
+                ) {
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Expiry date</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate">
-                      <span>{{ amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}</span>
+                    <dd
+                      class="govuk-summary-list__value"
+                      id="test-techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate"
+                    >
+                      <span>{{
+                        amended.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate
+                          | defaultNullOrEmpty
+                          | date: 'dd/MM/yyyy'
+                      }}</span>
                     </dd>
                   </div>
                 }
               </dl>
             }
             <!-- Subsequent inspections -->
-            @for (inspection of amended.techRecord_adrDetails_tank_tankDetails_tc3Details; track inspection; let i = $index) {
-              <h2 class="govuk-heading-s ">Subsequent {{ i + 1 }}</h2>
+            @for (
+              inspection of amended.techRecord_adrDetails_tank_tankDetails_tc3Details;
+              track inspection;
+              let i = $index
+            ) {
+              <h2 class="govuk-heading-s">Subsequent {{ i + 1 }}</h2>
               <dl class="govuk-summary-list">
                 <ng-container>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Inspection type</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3Type">
+                    <dd
+                      class="govuk-summary-list__value"
+                      id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{
+                        i
+                      }}_tc3Type"
+                    >
                       <span>{{ inspection.tc3Type | defaultNullOrEmpty }}</span>
                     </dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Certificate number</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicNumber">
-                      <span>{{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}</span>
+                    <dd
+                      class="govuk-summary-list__value"
+                      id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{
+                        i
+                      }}_tc3PeriodicNumber"
+                    >
+                      <span>{{
+                        inspection.tc3PeriodicNumber | defaultNullOrEmpty
+                      }}</span>
                     </dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Expiry date</dt>
-                    <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{ i }}_tc3PeriodicExpiryDate">
-                      <span>{{ inspection.tc3PeriodicExpiryDate | defaultNullOrEmpty | date : 'dd/MM/yyyy'  }}</span>
+                    <dd
+                      class="govuk-summary-list__value"
+                      id="test-techRecord_adrDetails_tank_tankDetails_tc3Details_{{
+                        i
+                      }}_tc3PeriodicExpiryDate"
+                    >
+                      <span>{{
+                        inspection.tc3PeriodicExpiryDate
+                          | defaultNullOrEmpty
+                          | date: 'dd/MM/yyyy'
+                      }}</span>
                     </dd>
                   </div>
                 </ng-container>
@@ -293,17 +588,31 @@
             <dl class="govuk-summary-list">
               @if (tcs.hasChanged('techRecord_adrDetails_memosApply')) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Memo 07/09 (3 month extension) can be applied</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_memosApply">
-                    {{ amended.techRecord_adrDetails_memosApply | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Memo 07/09 (3 month extension) can be applied
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_memosApply"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_memosApply
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
               @if (tcs.hasChanged('techRecord_adrDetails_m145Statement')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">M145</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_m145Statement">
-                    {{ amended.techRecord_adrDetails_m145Statement | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_m145Statement"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_m145Statement
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
@@ -311,22 +620,39 @@
           }
         }
         <!-- Battery list applicable -->
-        @if (adrService.canDisplayBatterySection(amended) && tcs.haveAnyBatteryListItemsChanged()) {
+        @if (
+          adrService.canDisplayBatterySection(amended) &&
+          tcs.haveAnyBatteryListItemsChanged()
+        ) {
           <h2 class="govuk-heading-m">Battery List Applicable</h2>
           <dl class="govuk-summary-list">
-            @if (tcs.hasChanged('techRecord_adrDetails_listStatementApplicable')) {
+            @if (
+              tcs.hasChanged('techRecord_adrDetails_listStatementApplicable')
+            ) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Battery List Applicable</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_listStatementApplicable">
-                  {{ amended.techRecord_adrDetails_listStatementApplicable | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_listStatementApplicable"
+                >
+                  {{
+                    amended.techRecord_adrDetails_listStatementApplicable
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
             @if (tcs.hasChanged('techRecord_adrDetails_batteryListNumber')) {
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Reference number</dt>
-                <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_batteryListNumber">
-                  {{ amended.techRecord_adrDetails_batteryListNumber | defaultNullOrEmpty }}
+                <dd
+                  class="govuk-summary-list__value"
+                  id="test-techRecord_adrDetails_batteryListNumber"
+                >
+                  {{
+                    amended.techRecord_adrDetails_batteryListNumber
+                      | defaultNullOrEmpty
+                  }}
                 </dd>
               </div>
             }
@@ -337,43 +663,81 @@
           <dl class="govuk-summary-list">
             <h2 class="govuk-heading-m">Declarations seen</h2>
             <dl class="govuk-summary-list">
-              @if (tcs.hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')) {
+              @if (
+                tcs.hasChanged('techRecord_adrDetails_brakeDeclarationsSeen')
+              ) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationsSeen">
-                    {{ amended.techRecord_adrDetails_brakeDeclarationsSeen | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Manufacturer brake declaration
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_brakeDeclarationsSeen"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_brakeDeclarationsSeen
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
-              @if (tcs.hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')) {
+              @if (
+                tcs.hasChanged('techRecord_adrDetails_brakeDeclarationIssuer')
+              ) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Issuer</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeDeclarationIssuer">
-                    {{ amended.techRecord_adrDetails_brakeDeclarationIssuer | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_brakeDeclarationIssuer"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_brakeDeclarationIssuer
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
               @if (tcs.hasChanged('techRecord_adrDetails_brakeEndurance')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Brake endurance</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_brakeEndurance">
-                    {{ amended.techRecord_adrDetails_brakeEndurance | defaultNullOrEmpty }}
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_brakeEndurance"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_brakeEndurance
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
               @if (tcs.hasChanged('techRecord_adrDetails_weight')) {
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Weight</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_weight">
-                    {{ amended.techRecord_adrDetails_weight | defaultNullOrEmpty }} (Tonnes)
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_weight"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_weight | defaultNullOrEmpty
+                    }}
+                    (Tonnes)
                   </dd>
                 </div>
               }
               @if (tcs.hasChanged('techRecord_adrDetails_declarationsSeen')) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
-                  <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_declarationsSeen">
-                    {{ amended.techRecord_adrDetails_declarationsSeen | defaultNullOrEmpty }}
+                  <dt class="govuk-summary-list__key">
+                    Owner/operator declaration
+                  </dt>
+                  <dd
+                    class="govuk-summary-list__value"
+                    id="test-techRecord_adrDetails_declarationsSeen"
+                  >
+                    {{
+                      amended.techRecord_adrDetails_declarationsSeen
+                        | defaultNullOrEmpty
+                    }}
                   </dd>
                 </div>
               }
@@ -386,8 +750,15 @@
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">New Certificate required</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_newCertificateRequested">
-                {{ amended.techRecord_adrDetails_newCertificateRequested ? 'Yes' : 'No' }}
+              <dd
+                class="govuk-summary-list__value"
+                id="test-techRecord_adrDetails_newCertificateRequested"
+              >
+                {{
+                  amended.techRecord_adrDetails_newCertificateRequested
+                    ? 'Yes'
+                    : 'No'
+                }}
               </dd>
             </div>
           </dl>
@@ -398,8 +769,14 @@
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Additional Examiner Notes</dt>
-              <dd class="govuk-summary-list__value whitespace-pre-line" id="test-techRecord_adrDetails_additionalExaminerNotes">
-                {{ amended.techRecord_adrDetails_additionalExaminerNotes_note | defaultNullOrEmpty }}
+              <dd
+                class="govuk-summary-list__value whitespace-pre-line"
+                id="test-techRecord_adrDetails_additionalExaminerNotes"
+              >
+                {{
+                  amended.techRecord_adrDetails_additionalExaminerNotes_note
+                    | defaultNullOrEmpty
+                }}
               </dd>
             </div>
           </dl>
@@ -416,28 +793,56 @@
                   <th scope="col" class="govuk-table__header">Date</th>
                 </tr>
                 @if (pagination.paginationOptions(); as page) {
-                  @for (note of notes.slice(page.start, page.end); track note; let i = $index) {
-                    <tr class="govuk-table__row" id="test-techRecord_adrDetails_additionalExaminerNotes_{{ i }}">
-                      <td class="govuk-table__cell whitespace-pre-wrap">{{ note.note | defaultNullOrEmpty }}</td>
-                      <td class="govuk-table__cell">{{ note.lastUpdatedBy | defaultNullOrEmpty }}</td>
-                      <td class="govuk-table__cell">{{ note.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+                  @for (
+                    note of notes.slice(page.start, page.end);
+                    track note;
+                    let i = $index
+                  ) {
+                    <tr
+                      class="govuk-table__row"
+                      id="test-techRecord_adrDetails_additionalExaminerNotes_{{
+                        i
+                      }}"
+                    >
+                      <td class="govuk-table__cell whitespace-pre-wrap">
+                        {{ note.note | defaultNullOrEmpty }}
+                      </td>
+                      <td class="govuk-table__cell">
+                        {{ note.lastUpdatedBy | defaultNullOrEmpty }}
+                      </td>
+                      <td class="govuk-table__cell">
+                        {{
+                          note.createdAtDate
+                            | date: 'dd/MM/yyyy HH:mm'
+                            | defaultNullOrEmpty
+                        }}
+                      </td>
                     </tr>
                   }
                 }
               </tbody>
             </table>
-            <app-pagination #pagination tableName="adr-notes-history" [numberOfItems]="notesCount" [itemsPerPage]="3" />
+            <app-pagination
+              #pagination
+              tableName="adr-notes-history"
+              [numberOfItems]="notesCount"
+              [itemsPerPage]="3"
+            />
           } @else {
             <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row border-b-0">
-                <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+                <dt class="govuk-summary-list__key">
+                  No additional examiner notes history available
+                </dt>
               </div>
             </dl>
           }
         } @else {
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row border-b-0">
-              <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+              <dt class="govuk-summary-list__key">
+                No additional examiner notes history available
+              </dt>
             </div>
           </dl>
         }
@@ -447,8 +852,14 @@
           <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">ADR Certificate Notes</dt>
-              <dd class="govuk-summary-list__value" id="test-techRecord_adrDetails_adrCertificateNotes">
-                <span class="whitespace-pre-wrap">{{ amended.techRecord_adrDetails_adrCertificateNotes | defaultNullOrEmpty }}</span>
+              <dd
+                class="govuk-summary-list__value"
+                id="test-techRecord_adrDetails_adrCertificateNotes"
+              >
+                <span class="whitespace-pre-wrap">{{
+                  amended.techRecord_adrDetails_adrCertificateNotes
+                    | defaultNullOrEmpty
+                }}</span>
               </dd>
             </div>
           </dl>

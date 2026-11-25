@@ -68,12 +68,10 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
 		return FormNodeWidth.L;
 	}
 
-	get certificateTypes(): Array<FormNodeOption<string>> {
-		return [
-			{ label: 'New ADR Certificate', value: ADRCertificateTypes.PASS },
-			{ label: 'Replacement ADR Certificate', value: ADRCertificateTypes.REPLACEMENT },
-		];
-	}
+	readonly certificateTypes: Array<FormNodeOption<string>> = [
+		{ label: 'New ADR Certificate', value: ADRCertificateTypes.PASS },
+		{ label: 'Replacement ADR Certificate', value: ADRCertificateTypes.REPLACEMENT },
+	];
 
 	navigateBack() {
 		this.globalErrorService.clearErrors();

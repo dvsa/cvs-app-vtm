@@ -11,7 +11,7 @@ export class TestStationsService {
 	getTestStationsOptions(): Observable<MultiOptions> {
 		return this.store.select(testStations).pipe(
 			map((allTestStations) =>
-				allTestStations
+				[...allTestStations]
 					.sort((a, b) => a.testStationName.localeCompare(b.testStationName))
 					.map((testStation) => {
 						const label = `${testStation.testStationName} - ${testStation.testStationPNumber}`;

@@ -51,7 +51,9 @@
   }
 
   <!--  Telephone number -->
-  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_telephoneNumber')) {
+  @if (
+    shouldDisplayFormControl('techRecord_manufacturerDetails_telephoneNumber')
+  ) {
     <govuk-form-group-input
       label="Telephone number"
       [width]="FormNodeWidth.XL"
@@ -60,7 +62,9 @@
   }
 
   <!--  Email address -->
-  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_emailAddress')) {
+  @if (
+    shouldDisplayFormControl('techRecord_manufacturerDetails_emailAddress')
+  ) {
     <govuk-form-group-input
       label="Email address"
       [width]="FormNodeWidth.XL"
@@ -78,7 +82,9 @@
   }
 
   <!--  Manufacturer notes -->
-  @if (shouldDisplayFormControl('techRecord_manufacturerDetails_manufacturerNotes')) {
+  @if (
+    shouldDisplayFormControl('techRecord_manufacturerDetails_manufacturerNotes')
+  ) {
     <govuk-form-group-textarea
       label="Manufacturer notes"
       [maxLength]="1024"

@@ -1,9 +1,12 @@
-<div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }" [id]="control?.meta?.name">
+<div
+  [ngClass]="{ 'govuk-form-group': !noBottomMargin() }"
+  [id]="control?.meta?.name"
+>
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <div class="govuk-fieldset__heading">
         {{ label() }}
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </div>
@@ -13,10 +16,20 @@
       }
     </legend>
 
-    <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-    <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+    <app-field-error-message
+      [error]="error"
+      [name]="name()"
+    ></app-field-error-message>
+    <app-field-error-message
+      [error]="warning()"
+      [name]="name()"
+    ></app-field-error-message>
 
-    <div class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline() }" data-module="govuk-radios">
+    <div
+      class="govuk-radios"
+      [ngClass]="{ 'govuk-radios--inline': inline() }"
+      data-module="govuk-radios"
+    >
       @for (option of options(); track $index) {
         <div class="govuk-radios__item">
           <input
@@ -27,12 +40,23 @@
             type="radio"
             [value]="option.value"
             [(ngModel)]="value"
+            [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="onChange($event)"
             (blur)="control?.markAsTouched()"
-            />
-          <label class="govuk-label govuk-radios__label" [for]="name() + '-' + option.value + '-radio'"> {{ option.label }} </label>
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            [for]="name() + '-' + option.value + '-radio'"
+          >
+            {{ option.label }}
+          </label>
           @if (option.hint) {
-            <div id="{{ name() }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
+            <div
+              id="{{ name() }}-hint-{{ option.value }}"
+              class="govuk-hint govuk-radios__hint"
+            >
+              {{ option.hint }}
+            </div>
           }
         </div>
       }

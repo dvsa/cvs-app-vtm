@@ -43,7 +43,7 @@ describe('DefectsEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: vi.fn().mockReturnValue(false) } },
 			],
 		});
 
@@ -66,7 +66,7 @@ describe('DefectsEffects', () => {
 				actions$ = hot('-a--', { a: fetchDefects() });
 
 				// mock service call
-				jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--a|', { a: payload }));
+				vi.spyOn(service, 'fetchDefects').mockReturnValue(cold('--a|', { a: payload }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchDefects$).toBe('---b', {
@@ -81,7 +81,7 @@ describe('DefectsEffects', () => {
 
 				const expectedError = new Error('Reference data resourceType is required');
 
-				jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'fetchDefects').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchDefects$).toBe('---b', {
 					b: fetchDefectsFailed({ error: 'Reference data resourceType is required' }),
@@ -100,7 +100,7 @@ describe('DefectsEffects', () => {
 				actions$ = hot('-a--', { a: fetchDefect({ id }) });
 
 				// mock service call
-				jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--a|', { a: entity }));
+				vi.spyOn(service, 'fetchDefect').mockReturnValue(cold('--a|', { a: entity }));
 
 				// expect effect to return success action
 				expectObservable(effects.fetchDefect$).toBe('---b', {
@@ -116,7 +116,7 @@ describe('DefectsEffects', () => {
 
 				const expectedError = new Error('Reference data resourceKey is required');
 
-				jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'fetchDefect').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.fetchDefect$).toBe('---b', {
 					b: fetchDefectFailed({ error: 'Reference data resourceKey is required' }),

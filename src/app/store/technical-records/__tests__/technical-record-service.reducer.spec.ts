@@ -14,6 +14,7 @@ import { createMockTrl } from '@mocks/trl-record.mock';
 import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { cloneDeep } from 'lodash-es';
 import {
 	addSectionState,
 	archiveTechRecord,
@@ -28,6 +29,9 @@ import {
 	getBySystemNumber,
 	getBySystemNumberFailure,
 	getBySystemNumberSuccess,
+	getTechRecordV3,
+	getTechRecordV3Failure,
+	getTechRecordV3Success,
 	removeSectionState,
 	updateADRAdditionalExaminerNotes,
 	updateBody,
@@ -42,11 +46,17 @@ import {
 } from '../technical-record-service.actions';
 import {
 	TechnicalRecordServiceState,
-	initialState,
+	initialState as initialTechnicalRecordState,
 	vehicleTechRecordReducer,
 } from '../technical-record-service.reducer';
 
 describe('Vehicle Technical Record Reducer', () => {
+	let initialState: TechnicalRecordServiceState;
+
+	beforeEach(() => {
+		initialState = cloneDeep(initialTechnicalRecordState);
+	});
+
 	describe('unknown action', () => {
 		it('should return the default state', () => {
 			const action = {
@@ -95,6 +105,39 @@ describe('Vehicle Technical Record Reducer', () => {
 		});
 	});
 
+	describe('getTechRecordV3', () => {
+		it('should keep the loading overlay visible while the technical record is requested', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: false };
+			const action = getTechRecordV3({ systemNumber: '001', createdTimestamp: '2026-08-19T12:00:00.000Z' });
+
+			const newState = vehicleTechRecordReducer(oldState, action);
+
+			expect(newState.loading).toBe(true);
+		});
+
+		it('should hide the loading overlay when the technical record request succeeds', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: true };
+			const vehicleTechRecord = {
+				systemNumber: '001',
+				createdTimestamp: '2026-08-19T12:00:00.000Z',
+				vin: 'testVin',
+			} as TechRecordType<'get'>;
+
+			const newState = vehicleTechRecordReducer(oldState, getTechRecordV3Success({ vehicleTechRecord }));
+
+			expect(newState.vehicleTechRecord).toBe(vehicleTechRecord);
+			expect(newState.loading).toBe(false);
+		});
+
+		it('should hide the loading overlay when the technical record request fails', () => {
+			const oldState: TechnicalRecordServiceState = { ...initialState, loading: true };
+
+			const newState = vehicleTechRecordReducer(oldState, getTechRecordV3Failure({ error: 'error' }));
+
+			expect(newState.loading).toBe(false);
+		});
+	});
+
 	describe('createVehicleRecord', () => {
 		it('should set loading to true', () => {
 			const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
@@ -135,7 +178,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
 	describe('createVehicleRecordFailure', () => {
 		it('should add an error to the state and set loading to false', () => {
-			const action = createVehicleRecordFailure({ error: 'something bad happened' });
+			const action = createVehicleRecordFailure({
+				error: 'something bad happened',
+				vehicleRecord: {} as TechRecordType<'put'>,
+			});
 			const newState = vehicleTechRecordReducer(initialState, action);
 
 			expect(newState.loading).toBeFalsy();
@@ -544,12 +590,12 @@ describe('Vehicle Technical Record Reducer', () => {
 	describe('handleADRExaminerNoteChanges', () => {
 		beforeEach(() => {
 			const mockedDate = new Date(2024, 5, 20);
-			jest.useFakeTimers();
-			jest.setSystemTime(mockedDate);
+			vi.useFakeTimers();
+			vi.setSystemTime(mockedDate);
 		});
 
 		afterEach(() => {
-			jest.useRealTimers();
+			vi.useRealTimers();
 		});
 		it('should handle any changes made to the adr examiner notes', () => {
 			const testNote = {

@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideMockActions } from '@ngrx/effects/testing';
 
 import { mockDefectList } from '@mocks/mock-defects';
 import { mockTestResult } from '@mocks/mock-test-result';
@@ -11,7 +12,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 
 import { State, initialAppState } from '@store/index';
-import { selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
+import { isTestTypeOldIvaOrMsva, selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
 import { of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
@@ -31,6 +32,7 @@ describe('AmendedTestRecordComponent', () => {
 				provideHttpClient(),
 				provideHttpClientTesting(),
 				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => of()),
 				{
 					provide: UserService,
 					useValue: {
@@ -43,8 +45,11 @@ describe('AmendedTestRecordComponent', () => {
 
 	beforeEach(() => {
 		store = TestBed.inject(MockStore);
-		store.overrideSelector(selectedAmendedTestResultState, mockTestResult());
+		const amendedTestResult = mockTestResult();
+		amendedTestResult.testTypes[0].testAnniversaryDate = new Date().toISOString();
+		store.overrideSelector(selectedAmendedTestResultState, amendedTestResult);
 		store.overrideSelector(selectAmendedDefectData, mockDefectList());
+		store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 
 		fixture = TestBed.createComponent(AmendedTestRecordComponent);
 		component = fixture.componentInstance;

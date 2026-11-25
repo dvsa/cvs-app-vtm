@@ -1,23 +1,21 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { PaginationComponent } from '@components/pagination/pagination.component';
 import {
 	ReferenceDataAdminColumn,
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,
 } from '@models/reference-data.model';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ReferenceDataState, fetchReferenceDataByKeySearch, selectSearchReturn } from '@store/reference-data';
-import { Observable, map } from 'rxjs';
 
 @Component({
 	selector: 'app-reference-data-amend-history',
 	templateUrl: './reference-data-amend-history.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [PaginationComponent, AsyncPipe, DatePipe],
+	imports: [PaginationComponent, DatePipe],
 })
 export class ReferenceDataAmendHistoryComponent implements OnInit {
-	cdr = inject(ChangeDetectorRef);
 	store = inject<Store<ReferenceDataState>>(Store<ReferenceDataState>);
 
 	readonly type = input('');
@@ -25,8 +23,17 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
 	readonly title = input('');
 	readonly columns = input<ReferenceDataAdminColumn[]>([]);
 
-	pageStart?: number;
-	pageEnd?: number;
+	readonly pageStart = signal<number | undefined>(undefined);
+	readonly pageEnd = signal<number | undefined>(undefined);
+
+	private readonly historySelector = computed(() =>
+		selectSearchReturn(`${this.type()}#AUDIT` as ReferenceDataResourceType)
+	);
+	readonly history = this.store.selectSignal<ReferenceDataModelBase[] | undefined>((state) =>
+		this.historySelector()(state)
+	);
+	readonly numberOfRecords = computed(() => this.history()?.length ?? 0);
+	readonly paginatedItems = computed(() => this.history()?.slice(this.pageStart(), this.pageEnd()) ?? []);
 
 	ngOnInit(): void {
 		// load the audit history
@@ -38,22 +45,9 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
 		);
 	}
 
-	get history$(): Observable<ReferenceDataModelBase[] | undefined> {
-		return this.store.pipe(select(selectSearchReturn(`${this.type()}#AUDIT` as ReferenceDataResourceType)));
-	}
-
-	get numberOfRecords$(): Observable<number> {
-		return this.history$.pipe(map((items) => items?.length ?? 0));
-	}
-
-	get paginatedItems$() {
-		return this.history$.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
-	}
-
 	handlePaginationChange(event?: { start: number; end: number }) {
 		if (!event) return;
-		this.pageStart = event.start;
-		this.pageEnd = event.end;
-		this.cdr.detectChanges();
+		this.pageStart.set(event.start);
+		this.pageEnd.set(event.end);
 	}
 }

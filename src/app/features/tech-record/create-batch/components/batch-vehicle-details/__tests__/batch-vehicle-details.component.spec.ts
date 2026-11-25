@@ -12,9 +12,9 @@ import { of } from 'rxjs';
 import { BatchVehicleDetailsComponent } from '../batch-vehicle-details.component';
 
 const mockGlobalErrorService = {
-	addError: jest.fn(),
-	clearErrors: jest.fn(),
-	setErrors: jest.fn(),
+	addError: vi.fn(),
+	clearErrors: vi.fn(),
+	setErrors: vi.fn(),
 };
 describe('BatchVehicleDetailsComponent', () => {
 	let component: BatchVehicleDetailsComponent;

@@ -2,11 +2,10 @@ import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/defaul
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TestService } from '@/src/app/services/test/test.service';
 import { toEditOrNotToEdit } from '@/src/app/store/test-records';
-import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { GovukFormGroupAutocompleteComponent } from '@forms/components/govuk-form-group-autocomplete/govuk-form-group-autocomplete.component';
-import { GovukFormGroupDateComponent } from '@forms/components/govuk-form-group-date/govuk-form-group-date.component';
 import { GovukFormGroupInputComponent } from '@forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { CommonValidatorsService } from '@forms/validators/common-validators.service';
 import { Modes } from '@models/modes.enum';
@@ -26,9 +25,9 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 		GovukFormGroupAutocompleteComponent,
 		GovukFormGroupInputComponent,
 		DefaultNullOrEmpty,
-		GovukFormGroupDateComponent,
 	],
 	styleUrls: ['./visit.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisitComponent implements OnInit, OnDestroy {
 	store = inject(Store);
@@ -60,7 +59,7 @@ export class VisitComponent implements OnInit, OnDestroy {
 	}
 
 	addValidators(): void {
-		this.form.controls.testStationPNumber.setValidators([this.commonValidators.required('Test station details')]);
+		this.form.controls.testStationPNumber.setValidators([this.commonValidators.required('Test Station Details')]);
 		this.form.controls.testerStaffId.setValidators([this.commonValidators.required('Tester details')]);
 	}
 

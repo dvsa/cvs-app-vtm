@@ -9,7 +9,7 @@ import { Axle, StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-r
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { canGeneratePlate, updateScrollPosition } from '@/src/app/store/technical-records';
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DocumentType } from '@models/document-type.enum';
@@ -29,6 +29,7 @@ import { FieldWarningMessageComponent } from '../../components/field-warning-mes
 		PaginationComponent,
 		RetrieveDocumentDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlatesComponent {
 	store = inject(Store);

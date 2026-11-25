@@ -42,7 +42,7 @@ describe('RequiredStandardEffects', () => {
 				provideMockStore({
 					initialState: initialAppState,
 				}),
-				{ provide: HttpCacheManager, useValue: { has: jest.fn().mockReturnValue(false) } },
+				{ provide: HttpCacheManager, useValue: { has: vi.fn().mockReturnValue(false) } },
 			],
 		});
 
@@ -65,7 +65,7 @@ describe('RequiredStandardEffects', () => {
 				actions$ = hot('-a--', { a: getRequiredStandards({ euVehicleCategory: 'm1' }) });
 
 				// mock service call
-				jest.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--a|', { a: requiredStandards }));
+				vi.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--a|', { a: requiredStandards }));
 
 				// expect effect to return success action
 				expectObservable(effects.getRequiredStandards$).toBe('---b', {
@@ -80,7 +80,7 @@ describe('RequiredStandardEffects', () => {
 
 				const expectedError = new Error('No required standards found');
 
-				jest.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--#|', {}, expectedError));
+				vi.spyOn(service, 'fetchRequiredStandards').mockReturnValue(cold('--#|', {}, expectedError));
 
 				expectObservable(effects.getRequiredStandards$).toBe('---b', {
 					b: getRequiredStandardsFailure({ error: 'No required standards found' }),

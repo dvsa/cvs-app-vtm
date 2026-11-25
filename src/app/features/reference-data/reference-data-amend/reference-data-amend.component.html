@@ -1,28 +1,34 @@
-@if (refDataAdminType$ | async) {
+@if (refDataAdminType()) {
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-xl govuk-!-font-weight-bold">Amend this {{ (refDataAdminType$ | async).labelSingular }}</h1>
+      <h1 class="govuk-heading-xl govuk-!-font-weight-bold">
+        Amend this {{ refDataAdminType().labelSingular }}
+      </h1>
       <div class="govuk-inset-text">
-        To amend the key, create a new {{ (refDataAdminType$ | async).labelSingular }} with the correct value, then delete this
-        {{ (refDataAdminType$ | async).labelSingular }}
+        To amend the key, create a new
+        {{ refDataAdminType().labelSingular }} with the correct value, then
+        delete this
+        {{ refDataAdminType().labelSingular }}
       </div>
-      @if (refDataAdminType$ | async) {
+      @if (refDataAdminType()) {
         <app-dynamic-form-group
-          [template]="(refDataAdminType$ | async).templateAmend"
-          [data]="data$ | async"
+          [template]="refDataAdminType().templateAmend"
+          [data]="data()"
           [edit]="true"
           (formChange)="handleFormChange($event)"
         ></app-dynamic-form-group>
       }
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>
-        <app-button id="cancel" design="link" (clicked)="navigateBack()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="navigateBack()"
+          >Cancel</app-button
+        >
       </app-button-group>
       <app-reference-data-amend-history
         [type]="type"
         [key]="key"
-        [title]="(refDataAdminType$ | async).labelSingular"
-        [columns]="(refDataAdminType$ | async).columns || []"
+        [title]="refDataAdminType().labelSingular"
+        [columns]="refDataAdminType().columns || []"
       ></app-reference-data-amend-history>
     </div>
   </div>

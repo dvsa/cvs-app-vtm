@@ -1,4 +1,4 @@
-@if (techRecordHistory$ | async) {
+@if (techRecordHistory()) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Technical Records History
@@ -13,28 +13,41 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      @for (searchResult of techRecordHistoryPage$ | async; track i; let i = $index) {
+      @for (searchResult of techRecordHistoryPage(); track i; let i = $index) {
         <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
+          <th
+            scope="row"
+            class="govuk-table__header"
+            [id]="searchResult.techRecord_statusCode + '-status-header-' + i"
+          >
             {{ searchResult.techRecord_statusCode }}
           </th>
-          <td class="govuk-table__cell word-break whitespace-pre-wrap" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+          <td
+            class="govuk-table__cell word-break whitespace-pre-wrap"
+            [id]="searchResult.techRecord_statusCode + '-reason-' + i"
+          >
             <span>{{ searchResult.techRecord_reasonForCreation }}</span>
           </td>
-          <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
+          <td
+            class="govuk-table__cell word-break"
+            [id]="searchResult.techRecord_statusCode + '-created-by-' + i"
+          >
             {{ searchResult.techRecord_createdByName }}
           </td>
-          <td class="govuk-table__cell" [id]="searchResult.createdTimestamp + '-created-at-' + i">
-            {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+          <td
+            class="govuk-table__cell"
+            [id]="searchResult.createdTimestamp + '-created-at-' + i"
+          >
+            {{ searchResult.createdTimestamp | date: 'dd/MM/yyyy HH:mm' }}
           </td>
           <td class="govuk-table__cell">
-            @if (searchResult.createdTimestamp !== currentTimeStamp) {
+            @if (searchResult.createdTimestamp !== currentTimeStamp()) {
               <app-button
                 id="view-test-{{ searchResult.vin }}"
                 type="link"
                 design="link"
                 [routerLink]="[summaryLinkUrl(searchResult)]"
-                >
+              >
                 View
               </app-button>
             }
@@ -43,8 +56,9 @@
       }
     </tbody>
   </table>
-  <app-pagination tableName="tech-history"
-    [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+  <app-pagination
+    tableName="tech-history"
+    [numberOfItems]="numberOfRecords()"
     (paginationOptionsChange)="handlePaginationChange($event)"
-    />
+  />
 }

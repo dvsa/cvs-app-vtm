@@ -35,7 +35,7 @@ import {
 	updateTestResult,
 	updateTestResultFailed,
 } from '@store/test-records';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash-es';
 import { Observable, take, throwError } from 'rxjs';
 
 @Injectable({

@@ -4,7 +4,8 @@
     @if (canDownloadApprovalsMedia(testResult)) {
       <td id="media-download-link" class="govuk-table__cell">
         @if (hasMediaRetentionPeriodExpired(testResult)) {
-          No media available - media was deleted as the retention period had passed
+          No media available - media was deleted as the retention period had
+          passed
         } @else {
           <button class="link" (click)="downloadMedia(testResult)">
             Download media

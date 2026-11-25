@@ -142,7 +142,7 @@ export class BatchTechnicalRecordService {
 	setGenerateNumberFlag(generateNumber: boolean) {
 		this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
 	}
-	setVehicleStatus(vehicleStatus: string) {
+	setVehicleStatus(vehicleStatus: StatusCodes) {
 		this.store.dispatch(setVehicleStatus({ vehicleStatus }));
 	}
 	setVehicleType(vehicleType: VehicleTypes) {

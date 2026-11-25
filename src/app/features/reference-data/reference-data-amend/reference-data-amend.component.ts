@@ -1,6 +1,5 @@
 import { ReferenceDataResourceType } from '@/src/app/models/reference-data.model';
-import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject, viewChildren } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, Signal, effect, inject, signal, viewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonGroupComponent } from '@components/button-group/button-group.component';
@@ -13,12 +12,12 @@ import {
 	DynamicFormGroupComponent as DynamicFormGroupComponent_1,
 } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, ReplaySubject, first, skipWhile, take, takeUntil } from 'rxjs';
+import { ReplaySubject, first, skipWhile, take } from 'rxjs';
 import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-history/reference-data-amend-history.component';
 
 @Component({
@@ -30,7 +29,6 @@ import { ReferenceDataAmendHistoryComponent } from '../reference-data-amend-hist
 		ButtonGroupComponent,
 		ButtonComponent,
 		ReferenceDataAmendHistoryComponent,
-		AsyncPipe,
 	],
 })
 export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
@@ -43,13 +41,17 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 	titleService = inject(Title);
 
 	type!: ReferenceDataResourceType;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	refDataAdminType!: Signal<any>;
+	private readonly injector = inject(Injector);
 	key!: string;
 	isFormDirty = false;
 	isFormInvalid = true;
 	destroy$ = new ReplaySubject<boolean>(1);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	amendedData: any;
+	// the item being amended; assigned in ngOnInit once the type and key are known from the route
+	data: Signal<any> = signal(undefined);
 
 	readonly sections = viewChildren(DynamicFormGroupComponent);
 
@@ -69,8 +71,12 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 			}
 		});
 
+		const dataSelector = selectReferenceDataByResourceKey(this.type, this.key);
+		this.data = this.store.selectSignal(dataSelector);
+
 		// Initially set the amended data to the value of reference data item
-		this.data$
+		this.store
+			.select(dataSelector)
 			.pipe(
 				skipWhile((data) => !data),
 				take(1)
@@ -79,9 +85,15 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 				this.amendedData = data;
 			});
 
-		this.refDataAdminType$.pipe(takeUntil(this.destroy$)).subscribe((type) => {
-			this.titleService.setTitle(`Amend this ${type?.labelSingular} - Vehicle Testing Management`);
-		});
+		this.refDataAdminType = this.store.selectSignal(
+			selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)
+		);
+		// the label arrives with the admin-type fetch, so keep the title reactive
+		effect(
+			() =>
+				this.titleService.setTitle(`Amend this ${this.refDataAdminType()?.labelSingular} - Vehicle Testing Management`),
+			{ injector: this.injector }
+		);
 	}
 
 	ngOnDestroy(): void {
@@ -92,18 +104,6 @@ export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
 
 	get roles(): typeof Roles {
 		return Roles;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get refDataAdminType$(): Observable<any> {
-		return this.store.pipe(
-			select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type))
-		);
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get data$(): Observable<any> {
-		return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
 	}
 
 	navigateBack() {

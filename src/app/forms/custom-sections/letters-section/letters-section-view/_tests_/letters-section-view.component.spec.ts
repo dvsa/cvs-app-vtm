@@ -95,7 +95,7 @@ describe('LettersSectionViewComponent', () => {
 
 	describe('eligibleForLetter', () => {
 		beforeEach(() => {
-			jest.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(true);
+			vi.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(true);
 			component.hasCurrent = false;
 		});
 
@@ -111,7 +111,7 @@ describe('LettersSectionViewComponent', () => {
 		});
 
 		it('should return false if the approval type is not valid', () => {
-			jest.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(false);
+			vi.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(false);
 			store.overrideSelector(techRecord, {
 				...mockTechRecord,
 				techRecord_approvalType: ApprovalType.NTA,
@@ -261,7 +261,7 @@ describe('LettersSectionViewComponent', () => {
 		});
 
 		it('should return correct string for when a vehicle has both an archived tech record', () => {
-			jest.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(false);
+			vi.spyOn(component, 'correctApprovalType', 'get').mockReturnValue(false);
 			component.hasCurrent = false;
 			store.overrideSelector(techRecord, {
 				...mockTechRecord,

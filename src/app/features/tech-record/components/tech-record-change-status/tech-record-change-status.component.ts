@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,7 +35,11 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	technicalRecordService = inject(TechnicalRecordService);
 	titleService = inject(Title);
 
-	techRecord: TechRecordType<'get'> | undefined;
+	readonly techRecord = toSignal(this.technicalRecordService.techRecord$) as Signal<TechRecordType<'get'> | undefined>;
+	readonly isPromotion = signal(false);
+	readonly titleText = computed(() => (this.isPromotion() ? 'Promote technical record' : 'Archive technical record'));
+	readonly label = computed(() => `Reason for ${this.isPromotion() ? 'promotion' : 'archiving'}`);
+	readonly buttonLabel = computed(() => (this.isPromotion() ? 'Promote' : 'Archive'));
 
 	form = new CustomFormGroup(
 		{ name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -43,15 +48,9 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 		}
 	);
 
-	isPromotion = false;
-
 	destroy$ = new Subject<void>();
 
 	ngOnInit(): void {
-		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
-			this.techRecord = record as TechRecordType<'get'>;
-		});
-
 		this.actions$
 			.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$))
 			.subscribe(({ vehicleTechRecord }) => {
@@ -63,9 +62,9 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 			});
 
 		this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-			this.isPromotion = params.get('to') === 'current';
+			this.isPromotion.set(params.get('to') === 'current');
 			this.titleService.setTitle(
-				`${this.isPromotion ? 'Promote' : 'Archive'} technical record - Vehicle Testing Management`
+				`${this.isPromotion() ? 'Promote' : 'Archive'} technical record - Vehicle Testing Management`
 			);
 		});
 	}
@@ -75,18 +74,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	getTitleText(): string {
-		return this.isPromotion ? 'Promote technical record' : 'Archive technical record';
-	}
-
-	get label(): string {
-		return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
-	}
-
-	get buttonLabel(): string {
-		return this.isPromotion ? 'Promote' : 'Archive';
-	}
-
 	navigateBack(relativePath = '..'): void {
 		void this.router.navigate([relativePath], { relativeTo: this.route });
 	}
@@ -94,7 +81,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 	handleSubmit(form: { reason: string }): void {
 		this.form.markAllAsTouched();
 
-		if (!this.techRecord) {
+		const techRecord = this.techRecord();
+		if (!techRecord) {
 			return;
 		}
 
@@ -103,7 +91,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 		} else {
 			this.errorService.setErrors([
 				{
-					error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`,
+					error: `${this.label()} is required`,
 					anchorLink: 'reasonForAmend',
 				},
 			]);
@@ -113,19 +101,19 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		if (this.isPromotion) {
+		if (this.isPromotion()) {
 			this.store.dispatch(
 				promoteTechRecord({
-					systemNumber: this.techRecord.systemNumber,
-					createdTimestamp: this.techRecord.createdTimestamp,
+					systemNumber: techRecord.systemNumber,
+					createdTimestamp: techRecord.createdTimestamp,
 					reasonForPromoting: this.form.value.reason,
 				})
 			);
 		} else {
 			this.store.dispatch(
 				archiveTechRecord({
-					systemNumber: this.techRecord.systemNumber,
-					createdTimestamp: this.techRecord.createdTimestamp,
+					systemNumber: techRecord.systemNumber,
+					createdTimestamp: techRecord.createdTimestamp,
 					reasonForArchiving: this.form.value.reason,
 				})
 			);

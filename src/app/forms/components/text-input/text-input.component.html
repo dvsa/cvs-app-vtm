@@ -1,9 +1,12 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
   @if (label()) {
-    <label class="flex flex-wrap gap-2 govuk-label govuk-label--m" for="{{ name() }}">
+    <label
+      class="flex flex-wrap gap-2 govuk-label govuk-label--m"
+      for="{{ name() }}"
+    >
       {{ label() }}
       <div class="flex flex-wrap gap-2">
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </div>
@@ -14,8 +17,14 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-error-message
+    [error]="warning()"
+    [name]="name()"
+  ></app-field-error-message>
 
   <div class="govuk-input__wrapper">
     @if (prefix(); as prefix) {
@@ -31,6 +40,7 @@
         type="text"
         [class]="style"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="disabled"
         (ngModelChange)="onChange($event)"
         (blur)="onTouched(); handleEvent($event); blur.emit($event)"
@@ -38,7 +48,7 @@
         appToUppercase
         appNoEmojis
         [uppercase]="uppercase() || false"
-        />
+      />
     }
 
     @if (numeric()) {
@@ -48,13 +58,14 @@
         type="text"
         [class]="style"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="disabled"
         (ngModelChange)="onChange($event)"
         (blur)="onTouched(); handleEvent($event); blur.emit($event)"
         (focus)="handleEvent($event)"
         appNumberOnly
         appNoEmojis
-        />
+      />
     }
 
     @if (suffix(); as suffix) {

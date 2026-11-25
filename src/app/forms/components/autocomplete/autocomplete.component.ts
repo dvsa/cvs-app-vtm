@@ -5,10 +5,10 @@ import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TagComponent } from '@components/tag/tag.component';
 import { CustomValidators } from '@forms/validators/custom-validators/custom-validators';
 import { Store } from '@ngrx/store';
-import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
 import { Observable, ReplaySubject, combineLatest, lastValueFrom, takeWhile } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
+import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from './load-accessible-autocomplete';
 
 @Component({
 	selector: 'app-autocomplete',
@@ -26,6 +26,7 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 export class AutocompleteComponent extends BaseControlComponent implements AfterViewInit, AfterContentInit {
 	store = inject(Store);
 	document = inject(DOCUMENT);
+	private loadAccessibleAutocomplete = inject(ACCESSIBLE_AUTOCOMPLETE_LOADER);
 
 	refDataLoading = this.store.select(referenceDataLoadingState);
 
@@ -43,16 +44,19 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 	ngAfterViewInit(): void {
 		const self = this;
 
-		lastValueFrom(
-			combineLatest({
-				options: this.options$(),
-				refDataLoading: this.refDataLoading,
-			}).pipe(takeWhile(({ options, refDataLoading }) => !options || options.length === 0 || refDataLoading, true))
-		)
-			.then(({ options }) => {
+		Promise.all([
+			lastValueFrom(
+				combineLatest({
+					options: this.options$(),
+					refDataLoading: this.refDataLoading,
+				}).pipe(takeWhile(({ options, refDataLoading }) => !options || options.length === 0 || refDataLoading, true))
+			).then(({ options }) => {
 				this.options = options;
 				this.cdr.detectChanges();
-
+			}),
+			this.loadAccessibleAutocomplete(),
+		])
+			.then(([, { enhanceSelectElement }]) => {
 				const name = this.name();
 				enhanceSelectElement({
 					selectElement: this.document.querySelector(`#${name}`),

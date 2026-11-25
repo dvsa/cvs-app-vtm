@@ -42,7 +42,7 @@ describe('TestTypeSelectWrapperComponent', () => {
 	});
 
 	it('should navigate to sibling path "amend-test-details"', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 		component.handleTestTypeSelection({ id: '1' } as TestType);
 		expect(navigateSpy).toHaveBeenCalledWith(['..', 'amend-test-details'], {
 			queryParams: { testType: '1' },

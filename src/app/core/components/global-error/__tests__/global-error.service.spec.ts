@@ -20,7 +20,7 @@ describe('GlobalErrorService', () => {
 
 	it('should dispatch action addError', () => {
 		const expectedError: GlobalError = { error: 'erro 2', anchorLink: '' };
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.addError(expectedError);
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(addError(expectedError));
@@ -28,14 +28,14 @@ describe('GlobalErrorService', () => {
 
 	it('should dispatch action patchErrors', () => {
 		const expectedErrors: GlobalError[] = [{ error: 'erro 2', anchorLink: '' }];
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.patchErrors(expectedErrors);
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(patchErrors({ errors: expectedErrors }));
 	});
 
 	it('should dispatch action clearError', () => {
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.clearErrors();
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(clearError());
@@ -43,14 +43,14 @@ describe('GlobalErrorService', () => {
 
 	it('should dispatch action setErrors', () => {
 		const expectedErrors: GlobalError[] = [{ error: 'erro 2', anchorLink: '' }];
-		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		service.setErrors(expectedErrors);
 		expect(dispatchSpy).toHaveBeenCalledTimes(1);
 		expect(dispatchSpy).toHaveBeenCalledWith(setErrors({ errors: expectedErrors }));
 	});
 
 	it('should attempt to focus all focusable controls', () => {
-		const spy = jest.spyOn(document, 'querySelectorAll');
+		const spy = vi.spyOn(document, 'querySelectorAll');
 		service.focusAllControls();
 		expect(spy).toHaveBeenCalled();
 	});

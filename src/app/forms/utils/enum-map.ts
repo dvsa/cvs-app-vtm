@@ -18,3 +18,10 @@ export function getSortedOptionsFromEnum(object: object): MultiOptions {
 		.map((value) => ({ value, label: value.charAt(0).toUpperCase() + value.slice(1) }))
 		.sort((a, b) => a.label.localeCompare(b.label));
 }
+
+export function getOptionsFromEnumWithCodeAndDescription(object: object): MultiOptions {
+	return Object.values(object).map((item: any) => ({
+		value: item,
+		label: `Class ${item.code}: ${item.description}`,
+	}));
+}

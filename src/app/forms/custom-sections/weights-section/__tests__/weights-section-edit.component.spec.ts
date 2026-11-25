@@ -65,7 +65,7 @@ describe('weightsSectionEditComponent', () => {
 		component.form.reset();
 		fixture.detectChanges();
 
-		jest.spyOn(component.techRecordAxles, 'get').mockReturnValue(new FormArray([]));
+		vi.spyOn(component.techRecordAxles, 'get').mockReturnValue(new FormArray([]));
 	});
 
 	describe('ngOnInit', () => {
@@ -94,8 +94,8 @@ describe('weightsSectionEditComponent', () => {
 		});
 
 		it('should clear all subscriptions', () => {
-			const nextSpy = jest.spyOn(component.destroy$, 'next');
-			const completeSpy = jest.spyOn(component.destroy$, 'complete');
+			const nextSpy = vi.spyOn(component.destroy$, 'next');
+			const completeSpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(nextSpy).toHaveBeenCalledWith(true);
 			expect(completeSpy).toHaveBeenCalled();

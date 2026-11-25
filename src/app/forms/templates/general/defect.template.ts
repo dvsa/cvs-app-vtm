@@ -139,7 +139,10 @@ export const DefectsTpl: FormNode = {
 													label: 'Notes',
 													value: null,
 													type: FormNodeTypes.CONTROL,
-													validators: [{ name: ValidatorNames.ValidateDefectNotes }],
+													validators: [
+														{ name: ValidatorNames.ValidateDefectNotes },
+														{ name: ValidatorNames.MaxLength, args: 500 },
+													],
 												},
 											],
 										},

@@ -88,7 +88,7 @@ describe('DefectComponent', () => {
 	});
 
 	it('should navigate back to test record', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 		component.navigateBack();
 		expect(navigateSpy).toHaveBeenCalled();
 	});
@@ -221,7 +221,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleSubmit();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
@@ -241,7 +241,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleSubmit();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(
@@ -264,7 +264,7 @@ describe('DefectComponent', () => {
 			tick();
 			fixture.detectChanges();
 
-			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = vi.spyOn(store, 'dispatch');
 			component.handleRemove();
 
 			expect(dispatchSpy).toHaveBeenCalledWith(removeDefect({ index: component.index }));

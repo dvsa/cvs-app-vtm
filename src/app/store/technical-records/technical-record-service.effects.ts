@@ -15,11 +15,12 @@ import { HttpService } from '@services/http/http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { catchError, concatMap, filter, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { selectMergedRouteUrl } from '../router/router.selectors';
 import {
 	amendVin,
+	amendVinFailure,
 	amendVinSuccess,
 	amendVrm,
 	amendVrmFailure,
@@ -92,7 +93,7 @@ export class TechnicalRecordServiceEffects {
 			mergeMap((action) => {
 				const anchorLink = 'search-term';
 
-				return this.httpService.getTechRecordV3(action.systemNumber, action.createdTimestamp).pipe(
+				return this.httpService.getTechRecordBySysNumberAndTimestamp(action.systemNumber, action.createdTimestamp).pipe(
 					map((vehicleTechRecord) => {
 						return getTechRecordV3Success({ vehicleTechRecord });
 					}),
@@ -113,14 +114,16 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(createVehicleRecord),
 			withLatestFrom(this.batchTechRecordService.applicationId$, this.userService.name$, this.userService.id$),
-			concatMap(([{ vehicle }, applicationId]) => {
+			concatMap(([{ batchRecordId, vehicle }, applicationId]) => {
 				const vehicleRecord = { ...vehicle, techRecord_applicationId: applicationId };
 
 				return this.httpService.createTechRecord(vehicleRecord).pipe(
-					map((response) => createVehicleRecordSuccess({ vehicleTechRecord: response })),
+					map((response) => createVehicleRecordSuccess({ batchRecordId, vehicleTechRecord: response })),
 					catchError((error) =>
 						of(
 							createVehicleRecordFailure({
+								batchRecordId,
+								vehicleRecord,
 								error: `Unable to create vehicle with VIN ${vehicle.vin}${
 									error.error?.errors
 										? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
@@ -138,14 +141,26 @@ export class TechnicalRecordServiceEffects {
 		this.actions$.pipe(
 			ofType(updateTechRecord),
 			withLatestFrom(this.store.pipe(select(editingTechRecord))),
-			concatMap(([{ systemNumber, createdTimestamp, groupType }, techRecord]) => {
+			concatMap(([{ batchRecordId, systemNumber, createdTimestamp, groupType }, techRecord]) => {
 				if (!techRecord) {
-					return of(updateTechRecordFailure({ error: 'There is not technical record in edit' }));
+					return of(
+						updateTechRecordFailure({
+							batchRecordId,
+							techRecord,
+							error: 'There is no technical record in edit',
+						})
+					);
 				}
 				return this.httpService.updateTechRecord(systemNumber, createdTimestamp, techRecord).pipe(
-					map((vehicleTechRecord) => updateTechRecordSuccess({ vehicleTechRecord, groupType })),
+					map((vehicleTechRecord) => updateTechRecordSuccess({ batchRecordId, vehicleTechRecord, groupType })),
 					catchError((error) =>
-						of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
+						of(
+							updateTechRecordFailure({
+								batchRecordId,
+								techRecord,
+								error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord', `with VIN ${techRecord.vin}`),
+							})
+						)
 					)
 				);
 			})
@@ -196,7 +211,7 @@ export class TechnicalRecordServiceEffects {
 				return this.httpService.amendTechRecordVin(newVin, systemNumber, createdTimestamp).pipe(
 					map((vehicleTechRecord) => amendVinSuccess({ vehicleTechRecord })),
 					catchError((error) =>
-						of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
+						of(amendVinFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))
 					)
 				);
 			})
@@ -425,5 +440,7 @@ export class TechnicalRecordServiceEffects {
 		promoteTechRecord_400: 'Unable to promote technical record',
 		unarchiveTechRecord_400: 'Unable to unarchive technical record',
 		generateADRCertificate_400: 'Unable to generate ADR certificate',
+		generatePlate_400: 'Unable to generate plate',
+		generateLetter_400: 'Unable to generate letter',
 	};
 }

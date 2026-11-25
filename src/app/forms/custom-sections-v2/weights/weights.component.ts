@@ -4,7 +4,18 @@ import { Modes } from '@/src/app/models/modes.enum';
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { TechnicalRecordChangesService } from '@/src/app/services/technical-record/technical-record-change.service';
 import { updateBrakeForces } from '@/src/app/store/technical-records';
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject, input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	SimpleChanges,
+	inject,
+	input,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { FilterByTagsDirective } from '@directives/filter-by-tags/filter-by-tags.directive';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -16,7 +27,7 @@ import { EditBaseComponent } from '@forms/custom-sections/edit-base-component/ed
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
-import { ReplaySubject, skip, takeUntil } from 'rxjs';
+import { skip } from 'rxjs';
 
 @Component({
 	selector: 'app-weights',
@@ -32,16 +43,17 @@ import { ReplaySubject, skip, takeUntil } from 'rxjs';
 		TrimWhitespaceDirective,
 		NoSpaceDirective,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeightsComponent extends EditBaseComponent implements OnInit, OnDestroy, OnChanges {
 	protected readonly VehicleTypes = VehicleTypes;
 	protected readonly FormNodeWidth = FormNodeWidth;
 	protected readonly Modes = Modes;
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = input.required<TechRecordType<'hgv' | 'trl' | 'psv'>>();
 
 	axlesService = inject(AxlesService);
+	destroyRef = inject(DestroyRef);
 	tcs = inject(TechnicalRecordChangesService);
 
 	form = this.fb.group({});
@@ -66,10 +78,6 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	ngOnDestroy(): void {
 		// Detach all form controls from parent
 		this.destroy(this.form);
-
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
 	}
 
 	get hgvControls() {
@@ -261,7 +269,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 	handleGrossKerbWeightChange() {
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 		const grossKerbWeight = this.form.get('techRecord_grossKerbWeight');
-		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
+		grossKerbWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
 			if (!value) return;
 			const mode = this.mode();
 			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;
@@ -278,7 +286,7 @@ export class WeightsComponent extends EditBaseComponent implements OnInit, OnDes
 		if (this.techRecord().techRecord_vehicleType !== VehicleTypes.PSV) return;
 
 		const grossLadenWeight = this.form.get('techRecord_grossLadenWeight');
-		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntil(this.destroy$)).subscribe((value) => {
+		grossLadenWeight?.valueChanges.pipe(skip(1), takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
 			if (!value) return;
 			const mode = this.mode();
 			if (!mode || mode === Modes.VIEW || mode === Modes.SUMMARY) return;

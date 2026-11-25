@@ -28,6 +28,7 @@ describe('fetchSearchResults actions', () => {
 				...initialTechSearchResultState,
 				ids: ['123456#10-22-10'],
 				entities: { '123456#10-22-10': mockSearchResult[0] },
+				hasSearched: true,
 			};
 			const action = fetchSearchResultSuccess({ payload: mockSearchResult });
 			const state = techSearchResultReducer(initialTechSearchResultState, action);
@@ -44,6 +45,22 @@ describe('fetchSearchResults actions', () => {
 
 				expect(state).toEqual(newState);
 				expect(state).not.toBe(newState);
+			});
+
+			it('should clear previous errors and completion state when a new search starts', () => {
+				const state = techSearchResultReducer(
+					{ ...initialTechSearchResultState, error: 'Previous failure', hasSearched: true },
+					fetchSearchResult({ term: 'foo', includeArchived: true })
+				);
+				expect(state).toMatchObject({ error: '', hasSearched: false, loading: true, includeArchived: true });
+			});
+
+			it('should mark an empty successful search as completed and clear previous errors', () => {
+				const state = techSearchResultReducer(
+					{ ...initialTechSearchResultState, loading: true, error: 'Previous failure' },
+					fetchSearchResultSuccess({ payload: [] })
+				);
+				expect(state).toMatchObject({ error: '', hasSearched: true, loading: false, ids: [] });
 			});
 		});
 	});

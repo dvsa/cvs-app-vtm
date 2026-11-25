@@ -24,7 +24,7 @@ describe('VisitComponent', () => {
 				{ provide: ControlContainer, useValue: formGroupDirective },
 				{
 					provide: MultiOptionsService,
-					useValue: { getOptions: jest.fn().mockReturnValue(of([])), loadOptions: jest.fn() },
+					useValue: { getOptions: vi.fn().mockReturnValue(of([])), loadOptions: vi.fn() },
 				},
 				provideMockStore({ initialState: initialAppState }),
 			],
@@ -166,7 +166,7 @@ describe('VisitComponent', () => {
 
 	describe('ngOnDestroy', () => {
 		it('should complete the destroy subject', () => {
-			const destroySpy = jest.spyOn(component.destroy$, 'complete');
+			const destroySpy = vi.spyOn(component.destroy$, 'complete');
 			component.ngOnDestroy();
 			expect(destroySpy).toHaveBeenCalled();
 		});

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -17,12 +18,14 @@ export class TechSearchResultsEffects {
 				this.httpService.searchTechRecords(searchBy ?? SEARCH_TYPES.ALL, term).pipe(
 					map((results) => fetchSearchResultSuccess({ payload: results })),
 					catchError((e) =>
-						of(
-							fetchSearchResultFailed({
-								error: this.getTechRecordErrorMessage(e, 'getTechnicalRecords', searchBy),
-								anchorLink: 'search-term',
-							})
-						)
+						e instanceof HttpErrorResponse && e.status === 404
+							? of(fetchSearchResultSuccess({ payload: [] }))
+							: of(
+									fetchSearchResultFailed({
+										error: this.getTechRecordErrorMessage(e, 'getTechnicalRecords', searchBy),
+										anchorLink: 'search-term',
+									})
+								)
 					)
 				)
 			)

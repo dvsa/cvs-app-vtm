@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumberPlateComponent } from '@components/number-plate/number-plate.component';
@@ -44,7 +44,6 @@ import { Observable, mergeMap, take } from 'rxjs';
 	],
 })
 export class TechRecordSearchTyresComponent implements OnInit {
-	cdr = inject(ChangeDetectorRef);
 	dfs = inject(DynamicFormService);
 	globalErrorService = inject(GlobalErrorService);
 	referenceDataService = inject(ReferenceDataService);
@@ -62,12 +61,16 @@ export class TechRecordSearchTyresComponent implements OnInit {
 	];
 
 	public form!: CustomFormGroup;
-	public searchResults: Array<ReferenceDataTyre> | null = null;
+	public readonly searchResults = signal<Array<ReferenceDataTyre> | null>(null);
 	public vehicleTechRecord?: V3TechRecordModel;
 	public viewableTechRecord?: TechRecordType<'hgv' | 'psv' | 'trl'>;
 	private params: SearchParams = {};
-	private pageStart?: number;
-	private pageEnd?: number;
+	private readonly pageStart = signal<number | undefined>(undefined);
+	private readonly pageEnd = signal<number | undefined>(undefined);
+	readonly paginatedFields = computed<ReferenceDataTyre[]>(
+		() => this.searchResults()?.slice(this.pageStart(), this.pageEnd()) ?? []
+	);
+	readonly numberOfResults = computed(() => this.searchResults()?.length ?? 0);
 	public itemsPerPage = 10;
 
 	public template: FormNode = {
@@ -105,7 +108,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			.getTyreSearchReturn$()
 			.pipe(take(1))
 			.subscribe((data) => {
-				this.searchResults = data;
+				this.searchResults.set(data);
 			});
 		this.referenceDataService
 			.getTyreSearchCriteria$()
@@ -131,16 +134,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			? (this.vehicleTechRecord?.primaryVrm ?? '')
 			: undefined;
 	}
-	get paginatedFields(): ReferenceDataTyre[] {
-		return this.searchResults?.slice(this.pageStart, this.pageEnd) ?? [];
-	}
-	get numberOfResults(): number {
-		return this.searchResults?.length ?? 0;
-	}
 
 	handleSearch(filter: string, term: string): void {
 		this.globalErrorService.clearErrors();
-		this.searchResults = [];
+		this.searchResults.set([]);
 		const trimmedTerm = term?.trim();
 		if (!trimmedTerm || !filter) {
 			const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
@@ -162,7 +159,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 			)
 			.subscribe((data) => {
 				void this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
-				this.searchResults = data as ReferenceDataTyre[];
+				this.searchResults.set(data as ReferenceDataTyre[]);
 			});
 	}
 
@@ -194,9 +191,8 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
 	handlePaginationChange(event?: { start: number; end: number }) {
 		if (!event) return;
-		this.pageStart = event.start;
-		this.pageEnd = event.end;
-		this.cdr.detectChanges();
+		this.pageStart.set(event.start);
+		this.pageEnd.set(event.end);
 	}
 	getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
 		return errors.find((error) => error.anchorLink === name);

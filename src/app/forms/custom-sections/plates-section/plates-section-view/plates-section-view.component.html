@@ -1,10 +1,13 @@
 @if (techRecord(); as vm) {
-  @if ((vm.techRecord_vehicleType === VehicleTypes.HGV
-    || vm.techRecord_vehicleType === VehicleTypes.TRL)
-    && vm.techRecord_plates
-    ) {
+  @if (
+    (vm.techRecord_vehicleType === VehicleTypes.HGV ||
+      vm.techRecord_vehicleType === VehicleTypes.TRL) &&
+    vm.techRecord_plates
+  ) {
     <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">Plates History</caption>
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        Plates History
+      </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">Serial number</th>
@@ -17,14 +20,32 @@
       <tbody class="govuk-table__body">
         @for (plate of plates; track i; let i = $index) {
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell word-break" [id]="'plate-serial-number-' + i">
+            <td
+              class="govuk-table__cell word-break"
+              [id]="'plate-serial-number-' + i"
+            >
               {{ plate.plateSerialNumber | defaultNullOrEmpty }}
             </td>
-            <td class="govuk-table__cell word-break" [id]="'plate-issue-date-' + i">{{ plate.plateIssueDate | date : 'dd/MM/yyyy HH:mm' }}</td>
-            <td class="govuk-table__cell word-break" [id]="'plate-issue-reason-' + i">{{ plate.plateReasonForIssue | defaultNullOrEmpty }}</td>
-            <td class="govuk-table__cell word-break" [id]="'plate-issuer-' + i">{{ plate.plateIssuer | defaultNullOrEmpty }}</td>
+            <td
+              class="govuk-table__cell word-break"
+              [id]="'plate-issue-date-' + i"
+            >
+              {{ plate.plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td
+              class="govuk-table__cell word-break"
+              [id]="'plate-issue-reason-' + i"
+            >
+              {{ plate.plateReasonForIssue | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell word-break" [id]="'plate-issuer-' + i">
+              {{ plate.plateIssuer | defaultNullOrEmpty }}
+            </td>
             <td class="govuk-table__cell" [id]="'plate-' + i">
-              @if (eligibleForPlates && mostRecentPlate?.plateIssueDate === plate.plateIssueDate) {
+              @if (
+                eligibleForPlates &&
+                mostRecentPlate?.plateIssueDate === plate.plateIssueDate
+              ) {
                 <button
                   [id]="'plate-link' + i"
                   class="link"
@@ -32,7 +53,7 @@
                   [params]="documentParams"
                   [fileName]="fileName"
                   [documentType]="DocumentType.PLATE"
-                  >
+                >
                   View plate
                 </button>
               }
@@ -41,22 +62,29 @@
         }
       </tbody>
     </table>
-    <app-pagination tableName="plate-history" [numberOfItems]="numberOfPlates" (paginationOptionsChange)="handlePaginationChange($event)" />
+    <app-pagination
+      tableName="plate-history"
+      [numberOfItems]="numberOfPlates"
+      (paginationOptionsChange)="handlePaginationChange($event)"
+    />
   }
   @if (eligibleForPlates) {
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <app-button id="generate-plate-link" *appRoleRequired="roles.TechRecordAmend" (clicked)="validateTechRecordPlates()"
+        <app-button
+          id="generate-plate-link"
+          *appRoleRequired="roles.TechRecordAmend"
+          (clicked)="validateTechRecordPlates()"
           >Generate and send plate</app-button
-          >
-        </div>
+        >
       </div>
-    }
-    @if (!eligibleForPlates) {
-      <dl class="govuk-summary-list">
-        <div>
-          <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
-        </div>
-      </dl>
-    }
+    </div>
   }
+  @if (!eligibleForPlates) {
+    <dl class="govuk-summary-list">
+      <div>
+        <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
+      </div>
+    </dl>
+  }
+}

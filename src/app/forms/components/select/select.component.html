@@ -1,9 +1,12 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin() }">
   @if (label()) {
-    <label class="flex flex-wrap gap-2 govuk-label govuk-label--m" for="{{ name() }}">
+    <label
+      class="flex flex-wrap gap-2 govuk-label govuk-label--m"
+      for="{{ name() }}"
+    >
       {{ label() }}
       <div class="flex flex-wrap gap-2">
-        @for (tag of control?.meta?.customTags; track tag) {
+        @for (tag of control?.meta?.customTags; track tag.label) {
           <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
         }
       </div>
@@ -14,8 +17,14 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-error-message [error]="warning()" [name]="name()"></app-field-error-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-error-message
+    [error]="warning()"
+    [name]="name()"
+  ></app-field-error-message>
 
   <select
     [class]="style"
@@ -23,15 +32,18 @@
     [id]="customId() || name()"
     name="{{ name() }}"
     [(ngModel)]="value"
+    [ngModelOptions]="{ standalone: true }"
     [disabled]="disabled"
     attr.aria-describedby="{{ name() }}-hint"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event); blur.emit($event)"
     (focus)="handleEvent($event)"
-    >
+  >
     <option [ngValue]="null" selected></option>
     @for (option of options(); track $index) {
-      <option [ngValue]="option.value" [selected]="value === option.value">{{ option.label }}</option>
+      <option [ngValue]="option.value" [selected]="value === option.value">
+        {{ option.label }}
+      </option>
     }
   </select>
 </div>

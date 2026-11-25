@@ -5,21 +5,35 @@ import { GlobalError } from '@/src/app/core/components/global-error/global-error
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { GlobalWarning } from '@/src/app/core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@/src/app/core/components/global-warning/global-warning.service';
-import { TEST_TYPES_ALL_DESK_BASED_TESTS, TEST_TYPES_GROUP15_16 } from '@/src/app/models/testTypeId.enum';
 import { ResultOfTestService } from '@/src/app/services/result-of-test/result-of-test.service';
 import { TechnicalRecordService } from '@/src/app/services/technical-record/technical-record.service';
+import { TestTypeService } from '@/src/app/services/test-type/test-type.service';
 import { TestService } from '@/src/app/services/test/test.service';
+import { UserService } from '@/src/app/services/user-service/user-service';
 import { selectQueryParam, selectRouteNestedParams } from '@/src/app/store/router/router.selectors';
 import { techRecord } from '@/src/app/store/technical-records';
 import {
 	cleanTestResultPayload,
-	selectedTestResultState,
+	patchEditingTestResult,
+	selectRecallsState,
 	testResultInEdit,
 	toEditOrNotToEdit,
 } from '@/src/app/store/test-records';
 import { selectTestType } from '@/src/app/store/test-types/test-types.selectors';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, DOCUMENT, OnDestroy, OnInit, Signal, computed, inject, input, linkedSignal } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DOCUMENT,
+	DestroyRef,
+	OnInit,
+	Signal,
+	computed,
+	inject,
+	input,
+	linkedSignal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,19 +44,23 @@ import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResul
 import { TestStatus } from '@dvsa/cvs-type-definitions/types/v1/enums/testStatus.enum.js';
 import { TestResultSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
 import { TestAmendmentHistoryComponent } from '@features/test-records/amend/components/test-amendment-history/test-amendment-history.component';
+import { CustomDefectsComponent } from '@features/test-records/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@features/test-records/custom-sections/defects/defects.component';
 import { NotesComponent } from '@features/test-records/custom-sections/notes/notes.component';
 import { ReasonForCreationComponent } from '@features/test-records/custom-sections/reason-for-creation/reason-for-creation.component';
+import { RequiredStandardsComponent } from '@features/test-records/custom-sections/required-standards/required-standards.component';
+import { SeatbeltsComponent } from '@features/test-records/custom-sections/seatbelts/seatbelts.component';
 import { TestComponent } from '@features/test-records/custom-sections/test/test.component';
 import { VehicleComponent } from '@features/test-records/custom-sections/vehicle/vehicle.component';
 import { VisitComponent } from '@features/test-records/custom-sections/visit/visit.component';
 import { Modes } from '@models/modes.enum';
 import { Roles } from '@models/roles.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_13, TEST_TYPES_GROUP7 } from '@models/testTypeId.enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 import { VehicleHeaderComponent } from '../../../../components/vehicle-header/vehicle-header.component';
 import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.component';
 @Component({
@@ -69,10 +87,15 @@ import { AbandonComponent } from '../../../../custom-sections/abandon/abandon.co
 		AsyncPipe,
 		RoleRequiredDirective,
 		TestAmendmentHistoryComponent,
+		SeatbeltsComponent,
+		RequiredStandardsComponent,
+		CustomDefectsComponent,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TestRecordV2Component implements OnDestroy, OnInit {
+export class TestRecordV2Component implements OnInit {
 	store = inject(Store);
+	destroyRef = inject(DestroyRef);
 	router = inject(Router);
 	route = inject(ActivatedRoute);
 	testService = inject(TestService);
@@ -84,16 +107,16 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	titleService = inject(Title);
 	actions$ = inject(Actions);
 	document = inject(DOCUMENT);
+	userService = inject(UserService);
+	testTypeService = inject(TestTypeService);
 
 	form = this.testService.form;
 
 	initialMode = input.required<Modes>();
 	mode = linkedSignal(() => this.initialMode());
 
-	destroy$ = new ReplaySubject<boolean>(1);
 	techRecord = this.store.selectSignal(techRecord);
 	testResultInEdit = this.store.selectSignal(testResultInEdit);
-	testResultInView = this.store.selectSignal(selectedTestResultState);
 	testResult = this.store.selectSignal(toEditOrNotToEdit);
 	testTypeId = this.store.selectSignal(selectQueryParam('testType')) as Signal<string>;
 	testType = computed(() => this.store.selectSignal(selectTestType(this.testTypeId()))());
@@ -101,16 +124,23 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	testNumber = computed(() => this.routeParams()['testNumber']);
 
 	private handleFormChanges(): void {
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+		// Debounce the live store mirror so rapid typing does not push a new editing test result
+		// (and re-render every section) on every keystroke. Explicit actions flush synchronously.
+		this.form.valueChanges.pipe(debounceTime(100), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
 			if (this.mode() === Modes.EDIT || this.mode() === Modes.AMEND) {
-				this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+				this.flushFormToStore();
 			}
 		});
 	}
 
+	/** Immediately mirror the form into the store editing test result (flushes any pending debounced change). */
+	private flushFormToStore(): void {
+		this.testRecordService.updateEditingTestResult(this.form.getRawValue() as TestResultSchema);
+	}
+
 	private handleMissingTestResult(): void {
 		if (this.mode() === Modes.SUMMARY || this.mode() === Modes.EDIT) {
-			this.testRecordService.editingTestResult$.pipe(takeUntil(this.destroy$)).subscribe((testResult) => {
+			this.testRecordService.editingTestResult$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((testResult) => {
 				if (!testResult && !this.router.currentNavigation()) {
 					this.router.navigate(['../../..'], { relativeTo: this.route.parent });
 				}
@@ -136,20 +166,41 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 		if (testTypeId && testTypeId !== testResult?.testTypes[0].testTypeId) {
 			this.testRecordService.testTypeChange(testTypeId);
+			this.applyTestTypeChange(testResult, testTypeId);
 		}
 	}
 
+	private applyTestTypeChange(testResult: TestResultSchema | undefined, testTypeId: string): void {
+		if (!testResult) return;
+
+		this.form.patchValue(testResult as any);
+		const testTypeName = this.testType()?.name;
+		this.form.controls.testTypes
+			.at(0)
+			.patchValue(testTypeName ? { testTypeId, testTypeName, name: testTypeName } : { testTypeId });
+		this.flushFormToStore();
+	}
+
 	ngOnInit(): void {
+		this.testService.isAbandoning.set(false); // the flag is held on a root service, so clear it per test
+		if (this.initialMode() === Modes.EDIT && this.testTypeId()) {
+			this.testRecordService.contingencyTestTypeSelected(this.testTypeId());
+		}
 		this.prepopulateForm();
+		this.applyPrefetchedRecalls();
 		this.handleFormChanges();
 		this.handleMissingTestResult();
 		this.loadEditingTestResult();
 	}
 
-	ngOnDestroy(): void {
-		// Clear subscriptions
-		this.destroy$.next(true);
-		this.destroy$.complete();
+	private applyPrefetchedRecalls(): void {
+		if (this.initialMode() !== Modes.EDIT) return;
+
+		const recallsState = this.store.selectSignal(selectRecallsState)();
+		if (!recallsState.recalls || recallsState.vin !== this.techRecord()?.vin) return;
+
+		this.form.controls.recalls.setValue(recallsState.recalls, { emitEvent: false });
+		this.store.dispatch(patchEditingTestResult({ testResult: { recalls: recallsState.recalls } }));
 	}
 
 	prepopulateForm(): void {
@@ -166,14 +217,6 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 				name: this.testType()?.name,
 			});
 		}
-	}
-
-	isTestTypeAbandonable(): boolean {
-		const testTypeId = this.testTypeId();
-		if (!testTypeId) return false;
-
-		// You cannot abanadon a test that is desk-based or LEC
-		return ![...TEST_TYPES_ALL_DESK_BASED_TESTS, ...TEST_TYPES_GROUP15_16].includes(testTypeId);
 	}
 
 	private setGlobalErrors(errors: GlobalError[]): void {
@@ -203,6 +246,7 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	onReview(): void {
 		this.form.markAllAsTouched();
+		this.flushFormToStore(); // ensure the store has the latest form value before the summary view reads it
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
@@ -218,6 +262,13 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	onCancel(mode: Modes): void {
 		this.titleService.setTitle('Test details - Vehicle Testing Management');
 		this.globalWarningService.clearWarnings();
+		// The errors belong to the page being left behind, so they must not follow the user back.
+		this.globalErrorService.clearErrors();
+		// Backing out of the abandon flow restores the validation that is skipped while abandoning.
+		// The abandon-only validation is dropped by the abandon page as it is destroyed.
+		if (this.mode() === Modes.ABANDON) {
+			this.testService.isAbandoning.set(false);
+		}
 		this.mode.set(mode);
 	}
 
@@ -242,76 +293,11 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	private validateUpdateStatus(testResult: TestResults | null, testTypeId: string): boolean {
 		return (
 			(testResult === TestResults.PASS || testResult === TestResults.PRS) &&
-			(this.isTestTypeFirstTest(testTypeId) ||
-				this.isTestTypeNotifiableAlteration(testTypeId) ||
-				this.isTestTypeCOIF(testTypeId) ||
-				this.isTestTypeIVA(testTypeId))
+			(this.testTypeService.isTestTypeFirstTest(testTypeId) ||
+				this.testTypeService.isTestTypeNotifiableAlteration(testTypeId) ||
+				this.testTypeService.isTestTypeCOIF(testTypeId) ||
+				this.testTypeService.isTestTypeIVA(testTypeId))
 		);
-	}
-
-	private isTestTypeFirstTest(testTypeId: string): boolean {
-		const firstTestIds = ['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'];
-		return firstTestIds.includes(testTypeId);
-	}
-
-	private isTestTypeNotifiableAlteration(testTypeId: string): boolean {
-		const notifiableAlterationIds = ['38', '47', '48'];
-		return notifiableAlterationIds.includes(testTypeId);
-	}
-
-	private isTestTypeCOIF(testTypeId: string): boolean {
-		const coifIds = ['142', '143', '175', '176'];
-		return coifIds.includes(testTypeId);
-	}
-
-	private isTestTypeIVA(testTypeId: string): boolean {
-		const ivaIds = [
-			'133',
-			'134',
-			'138',
-			'139',
-			'140',
-			'165',
-			'169',
-			'167',
-			'170',
-			'135',
-			'172',
-			'173',
-			'439',
-			'449',
-			'136',
-			'187',
-			'126',
-			'186',
-			'193',
-			'192',
-			'195',
-			'162',
-			'191',
-			'128',
-			'188',
-			'189',
-			'125',
-			'161',
-			'158',
-			'159',
-			'154',
-			'190',
-			'129',
-			'196',
-			'194',
-			'197',
-			'185',
-			'420',
-			'438',
-			'163',
-			'153',
-			'184',
-			'130',
-			'183',
-		];
-		return ivaIds.includes(testTypeId);
 	}
 
 	onSubmit(): void {
@@ -330,7 +316,17 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 	}
 
 	amendTestResult(): void {
-		const value = cleanTestResultPayload({ ...this.testResult() } as TestResultSchema);
+		const testResult = this.testResult();
+
+		const value = cleanTestResultPayload({
+			...testResult,
+			contingencyTestNumber: testResult?.contingencyTestNumber || undefined,
+			lastUpdatedByName: this.userService.user().name,
+			lastUpdatedByEmailAddress: this.userService.userEmail(),
+			lastUpdatedById: this.userService.user().oid,
+			lastUpdatedAt: new Date().toISOString(),
+		} as TestResultSchema);
+
 		if (!value) return;
 
 		this.populateDefectMedia(value);
@@ -350,6 +346,11 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	onMarkAsAbandoned(): void {
 		this.form.markAllAsTouched();
+		this.flushFormToStore(); // capture any pending debounced change before leaving edit mode
+
+		// Flag the abandonment before validating, so the sections skip the validation that only applies
+		// to a test that is being completed (e.g. country of registration, odometer, seatbelt check).
+		this.testService.isAbandoning.set(true);
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
@@ -361,15 +362,20 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 			return;
 		}
 
+		// The user stays in edit mode to fix the errors, so they are no longer abandoning the test.
+		this.testService.isAbandoning.set(false);
 		this.setGlobalErrors(errors);
 	}
 
 	onAbandon(): void {
-		this.form.markAllAsTouched();
+		const testTypeGroup = this.form.controls.testTypes.at(0);
+		testTypeGroup.controls.reasonForAbandoning.markAsTouched();
+		testTypeGroup.controls.additionalCommentsForAbandon.markAsTouched();
 
 		const errors = this.globalErrorService.extractGlobalErrors(this.form);
 
 		if (errors.length === 0) {
+			this.flushFormToStore();
 			this.resultOfTestService.toggleAbandoned(TestResults.ABANDONED);
 			this.onSubmit();
 			return;
@@ -392,6 +398,43 @@ export class TestRecordV2Component implements OnDestroy, OnInit {
 
 	get isTestTypeGroupEditable$(): Observable<boolean> {
 		return this.testRecordService.isTestTypeGroupEditable$;
+	}
+
+	shouldShowSeatbeltSection(): boolean {
+		// Sourced from the test result rather than the tech record, as the tech record is not
+		// guaranteed to be loaded when amending or viewing an existing test.
+		return this.testResult()?.vehicleType === VehicleTypes.PSV && !this.isSpecialistGroup1();
+	}
+
+	shouldShowDefectSection(): boolean {
+		return !this.isTestTypeGroup7() && !this.isSpecialistGroup1() && !this.isTestTypeGroup5or13();
+	}
+
+	isTestTypeGroup5or13 = computed(() =>
+		TEST_TYPES_GROUP5_13.includes(this.testResult()?.testTypes[0].testTypeId ?? '')
+	);
+
+	isTestTypeGroup7 = computed(() => TEST_TYPES_GROUP7.includes(this.testResult()?.testTypes[0].testTypeId ?? ''));
+
+	shouldShowRequiredStandardsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowAdditionalDefectsSection(): boolean {
+		return this.isSpecialistGroup1();
+	}
+
+	shouldShowSpecialistSectionsAfterTest(): boolean {
+		// Matches the original DFS template order, where LGV/car/motorcycle show Required Standards
+		// and Additional Defects straight after Test, and PSV/HGV/TRL show them after Notes.
+		const vehicleType = this.testResult()?.vehicleType;
+		return (
+			vehicleType === VehicleTypes.LGV || vehicleType === VehicleTypes.CAR || vehicleType === VehicleTypes.MOTORCYCLE
+		);
+	}
+
+	isSpecialistGroup1(): boolean {
+		return TEST_TYPES_GROUP1_SPEC_TEST.includes(this.testResult()?.testTypes[0].testTypeId ?? '');
 	}
 
 	protected readonly Modes = Modes;

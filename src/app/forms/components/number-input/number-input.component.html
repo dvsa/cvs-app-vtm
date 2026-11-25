@@ -2,7 +2,7 @@
   @if (label()) {
     <label class="govuk-label govuk-label--m" for="{{ name() }}">
       {{ label() }}
-      @for (tag of control?.meta?.customTags; track tag) {
+      @for (tag of control?.meta?.customTags; track tag.label) {
         <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
       }
     </label>
@@ -12,8 +12,13 @@
     <div id="{{ name() }}-hint" class="govuk-hint">{{ hint() }}</div>
   }
 
-  <app-field-error-message [error]="error" [name]="name()"></app-field-error-message>
-  <app-field-warning-message [warningMessage]="getWarningMessage"></app-field-warning-message>
+  <app-field-error-message
+    [error]="error"
+    [name]="name()"
+  ></app-field-error-message>
+  <app-field-warning-message
+    [warningMessage]="getWarningMessage"
+  ></app-field-warning-message>
   <div class="govuk-input__wrapper">
     @if (prefix(); as prefix) {
       <div class="govuk-input__suffix prefix" aria-hidden="true">
@@ -27,12 +32,13 @@
         type="number"
         [class]="style"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="disabled"
         (ngModelChange)="onChange($event)"
         (blur)="onTouched(); handleEvent($event)"
         (focus)="handleEvent($event)"
         appNumberOnly
-        />
+      />
     }
     @if (enableDecimals()) {
       <input
@@ -41,12 +47,13 @@
         type="number"
         [class]="style"
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="disabled"
         (ngModelChange)="onChange($event)"
         (blur)="onTouched(); handleEvent($event)"
         (focus)="handleEvent($event)"
         appDecimalOnly
-        />
+      />
     }
 
     @if (suffix(); as suffix) {

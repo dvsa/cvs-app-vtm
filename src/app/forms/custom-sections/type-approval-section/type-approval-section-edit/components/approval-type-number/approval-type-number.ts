@@ -1,5 +1,15 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, OnChanges, OnDestroy, SimpleChanges, forwardRef, inject, input, model } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	OnChanges,
+	OnDestroy,
+	SimpleChanges,
+	forwardRef,
+	inject,
+	input,
+	model,
+} from '@angular/core';
 import {
 	AbstractControl,
 	ControlContainer,
@@ -54,6 +64,7 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	fb = inject(FormBuilder);
 	controlContainer = inject(ControlContainer);
 	commonValidators = inject(CommonValidatorsService);
+	cdr = inject(ChangeDetectorRef);
 	destroy = new ReplaySubject<boolean>(1);
 
 	form = this.fb.group({
@@ -101,6 +112,11 @@ export class ApprovalTypeNumber implements ControlValueAccessor, OnChanges, OnDe
 	}
 
 	ngOnInit() {
+		// Touched/validity changes are applied to the control from outside this template (e.g.
+		// GlobalErrorService.markAllAsTouched on submit), so nothing tells Angular this view needs
+		// refreshing and the inline error never renders.
+		this.control?.events.pipe(takeUntil(this.destroy)).subscribe(() => this.cdr.markForCheck());
+
 		this.form.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
 			const approvalTypeNumber1 = this.form?.get('approvalTypeNumber1')?.value;
 			const approvalTypeNumber2 = this.form?.get('approvalTypeNumber2')?.value;

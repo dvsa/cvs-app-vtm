@@ -2,12 +2,14 @@ import { ReasonForNotLoading } from '@dvsa/cvs-type-definitions/types/v1/enums/r
 import { TestResults } from '@dvsa/cvs-type-definitions/types/v1/enums/testResult.enum.js';
 import { UnladenBodyType } from '@dvsa/cvs-type-definitions/types/v1/enums/unladenBodyType.enum.js';
 import { VehicleLoadStatusType } from '@dvsa/cvs-type-definitions/types/v1/enums/vehicleLoadStatus.enum.js';
+import { RecallsSchema } from '@dvsa/cvs-type-definitions/types/v1/recalls';
 import {
 	DefectDetailsSchema,
 	LoadStatusSchema,
 	SpecialistCustomDefectsSchemaPut,
 	TestResultSchema,
 } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { DeficiencyCategoryEnum } from '@models/test-results/test-result-defect.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import {
@@ -27,8 +29,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
-import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
+import { cloneDeep, merge } from 'lodash-es';
 import {
 	cancelEditingTestResult,
 	cleanTestResult,
@@ -72,6 +73,9 @@ interface Extras {
 	loading: boolean;
 	editingTestResult?: TestResultSchema;
 	sectionTemplates?: FormNode[];
+	recalls?: RecallsSchema;
+	recallsVin?: string;
+	recallsLoading: boolean;
 }
 
 export interface TestResultsState extends EntityState<TestResultSchema>, Extras {}
@@ -87,6 +91,7 @@ export const testResultAdapter: EntityAdapter<TestResultSchema> = createEntityAd
 export const initialTestResultsState: EntityState<TestResultSchema> & Extras = testResultAdapter.getInitialState({
 	error: '',
 	loading: false,
+	recallsLoading: false,
 });
 
 export const testResultsReducer = createReducer(
@@ -110,6 +115,25 @@ export const testResultsReducer = createReducer(
 		loading: false,
 	})),
 	on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
+
+	on(getRecalls, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: true,
+	})),
+	on(getRecallsSuccess, (state, action) => ({
+		...state,
+		recalls: action.recalls,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
+	on(getRecallsFailure, (state, action) => ({
+		...state,
+		recalls: undefined,
+		recallsVin: action.vin,
+		recallsLoading: false,
+	})),
 
 	on(createTestResult, updateTestResult, (state) => ({ ...state, loading: true })),
 	on(updateTestResultSuccess, (state, action) => ({
@@ -179,8 +203,6 @@ export const testResultsReducer = createReducer(
 
 	on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 
-	on(getRecalls, (state) => ({ ...state, loading: true })),
-	on(getRecallsSuccess, getRecallsFailure, (state) => ({ ...state, loading: false })),
 	on(setTestResultLoading, (state, action) => ({ ...state, loading: action.loading }))
 );
 
@@ -195,32 +217,57 @@ function createNewRequiredStandard(
 	}
 	const testResult = cloneDeep(testResultState);
 
-	if (!testResult.testTypes[0].requiredStandards) {
-		return;
-	}
+	// Saved test results drop an empty requiredStandards array, so it may need creating when amending
+	testResult.testTypes[0].requiredStandards ??= [];
 	testResult.testTypes[0].requiredStandards.push(requiredStandard);
 
 	return { ...testResult };
 }
 
-export function cleanTestResultPayload(testResult: TestResultSchema | undefined) {
-	if (!testResult || !testResult.testTypes) {
-		return testResult;
+export function cleanTestResultPayload(testResultState: TestResultSchema | undefined) {
+	if (!testResultState || !testResultState.testTypes) {
+		return testResultState;
 	}
+	const testResult = cloneDeep(testResultState);
 
 	// Ensure body model is null when empty, so it doesn't affect downstream services
 	if (testResult.model === '') {
 		testResult.model = null;
 	}
 
-	// Remove recalls from non HGV/PSV/TRL tests
+	// The v2 form defaults these to empty strings, which the BE rejects for vehicles without them (e.g. cars)
+	for (const key of ['vehicleClass', 'bodyType'] as const) {
+		const value = testResult[key] as { code?: string | null; description?: string | null } | null | undefined;
+		if (value?.code === '' && value.description === '') {
+			testResult[key] = { code: null, description: null } as any;
+		}
+	}
+
 	const vehicleType = testResult.vehicleType;
 	const isHGV = vehicleType === VehicleTypes.HGV;
 	const isPSV = vehicleType === VehicleTypes.PSV;
 	const isTRL = vehicleType === VehicleTypes.TRL;
+	const isLGV = vehicleType === VehicleTypes.LGV;
+	const isHeavyTRL =
+		isTRL &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O1 &&
+		testResult.euVehicleCategory !== EUVehicleCategory.O2;
 
+	// Remove recalls from non HGV/PSV/TRL tests
 	if (!(isHGV || isPSV || isTRL)) {
 		delete testResult.recalls;
+	}
+
+	// Remove VTG15 from non HGV/LGV/TRL tests
+	if (!isHGV && !isLGV && !isHeavyTRL) {
+		delete testResult.vtg15;
+	}
+
+	if (!testResult.vtg15?.vtg15Required) {
+		delete testResult.vtg15?.primaryHazardClassification;
+		delete testResult.vtg15?.secondaryHazardClassification;
+		delete testResult.vtg15?.unNumber;
+		delete testResult.vtg15?.media;
 	}
 
 	const testTypes = testResult.testTypes.map((testType, index) => {
@@ -283,7 +330,7 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 
 		// If abandon reasons is an array, convert it to a string
 		if (Array.isArray(testType.reasonForAbandoning)) {
-			testType.reasonForAbandoning = testType.reasonForAbandoning.join('.');
+			testType.reasonForAbandoning = testType.reasonForAbandoning.join('. ');
 		}
 
 		// If required standards is an empty array, convert it to undefined
@@ -292,8 +339,9 @@ export function cleanTestResultPayload(testResult: TestResultSchema | undefined)
 		}
 
 		if (testType.loadStatus) {
-			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status
-			if (testType.loadStatus.vehicleLoadStatus === null) {
+			// If amending a historic test vehicle load status is not required, so if its not entered, delete load status.
+			// The dynamic form initialises this control to null, the reactive form to undefined; both mean "not entered".
+			if (testType.loadStatus.vehicleLoadStatus === null || testType.loadStatus.vehicleLoadStatus === undefined) {
 				delete testType.loadStatus;
 			} else {
 				// Otherwise create a valid load status object
@@ -338,7 +386,7 @@ function updateRequiredStandardAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].requiredStandards) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].requiredStandards[`${index}`] = requiredStandard;
 
@@ -351,7 +399,7 @@ function removeRequiredStandardAtIndex(testResultState: TestResultSchema | undef
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].requiredStandards) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].requiredStandards.splice(index, 1);
 
@@ -367,9 +415,7 @@ function createNewDefect(
 	}
 	const testResult = cloneDeep(testResultState);
 
-	if (!testResult.testTypes[0].defects) {
-		return;
-	}
+	testResult.testTypes[0].defects ??= [];
 	testResult.testTypes[0].defects.push(defect);
 
 	return { ...testResult };
@@ -385,7 +431,7 @@ function updateDefectAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].defects) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].defects[`${index}`] = defect;
 
@@ -401,7 +447,7 @@ function removeDefectAtIndex(
 	}
 	const testResult = cloneDeep(testResultState);
 	if (!testResult.testTypes[0].defects) {
-		return;
+		return testResultState;
 	}
 	testResult.testTypes[0].defects.splice(index, 1);
 

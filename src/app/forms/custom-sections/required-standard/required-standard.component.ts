@@ -75,7 +75,10 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 				distinctUntilChanged((prev, curr) => prev[0]?.testTypes[0]?.testResult === curr[0]?.testTypes[0]?.testResult)
 			)
 			.subscribe(([testResult, inspectionTypeValue, rsRefCalculationValue, requiredStandardIndexValue]) => {
-				if (!testResult) this.navigateBack();
+				if (!testResult) {
+					this.navigateBack();
+					return;
+				}
 				this.requiredStandardForm = (this.dfs.createForm(RequiredStandardsTpl, testResult) as CustomFormGroup).get([
 					'testTypes',
 					'0',

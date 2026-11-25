@@ -1,6 +1,9 @@
 @if (amendedTechRecord(); as vm) {
   <dl class="govuk-summary-list">
-    @if (vm.techRecord_vehicleType !== VehicleTypes.PSV && tcs.hasChanged('techRecord_notes')) {
+    @if (
+      vm.techRecord_vehicleType !== VehicleTypes.PSV &&
+      tcs.hasChanged('techRecord_notes')
+    ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Notes</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_notes">
@@ -8,18 +11,27 @@
         </dd>
       </div>
     }
-    @if (vm.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasChanged('techRecord_remarks')) {
+    @if (
+      vm.techRecord_vehicleType === VehicleTypes.PSV &&
+      tcs.hasChanged('techRecord_remarks')
+    ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Notes</dt>
         <dd class="govuk-summary-list__value" id="test-techRecord_remarks">
-          <p class='whitespace-pre-wrap'>{{ vm.techRecord_remarks }}</p>
+          <p class="whitespace-pre-wrap">{{ vm.techRecord_remarks }}</p>
         </dd>
       </div>
     }
-    @if (vm.techRecord_vehicleType === VehicleTypes.PSV && tcs.hasChanged('techRecord_dispensations')) {
+    @if (
+      vm.techRecord_vehicleType === VehicleTypes.PSV &&
+      tcs.hasChanged('techRecord_dispensations')
+    ) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Dispensations</dt>
-        <dd class="govuk-summary-list__value" id="test-techRecord_dispensations">
+        <dd
+          class="govuk-summary-list__value"
+          id="test-techRecord_dispensations"
+        >
           <p class="whitespace-pre-wrap">{{ vm.techRecord_dispensations }}</p>
         </dd>
       </div>

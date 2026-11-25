@@ -216,20 +216,23 @@ export class CreateTechRecordComponent implements OnInit, OnChanges {
 
 	async isFormValueUnique() {
 		const isTrailer = this.form.value.vehicleType === VehicleTypes.TRL;
-
-		if (!this.isVinUniqueCheckComplete) {
-			this.vinUnique = await this.isVinUnique();
-		}
+		const vinCheck = this.isVinUniqueCheckComplete
+			? Promise.resolve(this.vinUnique)
+			: this.isVinUnique().then((unique) => {
+					this.vinUnique = unique;
+					return unique;
+				});
 
 		if (this.form.controls['generateID'].value) {
+			this.vinUnique = await vinCheck;
 			return this.vinUnique;
 		}
 
 		if (isTrailer) {
-			this.trlUnique = await this.isTrailerIdUnique();
+			[this.vinUnique, this.trlUnique] = await Promise.all([vinCheck, this.isTrailerIdUnique()]);
 			return this.vinUnique && this.trlUnique;
 		}
-		this.vrmUnique = await this.isVrmUnique();
+		[this.vinUnique, this.vrmUnique] = await Promise.all([vinCheck, this.isVrmUnique()]);
 		return this.vinUnique && this.vrmUnique;
 	}
 

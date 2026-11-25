@@ -1,8 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { MediaSchema } from '@dvsa/cvs-type-definitions/types/v1/test-result';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { ValidatorNames } from '@models/validators.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -33,6 +35,32 @@ describe('DynamicFormService', () => {
 	});
 
 	describe('createForm', () => {
+		it.each(Object.entries(masterTpl).filter(([, templates]) => templates.testTypesSpecialistGroup1))(
+			'preserves certificate photos and failure reasons in %s specialist template state',
+			(_vehicleType, templates) => {
+				const certificateMedia: MediaSchema[][] = [
+					[{ type: 'image', path: 'test-result-id/iac/certificate.jpg' }],
+					[{ type: 'failReason', path: 'test-result-id/iac/reason.txt', reason: 'Camera not working' }],
+				];
+				const groups = [
+					'testTypesSpecialistGroup1',
+					'testTypesSpecialistGroup5',
+					'testTypesSpecialistGroup1OldIVAorMSVA',
+					'testTypesSpecialistGroup5OldIVAorMSVA',
+				] as const;
+
+				for (const group of groups) {
+					const template = templates[group];
+					if (!template) continue;
+
+					for (const approvalCertificate of certificateMedia) {
+						const form = service.createForm(template.required, { approvalCertificate });
+						expect(form.getCleanValue(form), group).toMatchObject({ approvalCertificate });
+					}
+				}
+			}
+		);
+
 		it('should return an empty FormGroup if the root node has no children', () => {
 			const node: FormNode = {
 				name: 'empty',
@@ -219,7 +247,8 @@ describe('DynamicFormService', () => {
 			const outputGroup = service.createForm(node);
 			const control = outputGroup.get('foo');
 			expect(control instanceof CustomFormControl).toBeTruthy();
-			expect(control?.hasValidator(Validators.required)).toBeTruthy();
+			control?.setValue(null);
+			expect(control?.hasError('required')).toBeTruthy();
 		});
 	});
 
@@ -231,9 +260,9 @@ describe('DynamicFormService', () => {
 				children: [],
 			});
 			const validators = [{ name: ValidatorNames.Required }];
-			const expectedValidator: ValidatorFn = Validators.required;
 			service.addValidators(control, validators);
-			expect(control.hasValidator(expectedValidator)).toBeTruthy();
+			control.setValue(null);
+			expect(control.hasError('required')).toBeTruthy();
 		});
 	});
 
@@ -256,8 +285,10 @@ describe('DynamicFormService', () => {
 					),
 				}
 			);
+			form.controls['foo'].setErrors({ required: true });
+			(form.controls['bar'] as CustomFormGroup).controls['baz'].setErrors({ required: true });
 
-			DynamicFormService.validate(form, errors);
+			DynamicFormService.validate(form, errors, false);
 
 			expect(errors).toHaveLength(2);
 		});

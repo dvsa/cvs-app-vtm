@@ -4,10 +4,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { TestType } from '@models/test-types/testType';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/index';
+import { clearAllSectionStates } from '@store/technical-records';
+import { contingencyTestTypeSelected } from '@store/test-records';
 import { of } from 'rxjs';
 import { TestTypeSelectComponent } from '../../../../components/test-type-select/test-type-select.component';
 import { CreateTestTypeComponent } from '../create-test-type.component';
@@ -18,6 +20,7 @@ describe('CreateTestTypeComponent', () => {
 	let router: Router;
 	let route: ActivatedRoute;
 	let techRecordService: TechnicalRecordService;
+	let store: MockStore;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
@@ -36,11 +39,12 @@ describe('CreateTestTypeComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(CreateTestTypeComponent);
 		techRecordService = TestBed.inject(TechnicalRecordService);
+		store = TestBed.inject(MockStore);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);
 		route = TestBed.inject(ActivatedRoute);
 
-		jest.spyOn(window, 'alert').mockImplementation();
+		vi.spyOn(window, 'alert').mockImplementation();
 
 		fixture.detectChanges();
 	});
@@ -50,13 +54,16 @@ describe('CreateTestTypeComponent', () => {
 	});
 
 	it('should navigate to sibling path "amend-test-details"', () => {
-		const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+		const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+		const dispatchSpy = vi.spyOn(store, 'dispatch');
 		component.handleSelectedTestType({ id: '1' } as TestType);
 		expect(navigateSpy).toHaveBeenCalledWith(['..', 'test-details'], {
 			queryParams: { testType: '1' },
 			queryParamsHandling: 'merge',
 			relativeTo: route,
 		});
+		expect(dispatchSpy).toHaveBeenCalledWith(clearAllSectionStates());
+		expect(dispatchSpy).not.toHaveBeenCalledWith(contingencyTestTypeSelected({ testType: '1' }));
 	});
 
 	describe('AfterContentInit', () => {
@@ -89,10 +96,10 @@ describe('CreateTestTypeComponent', () => {
 		it.each(testCases)(
 			'should get the vehicle record and alert with the appropriate message',
 			({ record, message }) => {
-				jest.resetAllMocks();
+				vi.resetAllMocks();
 				techRecordService.techRecord$ = of(record);
-				const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
-				const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
+				const alertSpy = vi.spyOn(window, 'alert').mockImplementation();
+				const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 				component.ngAfterContentInit();
 				expect(alertSpy).toHaveBeenCalledTimes(1);
 				expect(alertSpy).toHaveBeenCalledWith(message);

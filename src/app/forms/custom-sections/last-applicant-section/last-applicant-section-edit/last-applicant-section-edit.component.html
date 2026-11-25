@@ -48,7 +48,9 @@
   }
 
   <!--  Telephone number -->
-  @if (shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')) {
+  @if (
+    shouldDisplayFormControl('techRecord_applicantDetails_telephoneNumber')
+  ) {
     <govuk-form-group-input
       label="Telephone number"
       formControlName="techRecord_applicantDetails_telephoneNumber"

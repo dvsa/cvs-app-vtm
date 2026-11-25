@@ -56,35 +56,44 @@ describe('TechnicalRecordService', () => {
 			});
 		});
 
-		it('return null if vin and trailer id are not provided', (done) => {
-			expect.assertions(1);
-			testGroup.get('vin')?.setValue(null);
-			testGroup.get('trailerIdOrVrm')?.setValue(null);
-			const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
-			(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
-				expect(errors).toBeNull();
-				done();
+		it('return null if vin and trailer id are not provided', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				expect.assertions(1);
+				testGroup.get('vin')?.setValue(null);
+				testGroup.get('trailerIdOrVrm')?.setValue(null);
+				const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
+				(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
+					expect(errors).toBeNull();
+					done();
+				});
 			});
 		});
 
-		it('return null if the required controls do not exist', (done) => {
-			expect.assertions(1);
-			testGroup = new FormGroup({ vin: new FormControl({ name: 'vin' }) });
-			const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
-			(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
-				expect(errors).toBeNull();
-				done();
+		it('return null if the required controls do not exist', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				expect.assertions(1);
+				testGroup = new FormGroup({ vin: new FormControl({ name: 'vin' }) });
+				const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
+				(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
+					expect(errors).toBeNull();
+					done();
+				});
 			});
 		});
 
-		it('throws an error if trailer id is provided but vin is not', (done) => {
-			expect.assertions(1);
-			testGroup.get('trailerIdOrVrm')?.setValue('test');
+		it('throws an error if trailer id is provided but vin is not', async () => {
+			await new Promise<void>((resolve) => {
+				const done = resolve;
+				expect.assertions(1);
+				testGroup.get('trailerIdOrVrm')?.setValue('test');
 
-			const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
-			(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
-				expect(errors).toEqual({ validateForBatch: { message: 'VIN is required' } });
-				done();
+				const serviceCall = service.validateForBatch()(testGroup.get('vin') as AbstractControl);
+				(serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
+					expect(errors).toEqual({ validateForBatch: { message: 'VIN is required' } });
+					done();
+				});
 			});
 		});
 
@@ -93,7 +102,7 @@ describe('TechnicalRecordService', () => {
 				testGroup.get('trailerIdOrVrm')?.setValue('');
 				testGroup.get('vin')?.setValue('TESTVIN');
 
-				const isUniqueSpy = jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+				const isUniqueSpy = vi.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -107,7 +116,7 @@ describe('TechnicalRecordService', () => {
 				testGroup.get('trailerIdOrVrm')?.setValue('');
 				const vinControl = testGroup.get('vin') as CustomFormControl;
 				vinControl.setValue('TESTVIN');
-				jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
+				vi.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
 				await firstValueFrom(
 					service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>
 				);
@@ -130,7 +139,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -152,7 +161,7 @@ describe('TechnicalRecordService', () => {
 					techRecord_vehicleType: VehicleTypes.TRL,
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -176,7 +185,7 @@ describe('TechnicalRecordService', () => {
 					createdTimestamp: '1234',
 				} as TechRecordSearchSchema;
 
-				jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([mockSearchResult]));
 
 				const serviceCall = service.validateForBatch()(
 					testGroup.get('vin') as AbstractControl
@@ -195,9 +204,9 @@ describe('TechnicalRecordService', () => {
 					techRecord_statusCode: StatusCodes.PROVISIONAL,
 				} as TechRecordSearchSchema;
 
-				jest
-					.spyOn(httpService, 'searchTechRecords')
-					.mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
+				vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(
+					of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }])
+				);
 
 				const errors = await firstValueFrom(
 					service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>
@@ -219,7 +228,7 @@ describe('TechnicalRecordService', () => {
 				trailerIdOrVrmControl.setValue('TESTTRAILERID');
 			}
 
-			jest.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
+			vi.spyOn(httpService, 'searchTechRecords').mockReturnValue(of([]));
 
 			const errors = await firstValueFrom(
 				service.validateForBatch()(testGroup.get('vin') as AbstractControl) as Observable<ValidationErrors | null>

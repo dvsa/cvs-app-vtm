@@ -26,7 +26,7 @@ export class CustomFormControlComponent extends BaseControlComponent {
 			if (ngControl.value) {
 				this.name.set(ngControl.key);
 				this.control = ngControl.value;
-				this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
+				this.form = (this.injector.get(FORM_INJECTION_TOKEN, null) as FormGroup | null) ?? undefined;
 			}
 		}
 	}

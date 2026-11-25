@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DocumentsService } from '../documents.service';
 
-global.URL.createObjectURL = jest.fn().mockReturnValue('objectURL');
+global.URL.createObjectURL = vi.fn().mockReturnValue('objectURL');
 
 const fileName = 'fileName';
 const responseBody = 'Response body';
@@ -26,9 +26,9 @@ describe('DocumentsService', () => {
 
 	describe('openDocumentFromResponse', () => {
 		it('should download a document sent back from a http response', () => {
-			const convertToBlobSpy = jest.spyOn(service, 'convertToBlob');
-			const createFileLinkSpy = jest.spyOn(service, 'createFileLink');
-			const simulateClickSpy = jest.spyOn(service, 'simulateClick');
+			const convertToBlobSpy = vi.spyOn(service, 'convertToBlob');
+			const createFileLinkSpy = vi.spyOn(service, 'createFileLink');
+			const simulateClickSpy = vi.spyOn(service, 'simulateClick');
 
 			service.openDocumentFromResponse(fileName, responseBody);
 
@@ -38,9 +38,9 @@ describe('DocumentsService', () => {
 		});
 
 		it('should download a document sent back with a signed url', () => {
-			const convertToBlobSpy = jest.spyOn(service, 'convertToBlob');
-			const createFileLinkSpy = jest.spyOn(service, 'createFileLink');
-			const simulateClickSpy = jest.spyOn(service, 'simulateClick');
+			const convertToBlobSpy = vi.spyOn(service, 'convertToBlob');
+			const createFileLinkSpy = vi.spyOn(service, 'createFileLink');
+			const simulateClickSpy = vi.spyOn(service, 'simulateClick');
 
 			const fakeAnchorZip = domParser
 				.parseFromString('<a download="fileName.zip" href="Response body" />', 'text/html')
@@ -74,9 +74,9 @@ describe('DocumentsService', () => {
 
 	describe('simulateClick', () => {
 		it('should add the downloadable pdf anchor element to the DOM, programmatically click it, then remove it', () => {
-			const appendChildSpy = jest.spyOn(document.body, 'appendChild');
-			const clickSpy = jest.spyOn(fakeAnchor as HTMLAnchorElement, 'click');
-			const removeChildSpy = jest.spyOn(document.body, 'removeChild');
+			const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+			const clickSpy = vi.spyOn(fakeAnchor as HTMLAnchorElement, 'click');
+			const removeChildSpy = vi.spyOn(document.body, 'removeChild');
 
 			service.simulateClick(fakeAnchor as HTMLAnchorElement);
 

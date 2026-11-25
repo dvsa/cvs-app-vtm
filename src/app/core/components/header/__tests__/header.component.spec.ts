@@ -40,7 +40,7 @@ describe('HeaderComponent', () => {
 	});
 
 	it('Clicking logout fires off event', () => {
-		const logoutSpy = jest.fn();
+		const logoutSpy = vi.fn();
 		component.logOutEvent.subscribe(logoutSpy);
 
 		logOutButton.triggerEventHandler('click', null);

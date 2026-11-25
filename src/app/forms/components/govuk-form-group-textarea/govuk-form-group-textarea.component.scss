@@ -1,4 +1,4 @@
-@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/govuk-frontend/govuk/base';
 
 .govuk-label {
   /* Default to .govuk-label--m */
@@ -28,4 +28,3 @@
 :host(.govuk-label) .govuk-label {
   font-weight: normal;
 }
-

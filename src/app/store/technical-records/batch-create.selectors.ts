@@ -12,9 +12,16 @@ export const selectApplicationId = createSelector(selectBatchState, (state) => s
 export const selectGenerateNumber = createSelector(selectBatchState, (state) => state.generateNumber);
 export const selectVehicleStatus = createSelector(selectBatchState, (state) => state.vehicleStatus);
 export const selectVehicleType = createSelector(selectBatchState, (state) => state.vehicleType);
+export const selectTrailerFormType = createSelector(selectBatchState, (state) => state.trlFormType);
+
+export const selectBatchPending = createSelector(selectAllBatch, (state) => state.filter((v) => v.pending));
+export const selectBatchPendingCount = createSelector(selectBatchPending, (state) => state.length);
 
 export const selectBatchSuccess = createSelector(selectAllBatch, (state) => state.filter((v) => v.created));
 export const selectBatchSuccessCount = createSelector(selectBatchSuccess, (state) => state.length);
+
+export const selectBatchFailed = createSelector(selectAllBatch, (state) => state.filter((v) => v.failed));
+export const selectBatchFailedCount = createSelector(selectBatchFailed, (state) => state.length);
 
 export const selectBatchCreated = createSelector(selectAllBatch, (state) =>
 	state.filter((v) => v.amendedRecord === false)

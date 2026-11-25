@@ -47,7 +47,7 @@
     orientation="horizontal"
     [options]="[
       { value: StatusCodes.CURRENT, label: 'Current' },
-      { value: StatusCodes.PROVISIONAL, label: 'Provisional' }
+      { value: StatusCodes.PROVISIONAL, label: 'Provisional' },
     ]"
   ></govuk-form-group-radio>
 
@@ -63,12 +63,18 @@
       { value: VehicleTypes.LGV, label: 'Light Goods Vehicle (LGV)' },
       { value: VehicleTypes.CAR, label: 'Car' },
       { value: VehicleTypes.MOTORCYCLE, label: 'Motorcycle' },
-      { value: VehicleTypes.SMALL_TRL, label: 'Small Trailer (Small TRL)', optionalId: 'small_trl' }
+      {
+        value: VehicleTypes.SMALL_TRL,
+        label: 'Small Trailer (Small TRL)',
+        optionalId: 'small_trl',
+      },
     ]"
   ></govuk-form-group-radio>
 
   <app-button-group>
     <app-button id="submit" (clicked)="handleSubmit()">Continue</app-button>
-    <app-button design="link" id="cancel" (clicked)="navigateBack()">Cancel</app-button>
+    <app-button design="link" id="cancel" (clicked)="navigateBack()"
+      >Cancel</app-button
+    >
   </app-button-group>
 </form>
