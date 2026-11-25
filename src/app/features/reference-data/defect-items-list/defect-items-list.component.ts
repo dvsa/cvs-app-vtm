@@ -5,10 +5,9 @@ import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-
 import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
 import { selectDefectCategoryFromRoute } from '@/src/app/store/defects';
-import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DefectItemReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { Store } from '@ngrx/store';
 
@@ -22,9 +21,7 @@ import { Store } from '@ngrx/store';
 		FormsModule,
 		ReactiveFormsModule,
 		GovukFormGroupSelectComponent,
-		UpperCasePipe,
 		AppRoutingModule,
-		RouterLink,
 	],
 })
 export class DefectItemsListComponent {

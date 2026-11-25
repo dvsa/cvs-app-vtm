@@ -8,7 +8,7 @@ import { defects } from '@/src/app/store/defects';
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DefectCategoryReferenceDataSchema } from '@dvsa/cvs-type-definitions/types/v1/defect-category-reference-data';
 import { Store } from '@ngrx/store';
 
@@ -24,7 +24,6 @@ import { Store } from '@ngrx/store';
 		GovukFormGroupSelectComponent,
 		UpperCasePipe,
 		AppRoutingModule,
-		RouterLink,
 	],
 })
 export class DefectsListComponent {

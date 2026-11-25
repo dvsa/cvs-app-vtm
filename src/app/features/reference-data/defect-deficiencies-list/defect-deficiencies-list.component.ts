@@ -5,7 +5,6 @@ import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-
 import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
 import { selectDefectCategoryFromRoute, selectDefectItemFromRoute } from '@/src/app/store/defects';
-import { UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +21,6 @@ import { Store } from '@ngrx/store';
 		FormsModule,
 		ReactiveFormsModule,
 		GovukFormGroupSelectComponent,
-		UpperCasePipe,
 		TagComponent,
 	],
 })

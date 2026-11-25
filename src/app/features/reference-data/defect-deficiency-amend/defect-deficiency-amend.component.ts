@@ -2,7 +2,6 @@ import { ButtonGroupComponent } from '@/src/app/components/button-group/button-g
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
-import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupCheckboxComponent } from '@/src/app/forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
@@ -31,7 +30,6 @@ import { Store } from '@ngrx/store';
 		GovukFormGroupTextareaComponent,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupCheckboxComponent,
-		GovukCheckboxGroupComponent,
 		ButtonGroupComponent,
 		ButtonComponent,
 		RoleRequiredDirective,
